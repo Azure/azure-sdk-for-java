@@ -3,23 +3,30 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.Objects;
 
+@Immutable
 public class OperationResult {
     /**
-     * Identifier which contains the result of the model operation.
+     * Identifier which contains the result of the model/analyze operation.
      */
     private final String resultId;
 
-
+    /**
+     * Constructs an OperationResult model.
+     *
+     * @param resultId The identifier which contains the result of the model/analyze operation.
+     */
     public OperationResult(String resultId) {
-        this.resultId = Objects.requireNonNull(resultId, "'modelId' cannot be null.");
+        this.resultId = Objects.requireNonNull(resultId, "'resultId' cannot be null.");
     }
 
     /**
-     * Get the modelId.
+     * Get the resultId.
      *
-     * @return the modelId
+     * @return the resultId.
      */
     public String getResultId() {
         return this.resultId;

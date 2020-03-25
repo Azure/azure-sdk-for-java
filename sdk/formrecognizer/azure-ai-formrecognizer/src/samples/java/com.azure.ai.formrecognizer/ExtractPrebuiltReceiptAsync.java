@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
@@ -7,7 +10,12 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-public class AnalyzePrebuiltReceiptAsync {
+import java.time.Duration;
+
+/**
+ * Sample for extracting receipt information using file source URL.
+ */
+public class ExtractPrebuiltReceiptAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         final FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
@@ -17,7 +25,7 @@ public class AnalyzePrebuiltReceiptAsync {
 
         String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<ReceiptPageResult>> analyzeReceiptPoller =
-            client.beginAnalyzeReceipt(receiptUrl, true);
+            client.beginExtractReceipt(receiptUrl, true, Duration.ofSeconds(1));
 
         IterableStream<ReceiptPageResult> receiptPageResults = analyzeReceiptPoller
             .last()
@@ -51,16 +59,6 @@ public class AnalyzePrebuiltReceiptAsync {
                 System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
                 System.out.println();
             });
-            // print raw ocr
-            if (receiptPageResultItem.getExtractedLines() != null) {
-                receiptPageResultItem.getExtractedLines().forEach(extractedLine -> {
-                    System.out.printf("Extracted Line text: %s%n", extractedLine.getText());
-                    extractedLine.extractedWords.forEach(extractedWord -> {
-                        System.out.printf("Extracted Word text: %s%n", extractedWord.getText());
-                        System.out.printf("Extracted Word confidence: %.2f%n", extractedWord.getConfidence());
-                    });
-                });
-            }
         }
     }
 }

@@ -4,52 +4,40 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.Collection;
 
 /**
  * Defines values for LengthUnit.
  */
-public enum DimensionUnit {
+public final class DimensionUnit extends ExpandableStringEnum<DimensionUnit> {
     /**
-     * Enum value pixel.
+     * Static value en for Language.
      */
-    PIXEL("pixel"),
+    public static final DimensionUnit PIXEL = fromString("pixel");
 
     /**
-     * Enum value inch.
+     * Static value en for Language.
      */
-    INCH("inch");
+    public static final DimensionUnit INCH = fromString("inch");
 
     /**
-     * The actual serialized value for a LengthUnit instance.
-     */
-    private final String value;
-
-    DimensionUnit(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a LengthUnit instance.
+     * Parses a serialized value to a {@code DimensionUnit} instance.
      *
      * @param value the serialized value to parse.
      * @return the parsed LengthUnit object, or null if unable to parse.
      */
     @JsonCreator
     public static DimensionUnit fromString(String value) {
-        DimensionUnit[] items = DimensionUnit.values();
-        for (DimensionUnit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+        return fromString(value, DimensionUnit.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * @return known {@link DimensionUnit} values.
+     */
+    public static Collection<DimensionUnit> values() {
+        return values(DimensionUnit.class);
     }
 }

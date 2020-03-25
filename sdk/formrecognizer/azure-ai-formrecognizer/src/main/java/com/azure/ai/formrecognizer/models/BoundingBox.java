@@ -3,17 +3,35 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.core.annotation.Immutable;
+
 import java.util.List;
 
+/**
+ * Quadrangle bounding box, with coordinates specified relative to the top-left of the original image
+ */
+@Immutable
 public class BoundingBox {
-    // TODO: improve to make a better coordinates class
-    private List<Float> coordinates;
+    /**
+     * Coordinates specified relative to the top-left of the element in {@link Point}.
+     */
+    private List<Point> coordinates;
 
-    public BoundingBox(final List<Float> coordinates) {
+    /**
+     * List of {@link Point points} specifying relative coordinates of the element.
+     *
+     * @param coordinates list of {@link Point points}
+     */
+    public BoundingBox(final List<Point> coordinates) {
         this.coordinates = coordinates;
     }
 
-    public List<Float> getCoordinates() {
+    /**
+     * Get the list of {@link Point points} specifying relative coordinates of the element.
+     *
+     * @return List of {@link Point points}.
+     */
+    public List<Point> getCoordinates() {
         return coordinates;
     }
 }

@@ -1,32 +1,38 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer.models;
+
+import com.azure.core.annotation.Fluent;
 
 import java.util.List;
 
+@Fluent
 public class ReceiptPageResult {
-    private List<ExtractedLine> extractedLines;
+    private List<Element> elements;
     private List<ReceiptItem> receiptItems;
     private PageInfo pageInfo;
-    private FieldValue merchantName;
-    private FieldValue merchantAddress;
-    private FieldValue merchantPhoneNumber;
+    private FieldValue<?> merchantName;
+    private FieldValue<?> merchantAddress;
+    private FieldValue<?> merchantPhoneNumber;
     private ReceiptType receiptType;
-    private FieldValue subtotal;
-    private FieldValue tax;
-    private FieldValue tip;
-    private FieldValue total;
-    private FieldValue transactionDate;
-    private FieldValue transactionTime;
+    private FieldValue<?> subtotal;
+    private FieldValue<?> tax;
+    private FieldValue<?> tip;
+    private FieldValue<?> total;
+    private FieldValue<?> transactionDate;
+    private FieldValue<?> transactionTime;
 
     public ReceiptPageResult(final PageInfo pageInfo) {
         this.pageInfo = pageInfo;
     }
 
-    public List<ExtractedLine> getExtractedLines() {
-        return extractedLines;
+    public List<Element> getElements() {
+        return elements;
     }
 
-    public ReceiptPageResult setExtractedLines(final List<ExtractedLine> extractedLines) {
-        this.extractedLines = extractedLines;
+    public ReceiptPageResult setElements(final List<Element> elements) {
+        this.elements = elements;
         return this;
     }
 
@@ -57,83 +63,83 @@ public class ReceiptPageResult {
         return this;
     }
 
-    public FieldValue getMerchantName() {
+    public FieldValue<?> getMerchantName() {
         return merchantName;
     }
 
-    public ReceiptPageResult setMerchantName(final FieldValue merchantName) {
+    public ReceiptPageResult setMerchantName(final FieldValue<?> merchantName) {
         this.merchantName = merchantName;
         return this;
     }
 
-    public FieldValue getMerchantAddress() {
+    public FieldValue<?> getMerchantAddress() {
         return merchantAddress;
     }
 
-    public ReceiptPageResult setMerchantAddress(final FieldValue merchantAddress) {
+    public ReceiptPageResult setMerchantAddress(final FieldValue<?> merchantAddress) {
         this.merchantAddress = merchantAddress;
         return this;
     }
 
-    public FieldValue getMerchantPhoneNumber() {
+    public FieldValue<?> getMerchantPhoneNumber() {
         return merchantPhoneNumber;
     }
 
-    public ReceiptPageResult setMerchantPhoneNumber(final FieldValue merchantPhoneNumber) {
+    public ReceiptPageResult setMerchantPhoneNumber(final FieldValue<?> merchantPhoneNumber) {
         this.merchantPhoneNumber = merchantPhoneNumber;
         return this;
     }
 
-    public FieldValue getSubtotal() {
+    public FieldValue<?> getSubtotal() {
         return subtotal;
     }
 
-    public ReceiptPageResult setSubtotal(final FieldValue subtotal) {
+    public ReceiptPageResult setSubtotal(final FieldValue<?> subtotal) {
         this.subtotal = subtotal;
         return this;
     }
 
-    public FieldValue getTax() {
+    public FieldValue<?> getTax() {
         return tax;
     }
 
-    public ReceiptPageResult setTax(final FieldValue tax) {
+    public ReceiptPageResult setTax(final FieldValue<?> tax) {
         this.tax = tax;
         return this;
     }
 
-    public FieldValue getTip() {
+    public FieldValue<?> getTip() {
         return tip;
     }
 
-    public ReceiptPageResult setTip(final FieldValue tip) {
+    public ReceiptPageResult setTip(final FieldValue<?> tip) {
         this.tip = tip;
         return this;
     }
 
-    public FieldValue getTotal() {
+    public FieldValue<?> getTotal() {
         return total;
     }
 
-    public ReceiptPageResult setTotal(final FieldValue total) {
+    public ReceiptPageResult setTotal(final FieldValue<?> total) {
         this.total = total;
         return this;
     }
 
-    public FieldValue getTransactionDate() {
+    public FieldValue<?> getTransactionDate() {
         return transactionDate;
     }
 
-    public ReceiptPageResult setTransactionDate(final FieldValue transactionDate) {
+    public ReceiptPageResult setTransactionDate(final FieldValue<?> transactionDate) {
         this.transactionDate = transactionDate;
         return this;
     }
 
-    public FieldValue getTransactionTime() {
+    public FieldValue<?> getTransactionTime() {
         return transactionTime;
     }
 
-    public ReceiptPageResult setTransactionTime(final FieldValue transactionTime) {
+    public ReceiptPageResult setTransactionTime(final FieldValue<?> transactionTime) {
         this.transactionTime = transactionTime;
         return this;
     }

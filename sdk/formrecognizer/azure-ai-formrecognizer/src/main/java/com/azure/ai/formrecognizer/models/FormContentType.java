@@ -3,55 +3,39 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
-public enum FormContentType {
-    // TODO: Expandable enum
-    APPLICATION_PDF("application/pdf"),
-
+public final class FormContentType extends ExpandableStringEnum<FormContentType> {
     /**
-     * Enum value image/jpeg.
+     * Static value Line for FormContentType.
      */
-    IMAGE_JPEG("image/jpeg"),
+    public static final FormContentType APPLICATION_PDF = fromString("application/pdf");
 
     /**
-     * Enum value image/png.
+     * Static value Line for FormContentType.
      */
-    IMAGE_PNG("image/png"),
+    public static final FormContentType IMAGE_JPEG = fromString("image/jpeg");
 
     /**
-     * Enum value image/tiff.
+     * Static value Line for FormContentType.
      */
-    IMAGE_TIFF("image/tiff");
-
-    private final String value;
-
-    FormContentType(String value) {
-        this.value = value;
-    }
+    public static final FormContentType IMAGE_PNG = fromString("image/png");
 
     /**
-     * Parses a serialized value to a ContentType instance.
+     * Static value Line for FormContentType.
+     */
+    public static final FormContentType IMAGE_TIFF = fromString("image/tiff");
+
+    /**
+     * Creates or finds a ElementType from its string representation.
      *
-     * @param value the serialized value to parse.
-     *
-     * @return the parsed ContentType object, or null if unable to parse.
+     * @param value a value to look for.
+     * @return the corresponding ElementType.
      */
     @JsonCreator
     public static FormContentType fromString(String value) {
-        FormContentType[] items = FormContentType.values();
-        for (FormContentType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+        return fromString(value, FormContentType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
-    }
 }

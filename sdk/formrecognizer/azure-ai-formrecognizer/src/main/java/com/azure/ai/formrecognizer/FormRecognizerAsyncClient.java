@@ -15,6 +15,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -71,33 +72,60 @@ public final class FormRecognizerAsyncClient {
         return serviceVersion;
     }
 
-    public PollerFlux<OperationResult, IterableStream<ReceiptPageResult>> beginAnalyzeReceipt(String sourcePath,
-        boolean includeTextDetails) {
-        return new PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>(
-            Duration.ofSeconds(30),
-            receiptAnalyzeActivationOperation(sourcePath, includeTextDetails),
-            analyzeReceiptPollOperation(),
+    /**
+     * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
+     * model.
+     *
+     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * one second is used.
+     *
+     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
+     * been cancelled.
+     */
+    public PollerFlux<OperationResult, IterableStream<ReceiptPageResult>> beginExtractReceipt(String sourceUrl,
+                                                                                              boolean includeTextDetails,
+                                                                                              Duration pollInterval) {
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+        return new PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>(interval,
+            receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
+            extractReceiptPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeReceiptResult());
+            fetchExtractReceiptResult());
     }
 
-    public PollerFlux<OperationResult, IterableStream<ReceiptPageResult>> beginAnalyzeReceipt(Flux<ByteBuffer> data,
-        long length, boolean includeTextDetails, FormContentType formContentType) {
-
-        return new PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>(
-            Duration.ofSeconds(30), // TODO: confirm the polling interval
+    /**
+     * Detects and extracts data from receipts data using optical character recognition (OCR) and a prebuilt receipt
+     * trained model.
+     *
+     * @param data The data of the document to be extract receipt information from.
+     * @param length The exact length of the data. Size of the file must be less than 20 MB.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param formContentType Supported Media types.
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * one second is used.
+     *
+     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
+     * been cancelled.
+     */
+    public PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>
+    beginExtractReceipt(Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
+                        Duration pollInterval) {
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+        return new PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>(interval,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
-            analyzeReceiptPollOperation(),
+            extractReceiptPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchAnalyzeReceiptResult());
+            fetchExtractReceiptResult());
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
-        String sourcePath, boolean includeTextDetails) {
+        String sourceUrl, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
                 return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
-                    new SourcePath().setSource(sourcePath))
+                    new SourcePath().setSource(sourceUrl))
                     .map(response -> {
                         final AnalyzeReceiptAsyncHeaders headers = response.getDeserializedHeaders();
                         return new OperationResult(parseModelId(headers.getOperationLocation()));
@@ -124,7 +152,8 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> analyzeReceiptPollOperation() {
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
+    extractReceiptPollOperation() {
         return (pollingContext) -> {
             PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
             String modelId = operationResultPollResponse.getValue().getResultId();
@@ -139,7 +168,8 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<ReceiptPageResult>>> fetchAnalyzeReceiptResult() {
+    private Function<PollingContext<OperationResult>, Mono<IterableStream<ReceiptPageResult>>>
+    fetchExtractReceiptResult() {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
@@ -168,8 +198,18 @@ public final class FormRecognizerAsyncClient {
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 
-    private String parseModelId(String location) {
-        // TODO: update this
-        return location.substring(location.lastIndexOf('/') + 1);
+    /**
+     * Extracts the result ID from the URL.
+     *
+     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
+     * resultId used to track the progress and obtain the result of the analyze operation.
+     *
+     * @return The resultId used to track the progress.
+     */
+    private String parseModelId(String operationLocation) {
+        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
+            return operationLocation.substring(operationLocation.lastIndexOf('/') + 1);
+        }
+        throw logger.logExceptionAsError(new RuntimeException("Failed to parse operation header for result Id."));
     }
 }

@@ -1,38 +1,55 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
+import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
-import com.azure.ai.formrecognizer.models.ExtractedLine;
-import com.azure.ai.formrecognizer.models.ExtractedWord;
+import com.azure.ai.formrecognizer.models.Element;
 import com.azure.ai.formrecognizer.models.FieldValue;
+import com.azure.ai.formrecognizer.models.FloatValue;
+import com.azure.ai.formrecognizer.models.IntegerValue;
+import com.azure.ai.formrecognizer.models.LineElement;
 import com.azure.ai.formrecognizer.models.PageInfo;
+import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
 import com.azure.ai.formrecognizer.models.ReceiptPageResult;
 import com.azure.ai.formrecognizer.models.ReceiptType;
+import com.azure.ai.formrecognizer.models.StringValue;
 import com.azure.ai.formrecognizer.models.TextLanguage;
+import com.azure.ai.formrecognizer.models.WordElement;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
- * Helper class to convert service level models to SDK exposes models.
+ * Helper class to convert service level models to SDK exposed models.
  */
 final class Transforms {
+    private final static ClientLogger LOGGER = new ClientLogger(Transforms.class);
+    private static final Pattern COMPILE = Pattern.compile("[^0-9]+");
+
     private Transforms() {
     }
 
     static IterableStream<ReceiptPageResult> toReceipt(AnalyzeResult analyzeResult) {
-        List<ReadResult> readResult = analyzeResult.getReadResults();
+        List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResult = analyzeResult.getDocumentResults();
-
         List<ReceiptPageResult> receiptPageResultList = new ArrayList<>();
-        for (int i = 0; i < readResult.size(); i++) {
-            ReceiptPageResult receiptPageResultItem = getReceiptReadResult(readResult, i);
+
+        for (int i = 0; i < readResults.size(); i++) {
+            ReadResult readResultItem = readResults.get(i);
+            PageInfo pageInfo = getPageInfo(readResultItem);
+            ReceiptPageResult receiptPageResultItem = new ReceiptPageResult(pageInfo);
+
             DocumentResult documentResultItem = documentResult.get(i);
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 switch (key) {
@@ -41,34 +58,34 @@ final class Transforms {
                             fieldValue.getConfidence()));
                         break;
                     case "MerchantName":
-                        receiptPageResultItem.setMerchantName(toFieldValueString(fieldValue));
+                        receiptPageResultItem.setMerchantName(setFieldValue(fieldValue, readResults));
                         break;
                     case "MerchantAddress":
-                        receiptPageResultItem.setMerchantAddress(toFieldValueString(fieldValue));
+                        receiptPageResultItem.setMerchantAddress(setFieldValue(fieldValue, readResults));
                         break;
                     case "MerchantPhoneNumber":
-                        receiptPageResultItem.setMerchantPhoneNumber(toFieldValueString(fieldValue));
+                        receiptPageResultItem.setMerchantPhoneNumber(setFieldValue(fieldValue, readResults));
                         break;
                     case "Subtotal":
-                        receiptPageResultItem.setSubtotal(toFieldValueNumber(fieldValue));
+                        receiptPageResultItem.setSubtotal(setFieldValue(fieldValue, readResults));
                         break;
                     case "Tax":
-                        receiptPageResultItem.setTax(toFieldValueNumber(fieldValue));
+                        receiptPageResultItem.setTax(setFieldValue(fieldValue, readResults));
                         break;
                     case "Tip":
-                        receiptPageResultItem.setTip(toFieldValueNumber(fieldValue));
+                        receiptPageResultItem.setTip(setFieldValue(fieldValue, readResults));
                         break;
                     case "Total":
-                        receiptPageResultItem.setTotal(toFieldValueNumber(fieldValue));
+                        receiptPageResultItem.setTotal(setFieldValue(fieldValue, readResults));
                         break;
                     case "TransactionDate":
-                        receiptPageResultItem.setTransactionDate(toFieldValueString(fieldValue));
+                        receiptPageResultItem.setTransactionDate(setFieldValue(fieldValue, readResults));
                         break;
                     case "TransactionTime":
-                        receiptPageResultItem.setTransactionTime(toFieldValueString(fieldValue));
+                        receiptPageResultItem.setTransactionTime(setFieldValue(fieldValue, readResults));
                         break;
                     case "Items":
-                        receiptPageResultItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray()));
+                        receiptPageResultItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray(), readResults));
                         break;
                     default:
                         break;
@@ -79,45 +96,87 @@ final class Transforms {
         return new IterableStream<>(receiptPageResultList);
     }
 
-    private static ReceiptPageResult getReceiptReadResult(List<ReadResult> readResult, int i) {
-        ReadResult readResultItem = readResult.get(i);
-        PageInfo pageInfo = new PageInfo(TextLanguage.fromString(readResultItem.getLanguage().toString()),
-            readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
-            readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()));
-        ReceiptPageResult receiptPageResultItem = new ReceiptPageResult(pageInfo);
-
-        // raw ocr
-        List<ExtractedLine> extractedLines = new ArrayList<>();
-        if (readResultItem.getLines() != null) {
-            readResultItem.getLines().forEach(textLine -> extractedLines.add(new ExtractedLine(new BoundingBox(textLine.getBoundingBox()), textLine.getText(),
-                toWords(textLine.getWords()))));
-            receiptPageResultItem.setExtractedLines(extractedLines);
+    private static FieldValue<?> setFieldValue(com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue,
+                                            List<ReadResult> readResults) {
+        FieldValue<?> value;
+        switch (fieldValue.getType()) {
+            case PHONE_NUMBER:
+            case STRING:
+            case TIME:
+            case DATE:
+                value = toFieldValueString(fieldValue);
+                break;
+            case INTEGER:
+                value = toFieldValueInteger(fieldValue);
+                break;
+            case NUMBER:
+                value = toFieldValueNumber(fieldValue);
+                break;
+            case ARRAY:
+            case OBJECT:
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        return receiptPageResultItem;
+        value.setElements(setReferenceElements(readResults, fieldValue.getElements()));
+        return value;
     }
 
-    static List<ExtractedWord> toWords(List<TextWord> words) {
-        List<ExtractedWord> extractedWordList = new ArrayList<>();
-        words.forEach(textWord -> extractedWordList.add(new ExtractedWord(new BoundingBox(textWord.getBoundingBox()),
-            textWord.getText(), textWord.getConfidence())));
-        return extractedWordList;
+    private static PageInfo getPageInfo(ReadResult readResultItem) {
+        return new PageInfo(TextLanguage.fromString(readResultItem.getLanguage().toString()),
+            readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
+            readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()));
+    }
+
+    private static List<Element> setReferenceElements(List<ReadResult> readResults, List<String> elements) {
+        List<Element> elementList = new ArrayList<>();
+        elements.forEach(elementString -> {
+            String[] indices = COMPILE.matcher(elementString).replaceAll(" ").trim().split(" ");
+            int readResultIndex, lineIndex;
+            if (indices.length >= 1) {
+                readResultIndex = Integer.parseInt(indices[0]);
+                lineIndex = Integer.parseInt(indices[1]);
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Reference Elements not found"));
+            }
+            if (indices.length == 3) {
+                int wordIndex = Integer.parseInt(indices[2]);
+                TextWord textWord = readResults.get(readResultIndex).getLines().get(lineIndex).getWords()
+                    .get(wordIndex);
+                WordElement wordElement = new WordElement(textWord.getText(), toBoundingBox(textWord.getBoundingBox()));
+                elementList.add(wordElement);
+            } else {
+                TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
+                LineElement lineElement = new LineElement(textLine.getText(), toBoundingBox(textLine.getBoundingBox()));
+                elementList.add(lineElement);
+            }
+        });
+        return elementList;
+    }
+
+    private static BoundingBox toBoundingBox(List<Float> boundingBox) {
+        List<Point> pointList = new ArrayList<>();
+        for (int i = 0; i < boundingBox.size(); i += 2) {
+            Point point = new Point(boundingBox.get(i), boundingBox.get(i + 1));
+            pointList.add(point);
+        }
+        return new BoundingBox(pointList);
     }
 
     private static List<ReceiptItem> toReceiptItems(
-        List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValue) {
+        List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValue, List<ReadResult> readResults) {
         List<ReceiptItem> receiptItemList = new ArrayList<>();
         fieldValue.forEach(fieldValue1 -> {
             ReceiptItem receiptItem = new ReceiptItem();
             fieldValue1.getValueObject().forEach((key, fieldValue2) -> {
                 switch (key) {
                     case "Quantity":
-                        receiptItem.setQuantity(toFieldValueNumber(fieldValue2));
+                        receiptItem.setQuantity(setFieldValue(fieldValue2, readResults));
                         break;
                     case "Name":
-                        receiptItem.setName(toFieldValueString(fieldValue2));
+                        receiptItem.setName(setFieldValue(fieldValue2, readResults));
                         break;
                     case "TotalPrice":
-                        receiptItem.setTotalPrice(toFieldValueNumber(fieldValue2));
+                        receiptItem.setTotalPrice(setFieldValue(fieldValue2, readResults));
                         break;
                     default:
                         break;
@@ -128,20 +187,26 @@ final class Transforms {
         return receiptItemList;
     }
 
-    static FieldValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue2) {
+    private static IntegerValue toFieldValueInteger(com.azure.ai.formrecognizer.implementation.models.FieldValue
+                                                        fieldValue2) {
         if (fieldValue2.getValueNumber() != null) {
             // TODO: Do not need this check, service team bug
-            return new FieldValue().setText(fieldValue2.getText()).setConfidence(fieldValue2.getConfidence())
-                .setValueNumber(fieldValue2.getValueNumber()).setBoundingBox(fieldValue2.getBoundingBox());
+            return new IntegerValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()),
+                fieldValue2.getValueInteger());
         }
-        return new FieldValue().setText(fieldValue2.getText()).setConfidence(fieldValue2.getConfidence())
-            .setBoundingBox(fieldValue2.getBoundingBox());
+
+        return new IntegerValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()), 0);
     }
 
-    static FieldValue toFieldValueString(com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue2) {
-
-        return new FieldValue().setText(fieldValue2.getText()).setConfidence(fieldValue2.getConfidence())
-            .setValue(fieldValue2.getValueString()).setBoundingBox(fieldValue2.getBoundingBox());
+    private static StringValue toFieldValueString(com.azure.ai.formrecognizer.implementation.models.FieldValue
+                                                      fieldValue2) {
+        return new StringValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()),
+            fieldValue2.getValueString());
     }
 
+    private static FloatValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
+                                                     fieldValue2) {
+        return new FloatValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()),
+            fieldValue2.getValueNumber());
+    }
 }

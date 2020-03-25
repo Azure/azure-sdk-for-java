@@ -43,6 +43,7 @@
   "eventgrid": "Event Grid",
   "eventhubs": "Event Hubs",
   "features": "Features",
+  "formrecognizer": "Form Recognizer",
   "frontdoor": "Front Door",
   "graphrbac": "Graph RBAC",
   "hanaonazure": "HANA on Azure",

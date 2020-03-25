@@ -46,15 +46,7 @@ import java.util.Objects;
  * {@link #apiKey(FormRecognizerApiKeyCredential) apiKey(FormRecognizerApiKeyCredential)} or
  * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
  * </p>
- *
- * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
- *
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
- *
- * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
- *
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
- *
+ * TODO: add code snippets
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
@@ -63,12 +55,10 @@ import java.util.Objects;
  * {@link FormRecognizerAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation}
- *
  * @see FormRecognizerAsyncClient
  * @see FormRecognizerClient
  */
-@ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, com.azure.ai.formrecognizer.FormRecognizerClient.class})
+@ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
@@ -80,7 +70,7 @@ public final class FormRecognizerClientBuilder {
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
-    private final ClientLogger logger = new ClientLogger(com.azure.ai.formrecognizer.FormRecognizerClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
     private final HttpHeaders headers;
     private final String clientName;
@@ -107,14 +97,9 @@ public final class FormRecognizerClientBuilder {
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-//        headers = new HttpHeaders()
-//            .put(ECHO_REQUEST_ID_HEADER, "true")
-//            .put(CONTENT_TYPE_HEADER, CONTENT_TYPE_HEADER_VALUE)
-//            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
-
         headers = new HttpHeaders()
-            .put(ECHO_REQUEST_ID_HEADER, "true");
-        // content type check if unset then default
+            .put(ECHO_REQUEST_ID_HEADER, "true")
+            .put(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -215,7 +200,7 @@ public final class FormRecognizerClientBuilder {
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder endpoint(String endpoint) {
+    public FormRecognizerClientBuilder endpoint(String endpoint) {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         try {
@@ -241,7 +226,7 @@ public final class FormRecognizerClientBuilder {
      * @return The updated FormRecognizerClientImplBuilder object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder apiKey(FormRecognizerApiKeyCredential apiKeyCredential) {
+    public FormRecognizerClientBuilder apiKey(FormRecognizerApiKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
         return this;
     }
@@ -253,7 +238,7 @@ public final class FormRecognizerClientBuilder {
      * @return The updated FormRecognizerClientImplBuilder object.
      * @throws NullPointerException If {@code tokenCredential} is {@code null}.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder credential(TokenCredential tokenCredential) {
+    public FormRecognizerClientBuilder credential(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         this.tokenCredential = tokenCredential;
         return this;
@@ -268,7 +253,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return The updated FormRecognizerClientImplBuilder object.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public FormRecognizerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
         return this;
     }
@@ -281,7 +266,7 @@ public final class FormRecognizerClientBuilder {
      * @return The updated FormRecognizerClientImplBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
         policies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
@@ -292,7 +277,7 @@ public final class FormRecognizerClientBuilder {
      * @param client The HTTP client to use for requests.
      * @return The updated FormRecognizerClientImplBuilder object.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder httpClient(HttpClient client) {
+    public FormRecognizerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
             logger.info("HttpClient is being set to 'null' when it was previously configured.");
         }
@@ -305,14 +290,14 @@ public final class FormRecognizerClientBuilder {
      * Sets the HTTP pipeline to use for the service client.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from
-     * {@link com.azure.ai.formrecognizer.FormRecognizerClientBuilder#endpoint(String) endpoint} to build {@link FormRecognizerAsyncClient} or
+     * {@link FormRecognizerClientBuilder#endpoint(String) endpoint} to build {@link FormRecognizerAsyncClient} or
      * {@link FormRecognizerClient}.
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
      * @return The updated FormRecognizerClientImplBuilder object.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder pipeline(HttpPipeline httpPipeline) {
+    public FormRecognizerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
             logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
@@ -331,7 +316,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return The updated FormRecognizerClientImplBuilder object.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder configuration(Configuration configuration) {
+    public FormRecognizerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -339,14 +324,14 @@ public final class FormRecognizerClientBuilder {
     /**
      * Sets the {@link RetryPolicy} that is used when each request is sent.
      * <p>
-     * The default retry policy will be used if not provided {@link com.azure.ai.formrecognizer.FormRecognizerClientBuilder#buildAsyncClient()}
+     * The default retry policy will be used if not provided {@link FormRecognizerClientBuilder#buildAsyncClient()}
      * to build {@link FormRecognizerAsyncClient} or {@link FormRecognizerClient}.
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
      * @return The updated FormRecognizerClientImplBuilder object.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public FormRecognizerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
@@ -362,7 +347,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return The updated FormRecognizerClientImplBuilder object.
      */
-    public com.azure.ai.formrecognizer.FormRecognizerClientBuilder serviceVersion(FormRecognizerServiceVersion version) {
+    public FormRecognizerClientBuilder serviceVersion(FormRecognizerServiceVersion version) {
         this.version = version;
         return this;
     }

@@ -11,6 +11,6 @@
  * API; just bring your text data. This API uses advanced natural language
  * processing techniques to deliver best in class predictions. Further
  * documentation can be found in
- * https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview.
+ * https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/overview.
  */
 package com.azure.ai.formrecognizer.models;

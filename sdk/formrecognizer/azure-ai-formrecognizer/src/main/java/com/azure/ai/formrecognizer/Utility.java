@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+/**
+ * Utility method class.
+ */
 public class Utility {
     private static final ClientLogger logger = new ClientLogger(Utility.class);
 
