@@ -22,7 +22,6 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -53,7 +52,6 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
  * operations increasing quotas, etc.
  */
 public class ManagementChannel implements ServiceBusManagementNode {
-    private final Scheduler scheduler;
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
     private final Duration operationTimeout;
@@ -66,14 +64,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private volatile boolean isDisposed;
 
     ManagementChannel(Mono<RequestResponseChannel> createRequestResponse, String fullyQualifiedNamespace,
-        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer, Scheduler scheduler,
-        Duration operationTimeout) {
+        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
         this.createRequestResponse = createRequestResponse;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
         this.operationTimeout = operationTimeout;
     }

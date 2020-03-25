@@ -199,6 +199,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
