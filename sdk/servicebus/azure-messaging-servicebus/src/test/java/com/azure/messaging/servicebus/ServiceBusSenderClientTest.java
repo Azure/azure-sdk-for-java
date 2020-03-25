@@ -126,7 +126,7 @@ public class ServiceBusSenderClientTest {
         int batchSize = 1024;
 
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
-        ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(batchSize, null, null,
+        final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(batchSize, null, null,
             null);
         when(asyncSender.createBatch(options)).thenReturn(Mono.just(batch));
 
