@@ -10,12 +10,13 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class MessageLockTokenTest {
+class MessageLockTokenTest {
 
     @Test
     public void aUuidTest() {
         UUID uuid = UUID.randomUUID();
         MessageLockToken myLockToken = MessageLockToken.fromUuid(uuid);
+
         assertNotNull(myLockToken);
         assertEquals(uuid, myLockToken.getLockToken());
     }

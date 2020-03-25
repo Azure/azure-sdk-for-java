@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -41,8 +42,13 @@ public class ProxySelectorTest extends IntegrationTestBase {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
+    @Disabled("Fix when proxy error is propagated back up to receiver.")
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
+        final String queueName = getQueueName();
+
+        Assertions.assertNotNull(queueName, "'queueName' is not set in environment variable.");
+
         // doesn't start proxy server and verifies that the connectFailed callback is invoked.
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         ProxySelector.setDefault(new ProxySelector() {
@@ -61,8 +67,10 @@ public class ProxySelectorTest extends IntegrationTestBase {
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .retry(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
-            .buildAsyncSenderClient();
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10)))
+            .buildSenderClientBuilder()
+            .entityName(queueName)
+            .buildAsyncClient();
 
         try {
             StepVerifier.create(sender.send(message))
