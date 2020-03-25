@@ -30,8 +30,8 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private EventHubAsyncClient client;
     private EventHubProducerAsyncClient producer;
+    private EventHubClientBuilder builder;
 
     @Mock
     private ErrorContextProvider contextProvider;
@@ -44,13 +44,16 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        client = createBuilder().shareConnection().buildAsyncClient();
-        producer = client.createProducer();
+        builder = createBuilder()
+            .shareConnection()
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+        producer = builder.buildAsyncProducerClient();
     }
 
     @Override
     protected void afterTest() {
-        dispose(producer, client);
+        dispose(producer);
     }
 
     /**
@@ -125,12 +128,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
         try {
             // Creating consumers on all the partitions and subscribing to the receive event.
-            final List<String> partitionIds = client.getPartitionIds().collectList().block(TIMEOUT);
+            final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
             Assertions.assertNotNull(partitionIds);
 
             for (String id : partitionIds) {
-                final EventHubConsumerAsyncClient consumer =
-                    client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+                final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
 
                 consumers.add(consumer);
                 consumer.receiveFromPartition(id, EventPosition.latest()).subscribe(partitionEvent -> {
