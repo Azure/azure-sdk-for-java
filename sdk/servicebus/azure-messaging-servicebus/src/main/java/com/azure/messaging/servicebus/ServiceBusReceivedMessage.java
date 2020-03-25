@@ -43,17 +43,6 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.properties = new HashMap<>();
     }
-    /**
-     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
-     * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for
-     * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
-     * who wish to deserialize the binary data.
-     *
-     * @return Application properties associated with this {@link ServiceBusReceivedMessage}.
-     */
-    public Map<String, Object> getProperties() {
-        return properties;
-    }
 
     /**
      * Gets the actual payload/data wrapped by the {@link ServiceBusReceivedMessage}.
@@ -71,27 +60,28 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     }
 
     /**
-     * Gets the number of the times this message was delivered to clients.
-     * <p>
-     * The count is incremented when a message lock expires, or the message is explicitly abandoned by
-     * the receiver. This property is read-only.
+     * Gets the content type of the message.
      *
-     * @return delivery count of this message.
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
-     *     transfers, locks, and settlement.</a>
+     * @return the contentType of the {@link ServiceBusReceivedMessage}.
      */
-    public long getDeliveryCount() {
-        return deliveryCount;
+    public String getContentType() {
+        return contentType;
     }
 
     /**
-     * Sets the number of the times this message was delivered to clients.
+     * Gets a correlation identifier.
+     * <p>
+     * Allows an application to specify a context for the message for the purposes of correlation, for example
+     * reflecting the MessageId of a message that is being replied to.
+     * </p>
      *
-     * @param deliveryCount the number of the times this message was delivered to clients.
+     * @return correlation id of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
+     *     Routing and Correlation</a>
      */
-    void setDeliveryCount(long deliveryCount) {
-        this.deliveryCount = deliveryCount;
+    public String getCorrelationId() {
+        return correlationId;
     }
 
     /**
@@ -112,23 +102,62 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     }
 
     /**
-     * Gets the content type of the message.
+     * Gets the number of the times this message was delivered to clients.
+     * <p>
+     * The count is incremented when a message lock expires, or the message is explicitly abandoned by
+     * the receiver. This property is read-only.
      *
-     * @return the contentType of the {@link ServiceBusReceivedMessage}.
+     * @return delivery count of this message.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
+     *     transfers, locks, and settlement.</a>
      */
-    public String getContentType() {
-        return contentType;
+    public long getDeliveryCount() {
+        return deliveryCount;
     }
 
     /**
-     * Sets the name of the queue or subscription that this message was enqueued on, before it was
-     * deadlettered.
+     * Gets the instant at which this message was enqueued in Azure Service Bus.
+     * <p>
+     * The UTC instant at which the message has been accepted and stored in the entity. For scheduled messages, this
+     * reflects the time when the message was activated. This value can be used as an authoritative and neutral arrival
+     * time indicator when the receiver does not want to trust the sender's clock. This property is read-only.
      *
-     * @param deadLetterSource the name of the queue or subscription that this message was enqueued on,
-     * before it was deadlettered.
+     * @return the instant at which the message was enqueued in Azure Service Bus
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
+     *     Timestamps</a>
      */
-    void setDeadLetterSource(String deadLetterSource) {
-        this.deadLetterSource = deadLetterSource;
+    public Instant getEnqueuedTime() {
+        return enqueuedTime;
+    }
+
+    /**
+     * Gets the instant at which this message will expire.
+     * <p>
+     * The value is the UTC instant for when the message is scheduled for removal and will no longer available for
+     * retrieval from the entity due to expiration. Expiry is controlled by the {@link #getTimeToLive() TimeToLive}
+     * property. This property is computed from {@link #getEnqueuedTime() EnqueuedTime} plus {@link #getTimeToLive()
+     * TimeToLive}.
+     *
+     * @return {@link Instant} at which this message expires
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
+     */
+    public Instant getExpiresAt() {
+        final Duration timeToLive = getTimeToLive();
+        return enqueuedTime != null && timeToLive != null
+            ? enqueuedTime.plus(timeToLive)
+            : null;
+    }
+
+    /**
+     * Gets the label for the message.
+     *
+     * @return The label for the message.
+     */
+    public String getLabel() {
+        return label;
     }
 
     /**
@@ -154,30 +183,90 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     }
 
     /**
-     * Sets the lock token for the current message.
+     * Gets the instant at which the lock of this message expires.
+     * <p>
+     * For messages retrieved under a lock (peek-lock receive mode, not pre-settled) this property reflects the UTC
+     * instant until which the message is held locked in the queue/subscription. When the lock expires, the {@link
+     * #getDeliveryCount() DeliveryCount} is incremented and the message is again available for retrieval. This property
+     * is read-only.
      *
-     * @param lockToken the lock token for the current message.
+     * @return the instant at which the lock of this message expires if the message is received using {@link
+     *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
+     *     transfers, locks, and settlement</a>
      */
-    void setLockToken(UUID lockToken) {
-        this.lockToken = lockToken;
+    public Instant getLockedUntil() {
+        return lockedUntil;
     }
 
     /**
-     * Gets the instant at which this message was enqueued in Azure Service Bus.
-     * <p>
-     * The UTC instant at which the message has been accepted and stored in the entity. For scheduled messages, this
-     * reflects the time when the message was activated. This value can be used as an authoritative and neutral arrival
-     * time indicator when the receiver does not want to trust the sender's clock. This property is read-only.
-     *
-     * @return the instant at which the message was enqueued in Azure Service Bus
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
-     *     Timestamps</a>
+     * @return Id of the {@link ServiceBusReceivedMessage}.
      */
-    public Instant getEnqueuedTime() {
-        return enqueuedTime;
+    public String getMessageId() {
+        return messageId;
     }
 
+    /**
+     * Gets the partition key for sending a message to a partitioned entity.
+     * <p>
+     * For <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">partitioned
+     * entities</a>, setting this value enables assigning related messages to the same internal partition, so that
+     * submission sequence order is correctly recorded. The partition is chosen by a hash function over this value and
+     * cannot be chosen directly. For session-aware entities, the {@link #getSessionId() sessionId} property overrides
+     * this value.
+     *
+     * @return The partition key of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
+     *     entities</a>
+     */
+    public String getPartitionKey() {
+        return partitionKey;
+    }
+
+    /**
+     * Gets the set of free-form {@link ServiceBusReceivedMessage} properties which may be used for passing metadata
+     * associated with the {@link ServiceBusReceivedMessage} during Service Bus operations. A common use-case for
+     * {@code properties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
+     * who wish to deserialize the binary data.
+     *
+     * @return Application properties associated with this {@link ServiceBusReceivedMessage}.
+     */
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    /**
+     * Gets the address of an entity to send replies to.
+     * <p>
+     * This optional and application-defined value is a standard way to express a reply path to the receiver of the
+     * message. When a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
+     * it expects the reply to be sent to.
+     *
+     * @return ReplyTo property value of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
+     *     Routing and Correlation</a>
+     */
+    public String getReplyTo() {
+        return replyTo;
+    }
+
+    /**
+     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
+     * <p>
+     * This value augments the ReplyTo information and specifies which SessionId should be set for the reply when sent
+     * to the reply entity.
+     *
+     * @return ReplyToSessionId property value of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
+     *     Routing and Correlation</a>
+     */
+    public String getReplyToSessionId() {
+        return replyToSessionId;
+    }
 
     /**
      * Gets the scheduled enqueue time of this message.
@@ -195,6 +284,23 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      */
     public Instant getScheduledEnqueueTime() {
         return scheduledEnqueueTime;
+    }
+
+    /**
+     * Gets the unique number assigned to a message by Service Bus.
+     * <p>
+     * The sequence number is a unique 64-bit integer assigned to a message as it is accepted and stored by the broker
+     * and functions as its true identifier. For partitioned entities, the topmost 16 bits reflect the partition
+     * identifier. Sequence numbers monotonically increase and are gapless. They roll over to 0 when the 48-64 bit range
+     * is exhausted. This property is read-only.
+     *
+     * @return sequence number of this message
+     *
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
+     *     Timestamps</a>
+     */
+    public long getSequenceNumber() {
+        return this.sequenceNumber;
     }
 
     /**
@@ -224,323 +330,12 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     }
 
     /**
-     * Gets the partition key for sending a message to a partitioned entity.
-     * <p>
-     * For <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">partitioned
-     * entities</a>, setting this value enables assigning related messages to the same internal partition, so that
-     * submission sequence order is correctly recorded. The partition is chosen by a hash function over this value and
-     * cannot be chosen directly. For session-aware entities, the {@link #getSessionId() sessionId} property overrides
-     * this value.
-     *
-     * @return The partition key of this message
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
-     *     entities</a>
-     */
-    public String getPartitionKey() {
-        return partitionKey;
-    }
-
-    /**
-     * Sets the instant at which this message was enqueued in Azure Service Bus.
-     *
-     * @param enqueuedTime the instant at which this message was enqueued in Azure Service Bus.
-     */
-    void setEnqueuedTime(Instant enqueuedTime) {
-        this.enqueuedTime = enqueuedTime;
-    }
-
-    /**
-     * Gets the unique number assigned to a message by Service Bus.
-     * <p>
-     * The sequence number is a unique 64-bit integer assigned to a message as it is accepted and stored by the broker
-     * and functions as its true identifier. For partitioned entities, the topmost 16 bits reflect the partition
-     * identifier. Sequence numbers monotonically increase and are gapless. They roll over to 0 when the 48-64 bit range
-     * is exhausted. This property is read-only.
-     *
-     * @return sequence number of this message
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sequencing">Message Sequencing and
-     *     Timestamps</a>
-     */
-    public long getSequenceNumber() {
-        return this.sequenceNumber;
-    }
-
-    /**
-     * Sets the unique number assigned to a message by Service Bus.
-     *
-     * @param sequenceNumber the unique number assigned to a message by Service Bus.
-     */
-    void setSequenceNumber(long sequenceNumber) {
-        this.sequenceNumber = sequenceNumber;
-    }
-
-    /**
-     * Gets the instant at which this message will expire.
-     * <p>
-     * The value is the UTC instant for when the message is scheduled for removal and will no longer available for
-     * retrieval from the entity due to expiration. Expiry is controlled by the {@link #getTimeToLive() TimeToLive}
-     * property. This property is computed from {@link #getEnqueuedTime() EnqueuedTime} plus {@link #getTimeToLive()
-     * TimeToLive}.
-     *
-     * @return {@link Instant} at which this message expires
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-expiration">Message Expiration</a>
-     */
-    public Instant getExpiresAt() {
-        final Duration timeToLive = getTimeToLive();
-        return enqueuedTime != null && timeToLive != null
-            ? enqueuedTime.plus(timeToLive)
-            : null;
-    }
-
-    /**
-     * Gets the instant at which the lock of this message expires.
-     * <p>
-     * For messages retrieved under a lock (peek-lock receive mode, not pre-settled) this property reflects the UTC
-     * instant until which the message is held locked in the queue/subscription. When the lock expires, the {@link
-     * #getDeliveryCount() DeliveryCount} is incremented and the message is again available for retrieval. This property
-     * is read-only.
-     *
-     * @return the instant at which the lock of this message expires if the message is received using {@link
-     *     ReceiveMode#PEEK_LOCK} mode. Otherwise it returns null.
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
-     *     transfers, locks, and settlement</a>
-     */
-    public Instant getLockedUntil() {
-        return lockedUntil;
-    }
-
-    /**
-     * Sets the instant at which the lock of this message expires.
-     *
-     * @param lockedUntil the instant at which the lock of this message expires.
-     */
-    void setLockedUntil(Instant lockedUntil) {
-        this.lockedUntil = lockedUntil;
-    }
-
-    /**
-     * Sets a partition key for sending a message to a partitioned entity
-     *
-     * @param partitionKey partition key of this message
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     *
-     * @see #getPartitionKey()
-     */
-    ServiceBusReceivedMessage setPartitionKey(String partitionKey) {
-        this.partitionKey = partitionKey;
-        return this;
-    }
-
-    /**
-     * Sets the session id.
-     *
-     * @param sessionId to be set.
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     */
-    ServiceBusReceivedMessage setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-        return this;
-    }
-
-    /**
-     * Sets the duration of time before this message expires.
-     *
-     * @param timeToLive Time to Live duration of this message
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     *
-     * @see #getTimeToLive()
-     */
-    ServiceBusReceivedMessage setTimeToLive(Duration timeToLive) {
-        this.timeToLive = timeToLive;
-        return this;
-    }
-
-
-    /**
-     * Sets the scheduled enqueue time of this message.
-     *
-     * @param scheduledEnqueueTime the instant at which this message should be enqueued in Azure Service Bus.
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     *
-     * @see #getScheduledEnqueueTime()
-     */
-    ServiceBusReceivedMessage setScheduledEnqueueTime(Instant scheduledEnqueueTime) {
-        this.scheduledEnqueueTime = scheduledEnqueueTime;
-        return this;
-    }
-
-    /**
-     * Sets the content type of the {@link ServiceBusReceivedMessage}.
-     *
-     * @param contentType of the message.
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     */
-    ServiceBusReceivedMessage setContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
-    }
-
-
-    /**
-     * Gets a correlation identifier.
-     * <p>
-     * Allows an application to specify a context for the message for the purposes of correlation, for example
-     * reflecting the MessageId of a message that is being replied to.
-     * </p>
-     *
-     * @return correlation id of this message
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
-     *     Routing and Correlation</a>
-     */
-    public String getCorrelationId() {
-        return correlationId;
-    }
-
-    /**
-     * Sets a correlation identifier.
-     *
-     * @param correlationId correlation id of this message
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     *
-     * @see #getCorrelationId()
-     */
-    ServiceBusReceivedMessage setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
-    }
-
-    /**
-     * Gets the label for the message.
-     *
-     * @return The label for the message.
-     */
-    public String getLabel() {
-        return label;
-    }
-
-    /**
-     * Sets the label for the message.
-     *
-     * @param label The label to set.
-     *
-     * @return The updated {@link ServiceBusReceivedMessage} object.
-     */
-    ServiceBusReceivedMessage setLabel(String label) {
-        this.label = label;
-        return this;
-    }
-
-    /**
-     * @return Id of the {@link ServiceBusReceivedMessage}.
-     */
-    public String getMessageId() {
-        return messageId;
-    }
-
-    /**
-     * Sets the message id.
-     *
-     * @param messageId to be set.
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     */
-    ServiceBusReceivedMessage setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
-
-    /**
-     * Gets the address of an entity to send replies to.
-     * <p>
-     * This optional and application-defined value is a standard way to express a reply path to the receiver of the
-     * message. When a sender expects a reply, it sets the value to the absolute or relative path of the queue or topic
-     * it expects the reply to be sent to.
-     *
-     * @return ReplyTo property value of this message
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
-     *     Routing and Correlation</a>
-     */
-    public String getReplyTo() {
-        return replyTo;
-    }
-
-    /**
-     * Sets the address of an entity to send replies to.
-     *
-     * @param replyTo ReplyTo property value of this message
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     *
-     * @see #getReplyTo()
-     */
-    ServiceBusReceivedMessage setReplyTo(String replyTo) {
-        this.replyTo = replyTo;
-        return this;
-    }
-
-    /**
      * Gets the "to" address.
      *
      * @return "To" property value of this message
      */
     public String getTo() {
         return to;
-    }
-
-    /**
-     * Sets the "to" address.
-     * <p>
-     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
-     * Applications can use this value in rule-driven
-     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding">auto-forward
-     * chaining</a> scenarios to indicate the intended logical destination of the message.
-     *
-     * @param to To property value of this message
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     */
-    ServiceBusReceivedMessage setTo(String to) {
-        this.to = to;
-        return this;
-    }
-    /**
-     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
-     * <p>
-     * This value augments the ReplyTo information and specifies which SessionId should be set for the reply when sent
-     * to the reply entity.
-     *
-     * @return ReplyToSessionId property value of this message
-     *
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
-     *     Routing and Correlation</a>
-     */
-    public String getReplyToSessionId() {
-        return replyToSessionId;
-    }
-
-    /**
-     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
-     *
-     * @param replyToSessionId ReplyToSessionId property value of this message
-     *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     */
-    ServiceBusReceivedMessage setReplyToSessionId(String replyToSessionId) {
-        this.replyToSessionId = replyToSessionId;
-        return this;
     }
 
     /**
@@ -559,17 +354,184 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
     }
 
     /**
+     * Sets a correlation identifier.
+     *
+     * @param correlationId correlation id of this message
+     *
+     * @see #getCorrelationId()
+     */
+    void setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+    }
+
+    /**
+     * Sets the content type of the {@link ServiceBusReceivedMessage}.
+     *
+     * @param contentType of the message.
+     */
+    void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    /**
+     * Sets the name of the queue or subscription that this message was enqueued on, before it was
+     * deadlettered.
+     *
+     * @param deadLetterSource the name of the queue or subscription that this message was enqueued on,
+     * before it was deadlettered.
+     */
+    void setDeadLetterSource(String deadLetterSource) {
+        this.deadLetterSource = deadLetterSource;
+    }
+
+    /**
+     * Sets the number of the times this message was delivered to clients.
+     *
+     * @param deliveryCount the number of the times this message was delivered to clients.
+     */
+    void setDeliveryCount(long deliveryCount) {
+        this.deliveryCount = deliveryCount;
+    }
+
+    /**
+     * Sets the instant at which this message was enqueued in Azure Service Bus.
+     *
+     * @param enqueuedTime the instant at which this message was enqueued in Azure Service Bus.
+     */
+    void setEnqueuedTime(Instant enqueuedTime) {
+        this.enqueuedTime = enqueuedTime;
+    }
+
+    /**
+     * Sets the label for the message.
+     *
+     * @param label The label to set.
+     */
+    void setLabel(String label) {
+        this.label = label;
+    }
+
+    /**
+     * Sets the lock token for the current message.
+     *
+     * @param lockToken the lock token for the current message.
+     */
+    void setLockToken(UUID lockToken) {
+        this.lockToken = lockToken;
+    }
+
+    /**
+     * Sets the instant at which the lock of this message expires.
+     *
+     * @param lockedUntil the instant at which the lock of this message expires.
+     */
+    void setLockedUntil(Instant lockedUntil) {
+        this.lockedUntil = lockedUntil;
+    }
+
+    /**
+     * Sets the message id.
+     *
+     * @param messageId to be set.
+     */
+    void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
+    /**
+     * Sets a partition key for sending a message to a partitioned entity
+     *
+     * @param partitionKey partition key of this message
+     *
+     * @see #getPartitionKey()
+     */
+    void setPartitionKey(String partitionKey) {
+        this.partitionKey = partitionKey;
+    }
+
+    /**
+     * Sets the scheduled enqueue time of this message.
+     *
+     * @param scheduledEnqueueTime the instant at which this message should be enqueued in Azure Service Bus.
+     *
+     * @see #getScheduledEnqueueTime()
+     */
+    void setScheduledEnqueueTime(Instant scheduledEnqueueTime) {
+        this.scheduledEnqueueTime = scheduledEnqueueTime;
+    }
+
+    /**
+     * Sets the unique number assigned to a message by Service Bus.
+     *
+     * @param sequenceNumber the unique number assigned to a message by Service Bus.
+     */
+    void setSequenceNumber(long sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
+
+    /**
+     * Sets the session id.
+     *
+     * @param sessionId to be set.
+     */
+    void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    /**
+     * Sets the duration of time before this message expires.
+     *
+     * @param timeToLive Time to Live duration of this message
+     *
+     * @see #getTimeToLive()
+     */
+    void setTimeToLive(Duration timeToLive) {
+        this.timeToLive = timeToLive;
+    }
+
+    /**
+     * Sets the address of an entity to send replies to.
+     *
+     * @param replyTo ReplyTo property value of this message
+     *
+     * @see #getReplyTo()
+     */
+    void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+    }
+
+    /**
+     * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
+     *
+     * @param replyToSessionId ReplyToSessionId property value of this message
+     */
+    void setReplyToSessionId(String replyToSessionId) {
+        this.replyToSessionId = replyToSessionId;
+    }
+
+    /**
+     * Sets the "to" address.
+     * <p>
+     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
+     * Applications can use this value in rule-driven
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding">auto-forward
+     * chaining</a> scenarios to indicate the intended logical destination of the message.
+     *
+     * @param to To property value of this message
+     */
+    void setTo(String to) {
+        this.to = to;
+    }
+
+    /**
      * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
      *
      * @param viaPartitionKey via-partition key of this message
      *
-     * @return The updated {@link ServiceBusReceivedMessage}.
-     *
      * @see #getViaPartitionKey()
      */
-    ServiceBusReceivedMessage setViaPartitionKey(String viaPartitionKey) {
+    void setViaPartitionKey(String viaPartitionKey) {
         this.viaPartitionKey = viaPartitionKey;
-        return this;
     }
 
     /**

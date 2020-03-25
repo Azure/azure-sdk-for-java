@@ -476,14 +476,12 @@ public class EventHubClientBuilder {
                 if (eventHubConnectionProcessor == null) {
                     eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer);
                 }
-
+                processor = eventHubConnectionProcessor;
                 final int numberOfOpenClients = ++openClients;
                 logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
+            } else {
+                processor = buildConnectionProcessor(messageSerializer);
             }
-
-            processor = isSharedConnection
-                ? eventHubConnectionProcessor
-                : buildConnectionProcessor(messageSerializer);
         }
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
@@ -589,16 +587,16 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
+        if (proxyOptions == null) {
+            proxyOptions = getDefaultProxyConfiguration(configuration);
+        }
+
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Cannot use a proxy when TransportType is not AMQP."));
-        }
-
-        if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+                "Cannot use a proxy when TransportType is not AMQP Web Sockets."));
         }
 
         final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential

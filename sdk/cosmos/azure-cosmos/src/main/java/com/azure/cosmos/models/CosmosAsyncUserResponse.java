@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * The type Cosmos async user response. Contains methods to get cosmos user and properties

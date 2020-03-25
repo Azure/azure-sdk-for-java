@@ -19,6 +19,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SpatialSpec;
@@ -348,7 +349,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             readDocumentResponse = client1.getDatabase(dbId)
                                        .getContainer(collectionId)
                                        .readItem(newDocument.getId(),
-                                                 new PartitionKey(newDocument.get("mypk")),
+                                                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
             logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
@@ -357,7 +358,8 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
-            assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
+            assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")
+                                          .equals(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "name"))).isTrue();
         } finally {
             safeDeleteDatabase(db);
             safeClose(client1);

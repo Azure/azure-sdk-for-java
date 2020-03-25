@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncStoredProcedure;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * The type Cosmos async stored procedure response.

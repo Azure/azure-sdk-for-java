@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,17 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().buildAsyncSenderClient();
+        ServiceBusSenderClientBuilder builder = createBuilder().buildSenderClientBuilder();
+
+        final String queueName = getQueueName();
+        if (queueName != null) {
+            logger.info("Using queueName: {}", queueName);
+            builder.entityName(queueName);
+        } else {
+            logger.info("Using entityPath from connection string.");
+        }
+
+        sender = builder.buildAsyncClient();
     }
 
     @Override

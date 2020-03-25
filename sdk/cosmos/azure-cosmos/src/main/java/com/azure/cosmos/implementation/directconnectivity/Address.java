@@ -87,4 +87,9 @@ public class Address extends Resource {
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
         BridgeInternal.setProperty(this, Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
     }
+
+    @Override
+    public Object get(String propertyName) {
+        return super.get(propertyName);
+    }
 }

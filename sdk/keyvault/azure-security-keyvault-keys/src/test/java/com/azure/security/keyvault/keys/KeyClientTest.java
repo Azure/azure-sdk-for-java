@@ -164,6 +164,7 @@ public class KeyClientTest extends KeyClientTestBase {
     public void deleteKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         getKeyClient(httpClient, serviceVersion);
         deleteKeyRunner((keyToDelete) -> {
+            sleepInRecordMode(30000);
             assertKeyEquals(keyToDelete,  client.createKey(keyToDelete));
 
             SyncPoller<DeletedKey, Void> deletedKeyPoller = client.beginDeleteKey(keyToDelete.getName());
@@ -173,7 +174,7 @@ public class KeyClientTest extends KeyClientTestBase {
 
             // Key is being deleted on server.
             while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(2000);
+                sleepInRecordMode(10000);
                 pollResponse = deletedKeyPoller.poll();
             }
 
@@ -181,8 +182,6 @@ public class KeyClientTest extends KeyClientTestBase {
             assertNotNull(deletedKey.getRecoveryId());
             assertNotNull(deletedKey.getScheduledPurgeDate());
             assertEquals(keyToDelete.getName(), deletedKey.getName());
-            client.purgeDeletedKey(keyToDelete.getName());
-            pollOnKeyPurge(keyToDelete.getName());
         });
     }
 
@@ -361,9 +360,6 @@ public class KeyClientTest extends KeyClientTestBase {
             assertNotNull(deletedKey.getRecoveryId());
             assertNotNull(deletedKey.getScheduledPurgeDate());
             assertEquals(keyToDeleteAndGet.getName(), deletedKey.getName());
-            client.purgeDeletedKey(keyToDeleteAndGet.getName());
-            pollOnKeyPurge(keyToDeleteAndGet.getName());
-            sleepInRecordMode(10000);
         });
     }
 
@@ -412,6 +408,7 @@ public class KeyClientTest extends KeyClientTestBase {
             String keyName = null;
             for (CreateKeyOptions key : keyVersions) {
                 keyName = key.getName();
+                sleepInRecordMode(4000);
                 assertKeyEquals(key, client.createKey(key));
             }
 
@@ -419,36 +416,7 @@ public class KeyClientTest extends KeyClientTestBase {
             List<KeyProperties> keyVersionsList = new ArrayList<>();
             keyVersionsOutput.forEach(keyVersionsList::add);
             assertEquals(keyVersions.size(), keyVersionsList.size());
-
-            SyncPoller<DeletedKey, Void> poller = client.beginDeleteKey(keyName);
-            PollResponse<DeletedKey> pollResponse = poller.poll();
-            while (!pollResponse.getStatus().isComplete()) {
-                sleepInRecordMode(1000);
-                pollResponse = poller.poll();
-            }
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
-    }
-
-    private DeletedKey pollOnKeyDeletion(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-                continue;
-            } else {
-                return deletedKey;
-            }
-        }
-        System.err.printf("Deleted Key %s not found \n", keyName);
-        return null;
     }
 
     private DeletedKey pollOnKeyPurge(String keyName) {

@@ -4,7 +4,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.IndexKind;
 
 /**
  * Represents a range index in the Azure Cosmos DB database service.
