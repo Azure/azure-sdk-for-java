@@ -396,10 +396,18 @@ public final class BridgeInternal {
     }
 
     public static MetadataDiagnosticsContext getMetaDataDiagnosticContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        if(cosmosResponseDiagnostics == null) {
+            return null;
+        }
+
         return cosmosResponseDiagnostics.clientSideRequestStatistics().getMetadataDiagnosticsContext();
     }
 
     public static SerializationDiagnosticsContext getSerializationDiagnosticsContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        if(cosmosResponseDiagnostics == null) {
+            return null;
+        }
+
         return cosmosResponseDiagnostics.clientSideRequestStatistics().getSerializationDiagnosticsContext();
     }
 
