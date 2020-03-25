@@ -39,7 +39,7 @@ public class ServiceBusSenderClient implements Closeable {
      * @return The name of the Service Bus resource.
      */
     public String getEntityPath() {
-        return asyncClient.getEntityNamePath();
+        return asyncClient.getEntityPath();
     }
 
     /**
