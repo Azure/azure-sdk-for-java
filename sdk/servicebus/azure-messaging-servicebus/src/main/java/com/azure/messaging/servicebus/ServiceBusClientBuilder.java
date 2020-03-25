@@ -522,6 +522,7 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final boolean hasTopicName = !isNullOrEmpty(topicName);
             final boolean hasQueueName = !isNullOrEmpty(queueName);
+            final boolean hasSubscription = !isNullOrEmpty(subscriptionName);
             final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
 
             final MessagingEntityType entityType;
@@ -548,6 +549,9 @@ public final class ServiceBusClientBuilder {
                     throw logger.logExceptionAsError(new IllegalStateException(String.format(
                         "topicName (%s) is different than connectionString entityName (%s).",
                         topicName, connectionStringEntityName)));
+                } else if (!hasSubscription) {
+                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                        "topicName (%s) must have a subscriptionName associated with it.", topicName)));
                 }
 
                 entityPath = topicName;

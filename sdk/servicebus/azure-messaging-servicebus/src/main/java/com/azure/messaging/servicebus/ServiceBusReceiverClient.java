@@ -14,10 +14,18 @@ import com.azure.core.annotation.ServiceClient;
  *     an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
-public class ServiceBusReceiverClient {
+public class ServiceBusReceiverClient implements AutoCloseable {
     private final ServiceBusReceiverAsyncClient asyncClient;
 
     ServiceBusReceiverClient(ServiceBusReceiverAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() {
+        asyncClient.close();
     }
 }
