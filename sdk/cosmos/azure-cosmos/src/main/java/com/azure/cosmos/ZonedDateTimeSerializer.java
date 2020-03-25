@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
+
+    private static final long serialVersionUID = 1477047422582342157L;
     private static final DateTimeFormatter RESPONSE_TIME_FORMATTER =
         DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm:ss" + ".SSS").withLocale(Locale.US);
 

@@ -62,6 +62,8 @@ public class SerializationDiagnosticsContext {
 
     static class SerializationDiagnosticsSerializer extends StdSerializer<SerializationDiagnosticsContext.SerializationDiagnostics> {
 
+        private static final long serialVersionUID = -1679638551521266979L;
+
         public SerializationDiagnosticsSerializer() {
             super(SerializationDiagnosticsContext.SerializationDiagnostics.class);
         }

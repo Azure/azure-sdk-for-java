@@ -42,6 +42,8 @@ public class MetadataDiagnosticsContext {
 
     static class MetaDataDiagnosticSerializer extends StdSerializer<MetadataDiagnostics> {
 
+        private static final long serialVersionUID = -6585518025594634820L;
+
         public MetaDataDiagnosticSerializer() {
             super(MetadataDiagnostics.class);
         }
