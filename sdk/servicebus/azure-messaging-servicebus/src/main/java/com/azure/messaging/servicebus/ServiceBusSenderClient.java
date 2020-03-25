@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
-import java.io.Closeable;
 import java.time.Duration;
 import java.util.Objects;
 

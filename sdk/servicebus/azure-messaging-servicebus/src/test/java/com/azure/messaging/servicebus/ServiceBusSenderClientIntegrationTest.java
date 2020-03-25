@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.UUID;
 
-public class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
+class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderClient sender;
 
     ServiceBusSenderClientIntegrationTest() {
@@ -26,7 +26,7 @@ public class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(sender);
+        sender.close();
     }
 
     /**
