@@ -73,12 +73,11 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         this.tokenManagerProvider = tokenManagerProvider;
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
-        TokenCredential tokenCredential = connectionOptions.getTokenCredential();
-        Scheduler scheduler = connectionOptions.getScheduler();
 
         managementChannel = new ManagementChannel(
             createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
-            eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler);
+            eventHubName, connectionOptions.getTokenCredential(), tokenManagerProvider, this.messageSerializer,
+            connectionOptions.getScheduler());
     }
 
     @Override
