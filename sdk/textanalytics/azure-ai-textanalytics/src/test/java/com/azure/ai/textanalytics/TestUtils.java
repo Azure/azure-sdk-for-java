@@ -24,6 +24,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.IterableStream;
 
 import java.util.Arrays;
@@ -40,6 +41,7 @@ final class TestUtils {
 
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
+    static final String FAKE_API_KEY = "1234567890";
 
     static final List<String> SENTIMENT_INPUTS = Arrays.asList("The hotel was dark and unclean. The restaurant had amazing gnocchi.",
         "The restaurant had amazing gnocchi. The hotel was dark and unclean.");
@@ -55,12 +57,32 @@ final class TestUtils {
         "Hello world. This is some input text that I love.",
         "Bonjour tout le monde");
 
+    static final List<String> KEY_PHRASE_FRENCH_INPUTS = Arrays.asList(
+        "Bonjour tout le monde.",
+        "Je m'appelle Mondly.");
+
     static final List<String> PII_ENTITY_INPUTS = Arrays.asList(
         "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
         "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");
 
     static final List<String> DETECT_LANGUAGE_INPUTS = Arrays.asList(
         "This is written in English", "Este es un documento escrito en Español.", "~@!~:)");
+
+    // "personal" and "social" are common to both English and Spanish and if given with limited context the
+    // response will be based on the "US" country hint. If the origin of the text is known to be coming from
+    // Spanish that can be given as a hint.
+    static final List<String> SPANISH_SAME_AS_ENGLISH_INPUTS = Arrays.asList("personal", "social");
+
+    static final DetectedLanguage DETECTED_LANGUAGE_SPANISH = new DetectedLanguage("Spanish", "es", 1.0);
+    static final DetectedLanguage DETECTED_LANGUAGE_ENGLISH = new DetectedLanguage("English", "en", 1.0);
+
+    static final List<DetectedLanguage> DETECT_SPANISH_LANGUAGE_RESULTS = Arrays.asList(
+        DETECTED_LANGUAGE_SPANISH, DETECTED_LANGUAGE_SPANISH);
+
+    static final List<DetectedLanguage> DETECT_ENGLISH_LANGUAGE_RESULTS = Arrays.asList(
+        DETECTED_LANGUAGE_ENGLISH, DETECTED_LANGUAGE_ENGLISH);
+
+    static final HttpResponseException HTTP_RESPONSE_EXCEPTION_CLASS = new HttpResponseException("", null);
 
     static List<DetectLanguageInput> getDetectLanguageInputs() {
         return Arrays.asList(

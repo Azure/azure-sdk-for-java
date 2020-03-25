@@ -95,3 +95,7 @@ stages:
         - name: azure-cognitiveservices-websearch
           groupId: com.microsoft.azure.cognitiveservices
           safeName: azurecognitiveserviceswebsearch
+        - name: azure-cognitiveservices-qnamaker
+          groupId: com.microsoft.azure.cognitiveservices
+          safeName: azurecognitiveservicesqnamaker
+
