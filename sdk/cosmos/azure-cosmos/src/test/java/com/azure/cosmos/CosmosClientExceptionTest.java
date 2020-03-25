@@ -3,7 +3,27 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.ForbiddenException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LockedException;
+import com.azure.cosmos.implementation.MethodNotAllowedException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.implementation.RequestEntityTooLargeException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.models.CosmosError;
 import com.google.common.collect.ImmutableMap;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -56,21 +76,21 @@ public class CosmosClientExceptionTest {
 
     @Test(groups = { "unit" })
     public void headerNotNull4() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, (CosmosError) null, (Map) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, (CosmosError) null, (Map<String, String>) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull5() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, 0, (CosmosError) null, (Map) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, 0, (CosmosError) null, (Map<String, String>) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull6() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, (Exception) null, (Map) null, 0, (String) null);
+        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, (Exception) null, (Map<String, String>) null, 0, (String) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }

@@ -59,34 +59,6 @@ public class PathPermissions {
         this.other = new RolePermissions();
     }
 
-    /**
-     * Initializes a new instance of {@code PathPermissions} with the given values.
-     *
-     * @param owner The permissions given to the owner of the resource.
-     * @param group The permissions given to the owning group of the resource.
-     * @param other The permissions given to other users and groups.
-     * @param stickyBit Sets the sticky bit. Please refer to the POSIX sticky bit for more information.
-     */
-    public PathPermissions(RolePermissions owner, RolePermissions group, RolePermissions other, boolean stickyBit) {
-        this.owner = owner;
-        this.group = group;
-        this.other = other;
-        this.stickyBit = stickyBit;
-    }
-
-    /**
-     * Initializes a new instance of {@code PathPermissions} with copies of the fields from another instance.
-     *
-     * @param other The instance with values to copy.
-     */
-    public PathPermissions(PathPermissions other) {
-        this.owner = new RolePermissions(other.owner);
-        this.group = new RolePermissions(other.group);
-        this.other = new RolePermissions(other.other);
-        this.stickyBit = other.stickyBit;
-        this.extendedInfoInAcl = other.extendedInfoInAcl;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -204,15 +176,6 @@ public class PathPermissions {
     }
 
     /**
-     * Validates that there is no sticky bit set on the umask, as it is not supported.
-     */
-    void assertUmask() {
-        if (this.stickyBit) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("umask cannot have a sticky bit."));
-        }
-    }
-
-    /**
      * Returns the {@link RolePermissions} for the owner of the resource.
      *
      * @return the {@link RolePermissions} for the owner of the resource.
@@ -278,7 +241,7 @@ public class PathPermissions {
      *
      * @return {@code true} if the sticky bit is set and {@code false} otherwise.
      */
-    public boolean hasStickyBit() {
+    public boolean isStickyBitSet() {
         return stickyBit;
     }
 
@@ -301,7 +264,7 @@ public class PathPermissions {
      *
      * @return {@code true} if there is more information in the ACL. {@code false} otherwise.
      */
-    public boolean hasExtendedInfoInAcl() {
+    public boolean isExtendedInfoInAcl() {
         return this.extendedInfoInAcl;
     }
 

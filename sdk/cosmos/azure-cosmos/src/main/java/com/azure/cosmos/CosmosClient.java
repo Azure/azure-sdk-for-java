@@ -4,28 +4,31 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+
+import java.io.Closeable;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos database service.
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
-public class CosmosClient implements AutoCloseable {
+public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
         this.asyncClientWrapper = builder.buildAsyncClient();
-    }
-
-    /**
-     * Instantiate the cosmos client builder to build cosmos client
-     *
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder();
     }
 
     /**
@@ -199,7 +202,7 @@ public class CosmosClient implements AutoCloseable {
     }
 
     CosmosDatabaseResponse convertResponse(CosmosAsyncDatabaseResponse response) {
-        return new CosmosDatabaseResponse(response, this);
+        return ModelBridgeInternal.createCosmosDatabaseResponse(response, this);
     }
 
     CosmosAsyncClient asyncClient() {
@@ -214,7 +217,7 @@ public class CosmosClient implements AutoCloseable {
     }
 
     private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
-        return new CosmosPagedIterable<>(cosmosPagedFlux);
+        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
 }

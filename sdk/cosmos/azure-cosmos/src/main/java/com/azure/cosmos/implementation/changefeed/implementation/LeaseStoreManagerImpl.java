@@ -6,11 +6,12 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
@@ -42,7 +43,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private LeaseStore leaseStore;
 
 
-    public static LeaseStoreManagerBuilderDefinition Builder() {
+    public static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
     }
 
@@ -136,14 +137,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.settings.getLeaseCollectionLink(),
             this.requestOptionsFactory);
 
-        if (this.settings.getLeaseCollectionLink() == null) {
-            throw new IllegalArgumentException("leaseCollectionLink was not specified");
-        }
-
-        if (this.requestOptionsFactory == null) {
-            throw new IllegalArgumentException("requestOptionsFactory was not specified");
-        }
-
         return Mono.just(this);
     }
 
@@ -194,8 +187,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
                 return documentServiceLease
                     .withId(document.getId())
-                    .withEtag(document.getETag())
-                    .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
+                    .withETag(document.getETag())
+                    .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document, Constants.Properties.LAST_MODIFIED));
             });
     }
 
@@ -234,7 +227,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseUpdater.updateLease(
             lease,
-            lease.getId(), 
+            lease.getId(),
             new PartitionKey(lease.getId()),
             this.requestOptionsFactory.createRequestOptions(lease),
             serverLease -> {
@@ -273,7 +266,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                lease.getId(), 
+                lease.getId(),
                 new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
@@ -319,7 +312,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map( documentResourceResponse -> ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse)))
             .flatMap( refreshedLease -> this.leaseUpdater.updateLease(
                 refreshedLease,
-                lease.getId(), 
+                lease.getId(),
                 new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createRequestOptions(lease),
                 serverLease ->
@@ -347,7 +340,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
 
         return this.leaseUpdater.updateLease(
             lease,
-            lease.getId(), 
+            lease.getId(),
             new PartitionKey(lease.getId()),
             this.requestOptionsFactory.createRequestOptions(lease),
             serverLease -> {
@@ -414,28 +407,6 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         return this.leaseStore.releaseInitializationLock();
     }
 
-    private Mono<ServiceItemLease> tryGetLease(Lease lease) {
-
-        return this.leaseDocumentClient.readItem(lease.getId(),
-                                                 new PartitionKey(lease.getId()),
-                                                 this.requestOptionsFactory.createRequestOptions(lease),
-                                                 CosmosItemProperties.class)
-            .onErrorResume( ex -> {
-                if (ex instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) ex;
-                    if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
-                        return Mono.empty();
-                    }
-                }
-
-                return Mono.error(ex);
-            })
-            .map( documentResourceResponse -> {
-                if (documentResourceResponse == null) return null;
-                return ServiceItemLease.fromDocument(BridgeInternal.getProperties(documentResourceResponse));
-            });
-    }
-
     private Flux<ServiceItemLease> listDocuments(String prefix) {
         if (prefix == null || prefix.isEmpty())  {
             throw new IllegalArgumentException("prefix");
@@ -466,5 +437,5 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     private String getPartitionLeasePrefix() {
         return this.settings.getContainerNamePrefix() + LEASE_STORE_MANAGER_LEASE_SUFFIX;
     }
-    
+
 }

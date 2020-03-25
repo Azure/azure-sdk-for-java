@@ -7,8 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
-import com.azure.cosmos.CosmosItemResponse;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -95,10 +94,10 @@ abstract class SyncBenchmark<T> {
         executorService = Executors.newFixedThreadPool(cfg.getConcurrency());
 
         cosmosClient = new CosmosClientBuilder()
-            .setEndpoint(cfg.getServiceEndpoint())
-            .setKey(cfg.getMasterKey())
-            .setConnectionPolicy(cfg.getConnectionPolicy())
-            .setConsistencyLevel(cfg.getConsistencyLevel())
+            .endpoint(cfg.getServiceEndpoint())
+            .key(cfg.getMasterKey())
+            .connectionPolicy(cfg.getConnectionPolicy())
+            .consistencyLevel(cfg.getConsistencyLevel())
             .buildClient();
 
         cosmosContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().getContainer();
@@ -355,6 +354,6 @@ abstract class SyncBenchmark<T> {
     }
 
     PojoizedJson toPojoizedJson(CosmosItemResponse<PojoizedJson> resp) throws Exception {
-        return resp.getResource();
+        return resp.getItem();
     }
 }

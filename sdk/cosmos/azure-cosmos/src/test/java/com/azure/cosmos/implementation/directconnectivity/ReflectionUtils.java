@@ -3,11 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -31,6 +31,8 @@ public class ReflectionUtils {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    // Note: @moderakh @kushagraThapar - klass is not used but still casting to T
     private static <T> T get(Class<T> klass, Object object, String fieldName) {
         try {
             return (T) FieldUtils.readField(object, fieldName, true);
@@ -93,5 +95,13 @@ public class ReflectionUtils {
 
     public static void setAsyncDocumentClient(CosmosAsyncClient client, RxDocumentClientImpl rxClient) {
         set(client, rxClient, "asyncDocumentClient");
+    }
+
+    public static GatewayServiceConfigurationReader getServiceConfigurationReader(RxDocumentClientImpl rxDocumentClient){
+        return get(GatewayServiceConfigurationReader.class, rxDocumentClient, "gatewayConfigurationReader");
+    }
+
+    public static void setBackgroundRefreshLocationTimeIntervalInMS(GlobalEndpointManager globalEndPointManager, int millSec){
+        set(globalEndPointManager, millSec, "backgroundRefreshLocationTimeIntervalInMS");
     }
 }

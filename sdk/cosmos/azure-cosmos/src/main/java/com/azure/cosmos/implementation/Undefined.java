@@ -3,27 +3,27 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.JsonSerializable;
+import com.azure.cosmos.models.JsonSerializable;
 
 /**
  * Represents the 'Undefined' partition key in the Azure Cosmos DB database service.
  */
 public class Undefined extends JsonSerializable {
-    
+
     private final static Undefined value = new Undefined();
-    
+
     /**
      * Constructor. CREATE a new instance of the Undefined object.
     */
     private Undefined() {
     }
-    
+
     /**
      * Returns the singleton value of Undefined.
      *
      * @return the Undefined value
     */
-    public static Undefined Value() {
+    public static Undefined value() {
         return value;
     }
 

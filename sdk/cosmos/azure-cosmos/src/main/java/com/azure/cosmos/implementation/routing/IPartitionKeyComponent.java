@@ -8,17 +8,17 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import java.io.OutputStream;
 
 interface IPartitionKeyComponent {
-    int CompareTo(IPartitionKeyComponent other);
+    int compareTo(IPartitionKeyComponent other);
 
-    int GetTypeOrdinal();
+    int getTypeOrdinal();
 
-    void JsonEncode(JsonGenerator writer);
+    void jsonEncode(JsonGenerator writer);
 
-    void WriteForHashing(OutputStream outputStream);
+    void writeForHashing(OutputStream outputStream);
 
-    void WriteForHashingV2(OutputStream binaryWriter);
+    void writeForHashingV2(OutputStream binaryWriter);
 
-    void WriteForBinaryEncoding(OutputStream binaryWriter);
+    void writeForBinaryEncoding(OutputStream binaryWriter);
 
-    IPartitionKeyComponent Truncate();
+    IPartitionKeyComponent truncate();
 }

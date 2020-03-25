@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.assertj.core.api.Condition;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public interface AddressValidator {
 
                 @Override
                 public void validate(Address address) {
-                    assertThat(address.IsPrimary()).isTrue();
+                    assertThat(address.isPrimary()).isTrue();
                 }
             });
             return this;

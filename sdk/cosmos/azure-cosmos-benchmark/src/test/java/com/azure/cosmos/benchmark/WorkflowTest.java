@@ -4,11 +4,11 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.DataType;
-import com.azure.cosmos.IncludedPath;
-import com.azure.cosmos.Index;
-import com.azure.cosmos.IndexingPolicy;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.DataType;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.Index;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;

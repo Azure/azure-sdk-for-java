@@ -77,6 +77,32 @@ mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
 
 //example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
 ```
+### Live testing
+
+Live tests assume a live resource has been created and appropriate environment
+variables have been set for the test process. To automate setting up live
+resources we use created a script called `New-TestResources.ps1` that deploys
+resources for a given service.
+
+To see what resources will be deployed for a live service, check the
+`test-resources.json` ARM template files in the service you wish to deploy for
+testing, for example `sdk\keyvault\test-resources.json`.
+
+To deploy live resources for testing use the steps documented in [`Example 1 of New-TestResources.ps1`](eng/common/TestResources/New-TestResources.ps1.md#example-1)
+to set up a service principal and deploy live testing resources.
+
+The script will provide instructions for setting environment variables before
+running live tests.
+
+To run live tests against a service after deploying live resources:
+
+```
+mvn -f sdk/keyvault/pom.service.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
+```
+
+Some live tests may have additional steps for setting up live testing resources.
+See the CONTRIBUTING.md file for the service you wish to test for additional
+information or instructions.
 
 ## Versions and versioning
 
@@ -96,11 +122,12 @@ Libraries refer to things that are built and released as part of the Azure SDK. 
 
 External Dependencies refer to dependencies for things that are not built and released as part of the Azure SDK regardless of the source. External Dependencies will only ever have a dependency version.
 
-### Current version, Dependency version and Unreleased Dependency version
+### Current version, Dependency version, Unreleased Dependency version and Released Beta Dependency version
 
 Current version - This is the version we should be using when defining a component in its POM file and also when dependent components are built within the same pipeline. The current version is the version currently in development.
 Dependency version - This is the version we should be using when a given library is a dependency outside of a particular area. This should be the latest released version of the package whenever possible.
-Unreleased Dependency version – Whenever possible, libraries should be using the latest released version for dependencies but there is the case where active development in one library is going to be needed by another library or libraries that are built in separate pipelines. These types of changes are specifically additive and not breaking. Once a library has GA’d, nothing short of breaking changes should ever force the dependency versions across the repo to an unreleased version. The reason for this is that it would prevent other libraries, that don’t need this change, from releasing.
+Unreleased Dependency version – Whenever possible, libraries should be using the latest released version for dependencies but there is the case where active development in one library is going to be needed by another library or libraries that are built in separate pipelines. These types of changes are specifically additive and not breaking. Once a library has GA’d, nothing short of breaking changes should ever force the dependency versions across the repo to an unreleased version. The reason for this is that it would prevent other libraries, that don’t need this change, from releasing. Unreleased dependcies of scope test will not prevent a library from being released.
+Released Beta Dependency version – This is for when a library, which has already GA'd, is being released as a Beta version and we need to keep the dependency version to the latest GA. This particular tag will be used to allow other libraries to depend on the released Beta version. Libraries with released Beta dependencies can only be released as Beta, themselves, as a library cannot GA with Beta dependencies. An exception to the previous rule would be if the Beta dependency has a scope of test as this will not prevent a library from being released as GA.
 
 An example of Current vs Dependency versions: `com.azure:azure-storage-blob-batch` has dependencies on `com.azure:azure-core`, `com.azure:azure-core-http-netty` and `com.azure:azure-storage-blob`. Because `com.azure:azure-core` and `com.azure:azure-core-http-netty` are both built outside of azure-storage pipeline we should be using the released or *Dependency* versions of these when they're dependencies of another library. Similarly, libraries built as part of the same pipeline, that have interdependencies, should be using the Current version. Since `com.azure:azure-storage-blob-batch` and `com.azure:azure-storage-blob` are both built part of the azure-batch pipeline when `com.azure:azure-storage-blob` is declared as a dependency of `com.azure:azure-storage-blob-batch` it should be the *Current* version.
 

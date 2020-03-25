@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.query.metrics;
 
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -21,101 +21,103 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     // QueryMetrics
     private static final String ActivityIds = "Activity Ids";
-    private static final String RetrievedDocumentCount = "Retrieved Document Count";
-    private static final String RetrievedDocumentSize = "Retrieved Document Size";
-    private static final String OutputDocumentCount = "Output Document Count";
-    private static final String OutputDocumentSize = "Output Document Size";
-    private static final String IndexUtilizationText = "Index Utilization";
-    private static final String TotalQueryExecutionTime = "Total Query Execution Time";
+    private static final String RETRIEVED_DOCUMENT_COUNT = "Retrieved Document Count";
+    private static final String RETRIEVED_DOCUMENT_SIZE = "Retrieved Document Size";
+    private static final String OUTPUT_DOCUMENT_COUNT = "Output Document Count";
+    private static final String OUTPUT_DOCUMENT_SIZE = "Output Document Size";
+    private static final String INDEX_UTILIZATION_TEXT = "Index Utilization";
+    private static final String TOTAL_QUERY_EXECUTION_TIME = "Total Query Execution Time";
 
     // QueryPreparationTimes
-    private static final String QueryPreparationTimes = "Query Preparation Times";
-    private static final String QueryCompileTime = "Query Compilation Time";
-    private static final String LogicalPlanBuildTime = "Logical Plan Build Time";
-    private static final String PhysicalPlanBuildTime = "Physical Plan Build Time";
-    private static final String QueryOptimizationTime = "Query Optimization Time";
+    private static final String QUERY_PREPARATION_TIMES = "Query Preparation Times";
+    private static final String QUERY_COMPILATION_TIME = "Query Compilation Time";
+    private static final String LOGICAL_PLAN_BUILD_TIME = "Logical Plan Build Time";
+    private static final String PHYSICAL_PLAN_BUILD_TIME = "Physical Plan Build Time";
+    private static final String QUERY_OPTIMIZATION_TIME = "Query Optimization Time";
 
     // QueryTimes
-    private static final String QueryEngineTimes = "Query Engine Times";
-    private static final String IndexLookupTime = "Index Lookup Time";
-    private static final String DocumentLoadTime = "Document Load Time";
-    private static final String DocumentWriteTime = "Document Write Time";
+    private static final String QUERY_ENGINE_TIMES = "Query Engine Times";
+    private static final String INDEX_LOOKUP_TIME = "Index Lookup Time";
+    private static final String DOCUMENT_LOAD_TIME = "Document Load Time";
+    private static final String DOCUMENT_WRITE_TIME = "Document Write Time";
 
     // RuntimeExecutionTimes
-    private static final String RuntimeExecutionTimes = "Runtime Execution Times";
-    private static final String TotalExecutionTime = "Query Engine Execution Time";
-    private static final String SystemFunctionExecuteTime = "System Function Execution Time";
-    private static final String UserDefinedFunctionExecutionTime = "User-defined Function Execution Time";
+    private static final String RUNTIME_EXECUTION_TIMES = "Runtime Execution Times";
+    private static final String TOTAL_EXECUTION_TIME = "Query Engine Execution Time";
+    private static final String SYSTEM_FUNCTION_EXECUTION_TIME = "System Function Execution Time";
+    private static final String USER_DEFINED_FUNCTION_EXECUTION_TIME = "User-defined Function Execution Time";
 
     // ClientSideQueryMetrics
-    private static final String ClientSideQueryMetrics = "Client Side Metrics";
-    private static final String Retries = "Retry Count";
-    private static final String RequestCharge = "Request Charge";
-    private static final String FetchExecutionRanges = "Partition Execution Timeline";
-    private static final String SchedulingMetrics = "Scheduling Metrics";
+    private static final String CLIENT_SIDE_METRICS = "Client Side Metrics";
+    private static final String RETRIES = "Retry Count";
+    private static final String REQUEST_CHARGE = "Request Charge";
+    private static final String FETCH_EXECUTION_RANGES = "Partition Execution Timeline";
+    private static final String SCHEDULING_METRICS = "Scheduling Metrics";
 
     // Constants for Partition Execution Timeline Table
-    private static final String StartTimeHeader = "Start Time (UTC)";
-    private static final String EndTimeHeader = "End Time (UTC)";
-    private static final String DurationHeader = "Duration (ms)";
-    private static final String PartitionKeyRangeIdHeader = "Partition Id";
-    private static final String NumberOfDocumentsHeader = "NUMBER of Documents";
-    private static final String RetryCountHeader = "Retry Count";
-    private static final String ActivityIdHeader = "Activity Id";
+    private static final String START_TIME_HEADER = "Start Time (UTC)";
+    private static final String END_TIME_HEADER = "End Time (UTC)";
+    private static final String DURATION_HEADER = "Duration (ms)";
+    private static final String PARTITION_KEY_RANGE_ID_HEADER = "Partition Id";
+    private static final String NUMBER_OF_DOCUMENTS_HEADER = "NUMBER of Documents";
+    private static final String RETRY_COUNT_HEADER = "Retry Count";
+    private static final String ACTIVITY_ID_HEADER = "Activity Id";
 
     // Constants for Scheduling Metrics Table
-    private static final String PartitionIdHeader = "Partition Id";
-    private static final String ResponseTimeHeader = "Response Time (ms)";
-    private static final String RunTimeHeader = "Run Time (ms)";
-    private static final String WaitTimeHeader = "Wait Time (ms)";
-    private static final String TurnaroundTimeHeader = "Turnaround Time (ms)";
-    private static final String NumberOfPreemptionHeader = "NUMBER of Preemptions";
+    private static final String PARTITION_ID_HEADER = "Partition Id";
+    private static final String RESPONSE_TIME_HEADER = "Response Time (ms)";
+    private static final String RUN_TIME_HEADER = "Run Time (ms)";
+    private static final String WAIT_TIME_HEADER = "Wait Time (ms)";
+    private static final String TURNAROUND_TIME_HEADER = "Turnaround Time (ms)";
+    private static final String NUMBER_OF_PREEMPTION_HEADER = "NUMBER of Preemptions";
 
     // Static  for Partition Execution Timeline Table
     // private static  int MaxDateTimeStringLength = LocalDateTime.MAX.toString().length();
-    private static final int MaxDateTimeStringLength = 16;
-    private static final int StartTimeHeaderLength = Math.max(MaxDateTimeStringLength, StartTimeHeader.length());
-    private static final int EndTimeHeaderLength = Math.max(MaxDateTimeStringLength, EndTimeHeader.length());
-    private static final int DurationHeaderLength = DurationHeader.length();
-    private static final int PartitionKeyRangeIdHeaderLength = PartitionKeyRangeIdHeader.length();
-    private static final int NumberOfDocumentsHeaderLength = NumberOfDocumentsHeader.length();
-    private static final int RetryCountHeaderLength = RetryCountHeader.length();
-    private static final int ActivityIdHeaderLength = UUID.randomUUID().toString().length();
+    private static final int MAX_DATE_TIME_STRING_LENGTH = 16;
+    private static final int START_TIME_HEADER_LENGTH
+        = Math.max(MAX_DATE_TIME_STRING_LENGTH, START_TIME_HEADER.length());
+    private static final int END_TIME_HEADER_LENGTH = Math.max(MAX_DATE_TIME_STRING_LENGTH, END_TIME_HEADER.length());
+    private static final int DURATION_HEADER_LENGTH = DURATION_HEADER.length();
+    private static final int PARTITION_KEY_RANGE_ID_HEADER_LENGTH = PARTITION_KEY_RANGE_ID_HEADER.length();
+    private static final int NUMBER_OF_DOCUMENTS_HEADER_LENGTH = NUMBER_OF_DOCUMENTS_HEADER.length();
+    private static final int RETRY_COUNT_HEADER_LENGTH = RETRY_COUNT_HEADER.length();
+    private static final int ACTIVITY_ID_HEADER_LENGTH = UUID.randomUUID().toString().length();
 
-    private static TextTable.Column[] PartitionExecutionTimelineColumns = new TextTable.Column[]
+    private static final TextTable.Column[] PARTITION_EXECUTION_TIMELINE_COLUMNS = new TextTable.Column[]
             {
-                    new TextTable.Column(PartitionKeyRangeIdHeader, PartitionKeyRangeIdHeaderLength),
-                    new TextTable.Column(ActivityIdHeader, ActivityIdHeaderLength),
-                    new TextTable.Column(StartTimeHeader, StartTimeHeaderLength),
-                    new TextTable.Column(EndTimeHeader, EndTimeHeaderLength),
-                    new TextTable.Column(DurationHeader, DurationHeaderLength),
-                    new TextTable.Column(NumberOfDocumentsHeader, NumberOfDocumentsHeaderLength),
-                    new TextTable.Column(RetryCountHeader, RetryCountHeaderLength),
+                    new TextTable.Column(PARTITION_KEY_RANGE_ID_HEADER, PARTITION_KEY_RANGE_ID_HEADER_LENGTH),
+                    new TextTable.Column(ACTIVITY_ID_HEADER, ACTIVITY_ID_HEADER_LENGTH),
+                    new TextTable.Column(START_TIME_HEADER, START_TIME_HEADER_LENGTH),
+                    new TextTable.Column(END_TIME_HEADER, END_TIME_HEADER_LENGTH),
+                    new TextTable.Column(DURATION_HEADER, DURATION_HEADER_LENGTH),
+                    new TextTable.Column(NUMBER_OF_DOCUMENTS_HEADER, NUMBER_OF_DOCUMENTS_HEADER_LENGTH),
+                    new TextTable.Column(RETRY_COUNT_HEADER, RETRY_COUNT_HEADER_LENGTH),
             };
 
-    private static TextTable PartitionExecutionTimelineTable = new TextTable(Arrays.asList(PartitionExecutionTimelineColumns));
+    private static final TextTable PARTITION_EXECUTION_TIMELINE_TABLE
+        = new TextTable(Arrays.asList(PARTITION_EXECUTION_TIMELINE_COLUMNS));
 
     // Static  for Scheduling Metrics Table
     //private static readonly int MaxTimeSpanStringLength = Math.Max(TimeSpan.MaxValue.TotalMilliseconds.ToString
     // ("G17").Length, TurnaroundTimeHeader.Length);
-    private static final int PartitionIdHeaderLength = PartitionIdHeader.length();
-    private static final int ResponseTimeHeaderLength = ResponseTimeHeader.length();
-    private static final int RunTimeHeaderLength = RunTimeHeader.length();
-    private static final int WaitTimeHeaderLength = WaitTimeHeader.length();
-    private static final int TurnaroundTimeHeaderLength = TurnaroundTimeHeader.length();
-    private static final int NumberOfPreemptionHeaderLength = NumberOfPreemptionHeader.length();
+    private static final int PARTITION_ID_HEADER_LENGTH = PARTITION_ID_HEADER.length();
+    private static final int RESPONSE_TIME_HEADER_LENGTH = RESPONSE_TIME_HEADER.length();
+    private static final int RUN_TIME_HEADER_LENGTH = RUN_TIME_HEADER.length();
+    private static final int WAIT_TIME_HEADER_LENGTH = WAIT_TIME_HEADER.length();
+    private static final int TURNAROUND_TIME_HEADER_LENGTH = TURNAROUND_TIME_HEADER.length();
+    private static final int NUMBER_OF_PREEMPTION_HEADER_LENGTH = NUMBER_OF_PREEMPTION_HEADER.length();
 
-    private static TextTable.Column[] SchedulingMetricsColumns = new TextTable.Column[]
+    private static final TextTable.Column[] SCHEDULING_METRICS_COLUMNS = new TextTable.Column[]
             {
-                    new TextTable.Column(PartitionIdHeader, PartitionIdHeaderLength),
-                    new TextTable.Column(ResponseTimeHeader, ResponseTimeHeaderLength),
-                    new TextTable.Column(RunTimeHeader, RunTimeHeaderLength),
-                    new TextTable.Column(WaitTimeHeader, WaitTimeHeaderLength),
-                    new TextTable.Column(TurnaroundTimeHeader, TurnaroundTimeHeaderLength),
-                    new TextTable.Column(NumberOfPreemptionHeader, NumberOfPreemptionHeaderLength),
+                    new TextTable.Column(PARTITION_ID_HEADER, PARTITION_ID_HEADER_LENGTH),
+                    new TextTable.Column(RESPONSE_TIME_HEADER, RESPONSE_TIME_HEADER_LENGTH),
+                    new TextTable.Column(RUN_TIME_HEADER, RUN_TIME_HEADER_LENGTH),
+                    new TextTable.Column(WAIT_TIME_HEADER, WAIT_TIME_HEADER_LENGTH),
+                    new TextTable.Column(TURNAROUND_TIME_HEADER, TURNAROUND_TIME_HEADER_LENGTH),
+                    new TextTable.Column(NUMBER_OF_PREEMPTION_HEADER, NUMBER_OF_PREEMPTION_HEADER_LENGTH),
             };
 
-    private static TextTable SchedulingMetricsTable = new TextTable(Arrays.asList(SchedulingMetricsColumns));
+    private static final TextTable SCHEDULING_METRICS_TABLE = new TextTable(Arrays.asList(SCHEDULING_METRICS_COLUMNS));
 
     // FetchExecutionRange state
     private String lastFetchPartitionId;
@@ -133,7 +135,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     private long lastTurnaroundTime;
     private long lastNumberOfPreemptions;
 
-    static DateTimeFormatter formatter =
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
             DateTimeFormatter.ofPattern("HH:mm:ss:SSSS").withZone(ZoneOffset.UTC);
 
     public QueryMetricsTextWriter(StringBuilder stringBuilder) {
@@ -149,67 +151,67 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     @Override
     protected void writeRetrievedDocumentCount(long retrievedDocumentCount) {
         QueryMetricsTextWriter.appendCountToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.RetrievedDocumentCount, retrievedDocumentCount, 0);
+                QueryMetricsTextWriter.RETRIEVED_DOCUMENT_COUNT, retrievedDocumentCount, 0);
     }
 
     @Override
     protected void writeRetrievedDocumentSize(long retrievedDocumentSize) {
-        QueryMetricsTextWriter.appendBytesToStringBuilder(stringBuilder, QueryMetricsTextWriter.RetrievedDocumentSize
+        QueryMetricsTextWriter.appendBytesToStringBuilder(stringBuilder, QueryMetricsTextWriter.RETRIEVED_DOCUMENT_SIZE
                 , retrievedDocumentSize, 0);
     }
 
     @Override
     protected void writeOutputDocumentCount(long outputDocumentCount) {
-        QueryMetricsTextWriter.appendCountToStringBuilder(stringBuilder, QueryMetricsTextWriter.OutputDocumentCount,
+        QueryMetricsTextWriter.appendCountToStringBuilder(stringBuilder, QueryMetricsTextWriter.OUTPUT_DOCUMENT_COUNT,
                 outputDocumentCount, 0);
     }
 
     @Override
     protected void writeOutputDocumentSize(long outputDocumentSize) {
-        QueryMetricsTextWriter.appendBytesToStringBuilder(stringBuilder, QueryMetricsTextWriter.OutputDocumentSize,
+        QueryMetricsTextWriter.appendBytesToStringBuilder(stringBuilder, QueryMetricsTextWriter.OUTPUT_DOCUMENT_SIZE,
                 outputDocumentSize, 0);
     }
 
     @Override
     protected void writeIndexHitRatio(double indexHitRatio) {
-        QueryMetricsTextWriter.appendPercentageToStringBuilder(stringBuilder, QueryMetricsTextWriter.IndexUtilizationText
+        QueryMetricsTextWriter.appendPercentageToStringBuilder(stringBuilder, QueryMetricsTextWriter.INDEX_UTILIZATION_TEXT
                 , indexHitRatio, 0);
     }
 
     @Override
     protected void writeTotalQueryExecutionTime(Duration totalQueryExecutionTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.TotalQueryExecutionTime, durationToMilliseconds(totalQueryExecutionTime), 0);
+                QueryMetricsTextWriter.TOTAL_QUERY_EXECUTION_TIME, durationToMilliseconds(totalQueryExecutionTime), 0);
     }
 
     @Override
     protected void writeBeforeQueryPreparationTimes() {
         QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.QueryPreparationTimes, 1);
+                QueryMetricsTextWriter.QUERY_PREPARATION_TIMES, 1);
     }
 
     @Override
     protected void writeQueryCompilationTime(Duration queryCompilationTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.QueryCompileTime, durationToMilliseconds(queryCompilationTime), 2);
+                QueryMetricsTextWriter.QUERY_COMPILATION_TIME, durationToMilliseconds(queryCompilationTime), 2);
     }
 
     @Override
     protected void writeLogicalPlanBuildTime(Duration logicalPlanBuildTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.LogicalPlanBuildTime, durationToMilliseconds(logicalPlanBuildTime), 2);
+                QueryMetricsTextWriter.LOGICAL_PLAN_BUILD_TIME, durationToMilliseconds(logicalPlanBuildTime), 2);
     }
 
     @Override
     protected void writePhysicalPlanBuildTime(Duration physicalPlanBuildTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.PhysicalPlanBuildTime, durationToMilliseconds(physicalPlanBuildTime), 2);
+                QueryMetricsTextWriter.PHYSICAL_PLAN_BUILD_TIME, durationToMilliseconds(physicalPlanBuildTime), 2);
     }
 
     @Override
     protected void writeQueryOptimizationTime(Duration queryOptimizationTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.QueryOptimizationTime, durationToMilliseconds(queryOptimizationTime), 2);
+                QueryMetricsTextWriter.QUERY_OPTIMIZATION_TIME, durationToMilliseconds(queryOptimizationTime), 2);
     }
 
     @Override
@@ -220,13 +222,13 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     @Override
     protected void writeIndexLookupTime(Duration indexLookupTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.IndexLookupTime, durationToMilliseconds(indexLookupTime), 1);
+                QueryMetricsTextWriter.INDEX_LOOKUP_TIME, durationToMilliseconds(indexLookupTime), 1);
     }
 
     @Override
     protected void writeDocumentLoadTime(Duration documentLoadTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.DocumentLoadTime, durationToMilliseconds(documentLoadTime), 1);
+                QueryMetricsTextWriter.DOCUMENT_LOAD_TIME, durationToMilliseconds(documentLoadTime), 1);
     }
 
     @Override
@@ -237,26 +239,26 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     @Override
     protected void writeBeforeRuntimeExecutionTimes() {
         QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.RuntimeExecutionTimes, 1);
+                QueryMetricsTextWriter.RUNTIME_EXECUTION_TIMES, 1);
     }
 
     @Override
     protected void writeQueryEngineExecutionTime(Duration queryEngineExecutionTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.QueryEngineTimes, durationToMilliseconds(queryEngineExecutionTime), 2);
+                QueryMetricsTextWriter.QUERY_ENGINE_TIMES, durationToMilliseconds(queryEngineExecutionTime), 2);
     }
 
     @Override
     protected void writeSystemFunctionExecutionTime(Duration systemFunctionExecutionTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.SystemFunctionExecuteTime, durationToMilliseconds(systemFunctionExecutionTime)
+                QueryMetricsTextWriter.SYSTEM_FUNCTION_EXECUTION_TIME, durationToMilliseconds(systemFunctionExecutionTime)
                 , 2);
     }
 
     @Override
     protected void writeUserDefinedFunctionExecutionTime(Duration userDefinedFunctionExecutionTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.UserDefinedFunctionExecutionTime,
+                QueryMetricsTextWriter.USER_DEFINED_FUNCTION_EXECUTION_TIME,
                 durationToMilliseconds(userDefinedFunctionExecutionTime), 2);
     }
 
@@ -268,23 +270,23 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     @Override
     protected void writeDocumentWriteTime(Duration documentWriteTime) {
         QueryMetricsTextWriter.appendMillisecondsToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.DocumentWriteTime, durationToMilliseconds(documentWriteTime), 1);
+                QueryMetricsTextWriter.DOCUMENT_WRITE_TIME, durationToMilliseconds(documentWriteTime), 1);
     }
 
     @Override
     protected void writeBeforeClientSideMetrics() {
         QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder,
-                QueryMetricsTextWriter.ClientSideQueryMetrics, 0);
+                QueryMetricsTextWriter.CLIENT_SIDE_METRICS, 0);
     }
 
     @Override
     protected void writeRetries(long retries) {
-        QueryMetricsTextWriter.appendCountToStringBuilder(stringBuilder, QueryMetricsTextWriter.Retries, retries, 1);
+        QueryMetricsTextWriter.appendCountToStringBuilder(stringBuilder, QueryMetricsTextWriter.RETRIES, retries, 1);
     }
 
     @Override
     protected void writeRequestCharge(double requestCharge) {
-        QueryMetricsTextWriter.appendRUToStringBuilder(stringBuilder, QueryMetricsTextWriter.RequestCharge,
+        QueryMetricsTextWriter.appendRUToStringBuilder(stringBuilder, QueryMetricsTextWriter.REQUEST_CHARGE,
                 requestCharge, 1);
     }
 
@@ -293,11 +295,11 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
         QueryMetricsTextWriter.appendNewlineToStringBuilder(stringBuilder);
 
         // Building the table for fetch execution ranges
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.FetchExecutionRanges
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.FETCH_EXECUTION_RANGES
                 , 1);
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PartitionExecutionTimelineTable.getTopLine(), 1);
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PartitionExecutionTimelineTable.getHeader(), 1);
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PartitionExecutionTimelineTable.getMiddleLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PARTITION_EXECUTION_TIMELINE_TABLE.getTopLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PARTITION_EXECUTION_TIMELINE_TABLE.getHeader(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PARTITION_EXECUTION_TIMELINE_TABLE.getMiddleLine(), 1);
     }
 
     @Override
@@ -339,11 +341,11 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     protected void writeAfterFetchExecutionRange() {
         QueryMetricsTextWriter.appendHeaderToStringBuilder(
                 stringBuilder,
-                PartitionExecutionTimelineTable.getRow(Arrays.asList(
+                PARTITION_EXECUTION_TIMELINE_TABLE.getRow(Arrays.asList(
                         this.lastFetchPartitionId,
                         this.lastActivityId,
-                        formatter.format(this.lastStartTime),
-                        formatter.format(this.lastEndTime),
+                        DATE_TIME_FORMATTER.format(this.lastStartTime),
+                        DATE_TIME_FORMATTER.format(this.lastEndTime),
                         nanosToMilliSeconds(this.lastEndTime.minusNanos(lastStartTime.getNano()).getNano()),
                         this.lastFetchDocumentCount,
                         this.lastFetchRetryCount)),
@@ -352,7 +354,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     @Override
     protected void writeAfterPartitionExecutionTimeline() {
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PartitionExecutionTimelineTable.getBottomLine(),
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, PARTITION_EXECUTION_TIMELINE_TABLE.getBottomLine(),
                 1);
     }
 
@@ -361,10 +363,10 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
         QueryMetricsTextWriter.appendNewlineToStringBuilder(stringBuilder);
 
         // Building the table for scheduling metrics
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.SchedulingMetrics, 1);
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SchedulingMetricsTable.getTopLine(), 1);
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SchedulingMetricsTable.getHeader(), 1);
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SchedulingMetricsTable.getMiddleLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, QueryMetricsTextWriter.SCHEDULING_METRICS, 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SCHEDULING_METRICS_TABLE.getTopLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SCHEDULING_METRICS_TABLE.getHeader(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SCHEDULING_METRICS_TABLE.getMiddleLine(), 1);
     }
 
     @Override
@@ -406,7 +408,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
     protected void writeAfterPartitionSchedulingDuration() {
         QueryMetricsTextWriter.appendHeaderToStringBuilder(
                 stringBuilder,
-                SchedulingMetricsTable.getRow(Arrays.asList(
+                SCHEDULING_METRICS_TABLE.getRow(Arrays.asList(
                         this.lastSchedulingPartitionId,
                         this.lastResponseTime,
                         this.lastRunTime,
@@ -418,7 +420,7 @@ public class QueryMetricsTextWriter extends QueryMetricsWriter {
 
     @Override
     protected void writeAfterSchedulingMetrics() {
-        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SchedulingMetricsTable.getBottomLine(), 1);
+        QueryMetricsTextWriter.appendHeaderToStringBuilder(stringBuilder, SCHEDULING_METRICS_TABLE.getBottomLine(), 1);
     }
 
     @Override

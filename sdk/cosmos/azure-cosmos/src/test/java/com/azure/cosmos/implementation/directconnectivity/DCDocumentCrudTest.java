@@ -6,9 +6,10 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Database;
@@ -192,7 +193,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         String propValue = "hello";
         BridgeInternal.setProperty(document, propName, propValue);
 
-        ResourceResponseValidator<Document> validator = ResourceResponseValidator.builder()
+        ResourceResponseValidator<Document> validator = ResourceResponseValidator.<Document>builder()
             .withProperty(propName, propValue)
             .build();
         validateSuccess(client.upsertDocument(getCollectionLink(), document, options, false), validator, TIMEOUT);
@@ -221,7 +222,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxDegreeOfParallelism(-1);
-        options.maxItemCount(100);
+        options.setMaxItemCount(100);
 
         Flux<FeedResponse<Document>> results = client.queryDocuments(getCollectionLink(), "SELECT * FROM r", options);
 
@@ -237,11 +238,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     private void validateNoStoredProcExecutionOperationThroughGateway() {
         // this validates that Document related requests don't go through gateway
-        DocumentServiceRequestValidator validateResourceTypesSentToGateway = DocumentServiceRequestValidator.builder()
-                .resourceTypeIn(ResourceType.DatabaseAccount,
-                                ResourceType.Database,
-                                ResourceType.DocumentCollection,
-                                ResourceType.PartitionKeyRange)
+        DocumentServiceRequestValidator<RxDocumentServiceRequest> validateResourceTypesSentToGateway
+            = DocumentServiceRequestValidator.<RxDocumentServiceRequest>builder()
+            .resourceTypeIn(ResourceType.DatabaseAccount,
+                ResourceType.Database,
+                ResourceType.DocumentCollection,
+                ResourceType.PartitionKeyRange)
                 .build();
 
         // validate that all gateway captured requests are non document resources
@@ -252,11 +254,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     private void validateNoDocumentOperationThroughGateway() {
         // this validates that Document related requests don't go through gateway
-        DocumentServiceRequestValidator validateResourceTypesSentToGateway = DocumentServiceRequestValidator.builder()
-                .resourceTypeIn(ResourceType.DatabaseAccount,
-                                ResourceType.Database,
-                                ResourceType.DocumentCollection,
-                                ResourceType.PartitionKeyRange)
+        DocumentServiceRequestValidator<RxDocumentServiceRequest> validateResourceTypesSentToGateway
+            = DocumentServiceRequestValidator.<RxDocumentServiceRequest>builder()
+            .resourceTypeIn(ResourceType.DatabaseAccount,
+                ResourceType.Database,
+                ResourceType.DocumentCollection,
+                ResourceType.PartitionKeyRange)
                 .build();
 
         // validate that all gateway captured requests are non document resources
@@ -267,11 +270,12 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
     private void validateNoDocumentQueryOperationThroughGateway() {
         // this validates that Document related requests don't go through gateway
-        DocumentServiceRequestValidator validateResourceTypesSentToGateway = DocumentServiceRequestValidator.builder()
-                .resourceTypeIn(ResourceType.DatabaseAccount,
-                                ResourceType.Database,
-                                ResourceType.DocumentCollection,
-                                ResourceType.PartitionKeyRange)
+        DocumentServiceRequestValidator<RxDocumentServiceRequest> validateResourceTypesSentToGateway
+            = DocumentServiceRequestValidator.builder()
+            .resourceTypeIn(ResourceType.DatabaseAccount,
+                ResourceType.Database,
+                ResourceType.DocumentCollection,
+                ResourceType.PartitionKeyRange)
                 .build();
 
         // validate that all gateway captured requests are non document resources

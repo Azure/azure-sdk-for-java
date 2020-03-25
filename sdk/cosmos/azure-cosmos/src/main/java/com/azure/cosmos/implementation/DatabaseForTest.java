@@ -3,12 +3,12 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -89,12 +89,17 @@ public class DatabaseForTest {
                                  new SqlParameterList(new SqlParameter("@PREFIX", DatabaseForTest.SHARED_DB_ID_PREFIX))))
                 .flatMap(page -> Flux.fromIterable(page.getResults())).collectList().block();
 
+        // block() can return null if Flux is empty()
+        if (dbs == null) {
+            return;
+        }
+
         for (Database db : dbs) {
             assert(db.getId().startsWith(DatabaseForTest.SHARED_DB_ID_PREFIX));
 
             DatabaseForTest dbForTest = DatabaseForTest.from(db);
 
-            if (db != null && dbForTest.isStale()) {
+            if (dbForTest.isStale()) {
                 logger.info("Deleting database {}", db.getId());
                 client.deleteDatabase(db.getId()).block();
             }

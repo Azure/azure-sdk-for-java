@@ -23,6 +23,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.IntegrationTestBase;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -73,7 +75,7 @@ public class CBSChannelTest extends IntegrationTestBase {
                 connectionString.getSharedAccessKey());
 
         final ConnectionOptions connectionOptions = new ConnectionOptions(connectionString.getEndpoint().getHost(),
-            connectionString.getEntityPath(), tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
+            tokenCredential, SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP,
             RETRY_OPTIONS, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.elastic());
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setTryTimeout(Duration.ofMinutes(5));
 
@@ -143,7 +145,7 @@ public class CBSChannelTest extends IntegrationTestBase {
             TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
             String product, String clientVersion) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
-                messageSerializer, product, clientVersion);
+                messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         }
 
         private Mono<RequestResponseChannel> getCBSChannel() {

@@ -32,7 +32,7 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
         Mono<LeaseStoreManager> build();
     }
 
-    static LeaseStoreManagerBuilderDefinition Builder() {
+    static LeaseStoreManagerBuilderDefinition builder() {
         return new LeaseStoreManagerImpl();
     }
 

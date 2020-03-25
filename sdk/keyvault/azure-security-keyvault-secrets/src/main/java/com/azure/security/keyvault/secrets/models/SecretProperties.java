@@ -104,6 +104,12 @@ public class SecretProperties {
     @JsonProperty(value = "managed", access = JsonProperty.Access.WRITE_ONLY)
     Boolean managed;
 
+    /**
+     * The number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
+     */
+    @JsonProperty(value = "recoverableDays", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer recoverableDays;
+
     SecretProperties(String secretName) {
         this.name = secretName;
     }
@@ -291,6 +297,14 @@ public class SecretProperties {
     }
 
     /**
+     * Gets the number of days a secret is retained before being deleted for a soft delete-enabled Key Vault.
+     * @return the recoverable days.
+     */
+    public Integer getRecoverableDays() {
+        return recoverableDays;
+    }
+
+    /**
      * Unpacks the attributes json response and updates the variables in the Secret Attributes object.
      * Uses Lazy Update to set values for variables id, tags, contentType, managed and keyId as these variables are
      * part of main json body and not attributes json body when the secret response comes from list Secrets operations.
@@ -309,6 +323,7 @@ public class SecretProperties {
         this.keyId = (String) lazyValueSelection(attributes.get("keyId"), this.keyId);
         this.tags = (Map<String, String>) lazyValueSelection(attributes.get("tags"), this.tags);
         this.managed = (Boolean) lazyValueSelection(attributes.get("managed"), this.managed);
+        this.recoverableDays = (Integer) attributes.get("recoverableDays");
         unpackId((String) attributes.get("id"));
     }
 

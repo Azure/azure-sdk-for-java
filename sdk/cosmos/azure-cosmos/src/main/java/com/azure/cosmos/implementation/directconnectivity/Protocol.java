@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import org.apache.commons.text.WordUtils;
+import com.azure.cosmos.implementation.apachecommons.text.WordUtils;
 
 public enum Protocol {
     HTTPS, TCP;
@@ -18,9 +18,9 @@ public enum Protocol {
                 throw new IllegalStateException();
         }
     }
-    
+
     @Override
     public String toString() {
-        return WordUtils.capitalizeFully(this.name());        
-    }    
+        return WordUtils.capitalizeFully(this.name());
+    }
 }

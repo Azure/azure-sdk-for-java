@@ -503,4 +503,14 @@ class APISpec extends Specification {
             stream2.close()
         }
     }
+
+    /**
+     * Insecurely and quickly generates a random AES256 key for the purpose of unit tests. No one should ever make a
+     * real key this way.
+     */
+    def getRandomKey(long seed = new Random().nextLong()) {
+        def key = new byte[32] // 256 bit key
+        new Random(seed).nextBytes(key)
+        return key
+    }
 }

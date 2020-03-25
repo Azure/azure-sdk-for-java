@@ -4,6 +4,9 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ServiceLoader;
 
 /**
@@ -14,7 +17,15 @@ import java.util.ServiceLoader;
  */
 public final class TracerProxy {
 
-    private static final ServiceLoader<? extends Tracer> TRACERS = ServiceLoader.load(Tracer.class);
+    private static final List<Tracer> TRACERS;
+    static {
+        ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
+        List<Tracer> tracers = new ArrayList<>();
+        for (Tracer tracer : serviceLoader) {
+            tracers.add(tracer);
+        }
+        TRACERS = Collections.unmodifiableList(tracers);
+    }
 
     private TracerProxy() {
         // no-op

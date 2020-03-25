@@ -6,16 +6,15 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
-import com.azure.cosmos.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CosmosStoredProcedureProperties;
-import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -46,7 +45,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
                 .getProperties();
 
         // read stored procedure to validate creation
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = createdCollection.getScripts()
                 .getStoredProcedure(readBackSp.getId()).read(null);
 
@@ -92,7 +91,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_StoredProcedureUpsertReplaceTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

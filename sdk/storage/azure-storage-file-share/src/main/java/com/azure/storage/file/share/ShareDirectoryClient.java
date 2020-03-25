@@ -27,6 +27,8 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.Map;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File
  * Service. Operations allowed by the client are creating, deleting and listing subdirectory and file, retrieving
@@ -98,6 +100,36 @@ public class ShareDirectoryClient {
      */
     public ShareDirectoryClient getSubdirectoryClient(String subdirectoryName) {
         return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubdirectoryClient(subdirectoryName));
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.exists}
+     *
+     * @return Flag indicating existence of the directory.
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Flag indicating existence of the directory.
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = shareDirectoryAsyncClient.existsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**

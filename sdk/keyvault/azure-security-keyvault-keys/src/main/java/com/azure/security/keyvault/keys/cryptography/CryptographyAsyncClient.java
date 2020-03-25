@@ -30,11 +30,14 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.security.keyvault.keys.models.KeyType.EC;
 import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA;
@@ -55,6 +58,11 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    static final Map<String, String> KEYVAULT_TRACING_PROPERTIES =
+        Collections.singletonMap(AZ_TRACING_NAMESPACE_KEY, "Microsoft.KeyVault");
+
     JsonWebKey key;
     private final CryptographyService service;
     private CryptographyServiceClient cryptographyServiceClient;
@@ -89,7 +97,7 @@ public class CryptographyAsyncClient {
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
             unpackAndValidateId(key.getId());
-            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service);
+            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service, version);
         } else {
             cryptographyServiceClient = null;
         }
@@ -107,7 +115,7 @@ public class CryptographyAsyncClient {
         unpackAndValidateId(keyId);
         this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
-        cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
+        cryptographyServiceClient = new CryptographyServiceClient(keyId, service, version);
         this.key = null;
     }
 
@@ -147,7 +155,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<KeyVaultKey>> getKeyWithResponse() {
         try {
-            return withContext(context -> getKeyWithResponse(context));
+            return withContext(context -> getKeyWithResponse(context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -180,7 +188,8 @@ public class CryptographyAsyncClient {
 
     Mono<JsonWebKey> getSecretKey() {
         try {
-            return withContext(context -> cryptographyServiceClient.getSecretKey(context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> cryptographyServiceClient.getSecretKey(context), KEYVAULT_TRACING_PROPERTIES)
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -218,7 +227,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         try {
-            return withContext(context -> encrypt(algorithm, plaintext, context));
+            return withContext(context -> encrypt(algorithm, plaintext, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -273,7 +282,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
         try {
-            return withContext(context -> decrypt(algorithm, cipherText, context));
+            return withContext(context -> decrypt(algorithm, cipherText, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -323,7 +332,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest) {
         try {
-            return withContext(context -> sign(algorithm, digest, context));
+            return withContext(context -> sign(algorithm, digest, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -374,7 +383,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         try {
-            return withContext(context -> verify(algorithm, digest, signature, context));
+            return withContext(context -> verify(algorithm, digest, signature, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -422,7 +431,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         try {
-            return withContext(context -> wrapKey(algorithm, key, context));
+            return withContext(context -> wrapKey(algorithm, key, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -473,7 +482,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         try {
-            return withContext(context -> unwrapKey(algorithm, encryptedKey, context));
+            return withContext(context -> unwrapKey(algorithm, encryptedKey, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -524,7 +533,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data) {
         try {
-            return withContext(context -> signData(algorithm, data, context));
+            return withContext(context -> signData(algorithm, data, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -576,7 +585,7 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         try {
-            return withContext(context -> verifyData(algorithm, data, signature, context));
+            return withContext(context -> verifyData(algorithm, data, signature, context), KEYVAULT_TRACING_PROPERTIES);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

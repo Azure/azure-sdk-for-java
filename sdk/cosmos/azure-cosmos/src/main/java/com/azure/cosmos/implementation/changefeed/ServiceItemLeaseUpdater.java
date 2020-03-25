@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;

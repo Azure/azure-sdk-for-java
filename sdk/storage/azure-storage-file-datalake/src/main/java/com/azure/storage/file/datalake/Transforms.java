@@ -320,7 +320,7 @@ class Transforms {
             .setVersion(h.getVersion())
             .setAcceptRanges(h.getAcceptRanges())
             .setDateProperty(h.getDateProperty())
-            .setIsServerEncrypted(h.isServerEncrypted())
+            .setServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())

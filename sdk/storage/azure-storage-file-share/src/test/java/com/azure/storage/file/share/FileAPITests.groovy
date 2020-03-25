@@ -83,6 +83,32 @@ class FileAPITests extends APISpec {
         expectURL == fileURL
     }
 
+    def "Exists"() {
+        when:
+        primaryFileClient.create(Constants.KB)
+
+        then:
+        primaryFileClient.exists()
+    }
+
+    def "Does not exist"() {
+        expect:
+        !primaryFileClient.exists()
+    }
+
+    def "Exists error"() {
+        setup:
+        primaryFileClient = fileBuilderHelper(interceptorManager, shareName, filePath)
+            .sasToken("sig=dummyToken").buildFileClient()
+
+        when:
+        primaryFileClient.exists()
+
+        then:
+        def e = thrown(HttpResponseException)
+        e.getResponse().getStatusCode() == 403
+    }
+
     def "Create file"() {
         expect:
         FileTestHelper.assertResponseStatusCode(primaryFileClient.createWithResponse(1024, null, null, null, null, null, null), 201)

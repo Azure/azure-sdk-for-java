@@ -3,16 +3,14 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 
 /**
- * Sample demonstrates how to recognize the linked entities of an input text.
+ * Sample demonstrates how to recognize the linked entities of document.
  */
 public class RecognizeLinkedEntities {
     /**
-     * Main method to invoke this demo about how to recognize the linked entities of an input text.
+     * Main method to invoke this demo about how to recognize the linked entities of document.
      *
      * @param args Unused arguments to the program.
      */
@@ -23,23 +21,16 @@ public class RecognizeLinkedEntities {
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that needs be analyzed.
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
+        // The document that needs be analyzed.
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
 
-        for (LinkedEntity linkedEntity : client.recognizeLinkedEntities(text)) {
+        client.recognizeLinkedEntities(document).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(),
-                linkedEntity.getDataSourceEntityId(),
-                linkedEntity.getUrl(),
+                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
-            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n",
-                    linkedEntityMatch.getText(),
-                    linkedEntityMatch.getOffset(),
-                    linkedEntityMatch.getLength(),
-                    linkedEntityMatch.getScore());
-            }
-        }
+            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
+                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+        });
     }
 }

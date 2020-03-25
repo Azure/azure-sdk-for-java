@@ -3,24 +3,33 @@
 
 package com.azure.storage.blob.perf;
 
-import com.azure.perf.test.core.RandomFlux;
-import com.azure.perf.test.core.RandomStream;
-import com.azure.perf.test.core.SizeOptions;
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
+
+import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.BlobTestBase;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class UploadBlockBlobTest extends BlobTestBase<SizeOptions> {
-    public UploadBlockBlobTest(SizeOptions options) {
+public class UploadBlockBlobTest extends BlobTestBase<PerfStressOptions> {
+    private final InputStream randomInputStream;
+    private final Flux<ByteBuffer> randomByteBufferFlux;
+
+    public UploadBlockBlobTest(PerfStressOptions options) {
         super(options);
+        this.randomInputStream = createRandomInputStream(options.getSize());
+        this.randomByteBufferFlux = createRandomByteBufferFlux(options.getSize());
     }
 
     @Override
     public void run() {
-        blockBlobClient.upload(RandomStream.create(options.getSize()), options.getSize(), true);
+        blockBlobClient.upload(randomInputStream, options.getSize(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blockBlobAsyncClient.upload(RandomFlux.create(options.getSize()), options.getSize(), true).then();
+        return blockBlobAsyncClient.upload(randomByteBufferFlux, options.getSize(), true).then();
     }
 }

@@ -4,8 +4,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
-import com.azure.cosmos.JsonSerializable;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.models.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +25,16 @@ public final class QueryInfo extends JsonSerializable {
     private Integer limit;
 
     public QueryInfo() { }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public QueryInfo(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     public QueryInfo(String jsonString) {
         super(jsonString);
@@ -71,9 +82,9 @@ public final class QueryInfo extends JsonSerializable {
                 ? this.orderByExpressions
                 : (this.orderByExpressions = super.getCollection("orderByExpressions", String.class));
     }
-    
+
     public boolean hasSelectValue(){
-        return super.has(HAS_SELECT_VALUE) && super.getBoolean(HAS_SELECT_VALUE);
+        return super.has(HAS_SELECT_VALUE) && Boolean.TRUE.equals(super.getBoolean(HAS_SELECT_VALUE));
     }
 
     public boolean hasOffset() {
