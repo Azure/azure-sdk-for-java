@@ -1,4 +1,7 @@
 ## Changelog
+### 3.7.1
+- Fix netty ByteBuf memory leak, issue (https://github.com/Azure/azure-sdk-for-java/issues/9023), PR (https://github.com/Azure/azure-sdk-for-java/pull/9211)
+
 ### 3.7.0
 - Downgrade guava dependency to 25.0-jre from 27.0.1-jre
 - Fix FeedOptions bug (see https://github.com/Azure/azure-sdk-for-java/pull/8085)

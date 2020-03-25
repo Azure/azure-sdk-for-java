@@ -17,7 +17,7 @@ stages:
             OSName: Windows
             ProfileFlag: '-Punit'
           MacOS - java8:
-            OSVmImage: 'macOS-10.13'
+            OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             OSName: macOS
             ProfileFlag: '-Punit'
