@@ -3,23 +3,12 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.CbsAuthorizationType;
-import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.credential.TokenCredential;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import org.apache.qpid.proton.amqp.messaging.Section;
-import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,23 +20,15 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,34 +38,25 @@ public class ServiceBusSenderClientTest {
     private static final String ENTITY_NAME = "my-servicebus-entity";
 
     @Mock
-    private AmqpSendLink sendLink;
-    @Mock
-    private ServiceBusAmqpConnection connection;
-    @Mock
-    private TokenCredential tokenCredential;
-    @Mock
     private ErrorContextProvider errorContextProvider;
 
+    @Mock
+    private ServiceBusSenderAsyncClient asyncSender;
+
     @Captor
-    private ArgumentCaptor<Message> singleMessageCaptor;
+    private ArgumentCaptor<ServiceBusMessage> singleMessageCaptor;
     @Captor
-    private ArgumentCaptor<List<Message>> messagesCaptor;
+    private ArgumentCaptor<ServiceBusMessageBatch> messageBatchCaptor;
 
     private MessageSerializer serializer = new ServiceBusMessageSerializer();
     private TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
-
     private final MessageSerializer messageSerializer = new ServiceBusMessageSerializer();
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
         .setDelay(Duration.ofMillis(500))
         .setMode(AmqpRetryMode.FIXED)
         .setTryTimeout(Duration.ofSeconds(10));
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
-    private ServiceBusSenderAsyncClient asyncSender;
-    private ServiceBusSenderClient sender;
-    private ServiceBusConnectionProcessor connectionProcessor;
-    private ConnectionOptions connectionOptions;
 
+    private ServiceBusSenderClient sender;
 
     private static final String TEST_CONTENTS = "My message for service bus queue!";
 
@@ -101,33 +73,19 @@ public class ServiceBusSenderClientTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+        when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
+        when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
 
-        tracerProvider = new TracerProvider(Collections.emptyList());
-        connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
-
-        when(connection.getEndpointStates()).thenReturn(endpointProcessor);
-        endpointSink.next(AmqpEndpointState.ACTIVE);
-
-        connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
-            new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getRetry()));
-        asyncSender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer);
         sender = new ServiceBusSenderClient(asyncSender, retryOptions.getTryTimeout());
 
     }
 
     @AfterEach
     void teardown() {
-        Mockito.framework().clearInlineMocks();
-        sendLink = null;
-        connection = null;
-        singleMessageCaptor = null;
-        messagesCaptor = null;
-        asyncSender.close();
         sender.close();
+        singleMessageCaptor = null;
+        messageBatchCaptor = null;
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test
@@ -150,9 +108,9 @@ public class ServiceBusSenderClientTest {
     @Test
     void createBatchDefault() {
         // Arrange
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
+        ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(MAX_MESSAGE_LENGTH_BYTES, null, null,
+            null);
+        when(asyncSender.createBatch()).thenReturn(Mono.just(batch));
 
         //Act
         ServiceBusMessageBatch batchMessage = sender.createBatch();
@@ -160,8 +118,8 @@ public class ServiceBusSenderClientTest {
         //Assert
         Assertions.assertEquals(MAX_MESSAGE_LENGTH_BYTES, batchMessage.getMaxSizeInBytes());
         Assertions.assertEquals(0, batchMessage.getCount());
+        verify(asyncSender, times(1)).createBatch();
 
-        verify(sendLink, times(1)).getLinkSize();
     }
 
     /**
@@ -173,14 +131,9 @@ public class ServiceBusSenderClientTest {
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
-        final AmqpSendLink link = mock(AmqpSendLink.class);
-        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
-
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
-            .thenReturn(Mono.just(link));
-
         // This event is 1024 bytes when serialized.
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        when(asyncSender.createBatch(options)).thenThrow(new IllegalArgumentException("too large size"));
 
         // Act & Assert
         try {
@@ -189,6 +142,8 @@ public class ServiceBusSenderClientTest {
         } catch (Exception ex) {
             Assertions.assertTrue(ex instanceof IllegalArgumentException);
         }
+
+        verify(asyncSender, times(1)).createBatch(options);
     }
 
     /**
@@ -204,18 +159,14 @@ public class ServiceBusSenderClientTest {
         int eventOverhead = 46;
         int maxEventPayload = batchSize - eventOverhead;
 
-        final AmqpSendLink link = mock(AmqpSendLink.class);
-        when(link.getLinkSize()).thenReturn(Mono.just(maxLinkSize));
-
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
-            .thenReturn(Mono.just(link));
-
         // This is 1024 bytes when serialized.
         final ServiceBusMessage message = new ServiceBusMessage(new byte[maxEventPayload]);
 
         final ServiceBusMessage tooLargeMessage = new ServiceBusMessage(new byte[maxEventPayload + 1]);
         final CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(batchSize);
+        ServiceBusMessageBatch batch =  new ServiceBusMessageBatch(batchSize, null, tracerProvider,
+            messageSerializer);
+        when(asyncSender.createBatch(options)).thenReturn(Mono.just(batch));
 
         // Act & Assert
         ServiceBusMessageBatch messageBatch = sender.createBatch(options);
@@ -224,7 +175,6 @@ public class ServiceBusSenderClientTest {
         Assertions.assertTrue(messageBatch.tryAdd(message));
         Assertions.assertFalse(messageBatch.tryAdd(tooLargeMessage));
 
-        verify(link, times(1)).getLinkSize();
     }
 
     /**
@@ -242,22 +192,18 @@ public class ServiceBusSenderClientTest {
             final ServiceBusMessage message = new ServiceBusMessage(contents);
             Assertions.assertTrue(batch.tryAdd(message));
         });
-
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
-            .thenReturn(Mono.just(sendLink));
-        when(sendLink.send(any(Message.class))).thenReturn(Mono.empty());
-        when(sendLink.send(anyList())).thenReturn(Mono.empty());
+        when(asyncSender.send(batch)).thenReturn(Mono.empty());
 
         // Act
         sender.send(batch);
 
         // Assert
-        verify(sendLink).send(messagesCaptor.capture());
+        verify(asyncSender).send(messageBatchCaptor.capture());
 
-        final List<org.apache.qpid.proton.message.Message> messagesSent = messagesCaptor.getValue();
-        Assertions.assertEquals(count, messagesSent.size());
+        final ServiceBusMessageBatch messagesSent = messageBatchCaptor.getValue();
+        Assertions.assertEquals(count, messagesSent.getCount());
 
-        messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+        messagesSent.getMessages().forEach(message -> Assertions.assertArrayEquals(contents, message.getBody()));
     }
 
     /**
@@ -269,21 +215,15 @@ public class ServiceBusSenderClientTest {
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
 
-        // EC is the prefix they use when creating a link that sends to the service round-robin.
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions)))
-            .thenReturn(Mono.just(sendLink));
-
-        when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
-        when(sendLink.send(any(org.apache.qpid.proton.message.Message.class))).thenReturn(Mono.empty());
-
+        when(asyncSender.send(testData)).thenReturn(Mono.empty());
         // Act
         sender.send(testData);
 
         // Assert
-        verify(sendLink, times(1)).send(any(org.apache.qpid.proton.message.Message.class));
-        verify(sendLink).send(singleMessageCaptor.capture());
+        verify(asyncSender, times(1)).send(testData);
+        verify(asyncSender).send(singleMessageCaptor.capture());
 
-        final Message message = singleMessageCaptor.getValue();
-        Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
+        final ServiceBusMessage message = singleMessageCaptor.getValue();
+        Assertions.assertArrayEquals(testData.getBody(), message.getBody());
     }
 }
