@@ -28,7 +28,7 @@ pr:
     include:
       - master
       - feature/*
-      - hotfix/*a
+      - hotfix/*
       - release/*
   paths:
     include:
