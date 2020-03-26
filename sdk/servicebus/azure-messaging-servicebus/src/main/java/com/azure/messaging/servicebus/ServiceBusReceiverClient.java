@@ -188,13 +188,13 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
      *
-     * @param fromSequenceNumber The sequence number from where to read the message.
+     * @param sequenceNumber The sequence number from where to read the message.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peek(long fromSequenceNumber) {
-        return asyncClient.peek(fromSequenceNumber).block(operationTimeout);
+    public ServiceBusReceivedMessage peekAt(long sequenceNumber) {
+        return asyncClient.peekAt(sequenceNumber).block(operationTimeout);
     }
 
     /**
@@ -226,19 +226,19 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * the receiver or the message source.
      *
      * @param maxMessages The number of messages.
-     * @param fromSequenceNumber The sequence number from where to start reading messages.
+     * @param sequenceNumber The sequence number from where to start reading messages.
      *
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
+    public IterableStream<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber) {
         if (maxMessages <= 0) {
             throw new IllegalArgumentException("'maxMessages' cannot be less than or equal to 0. maxMessages: "
                 + maxMessages);
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatch(maxMessages, fromSequenceNumber)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatchAt(maxMessages, sequenceNumber)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.

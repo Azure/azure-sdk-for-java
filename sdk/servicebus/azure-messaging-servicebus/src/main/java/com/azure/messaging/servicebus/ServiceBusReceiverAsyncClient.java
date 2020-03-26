@@ -248,15 +248,15 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * Starting from the given sequence number, reads next the active message without changing the state of the receiver
      * or the message source.
      *
-     * @param fromSequenceNumber The sequence number from where to read the message.
+     * @param sequenceNumber The sequence number from where to read the message.
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
+    public Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.peek(fromSequenceNumber));
+            .flatMap(node -> node.peek(sequenceNumber));
     }
 
     /**
@@ -279,16 +279,16 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * the receiver or the message source.
      *
      * @param maxMessages The number of messages.
-     * @param fromSequenceNumber The sequence number from where to start reading messages.
+     * @param sequenceNumber The sequence number from where to start reading messages.
      *
      * @return A {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
+    public Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(node -> node.peekBatch(maxMessages, fromSequenceNumber));
+            .flatMapMany(node -> node.peekBatch(maxMessages, sequenceNumber));
     }
 
     /**
