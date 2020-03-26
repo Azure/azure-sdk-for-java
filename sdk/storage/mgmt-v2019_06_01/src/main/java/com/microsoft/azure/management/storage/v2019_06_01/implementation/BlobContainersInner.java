@@ -19,7 +19,6 @@ import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersExtendIm
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersGetImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainersLockImmutabilityPolicyHeaders;
 import com.microsoft.azure.management.storage.v2019_06_01.LeaseContainerRequest;
-import com.microsoft.azure.management.storage.v2019_06_01.PublicAccess;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -29,7 +28,6 @@ import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -78,11 +76,11 @@ public class BlobContainersInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
-        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BlobContainerInner blobContainer, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Body BlobContainerInner blobContainer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
-        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BlobContainerInner blobContainer, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("containerName") String containerName, @Path("subscriptionId") String subscriptionId, @Body BlobContainerInner blobContainer, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.BlobContainers get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}")
@@ -387,13 +385,14 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BlobContainerInner object if successful.
      */
-    public BlobContainerInner create(String resourceGroupName, String accountName, String containerName) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName).toBlocking().single().body();
+    public BlobContainerInner create(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).toBlocking().single().body();
     }
 
     /**
@@ -402,12 +401,13 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, containerName), serviceCallback);
+    public ServiceFuture<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer, final ServiceCallback<BlobContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer), serviceCallback);
     }
 
     /**
@@ -416,11 +416,12 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
+    public Observable<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
             @Override
             public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
                 return response.body();
@@ -434,10 +435,11 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties of the blob container to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<ServiceResponse<BlobContainerInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName) {
+    public Observable<ServiceResponse<BlobContainerInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -450,113 +452,14 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublicAccess publicAccess = null;
-        final Map<String, String> metadata = null;
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(null);
-        blobContainer.withMetadata(null);
-        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
-                @Override
-                public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<BlobContainerInner> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the BlobContainerInner object if successful.
-     */
-    public BlobContainerInner create(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata), serviceCallback);
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<BlobContainerInner> createAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return createWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
-            @Override
-            public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a new container under the specified account as described by request body. The container resource includes metadata and properties for that container. It does not include a list of the blobs contained by the container.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<ServiceResponse<BlobContainerInner>> createWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (blobContainer == null) {
+            throw new IllegalArgumentException("Parameter blobContainer is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata);
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(publicAccess);
-        blobContainer.withMetadata(metadata);
-        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        Validator.validate(blobContainer);
+        return service.create(resourceGroupName, accountName, containerName, this.client.subscriptionId(), blobContainer, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
@@ -584,13 +487,14 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BlobContainerInner object if successful.
      */
-    public BlobContainerInner update(String resourceGroupName, String accountName, String containerName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName).toBlocking().single().body();
+    public BlobContainerInner update(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).toBlocking().single().body();
     }
 
     /**
@@ -599,12 +503,13 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, containerName), serviceCallback);
+    public ServiceFuture<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer, final ServiceCallback<BlobContainerInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer), serviceCallback);
     }
 
     /**
@@ -613,11 +518,12 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
+    public Observable<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
+        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, blobContainer).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
             @Override
             public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
                 return response.body();
@@ -631,10 +537,11 @@ public class BlobContainersInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param blobContainer Properties to update for the blob container.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BlobContainerInner object
      */
-    public Observable<ServiceResponse<BlobContainerInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName) {
+    public Observable<ServiceResponse<BlobContainerInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, BlobContainerInner blobContainer) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -647,113 +554,14 @@ public class BlobContainersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final PublicAccess publicAccess = null;
-        final Map<String, String> metadata = null;
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(null);
-        blobContainer.withMetadata(null);
-        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
-                @Override
-                public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<BlobContainerInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the BlobContainerInner object if successful.
-     */
-    public BlobContainerInner update(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).toBlocking().single().body();
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata, final ServiceCallback<BlobContainerInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata), serviceCallback);
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<BlobContainerInner> updateAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        return updateWithServiceResponseAsync(resourceGroupName, accountName, containerName, publicAccess, metadata).map(new Func1<ServiceResponse<BlobContainerInner>, BlobContainerInner>() {
-            @Override
-            public BlobContainerInner call(ServiceResponse<BlobContainerInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number.
-     * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
-     * @param metadata A name-value pair to associate with the container as metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the BlobContainerInner object
-     */
-    public Observable<ServiceResponse<BlobContainerInner>> updateWithServiceResponseAsync(String resourceGroupName, String accountName, String containerName, PublicAccess publicAccess, Map<String, String> metadata) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (containerName == null) {
-            throw new IllegalArgumentException("Parameter containerName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        if (blobContainer == null) {
+            throw new IllegalArgumentException("Parameter blobContainer is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(metadata);
-        BlobContainerInner blobContainer = new BlobContainerInner();
-        blobContainer.withPublicAccess(publicAccess);
-        blobContainer.withMetadata(metadata);
-        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), blobContainer, this.client.userAgent())
+        Validator.validate(blobContainer);
+        return service.update(resourceGroupName, accountName, containerName, this.client.subscriptionId(), blobContainer, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BlobContainerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BlobContainerInner>> call(Response<ResponseBody> response) {
