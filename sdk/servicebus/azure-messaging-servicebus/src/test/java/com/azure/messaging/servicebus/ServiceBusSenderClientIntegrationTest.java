@@ -21,7 +21,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        sender = createBuilder().buildSenderClientBuilder().buildClient();
+        sender = createBuilder()
+            .buildSenderClientBuilder()
+            .entityName(getTopicName())
+            .buildClient();
     }
 
     @Override
