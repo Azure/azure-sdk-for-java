@@ -1,0 +1,368 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:22:34 GMT",
+      "content-length" : "586",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "e8e41c4a-b152-4750-ada4-eacc92daf151",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072235Z:e8e41c4a-b152-4750-ada4-eacc92daf151",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:9663daca-512b-49a5-81fd-687729986a0f",
+      "Body" : "{\"properties\":{\"displayName\":\"mypolicy350795\",\"policyType\":\"Custom\",\"mode\":\"Indexed\",\"description\":\"This is my policy\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:22:35.0153377Z\",\"updatedBy\":null,\"updatedOn\":null},\"parameters\":{},\"policyRule\":{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"northeurope\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"type\":\"Microsoft.Authorization/policyDefinitions\",\"name\":\"policy62e93792\"}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javarg6b719531?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:22:38 GMT",
+      "content-length" : "358",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "329cba65-1425-4d7d-86bc-327670d7de99",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072239Z:329cba65-1425-4d7d-86bc-327670d7de99",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "329cba65-1425-4d7d-86bc-327670d7de99",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531\",\"name\":\"javarg6b719531\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"ukwest\",\"tags\":{\"date\":\"2020-03-23T07:22:35.143009900Z\",\"product\":\"javasdk\",\"cause\":\"automation\",\"StorageType\":\"Standard_LRS\",\"type\":\"test\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments/2d490e8aada84e2?api-version=2017-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:22:38 GMT",
+      "content-length" : "688",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "96dfb55e-8e25-450b-80ca-67f95f3df34e",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072239Z:96dfb55e-8e25-450b-80ca-67f95f3df34e",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:e890e31f-d7ce-480d-bb4f-a39e9a7401ea",
+      "Body" : "{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:22:39.2505311Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments/2d490e8aada84e2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"2d490e8aada84e2\"}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javarg6b719531/providers/Microsoft.Web//sites/fd34e15023534b6?api-version=2015-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:05 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "3084",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "ec50d161-9062-4f1b-ad4e-fd6fc36b4aa9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-resource-requests" : "499",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072306Z:ec50d161-9062-4f1b-ad4e-fd6fc36b4aa9",
+      "x-powered-by" : "ASP.NET",
+      "etag" : "\"1D600E3DBF9D08B\"",
+      "content-type" : "application/json",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7dd3c85a-4873-4f69-ba34-6594ab6c7687",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6\",\"name\":\"fd34e15023534b6\",\"type\":\"Microsoft.Web/sites\",\"kind\":\"app\",\"location\":\"southcentralus\",\"tags\":{},\"properties\":{\"name\":\"fd34e15023534b6\",\"state\":\"Running\",\"hostNames\":[\"fd34e15023534b6.azurewebsites.net\"],\"webSpace\":\"javarg6b719531-SouthCentralUSwebspace\",\"selfLink\":\"https://waws-prod-sn1-139.api.azurewebsites.windows.net:454/subscriptions/00000000-0000-0000-0000-000000000000/webspaces/javarg6b719531-SouthCentralUSwebspace/sites/fd34e15023534b6\",\"repositorySiteName\":\"fd34e15023534b6\",\"owner\":null,\"usageState\":0,\"enabled\":true,\"adminEnabled\":true,\"enabledHostNames\":[\"fd34e15023534b6.azurewebsites.net\",\"fd34e15023534b6.scm.azurewebsites.net\"],\"siteProperties\":{\"metadata\":null,\"properties\":[{\"name\":\"LinuxFxVersion\",\"value\":\"\"},{\"name\":\"WindowsFxVersion\",\"value\":null}],\"appSettings\":null},\"availabilityState\":0,\"sslCertificates\":null,\"csrs\":[],\"cers\":null,\"siteMode\":null,\"hostNameSslStates\":[{\"name\":\"fd34e15023534b6.azurewebsites.net\",\"sslState\":0,\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":0,\"hostType\":0},{\"name\":\"fd34e15023534b6.scm.azurewebsites.net\",\"sslState\":0,\"ipBasedSslResult\":null,\"virtualIP\":null,\"thumbprint\":null,\"toUpdate\":null,\"toUpdateIpBasedSsl\":null,\"ipBasedSslState\":0,\"hostType\":1}],\"computeMode\":null,\"serverFarm\":null,\"serverFarmId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/serverfarms/Default1yh\",\"reserved\":false,\"isXenon\":false,\"hyperV\":false,\"lastModifiedTimeUtc\":\"2020-03-23T07:22:50.1033333\",\"storageRecoveryDefaultState\":\"Running\",\"contentAvailabilityState\":0,\"runtimeAvailabilityState\":0,\"siteConfig\":null,\"deploymentId\":\"fd34e15023534b6\",\"trafficManagerHostNames\":null,\"sku\":\"Free\",\"scmSiteAlsoStopped\":false,\"targetSwapSlot\":null,\"hostingEnvironment\":null,\"hostingEnvironmentProfile\":null,\"clientAffinityEnabled\":true,\"clientCertEnabled\":false,\"clientCertExclusionPaths\":null,\"hostNamesDisabled\":false,\"domainVerificationIdentifiers\":null,\"customDomainVerificationId\":\"253001F2FCF5A7B1CD759EB861E9BB1596370BE27E47A991F72184277B3D12F2\",\"kind\":\"app\",\"inboundIpAddress\":\"13.84.180.32\",\"possibleInboundIpAddresses\":\"13.84.180.32\",\"outboundIpAddresses\":\"13.84.180.32,13.65.255.36,23.98.216.34,13.65.25.127,23.98.220.106\",\"possibleOutboundIpAddresses\":\"13.84.180.32,13.65.255.36,23.98.216.34,13.65.25.127,23.98.220.106,13.65.43.153,52.171.129.2\",\"containerSize\":0,\"dailyMemoryTimeQuota\":0,\"suspendedTill\":null,\"siteDisabledReason\":0,\"functionExecutionUnitsCache\":null,\"maxNumberOfWorkers\":null,\"homeStamp\":\"waws-prod-sn1-139\",\"cloningInfo\":null,\"hostingEnvironmentId\":null,\"tags\":{},\"resourceGroup\":\"javarg6b719531\",\"defaultHostName\":\"fd34e15023534b6.azurewebsites.net\",\"slotSwapStatus\":null,\"httpsOnly\":false,\"redundancyMode\":0,\"inProgressOperationId\":null,\"geoDistributions\":null,\"privateEndpointConnections\":null,\"buildVersion\":null,\"targetBuildVersion\":null}}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6/providers/Microsoft.Authorization/policyAssignments/7df0182312f64c2?api-version=2017-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:06 GMT",
+      "content-length" : "782",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b85d72ed-4a66-43ce-8abb-93fe6ede4538",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072306Z:b85d72ed-4a66-43ce-8abb-93fe6ede4538",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:5885ddf7-846a-489f-8cfa-939c79a8c6ee",
+      "Body" : "{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment 2\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:23:06.8035695Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6/providers/Microsoft.Authorization/policyAssignments/7df0182312f64c2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"7df0182312f64c2\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments?api-version=2017-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:06 GMT",
+      "content-length" : "12686",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f92bc5e8-1e16-4046-8fff-592c190513e6",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072307Z:f92bc5e8-1e16-4046-8fff-592c190513e6",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:016f7e10-11e6-4a23-9b42-6ae9b0b76b8a",
+      "Body" : "{\"value\":[{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"Apply tag and its default value to resource groups\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/49c88fc8-6fd1-46fd-a676-f12d1d3a4c71\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{\"tagName\":{\"value\":\"type\"},\"tagValue\":{\"value\":\"test\"}},\"description\":\"\",\"metadata\":{\"createdBy\":\"2c4ad291-088a-4833-9d12-65562168e61f\",\"createdOn\":\"2020-03-11T15:04:17.0333963Z\",\"updatedBy\":\"f238ba61-2e60-495f-8044-5abc249758fe\",\"updatedOn\":\"2020-03-14T14:47:40.0443799Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/0aa1605f5affd03d6155fcdc5fa7781afe03220801d799bb8cbb9e1dc6ec9c07\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"0aa1605f5affd03d6155fcdc5fa7781afe03220801d799bb8cbb9e1dc6ec9c07\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"deny-nsg-rule-internet-inbound\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-nsg-rule-internet-inbound\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{},\"description\":\"The policy block deployment of domain service, I deleted the policy in my resource group, and found that will apply to the whole subscription. Assign the policy again.\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com\",\"parameterScopes\":{},\"createdBy\":\"97233d81-8d2d-4e63-8bd2-ae5707805489\",\"createdOn\":\"2020-03-04T10:07:29.1757898Z\",\"updatedBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"updatedOn\":\"2020-03-05T08:49:08.281448Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/36e07b214d59455886a2b76b\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"36e07b214d59455886a2b76b\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"deny-nsg-internet-inbound\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-nsg-internet-inbound\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{},\"description\":\"The policy block deployment of domain service, I deleted it from my resource group and found that it applied to the the whole subscription.\\nRe assign the policy.\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com\",\"parameterScopes\":{},\"createdBy\":\"97233d81-8d2d-4e63-8bd2-ae5707805489\",\"createdOn\":\"2020-03-04T10:06:22.2583329Z\",\"updatedBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"updatedOn\":\"2020-03-05T08:49:01.9817826Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/5b5ec388a1b6480391640d13\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"5b5ec388a1b6480391640d13\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"deny-nic-no-nsg\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-nic-no-nsg\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/wls-admin\"],\"parameters\":{},\"description\":\"The policy block deployment of domain service, I deleted the policy in my resource group, and found that will apply to the whole subscription. \\nAssign the policy again.\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com \",\"parameterScopes\":{},\"createdBy\":\"97233d81-8d2d-4e63-8bd2-ae5707805489\",\"createdOn\":\"2020-03-04T10:04:31.0026973Z\",\"updatedBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"updatedOn\":\"2020-03-05T08:48:51.6972917Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/8805e4466db647d1beda40e2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"8805e4466db647d1beda40e2\"},{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"Apply storage tag to resource group\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/49c88fc8-6fd1-46fd-a676-f12d1d3a4c71\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{\"tagName\":{\"value\":\"StorageType\"},\"tagValue\":{\"value\":\"Standard_LRS\"}},\"description\":\"\",\"metadata\":{\"createdBy\":\"146086a1-579c-41a5-a611-bd9e770f1a5c\",\"createdOn\":\"2020-03-11T14:03:42.970365Z\",\"updatedBy\":\"f238ba61-2e60-495f-8044-5abc249758fe\",\"updatedOn\":\"2020-03-14T14:47:37.6038349Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/8c6ee8d403e4302ff7775f7abd0ff27b978ba9973618abfe47f611de4d0bad95\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"8c6ee8d403e4302ff7775f7abd0ff27b978ba9973618abfe47f611de4d0bad95\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"Secure transfer to storage accounts should be enabled\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/404c3081-a854-4457-ae30-26a93ef643f9\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{\"effect\":{\"value\":\"Deny\"}},\"description\":\"\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com \",\"parameterScopes\":{},\"createdBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"createdOn\":\"2020-03-09T04:52:35.6288528Z\",\"updatedBy\":\"7f2b9f1e-23ea-4ef8-a76b-d1ff0fe05120\",\"updatedOn\":\"2020-03-14T15:50:20.3668625Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/927bd18474de422cb584c993\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"927bd18474de422cb584c993\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"'zhoxingtest'\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/04a22d7e-273d-45f2-8a10-02070dbcefca\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"parameters\":{\"allowedLocations\":{\"value\":[\"australiaeast\",\"eastus\",\"japaneast\"]}},\"metadata\":{\"createdBy\":\"9ac534f1-d577-4034-a32d-48de400dacbf\",\"createdOn\":\"2020-03-19T08:03:47.031185Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/'zhoxingtest'\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"'zhoxingtest'\"},{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"ASC DataProtection (subscription: 00000000-0000-0000-0000-000000000000)\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policySetDefinitions/9cb3cc7a-b39b-4b82-bc89-e5a5d9ff7b97\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"description\":\"This policy assignment was automatically created by Azure Security Center\",\"metadata\":{\"assignedBy\":\"Security Center\",\"createdBy\":\"2f8a138f-0955-44e1-9124-c386dfaecad4\",\"createdOn\":\"2019-11-25T02:19:57.9086573Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/DataProtectionSecurityCenter\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"DataProtectionSecurityCenter\"},{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"ASC Default (subscription: 00000000-0000-0000-0000-000000000000)\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"parameters\":{\"diagnosticsLogsInServiceFabricMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"systemUpdatesMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"systemConfigurationsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"endpointProtectionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diskEncryptionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"networkSecurityGroupsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"webApplicationFirewallMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"sqlAuditingMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"sqlEncryptionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"nextGenerationFirewallMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"vulnerabilityAssesmentMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"storageEncryptionMonitoringEffect\":{\"value\":\"Audit\"},\"jitNetworkAccessMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"adaptiveApplicationControlsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityDesignateLessThanOwnersMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityDesignateMoreThanOneOwnerMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityEnableMFAForOwnerPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityEnableMFAForWritePermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityEnableMFAForReadPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveDeprecatedAccountWithOwnerPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveDeprecatedAccountMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveExternalAccountWithOwnerPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveExternalAccountWithWritePermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveExternalAccountWithReadPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"secureTransferToStorageAccountMonitoringEffect\":{\"value\":\"Audit\"},\"aadAuthenticationInSqlServerMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInRedisCacheMonitoringEffect\":{\"value\":\"Audit\"},\"clusterProtectionLevelInServiceFabricMonitoringEffect\":{\"value\":\"Audit\"},\"aadAuthenticationInServiceFabricMonitoringEffect\":{\"value\":\"Audit\"},\"diagnosticsLogsInServiceBusMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInDataLakeAnalyticsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInDataLakeStoreMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInBatchAccountMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInEventHubMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"metricAlertsInBatchAccountMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"namespaceAuthorizationRulesInServiceBusMonitoringEffect\":{\"value\":\"Audit\"},\"disableUnrestrictedNetworkToStorageAccountMonitoringEffect\":{\"value\":\"Audit\"},\"classicComputeVMsMonitoringEffect\":{\"value\":\"Audit\"},\"classicStorageAccountsMonitoringEffect\":{\"value\":\"Audit\"},\"sqlDbVulnerabilityAssesmentMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInKeyVaultMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInStreamAnalyticsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInSearchServiceMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInLogicAppsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"}},\"description\":\"This policy assignment was automatically created by Azure Security Center\",\"metadata\":{\"assignedBy\":\"Security Center\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"SecurityCenterBuiltIn\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:22:39.2505311Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments/2d490e8aada84e2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"2d490e8aada84e2\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment 2\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:23:06.8035695Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6/providers/Microsoft.Authorization/policyAssignments/7df0182312f64c2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"7df0182312f64c2\"}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments?api-version=2017-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:06 GMT",
+      "content-length" : "12686",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "66825b3a-ee40-4c2e-ab4d-1caae3fb0c6d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072307Z:66825b3a-ee40-4c2e-ab4d-1caae3fb0c6d",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:39b2553e-e0fc-4d72-b037-631230e58b2e",
+      "Body" : "{\"value\":[{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"Apply tag and its default value to resource groups\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/49c88fc8-6fd1-46fd-a676-f12d1d3a4c71\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{\"tagName\":{\"value\":\"type\"},\"tagValue\":{\"value\":\"test\"}},\"description\":\"\",\"metadata\":{\"createdBy\":\"2c4ad291-088a-4833-9d12-65562168e61f\",\"createdOn\":\"2020-03-11T15:04:17.0333963Z\",\"updatedBy\":\"f238ba61-2e60-495f-8044-5abc249758fe\",\"updatedOn\":\"2020-03-14T14:47:40.0443799Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/0aa1605f5affd03d6155fcdc5fa7781afe03220801d799bb8cbb9e1dc6ec9c07\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"0aa1605f5affd03d6155fcdc5fa7781afe03220801d799bb8cbb9e1dc6ec9c07\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"deny-nsg-rule-internet-inbound\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-nsg-rule-internet-inbound\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{},\"description\":\"The policy block deployment of domain service, I deleted the policy in my resource group, and found that will apply to the whole subscription. Assign the policy again.\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com\",\"parameterScopes\":{},\"createdBy\":\"97233d81-8d2d-4e63-8bd2-ae5707805489\",\"createdOn\":\"2020-03-04T10:07:29.1757898Z\",\"updatedBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"updatedOn\":\"2020-03-05T08:49:08.281448Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/36e07b214d59455886a2b76b\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"36e07b214d59455886a2b76b\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"deny-nsg-internet-inbound\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-nsg-internet-inbound\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{},\"description\":\"The policy block deployment of domain service, I deleted it from my resource group and found that it applied to the the whole subscription.\\nRe assign the policy.\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com\",\"parameterScopes\":{},\"createdBy\":\"97233d81-8d2d-4e63-8bd2-ae5707805489\",\"createdOn\":\"2020-03-04T10:06:22.2583329Z\",\"updatedBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"updatedOn\":\"2020-03-05T08:49:01.9817826Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/5b5ec388a1b6480391640d13\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"5b5ec388a1b6480391640d13\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"deny-nic-no-nsg\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-nic-no-nsg\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/wls-admin\"],\"parameters\":{},\"description\":\"The policy block deployment of domain service, I deleted the policy in my resource group, and found that will apply to the whole subscription. \\nAssign the policy again.\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com \",\"parameterScopes\":{},\"createdBy\":\"97233d81-8d2d-4e63-8bd2-ae5707805489\",\"createdOn\":\"2020-03-04T10:04:31.0026973Z\",\"updatedBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"updatedOn\":\"2020-03-05T08:48:51.6972917Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/8805e4466db647d1beda40e2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"8805e4466db647d1beda40e2\"},{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"Apply storage tag to resource group\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/49c88fc8-6fd1-46fd-a676-f12d1d3a4c71\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{\"tagName\":{\"value\":\"StorageType\"},\"tagValue\":{\"value\":\"Standard_LRS\"}},\"description\":\"\",\"metadata\":{\"createdBy\":\"146086a1-579c-41a5-a611-bd9e770f1a5c\",\"createdOn\":\"2020-03-11T14:03:42.970365Z\",\"updatedBy\":\"f238ba61-2e60-495f-8044-5abc249758fe\",\"updatedOn\":\"2020-03-14T14:47:37.6038349Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/8c6ee8d403e4302ff7775f7abd0ff27b978ba9973618abfe47f611de4d0bad95\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"8c6ee8d403e4302ff7775f7abd0ff27b978ba9973618abfe47f611de4d0bad95\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"Secure transfer to storage accounts should be enabled\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policyDefinitions/404c3081-a854-4457-ae30-26a93ef643f9\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"notScopes\":[],\"parameters\":{\"effect\":{\"value\":\"Deny\"}},\"description\":\"\",\"metadata\":{\"assignedBy\":\"jiasli@microsoft.com \",\"parameterScopes\":{},\"createdBy\":\"0d504196-1423-4569-9a6e-15149656f0ee\",\"createdOn\":\"2020-03-09T04:52:35.6288528Z\",\"updatedBy\":\"7f2b9f1e-23ea-4ef8-a76b-d1ff0fe05120\",\"updatedOn\":\"2020-03-14T15:50:20.3668625Z\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/927bd18474de422cb584c993\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"927bd18474de422cb584c993\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"'zhoxingtest'\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/04a22d7e-273d-45f2-8a10-02070dbcefca\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"parameters\":{\"allowedLocations\":{\"value\":[\"australiaeast\",\"eastus\",\"japaneast\"]}},\"metadata\":{\"createdBy\":\"9ac534f1-d577-4034-a32d-48de400dacbf\",\"createdOn\":\"2020-03-19T08:03:47.031185Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/'zhoxingtest'\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"'zhoxingtest'\"},{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"ASC DataProtection (subscription: 00000000-0000-0000-0000-000000000000)\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policySetDefinitions/9cb3cc7a-b39b-4b82-bc89-e5a5d9ff7b97\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"description\":\"This policy assignment was automatically created by Azure Security Center\",\"metadata\":{\"assignedBy\":\"Security Center\",\"createdBy\":\"2f8a138f-0955-44e1-9124-c386dfaecad4\",\"createdOn\":\"2019-11-25T02:19:57.9086573Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/DataProtectionSecurityCenter\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"DataProtectionSecurityCenter\"},{\"sku\":{\"name\":\"A1\",\"tier\":\"Standard\"},\"properties\":{\"displayName\":\"ASC Default (subscription: 00000000-0000-0000-0000-000000000000)\",\"policyDefinitionId\":\"/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000\",\"parameters\":{\"diagnosticsLogsInServiceFabricMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"systemUpdatesMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"systemConfigurationsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"endpointProtectionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diskEncryptionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"networkSecurityGroupsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"webApplicationFirewallMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"sqlAuditingMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"sqlEncryptionMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"nextGenerationFirewallMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"vulnerabilityAssesmentMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"storageEncryptionMonitoringEffect\":{\"value\":\"Audit\"},\"jitNetworkAccessMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"adaptiveApplicationControlsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityDesignateLessThanOwnersMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityDesignateMoreThanOneOwnerMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityEnableMFAForOwnerPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityEnableMFAForWritePermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityEnableMFAForReadPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveDeprecatedAccountWithOwnerPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveDeprecatedAccountMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveExternalAccountWithOwnerPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveExternalAccountWithWritePermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"identityRemoveExternalAccountWithReadPermissionsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"secureTransferToStorageAccountMonitoringEffect\":{\"value\":\"Audit\"},\"aadAuthenticationInSqlServerMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInRedisCacheMonitoringEffect\":{\"value\":\"Audit\"},\"clusterProtectionLevelInServiceFabricMonitoringEffect\":{\"value\":\"Audit\"},\"aadAuthenticationInServiceFabricMonitoringEffect\":{\"value\":\"Audit\"},\"diagnosticsLogsInServiceBusMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInDataLakeAnalyticsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInDataLakeStoreMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInBatchAccountMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInEventHubMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"metricAlertsInBatchAccountMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"namespaceAuthorizationRulesInServiceBusMonitoringEffect\":{\"value\":\"Audit\"},\"disableUnrestrictedNetworkToStorageAccountMonitoringEffect\":{\"value\":\"Audit\"},\"classicComputeVMsMonitoringEffect\":{\"value\":\"Audit\"},\"classicStorageAccountsMonitoringEffect\":{\"value\":\"Audit\"},\"sqlDbVulnerabilityAssesmentMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInKeyVaultMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInStreamAnalyticsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInSearchServiceMonitoringEffect\":{\"value\":\"AuditIfNotExists\"},\"diagnosticsLogsInLogicAppsMonitoringEffect\":{\"value\":\"AuditIfNotExists\"}},\"description\":\"This policy assignment was automatically created by Azure Security Center\",\"metadata\":{\"assignedBy\":\"Security Center\"}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"SecurityCenterBuiltIn\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:22:39.2505311Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments/2d490e8aada84e2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"2d490e8aada84e2\"},{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment 2\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:23:06.8035695Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6/providers/Microsoft.Authorization/policyAssignments/7df0182312f64c2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"7df0182312f64c2\"}]}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments/2d490e8aada84e2?api-version=2017-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:06 GMT",
+      "content-length" : "688",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "f48c7b26-33f3-49ca-af54-8bc734a15f50",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072307Z:f48c7b26-33f3-49ca-af54-8bc734a15f50",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:65c2ab4f-2d70-4fac-a9d3-f3792b6fb40f",
+      "Body" : "{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:22:39.2505311Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Authorization/policyAssignments/2d490e8aada84e2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"2d490e8aada84e2\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234//subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6/providers/Microsoft.Authorization/policyAssignments/7df0182312f64c2?api-version=2017-06-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:06 GMT",
+      "content-length" : "782",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14998",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "76911fa5-7c27-4807-8f2b-cd6838d559c9",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072307Z:76911fa5-7c27-4807-8f2b-cd6838d559c9",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:4ca44ecc-8e4f-4dd0-9360-d5552acb985a",
+      "Body" : "{\"sku\":{\"name\":\"A0\",\"tier\":\"Free\"},\"properties\":{\"displayName\":\"My Assignment 2\",\"policyDefinitionId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"scope\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:23:06.8035695Z\",\"updatedBy\":null,\"updatedOn\":null}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javarg6b719531/providers/Microsoft.Web/sites/fd34e15023534b6/providers/Microsoft.Authorization/policyAssignments/7df0182312f64c2\",\"type\":\"Microsoft.Authorization/policyAssignments\",\"name\":\"7df0182312f64c2\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792?api-version=2016-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:07 GMT",
+      "content-length" : "586",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "bd979fed-0d10-4b37-9f6c-42bad84a0560",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072307Z:bd979fed-0d10-4b37-9f6c-42bad84a0560",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "southeastasia:b25559c3-d334-4ad6-b751-329fd2a74153",
+      "Body" : "{\"properties\":{\"displayName\":\"mypolicy350795\",\"policyType\":\"Custom\",\"mode\":\"Indexed\",\"description\":\"This is my policy\",\"metadata\":{\"createdBy\":\"0ea19d04-ed36-495e-b2f6-b514e2b68c33\",\"createdOn\":\"2020-03-23T07:22:35.0153377Z\",\"updatedBy\":null,\"updatedOn\":null},\"parameters\":{},\"policyRule\":{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"northeurope\",\"westeurope\"]}},\"then\":{\"effect\":\"deny\"}}},\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/policy62e93792\",\"type\":\"Microsoft.Authorization/policyDefinitions\",\"name\":\"policy62e93792\"}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javarg6b719531?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:10 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14996",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "afdca41a-8cd9-4bca-86a7-c88a5d2d9971",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072311Z:afdca41a-8cd9-4bca-86a7-c88a5d2d9971",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "afdca41a-8cd9-4bca-86a7-c88a5d2d9971",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:23:41 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "6a404b34-7f3a-46ec-8b27-7db3fa23dc6d",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072341Z:6a404b34-7f3a-46ec-8b27-7db3fa23dc6d",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6a404b34-7f3a-46ec-8b27-7db3fa23dc6d",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:24:11 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "2af3247f-39c7-431f-a328-d56fac338808",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072412Z:2af3247f-39c7-431f-a328-d56fac338808",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2af3247f-39c7-431f-a328-d56fac338808",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:24:41 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "8436ccb6-d86d-4ff8-b7ee-f2605bebe5a3",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072442Z:8436ccb6-d86d-4ff8-b7ee-f2605bebe5a3",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "8436ccb6-d86d-4ff8-b7ee-f2605bebe5a3",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBUkc2QjcxOTUzMS1VS1dFU1QiLCJqb2JMb2NhdGlvbiI6InVrd2VzdCJ9?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 23 Mar 2020 07:25:11 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b81e0c82-07a6-4fd1-869b-622d401d43f0",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200323T072512Z:b81e0c82-07a6-4fd1-869b-622d401d43f0",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b81e0c82-07a6-4fd1-869b-622d401d43f0",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "policy62e93792", "mypolicy350795", "javarg6b719531", "2d490e8aada84e2", "7df0182312f64c2", "fd34e15023534b6" ]
+}
