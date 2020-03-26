@@ -58,7 +58,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  * <p><strong>Send messages to a Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
  *
- * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
+ * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize}
  *
  */

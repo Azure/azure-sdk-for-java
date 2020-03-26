@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -32,6 +33,20 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .queueName("<QUEUE-NAME>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation
+
+        consumer.close();
+    }
+
+    public void instantiateWithDefaultCredential() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
+        // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+            .credential("<<fully-qualified-namespace>>",
+                new DefaultAzureCredentialBuilder().build())
+            .buildReceiverClientBuilder()
+            .queueName("<QUEUE-NAME>")
+            .buildAsyncClient();
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
 
         consumer.close();
     }
