@@ -216,12 +216,16 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
-     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws NullPointerException if {@code lockToken} or {@code deadLetterOptions} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
      */
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
+        if (Objects.isNull(deadLetterOptions)) {
+            return monoError(logger, new NullPointerException("'deadLetterOptions' cannot be null."));
+        }
+
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
     }

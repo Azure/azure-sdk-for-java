@@ -5,13 +5,20 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import reactor.core.Disposable;
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -23,6 +30,8 @@ import java.util.Objects;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public class ServiceBusReceiverClient implements AutoCloseable {
+    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
+    private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
 
@@ -253,12 +262,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
                 + maxMessages);
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.receive()
-            .take(maxMessages)
-            .timeout(operationTimeout);
-
-        // Subscribe so we can kick off this operation.
-        messages.subscribe();
+        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages, emitter));
 
         return new IterableStream<>(messages);
     }
@@ -319,5 +323,19 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     @Override
     public void close() {
         asyncClient.close();
+    }
+
+    /**
+     * Given an {@code emitter}, queues that work in {@link SynchronousMessageSubscriber}. If the synchronous job has
+     * not been created, will initialise it.
+     */
+    private void queueWork(int maximumMessageCount, FluxSink<ServiceBusReceivedMessage> emitter) {
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, operationTimeout,
+            emitter);
+        final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
+
+        logger.info("[{}]: Started synchronous message subscriber.", id);
+        asyncClient.receive().subscribeWith(syncSubscriber);
     }
 }
