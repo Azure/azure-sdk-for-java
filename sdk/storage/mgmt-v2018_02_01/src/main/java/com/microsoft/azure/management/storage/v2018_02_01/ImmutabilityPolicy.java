@@ -55,7 +55,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * The entirety of the ImmutabilityPolicy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer, DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer, DefinitionStages.WithIfMatch, DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithCreate {
     }
 
     /**
@@ -74,8 +74,24 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
         interface WithContainer {
            /**
             * Specifies resourceGroupName, accountName, containerName.
+            * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive
+            * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only
+            * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number
+            * @return the next definition stage
             */
-            WithImmutabilityPeriodSinceCreationInDays withExistingContainer(String resourceGroupName, String accountName, String containerName);
+            WithIfMatch withExistingContainer(String resourceGroupName, String accountName, String containerName);
+        }
+
+        /**
+         * The stage of the immutabilitypolicy definition allowing to specify IfMatch.
+         */
+        interface WithIfMatch {
+           /**
+            * Specifies ifMatch.
+            * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied
+            * @return the next definition stage
+            */
+            WithImmutabilityPeriodSinceCreationInDays withIfMatch(String ifMatch);
         }
 
         /**
@@ -84,6 +100,8 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
         interface WithImmutabilityPeriodSinceCreationInDays {
            /**
             * Specifies immutabilityPeriodSinceCreationInDays.
+            * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days
+            * @return the next definition stage
             */
             WithCreate withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays);
         }
@@ -99,7 +117,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * The template for a ImmutabilityPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
+    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithIfMatch, UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
     }
 
     /**
@@ -107,11 +125,25 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
      */
     interface UpdateStages {
         /**
+         * The stage of the immutabilitypolicy update allowing to specify IfMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies ifMatch.
+             * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied
+             * @return the next update stage
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
          * The stage of the immutabilitypolicy update allowing to specify ImmutabilityPeriodSinceCreationInDays.
          */
         interface WithImmutabilityPeriodSinceCreationInDays {
             /**
              * Specifies immutabilityPeriodSinceCreationInDays.
+             * @param immutabilityPeriodSinceCreationInDays The immutability period for the blobs in the container since the policy creation, in days
+             * @return the next update stage
              */
             Update withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays);
         }
