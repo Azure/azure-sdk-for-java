@@ -9,9 +9,11 @@ import com.azure.core.annotation.ServiceClient;
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
  * topic on Azure Service Bus.
  *
+ * <p><strong>Create an instance of receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation}
+ *
  * @see ServiceBusClientBuilder
- * @see ServiceBusReceiverAsyncClient See ServiceBusReceiverAsyncClient to communicate with a Service Bus resource using
- *     an asynchronous client.
+ * @see ServiceBusReceiverAsyncClient To communicate with a Service Bus resource using an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public class ServiceBusReceiverClient implements AutoCloseable {

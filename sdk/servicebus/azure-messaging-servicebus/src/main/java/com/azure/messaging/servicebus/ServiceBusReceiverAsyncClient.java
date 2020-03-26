@@ -21,6 +21,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -36,9 +37,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
  * topic on Azure Service Bus.
  *
+ * <p><strong>Create an instance of receiver</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation}
+ *
+ * <p><strong>Create a sender and receive message from Service Bus queue or topic</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#message}
+ *
+ * <p><strong>Create a sender and receive all the messages from Service Bus queue or topic</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all }
+ *
+ * <p><strong>Rate limiting consumption of messages from Service Bus</strong></p>
+ * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
+ * {@link BaseSubscriber#request(long)}.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ *
  * @see ServiceBusClientBuilder
- * @see ServiceBusReceiverClient See ServiceBusReceiverClient to communicate with a Service Bus resource using a
- *     synchronous client.
+ * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
