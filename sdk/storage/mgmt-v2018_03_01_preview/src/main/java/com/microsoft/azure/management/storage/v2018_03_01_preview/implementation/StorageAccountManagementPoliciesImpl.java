@@ -17,6 +17,8 @@ class StorageAccountManagementPoliciesImpl extends CreatableUpdatableImpl<Storag
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
+    private Object cpolicy;
+    private Object upolicy;
 
     StorageAccountManagementPoliciesImpl(String name, StorageManager manager) {
         super(name, new StorageAccountManagementPoliciesInner());
@@ -31,7 +33,7 @@ class StorageAccountManagementPoliciesImpl extends CreatableUpdatableImpl<Storag
         this.manager = manager;
         // Set resource name
         this.accountName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         //
@@ -45,14 +47,14 @@ class StorageAccountManagementPoliciesImpl extends CreatableUpdatableImpl<Storag
     @Override
     public Observable<StorageAccountManagementPolicies> createResourceAsync() {
         StorageAccountsInner client = this.manager().inner().storageAccounts();
-        return client.createOrUpdateManagementPoliciesAsync(this.resourceGroupName, this.accountName)
+        return client.createOrUpdateManagementPoliciesAsync(this.resourceGroupName, this.accountName, this.cpolicy)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<StorageAccountManagementPolicies> updateResourceAsync() {
         StorageAccountsInner client = this.manager().inner().storageAccounts();
-        return client.createOrUpdateManagementPoliciesAsync(this.resourceGroupName, this.accountName)
+        return client.createOrUpdateManagementPoliciesAsync(this.resourceGroupName, this.accountName, this.upolicy)
             .map(innerToFluentMap(this));
     }
 
@@ -97,6 +99,16 @@ class StorageAccountManagementPoliciesImpl extends CreatableUpdatableImpl<Storag
     public StorageAccountManagementPoliciesImpl withExistingStorageAccount(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public StorageAccountManagementPoliciesImpl withPolicy(Object policy) {
+        if (isInCreateMode()) {
+            this.cpolicy = policy;
+        } else {
+            this.upolicy = policy;
+        }
         return this;
     }
 
