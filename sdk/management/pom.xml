@@ -400,7 +400,7 @@
         <module>./azure</module>
         <module>../appservice/mgmt</module>
         <module>../compute/mgmt</module>
-        <module>../authentication/mgmt</module>
+        <module>../authorization/mgmt</module>
         <module>../managedserviceidentity/mgmt</module>
         <module>../network/mgmt</module>
         <module>../keyvault/mgmt</module>
