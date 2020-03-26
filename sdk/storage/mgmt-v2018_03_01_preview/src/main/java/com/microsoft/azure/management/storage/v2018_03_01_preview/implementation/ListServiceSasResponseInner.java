@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ListServiceSasResponseInner {
     /**
-     * List service SAS credentials of speicific resource.
+     * List service SAS credentials of specific resource.
      */
     @JsonProperty(value = "serviceSasToken", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceSasToken;
 
     /**
-     * Get list service SAS credentials of speicific resource.
+     * Get list service SAS credentials of specific resource.
      *
      * @return the serviceSasToken value
      */
