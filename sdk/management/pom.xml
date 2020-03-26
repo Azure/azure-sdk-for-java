@@ -398,18 +398,18 @@
     </profiles>
     <modules>
         <module>./azure</module>
-        <module>./azure-mgmt-appservice</module>
-        <module>./azure-mgmt-compute</module>
-        <module>./azure-mgmt-graph-rbac</module>
-        <module>./azure-mgmt-msi</module>
-        <module>./azure-mgmt-network</module>
-        <module>./azure-mgmt-keyvault</module>
-        <module>./azure-mgmt-resources</module>
-        <module>./azure-mgmt-storage</module>
-        <module>./azure-mgmt-sql</module>
-        <module>./azure-mgmt-cosmosdb</module>
-        <module>./azure-mgmt-containerservice</module>
-        <module>./azure-mgmt-monitor</module>
-        <module>./azure-samples</module>
+        <module>../appservice/mgmt</module>
+        <module>../compute/mgmt</module>
+        <module>../authentication/mgmt</module>
+        <module>../managedserviceidentity/mgmt</module>
+        <module>../network/mgmt</module>
+        <module>../keyvault/mgmt</module>
+        <module>../resources/mgmt</module>
+        <module>../storage/mgmt</module>
+        <module>../sql/mgmt</module>
+        <module>../cosmos/mgmt</module>
+        <module>../containerservice/mgmt</module>
+        <module>../monitor/mgmt</module>
+        <module>./samples</module>
     </modules>
 </project>
