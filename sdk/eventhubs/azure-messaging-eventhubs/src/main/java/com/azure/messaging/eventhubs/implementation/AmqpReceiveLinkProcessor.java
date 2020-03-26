@@ -223,8 +223,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             final String linkName;
             final String entityPath;
             synchronized (lock) {
-                    linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
-                    entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
+                linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
+                entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
             }
 
             logger.info("linkName[{}] entityPath[{}]. AmqpReceiveLink is already terminated.", linkName, entityPath);
@@ -261,7 +261,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isTerminated() || isCancelled) {
-                logger.info("AmqpReceiveLinkProcessor is terminated. Not reopening on error.");
+            logger.info("AmqpReceiveLinkProcessor is terminated. Not reopening on error.");
             Operators.onErrorDropped(throwable, currentContext());
             return;
         }

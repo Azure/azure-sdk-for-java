@@ -11,12 +11,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
@@ -131,6 +129,8 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now().minus(Duration.ofMinutes(10)));
 
         try {
+
+            //@formatter:off
             for (final EventHubConsumerAsyncClient consumer : clients) {
                 consumer.receiveFromPartition(PARTITION_ID, position)
                     .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
@@ -139,12 +139,13 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                             EventData event = partitionEvent.getData();
                             logger.info("Event[{}] matched.", event.getSequenceNumber());
                         }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
-                        () -> {
-                            long count = countDownLatch.getCount();
-                            logger.info("Finished consuming events. Counting down: {}", count);
-                            countDownLatch.countDown();
-                        });
+                            () -> {
+                                long count = countDownLatch.getCount();
+                                logger.info("Finished consuming events. Counting down: {}", count);
+                                countDownLatch.countDown();
+                            });
             }
+            //@formatter:on
 
             // Act
             producer.send(events, sendOptions);

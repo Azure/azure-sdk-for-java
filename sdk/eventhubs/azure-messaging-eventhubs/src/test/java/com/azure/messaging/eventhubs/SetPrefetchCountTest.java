@@ -7,7 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -36,7 +35,7 @@ class SetPrefetchCountTest extends IntegrationTestBase {
     private EventHubConsumerAsyncClient consumer;
     private EventHubClientBuilder builder;
 
-    public SetPrefetchCountTest() {
+    SetPrefetchCountTest() {
         super(new ClientLogger(SetPrefetchCountTest.class));
     }
 
