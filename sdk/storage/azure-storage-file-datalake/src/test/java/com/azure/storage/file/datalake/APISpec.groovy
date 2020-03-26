@@ -169,7 +169,7 @@ class APISpec extends Specification {
         for (def fileSystem : cleanupClient.listFileSystems(options, null)) {
             def fileSystemClient = cleanupClient.getFileSystemClient(fileSystem.getName())
 
-            if (fileSystemClient.getProperties().getLeaseState() == LeaseStateType.LEASED) {
+            if (fileSystem.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
             }
 
