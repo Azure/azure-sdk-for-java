@@ -277,7 +277,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @param maxMessages The number of messages.
      * @param fromSequenceNumber The sequence number from where to start reading messages.
      *
-     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
+     * @return A {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
@@ -327,7 +327,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
      * sequence number.
      *
-     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber() sequence number} of the message.
+     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber() sequence number} of the
+     *     message.
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
      */
@@ -338,8 +339,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using sequence
-     * number.
+     * Receives a batch of deferred {@link ServiceBusReceivedMessage messages}. Deferred messages can only be received
+     * by using sequence number.
      *
      * @param sequenceNumbers The sequence numbers of the deferred messages.
      *

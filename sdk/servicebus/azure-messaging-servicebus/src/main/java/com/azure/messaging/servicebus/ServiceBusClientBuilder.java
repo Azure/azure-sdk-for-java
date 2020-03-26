@@ -585,7 +585,7 @@ public final class ServiceBusClientBuilder {
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 }
