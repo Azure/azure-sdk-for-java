@@ -1936,6 +1936,7 @@
     UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
     UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
     UWF_UNWRITTEN_FIELD"/>
+    </Match>
     
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
