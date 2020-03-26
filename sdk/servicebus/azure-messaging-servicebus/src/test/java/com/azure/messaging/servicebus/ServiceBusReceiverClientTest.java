@@ -11,12 +11,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,11 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -356,6 +355,101 @@ class ServiceBusReceiverClientTest {
 
         final List<ServiceBusReceivedMessage> collected = actual.stream().collect(Collectors.toList());
         assertEquals(maxMessages, collected.size());
+    }
+
+    /**
+     * Verifies that all requested messages are returned when we can satisfy them all.
+     */
+    @Test
+    void receiveMessagesTimeout() {
+        // Arrange
+        final int maxMessages = 10;
+        final int numberToEmit = 5;
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
+            sink.onRequest(e -> {
+                final AtomicInteger emittedMessages = new AtomicInteger();
+                if (emittedMessages.get() >= numberToEmit) {
+                    logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
+                        emittedMessages.get(), numberToEmit);
+                    return;
+                }
+
+                for (int i = 0; i < numberToEmit; i++) {
+                    sink.next(mock(ServiceBusReceivedMessage.class));
+
+                    final int emit = emittedMessages.incrementAndGet();
+                    if (emit >= numberToEmit) {
+                        logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
+                        break;
+                    }
+                }
+            });
+
+            sink.onCancel(() -> {
+                logger.info("Cancelled. Completing sink.");
+                sink.complete();
+            });
+        });
+        when(asyncClient.receive()).thenReturn(messageSink);
+
+        // Act
+        final IterableStream<ServiceBusReceivedMessage> actual = client.receive(maxMessages);
+
+        // Assert
+        assertNotNull(actual);
+
+        final List<ServiceBusReceivedMessage> collected = actual.stream().collect(Collectors.toList());
+        assertEquals(numberToEmit, collected.size());
+    }
+
+    @Test
+    void receiveDeferredMessage() {
+        // Arrange
+        final long sequenceNumber = 231412;
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        when(asyncClient.receiveDeferredMessage(anyLong())).thenReturn(Mono.just(message));
+
+        // Act
+        final ServiceBusReceivedMessage actual = client.receiveDeferredMessage(sequenceNumber);
+
+        // Assert
+        assertEquals(message, actual);
+
+        verify(asyncClient).receiveDeferredMessage(sequenceNumber);
+    }
+
+    @Test
+    void receiveDeferredMessageBatch() {
+        // Arrange
+        final long sequenceNumber = 154;
+        final long sequenceNumber2 = 13124;
+        final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage message2 = mock(ServiceBusReceivedMessage.class);
+        when(asyncClient.receiveDeferredMessageBatch(any())).thenReturn(Flux.just(message, message2));
+
+        // Act
+        final IterableStream<ServiceBusReceivedMessage> actual = client.receiveDeferredMessageBatch(sequenceNumber, sequenceNumber2);
+
+        // Assert
+        assertNotNull(actual);
+
+        final List<ServiceBusReceivedMessage> collected = actual.stream().collect(Collectors.toList());
+        assertEquals(2, collected.size());
+        assertEquals(message, collected.get(0));
+        assertEquals(message2, collected.get(1));
+    }
+
+    @Test
+    void renewMessageLock() {
+        // Arrange
+        final Instant response = Instant.ofEpochSecond(1585259339);
+        when(asyncClient.renewMessageLock(messageLockToken)).thenReturn(Mono.just(response));
+
+        // Act
+        final Instant actual = client.renewMessageLock(messageLockToken);
+
+        // Assert
+        assertEquals(response, actual);
     }
 
     private static boolean lockTokenEquals(MessageLockToken compared) {
