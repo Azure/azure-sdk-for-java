@@ -28,7 +28,7 @@ public final class ContactPage implements Page<CertificateContact> {
      * @return The iterable stream of items in {@link List}.
      */
     @Override
-    public IterableStream<CertificateContact> getElements () {
+    public IterableStream<CertificateContact> getElements() {
         return IterableStream.of(items);
     }
 
