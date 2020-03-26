@@ -7,12 +7,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import reactor.core.Disposable;
-import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -121,7 +117,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral>Message deferral</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(MessageLockToken lockToken) {
         asyncClient.defer(lockToken).block(operationTimeout);
@@ -138,7 +134,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral>Message deferral</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         asyncClient.defer(lockToken, propertiesToModify).block(operationTimeout);
@@ -254,6 +250,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
      *
+     * @param maxMessages The maximum number of messages to receive.
      * @return An {@link IterableStream} of at most {@code maxMessages} messages from the Service Bus entity.
      */
     public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages) {

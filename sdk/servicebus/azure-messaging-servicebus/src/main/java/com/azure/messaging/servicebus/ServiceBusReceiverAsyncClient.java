@@ -167,7 +167,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral>Message deferral</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(MessageLockToken lockToken) {
         return defer(lockToken, null);
@@ -185,7 +185,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral>Message deferral</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null, propertiesToModify);
