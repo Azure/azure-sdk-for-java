@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * Pipeline policy that uses an {@link AzureKeyCredential} to set the specified header which authorizes requests.
+ * Pipeline policy that uses an {@link AzureKeyCredential} to set the authorization key for a request.
  *
  * <p>
  * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
@@ -22,25 +22,25 @@ import java.util.Objects;
 public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     private final ClientLogger logger = new ClientLogger(AzureKeyCredentialPolicy.class);
 
-    private final String header;
+    private final String name;
     private final AzureKeyCredential credential;
 
     /**
-     * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified header.
+     * Creates a policy that uses the passed {@link AzureKeyCredential} to set the specified name.
      *
-     * @param header The header that will be set to the {@link AzureKeyCredential} key value.
+     * @param name The name of the key header that will be set to the {@link AzureKeyCredential} key value.
      * @param credential The {@link AzureKeyCredential} containing the authorization key to use.
-     * @throws NullPointerException If {@code header} or {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@code header} is empty.
+     * @throws NullPointerException If {@code name} or {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@code name} is empty.
      */
-    public AzureKeyCredentialPolicy(String header, AzureKeyCredential credential) {
+    public AzureKeyCredentialPolicy(String name, AzureKeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
-        Objects.requireNonNull(header, "'header' cannot be null.");
-        if (header.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'header' cannot be empty."));
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        if (name.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
 
-        this.header = header;
+        this.name = name;
         this.credential = credential;
     }
 
@@ -50,7 +50,7 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
             return Mono.error(new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
         }
 
-        context.getHttpRequest().setHeader(header, credential.getKey());
+        context.getHttpRequest().setHeader(name, credential.getKey());
         return next.process();
     }
 }
