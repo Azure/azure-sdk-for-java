@@ -10,6 +10,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -42,6 +43,8 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {SearchServiceClient.class, SearchServiceAsyncClient.class})
 public final class SearchServiceClientBuilder {
+    private static final String API_KEY = "api-key";
+
     /*
      * This header tells the service to return the request ID in the HTTP response. This is useful for correlating the
      * request sent to the response.
@@ -127,7 +130,7 @@ public final class SearchServiceClientBuilder {
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
         if (keyCredential != null) {
-            this.policies.add(new SearchApiKeyPipelinePolicy(keyCredential));
+            this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
         }
 
         policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,

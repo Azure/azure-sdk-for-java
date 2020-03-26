@@ -15,8 +15,8 @@ import javax.net.ssl.SSLException;
 import java.time.Duration;
 import java.util.Locale;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Strings.emptyToNull;
+import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
+import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
