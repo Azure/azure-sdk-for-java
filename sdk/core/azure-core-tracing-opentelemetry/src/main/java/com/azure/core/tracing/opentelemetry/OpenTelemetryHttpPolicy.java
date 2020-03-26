@@ -15,7 +15,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.context.propagation.HttpTextFormat;
-import io.opentelemetry.trace.AttributeValue;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.Tracer;
@@ -42,7 +41,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
-    private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
+    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -102,7 +101,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
         // AttributeValue will throw an error if the value is null.
         if (!CoreUtils.isNullOrEmpty(value)) {
-            span.setAttribute(key, AttributeValue.stringAttributeValue(value));
+            span.setAttribute(key, value);
         }
     }
 
@@ -157,7 +156,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             }
 
             putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
-            span.setAttribute(HTTP_STATUS_CODE, AttributeValue.longAttributeValue(statusCode));
+            span.setAttribute(HTTP_STATUS_CODE, statusCode);
             span.setStatus(HttpTraceUtil.parseResponseStatus(statusCode, error));
         }
 
