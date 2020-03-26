@@ -16,23 +16,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ExportTemplateRequest {
     /**
-     * The IDs of the resources. The only supported string currently is '*'
-     * (all resources). Future updates will support exporting specific
-     * resources.
+     * The IDs of the resources to filter the export by. To export all
+     * resources, supply an array with single entry '*'.
      */
     @JsonProperty(value = "resources")
     private List<String> resources;
 
     /**
-     * The export template options. Supported values include
-     * 'IncludeParameterDefaultValue', 'IncludeComments' or
-     * 'IncludeParameterDefaultValue, IncludeComments.
+     * The export template options. A CSV-formatted list containing zero or
+     * more of the following: 'IncludeParameterDefaultValue',
+     * 'IncludeComments', 'SkipResourceNameParameterization',
+     * 'SkipAllParameterization'.
      */
     @JsonProperty(value = "options")
     private String options;
 
     /**
-     * Get the IDs of the resources. The only supported string currently is '*' (all resources). Future updates will support exporting specific resources.
+     * Get the IDs of the resources to filter the export by. To export all resources, supply an array with single entry '*'.
      *
      * @return the resources value
      */
@@ -41,7 +41,7 @@ public class ExportTemplateRequest {
     }
 
     /**
-     * Set the IDs of the resources. The only supported string currently is '*' (all resources). Future updates will support exporting specific resources.
+     * Set the IDs of the resources to filter the export by. To export all resources, supply an array with single entry '*'.
      *
      * @param resources the resources value to set
      * @return the ExportTemplateRequest object itself.
@@ -52,7 +52,7 @@ public class ExportTemplateRequest {
     }
 
     /**
-     * Get the export template options. Supported values include 'IncludeParameterDefaultValue', 'IncludeComments' or 'IncludeParameterDefaultValue, IncludeComments.
+     * Get the export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization', 'SkipAllParameterization'.
      *
      * @return the options value
      */
@@ -61,7 +61,7 @@ public class ExportTemplateRequest {
     }
 
     /**
-     * Set the export template options. Supported values include 'IncludeParameterDefaultValue', 'IncludeComments' or 'IncludeParameterDefaultValue, IncludeComments.
+     * Set the export template options. A CSV-formatted list containing zero or more of the following: 'IncludeParameterDefaultValue', 'IncludeComments', 'SkipResourceNameParameterization', 'SkipAllParameterization'.
      *
      * @param options the options value to set
      * @return the ExportTemplateRequest object itself.

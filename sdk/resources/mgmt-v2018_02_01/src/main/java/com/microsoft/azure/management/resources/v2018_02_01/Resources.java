@@ -24,7 +24,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<GenericResource> listAsync();
+    Observable<GenericResourceExpanded> listAsync();
 
     /**
      * Checks by ID whether a resource exists.
@@ -34,7 +34,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceByIdAsync(String resourceId, String apiVersion);
+    Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion);
 
     /**
      * Deletes a resource by ID.
@@ -85,7 +85,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<GenericResource> listByResourceGroupAsync(final String resourceGroupName);
+    Observable<GenericResourceExpanded> listByResourceGroupAsync(final String resourceGroupName);
 
     /**
      * Moves resources from one resource group to another resource group.
@@ -121,7 +121,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 
     /**
      * Deletes a resource.
