@@ -201,19 +201,6 @@ jobs:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
 
-      - task: Maven@3
-        displayName: 'Start Jetty'
-        condition: succeeded()
-        inputs:
-          mavenPomFile: pom.data.xml
-          options: '$(DefaultOptions)'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
-
       - ${{ parameters.PreTestSteps }}
 
       - task: Maven@3
