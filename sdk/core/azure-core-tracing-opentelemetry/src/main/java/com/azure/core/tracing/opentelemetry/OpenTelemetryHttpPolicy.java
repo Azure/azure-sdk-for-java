@@ -14,6 +14,7 @@ import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.common.AttributeValue;
 import io.opentelemetry.context.propagation.HttpTextFormat;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
@@ -101,7 +102,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     private static void putAttributeIfNotEmptyOrNull(Span span, String key, String value) {
         // AttributeValue will throw an error if the value is null.
         if (!CoreUtils.isNullOrEmpty(value)) {
-            span.setAttribute(key, value);
+            span.setAttribute(key, AttributeValue.stringAttributeValue(value));
         }
     }
 
@@ -156,7 +157,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             }
 
             putAttributeIfNotEmptyOrNull(span, REQUEST_ID, requestId);
-            span.setAttribute(HTTP_STATUS_CODE, statusCode);
+            span.setAttribute(HTTP_STATUS_CODE, AttributeValue.longAttributeValue(statusCode));
             span.setStatus(HttpTraceUtil.parseResponseStatus(statusCode, error));
         }
 

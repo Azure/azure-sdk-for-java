@@ -61,45 +61,6 @@ public class OpenTelemetryTracerTest {
     private Context tracingContext;
     private Span parentSpan;
 
-    private static void assertSpanWithExplicitParent(Context updatedContext, SpanId parentSpanId) {
-        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
-
-        // verify instance created of opentelemetry-sdk (test impl), span implementation
-        assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
-
-        final ReadableSpan recordEventsSpan =
-            (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-
-        assertEquals(METHOD_NAME, recordEventsSpan.getName());
-
-        // verify span started with explicit parent
-        assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
-        assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
-    }
-
-    private static void assertSpanWithRemoteParent(Context updatedContext, SpanId parentSpanId) {
-        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
-
-        // verify instance created of openTelemetry-sdk (test impl), span implementation
-        assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
-
-        // verify span created with provided name and kind server
-        final ReadableSpan recordEventsSpan =
-            (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(METHOD_NAME, recordEventsSpan.getName());
-        assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
-
-        // verify span started with remote parent
-        assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
-        assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
-    }
-
-    private static void verifySpanAttributes(Map<String, AttributeValue> actualAttributeMap,
-                                             Map<String, AttributeValue> expectedMapValue) {
-        actualAttributeMap.forEach((attributeKey, attributeValue) ->
-            assertEquals(expectedMapValue.get(attributeKey), attributeValue));
-    }
-
     @BeforeEach
     public void setUp() {
         System.out.println("Running: setUp");
@@ -484,5 +445,44 @@ public class OpenTelemetryTracerTest {
         assertNotNull(spanContextOptional);
         SpanContext spanContext = (SpanContext) spanContextOptional.get();
         assertEquals(spanContext, invalidSpanContext);
+    }
+
+    private static void assertSpanWithExplicitParent(Context updatedContext, SpanId parentSpanId) {
+        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
+
+        // verify instance created of opentelemetry-sdk (test impl), span implementation
+        assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
+
+        final ReadableSpan recordEventsSpan =
+            (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
+
+        assertEquals(METHOD_NAME, recordEventsSpan.getName());
+
+        // verify span started with explicit parent
+        assertFalse(recordEventsSpan.toSpanData().getHasRemoteParent());
+        assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
+    }
+
+    private static void assertSpanWithRemoteParent(Context updatedContext, SpanId parentSpanId) {
+        assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
+
+        // verify instance created of openTelemetry-sdk (test impl), span implementation
+        assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
+
+        // verify span created with provided name and kind server
+        final ReadableSpan recordEventsSpan =
+            (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
+        assertEquals(METHOD_NAME, recordEventsSpan.getName());
+        assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
+
+        // verify span started with remote parent
+        assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
+        assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
+    }
+
+    private static void verifySpanAttributes(Map<String, AttributeValue> actualAttributeMap,
+        Map<String, AttributeValue> expectedMapValue) {
+        actualAttributeMap.forEach((attributeKey, attributeValue) ->
+            assertEquals(expectedMapValue.get(attributeKey), attributeValue));
     }
 }

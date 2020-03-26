@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-data-appconfiguration</artifactId>
-    <version>1.0.1</version>
+    <version>1.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -43,11 +43,8 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import io.opentelemetry.OpenTelemetry;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporters.logging.LoggingExporter;
-import io.opentelemetry.sdk.trace.TracerSdkFactory;
-import io.opentelemetry.sdk.trace.export.SimpleSpansProcessor;
+import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 
@@ -60,24 +57,24 @@ public class Sample {
     final static String CONNECTION_STRING = "<YOUR-CONNECTION_STRING>";
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
-    private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
 
     static {
-        TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Sample");
+        TRACER_SDK_PROVIDER = configureOpenTelemetryAndLoggingExporter();
+        TRACER = TRACER_SDK_PROVIDER.get("Sample");
     }
 
     public static void main(String[] args) {
         doClientWork();
-        TRACER_SDK_FACTORY.shutdown();
+        TRACER_SDK_PROVIDER.shutdown();
     }
 
-    private static TracerSdkFactory configureOpenTelemetryAndLoggingExporter() {
+    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
         LoggingExporter exporter = new LoggingExporter();
-        TracerSdkFactory tracerSdkFactory = (TracerSdkFactory) OpenTelemetry.getTracerFactory();
-        tracerSdkFactory.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
+        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
 
-        return tracerSdkFactory;
+        return tracerSdkProvider;
     }
 
     private static void doClientWork() {
