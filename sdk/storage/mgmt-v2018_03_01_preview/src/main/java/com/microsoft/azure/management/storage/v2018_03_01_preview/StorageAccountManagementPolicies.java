@@ -51,7 +51,7 @@ public interface StorageAccountManagementPolicies extends HasInner<StorageAccoun
     /**
      * The entirety of the StorageAccountManagementPolicies definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithStorageAccount, DefinitionStages.WithPolicy, DefinitionStages.WithCreate {
     }
 
     /**
@@ -70,8 +70,23 @@ public interface StorageAccountManagementPolicies extends HasInner<StorageAccoun
         interface WithStorageAccount {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive
+            * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only
+            * @return the next definition stage
             */
-            WithCreate withExistingStorageAccount(String resourceGroupName, String accountName);
+            WithPolicy withExistingStorageAccount(String resourceGroupName, String accountName);
+        }
+
+        /**
+         * The stage of the storageaccountmanagementpolicies definition allowing to specify Policy.
+         */
+        interface WithPolicy {
+           /**
+            * Specifies policy.
+            * @param policy The Storage Account ManagementPolicies Rules, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts
+            * @return the next definition stage
+            */
+            WithCreate withPolicy(Object policy);
         }
 
         /**
@@ -85,12 +100,24 @@ public interface StorageAccountManagementPolicies extends HasInner<StorageAccoun
     /**
      * The template for a StorageAccountManagementPolicies update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<StorageAccountManagementPolicies> {
+    interface Update extends Appliable<StorageAccountManagementPolicies>, UpdateStages.WithPolicy {
     }
 
     /**
      * Grouping of StorageAccountManagementPolicies update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the storageaccountmanagementpolicies update allowing to specify Policy.
+         */
+        interface WithPolicy {
+            /**
+             * Specifies policy.
+             * @param policy The Storage Account ManagementPolicies Rules, in JSON format. See more details in: https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts
+             * @return the next update stage
+             */
+            Update withPolicy(Object policy);
+        }
+
     }
 }
