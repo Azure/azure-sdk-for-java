@@ -20,7 +20,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -36,10 +35,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
  * topic on Azure Service Bus.
+ *
+ * @see ServiceBusClientBuilder
+ * @see ServiceBusReceiverClient See ServiceBusReceiverClient to communicate with a Service Bus resource using a
+ *     synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
-    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS =  new DeadLetterOptions();
+    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
@@ -97,7 +100,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @return The Service Bus resource this client interacts with.
      */
-    public String getServiceBusResourceName() {
+    public String getEntityPath() {
         return entityPath;
     }
 
@@ -196,6 +199,8 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * @return The {@link Mono} the finishes this operation on service bus resource.
      */
     public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+        Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
@@ -243,7 +248,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         Objects.requireNonNull(deadLetterOptions, "'deadLetterOptions' cannot be null.");
 
         return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
-                deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
+            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
 
     }
 
@@ -274,10 +279,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
-     * sequence number.
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using sequence
+     * number.
      *
      * @param sequenceNumbers of the messages to be received.
+     *
      * @return The {@link Flux} of deferred {@link ServiceBusReceivedMessage}.
      */
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
@@ -433,6 +439,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(getFullyQualifiedNamespace(), getServiceBusResourceName());
+        return new SessionErrorContext(getFullyQualifiedNamespace(), getEntityPath());
     }
 }

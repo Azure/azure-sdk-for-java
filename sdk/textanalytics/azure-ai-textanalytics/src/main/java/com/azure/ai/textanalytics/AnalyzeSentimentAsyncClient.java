@@ -180,7 +180,7 @@ class AnalyzeSentimentAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link AnalyzeSentimentResult} from a {@link SimpleResponse} of {@link SentimentResponse}.
      *
-     * @param documents A list of documents to recognize PII entities for.
+     * @param documents A list of documents to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

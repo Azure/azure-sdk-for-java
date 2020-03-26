@@ -132,7 +132,7 @@ known_content_issues:
   - ['sdk/eventhubs/README.md', '#3113']
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
-  - ['sdk/search/azure-search/swagger/readme.md', '#3113']
+  - ['sdk/search/azure-search-documents/swagger/readme.md', '#3113']
   - ['sdk/servicebus/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-common/README.md', '#3113']
@@ -146,7 +146,7 @@ known_content_issues:
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/storage/azure-storage-file-share/swagger/README.md','has other required sections']
-  - ['sdk/search/azure-search/src/test/README.md', '#3113']
+  - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']
 
 package_indexing_exclusion_list:

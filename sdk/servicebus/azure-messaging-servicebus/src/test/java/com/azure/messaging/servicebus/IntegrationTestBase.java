@@ -41,7 +41,9 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_CONNECTION_STRING";
 
     private static final String AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME";
-    private static final String AZURE_SERVICEBUS_RESOURCE_PATH = "AZURE_SERVICEBUS_RESOURCE_NAME";
+    private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
+    private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
     private ConnectionStringProperties properties;
     private String testName;
@@ -99,8 +101,16 @@ public abstract class IntegrationTestBase extends TestBase {
         return System.getenv(AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME);
     }
 
-    public String getResourcePath() {
-        return System.getenv(AZURE_SERVICEBUS_RESOURCE_PATH);
+    public String getQueueName() {
+        return System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+    }
+
+    public String getTopicName() {
+        return System.getenv(AZURE_SERVICEBUS_TOPIC_NAME);
+    }
+
+    public String getSubscriptionName() {
+        return System.getenv(AZURE_SERVICEBUS_SUBSCRIPTION_NAME);
     }
 
     /**
@@ -161,16 +171,14 @@ public abstract class IntegrationTestBase extends TestBase {
     protected ServiceBusClientBuilder createBuilder(boolean useCredentials) {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retry(RETRY_OPTIONS)
+            .retryOptions(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();
-            final String eventHubName = getResourcePath();
 
             Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
-            Assumptions.assumeTrue(eventHubName != null && !eventHubName.isEmpty(), AZURE_SERVICEBUS_RESOURCE_PATH + " variable needs to be set when using credentials.");
 
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("AZURE_CLIENT_ID"))
@@ -178,7 +186,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 .tenantId(System.getenv("AZURE_TENANT_ID"))
                 .build();
 
-            return builder.credential(fqdn, eventHubName, clientSecretCredential);
+            return builder.credential(fqdn, clientSecretCredential);
         } else {
             return builder.connectionString(getConnectionString());
         }
