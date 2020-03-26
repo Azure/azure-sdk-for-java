@@ -14,9 +14,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })

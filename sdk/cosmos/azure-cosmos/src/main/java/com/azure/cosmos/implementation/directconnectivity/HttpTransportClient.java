@@ -705,7 +705,7 @@ public class HttpTransportClient extends TransportClient {
                     List<String> lsnValues = null;
                     String[] headerValues = response.headers().values(WFConstants.BackendHeaders.LSN);
                     if (headerValues != null) {
-                        lsnValues = com.google.common.collect.Lists.newArrayList(headerValues);
+                        lsnValues = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
 
                     if (lsnValues != null) {
@@ -717,7 +717,8 @@ public class HttpTransportClient extends TransportClient {
                     List<String> partitionKeyRangeIdValues = null;
                     headerValues = response.headers().values(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
                     if (headerValues != null) {
-                        partitionKeyRangeIdValues = com.google.common.collect.Lists.newArrayList(headerValues);
+                        partitionKeyRangeIdValues
+                            = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
                     if (partitionKeyRangeIdValues != null) {
                         responsePartitionKeyRangeId = Lists.firstOrDefault(partitionKeyRangeIdValues, null);
@@ -938,7 +939,8 @@ public class HttpTransportClient extends TransportClient {
                             List<String> values = null;
                             headerValues = response.headers().values(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
                             if (headerValues != null) {
-                                values = com.google.common.collect.Lists.newArrayList(headerValues);
+                                values
+                                    = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                             }
                             if (values == null || values.isEmpty()) {
                                 logger.warn("RequestRateTooLargeException being thrown without RetryAfter.");

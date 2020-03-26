@@ -382,7 +382,7 @@ public final class ServiceBusClientBuilder {
          * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
          */
         public ServiceBusSenderClient buildClient() {
-            return new ServiceBusSenderClient(buildAsyncClient());
+            return new ServiceBusSenderClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 
