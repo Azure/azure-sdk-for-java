@@ -49,7 +49,7 @@ public class CustomPatternTokenizerSerializer extends JsonSerializer<PatternToke
     @Override
     public void serialize(final PatternTokenizer tokenizer, final JsonGenerator jsonGenerator,
         final SerializerProvider serializerProvider) throws IOException {
-        if(tokenizer.getName() != null) {
+        if (tokenizer.getName() != null) {
             jsonGenerator.writeStringField("name", tokenizer.getName());
         }
         if (tokenizer.getPattern() != null) {
