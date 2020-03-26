@@ -7,7 +7,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 
 import java.time.Duration;
 

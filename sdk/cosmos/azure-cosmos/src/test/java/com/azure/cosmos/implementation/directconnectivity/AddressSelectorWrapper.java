@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.base.Predicates;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Condition;
