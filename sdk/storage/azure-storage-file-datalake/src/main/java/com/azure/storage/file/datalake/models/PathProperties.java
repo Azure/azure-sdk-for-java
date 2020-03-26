@@ -114,8 +114,7 @@ public class PathProperties {
         if (this.metadata == null) {
             this.isDirectory = false;
         } else {
-            this.isDirectory = String.valueOf(true)
-                .equalsIgnoreCase(metadata.get(Constants.HeaderConstants.DIRECTORY_METADATA_KEY));
+            this.isDirectory = Boolean.parseBoolean(metadata.get(Constants.HeaderConstants.DIRECTORY_METADATA_KEY));
         }
     }
     /**
