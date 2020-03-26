@@ -1,5 +1,8 @@
 # Release History
 
+## 4.1.1 (2020-03-25)
+- Update azure-core dependency to version 1.3.0.
+
 ## 4.1.0 (2020-01-07)
 - Fixes the logic of `getKeyId()` method in `KeyEncryptionKeyClient` and `KeyEncryptionKeyAsyncClient` to ensure key id is available in all scenarios.
 - Update azure-core dependency to version 1.2.0.
