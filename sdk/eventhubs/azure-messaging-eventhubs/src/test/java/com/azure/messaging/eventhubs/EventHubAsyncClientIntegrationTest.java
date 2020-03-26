@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -70,7 +71,7 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventHubConsumerAsyncClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(2)
+            .prefetchCount(DEFAULT_PREFETCH_COUNT)
             .transportType(transportType)
             .buildAsyncConsumerClient();
 
