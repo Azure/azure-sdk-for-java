@@ -146,7 +146,7 @@ class APISpec extends Specification {
             .httpClient(getHttpClient())
 
         if (testMode != TestMode.PLAYBACK) {
-            if (recordLiveMode) {
+            if (testMode == TestMode.RECORD) {
                 builder.addPolicy(interceptorManager.getRecordPolicy())
             }
 

@@ -13,8 +13,11 @@ import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
 import com.azure.core.util.Configuration
+import com.azure.core.util.Context
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
+import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient
 import com.azure.storage.file.share.specialized.ShareLeaseClient
@@ -24,7 +27,6 @@ import spock.lang.Specification
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
-import java.time.Duration
 import java.time.OffsetDateTime
 
 class APISpec extends Specification {
@@ -112,11 +114,12 @@ class APISpec extends Specification {
     def cleanup() {
         interceptorManager.close()
         if (getTestMode() != TestMode.PLAYBACK) {
-            ShareServiceClient cleanupFileServiceClient = new ShareServiceClientBuilder()
+            def cleanupFileServiceClient = new ShareServiceClientBuilder()
+                .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
                 .connectionString(connectionString)
                 .buildClient()
             cleanupFileServiceClient.listShares(new ListSharesOptions().setPrefix(methodName.toLowerCase()),
-                Duration.ofSeconds(30), null).each {
+                null, Context.NONE).each {
                 cleanupFileServiceClient.deleteShare(it.getName())
             }
         }
