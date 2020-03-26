@@ -48,6 +48,16 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
+ *
+ * <p><strong>Create an instance of sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation}
+ *
+ * <p><strong>Create a sender and send messages to Service Bus topic and queue</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
+ *
+ * <p><strong>Publish messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptions-int}
+ *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements Closeable {

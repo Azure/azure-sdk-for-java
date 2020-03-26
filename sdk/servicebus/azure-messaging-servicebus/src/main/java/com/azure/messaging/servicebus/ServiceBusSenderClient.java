@@ -13,9 +13,17 @@ import java.util.Objects;
  * A <b>synchronous</b> sender responsible for sending {@link ServiceBusMessage} to  specific queue or topic on
  * Azure Service Bus.
  *
- * @see ServiceBusClientBuilder
- * @see ServiceBusSenderAsyncClient See ServiceBusSenderAsyncClient to communicate with a Service Bus resource using
- *     an asynchronous client.
+ * <p><strong>Create an instance of sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.instantiation}
+ *
+ * <p><strong>Create a sender and send messages to Service Bus topic and queue</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch}
+ *
+ * <p><strong>Publish messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateBatchOptions-int}
+ *
+ * @see ServiceBusClientBuilder#buildSenderClientBuilder()
+ * @see ServiceBusSenderAsyncClient To communicate with a Service Bus resource using an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public class ServiceBusSenderClient implements AutoCloseable {
