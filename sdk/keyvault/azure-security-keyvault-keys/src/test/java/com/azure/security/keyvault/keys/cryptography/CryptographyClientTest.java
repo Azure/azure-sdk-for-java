@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.Context;
@@ -13,7 +12,6 @@ import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
-import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
@@ -41,18 +39,18 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     private void initializeKeyClient(HttpClient httpClient) {
         pipeline = getHttpPipeline(httpClient, KeyServiceVersion.getLatest());
         client = new KeyClientBuilder()
-            .pipeline(pipeline)
-            .vaultUrl(getEndpoint())
-            .buildClient();
+                     .pipeline(pipeline)
+                     .vaultUrl(getEndpoint())
+                     .buildClient();
     }
 
     private CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
         pipeline = getHttpPipeline(httpClient, serviceVersion);
         return new CryptographyClientBuilder()
-            .pipeline(pipeline)
-            .serviceVersion(serviceVersion)
-            .keyIdentifier(keyId)
-            .buildClient();
+                   .pipeline(pipeline)
+                   .serviceVersion(serviceVersion)
+                   .keyIdentifier(keyId)
+                   .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -82,11 +80,6 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
                 assertArrayEquals(decryptedText, plainText);
             }
-
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
     }
 
@@ -118,10 +111,6 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
                 assertArrayEquals(decryptedKey, plainText);
             }
 
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
     }
 
@@ -153,11 +142,6 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
 
                 assertTrue(verifyStatus);
             }
-
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         });
     }
 
@@ -177,7 +161,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
         curveToSpec.put(KeyCurveName.P_521, "secp521r1");
         curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
 
-        List<KeyCurveName> curveList =  Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
+        List<KeyCurveName> curveList = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
         Provider provider = Security.getProvider("SunEC");
         for (KeyCurveName crv : curveList) {
 
@@ -205,50 +189,7 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
             if (!interceptorManager.isPlaybackMode()) {
                 assertTrue(verifyStatus);
             }
-
-            client.beginDeleteKey(keyName);
-            pollOnKeyDeletion(keyName);
-            client.purgeDeletedKey(keyName);
-            pollOnKeyPurge(keyName);
         }
 
-    }
-
-    private void pollOnKeyDeletion(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-                continue;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Key %s not found \n", keyName);
-    }
-
-    private void pollOnKeyPurge(String keyName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 10) {
-            DeletedKey deletedKey = null;
-            try {
-                deletedKey = client.getDeletedKey(keyName);
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedKey != null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-                continue;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Key %s was not purged \n", keyName);
     }
 }

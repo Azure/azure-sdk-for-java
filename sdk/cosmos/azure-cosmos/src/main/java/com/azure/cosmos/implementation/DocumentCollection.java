@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.JsonSerializable;
@@ -10,7 +11,6 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang3.StringUtils;
 
 import static com.azure.cosmos.models.ModelBridgeInternal.populatePropertyBagJsonSerializable;
 import static com.azure.cosmos.BridgeInternal.setProperty;
