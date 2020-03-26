@@ -42,15 +42,13 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
      * @throws IllegalArgumentException if an message is too large.
      */
     public void sendBatch() {
-        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch
-        // The required parameter is a way to authenticate with Service Bus using credentials.
-        // The connectionString provides a way to authenticate with Service Bus.
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
+            .connectionString("fake-string")
             .buildSenderClientBuilder()
-            .entityName("<QUEUE-NAME>")
             .buildClient();
+
+        // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch
+
         List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage("test-1".getBytes(UTF_8)),
             new ServiceBusMessage("test-2".getBytes(UTF_8)));
 

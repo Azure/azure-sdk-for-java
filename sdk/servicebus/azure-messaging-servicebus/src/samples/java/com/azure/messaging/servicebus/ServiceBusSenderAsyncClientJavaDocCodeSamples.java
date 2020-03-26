@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -38,6 +39,24 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippet demonstrating how to create an {@link ServiceBusSenderAsyncClient}.
+     */
+    public void instantiateWithDefaultCredential() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential
+        // The required parameter is a way to authenticate with Service Bus using credentials.
+        // The connectionString provides a way to authenticate with Service Bus.
+        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+            .credential("<<fully-qualified-namespace>>",
+                new DefaultAzureCredentialBuilder().build())
+            .buildSenderClientBuilder()
+            .entityName("<QUEUE-NAME>")
+            .buildAsyncClient();
+        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential
+
+        sender.close();
+    }
+
+    /**
      * Code snippet demonstrating how to send a batch to Service Bus queue or topic.
      */
     public void sendBatch() {
@@ -48,7 +67,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
             .buildSenderClientBuilder()
-            .entityName("<QUEUE-NAME>")
+            .entityName("<QUEUE OR TOPIC NAME>")
             .buildAsyncClient();
 
         // Creating a batch without options set, will allow for automatic routing of events to any partition.
@@ -57,7 +76,6 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             batch.tryAdd(new ServiceBusMessage("test-2".getBytes(UTF_8)));
             return sender.send(batch);
         }).subscribe(unused -> {
-
         },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
@@ -80,7 +98,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         final ServiceBusMessage secondMessage = new ServiceBusMessage("98".getBytes(UTF_8));
         secondMessage.getProperties().put("telemetry", "cpu-temperature");
 
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptions-int
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize
         final Flux<ServiceBusMessage> telemetryMessages = Flux.just(firstMessage, secondMessage);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
@@ -117,6 +135,6 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
                     sender.send(batch).block();
                 }
             });
-        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptions-int
+        // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize
     }
 }

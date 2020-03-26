@@ -16,10 +16,10 @@ import java.util.Objects;
  * <p><strong>Create an instance of sender</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.instantiation}
  *
- * <p><strong>Create a sender and send messages to Service Bus topic and queue</strong></p>
+ * <p><strong>Send messages to a Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch}
  *
- * <p><strong>Publish messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
+ * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateBatchOptions-int}
  *
  * @see ServiceBusClientBuilder#buildSenderClientBuilder()
