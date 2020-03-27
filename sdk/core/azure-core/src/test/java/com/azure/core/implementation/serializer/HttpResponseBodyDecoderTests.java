@@ -13,6 +13,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.UnixTime;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -263,6 +265,25 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of(stringListResponse, stringListDecodeData, list),
             Arguments.of(mapStringStringResponse, mapStringStringDecodeData, map)
         );
+    }
+
+    @Test
+    public void decodeListBase64UrlResponse() {
+        ParameterizedType parameterizedType = mockParameterizedType(List.class, byte[].class);
+        HttpResponseDecodeData decodeData = mock(HttpResponseDecodeData.class);
+        when(decodeData.getReturnType()).thenReturn(parameterizedType);
+        when(decodeData.getReturnValueWireType()).thenReturn(Base64Url.class);
+        List<Base64Url> base64Urls = Arrays.asList(new Base64Url("base"), new Base64Url("64"));
+        HttpResponse response = new MockHttpResponse(GET_REQUEST, 200, base64Urls);
+
+        StepVerifier.create(HttpResponseBodyDecoder.decode(null, response, new JacksonAdapter(), decodeData))
+            .assertNext(actual -> {
+                assertTrue(actual instanceof List);
+                @SuppressWarnings("unchecked") List<byte[]> decoded = (List<byte[]>) actual;
+                assertEquals(2, decoded.size());
+                assertArrayEquals(base64Urls.get(0).decodedBytes(), decoded.get(0));
+                assertArrayEquals(base64Urls.get(1).decodedBytes(), decoded.get(1));
+            }).verifyComplete();
     }
 
     @Test

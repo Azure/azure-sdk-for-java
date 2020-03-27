@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
+import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -177,7 +178,11 @@ final class HttpResponseBodyDecoder {
         Objects.requireNonNull(wireType);
 
         Type wireResponseType = resultType;
-        if (resultType == OffsetDateTime.class) {
+        if (resultType == byte[].class) {
+            if (wireType == Base64Url.class) {
+                wireResponseType = Base64Url.class;
+            }
+        } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 wireResponseType = DateTimeRfc1123.class;
             } else if (wireType == UnixTime.class) {
@@ -234,7 +239,12 @@ final class HttpResponseBodyDecoder {
      */
     private static Object convertToResultType(Object wireResponse, Type resultType, Type wireType) {
         Object result = wireResponse;
-        if (resultType == OffsetDateTime.class) {
+
+        if (resultType == byte[].class) {
+            if (wireType == Base64Url.class) {
+                result = ((Base64Url) wireResponse).decodedBytes();
+            }
+        } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 result = ((DateTimeRfc1123) wireResponse).getDateTime();
             } else if (wireType == UnixTime.class) {
