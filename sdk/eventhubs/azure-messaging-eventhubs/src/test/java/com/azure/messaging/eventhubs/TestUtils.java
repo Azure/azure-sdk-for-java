@@ -20,7 +20,10 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
@@ -122,9 +125,10 @@ public final class TestUtils {
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }
 
-    public static Flux<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
-        return Flux.range(0, numberOfEvents)
-            .map(number -> getEvent("Event " + number, messageTrackingValue, number));
+    public static List<EventData> getEvents(int numberOfEvents, String messageTrackingValue) {
+        return IntStream.range(0, numberOfEvents)
+            .mapToObj(number -> getEvent("Event " + number, messageTrackingValue, number))
+            .collect(Collectors.toList());
     }
 
     static EventData getEvent(String body, String messageTrackingValue, int position) {

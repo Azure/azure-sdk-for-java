@@ -93,7 +93,7 @@ public class ProxySendTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
         final EventHubProducerAsyncClient producer = builder.buildAsyncProducerClient();
-        final Flux<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
+        final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
         final PartitionProperties information = producer.getPartitionProperties(PARTITION_ID).block();
 
         Assertions.assertNotNull(information, "Should receive partition information.");

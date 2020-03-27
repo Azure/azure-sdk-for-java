@@ -133,7 +133,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int numberOfEvents = 15;
         final String partitionId = "1";
-        final List<EventData> events = getEventsAsList(numberOfEvents);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
@@ -165,8 +165,8 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final int receiveNumber = 10;
         final String partitionId = "1";
 
-        final List<EventData> events = getEventsAsList(numberOfEvents);
-        final List<EventData> events2 = getEventsAsList(secondSetOfEvents);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID);
+        final List<EventData> events2 = TestUtils.getEvents(secondSetOfEvents, MESSAGE_TRACKING_ID);
 
         final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
         final SendOptions sendOptions = new SendOptions().setPartitionId(partitionId);
@@ -199,7 +199,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         final int receiveNumber = 10;
         final String partitionId = "1";
 
-        final List<EventData> events = getEventsAsList(numberOfEvents);
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID);
 
         final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now());
         final EventHubConsumerClient consumer = client.createConsumer(DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
@@ -293,9 +293,5 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(consumer);
         }
-    }
-
-    private static List<EventData> getEventsAsList(int numberOfEvents) {
-        return TestUtils.getEvents(numberOfEvents, MESSAGE_TRACKING_ID).collectList().block();
     }
 }
