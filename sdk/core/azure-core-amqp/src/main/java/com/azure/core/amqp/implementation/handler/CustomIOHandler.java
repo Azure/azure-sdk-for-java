@@ -22,7 +22,7 @@ public class CustomIOHandler extends IOHandler {
         final Transport transport = event.getTransport();
         final Connection connection = event.getConnection();
 
-        logger.info("onTransportClosed name[{}], hostname[{}]",
+        logger.info("onTransportClosed connectionId[{}], hostname[{}]",
             connectionId, (connection != null ? connection.getHostname() : "n/a"));
 
         if (transport != null && connection != null && connection.getTransport() != null) {
