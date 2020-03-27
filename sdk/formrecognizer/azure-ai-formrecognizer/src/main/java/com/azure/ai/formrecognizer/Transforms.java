@@ -11,14 +11,14 @@ import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.Element;
+import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FieldValue;
 import com.azure.ai.formrecognizer.models.FloatValue;
 import com.azure.ai.formrecognizer.models.IntegerValue;
 import com.azure.ai.formrecognizer.models.LineElement;
-import com.azure.ai.formrecognizer.models.PageInfo;
+import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
-import com.azure.ai.formrecognizer.models.ReceiptPageResult;
 import com.azure.ai.formrecognizer.models.ReceiptType;
 import com.azure.ai.formrecognizer.models.StringValue;
 import com.azure.ai.formrecognizer.models.TextLanguage;
@@ -34,66 +34,66 @@ import java.util.regex.Pattern;
  * Helper class to convert service level models to SDK exposed models.
  */
 final class Transforms {
-    private final static ClientLogger LOGGER = new ClientLogger(Transforms.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
     private static final Pattern COMPILE = Pattern.compile("[^0-9]+");
 
     private Transforms() {
     }
 
-    static IterableStream<ReceiptPageResult> toReceipt(AnalyzeResult analyzeResult) {
+    static IterableStream<ExtractedReceipt> toReceipt(AnalyzeResult analyzeResult) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResult = analyzeResult.getDocumentResults();
-        List<ReceiptPageResult> receiptPageResultList = new ArrayList<>();
+        List<ExtractedReceipt> extractedReceiptList = new ArrayList<>();
 
         for (int i = 0; i < readResults.size(); i++) {
             ReadResult readResultItem = readResults.get(i);
-            PageInfo pageInfo = getPageInfo(readResultItem);
-            ReceiptPageResult receiptPageResultItem = new ReceiptPageResult(pageInfo);
+            PageMetadata pageMetadata = getPageInfo(readResultItem);
+            ExtractedReceipt extractedReceiptItem = new ExtractedReceipt(pageMetadata);
 
             DocumentResult documentResultItem = documentResult.get(i);
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 switch (key) {
                     case "ReceiptType":
-                        receiptPageResultItem.setReceiptType(new ReceiptType(fieldValue.getText(),
+                        extractedReceiptItem.setReceiptType(new ReceiptType(fieldValue.getText(),
                             fieldValue.getConfidence()));
                         break;
                     case "MerchantName":
-                        receiptPageResultItem.setMerchantName(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setMerchantName(setFieldValue(fieldValue, readResults));
                         break;
                     case "MerchantAddress":
-                        receiptPageResultItem.setMerchantAddress(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setMerchantAddress(setFieldValue(fieldValue, readResults));
                         break;
                     case "MerchantPhoneNumber":
-                        receiptPageResultItem.setMerchantPhoneNumber(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setMerchantPhoneNumber(setFieldValue(fieldValue, readResults));
                         break;
                     case "Subtotal":
-                        receiptPageResultItem.setSubtotal(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setSubtotal(setFieldValue(fieldValue, readResults));
                         break;
                     case "Tax":
-                        receiptPageResultItem.setTax(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTax(setFieldValue(fieldValue, readResults));
                         break;
                     case "Tip":
-                        receiptPageResultItem.setTip(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTip(setFieldValue(fieldValue, readResults));
                         break;
                     case "Total":
-                        receiptPageResultItem.setTotal(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTotal(setFieldValue(fieldValue, readResults));
                         break;
                     case "TransactionDate":
-                        receiptPageResultItem.setTransactionDate(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTransactionDate(setFieldValue(fieldValue, readResults));
                         break;
                     case "TransactionTime":
-                        receiptPageResultItem.setTransactionTime(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTransactionTime(setFieldValue(fieldValue, readResults));
                         break;
                     case "Items":
-                        receiptPageResultItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray(), readResults));
+                        extractedReceiptItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray(), readResults));
                         break;
                     default:
                         break;
                 }
             });
-            receiptPageResultList.add(receiptPageResultItem);
+            extractedReceiptList.add(extractedReceiptItem);
         }
-        return new IterableStream<>(receiptPageResultList);
+        return new IterableStream<>(extractedReceiptList);
     }
 
     private static FieldValue<?> setFieldValue(com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue,
@@ -121,8 +121,8 @@ final class Transforms {
         return value;
     }
 
-    private static PageInfo getPageInfo(ReadResult readResultItem) {
-        return new PageInfo(TextLanguage.fromString(readResultItem.getLanguage().toString()),
+    private static PageMetadata getPageInfo(ReadResult readResultItem) {
+        return new PageMetadata(TextLanguage.fromString(readResultItem.getLanguage().toString()),
             readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
             readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()));
     }

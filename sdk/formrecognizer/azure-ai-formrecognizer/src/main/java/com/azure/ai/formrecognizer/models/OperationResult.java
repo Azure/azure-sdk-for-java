@@ -7,6 +7,9 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Objects;
 
+/**
+ * The OperationResult model.
+ */
 @Immutable
 public class OperationResult {
     /**

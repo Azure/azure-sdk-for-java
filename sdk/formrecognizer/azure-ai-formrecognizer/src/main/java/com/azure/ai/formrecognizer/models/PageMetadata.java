@@ -6,10 +6,10 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The PageInfo model.
+ * The PageMetadata model.
  */
 @Immutable
-public class PageInfo {
+public class PageMetadata {
     /*
      * The detected language on the page overall.
      */
@@ -43,7 +43,7 @@ public class PageInfo {
     private final DimensionUnit unit;
 
     /**
-     * Constructs a PageInfo model.
+     * Constructs a PageMetadata model.
      *
      * @param language The detected language on the page overall.
      * @param pageHeight The height of the image/PDF in pixels/inches, respectively.
@@ -52,9 +52,9 @@ public class PageInfo {
      * @param textAngle The orientation of the text in clockwise direction, measured in degrees between (-180, 180].
      * @param unit The unit used by the width, height and boundingBox properties.
      */
-    public PageInfo(final TextLanguage language, final double pageHeight, final int pageNumber,
-                    final double pageWidth, final double textAngle,
-        final DimensionUnit unit) {
+    public PageMetadata(final TextLanguage language, final double pageHeight, final int pageNumber,
+                        final double pageWidth, final double textAngle,
+                        final DimensionUnit unit) {
         this.language = language;
         this.pageHeight = pageHeight;
         this.pageNumber = pageNumber;

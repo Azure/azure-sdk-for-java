@@ -14,17 +14,17 @@ public class ReceiptItem {
     /*
      * Name of the field value.
      */
-    public FieldValue<?> name;
+    private FieldValue<?> name;
 
     /*
      * Quantity of the field value.
      */
-    public FieldValue<?> quantity;
+    private FieldValue<?> quantity;
 
     /*
      * Total price of the field value.
      */
-    public FieldValue<?> totalPrice;
+    private FieldValue<?> totalPrice;
 
     /**
      * Gets the name of the field value.

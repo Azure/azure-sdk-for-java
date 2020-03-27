@@ -8,14 +8,12 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -43,8 +41,8 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #apiKey(FormRecognizerApiKeyCredential) apiKey(FormRecognizerApiKeyCredential)} or
- * {@link #credential(TokenCredential) credential(TokenCredential)} give the builder access credential.
+ * {@link #apiKey(FormRecognizerApiKeyCredential) apiKey(FormRecognizerApiKeyCredential)} gives
+ * the builder access credential.
  * </p>
  * TODO: add code snippets
  * <p>
@@ -61,14 +59,12 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
-    private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
+    private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
 
     private final ClientLogger logger = new ClientLogger(FormRecognizerClientBuilder.class);
     private final List<HttpPipelinePolicy> policies;
@@ -78,7 +74,6 @@ public final class FormRecognizerClientBuilder {
 
     private String endpoint;
     private FormRecognizerApiKeyCredential credential;
-    private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -93,7 +88,7 @@ public final class FormRecognizerClientBuilder {
         policies = new ArrayList<>();
         httpLogOptions = new HttpLogOptions();
 
-        Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
+        Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
@@ -154,10 +149,7 @@ public final class FormRecognizerClientBuilder {
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
             // Authentications
-            if (tokenCredential != null) {
-                // User token based policy
-                policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-            } else if (credential != null) {
+            if (credential != null) {
                 policies.add(new ApiKeyCredentialPolicy(credential));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
@@ -228,19 +220,6 @@ public final class FormRecognizerClientBuilder {
      */
     public FormRecognizerClientBuilder apiKey(FormRecognizerApiKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
-        return this;
-    }
-
-    /**
-     * Sets the {@link TokenCredential} used to authenticate HTTP requests.
-     *
-     * @param tokenCredential TokenCredential used to authenticate HTTP requests.
-     * @return The updated FormRecognizerClientImplBuilder object.
-     * @throws NullPointerException If {@code tokenCredential} is {@code null}.
-     */
-    public FormRecognizerClientBuilder credential(TokenCredential tokenCredential) {
-        Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
-        this.tokenCredential = tokenCredential;
         return this;
     }
 

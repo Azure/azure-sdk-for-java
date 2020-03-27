@@ -6,7 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * Creates an element of {@link ElementType#WORD}
+ * Creates an element of type {@link ElementType#WORD}
  */
 @Immutable
 public class WordElement extends Element {

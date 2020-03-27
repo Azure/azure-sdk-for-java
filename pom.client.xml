@@ -475,6 +475,10 @@
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
+                <title>Azure Form Recognizer</title>
+                <packages>com.azure.ai.formrecognizer*</packages>
+              </group>
+              <group>
                 <title>Azure Identity</title>
                 <packages>com.azure.identity*</packages>
               </group>
@@ -530,10 +534,6 @@
               <group>
                 <title>Azure Text Analytics</title>
                 <packages>com.azure.ai.textanalytics*</packages>
-              </group>
-              <group>
-                <title>Azure Form Recognizer</title>
-                <packages>com.azure.ai.formrecognizer*</packages>
               </group>
             </groups>
             <links>

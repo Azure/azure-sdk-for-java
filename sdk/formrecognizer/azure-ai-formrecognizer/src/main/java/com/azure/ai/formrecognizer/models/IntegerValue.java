@@ -5,7 +5,11 @@ package com.azure.ai.formrecognizer.models;
 
 import java.util.List;
 
+/**
+ * The IntegerValue model.
+ */
 public class IntegerValue extends FieldValue<Integer> {
+
     /*
      * Integer value.
      */

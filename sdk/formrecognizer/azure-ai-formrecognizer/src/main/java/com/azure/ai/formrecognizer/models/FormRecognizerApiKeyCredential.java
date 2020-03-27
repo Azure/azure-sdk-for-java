@@ -11,8 +11,7 @@ import java.util.Objects;
  * API key credential that shared across cognitive services, or restrict to single service.
  *
  * <p>Be able to rotate an existing API key</p>
- * {@codesnippet com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential}
- *
+ * TODO: codesnippet
  */
 public final class FormRecognizerApiKeyCredential {
     private final ClientLogger logger = new ClientLogger(FormRecognizerApiKeyCredential.class);

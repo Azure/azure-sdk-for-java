@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
  * Utility method class.
  */
 public class Utility {
-    private static final ClientLogger logger = new ClientLogger(Utility.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
 
     /**
      * A utility method for converting the input stream to Flux of ByteBuffer.
@@ -29,7 +29,7 @@ public class Utility {
         try {
             return Flux.just(toByteArray(data));
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 

@@ -10,16 +10,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for LengthUnit.
+ * Defines values for DimensionUnit.
  */
 public final class DimensionUnit extends ExpandableStringEnum<DimensionUnit> {
     /**
-     * Static value en for Language.
+     * Static value pixel for DimensionUnit.
      */
     public static final DimensionUnit PIXEL = fromString("pixel");
 
     /**
-     * Static value en for Language.
+     * Static value inch for DimensionUnit.
      */
     public static final DimensionUnit INCH = fromString("inch");
 
@@ -27,7 +27,7 @@ public final class DimensionUnit extends ExpandableStringEnum<DimensionUnit> {
      * Parses a serialized value to a {@code DimensionUnit} instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed LengthUnit object, or null if unable to parse.
+     * @return the parsed DimensionUnit object, or null if unable to parse.
      */
     @JsonCreator
     public static DimensionUnit fromString(String value) {

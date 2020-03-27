@@ -8,9 +8,9 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncHeaders;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
+import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.ReceiptPageResult;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
@@ -39,7 +39,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * and linked entities of a text input or list of test inputs.
  *
  * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
+ * TODO: codesnippet
  *
  * <p>View {@link FormRecognizerClientBuilder} for additional ways to construct the client.</p>
  *
@@ -77,6 +77,19 @@ public final class FormRecognizerAsyncClient {
      * model.
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     *
+     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
+     * been cancelled.
+     */
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl) {
+        return beginExtractReceipt(sourceUrl, false, null);
+    }
+
+    /**
+     * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
+     * model.
+     *
+     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * one second is used.
@@ -84,11 +97,11 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ReceiptPageResult>> beginExtractReceipt(String sourceUrl,
-                                                                                              boolean includeTextDetails,
-                                                                                              Duration pollInterval) {
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl,
+                                                                                             boolean includeTextDetails,
+                                                                                             Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
-        return new PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>(interval,
+        return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -109,11 +122,11 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>
-    beginExtractReceipt(Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
-                        Duration pollInterval) {
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(
+        Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
+        Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
-        return new PollerFlux<OperationResult, IterableStream<ReceiptPageResult>>(interval,
+        return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -153,14 +166,15 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-    extractReceiptPollOperation() {
+        extractReceiptPollOperation() {
         return (pollingContext) -> {
             PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
             String modelId = operationResultPollResponse.getValue().getResultId();
             try {
                 UUID resultUid = UUID.fromString(modelId);
                 return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse, operationResultPollResponse));
+                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
+                        operationResultPollResponse));
             } catch (HttpResponseException e) {
                 logger.logExceptionAsError(e);
                 return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
@@ -168,8 +182,8 @@ public final class FormRecognizerAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<ReceiptPageResult>>>
-    fetchExtractReceiptResult() {
+    private Function<PollingContext<OperationResult>, Mono<IterableStream<ExtractedReceipt>>>
+        fetchExtractReceiptResult() {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
@@ -192,7 +206,8 @@ public final class FormRecognizerAsyncClient {
                 status = LongRunningOperationStatus.FAILED;
                 break;
             default:
-                status = LongRunningOperationStatus.fromString(analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
+                status = LongRunningOperationStatus.fromString(
+                    analyzeOperationResultSimpleResponse.getValue().getStatus().toString(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));

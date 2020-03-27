@@ -3,10 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.ReceiptPageResult;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -25,34 +25,38 @@ public class ExtractPrebuiltReceiptSync {
     /**
      * Sample for extracting receipt information using input stream.
      *
-     * @param args
-     * @throws IOException
+     * @param args Unused. Arguments to the program.
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
 
         final FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new FormRecognizerApiKeyCredential("0679e81143284edb941ed00628dcb689"))
-            .endpoint("https://form-recognizer-canary.cognitiveservices.azure.com/")
+            .apiKey(new FormRecognizerApiKeyCredential(""))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("/C:/Users/savaity/Downloads/fr-training-with-labels/contoso-receipt.png");
+        File sourceFile = new File("///contoso-receipt.png");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
-        SyncPoller<OperationResult, IterableStream<ReceiptPageResult>> analyzeReceiptPoller =
+        SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
             client.beginExtractReceipt(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
                 Duration.ofSeconds(4));
 
-        IterableStream<ReceiptPageResult> receiptPageResults = analyzeReceiptPoller.getFinalResult();
+        IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 
-        for (ReceiptPageResult receiptPageResultItem : receiptPageResults) {
-            System.out.printf("Page Number %s%n", receiptPageResultItem.getPageInfo().getPageNumber());
-            System.out.printf("Merchant Name %s%n", receiptPageResultItem.getMerchantName().getText());
-            System.out.printf("Merchant Address %s%n", receiptPageResultItem.getMerchantAddress().getText());
-            System.out.printf("Merchant Phone Number %s%n", receiptPageResultItem.getMerchantPhoneNumber().getText());
-            System.out.printf("Total: %s%n", receiptPageResultItem.getTotal().getText());
+        for (ExtractedReceipt extractedReceiptItem : receiptPageResults) {
+            System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
+            System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
+            System.out.printf("Merchant Name Value: %s%n", extractedReceiptItem.getMerchantName().getValue());
+            System.out.printf("Merchant Address %s%n", extractedReceiptItem.getMerchantAddress().getText());
+            System.out.printf("Merchant Address Value: %s%n", extractedReceiptItem.getMerchantAddress().getValue());
+            System.out.printf("Merchant Phone Number %s%n", extractedReceiptItem.getMerchantPhoneNumber().getText());
+            System.out.printf("Merchant Phone Number Value: %s%n", extractedReceiptItem.getMerchantPhoneNumber().getValue());
+            System.out.printf("Total: %s%n", extractedReceiptItem.getTotal().getText());
+            System.out.printf("Total Value: %s%n", extractedReceiptItem.getTotal().getValue());
             System.out.printf("Receipt Items: %n");
-            receiptPageResultItem.getReceiptItems().forEach(receiptItem -> {
+            extractedReceiptItem.getReceiptItems().forEach(receiptItem -> {
                 System.out.printf("Name: %s%n", receiptItem.getName().getText());
                 System.out.printf("Quantity: %s%n", receiptItem.getQuantity() == null
                     ? "N/A" : receiptItem.getQuantity().getText());

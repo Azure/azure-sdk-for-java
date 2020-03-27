@@ -38,14 +38,14 @@ public abstract class FieldValue<T> extends RawItem {
      *
      * @return The T field value
      */
-    abstract T getValue();
+    public abstract T getValue();
 
     /**
      * Sets the field value.
      *
      * @param value The value T.
      */
-    abstract void setValue(T value);
+    public abstract void setValue(T value);
 
     /**
      * Get the confidence property: Confidence score.

@@ -15,15 +15,15 @@ public class BoundingBox {
     /**
      * Coordinates specified relative to the top-left of the element in {@link Point}.
      */
-    private List<Point> coordinates;
+    private final List<Point> points;
 
     /**
      * List of {@link Point points} specifying relative coordinates of the element.
      *
-     * @param coordinates list of {@link Point points}
+     * @param points list of {@link Point points}
      */
-    public BoundingBox(final List<Point> coordinates) {
-        this.coordinates = coordinates;
+    public BoundingBox(final List<Point> points) {
+        this.points = points;
     }
 
     /**
@@ -31,7 +31,7 @@ public class BoundingBox {
      *
      * @return List of {@link Point points}.
      */
-    public List<Point> getCoordinates() {
-        return coordinates;
+    public List<Point> getPoints() {
+        return points;
     }
 }

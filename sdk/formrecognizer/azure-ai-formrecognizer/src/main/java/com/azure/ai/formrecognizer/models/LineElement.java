@@ -5,15 +5,16 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
-@Immutable
 /**
- * Creates an element of {@link ElementType#WORD}
+ * Creates an element of {@link ElementType#LINE}
  */
+@Immutable
 public class LineElement extends Element {
+
     /*
      * Type of the element.
      */
-    private ElementType elementType;
+    private final ElementType elementType;
 
     /**
      * Creates an {@link Element element} of {@link ElementType#LINE}.

@@ -3,16 +3,14 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.ReceiptPageResult;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -23,7 +21,7 @@ import java.time.Duration;
  * recognize linked entities, and analyze sentiment for a text input or a list of text inputs.
  *
  * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
+ * TODO: codesnippet
  *
  * <p>View {@link FormRecognizerClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -48,6 +46,19 @@ public final class FormRecognizerClient {
      * model.
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
+     *
+     * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
+     * has failed, or has been cancelled.
+     */
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl) {
+        return beginExtractReceipt(sourceUrl, false, null);
+    }
+
+    /**
+     * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
+     * model.
+     *
+     * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * one second is used.
@@ -55,9 +66,9 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<ReceiptPageResult>> beginExtractReceipt(String sourceUrl,
-                                                                                              boolean includeTextDetails,
-                                                                                              Duration pollInterval) {
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl,
+                                                                                             boolean includeTextDetails,
+                                                                                             Duration pollInterval) {
         return client.beginExtractReceipt(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
     }
 
@@ -75,9 +86,9 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<ReceiptPageResult>>
-    beginExtractReceipt(InputStream data, long length, FormContentType formContentType, boolean includeTextDetails,
-                        Duration pollInterval) {
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
+        beginExtractReceipt(InputStream data, long length, FormContentType formContentType, boolean includeTextDetails,
+                            Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
         return client.beginExtractReceipt(buffer, length, includeTextDetails, formContentType, pollInterval)
