@@ -102,6 +102,19 @@ Licensed under the MIT License.
       </exclusions>
     </dependency>
 
+    <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
+         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
+         which is used in @Nullable annotation in reactor core classes.
+
+         Similar provided dependency exits for "azure-core" as well.
+    -->
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
+      <scope>provided</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-core -->
     <dependency>
       <groupId>com.azure</groupId>
@@ -216,6 +229,7 @@ Licensed under the MIT License.
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>25.0-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
+      <scope>test</scope>
     </dependency>
 
     <dependency>

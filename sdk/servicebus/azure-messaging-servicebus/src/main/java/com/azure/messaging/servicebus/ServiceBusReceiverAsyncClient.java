@@ -100,7 +100,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @return The Service Bus resource this client interacts with.
      */
-    public String getServiceBusResourceName() {
+    public String getEntityPath() {
         return entityPath;
     }
 
@@ -439,6 +439,6 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     }
 
     private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(getFullyQualifiedNamespace(), getServiceBusResourceName());
+        return new SessionErrorContext(getFullyQualifiedNamespace(), getEntityPath());
     }
 }

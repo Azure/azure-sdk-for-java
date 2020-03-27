@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.util.SearchPagedFlux;
@@ -35,7 +36,7 @@ public class SearchAsyncWithFullyTypedDocumentsExample {
     public static void main(String[] args) {
         SearchIndexAsyncClient searchClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildAsyncClient();
 

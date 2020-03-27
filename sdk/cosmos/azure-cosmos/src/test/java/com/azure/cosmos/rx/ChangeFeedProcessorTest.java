@@ -113,6 +113,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             log.error(e.getMessage());
         }
 
+        assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
         for (CosmosItemProperties item : createdDocuments) {
@@ -177,6 +179,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         assertThat(remainingWork >= 0).as("Failed to receive all the feed documents").isTrue();
+        assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
