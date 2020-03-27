@@ -105,6 +105,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchDnsSuffix;
     protected String endpoint;
     AzureKeyCredential searchApiKeyCredential;
+    private static final boolean IS_DEBUG = false;
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
@@ -123,6 +124,9 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     @AfterAll
     public static void afterAll() {
+        if(IS_DEBUG) {
+            azureSearchResources.deleteResourceGroup();
+        }
     }
 
     @Override
