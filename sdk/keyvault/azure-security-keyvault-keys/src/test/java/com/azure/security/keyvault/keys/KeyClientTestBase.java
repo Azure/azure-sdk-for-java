@@ -426,7 +426,7 @@ public abstract class KeyClientTestBase extends TestBase {
                 KeyServiceVersion[] keyServiceVersions = KeyServiceVersion.values();
                 int count = keyServiceVersions.length;
                 for (int i = 0; i < count; i++) {
-                    if (i % 6 == ((6 + offset) - platformNo) % count) {
+                    if (i % 6 == ((6 + offset) - getPlatFormOffset()) % count) {
                         argumentsList.add(Arguments.of(httpClient, keyServiceVersions[i]));
                     }
                 }

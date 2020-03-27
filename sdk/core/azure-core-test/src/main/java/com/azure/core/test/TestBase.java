@@ -26,6 +26,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Locale;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -39,23 +41,8 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     private static final String AZURE_TEST_OS_NAME = "OSName";
     private static final String AZURE_TEST_JDK_VERSION = "JavaVersion";
-    private static final Map<DayOfWeek, Integer> calendarMap = new HashMap<>(){{
-        put(DayOfWeek.MONDAY, 0);
-        put(DayOfWeek.TUESDAY, 1);
-        put(DayOfWeek.WEDNESDAY, 2);
-        put(DayOfWeek.THURSDAY, 3);
-        put(DayOfWeek.FRIDAY, 4);
-        put(DayOfWeek.SATURDAY, 5);
-        put(DayOfWeek.SUNDAY, 6);
-    }};
-    private static final List<String> platformList = new ArrayList<>(){{
-        add("win,8");
-        add("win,11");
-        add("os,8");
-        add("os,11");
-        add("linux,8");
-        add("linux,11");
-    }};
+    private static Map<DayOfWeek, Integer> calendarMap;
+    private static List<String> platformList;
 
     private static TestMode testMode;
 
@@ -66,8 +53,6 @@ public abstract class TestBase implements BeforeEachCallback {
     protected TestContextManager testContextManager;
 
     private ExtensionContext extensionContext;
-
-    public static int platformNo = getPlatFormOffset();
     /**
      * Before tests are executed, determines the test mode by reading the {@link TestBase#AZURE_TEST_MODE} environment
      * variable. If it is not set, {@link TestMode#PLAYBACK}
@@ -159,10 +144,12 @@ public abstract class TestBase implements BeforeEachCallback {
 
     public static int getOffset() {
         LocalDate today = LocalDate.now();
-        return calendarMap.get(today.getDayOfWeek()) + platformNo;
+        buildCalendarMap();
+        buildPlatformList();
+        return calendarMap.get(today.getDayOfWeek()) + getPlatFormOffset();
     }
 
-    private static Integer getPlatFormOffset() {
+    public static Integer getPlatFormOffset() {
         String currentOs = Configuration.getGlobalConfiguration().get(AZURE_TEST_OS_NAME);
         String currentJdk = Configuration.getGlobalConfiguration().get(AZURE_TEST_JDK_VERSION);
         return platformList.stream().filter(platform ->
@@ -188,11 +175,32 @@ public abstract class TestBase implements BeforeEachCallback {
         List<HttpClient> filteredHttpClients = new ArrayList<>();
         int offset = getOffset();
         for (int i = 0; i < count; i++) {
-            if (i % 6 == ((6 + platformNo) - offset) % count) {
+            if (i % 6 == ((6 + getPlatFormOffset()) - offset) % count) {
                 filteredHttpClients.add(allHttpClients.get(i));
             }
         }
         return filteredHttpClients;
+    }
+
+    private static void buildPlatformList() {
+        platformList = new ArrayList<>();
+        platformList.add("win,8");
+        platformList.add("win,11");
+        platformList.add("os,8");
+        platformList.add("os,11");
+        platformList.add("linux,8");
+        platformList.add("linux,11");
+    }
+
+    private static void buildCalendarMap() {
+        calendarMap = new HashMap<DayOfWeek, Integer>();
+        calendarMap.put(DayOfWeek.MONDAY, 0);
+        calendarMap.put(DayOfWeek.TUESDAY, 1);
+        calendarMap.put(DayOfWeek.WEDNESDAY, 2);
+        calendarMap.put(DayOfWeek.THURSDAY, 3);
+        calendarMap.put(DayOfWeek.FRIDAY, 4);
+        calendarMap.put(DayOfWeek.SATURDAY, 5);
+        calendarMap.put(DayOfWeek.SUNDAY, 6);
     }
 
     /**
