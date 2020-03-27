@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -137,14 +136,14 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
                     .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
                     .take(numberOfEvents)
                     .subscribe(partitionEvent -> {
-                            EventData event = partitionEvent.getData();
-                            logger.info("Event[{}] matched.", event.getSequenceNumber());
-                        }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
-                            () -> {
-                                long count = countDownLatch.getCount();
-                                logger.info("Finished consuming events. Counting down: {}", count);
-                                countDownLatch.countDown();
-                            });
+                        EventData event = partitionEvent.getData();
+                        logger.info("Event[{}] matched.", event.getSequenceNumber());
+                    }, error -> Assertions.fail("An error should not have occurred:" + error.toString()),
+                        () -> {
+                            long count = countDownLatch.getCount();
+                            logger.info("Finished consuming events. Counting down: {}", count);
+                            countDownLatch.countDown();
+                        });
             }
             //@formatter:on
 
