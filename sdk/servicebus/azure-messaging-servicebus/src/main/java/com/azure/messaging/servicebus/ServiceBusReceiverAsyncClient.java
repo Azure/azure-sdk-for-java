@@ -43,11 +43,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * <p><strong>Create an instance of sender using default credential</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
  *
- * <p><strong>Create a sender and receive message from Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#message}
- *
- * <p><strong>Create a sender and receive all the messages from Service Bus resource</strong></p>
+ * <p><strong>Receive all messages from Service Bus resource</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all }
+ *
+ * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode }
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use

@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
@@ -40,7 +41,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     public void instantiateWithDefaultCredential() {
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>",
                 new DefaultAzureCredentialBuilder().build())
             .buildReceiverClientBuilder()
@@ -48,33 +49,35 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
 
-        consumer.close();
+        receiver.close();
     }
 
     /**
-     * Receives message from a queue or topic.
+     * Receives message from a queue or topic using receive and delete mode.
      */
-    public void receive() {
+    public void receiveWithReceiveAndDeleteMode() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
             .buildReceiverClientBuilder()
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .queueName("<QUEUE-NAME>")
             .buildAsyncClient();
-        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#message
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 
 
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
         Disposable subscription = receiver.receive()
-            .take(1)
             .subscribe(receivedMessage -> {
                 String messageId = receivedMessage.getMessageId();
 
                 System.out.printf("Received message messageId %s%n", messageId);
                 System.out.printf("Contents of message as string: %s%n", new String(receivedMessage.getBody(), UTF_8));
             }, error -> System.err.print(error.toString()));
-        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#message
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 
         // When program ends, or you're done receiving all messages.
+        receiver.close();
         subscription.dispose();
     }
 
@@ -113,6 +116,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             }
         });
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
+        receiver.close();
     }
 
     /**
@@ -122,10 +126,10 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
             .buildReceiverClientBuilder()
+            .queueName("<QUEUE-NAME>")
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-
         Disposable subscription = receiver.receive().subscribe(receivedMessage -> {
             String messageId = receivedMessage.getMessageId();
 
@@ -134,6 +138,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         });
 
         // When program ends, or you're done receiving all messages.
+        receiver.close();
         subscription.dispose();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
     }
