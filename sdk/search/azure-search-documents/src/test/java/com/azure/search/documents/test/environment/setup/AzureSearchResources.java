@@ -20,13 +20,14 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 import java.security.SecureRandom;
 import java.util.Objects;
 
-public class AzureSearchResources extends TestBase {
+public class AzureSearchResources {
     private static final String RESOURCE_GROUP_NAME_PREFIX = "azsjava";
     private static final String SEARCH_SERVICE_NAME_PREFIX = "azsjava";
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsjavablob";
     private static final String STORAGE_NAME_PREFIX = "azsjavastor";
     private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
     private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+    private static final String TEST_RESOURCE_GROUP = "azsjavaresourcegroup";
 
     private String searchServiceName;
     private String searchAdminKey;
@@ -121,7 +122,7 @@ public class AzureSearchResources extends TestBase {
         String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
         boolean resourceGroupNameSet = !CoreUtils.isNullOrEmpty(resourceGroupName);
         if (!resourceGroupNameSet) {
-            resourceGroupName = randomResourceGroupName();
+            resourceGroupName = TEST_RESOURCE_GROUP;
         }
 
         if (resourceGroupNameSet && azure.resourceGroups().checkExistence(resourceGroupName)) {
