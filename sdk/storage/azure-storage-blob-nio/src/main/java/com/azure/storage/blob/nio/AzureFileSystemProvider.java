@@ -198,7 +198,11 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public DirectoryStream<Path> newDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter)
         throws IOException {
-        return new AzureDirectoryStream(path, filter);
+        if (!(path instanceof AzurePath)) {
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
+                + "subtypes of Path other than AzurePath"));
+        }
+        return new AzureDirectoryStream((AzurePath) path, filter);
     }
 
     /**

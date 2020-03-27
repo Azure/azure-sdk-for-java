@@ -30,7 +30,7 @@ class AzureDirectoryStreamTest extends APISpec {
         }
 
         when:
-        def it = new AzureDirectoryStream(fs.getPath(rootName, dirName), { path -> true }).iterator()
+        def it = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName), { path -> true }).iterator()
 
         then:
         if (numFiles > 0) {
@@ -108,7 +108,7 @@ class AzureDirectoryStreamTest extends APISpec {
     def "List files depth"() {
         setup:
         def rootName = getNonDefaultRootDir(fs)
-        def listingPath = fs.getPath(rootName, getPathWithDepth(depth))
+        def listingPath = (AzurePath) fs.getPath(rootName, getPathWithDepth(depth))
 
         def filePath = new AzureResource(listingPath.resolve(generateBlobName()))
         filePath.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
@@ -149,7 +149,7 @@ class AzureDirectoryStreamTest extends APISpec {
 
     def "Iterator duplicate calls fail"() {
         setup:
-        def stream = new AzureDirectoryStream(fs.getPath(generateBlobName()), { path -> true })
+        def stream = new AzureDirectoryStream((AzurePath) fs.getPath(generateBlobName()), { path -> true })
         stream.iterator()
 
         when:
@@ -167,7 +167,7 @@ class AzureDirectoryStreamTest extends APISpec {
             resources.push(new AzureResource(fs.getPath(rootName, dirName, generateBlobName())))
             resources[0].getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
         }
-        def stream = new AzureDirectoryStream(fs.getPath(rootName, dirName), { path -> true })
+        def stream = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName), { path -> true })
         def it = stream.iterator()
 
         // There are definitely items we haven't returned from the iterator, but they are inaccessible after closing.
@@ -193,7 +193,7 @@ class AzureDirectoryStreamTest extends APISpec {
             resources.push(new AzureResource(fs.getPath(rootName, dirName, i + generateBlobName())))
             resources[0].getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
         }
-        def stream = new AzureDirectoryStream(fs.getPath(rootName, dirName),
+        def stream = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName),
             { Path path -> path.getFileName().toString().startsWith('0') })
 
         when:
@@ -219,7 +219,8 @@ class AzureDirectoryStreamTest extends APISpec {
             resources.push(new AzureResource(fs.getPath(rootName, dirName, i + generateBlobName())))
             resources[0].getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
         }
-        def stream = new AzureDirectoryStream(fs.getPath(rootName, dirName), { throw new IOException("Test exception") })
+        def stream = new AzureDirectoryStream((AzurePath) fs.getPath(rootName, dirName),
+            { throw new IOException("Test exception") })
 
         when:
         stream.iterator().hasNext()

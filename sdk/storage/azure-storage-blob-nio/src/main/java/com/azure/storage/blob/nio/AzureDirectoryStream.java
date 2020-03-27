@@ -4,6 +4,7 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -25,14 +26,16 @@ import java.util.Set;
 public class AzureDirectoryStream implements DirectoryStream<Path> {
     private final ClientLogger logger = new ClientLogger(AzureDirectoryStream.class);
 
-    private final Path path;
+    private final AzurePath path;
     private final DirectoryStream.Filter<? super Path> filter;
     private boolean iteratorRequested = false;
+    private final AzureDirectoryIterator iterator;
     boolean closed = false;
 
-    AzureDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter) {
+    AzureDirectoryStream(AzurePath path, DirectoryStream.Filter<? super Path> filter) throws IOException {
         this.path = path;
         this.filter = filter;
+        this.iterator = new AzureDirectoryIterator(this, this.path, this.filter);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
                 new IllegalStateException("Only one iterator may be requested from a given directory stream"));
         }
         this.iteratorRequested = true;
-        return new AzureDirectoryIterator(this, this.path, this.filter);
+        return this.iterator;
     }
 
     @Override
@@ -56,26 +59,31 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
         private final AzureDirectoryStream parentStream;
         private final DirectoryStream.Filter<? super Path> filter;
         private final Iterator<BlobItem> blobIterator;
-        private final Path path;
+        private final AzurePath path;
         private Path bufferedNext = null;
         private final Set<String> directoryPaths;
 
-        AzureDirectoryIterator(AzureDirectoryStream parentStream, Path path,
+        AzureDirectoryIterator(AzureDirectoryStream parentStream, AzurePath path,
             DirectoryStream.Filter<? super Path> filter) throws IOException {
             this.parentStream = parentStream;
             this.filter = filter;
             this.path = path;
             directoryPaths = new HashSet<>();
+
+            BlobContainerClient containerClient;
+            ListBlobsOptions listOptions = new ListBlobsOptions()
+                .setDetails(new BlobListDetails().setRetrieveMetadata(true));
             if (path.isRoot()) {
-                this.blobIterator = resource.getContainerClient().listBlobs().iterator();
+                String containerName = path.toString().substring(0, path.toString().length() - 1);
+                containerClient = ((AzureFileSystem) path.getFileSystem()).getBlobServiceClient()
+                    .getBlobContainerClient(containerName);
             } else {
                 AzureResource azureResource = new AzureResource(path);
-                ListBlobsOptions listOptions = new ListBlobsOptions()
-                    .setPrefix(azureResource.getBlobClient().getBlobName() + AzureFileSystem.PATH_SEPARATOR)
-                    .setDetails(new BlobListDetails().setRetrieveMetadata(true));
-                this.blobIterator = azureResource.getContainerClient()
-                    .listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR, listOptions, null).iterator();
+                listOptions.setPrefix(azureResource.getBlobClient().getBlobName() + AzureFileSystem.PATH_SEPARATOR);
+                containerClient = azureResource.getContainerClient();
             }
+            this.blobIterator = containerClient
+                .listBlobsByHierarchy(AzureFileSystem.PATH_SEPARATOR, listOptions, null).iterator();
         }
 
         @Override

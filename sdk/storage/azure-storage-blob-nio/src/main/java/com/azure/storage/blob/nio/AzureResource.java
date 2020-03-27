@@ -34,7 +34,7 @@ import java.util.Objects;
  * It also serves as the interface to Storage clients. Any operation that needs to use a client should first build an
  * AzureResource using a path and then use the getter to access the client.
  */
-class AzureResource {
+final class AzureResource {
     private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
     static final String DIR_METADATA_MARKER = "hdi_isfolder";
