@@ -208,8 +208,8 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public IterableStream<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
         if (maxMessages <= 0) {
-            throw new IllegalArgumentException("'maxMessages' cannot be less than or equal to 0. maxMessages: "
-                + maxMessages);
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatch(maxMessages)
@@ -234,8 +234,8 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public IterableStream<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber) {
         if (maxMessages <= 0) {
-            throw new IllegalArgumentException("'maxMessages' cannot be less than or equal to 0. maxMessages: "
-                + maxMessages);
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatchAt(maxMessages, sequenceNumber)
@@ -255,8 +255,8 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      */
     public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages) {
         if (maxMessages <= 0) {
-            throw new IllegalArgumentException("'maxMessages' cannot be less than or equal to 0. maxMessages: "
-                + maxMessages);
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
         final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages, emitter));

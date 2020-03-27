@@ -30,7 +30,8 @@ class SynchronousReceiveWork {
      * @param timeout Maximum duration to wait for {@code numberOfReceive} events.
      * @param emitter Sink to publish received messages to.
      */
-    SynchronousReceiveWork(long id, int numberToReceive, Duration timeout, FluxSink<ServiceBusReceivedMessage> emitter) {
+    SynchronousReceiveWork(long id, int numberToReceive, Duration timeout,
+        FluxSink<ServiceBusReceivedMessage> emitter) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;

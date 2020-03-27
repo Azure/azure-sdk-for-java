@@ -5,9 +5,7 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
-import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.Timer;
