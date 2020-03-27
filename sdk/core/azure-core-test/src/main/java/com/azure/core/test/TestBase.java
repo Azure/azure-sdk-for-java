@@ -4,11 +4,21 @@ package com.azure.core.test;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.implementation.http.HttpClientProviders;
+import com.azure.core.test.models.Platform;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +42,10 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+    private static final String AZURE_TEST_OS_NAME = "OSName";
+    private static final String AZURE_TEST_JDK_VERSION = "JavaVersion";
+    private static final Map<DayOfWeek, Integer> calendarMap = new HashMap<>();
+    private static final Map<Platform, Integer> platformMap = new HashMap<>();
 
     private static TestMode testMode;
 
@@ -132,17 +146,64 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     /**
+     * Build calendar to index map.
+     *
+     * @return The map of day-of-week to index map.
+     */
+    public static Map<DayOfWeek, Integer> buildCalendarMap() {
+        calendarMap.put(DayOfWeek.MONDAY, 0);
+        calendarMap.put(DayOfWeek.TUESDAY, 1);
+        calendarMap.put(DayOfWeek.WEDNESDAY, 2);
+        calendarMap.put(DayOfWeek.THURSDAY, 3);
+        calendarMap.put(DayOfWeek.FRIDAY, 4);
+        calendarMap.put(DayOfWeek.SATURDAY, 5);
+        calendarMap.put(DayOfWeek.SUNDAY, 6);
+        return calendarMap;
+    }
+
+    /**
+     * Build platform to index map.
+     *
+     * @return The map of platform to index map.
+     */
+    public static Map<Platform, Integer> buildPlatformMap() {
+        platformMap.put(new Platform("win", "8"), 0);
+        platformMap.put(new Platform("os", "8"), 1);
+        platformMap.put(new Platform("linux", "8"), 2);
+        platformMap.put(new Platform("win", "11"), 3);
+        platformMap.put(new Platform("win", "11"), 4);
+        platformMap.put(new Platform("win", "11"), 5);
+        return platformMap;
+    }
+
+    public static int getOffset() {
+        LocalDate today = LocalDate.now();
+        String currentOs = Configuration.getGlobalConfiguration().get(AZURE_TEST_OS_NAME);
+        String currentJdk = Configuration.getGlobalConfiguration().get(AZURE_TEST_JDK_VERSION);
+        return calendarMap.get(today.getDayOfWeek()) + platformMap.get(new Platform(currentOs, currentJdk));
+    }
+
+    /**
      * Returns a list of {@link HttpClient HttpClients} that should be tested.
      *
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    public static Stream<HttpClient> getHttpClients() {
+    public static List<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.
-            return Stream.of(new HttpClient[]{null});
+            return null;
         }
-        return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
+        List<HttpClient> allHttpClients = HttpClientProviders.getAllHttpClients();
+        int count = allHttpClients.size();
+        List<HttpClient> filteredHttpClients = new ArrayList<>();
+        int offset = getOffset();
+        for (int i = 0; i < count; i++) {
+            if (i == (i + offset) % 6) {
+                filteredHttpClients.add(allHttpClients.get(i));
+            }
+        }
+        return filteredHttpClients;
     }
 
     /**
@@ -158,22 +219,22 @@ public abstract class TestBase implements BeforeEachCallback {
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
-     * @param client Http client needs to check
+     * client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
      */
-    public static boolean shouldClientBeTested(HttpClient client) {
-        String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
-        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
-            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
-        }
-        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
-            return true;
-        }
-        String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
-        return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
-            client.getClass().getSimpleName().toLowerCase(Locale.ROOT)
-                .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
-    }
+//    public static boolean shouldClientBeTested(HttpClient client) {
+//        String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
+//        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
+//            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
+//        }
+//        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
+//            return true;
+//        }
+//        String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
+//        return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
+//            client.getClass().getSimpleName().toLowerCase(Locale.ROOT)
+//                .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
+//    }
 
     private static TestMode initializeTestMode() {
         final ClientLogger logger = new ClientLogger(TestBase.class);

@@ -45,8 +45,8 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     private static final String AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
+//    private static final String SERVICE_VERSION_FROM_ENV =
+//        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
 
     @Override
     protected String getTestName() {
@@ -422,8 +422,16 @@ public abstract class KeyClientTestBase extends TestBase {
 
         getHttpClients()
             .forEach(httpClient -> {
-                Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                int offset = getOffset();
+                KeyServiceVersion[] keyServiceVersions = KeyServiceVersion.values();
+                for (int i = 0; i < keyServiceVersions.length; i++) {
+                    if (i == (i + offset) % 6) {
+                        argumentsList.add(Arguments.of(httpClient, keyServiceVersions[i]));
+                    }
+                }
+//                getOffset()
+//                Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
+//                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }
@@ -444,15 +452,15 @@ public abstract class KeyClientTestBase extends TestBase {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
-        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-            return KeyServiceVersion.getLatest().equals(serviceVersion);
-        }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
-            return true;
-        }
-        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
-    }
+//    private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
+//        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
+//            return KeyServiceVersion.getLatest().equals(serviceVersion);
+//        }
+//        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+//            return true;
+//        }
+//        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
+//        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+//            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+//    }
 }
