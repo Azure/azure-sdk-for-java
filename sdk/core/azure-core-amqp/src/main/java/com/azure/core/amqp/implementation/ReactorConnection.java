@@ -336,7 +336,7 @@ public class ReactorConnection implements AmqpConnection {
 
     private synchronized Connection getOrCreateConnection() throws IOException {
         if (connection == null) {
-            logger.info("connectionId[{}] Creating and starting connection to {}:{}", connectionId,
+            logger.info("connectionId[{}]: Creating and starting connection to {}:{}", connectionId,
                 handler.getHostname(), handler.getProtocolPort());
 
             final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
