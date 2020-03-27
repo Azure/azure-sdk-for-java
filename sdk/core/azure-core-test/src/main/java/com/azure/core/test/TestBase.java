@@ -152,6 +152,10 @@ public abstract class TestBase implements BeforeEachCallback {
     public static Integer getPlatFormOffset() {
         String currentOs = Configuration.getGlobalConfiguration().get(AZURE_TEST_OS_NAME);
         String currentJdk = Configuration.getGlobalConfiguration().get(AZURE_TEST_JDK_VERSION);
+        System.out.println("--------------------------------");
+        System.out.println(currentOs);
+        System.out.println(currentJdk);
+        System.out.println("--------------------------------");
         return platformList.stream().filter(platform ->
             currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
             && currentJdk.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[1]
@@ -186,8 +190,8 @@ public abstract class TestBase implements BeforeEachCallback {
         platformList = new ArrayList<>();
         platformList.add("win,8");
         platformList.add("win,11");
-        platformList.add("os,8");
-        platformList.add("os,11");
+        platformList.add("mac,8");
+        platformList.add("mac,11");
         platformList.add("linux,8");
         platformList.add("linux,11");
     }
