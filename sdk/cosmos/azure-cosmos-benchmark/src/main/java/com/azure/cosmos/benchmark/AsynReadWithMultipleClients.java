@@ -229,7 +229,8 @@ public class AsynReadWithMultipleClients<T> {
                     List<PojoizedJson> docsToRead = new ArrayList<>();
                     if (!configuration.isDeleteCollections()) {
                         CosmosAsyncDatabase cosmosAsyncDatabase = asyncClient.createDatabaseIfNotExists(this.configuration.getDatabaseId()).block().getDatabase();
-                        CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), PARTITION_KEY, 100000).block().getContainer();
+                        CosmosAsyncContainer cosmosAsyncContainer =
+                            cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), PARTITION_KEY, configuration.getThroughput()).block().getContainer();
                         String partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
                             .getPaths().iterator().next().split("/")[1];
                         String dataFieldValue = RandomStringUtils.randomAlphabetic(this.configuration.getDocumentDataFieldSize());
@@ -256,23 +257,23 @@ public class AsynReadWithMultipleClients<T> {
                     clientDocsMap.put(asyncClient, docsToRead);
                 }
             }
-            MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
-
-            if (registry != null) {
-                BridgeInternal.monitorTelemetry(registry);
-            }
-
-            registry = configuration.getGraphiteMeterRegistry();
-
-            if (registry != null) {
-                BridgeInternal.monitorTelemetry(registry);
-            }
-
-            logger.info("Total number of client created for ReadThroughputWithMultipleClient {}",clientDocsMap.size());
+            logger.info("Total number of client created for ReadThroughputWithMultipleClient {}", clientDocsMap.size());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+        }
+
+        MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
+
+        if (registry != null) {
+            BridgeInternal.monitorTelemetry(registry);
+        }
+
+        registry = configuration.getGraphiteMeterRegistry();
+
+        if (registry != null) {
+            BridgeInternal.monitorTelemetry(registry);
         }
     }
 
