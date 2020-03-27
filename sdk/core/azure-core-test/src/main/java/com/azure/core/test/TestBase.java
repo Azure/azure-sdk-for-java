@@ -39,8 +39,8 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
-    private static final String AZURE_TEST_OS_NAME = "OSName";
-    private static final String AZURE_TEST_JDK_VERSION = "JavaVersion";
+    private static final String AZURE_TEST_OS_NAME = "AZURE_TEST_OS_NAME";
+    private static final String AZURE_TEST_JDK_VERSION = "AZURE_TEST_JDK_VERSION";
     private static Map<DayOfWeek, Integer> calendarMap;
     private static List<String> platformList;
 
