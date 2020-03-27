@@ -17,6 +17,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
 import static com.azure.core.test.TestBase.getOffset;
+import static com.azure.core.test.TestBase.getPlatFormOffset;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -39,10 +40,11 @@ public class TestHelper {
         getHttpClients()
             .forEach(httpClient -> {
                 int offset = getOffset();
-                KeyServiceVersion[] keyServiceVersions = KeyServiceVersion.values();
-                for (int i = 0; i < keyServiceVersions.length; i++) {
-                    if (i == (5 - (i + offset) % 6)) {
-                        argumentsList.add(Arguments.of(httpClient, keyServiceVersions[i]));
+                CryptographyServiceVersion[] cryptographyServiceVersions = CryptographyServiceVersion.values();
+                int count = cryptographyServiceVersions.length;
+                for (int i = 0; i < count; i++) {
+                    if (i % 6 == ((6 + offset) - getPlatFormOffset()) % count) {
+                        argumentsList.add(Arguments.of(httpClient, cryptographyServiceVersions[i]));
                     }
                 }
 //                getOffset()
