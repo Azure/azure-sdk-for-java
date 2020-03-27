@@ -93,8 +93,8 @@
   "containerregistry": {
     "dir": "azure-mgmt-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.containerregistry",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-09"
+    "package": "com.azure.management.containerregistry",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-09 --track1-naming=true"
   },
   "containerservice": {
     "dir": "azure-mgmt-containerservice",
