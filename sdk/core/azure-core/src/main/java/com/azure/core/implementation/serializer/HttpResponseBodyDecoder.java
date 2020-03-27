@@ -8,13 +8,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.UnixTime;
-import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -63,7 +60,8 @@ final class HttpResponseBodyDecoder {
                         final Object decodedErrorEntity = deserializeBody(bodyString,
                             decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyType(),
                             null, serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-                        return decodedErrorEntity == null ? Mono.empty() : Mono.just(decodedErrorEntity);
+
+                        return Mono.justOrEmpty(decodedErrorEntity);
                     } catch (IOException | MalformedValueException ex) {
                         // This translates in RestProxy as a RestException with no deserialized body.
                         // The response content will still be accessible via the .response() member.
@@ -85,7 +83,8 @@ final class HttpResponseBodyDecoder {
                         final Object decodedSuccessEntity = deserializeBody(bodyString,
                             extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                             serializer, SerializerEncoding.fromHeaders(httpResponse.getHeaders()));
-                        return decodedSuccessEntity == null ? Mono.empty() : Mono.just(decodedSuccessEntity);
+
+                        return Mono.justOrEmpty(decodedSuccessEntity);
                     } catch (MalformedValueException e) {
                         return Mono.error(new HttpResponseException("HTTP response has a malformed body.",
                             httpResponse, e));
@@ -175,38 +174,30 @@ final class HttpResponseBodyDecoder {
      * @return the {@code java.lang.reflect.Type} of REST API response body
      */
     private static Type constructWireResponseType(Type resultType, Type wireType) {
-        Objects.requireNonNull(resultType);
         Objects.requireNonNull(wireType);
-        //
-        Type wireResponseType = resultType;
 
-        if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                wireResponseType = Base64Url.class;
-            }
-        } else if (resultType == OffsetDateTime.class) {
+        Type wireResponseType = resultType;
+        if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 wireResponseType = DateTimeRfc1123.class;
             } else if (wireType == UnixTime.class) {
                 wireResponseType = UnixTime.class;
             }
-        } else {
-            if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
-                final Type resultElementType = TypeUtil.getTypeArgument(resultType);
-                final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
+        } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
+            final Type resultElementType = TypeUtil.getTypeArgument(resultType);
+            final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
 
-                wireResponseType = TypeUtil.createParameterizedType(
-                    (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType,
-                Response.class)) {
-                Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
-                final Type resultValueType = typeArguments[1];
-                final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
+            wireResponseType = TypeUtil.createParameterizedType(
+                (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
+        } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
+            Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
+            final Type resultValueType = typeArguments[1];
+            final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
-                wireResponseType = TypeUtil.createParameterizedType(
-                    (Class<?>) ((ParameterizedType) resultType).getRawType(), typeArguments[0], wireResponseValueType);
-            }
+            wireResponseType = TypeUtil.createParameterizedType(
+                (Class<?>) ((ParameterizedType) resultType).getRawType(), typeArguments[0], wireResponseValueType);
         }
+
         return wireResponseType;
     }
 
@@ -242,91 +233,45 @@ final class HttpResponseBodyDecoder {
      * @return converted object
      */
     private static Object convertToResultType(Object wireResponse, Type resultType, Type wireType) {
-        if (wireResponse == null) {
-            return null;
-        }
-
         Object result = wireResponse;
-        if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                result = ((Base64Url) wireResponse).decodedBytes();
-            }
-        } else if (resultType == OffsetDateTime.class) {
+        if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 result = ((DateTimeRfc1123) wireResponse).getDateTime();
             } else if (wireType == UnixTime.class) {
                 result = ((UnixTime) wireResponse).getDateTime();
             }
-        } else {
-            if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
-                final Type resultElementType = TypeUtil.getTypeArgument(resultType);
+        } else if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
+            final Type resultElementType = TypeUtil.getTypeArgument(resultType);
 
-                @SuppressWarnings("unchecked") final List<Object> wireResponseList = (List<Object>) wireResponse;
+            @SuppressWarnings("unchecked") final List<Object> wireResponseList = (List<Object>) wireResponse;
 
-                final int wireResponseListSize = wireResponseList.size();
-                for (int i = 0; i < wireResponseListSize; ++i) {
-                    final Object wireResponseElement = wireResponseList.get(i);
-                    final Object resultElement =
-                        convertToResultType(wireResponseElement, resultElementType, wireType);
-                    if (wireResponseElement != resultElement) {
-                        wireResponseList.set(i, resultElement);
-                    }
-                }
-                //
-                result = wireResponseList;
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
-                final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
-
-                @SuppressWarnings("unchecked") final Map<String, Object> wireResponseMap =
-                    (Map<String, Object>) wireResponse;
-
-                final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
-                for (Map.Entry<String, Object> wireResponseEntry : wireResponseEntries) {
-                    final Object wireResponseValue = wireResponseEntry.getValue();
-                    final Object resultValue = convertToResultType(wireResponseValue, resultValueType, wireType);
-                    if (wireResponseValue != resultValue) {
-                        wireResponseMap.put(wireResponseEntry.getKey(), resultValue);
-                    }
-                }
-                //
-                result = wireResponseMap;
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, PagedResponseBase.class)) {
-                PagedResponseBase<?, ?> restResponse = (PagedResponseBase<?, ?>) wireResponse;
-                result =
-                    new PagedResponseBase<>(restResponse.getRequest(), restResponse.getStatusCode(),
-                        restResponse.getHeaders(), restResponse.getItems(), restResponse.getContinuationToken(),
-                        restResponse.getDeserializedHeaders());
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, ResponseBase.class)) {
-                ResponseBase<?, ?> restResponseBase = (ResponseBase<?, ?>) wireResponse;
-                Object wireResponseBody = restResponseBase.getValue();
-
-                // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't
-                //  seem right
-                Object resultBody =
-                    convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
-                if (wireResponseBody != resultBody) {
-                    result =
-                        new ResponseBase<>(restResponseBase.getRequest(), restResponseBase.getStatusCode(),
-                            restResponseBase.getHeaders(), resultBody, restResponseBase.getDeserializedHeaders());
-                } else {
-                    result = restResponseBase;
-                }
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Response.class)) {
-                Response<?> restResponse = (Response<?>) wireResponse;
-                Object wireResponseBody = restResponse.getValue();
-
-                // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't
-                //  seem right
-                Object resultBody =
-                    convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
-                if (wireResponseBody != resultBody) {
-                    result =
-                        new SimpleResponse<>(restResponse.getRequest(), restResponse.getStatusCode(),
-                            restResponse.getHeaders(), resultBody);
-                } else {
-                    result = restResponse;
+            final int wireResponseListSize = wireResponseList.size();
+            for (int i = 0; i < wireResponseListSize; ++i) {
+                final Object wireResponseElement = wireResponseList.get(i);
+                final Object resultElement =
+                    convertToResultType(wireResponseElement, resultElementType, wireType);
+                if (wireResponseElement != resultElement) {
+                    wireResponseList.set(i, resultElement);
                 }
             }
+            //
+            result = wireResponseList;
+        } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
+            final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
+
+            @SuppressWarnings("unchecked") final Map<String, Object> wireResponseMap =
+                (Map<String, Object>) wireResponse;
+
+            final Set<Map.Entry<String, Object>> wireResponseEntries = wireResponseMap.entrySet();
+            for (Map.Entry<String, Object> wireResponseEntry : wireResponseEntries) {
+                final Object wireResponseValue = wireResponseEntry.getValue();
+                final Object resultValue = convertToResultType(wireResponseValue, resultValueType, wireType);
+                if (wireResponseValue != resultValue) {
+                    wireResponseMap.put(wireResponseEntry.getKey(), resultValue);
+                }
+            }
+            //
+            result = wireResponseMap;
         }
 
         return result;
