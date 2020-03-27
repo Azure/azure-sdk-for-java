@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.test.environment.setup;
 
-import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;

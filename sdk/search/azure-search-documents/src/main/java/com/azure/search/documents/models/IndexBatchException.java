@@ -5,11 +5,9 @@ package com.azure.search.documents.models;
 
 import com.azure.core.exception.AzureException;
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;

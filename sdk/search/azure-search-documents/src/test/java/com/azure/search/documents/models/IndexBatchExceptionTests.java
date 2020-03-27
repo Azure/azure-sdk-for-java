@@ -173,8 +173,8 @@ public class IndexBatchExceptionTests {
         List<String> allKeys = result.getResults().stream().map(IndexingResult::getKey).collect(Collectors.toList());
         IndexBatchException exception = new IndexBatchException(result);
 
-        IndexDocumentsBatch<SearchDocument> originalBatch= new IndexDocumentsBatch<SearchDocument>().addUploadActions(
-            allKeys.stream().map(key -> new SearchDocument(new HashMap<String, String>(){{
+        IndexDocumentsBatch<SearchDocument> originalBatch = new IndexDocumentsBatch<SearchDocument>().addUploadActions(
+            allKeys.stream().map(key -> new SearchDocument(new HashMap<String, String>() {{
                     put(KEY_FIELD_NAME, key);
                 }})).collect(Collectors.toList())
         );
@@ -184,7 +184,7 @@ public class IndexBatchExceptionTests {
     private IndexBatchBase<Hotel> getTypedRetryBatch(IndexDocumentsResult result) {
         List<String> allKeys = result.getResults().stream().map(IndexingResult::getKey).collect(Collectors.toList());
         IndexBatchException exception = new IndexBatchException(result);
-        IndexDocumentsBatch<Hotel> originalBatch= new IndexDocumentsBatch<Hotel>().addUploadActions(
+        IndexDocumentsBatch<Hotel> originalBatch = new IndexDocumentsBatch<Hotel>().addUploadActions(
             allKeys.stream().map(key -> new Hotel().setHotelId(key)).collect(Collectors.toList())
         );
         return exception.findFailedActionsToRetry(originalBatch, Hotel::getHotelId);
