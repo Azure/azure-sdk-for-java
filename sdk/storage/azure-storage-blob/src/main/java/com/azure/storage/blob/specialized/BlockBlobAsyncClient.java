@@ -63,8 +63,15 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
+     * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
      */
+    @Deprecated
     public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
+     */
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = 4000L * Constants.MB;
 
     /**
      * Indicates the maximum number of blocks allowed in a block blob.

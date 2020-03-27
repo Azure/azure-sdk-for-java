@@ -15,7 +15,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 @Fluent
 public final class ParallelTransferOptions {
 
-    private final Integer blockSize;
+    private final Long blockSize;
     private final Integer numBuffers;
     private final ProgressReceiver progressReceiver;
     private final Integer maxSingleUploadSize;
@@ -34,8 +34,29 @@ public final class ParallelTransferOptions {
      * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
      * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
      * @param progressReceiver {@link ProgressReceiver}
+     * @deprecated Use {@link #ParallelTransferOptions(Long, Integer, ProgressReceiver)}
      */
+    @Deprecated
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver) {
+        this(blockSize, numBuffers, progressReceiver, null);
+    }
+
+    /**
+     * Creates a new {@link ParallelTransferOptions} with default parameters applied.
+     *
+     * @param blockSize The block size.
+     * For upload, The block size is the size of each block that will be staged. This value also determines the number
+     * of requests that need to be made. If block size is large, upload will make fewer network calls, but each
+     * individual call will send more data and will therefore take longer. This parameter also determines the size
+     * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
+     * be up to blockSize * numBuffers.
+     * @param numBuffers For buffered upload only, the number of buffers is the maximum number of buffers this method
+     * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
+     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
+     * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
+     * @param progressReceiver {@link ProgressReceiver}
+     */
+    public ParallelTransferOptions(Long blockSize, Integer numBuffers, ProgressReceiver progressReceiver) {
         this(blockSize, numBuffers, progressReceiver, null);
     }
 
@@ -60,11 +81,40 @@ public final class ParallelTransferOptions {
      * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the maximum value the
      * service accepts for uploading in a single requests and is represented by
      * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES}.
+     * @deprecated Use {@link #ParallelTransferOptions(Long, Integer, ProgressReceiver, Integer)}
      */
+    @Deprecated
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
         Integer maxSingleUploadSize) {
+        this(blockSize == null ? null : Long.valueOf(blockSize), numBuffers, progressReceiver, maxSingleUploadSize);
+    }
+
+    /**
+     * Creates a new {@link ParallelTransferOptions} with default parameters applied.
+     *
+     * @param blockSize The block size.
+     * For upload, The block size is the size of each block that will be staged. This value also determines the number
+     * of requests that need to be made. If block size is large, upload will make fewer network calls, but each
+     * individual call will send more data and will therefore take longer. This parameter also determines the size
+     * that each buffer uses when buffering is required and consequently amount of memory consumed by such methods may
+     * be up to blockSize * numBuffers.
+     * @param numBuffers For buffered upload only, the number of buffers is the maximum number of buffers this method
+     * should allocate. Memory will be allocated lazily as needed. Must be at least two. Typically, the larger the
+     * number of buffers, the more parallel, and thus faster, the upload portion  of this operation will be.
+     * The amount of memory consumed by methods using this value may be up to blockSize * numBuffers.
+     * @param progressReceiver {@link ProgressReceiver}
+     * @param maxSingleUploadSize If the size of the data is less than or equal to this value, it will be uploaded in a
+     * single put rather than broken up into chunks. If the data is uploaded in a single shot, the block size will be
+     * ignored. Some constraints to consider are that more requests cost more, but several small or mid-sized requests
+     * may sometimes perform better. In the case of buffered upload, up to this amount of data may be buffered before
+     * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the maximum value the
+     * service accepts for uploading in a single requests and is represented by
+     * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES}.
+     */
+    public ParallelTransferOptions(Long blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
+                                   Integer maxSingleUploadSize) {
         if (blockSize != null) {
-            StorageImplUtils.assertInBounds("blockSize", blockSize, 1, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES);
+            StorageImplUtils.assertInBounds("blockSize", blockSize, 1, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES_LONG);
         }
         this.blockSize = blockSize;
 
@@ -84,8 +134,18 @@ public final class ParallelTransferOptions {
     /**
      * Gets the block size (chunk size) to transfer at a time.
      * @return The block size.
+     * @deprecated use {@link #getBlockSizeLong()}
      */
+    @Deprecated
     public Integer getBlockSize() {
+        return this.blockSize == null ? null : Math.toIntExact(this.blockSize);
+    }
+
+    /**
+     * Gets the block size (chunk size) to transfer at a time.
+     * @return The block size.
+     */
+    public Long getBlockSizeLong() {
         return this.blockSize;
     }
 

@@ -643,7 +643,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         // Block length will be ignored for single shot.
-        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions(blockSize, null,
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions((Integer)blockSize, null,
             null), null, null, null, null))
             .verifyComplete()
 
@@ -1264,10 +1264,10 @@ class BlockBlobAPITest extends APISpec {
         thrown(IllegalArgumentException)
 
         where:
-        bufferSize                                     | numBuffs
-        0                                              | 5
-        BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES + 1 | 5
-        5                                              | 1
+        bufferSize                                          | numBuffs
+        0                                                   | 5
+        BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES_LONG + 1 | 5
+        5                                                   | 1
     }
 
     // Only run these tests in live mode as they use variables that can't be captured.

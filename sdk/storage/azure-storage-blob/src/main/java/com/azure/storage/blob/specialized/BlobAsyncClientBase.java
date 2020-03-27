@@ -866,7 +866,7 @@ public class BlobAsyncClientBase {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
 
-                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
+                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSizeLong());
 
                 // In case it is an empty blob, this ensures we still actually perform a download operation.
                 numChunks = numChunks == 0 ? 1 : numChunks;
@@ -881,8 +881,8 @@ public class BlobAsyncClientBase {
                         }
 
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSize();
-                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
+                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
+                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
                             newCount - modifier);
                         BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
 
@@ -917,8 +917,9 @@ public class BlobAsyncClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         // We will scope our initial download to either be one chunk or the total size.
-        long initialChunkSize = range.getCount() != null && range.getCount() < parallelTransferOptions.getBlockSize()
-            ? range.getCount() : parallelTransferOptions.getBlockSize();
+        long initialChunkSize = range.getCount() != null
+            && range.getCount() < parallelTransferOptions.getBlockSizeLong()
+            ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
 
         return this.downloadWithResponse(new BlobRange(range.getOffset(), initialChunkSize), downloadRetryOptions,
             requestConditions, rangeGetContentMd5, context)
@@ -1001,7 +1002,7 @@ public class BlobAsyncClientBase {
             finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
-        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSize());
+        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {
@@ -1270,7 +1271,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        
+
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),

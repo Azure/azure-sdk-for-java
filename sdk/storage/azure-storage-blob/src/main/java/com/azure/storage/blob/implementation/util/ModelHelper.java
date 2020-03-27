@@ -26,10 +26,10 @@ public class ModelHelper {
      * @return An object with defaults filled in for null values in the original.
      */
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
-        other = other == null ? new ParallelTransferOptions(null, null, null) : other;
+        other = other == null ? new ParallelTransferOptions((Long)null, null, null) : other;
         return new ParallelTransferOptions(
-            other.getBlockSize() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : other.getBlockSize(),
+            other.getBlockSizeLong() == null ? Long.valueOf(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : other.getBlockSizeLong(),
             other.getNumBuffers() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
                 : other.getNumBuffers(),
             other.getProgressReceiver(),

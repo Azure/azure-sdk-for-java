@@ -364,10 +364,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         // See ProgressReporter for an explanation on why this lock is necessary and why we use AtomicLong.
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
+        long blockSize = parallelTransferOptions.getBlockSizeLong();
 
         // Validation done in the constructor.
-        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
-            parallelTransferOptions.getBlockSize());
+        UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(), blockSize);
 
         /*
         Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
@@ -375,20 +375,24 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
         preserve the ordering of the buffers, but we don't really care if one is split before another.
          */
-        Flux<ByteBuffer> chunkedSource = data
-            .flatMapSequential(buffer -> {
-                if (buffer.remaining() <= parallelTransferOptions.getBlockSize()) {
-                    return Flux.just(buffer);
-                }
-                int numSplits = (int) Math.ceil(buffer.remaining() / (double) parallelTransferOptions.getBlockSize());
-                return Flux.range(0, numSplits)
-                    .map(i -> {
-                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                        duplicate.position(i * parallelTransferOptions.getBlockSize());
-                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * parallelTransferOptions.getBlockSize()));
-                        return duplicate;
-                    });
-            });
+        Flux<ByteBuffer> chunkedSource = data;
+        if (blockSize <= Integer.MAX_VALUE) {
+            int chunkSize = (int) blockSize;
+            chunkedSource = data
+                .flatMapSequential(buffer -> {
+                    if (buffer.remaining() <= chunkSize) {
+                        return Flux.just(buffer);
+                    }
+                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
+                    return Flux.range(0, numSplits)
+                        .map(i -> {
+                            ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                            duplicate.position(i * chunkSize);
+                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
+                            return duplicate;
+                        });
+                });
+        }
 
         /*
          Write to the pool and upload the output.
@@ -397,13 +401,16 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .concatWith(Flux.defer(pool::flush))
             .flatMapSequential(buffer -> {
                 // Report progress as necessary.
-                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(Flux.just(buffer),
-                    parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
+                    buffer.getBuffers(),
+                    parallelTransferOptions.getProgressReceiver(),
+                    progressLock,
+                    totalProgress);
 
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
-                return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, buffer.remaining(),
+                return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, buffer.size(),
                     null, requestConditions.getLeaseId())
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
@@ -416,74 +423,28 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, metadata, tier, requestConditions));
     }
 
-    private Mono<Response<BlockBlobItem>> determineUploadFullOrChunked(final Flux<ByteBuffer> data,
+    private Mono<Response<BlockBlobItem>> determineUploadFullOrChunked(
+        final Flux<ByteBuffer> data,
         ParallelTransferOptions parallelTransferOptions,
         final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
-        final long[] bufferedDataSize = {0};
-        final LinkedList<ByteBuffer> cachedBuffers = new LinkedList<>();
 
-        /*
-         * Window the reactive stream until either the stream completes or the windowing size is hit. If the window
-         * size is hit the next emission will be the pointer to the rest of the reactive steam.
-         *
-         * Once the windowing has completed buffer the two streams, this should create a maximum overhead of ~4MB plus
-         * the next stream emission if the window size was hit. If there are two streams buffered use Stage Blocks and
-         * Put Block List as the upload mechanism otherwise use Put Blob.
-         */
+        PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSize());
+
         return data
             .filter(ByteBuffer::hasRemaining)
-            .windowUntil(buffer -> {
-                if (bufferedDataSize[0] > parallelTransferOptions.getMaxSingleUploadSize()) {
-                    return false;
+            .concatMap(gate::write)
+            .concatWith(Flux.defer(gate::flush))
+            .switchOnFirst((signal, flux) -> {
+                if (gate.isThresholdBroken()) {
+                    return uploadInChunks.apply(flux);
                 } else {
-                    bufferedDataSize[0] += buffer.remaining();
-
-                    if (bufferedDataSize[0] > parallelTransferOptions.getMaxSingleUploadSize()) {
-                        return true;
-                    } else {
-                        /*
-                         * Buffer until the first 4MB are emitted from the stream in case Put Blob is used. This is
-                         * done to support replayability which is required by the Put Blob code path, it doesn't buffer
-                         * the stream in a way that the Stage Blocks and Put Block List code path does, and this API
-                         * explicitly states that it supports non-replayable streams.
-                         */
-                        ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                        cachedBuffer.flip();
-                        cachedBuffers.add(cachedBuffer);
-                        return false;
-                    }
-                }
-            /*
-             * Use cutBefore = true as we want to window all data under 4MB into one window.
-             * Set the prefetch to 'Integer.MAX_VALUE' to leverage an unbounded fetch limit in case there are numerous
-             * tiny buffers, windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete
-             * which causes downstream issues.
-             */
-            }, true, Integer.MAX_VALUE)
-            .buffer(2)
-            .next()
-            .flatMap(fluxes -> {
-                if (fluxes.size() == 1) {
-                    return uploadFullBlob.apply(Flux.fromIterable(cachedBuffers), bufferedDataSize[0]);
-                } else {
-                    return uploadInChunks.apply(dequeuingFlux(cachedBuffers).concatWith(fluxes.get(1)));
+                    return uploadFullBlob.apply(flux, gate.size());
                 }
             })
+            .next()
             // If nothing was emitted from the stream upload an empty blob.
             .switchIfEmpty(uploadFullBlob.apply(Flux.empty(), 0L));
-    }
-
-    private static Flux<ByteBuffer> dequeuingFlux(Queue<ByteBuffer> queue) {
-        // Generate is used as opposed to Flux.fromIterable as it allows the buffers to be garbage collected sooner.
-        return Flux.generate(sink -> {
-            ByteBuffer buffer = queue.poll();
-            if (buffer != null) {
-                sink.next(buffer);
-            } else {
-                sink.complete();
-            }
-        });
     }
 
     /**
@@ -564,9 +525,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
-        Integer originalBlockSize = (parallelTransferOptions == null)
+        Long originalBlockSize = (parallelTransferOptions == null)
             ? null
-            : parallelTransferOptions.getBlockSize();
+            : parallelTransferOptions.getBlockSizeLong();
         final ParallelTransferOptions finalParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         try {
@@ -599,7 +560,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private Mono<Void> uploadFileChunks(long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Integer originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
+        Long originalBlockSize, BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions, AsynchronousFileChannel channel, BlockBlobAsyncClient client) {
         final BlobRequestConditions finalRequestConditions = (requestConditions == null)
             ? new BlobRequestConditions() : requestConditions;
@@ -610,7 +571,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         Lock progressLock = new ReentrantLock();
 
         final SortedMap<Long, String> blockIds = new TreeMap<>();
-        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSize()))
+        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
             .flatMap(chunk -> {
                 String blockId = getBlockID();
                 blockIds.put(chunk.getOffset(), blockId);
@@ -644,7 +605,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private List<BlobRange> sliceFile(long fileSize, Integer originalBlockSize, int blockSize) {
+    private List<BlobRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
         List<BlobRange> ranges = new ArrayList<>();
         if (fileSize > 100 * Constants.MB && originalBlockSize == null) {
             blockSize = BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;

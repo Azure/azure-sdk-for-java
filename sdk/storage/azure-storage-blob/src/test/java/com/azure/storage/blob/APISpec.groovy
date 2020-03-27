@@ -377,6 +377,22 @@ class APISpec extends Specification {
         return builder.credential(credential).buildClient()
     }
 
+    BlobAsyncClient getBlobAsyncClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+
+        return builder.credential(credential).buildAsyncClient()
+    }
+
     BlobClient getBlobClient(StorageSharedKeyCredential credential, String endpoint, String blobName) {
         BlobClientBuilder builder = new BlobClientBuilder()
             .endpoint(endpoint)
