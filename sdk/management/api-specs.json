@@ -151,8 +151,8 @@
   "dns": {
     "dir": "azure-mgmt-dns",
     "source": "specification/dns/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.dns",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
+    "package": "com.azure.management.dns",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview --track1-naming=true"
   },
   "eventhub": {
     "dir": "azure-mgmt-eventhub",
