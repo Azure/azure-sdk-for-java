@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 public class HttpResponseHeaderDecoderTests {
     @AfterEach
     public void clearMocks() {
-        Mockito.framework().clearInlineMocks();;
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test

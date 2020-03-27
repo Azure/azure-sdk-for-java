@@ -261,7 +261,7 @@ public class HttpResponseBodyDecoderTests {
             Arguments.of(dateTimeRfc1123Response, dateTimeRfc1123DecodeData,
                 new DateTimeRfc1123(dateTimeRfc1123Now.toString()).getDateTime()),
             Arguments.of(unixTimeResponse, unixTimeDecodeData,
-                new UnixTime(unixTimeNow.toString()).getDateTime()),
+                new UnixTime(Long.parseLong(unixTimeNow.toString())).getDateTime()),
             Arguments.of(stringListResponse, stringListDecodeData, list),
             Arguments.of(mapStringStringResponse, mapStringStringDecodeData, map)
         );

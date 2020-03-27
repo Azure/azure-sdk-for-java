@@ -6,7 +6,6 @@ package com.azure.core.util.serializer;
 import com.azure.core.implementation.UnixTime;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
@@ -30,10 +29,6 @@ final class UnixTimeSerializer extends JsonSerializer<UnixTime> {
 
     @Override
     public void serialize(UnixTime value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
-        if (provider.isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)) {
-            jgen.writeNumber(value.getDateTime().toInstant().toEpochMilli());
-        } else {
-            jgen.writeString(value.toString()); // Use the default toString as it is an epoch.
-        }
+        jgen.writeNumber(value.toString());
     }
 }

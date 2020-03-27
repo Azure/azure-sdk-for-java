@@ -36,15 +36,6 @@ public final class UnixTime {
     }
 
     /**
-     * Creates a UnixTime object with the specified epoch.
-     *
-     * @param epoch The epoch value represented as a string.
-     */
-    public UnixTime(String epoch) {
-        this.dateTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(epoch)), ZoneOffset.UTC);
-    }
-
-    /**
      * Get the underlying DateTime.
      *
      * @return The underlying DateTime
