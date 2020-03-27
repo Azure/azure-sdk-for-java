@@ -124,7 +124,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     @AfterAll
     public static void afterAll() {
-        if(IS_DEBUG) {
+        if (IS_DEBUG) {
             azureSearchResources.deleteResourceGroup();
         }
     }

@@ -50,8 +50,6 @@ public final class IndexBatchException extends AzureException {
      *
      * @param originBatch The batch that partially failed indexing.
      * @param keySelector A lambda that retrieves a key value from a given document of type T.
-     * @param <T> The CLR type that maps to the index schema. Instances of this type can be stored as documents
-     * in the index.
      * @return A new batch containing all the actions from the given batch that failed and should be retried.
      */
     public <T> IndexBatchBase<T> findFailedActionsToRetry(IndexBatchBase<T> originBatch,
@@ -94,27 +92,21 @@ public final class IndexBatchException extends AzureException {
         return false;
     }
 
+    /**
+     * Checks whether status code is retriable or not.
+     * <ul>
+     * <li>'409': A version conflict was detected when attempting to index a document.</li>
+     * <li>'422': The index is temporarily unavailable because it was updated with the
+     * 'allowIndexDowntime' flag set to 'true'.</li>
+     * <li>'503': Your search service is temporarily unavailable, possibly due to heavy load.</li>
+     * </ul>
+     *
+     * @param statusCode The status code from http response.
+     * @return Indicates whether it is retriable or not.
+     */
     private static boolean isRetriableStatusCode(int statusCode) {
-        switch (statusCode) {
-            case 200:
-            case 201:
-                return false;   // Don't retry on success.
-
-            case 404:
-            case 400:
-                return false;   // Don't retry on user error.
-
-            case 500:
-                return false;   // Don't retry when something unexpected happened.
-
-            case 422:
-            case 409:
-            case 503:
-                return true;    // The above cases might succeed on a subsequent retry.
-
-            default:
-                // If this happens, it's a bug. Safest to assume no retry.
-                return false;
-        }
+        // 503 Service Unavailable:
+        // server error response code indicates that the server is not ready to handle the request
+        return statusCode == 409 || statusCode == 422 || statusCode == 503;
     }
 }
