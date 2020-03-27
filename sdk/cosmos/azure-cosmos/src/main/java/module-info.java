@@ -3,14 +3,8 @@
 
 module com.azure.cosmos {
 
-    requires transitive reactor.core;
-    requires transitive org.reactivestreams;
+    requires transitive com.azure.core;
 
-    requires transitive com.fasterxml.jackson.annotation;
-    requires transitive com.fasterxml.jackson.core;
-    requires transitive com.fasterxml.jackson.databind;
-
-    requires com.azure.core;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires io.netty.transport;
     requires io.netty.handler;
@@ -49,4 +43,5 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
 
+    uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
 }
