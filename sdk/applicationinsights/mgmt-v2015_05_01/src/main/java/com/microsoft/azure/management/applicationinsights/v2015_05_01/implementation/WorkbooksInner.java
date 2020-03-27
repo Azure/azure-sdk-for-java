@@ -85,7 +85,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkbookErrorException thrown if the request is rejected by server
@@ -99,7 +99,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -112,7 +112,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkbookInner&gt; object
@@ -129,7 +129,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;WorkbookInner&gt; object
@@ -172,7 +172,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
@@ -188,7 +188,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
@@ -203,7 +203,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
@@ -222,7 +222,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @param tags Tags presents on each workbook returned.
      * @param canFetchContent Flag indicating whether or not to return the full content for each applicable workbook. If false, only return summary content for workbooks.
@@ -273,7 +273,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkbookErrorException thrown if the request is rejected by server
@@ -287,7 +287,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -300,7 +300,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkbookInner object
@@ -317,7 +317,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkbookInner object
@@ -359,7 +359,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws WorkbookErrorException thrown if the request is rejected by server
@@ -372,7 +372,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -385,7 +385,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -402,7 +402,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -445,7 +445,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -460,7 +460,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -474,7 +474,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -492,7 +492,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Create a new workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -540,7 +540,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -555,7 +555,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -569,7 +569,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -587,7 +587,7 @@ public class WorkbooksInner implements InnerSupportsDelete<Void> {
     /**
      * Updates a workbook that has already been added.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation

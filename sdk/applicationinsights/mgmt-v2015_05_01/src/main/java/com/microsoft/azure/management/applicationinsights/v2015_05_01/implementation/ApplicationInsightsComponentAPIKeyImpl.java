@@ -22,6 +22,7 @@ class ApplicationInsightsComponentAPIKeyImpl extends IndexableRefreshableWrapper
     ApplicationInsightsComponentAPIKeyImpl(ApplicationInsightsComponentAPIKeyInner inner,  InsightsManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "components");
         this.keyId = IdParsingUtils.getValueFromIdByName(inner.id(), "APIKeys");

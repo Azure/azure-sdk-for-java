@@ -26,7 +26,7 @@ public interface WebTests extends SupportsCreating<WebTest.DefinitionStages.Blan
      * Get all Application Insights web tests defined for the specified component.
      *
      * @param componentName The name of the Application Insights component resource.
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
