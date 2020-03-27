@@ -82,7 +82,7 @@ class APISpec extends Specification {
 
     String blobPrefix = "javablob"
 
-    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -408,7 +408,7 @@ class APISpec extends Specification {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 
-    def createFS(Map<String,String> config) {
+    def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
 

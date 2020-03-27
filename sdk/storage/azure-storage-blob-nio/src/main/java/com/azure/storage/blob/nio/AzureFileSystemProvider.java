@@ -119,7 +119,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private static final String ACCOUNT_QUERY_KEY = "account";
     private static final int COPY_TIMEOUT_SECONDS = 30;
-    static final String DIR_METADATA_MARKER = "is_hdi_folder";
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -199,7 +198,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public DirectoryStream<Path> newDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter)
         throws IOException {
-        return null;
+        return new AzureDirectoryStream(path, filter);
     }
 
     /**

@@ -37,7 +37,7 @@ import java.util.Objects;
 class AzureResource {
     private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
-    static final String DIR_METADATA_MARKER = "is_hdi_folder";
+    static final String DIR_METADATA_MARKER = "hdi_isfolder";
 
     private final AzurePath path;
     private final BlobClient blobClient;
@@ -211,13 +211,13 @@ class AzureResource {
 
     private AzurePath validatePathInstanceType(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on " 
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
         return (AzurePath) path;
     }
 
-    private BlobContainerClient getContainerClient() {
+    BlobContainerClient getContainerClient() {
         return new BlobContainerClientBuilder().endpoint(this.blobClient.getBlobUrl())
             .pipeline(this.blobClient.getHttpPipeline())
             .buildClient();
