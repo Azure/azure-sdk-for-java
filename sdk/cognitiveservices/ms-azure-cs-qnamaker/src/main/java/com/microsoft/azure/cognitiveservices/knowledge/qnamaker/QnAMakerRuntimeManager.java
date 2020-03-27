@@ -49,7 +49,7 @@ public class QnAMakerRuntimeManager {
                                 Request original = chain.request();
                                 // Request customization: add request headers
                                 Request.Builder requestBuilder = original.newBuilder()
-                                        .addHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+                                        .addHeader("Authorization", "EndpointKey " + subscriptionKey);
                                 request = requestBuilder.build();
                                 return chain.proceed(request);
                             }

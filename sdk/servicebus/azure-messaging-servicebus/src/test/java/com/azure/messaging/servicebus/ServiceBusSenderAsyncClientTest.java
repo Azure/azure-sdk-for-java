@@ -110,7 +110,7 @@ public class ServiceBusSenderAsyncClientTest {
 
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                ENTITY_NAME, connectionOptions.getRetry()));
+                connectionOptions.getRetry()));
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
             tracerProvider, messageSerializer);
     }
@@ -129,7 +129,7 @@ public class ServiceBusSenderAsyncClientTest {
      */
     @Test
     void verifyProperties() {
-        Assertions.assertEquals(ENTITY_NAME, sender.getEntityName());
+        Assertions.assertEquals(ENTITY_NAME, sender.getEntityPath());
         Assertions.assertEquals(NAMESPACE, sender.getFullyQualifiedNamespace());
     }
 

@@ -14,50 +14,51 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.MessageUtils;
+import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAsyncConsumer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
-import com.azure.messaging.servicebus.models.ReceiveMessageOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
-import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
  * topic on Azure Service Bus.
+ *
+ * @see ServiceBusClientBuilder
+ * @see ServiceBusReceiverClient See ServiceBusReceiverClient to communicate with a Service Bus resource using a
+ *     synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements Closeable {
-    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS =  new DeadLetterOptions();
+    private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
-    private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final boolean isSessionEnabled;
+    private final ReceiveMessageOptions receiveOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final Duration maxAutoRenewDuration;
     private final int prefetch;
-    private final boolean isAutoComplete;
     private final ReceiveMode receiveMode;
+    private final MessageLockContainer messageLockContainer;
 
     /**
      * Map containing linkNames and their associated consumers. Key: linkName Value: consumer associated with that
@@ -66,25 +67,24 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
     private final ConcurrentHashMap<String, ServiceBusAsyncConsumer> openConsumers = new ConcurrentHashMap<>();
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        boolean isSessionEnabled, ReceiveMessageOptions receiveMessageOptions,
+        boolean isSessionEnabled, ReceiveMessageOptions receiveOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer) {
+        MessageSerializer messageSerializer, MessageLockContainer messageLockContainer) {
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+        this.receiveOptions = Objects.requireNonNull(receiveOptions, "'receiveMessageOptions' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
 
-        Objects.requireNonNull(receiveMessageOptions, "'receiveMessageOptions' cannot be null.");
-        this.prefetch = receiveMessageOptions.getPrefetchCount();
-        this.maxAutoRenewDuration = receiveMessageOptions.getMaxAutoRenewDuration();
-        this.isAutoComplete = receiveMessageOptions.isAutoComplete();
-        this.receiveMode = receiveMessageOptions.getReceiveMode();
+        this.prefetch = receiveOptions.getPrefetchCount();
+        this.receiveMode = receiveOptions.getReceiveMode();
 
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
+        this.messageLockContainer = messageLockContainer;
     }
 
     /**
@@ -102,14 +102,199 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      *
      * @return The Service Bus resource this client interacts with.
      */
-    public String getServiceBusResourceName() {
+    public String getEntityPath() {
         return entityPath;
     }
 
     /**
-     * Receives a stream of {@link ServiceBusReceivedMessage}.
+     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token. This will make the message available
+     * again for processing. Abandoning a message will increase the delivery count on the message.
      *
-     * @return A stream of messages from Service Bus.
+     * @param lockToken Lock token of the message.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
+    public Mono<Void> abandon(MessageLockToken lockToken) {
+        return abandon(lockToken, null);
+    }
+
+    /**
+     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
+     * This will make the message available again for processing. Abandoning a message will increase the delivery count
+     * on the message.
+     *
+     * @param lockToken Lock token of the message.
+     * @param propertiesToModify Properties to modify on the message.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
+    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
+        return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null, propertiesToModify);
+    }
+
+    /**
+     * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
+     * service.
+     *
+     * @param lockToken Lock token of the message.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
+    public Mono<Void> complete(MessageLockToken lockToken) {
+        return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null, null);
+    }
+
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
+     * subqueue.
+     *
+     * @param lockToken Lock token of the message.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
+    public Mono<Void> defer(MessageLockToken lockToken) {
+        return defer(lockToken, null);
+    }
+
+    /**
+     * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
+     * move message into the deferred subqueue.
+     *
+     * @param lockToken Lock token of the message.
+     * @param propertiesToModify Message properties to modify.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
+     */
+    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
+        return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null, propertiesToModify);
+    }
+
+    /**
+     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
+     *
+     * @param lockToken Lock token of the message.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
+     *     queues</a>
+     */
+    public Mono<Void> deadLetter(MessageLockToken lockToken) {
+        return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS);
+    }
+
+    /**
+     * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
+     * description, and/or modified properties.
+     *
+     * @param lockToken Lock token of the message.
+     * @param deadLetterOptions The options to specify when moving message to the deadletter sub-queue.
+     *
+     * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     * @throws NullPointerException if {@code lockToken} or {@code deadLetterOptions} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     */
+    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
+        if (Objects.isNull(deadLetterOptions)) {
+            return monoError(logger, new NullPointerException("'deadLetterOptions' cannot be null."));
+        }
+
+        return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
+            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
+    }
+
+    /**
+     * Reads the next active message without changing the state of the receiver or the message source. The first call to
+     * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
+     * message in the entity.
+     *
+     * @return A peeked {@link ServiceBusReceivedMessage}.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
+     */
+    public Mono<ServiceBusReceivedMessage> peek() {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(ServiceBusManagementNode::peek);
+    }
+
+    /**
+     * Starting from the given sequence number, reads next the active message without changing the state of the receiver
+     * or the message source.
+     *
+     * @param sequenceNumber The sequence number from where to read the message.
+     *
+     * @return A peeked {@link ServiceBusReceivedMessage}.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
+     */
+    public Mono<ServiceBusReceivedMessage> peekAt(long sequenceNumber) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(node -> node.peek(sequenceNumber));
+    }
+
+    /**
+     * Reads the next batch of active messages without changing the state of the receiver or the message source.
+     *
+     * @param maxMessages The number of messages.
+     *
+     * @return A {@link Flux} of {@link ServiceBusReceivedMessage messages} that are peeked.
+     * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
+     */
+    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(node -> node.peekBatch(maxMessages));
+    }
+
+    /**
+     * Starting from the given sequence number, reads the next batch of active messages without changing the state of
+     * the receiver or the message source.
+     *
+     * @param maxMessages The number of messages.
+     * @param sequenceNumber The sequence number from where to start reading messages.
+     *
+     * @return A {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
+     * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
+     */
+    public Flux<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(node -> node.peekBatch(maxMessages, sequenceNumber));
+    }
+
+    /**
+     * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     *
+     * @return A stream of messages from the Service Bus entity.
      */
     public Flux<ServiceBusReceivedMessage> receive() {
         if (isDisposed.get()) {
@@ -117,7 +302,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 new IllegalStateException("Cannot receive from a client that is already closed.")));
         }
 
-        if (receiveMode != ReceiveMode.PEEK_LOCK && isAutoComplete) {
+        if (receiveMode != ReceiveMode.PEEK_LOCK && receiveOptions.isAutoComplete()) {
             return Flux.error(logger.logExceptionAsError(new UnsupportedOperationException(
                 "Autocomplete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.")));
         }
@@ -126,25 +311,7 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         //  Python and .NET does not have the same behaviour.
         return Flux.usingWhen(
             Mono.fromCallable(() -> getOrCreateConsumer(entityPath)),
-            consumer -> {
-                return consumer.receive().map(message -> {
-                    if (message.getLockToken() == null || MessageUtils.ZERO_LOCK_TOKEN.equals(message.getLockToken())) {
-                        return message;
-                    }
-
-                    lockTokenExpirationMap.compute(message.getLockToken(), (key, existing) -> {
-                        if (existing == null) {
-                            return message.getLockedUntil();
-                        } else {
-                            return existing.isBefore(message.getLockedUntil())
-                                ? message.getLockedUntil()
-                                : existing;
-                        }
-                    });
-
-                    return message;
-                });
-            },
+            consumer -> consumer.receive(),
             consumer -> {
                 final String linkName = consumer.getLinkName();
                 logger.info("{}: Receiving completed. Disposing", linkName);
@@ -152,76 +319,41 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 final ServiceBusAsyncConsumer removed = openConsumers.remove(linkName);
                 if (removed == null) {
                     logger.warning("Could not find consumer to remove for: {}", linkName);
-                    return Mono.empty();
                 } else {
-                    return removed.disposeAsync();
+                    removed.close();
                 }
+
+                return Mono.empty();
             });
     }
 
     /**
-     * Abandon {@link ServiceBusMessage} with lock token. This will make the message available again for processing.
-     * Abandoning a message will increase the delivery count on the message.
+     * Receives a deferred {@link ServiceBusReceivedMessage message}. Deferred messages can only be received by using
+     * sequence number.
      *
-     * @param message to be used.
+     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber() sequence number} of the
+     *     message.
      *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @return A deferred message with the matching {@code sequenceNumber}.
      */
-    public Mono<Void> abandon(ServiceBusReceivedMessage message) {
-        return abandon(message, null);
-    }
-
-    /**
-     * Abandon {@link ServiceBusMessage} with lock token and updated message property. This will make the message
-     * available again for processing. Abandoning a message will increase the delivery count on the message.
-     *
-     * @param message to be used.
-     * @param propertiesToModify Message properties to modify.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> abandon(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        return updateDisposition(message, DispositionStatus.ABANDONED, null, null, propertiesToModify);
-    }
-
-    /**
-     * Completes a {@link ServiceBusMessage} using its lock token. This will delete the message from the service.
-     *
-     * @param message Message to be completed.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> complete(ServiceBusReceivedMessage message) {
-        return updateDisposition(message, DispositionStatus.COMPLETED, null, null, null);
-    }
-
-    /**
-     * Defers a {@link ServiceBusMessage} using its lock token. This will move message into deferred subqueue.
-     *
-     * @param message to be used.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> defer(ServiceBusReceivedMessage message) {
-        return defer(message, null);
-    }
-
-    /**
-     * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on the
-     * setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is
-     * locked on the server for this receiver instance for a duration as specified during the Queue creation
-     * (LockDuration). If processing of the message requires longer than this duration, the lock needs to be renewed.
-     * For each renewal, the lock is reset to the entity's LockDuration value.
-     *
-     * @param messageLock The {@link UUID} value of the message lock to renew.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Instant> renewMessageLock(UUID messageLock) {
+    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(messageLock));
+            .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber));
+    }
+
+    /**
+     * Receives a batch of deferred {@link ServiceBusReceivedMessage messages}. Deferred messages can only be received
+     * by using sequence number.
+     *
+     * @param sequenceNumbers The sequence numbers of the deferred messages.
+     *
+     * @return A {@link Flux} of deferred {@link ServiceBusReceivedMessage messages}.
+     */
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMapMany(node -> node.receiveDeferredMessageBatch(receiveMode, sequenceNumbers));
     }
 
     /**
@@ -231,140 +363,30 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      * processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the
      * lock is reset to the entity's LockDuration value.
      *
-     * @param receivedMessage to be used to renew.
+     * @param lockToken Lock token of the message to renew.
      *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
+     * @return The new expiration time for the message.
+     * @throws NullPointerException if {@code lockToken} is null.
+     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
+     *     mode.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
      */
-    public Mono<Instant> renewMessageLock(ServiceBusReceivedMessage receivedMessage) {
+    public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {
+        if (Objects.isNull(lockToken)) {
+            return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
+        }
+
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(serviceBusManagementNode -> serviceBusManagementNode
-                .renewMessageLock(receivedMessage.getLockToken())
-                .map(instant -> {
-                    receivedMessage.setLockedUntil(instant);
-                    return instant;
-                }));
-    }
+            .flatMap(serviceBusManagementNode ->
+                serviceBusManagementNode.renewMessageLock(lockToken.getLockToken()))
+            .map(instant -> {
+                if (lockToken instanceof ServiceBusReceivedMessage) {
+                    ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
+                }
 
-    /**
-     * Defers a {@link ServiceBusMessage} using its lock token with modified message property. This will move message
-     * into deferred subqueue.
-     *
-     * @param message to be used.
-     * @param propertiesToModify Message properties to modify.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> defer(ServiceBusReceivedMessage message, Map<String, Object> propertiesToModify) {
-        return updateDisposition(message, DispositionStatus.DEFERRED, null, null, propertiesToModify);
-    }
-
-    /**
-     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue.
-     *
-     * @param message to be used.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message) {
-        return deadLetter(message, DEFAULT_DEAD_LETTER_OPTIONS);
-    }
-
-
-    /**
-     * Moves a {@link ServiceBusMessage} to the deadletter sub-queue with deadletter reason, error description and
-     * modifided properties.
-     *
-     * @param message to be used.
-     * @param deadLetterOptions The options to specify while moving message to the deadletter sub-queue.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions deadLetterOptions) {
-        Objects.requireNonNull(deadLetterOptions, "'deadLetterOptions' cannot be null.");
-
-        return updateDisposition(message, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
-                deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify());
-
-    }
-
-    /**
-     * Receives a deferred {@link ServiceBusMessage}. Deferred messages can only be received by using sequence number.
-     *
-     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
-     *
-     * @return The {@link Mono} the finishes this operation on service bus resource.
-     */
-    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber));
-    }
-
-    /**
-     * Reads the next active message without changing the state of the receiver or the message source. The first call to
-     * {@code peek()} fetches the first active message for this receiver. Each subsequent call fetches the subsequent
-     * message in the entity.
-     *
-     * @return Single {@link ServiceBusReceivedMessage} peeked.
-     */
-    public Mono<ServiceBusReceivedMessage> peek() {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(ServiceBusManagementNode::peek);
-    }
-
-    /**
-     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
-     * sequence number.
-     *
-     * @param sequenceNumbers of the messages to be received.
-     * @return The {@link Flux} of deferred {@link ServiceBusReceivedMessage}.
-     */
-    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(long... sequenceNumbers) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(node -> node.receiveDeferredMessageBatch(receiveMode, sequenceNumbers));
-    }
-
-    /**
-     * Reads next the active message without changing the state of the receiver or the message source.
-     *
-     * @param fromSequenceNumber The sequence number from where to read the message.
-     *
-     * @return Single {@link ServiceBusReceivedMessage} peeked.
-     */
-    public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.peek(fromSequenceNumber));
-    }
-
-    /**
-     * Reads the next batch of active messages without changing the state of the receiver or the message source.
-     *
-     * @param maxMessages The number of messages.
-     *
-     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
-     */
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(node -> node.peekBatch(maxMessages));
-    }
-
-    /**
-     * Reads the next batch of active messages without changing the state of the receiver or the message source.
-     *
-     * @param maxMessages The number of messages.
-     * @param fromSequenceNumber The sequence number from where to read the message.
-     *
-     * @return The {@link Flux} of {@link ServiceBusReceivedMessage} peeked.
-     */
-    public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(node -> node.peekBatch(maxMessages, fromSequenceNumber));
+                return instant;
+            });
     }
 
     /**
@@ -372,33 +394,25 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
      */
     @Override
     public void close() {
-        if (isDisposed.get()) {
+        if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        logger.info("Removing receiver client.");
+        logger.info("Removing receiver clients.");
         connectionProcessor.dispose();
-        cleanup().block(connectionProcessor.getRetryOptions().getTryTimeout());
-    }
 
-    Mono<Void> cleanup() {
-        if (isDisposed.getAndSet(true)) {
-            return Mono.empty();
-        }
+        openConsumers.keySet().forEach(key -> {
+            final ServiceBusAsyncConsumer consumer = openConsumers.get(key);
+            if (consumer != null) {
+                consumer.close();
+            }
+        });
 
-        List<Mono<Void>> collect = openConsumers.keySet().stream()
-            .map(e -> {
-                final ServiceBusAsyncConsumer consumer = openConsumers.get(e);
-                return consumer != null ? consumer.disposeAsync() : null;
-            })
-            .filter(Objects::nonNull)
-            .collect(Collectors.toList());
-
-        return Mono.when(collect).then(Mono.fromRunnable(() -> openConsumers.clear()));
+        openConsumers.clear();
     }
 
     private Mono<Boolean> isLockTokenValid(UUID lockToken) {
-        final Instant lockedUntilUtc = lockTokenExpirationMap.get(lockToken);
+        final Instant lockedUntilUtc = messageLockContainer.getLockTokenExpiration(lockToken);
         if (lockedUntilUtc == null) {
             logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
             return Mono.just(false);
@@ -416,10 +430,11 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
         return Mono.just(true);
     }
 
-    private Mono<Void> updateDisposition(ServiceBusReceivedMessage message, DispositionStatus dispositionStatus,
+    private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
-        if (message == null) {
-            return Mono.error(new NullPointerException("'message' cannot be null."));
+
+        if (Objects.isNull(message)) {
+            return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
 
         final UUID lockToken = message.getLockToken();
@@ -431,9 +446,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                 "'message.getLockToken()' cannot be null.")));
         }
 
-        final Instant instant = lockTokenExpirationMap.get(lockToken);
-        logger.info("{}: Update started. Disposition: {}. Sequence number: {}. Lock: {}. Expiration: {}",
-            entityPath, dispositionStatus, message.getSequenceNumber(), lockToken, instant);
+        final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
+        logger.info("{}: Update started. Disposition: {}. Lock: {}. Expiration: {}",
+            entityPath, dispositionStatus, lockToken, instant);
 
         return isLockTokenValid(lockToken).flatMap(isLocked -> {
             return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -448,10 +463,9 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
                     }
                 });
         }).then(Mono.fromRunnable(() -> {
-            logger.info("{}: Update completed. Disposition: {}. Sequence number: {}. Lock: {}.",
-                entityPath, dispositionStatus, message.getSequenceNumber(), lockToken);
+            logger.info("{}: Update completed. Disposition: {}. Lock: {}.", entityPath, dispositionStatus, lockToken);
 
-            lockTokenExpirationMap.remove(lockToken);
+            messageLockContainer.remove(lockToken);
         }));
     }
 
@@ -474,12 +488,14 @@ public final class ServiceBusReceiverAsyncClient implements Closeable {
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
                 new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
 
-            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer, isAutoComplete,
-                connectionProcessor.getRetryOptions(), this::complete, this::abandon);
+            return new ServiceBusAsyncConsumer(linkName, linkMessageProcessor, messageSerializer,
+                receiveOptions.isAutoComplete(), receiveOptions.isLockAutoRenewed(),
+                receiveOptions.getMaxAutoRenewDuration(), connectionProcessor.getRetryOptions(), messageLockContainer,
+                this::complete, this::abandon, this::renewMessageLock);
         });
     }
 
     private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(getFullyQualifiedNamespace(), getServiceBusResourceName());
+        return new SessionErrorContext(getFullyQualifiedNamespace(), getEntityPath());
     }
 }
