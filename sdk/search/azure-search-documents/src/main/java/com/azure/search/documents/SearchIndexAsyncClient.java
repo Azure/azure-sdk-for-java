@@ -14,6 +14,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
+import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SerializationUtil;
