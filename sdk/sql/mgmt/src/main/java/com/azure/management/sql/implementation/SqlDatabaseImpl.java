@@ -543,7 +543,7 @@ class SqlDatabaseImpl
             }
 
             return this.sqlServerManager.inner().databases()
-                .importAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
+                .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
                 .flatMap(importExportResponseInner -> {
                     if (self.elasticPoolId() != null) {
                         self.importRequestInner = null;
@@ -712,8 +712,9 @@ class SqlDatabaseImpl
     @Override
     public SqlDatabaseImpl fromRestorableDroppedDatabase(SqlRestorableDroppedDatabase restorableDroppedDatabase) {
         Objects.requireNonNull(restorableDroppedDatabase);
-        return this.withSourceDatabase(restorableDroppedDatabase.id())
-            .withMode(CreateMode.RESTORE);
+        this.inner().withRestorableDroppedDatabaseId(restorableDroppedDatabase.id())
+                .withCreateMode(CreateMode.RESTORE);
+        return this;
     }
 
     private void initializeImportRequestInner() {

@@ -55,7 +55,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -1040,19 +1039,18 @@ public class AzureTests extends TestBase {
         new TestResourceStreaming(azure.storageAccounts()).runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
-//    @Test
-//    public void testContainerService() throws Exception {
-//        new TestContainerService()
-//                .runTest(azure.containerServices(), azure.resourceGroups());
-//    }
-//
-//    @Test
-//    public void testKubernetesCluster() throws Exception {
-//        if (isPlaybackMode()) {
-//            new TestKubernetesCluster()
-//                    .runTest(azure.kubernetesClusters(), azure.resourceGroups());
-//        }
-//    }
+    @Test
+    @Disabled("Container service will be deprecated")
+    public void testContainerService() throws Exception {
+        new TestContainerService()
+                .runTest(azure.containerServices(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testKubernetesCluster() throws Exception {
+        new TestKubernetesCluster()
+                .runTest(azure.kubernetesClusters(), azure.resourceGroups());
+    }
 
 //    @Test
 //    public void testContainerInstanceWithPublicIpAddressWithSystemAssignedMsi() throws Exception {
@@ -1186,13 +1184,12 @@ public class AzureTests extends TestBase {
 //                .runTest(azure.containerRegistries(), azure.resourceGroups());
 //    }
 
-//    @Test
-//    @Ignore("Runs locally find but fails for unknown reason on check in.")
-//    public void testCosmosDB() throws Exception {
-//        new TestCosmosDB()
-//                .runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
-//    }
-//
+    @Test
+    public void testCosmosDB() throws Exception {
+        new TestCosmosDB()
+                .runTest(azure.cosmosDBAccounts(), azure.resourceGroups());
+    }
+
 //    @Test
 //    public void testSearchServiceFreeSku() throws Exception {
 //        new TestSearchService.SearchServiceFreeSku()

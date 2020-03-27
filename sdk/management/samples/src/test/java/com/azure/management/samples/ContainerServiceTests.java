@@ -10,6 +10,7 @@ import com.azure.management.containerservice.samples.DeployImageFromContainerReg
 import com.azure.management.containerservice.samples.ManageContainerServiceWithDockerSwarmOrchestrator;
 import com.azure.management.containerservice.samples.ManageContainerServiceWithKubernetesOrchestrator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
@@ -25,6 +26,7 @@ public class ContainerServiceTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled("Container service will be deprecated")
     public void testManageContainerServiceWithDockerSwarmOrchestrator() {
         Assertions.assertTrue(ManageContainerServiceWithDockerSwarmOrchestrator.runSample(azure));
     }

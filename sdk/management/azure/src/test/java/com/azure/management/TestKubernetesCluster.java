@@ -5,6 +5,8 @@
  */
 package com.azure.management;
 
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.containerservice.ContainerServiceVMSizeTypes;
 import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.containerservice.KubernetesClusters;
@@ -13,11 +15,17 @@ import org.junit.jupiter.api.Assertions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Properties;
 
 public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, KubernetesClusters> {
     @Override
@@ -27,8 +35,21 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         final String newName = "aks" + kubernetesClusters.manager().getSdkContext().randomResourceName("", 8);
         final String dnsPrefix = "dns" + newName;
         final String agentPoolName = "ap" + newName;
-        final String clientId = "clientId";
-        final String secret = "secret";
+        String clientId = "clientId";
+        String secret = "secret";
+
+        // aks can use another azure auth rather than original client auth to access azure service.
+        // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
+        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
+        if (envSecondaryServicePrincipal == null || envSecondaryServicePrincipal.isEmpty() || !(new File(envSecondaryServicePrincipal).exists())) {
+            envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
+        }
+
+        try {
+            HashMap<String, String> credentialsMap = ParseAuthFile(envSecondaryServicePrincipal);
+            clientId = credentialsMap.get("clientId");
+            secret = credentialsMap.get("clientSecret");
+        } catch (Exception e) {}
 
         KubernetesCluster resource = kubernetesClusters.define(newName)
             .withRegion(Region.US_EAST)
@@ -108,5 +129,34 @@ public class TestKubernetesCluster extends TestTemplate<KubernetesCluster, Kuber
         String publicKeyEncoded = new String(
             Base64.getEncoder().encode(byteOs.toByteArray()));
         return "ssh-rsa " + publicKeyEncoded + " ";
+    }
+
+
+    /**
+     * Parse azure auth to hashmap
+     * @param authFilename the azure auth location
+     * @return all fields in azure auth json
+     * @throws Exception exception
+     */
+    private static HashMap<String, String> ParseAuthFile(String authFilename) throws Exception {
+        String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
+        HashMap<String, String> auth = new HashMap<>();
+        if (isJsonBased(content)) {
+            auth = new JacksonAdapter().deserialize(content, auth.getClass(), SerializerEncoding.JSON);
+        } else {
+            Properties authSettings = new Properties();
+            FileInputStream credentialsFileStream = new FileInputStream(new File(authFilename));
+            authSettings.load(credentialsFileStream);
+            credentialsFileStream.close();
+
+            for (final String authName: authSettings.stringPropertyNames()) {
+                auth.put(authName, authSettings.getProperty(authName));
+            }
+        }
+        return auth;
+    }
+
+    private static boolean isJsonBased(String content) {
+        return content.startsWith("{");
     }
 }

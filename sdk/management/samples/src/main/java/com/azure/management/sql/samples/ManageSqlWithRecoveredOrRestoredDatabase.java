@@ -55,7 +55,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             // Create a SQL Server with two databases from a sample.
             System.out.println("Creating a SQL Server with two databases from a sample.");
             SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
-                .withRegion(Region.US_WEST2)
+                .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
@@ -99,6 +99,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             OffsetDateTime currentTime = OffsetDateTime.now();
             long waitForRestoreToBeReady = ChronoUnit.MILLIS.between(currentTime, restorePointInTime.earliestRestoreDate())
                     + 5 * 60 * 1000;
+            System.out.printf("waitForRestoreToBeReady %d\n", waitForRestoreToBeReady);
             if (waitForRestoreToBeReady > 0) {
                 SdkContext.sleep((int) waitForRestoreToBeReady);
             }
@@ -113,7 +114,7 @@ public final class ManageSqlWithRecoveredOrRestoredDatabase {
             // ============================================================
             // Restore the database form a point in time restore which is 5 minutes ago.
             dbRestorePointInTime = sqlServer.databases()
-                .define("db-restore-pit")
+                .define("db-restore-pit-2")
                 .fromRestorePoint(restorePointInTime, OffsetDateTime.now().minusMinutes(5))
                 .create();
             Utils.print(dbRestorePointInTime);

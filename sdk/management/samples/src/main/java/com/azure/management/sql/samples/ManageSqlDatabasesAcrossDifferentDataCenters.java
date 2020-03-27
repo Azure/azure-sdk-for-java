@@ -63,8 +63,8 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
         final String slaveSqlServer1Name =  azure.sdkContext().randomResourceName("slave1sql", 20);
         final String slaveSqlServer2Name =  azure.sdkContext().randomResourceName("slave2sql", 20);
         final String databaseName = "mydatabase";
-        final String networkName =  azure.sdkContext().randomResourceName("network", 20);
-        final String virtualMachineName =  azure.sdkContext().randomResourceName("samplevm", 20);
+        final String networkPrefix =  "network";
+        final String virtualMachinePrefix =  "samplevm";
         try {
 
             // ============================================================
@@ -112,7 +112,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating server in another location for master SQL Server");
             SqlServer sqlServerInEurope = azure.sqlServers()
                     .define(slaveSqlServer2Name)
-                        .withRegion(Region.EUROPE_WEST)
+                        .withRegion(Region.US_SOUTH_CENTRAL)
                         .withExistingResourceGroup(rgName)
                         .withAdministratorLogin(administratorLogin)
                         .withAdministratorPassword(administratorPassword)
@@ -131,7 +131,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             List<Region> regions = new ArrayList<>();
 
             regions.add(Region.US_EAST);
-            regions.add(Region.US_WEST);
+            regions.add(Region.US_SOUTH_CENTRAL);
             regions.add(Region.EUROPE_NORTH);
             regions.add(Region.ASIA_SOUTHEAST);
             regions.add(Region.JAPAN_EAST);
@@ -141,7 +141,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating virtual networks in different regions.");
 
             for (Region region: regions) {
-                creatableNetworks.add(azure.networks().define(networkName)
+                creatableNetworks.add(azure.networks().define(azure.sdkContext().randomResourceName(networkPrefix, 20))
                         .withRegion(region)
                         .withExistingResourceGroup(rgName));
             }
@@ -153,6 +153,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
             System.out.println("Creating virtual machines in different regions.");
 
             for (Network network: networks) {
+                String virtualMachineName = azure.sdkContext().randomResourceName(virtualMachinePrefix, 20);
                 Creatable<PublicIPAddress> publicIPAddressCreatable = azure.publicIPAddresses().define(virtualMachineName)
                         .withRegion(network.region())
                         .withExistingResourceGroup(rgName)
