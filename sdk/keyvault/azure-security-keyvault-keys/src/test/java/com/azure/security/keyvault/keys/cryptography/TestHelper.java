@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
+import static com.azure.core.test.TestBase.getOffset;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -35,12 +38,19 @@ public class TestHelper {
 
         getHttpClients()
             .forEach(httpClient -> {
-                Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                int offset = getOffset();
+                KeyServiceVersion[] keyServiceVersions = KeyServiceVersion.values();
+                for (int i = 0; i < keyServiceVersions.length; i++) {
+                    if (i == (5 - (i + offset) % 6)) {
+                        argumentsList.add(Arguments.of(httpClient, keyServiceVersions[i]));
+                    }
+                }
+//                getOffset()
+//                Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
+//                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();
     }
-
     /**
      * Returns whether the given service version match the rules of test framework.
      *

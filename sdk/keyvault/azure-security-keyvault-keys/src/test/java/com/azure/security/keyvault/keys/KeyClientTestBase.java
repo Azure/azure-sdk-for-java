@@ -425,7 +425,7 @@ public abstract class KeyClientTestBase extends TestBase {
                 int offset = getOffset();
                 KeyServiceVersion[] keyServiceVersions = KeyServiceVersion.values();
                 for (int i = 0; i < keyServiceVersions.length; i++) {
-                    if (i == (i + offset) % 6) {
+                    if (i == (5 - (i + offset) % 6)) {
                         argumentsList.add(Arguments.of(httpClient, keyServiceVersions[i]));
                     }
                 }
