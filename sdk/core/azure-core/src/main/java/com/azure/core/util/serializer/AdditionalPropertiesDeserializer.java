@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
@@ -107,6 +108,15 @@ final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> imp
                 }
                 JsonProperty property = field.getAnnotation(JsonProperty.class);
                 String key = isJsonFlatten ? property.value().split("((?<!\\\\))\\.")[0] : property.value();
+                if (key.equals("additionalProperties-original")) {
+                    String serializedKey = "additionalProperties";
+                    if (copy.has(serializedKey)) {
+                        JsonNode node = copy.get(serializedKey);
+                        root.put(key, node);
+                        copy.remove(serializedKey);
+                        root.remove(serializedKey);
+                    }
+                }
                 if (!key.isEmpty()) {
                     if (copy.has(key)) {
                         copy.remove(key);

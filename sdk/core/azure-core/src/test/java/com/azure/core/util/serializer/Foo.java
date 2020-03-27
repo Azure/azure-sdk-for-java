@@ -34,6 +34,8 @@ public class Foo {
     private Integer empty;
     @JsonProperty(value = "")
     private Map<String, Object> additionalProperties;
+    @JsonProperty(value = "additionalProperties-original")
+    private Map<String, Integer> additionalPropertiesProperty;
 
     public String bar() {
         return bar;
@@ -81,5 +83,13 @@ public class Foo {
 
     public void additionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+
+    public Map<String, Integer> additionalPropertiesProperty() {
+        return additionalPropertiesProperty;
+    }
+
+    public void additionalPropertiesProperty(Map<String, Integer> additionalPropertiesProperty) {
+        this.additionalPropertiesProperty = additionalPropertiesProperty;
     }
 }
