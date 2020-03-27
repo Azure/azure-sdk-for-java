@@ -5,17 +5,15 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class SendMessageBatchWithConnectionStringSample {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Event Hub.
+     * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
      * @param args Unused arguments to the program.
      */
@@ -58,9 +56,9 @@ public class SendMessageBatchWithConnectionStringSample {
             senderClient.send(currentBatch);
             currentBatch = senderClient.createBatch();
 
-            // Add that event that we couldn't before.
+            // Add that message that we couldn't before.
             if (!currentBatch.tryAdd(message)) {
-                System.err.printf("Event is too large for an empty batch. Skipping. Max size: %s. Event: %s%n",
+                System.err.printf("Message is too large for an empty batch. Skipping. Max size: %s. Message: %s%n",
                     currentBatch.getMaxSizeInBytes(), new String(message.getBody(), UTF_8));
             }
         }
