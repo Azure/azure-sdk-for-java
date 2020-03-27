@@ -8,6 +8,7 @@ import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.models.Index;
+import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;

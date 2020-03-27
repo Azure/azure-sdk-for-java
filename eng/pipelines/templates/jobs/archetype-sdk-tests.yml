@@ -15,7 +15,7 @@ parameters:
       OSVmImage: 'macOS-10.15'
       JavaVersion: '1.8'
       DisplayName: 'macOS - Java 8'
-    Windows - Java 8:
+    Windows - Java 8:IndexingSyncTests
       OSName: 'Windows'
       OSVmImage: 'windows-2019'
       JavaVersion: '1.8'
@@ -107,7 +107,7 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-  
+
 
       - task: Maven@3
         displayName: $(DisplayName)
