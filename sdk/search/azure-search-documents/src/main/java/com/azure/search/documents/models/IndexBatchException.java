@@ -50,6 +50,7 @@ public final class IndexBatchException extends AzureException {
      *
      * @param originBatch The batch that partially failed indexing.
      * @param keySelector A lambda that retrieves a key value from a given document of type T.
+     * @param <T> The given document type.
      * @return A new batch containing all the actions from the given batch that failed and should be retried.
      */
     public <T> IndexBatchBase<T> findFailedActionsToRetry(IndexBatchBase<T> originBatch,
