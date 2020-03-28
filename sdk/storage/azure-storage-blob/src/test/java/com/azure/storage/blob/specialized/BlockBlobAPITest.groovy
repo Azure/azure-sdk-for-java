@@ -1230,7 +1230,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions((Long)null, null, null, 4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1246,6 +1246,35 @@ class BlockBlobAPITest extends APISpec {
         [4 * Constants.MB + 1, 10]           | 2
         [4 * Constants.MB]                   | 0
         [10, 100, 1000, 10000]               | 0
+        [4 * Constants.MB, 4 * Constants.MB] | 2
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    def "Buffered upload handle pathing hot flux with transient failure"() {
+        setup:
+        def clientWithFailure = getBlobAsyncClient(
+            primaryCredential,
+            blobAsyncClient.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        )
+
+        def dataList = [] as List<ByteBuffer>
+        dataSizeList.each { size -> dataList.add(getRandomData(size)) }
+        def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions((Long)null, null, null, 4 * Constants.MB), true)
+
+        expect:
+        StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
+            .assertNext({ assert compareListToBuffer(dataList, it) })
+            .verifyComplete()
+
+        StepVerifier.create(blockBlobAsyncClient.listBlocks(BlockListType.ALL))
+            .assertNext({ assert it.getCommittedBlocks().size() == blockCount })
+            .verifyComplete()
+
+        where:
+        dataSizeList                         | blockCount
+        [4 * Constants.MB + 1, 10]           | 2
         [4 * Constants.MB, 4 * Constants.MB] | 2
     }
 

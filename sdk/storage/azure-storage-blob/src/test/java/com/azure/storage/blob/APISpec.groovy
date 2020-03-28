@@ -35,6 +35,7 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import org.reactivestreams.Publisher
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -47,7 +48,10 @@ import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.time.Duration
 import java.time.OffsetDateTime
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
+import java.util.function.BiFunction
+import java.util.function.Function
 import java.util.function.Supplier
 
 @Timeout(value = 5, unit = TimeUnit.MINUTES)
@@ -827,6 +831,39 @@ class APISpec extends Specification {
         @Override
         Mono<String> getBodyAsString(Charset charset) {
             return Mono.error(new IOException())
+        }
+    }
+
+    class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            def request = httpPipelineCallContext.httpRequest
+            def key = request.url.toString()
+            if (failureTracker.get(key, false)) {
+                return httpPipelineNextPolicy.process()
+            } else {
+                failureTracker.put(key, true)
+                return request.getBody().flatMap(new Function<ByteBuffer, Publisher<ByteBuffer>>() {
+                    @Override
+                    Publisher<ByteBuffer> apply(ByteBuffer byteBuffer) {
+                        byteBuffer.get()
+                        return Flux.just(byteBuffer)
+                    }
+                }).reduce(0L, new BiFunction<Long, ByteBuffer, Long>() {
+                    @Override
+                    Long apply(Long a, ByteBuffer byteBuffer) {
+                        return a + byteBuffer.remaining()
+                    }
+                }).flatMap(new Function<Long, Mono<HttpResponse>>() {
+                    @Override
+                    Mono<HttpResponse> apply(Long aLong) {
+                        return Mono.error(new IOException("KABOOM!"))
+                    }
+                })
+            }
         }
     }
 }

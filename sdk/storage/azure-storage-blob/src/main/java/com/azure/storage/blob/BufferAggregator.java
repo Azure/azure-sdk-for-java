@@ -4,12 +4,12 @@ import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 final class BufferAggregator {
     private final long limit;
     private long size = 0;
-    private Queue<ByteBuffer> buffers = new LinkedList<>();
+    private List<ByteBuffer> buffers = new LinkedList<>();
 
     public BufferAggregator(long limit) {
         this.limit = limit;
@@ -34,18 +34,6 @@ final class BufferAggregator {
     }
 
     public Flux<ByteBuffer> getBuffers(){
-        return dequeuingFlux(this.buffers);
-    }
-
-    private static Flux<ByteBuffer> dequeuingFlux(Queue<ByteBuffer> queue) {
-        // Generate is used as opposed to Flux.fromIterable as it allows the buffers to be garbage collected sooner.
-        return Flux.generate(sink -> {
-            ByteBuffer buffer = queue.poll();
-            if (buffer != null) {
-                sink.next(buffer);
-            } else {
-                sink.complete();
-            }
-        });
+        return Flux.fromIterable(this.buffers);
     }
 }

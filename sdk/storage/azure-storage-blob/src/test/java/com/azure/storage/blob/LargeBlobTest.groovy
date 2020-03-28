@@ -7,10 +7,8 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.util.Context
 import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient
-import com.azure.storage.blob.specialized.BlockBlobClient
-import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
 import reactor.core.publisher.Flux
@@ -62,6 +60,7 @@ class LargeBlobTest extends APISpec {
         blobClient.getBlockBlobClient().commitBlockList([blockId])
 
         then:
+        count.get() == 1
         putBlockPayloadSizes.size() == 1
         putBlockPayloadSizes[0].block() == maxBlockSize
     }
@@ -77,6 +76,7 @@ class LargeBlobTest extends APISpec {
         .block()
 
         then:
+        count.get() == 2
         putBlockPayloadSizes.size() == 2
         putBlockPayloadSizes[0].block() == maxBlockSize
         putBlockPayloadSizes[1].block() == maxBlockSize
@@ -98,10 +98,50 @@ class LargeBlobTest extends APISpec {
         count.get() == blocks
     }
 
+    @Requires({ liveMode() })
+    def "Upload Large Input Sync"() {
+        given:
+        long blocks = 2
+        long length = maxBlockSize * blocks
+        def stream = createLargeInputStream(length, Constants.MB)
+
+        when:
+        blobClient.uploadWithResponse(
+            stream, length, new ParallelTransferOptions(maxBlockSize, null, null, null),
+            null, null, null, null, null, Context.NONE);
+
+        then:
+        count.get() == blocks
+        putBlockPayloadSizes.size() == 2
+        putBlockPayloadSizes[0].block() == maxBlockSize
+        putBlockPayloadSizes[1].block() == maxBlockSize
+    }
+
+    @Requires({ liveMode() })
+    def "Upload Largest Input Sync"() {
+        given:
+        collectSize = false
+        long blocks = 50 * 1000
+        long length = maxBlockSize * blocks
+        def stream = createLargeInputStream(length, 100 * Constants.MB)
+
+        when:
+        blobClient.uploadWithResponse(
+            stream, length, new ParallelTransferOptions(maxBlockSize, null, null, null),
+            null, null, null, null, null, Context.NONE);
+
+        then:
+        count.get() == blocks
+    }
+
     private InputStream createLargeInputStream(long size) {
-        long numberOfSubStreams = (long) (size / Constants.MB)
+        return createLargeInputStream(size, Constants.MB)
+    }
+
+    private InputStream createLargeInputStream(long size, int chunkSize) {
+        long numberOfSubStreams = (long) (size / chunkSize)
         def subStreams = new Vector()
-        def bytes = getRandomByteArray(Constants.MB)
+        def bytes = getRandomByteArray(chunkSize)
         for (long i = 0; i < numberOfSubStreams; i++) {
             subStreams.add(new ByteArrayInputStream(bytes))
         }
