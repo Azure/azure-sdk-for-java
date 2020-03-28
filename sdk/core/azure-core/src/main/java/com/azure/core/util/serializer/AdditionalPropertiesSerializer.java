@@ -119,9 +119,6 @@ final class AdditionalPropertiesSerializer extends StdSerializer<Object> impleme
                         Entry<String, JsonNode> additionalField = additionalFields.next();
                         resCurrent.put(additionalField.getKey(), additionalField.getValue());
                     }
-                } else if ("additionalProperties-original".equals(key)) {
-                    resCurrent.remove(key);
-                    resCurrent.put("additionalProperties", outNode);
                 }
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());

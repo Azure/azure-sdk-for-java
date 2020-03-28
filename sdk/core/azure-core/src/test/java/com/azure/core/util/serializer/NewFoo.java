@@ -4,11 +4,15 @@
 package com.azure.core.util.serializer;
 
 import com.azure.core.annotation.JsonFlatten;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +21,11 @@ import java.util.Map;
  */
 @JsonFlatten
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
-@JsonTypeName("foo")
+@JsonTypeName("newfoo")
 @JsonSubTypes({
-        @JsonSubTypes.Type(name = "foochild", value = FooChild.class)
+        @JsonSubTypes.Type(name = "newfoochild", value = NewFooChild.class)
 })
-public class Foo {
+public class NewFoo {
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
@@ -32,8 +36,10 @@ public class Foo {
     private String moreProps;
     @JsonProperty(value = "props.empty")
     private Integer empty;
-    @JsonProperty(value = "")
+    @JsonIgnore
     private Map<String, Object> additionalProperties;
+    @JsonProperty(value = "additionalProperties")
+    private Map<String, Object> additionalPropertiesProperty;
 
     public String bar() {
         return bar;
@@ -75,11 +81,28 @@ public class Foo {
         this.empty = empty;
     }
 
+    @JsonAnySetter
+    private void additionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key.replace("\\.", "."), value);
+    }
+
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return additionalProperties;
     }
 
     public void additionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+
+    public Map<String, Object> additionalPropertiesProperty() {
+        return additionalPropertiesProperty;
+    }
+
+    public void additionalPropertiesProperty(Map<String, Object> additionalPropertiesProperty) {
+        this.additionalPropertiesProperty = additionalPropertiesProperty;
     }
 }
