@@ -45,7 +45,6 @@ public class ReceiveMessageAndSettleSample {
 
         Disposable subscription = receiverAsyncClient.receive()
             .subscribe(received -> {
-                final Instant initial = received.getLockedUntil();
                 Instant latest = Instant.MIN;
 
                 // Simulate some sort of long processing. Sleep should not be used in production system.
@@ -59,8 +58,30 @@ public class ReceiveMessageAndSettleSample {
                     System.out.println("Message Locked Until " + latest);
                 }
 
-                System.out.println("Completing message.");
-                receiverAsyncClient.complete(received).block(Duration.ofSeconds(15));
+                //This is application businedd logic to take action based on some application logic.
+                // For demo purpose we are using a property for application logic.
+                String propertyValue = "UNDEFINED";
+                if (received.getProperties().get("SOME_USER_PROPERTY") != null) {
+                    propertyValue = (String)received.getProperties().get("SOME_USER_PROPERTY");
+                }
+
+                switch (propertyValue){
+                    case "VALUE-1":
+                        System.out.println("Completing message.");
+                        receiverAsyncClient.complete(received).block(Duration.ofSeconds(15));
+                        break;
+                    case "VALUE-2":
+                        System.out.println("Abandon message.");
+                        receiverAsyncClient.abandon(received).block(Duration.ofSeconds(15));
+                        break;
+                    case "VALUE-3":
+                        System.out.println("Defer message.");
+                        receiverAsyncClient.defer(received).block(Duration.ofSeconds(15));
+                        break;
+                    default:
+                        System.out.println("Deadletter message.");
+                        receiverAsyncClient.deadLetter(received).block(Duration.ofSeconds(15));
+                }
             });
 
         // Receiving messages from the queue for a duration of 20 seconds.
