@@ -176,4 +176,3 @@ public class ReadmeSamples {
         eventProcessorClient.stop();
     }
 }
-
