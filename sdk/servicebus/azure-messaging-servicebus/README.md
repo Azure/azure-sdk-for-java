@@ -29,7 +29,10 @@ have to be online at the same time.
   - [Send Message to Queue or Topic](#send-message-to-queue-or-topic)
   - [Receive message from Queue or Subscription](#receive-message-from-queue-or-subscription)
   - [Send message with Azure Active Directory credentials](#send-message-with-azure-active-directory-credentials)
+  - [Send a batch of messages](#send-a-batch-of-messages)
   - [Receive message with Azure Active Directory credentials](#receive-message-with-azure-active-directory-credentials)
+  - [Receive messages and settle them](#receive-messages-and-settle-them)
+  - [Receive stream of messages synchronously](#receive-stream-of-messages-synchronously)
 - [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
@@ -109,7 +112,7 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ca
 
 The snippet below creates an asynchronous Service Bus sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L23 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L21-L26 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
@@ -121,13 +124,41 @@ ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
 
 The snippet below creates an asynchronous Service Bus receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-L35 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L33-L38 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString(connectionString)
     .buildReceiverClientBuilder()
     .queueName("<< QUEUE NAME >>")
+    .buildAsyncClient();
+```
+
+The snippet below creates an asynchronous Service Bus receiver with default token credential.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L45-L51 -->
+```java
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .build();
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .credential("<<fully-qualified-namespace>>", credential)
+    .buildReceiverClientBuilder()
+    .queueName("<<queue-name>>")
+    .buildAsyncClient();
+```
+The snippet below creates an asynchronous Service Bus receiver with environment variables and default token credential.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L59-L68 -->
+```java
+System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
+System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
+System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .build();
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .credential("<<fully-qualified-namespace>>", credential)
+    .buildReceiverClientBuilder()
+    .queueName("<<queue-name>>")
     .buildAsyncClient();
 ```
 
@@ -151,8 +182,17 @@ Example of receiving a message asynchronously is documented [here][sample-receiv
 ### Send message with Azure Active Directory credentials
 Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
 
+### Send a batch of messages 
+Example of sending a message asynchronously using active directory credential is documented [here][sample-send-batch-messages].
+
 ### Receive message with Azure Active Directory credentials
 Example of receiving a message asynchronously using active directory credential is documented [here][sample-receive-async-aad-message].
+
+### Receive messages and settle them
+Example of receiving a message asynchronously and settling them is documented [here][sample-receive-message-and-settle].
+
+### Receive stream of messages synchronously
+Example of receiving stream of messages synchronously is documented [here][sample-receive-message-stream-synchronously].
 
 ## Troubleshooting
 
@@ -258,5 +298,8 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
 [sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentity.java
 [sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIDentity.java
+[sample-send-batch-messages]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageBatchWithConnectionStringSample.java
+[sample-receive-message-and-settle]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleSample.java
+[sample-receive-message-stream-synchronously]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageStreamSyncSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

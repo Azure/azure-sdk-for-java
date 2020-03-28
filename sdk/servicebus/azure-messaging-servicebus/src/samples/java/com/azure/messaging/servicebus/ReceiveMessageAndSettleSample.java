@@ -58,14 +58,14 @@ public class ReceiveMessageAndSettleSample {
                     System.out.println("Message Locked Until " + latest);
                 }
 
-                //This is application businedd logic to take action based on some application logic.
+                //This is application business logic to take action based on some application logic.
                 // For demo purpose we are using a property for application logic.
                 String propertyValue = "UNDEFINED";
                 if (received.getProperties().get("SOME_USER_PROPERTY") != null) {
-                    propertyValue = (String)received.getProperties().get("SOME_USER_PROPERTY");
+                    propertyValue = (String) received.getProperties().get("SOME_USER_PROPERTY");
                 }
 
-                switch (propertyValue){
+                switch (propertyValue) {
                     case "VALUE-1":
                         System.out.println("Completing message.");
                         receiverAsyncClient.complete(received).block(Duration.ofSeconds(15));

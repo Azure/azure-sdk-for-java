@@ -3,6 +3,9 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
  * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
@@ -32,6 +35,36 @@ public class ReadmeSamples {
             .connectionString(connectionString)
             .buildReceiverClientBuilder()
             .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
+    }
+
+    /**
+     * Code sample for creating an asynchronous Service Bus receiver using {@link DefaultAzureCredentialBuilder}.
+     */
+    public void createAsynchronousServiceBusReceiverWithAzureIdentity() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential("<<fully-qualified-namespace>>", credential)
+            .buildReceiverClientBuilder()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
+    }
+
+    /**
+     * Code sample for creating an asynchronous Service Bus receiver using environment variable and
+     * {@link DefaultAzureCredentialBuilder}.
+     */
+    public void createAsynchronousServiceBusReceiverWithEnvVariableAzureIdentity() {
+        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
+        System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
+        System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential("<<fully-qualified-namespace>>", credential)
+            .buildReceiverClientBuilder()
+            .queueName("<<queue-name>>")
             .buildAsyncClient();
     }
 }
