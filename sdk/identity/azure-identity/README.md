@@ -119,16 +119,83 @@ A credential is a class which contains or can obtain the data needed for a servi
 
 The credential types in Azure Identity differ in the types of AAD identities they can authenticate and how they are configured:
 
-|credential class|identity|configuration
-|-|-|-
-|`DefaultAzureCredential`|service principal or managed identity|none for managed identity; [environment variables](#environment-variables) for service principal
-|`ManagedIdentityCredential`|managed identity|`ManagedIdentityCredentialBuilder`
-|`EnvironmentCredential`|service principal|[environment variables](#environment-variables)
-|`ClientSecretCredential`|service principal|`ClientSecretCredentialBuilder`
-|`ClientCertificateCredential`|service principal|`ClientCertificateCredentialBuilder`
-|`DeviceCodeCredential`|user account|`DeviceCodeCredentialBuilder`
-|`InteractiveBrowserCredential`|user account|`InteractiveBrowserCredentialBuilder`
-|`UsernamePasswordCredential`|user account|`UsernamePasswordCredentialBuilder`
+<table>
+    <tr>
+        <th>credential class</th>
+        <th>identity</th>
+        <th>configuration</th>
+    </tr>
+    <tr>
+        <td>
+            <code>DefaultAzureCredential</code>
+        </td>
+        <td>service principal or managed identity</td>
+        <td>none for managed identity; <a href="#environment-variables">environment variables</a> for service principal</td>
+    </tr>
+    <tr>
+        <td>
+            <code>ManagedIdentityCredential</code>
+        </td>
+        <td>managed identity</td>
+        <td>
+            <code>ManagedIdentityCredentialBuilder</code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>EnvironmentCredential</code>
+        </td>
+        <td>service principal</td>
+        <td>
+            <a href="#environment-variables">environment variables</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>ClientSecretCredential</code>
+        </td>
+        <td>service principal</td>
+        <td>
+            <code>ClientSecretCredentialBuilder</code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>ClientCertificateCredential</code>
+        </td>
+        <td>service principal</td>
+        <td>
+            <code>ClientCertificateCredentialBuilder</code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>DeviceCodeCredential</code>
+        </td>
+        <td>user account</td>
+        <td>
+            <code>DeviceCodeCredentialBuilder</code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>InteractiveBrowserCredential</code>
+        </td>
+        <td>user account</td>
+        <td>
+            <code>InteractiveBrowserCredentialBuilder</code>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>UsernamePasswordCredential</code>
+        </td>
+        <td>user account</td>
+        <td>
+            <code>UsernamePasswordCredentialBuilder</code>
+        </td>
+    </tr>
+</table>
 
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#chaining-credentials) for details.
 
@@ -148,11 +215,30 @@ If a managed identity isn't available, and the application is running on Windows
 `DefaultAzureCredential` and `EnvironmentCredential` are configured for service
 principal authentication with these environment variables:
 
-|variable name|value
-|-|-
-|`AZURE_CLIENT_ID`|service principal's app id
-|`AZURE_TENANT_ID`|id of the principal's Azure Active Directory tenant
-|`AZURE_CLIENT_SECRET`|one of the service principal's client secrets
+<table>
+    <tr>
+        <th>variable name</th>
+        <th>value</th>
+    </tr>
+    <tr>
+        <td>
+            <code>AZURE_CLIENT_ID</code>
+        </td>
+        <td>service principal's app id</td>
+    </tr>
+    <tr>
+        <td>
+            <code>AZURE_TENANT_ID</code>
+        </td>
+        <td>id of the principal's Azure Active Directory tenant</td>
+    </tr>
+    <tr>
+        <td>
+            <code>AZURE_CLIENT_SECRET</code>
+        </td>
+        <td>one of the service principal's client secrets</td>
+    </tr>
+</table>
 
 ## Examples
 
