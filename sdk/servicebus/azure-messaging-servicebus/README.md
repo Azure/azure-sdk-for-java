@@ -92,14 +92,44 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L60-L69 -->
+```java
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .clientId("<< APPLICATION (CLIENT) ID >>")
+    .clientSecret("<< APPLICATION SECRET >>")
+    .tenantId("<< DIRECTORY (TENANT) ID >>")
+    .build();
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .credential("<<fully-qualified-namespace>>", credential)
+    .buildReceiverClientBuilder()
+    .queueName("<<queue-name>>")
+    .buildAsyncClient();
+```
+
 When using Azure Active Directory, your principal must be assigned a role which allows access to Service Bus, such
 as the `Azure Service Bus Data Owner` role. For more information about using Azure Active Directory authorization
 with Service Bus, please refer to [the associated documentation][aad_authorization].
 
 ## Key concepts
-### Queues
-### Topics
-### Subscriber
+
+- **Queues** offer First In, First Out (FIFO) message delivery to one or more competing consumers. That is, receivers 
+  typically receive and process messages in the order in which they were added to the queue, and only one message 
+  consumer receives and processes each message. A key benefit of using queues is to achieve "temporal decoupling" of
+  application components. In other words, the producers (senders) and consumers (receivers) do not have to be sending  
+  and receiving messages at the same time, because messages are stored durably in the queue. Furthermore, the producer 
+  does not have to wait for a reply from the consumer in order to continue to process and send messages.
+
+- In contrast to queues, in which each message is processed by a single consumer, **topics and subscriptions** provide 
+  a one-to-many form of communication, in a publish/subscribe pattern. Useful for scaling to large numbers of 
+  recipients, each published message is made available to each subscription registered with the topic. Messages are 
+  sent to a topic and delivered to one or more associated subscriptions, depending on filter rules that can be set on
+  a per-subscription basis. The subscriptions can use additional filters to restrict the messages that they want to
+  receive. Messages are sent to a topic in the same way they are sent to a queue, but messages are not received from
+  the topic directly. Instead, they are received from subscriptions. A topic subscription resembles a virtual queue
+  that receives copies of the messages that are sent to the topic. Messages are received from a subscription
+  identically to the way they are received from a queue.
+  By way of comparison, the message-sending functionality of a queue maps directly to a topic and its message-receiving
+  functionality maps to a subscription.
 
 ## Examples
 ### Create a sender or receiver using connection string
@@ -114,52 +144,37 @@ The snippet below creates an asynchronous Service Bus sender.
 
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L21-L26 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
-ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
-    .buildSenderClientBuilder()
-    .entityName("<< QUEUE OR TOPIC NAME >>")
-    .buildAsyncClient();
+ */
+public void createAsynchronousServiceBusSender() {
+    String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
+    ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+        .connectionString(connectionString)
+        .buildSenderClientBuilder()
 ```
 
 The snippet below creates an asynchronous Service Bus receiver.
 
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L33-L38 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
-    .buildReceiverClientBuilder()
-    .queueName("<< QUEUE NAME >>")
-    .buildAsyncClient();
+ */
+public void createAsynchronousServiceBusReceiver() {
+    String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
+    ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        .connectionString(connectionString)
+        .buildReceiverClientBuilder()
 ```
 
 The snippet below creates an asynchronous Service Bus receiver with default token credential.
 
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L45-L51 -->
 ```java
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .credential("<<fully-qualified-namespace>>", credential)
-    .buildReceiverClientBuilder()
-    .queueName("<<queue-name>>")
-    .buildAsyncClient();
-```
-The snippet below creates an asynchronous Service Bus receiver with environment variables and default token credential.
-
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L59-L68 -->
-```java
-System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
-System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
-System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .credential("<<fully-qualified-namespace>>", credential)
-    .buildReceiverClientBuilder()
-    .queueName("<<queue-name>>")
-    .buildAsyncClient();
+ */
+public void createAsynchronousServiceBusReceiverWithAzureIdentity() {
+    TokenCredential credential = new DefaultAzureCredentialBuilder()
+        .build();
+    ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        .credential("<<fully-qualified-namespace>>", credential)
+        .buildReceiverClientBuilder()
 ```
 
 ### Send message to Queue or Topic

@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
@@ -52,14 +54,13 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code sample for creating an asynchronous Service Bus receiver using environment variable and
-     * {@link DefaultAzureCredentialBuilder}.
+     * Code sample for creating an asynchronous Service Bus receiver using Aad.
      */
-    public void createAsynchronousServiceBusReceiverWithEnvVariableAzureIdentity() {
-        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
-        System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
-        System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
+    public void createAsynchronousServiceBusReceiverWithAad() {
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId("<< APPLICATION (CLIENT) ID >>")
+            .clientSecret("<< APPLICATION SECRET >>")
+            .tenantId("<< DIRECTORY (TENANT) ID >>")
             .build();
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>", credential)

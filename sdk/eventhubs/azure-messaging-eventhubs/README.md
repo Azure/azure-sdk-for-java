@@ -120,7 +120,7 @@ obtained from the [App registration page][app_registration_page].
 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventhubs/ReadmeSamples.java#L41-L53 -->
 ```java
-ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+ClientSecretCredential credential = new ()
     .clientId("<< APPLICATION (CLIENT) ID >>")
     .clientSecret("<< APPLICATION SECRET >>")
     .tenantId("<< DIRECTORY (TENANT) ID >>")

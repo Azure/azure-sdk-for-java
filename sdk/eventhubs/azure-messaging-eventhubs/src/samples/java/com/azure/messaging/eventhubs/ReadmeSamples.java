@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.IterableStream;
 import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
