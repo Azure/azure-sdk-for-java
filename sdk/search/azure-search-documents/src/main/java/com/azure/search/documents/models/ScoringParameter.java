@@ -32,7 +32,7 @@ public final class ScoringParameter {
      *
      * @param name Name of the scoring parameter.
      * @param values Values of the scoring parameter.
-     * @throws {@link NullPointerException} if {@code name} or {@code values} is null.
+     * @throws NullPointerException if {@code name} or {@code values} is null.
      */
     @JsonCreator
     public ScoringParameter(@JsonProperty(value = "name") String name,
@@ -79,6 +79,12 @@ public final class ScoringParameter {
         return Arrays.asList(String.valueOf(point.getLongitude()), String.valueOf(point.getLatitude()));
     }
 
+    /**
+     * Covert {@link ScoringParameter} to string.
+     *
+     * @return Service accepted string format.
+     * @throws IllegalArgumentException if all values in the list are null or empty.
+     */
     @Override
     @JsonValue
     public String toString() {
@@ -88,10 +94,8 @@ public final class ScoringParameter {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("There must be at least one valid value for scoring parameter values."));
         }
-        String concatNameAndValue = name + SEPARATOR +
-            values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
+        return name + SEPARATOR + values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
                 .map(this::escapeValue).collect(Collectors.joining(COMMA));
-        return concatNameAndValue;
     }
 
     private String escapeValue(String value) {

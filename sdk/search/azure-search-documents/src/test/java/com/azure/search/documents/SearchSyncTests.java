@@ -597,7 +597,7 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
-            .setScoringParameters(new ScoringParameter("myloc", GeoPoint.create(-122,49)))
+            .setScoringParameters(new ScoringParameter("myloc", GeoPoint.create(-122, 49)))
             .setFilter("Rating eq 5 or Rating eq 1");
 
         List<Map<String, Object>> response = getSearchResults(client.search("hotel",
