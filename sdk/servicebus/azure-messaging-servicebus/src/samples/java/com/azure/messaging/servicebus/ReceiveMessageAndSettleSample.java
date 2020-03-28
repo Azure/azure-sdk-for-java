@@ -44,7 +44,7 @@ public class ReceiveMessageAndSettleSample {
             .buildAsyncClient();
 
         Disposable subscription = receiverAsyncClient.receive()
-            .doOnNext(received -> {
+            .subscribe(received -> {
                 final Instant initial = received.getLockedUntil();
                 Instant latest = Instant.MIN;
 
@@ -61,8 +61,7 @@ public class ReceiveMessageAndSettleSample {
 
                 System.out.println("Completing message.");
                 receiverAsyncClient.complete(received).block(Duration.ofSeconds(15));
-            })
-            .subscribe();
+            });
 
         // Receiving messages from the queue for a duration of 20 seconds.
         // Subscribe is not a blocking call so we sleep here so the program does not end.
