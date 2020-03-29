@@ -20,7 +20,8 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
-@Disabled("Set prefetch tests do not work because they try to send very large number of events at once.")
+@Disabled("Set prefetch tests do not work because they try to send very large number of events at once."
+    + "https://github.com/Azure/azure-sdk-for-java/issues/9659")
 class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.
