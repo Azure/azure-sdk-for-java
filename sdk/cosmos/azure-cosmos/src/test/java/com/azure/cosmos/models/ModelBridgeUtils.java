@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.DatabaseAccount;
+
 import java.util.List;
 
 /**

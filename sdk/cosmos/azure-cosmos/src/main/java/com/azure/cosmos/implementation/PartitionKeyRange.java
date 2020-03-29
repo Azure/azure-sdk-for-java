@@ -123,4 +123,9 @@ public class PartitionKeyRange extends Resource {
      * @return a list partition key range ID
      */
     public List<String> getParents() { return this.getList(Constants.Properties.PARENTS, String.class); }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
 }

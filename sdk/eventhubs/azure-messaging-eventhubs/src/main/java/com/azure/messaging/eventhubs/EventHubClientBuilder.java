@@ -135,7 +135,7 @@ public class EventHubClientBuilder {
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
-    private volatile int openClients;
+    private final AtomicInteger openClients = new AtomicInteger();
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
@@ -477,14 +477,12 @@ public class EventHubClientBuilder {
                 if (eventHubConnectionProcessor == null) {
                     eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer);
                 }
-
-                final int numberOfOpenClients = ++openClients;
+                processor = eventHubConnectionProcessor;
+                final int numberOfOpenClients = openClients.incrementAndGet();
                 logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
+            } else {
+                processor = buildConnectionProcessor(messageSerializer);
             }
-
-            processor = isSharedConnection
-                ? eventHubConnectionProcessor
-                : buildConnectionProcessor(messageSerializer);
         }
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
@@ -526,14 +524,20 @@ public class EventHubClientBuilder {
 
     void onClientClose() {
         synchronized (connectionLock) {
-            final int numberOfOpenClients = --openClients;
+            final int numberOfOpenClients = openClients.decrementAndGet();
             logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
 
-            if (numberOfOpenClients == 0) {
-                logger.info("No more open clients, closing shared connection.");
-                eventHubConnectionProcessor.dispose();
-                eventHubConnectionProcessor = null;
+            if (numberOfOpenClients > 0) {
+                return;
             }
+
+            if (numberOfOpenClients < 0) {
+                logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
+            }
+
+            logger.info("No more open clients, closing shared connection.");
+            eventHubConnectionProcessor.dispose();
+            eventHubConnectionProcessor = null;
         }
     }
 
@@ -561,7 +565,7 @@ public class EventHubClientBuilder {
                 }
 
                 final String connectionId = StringUtil.getRandomString("MF");
-                logger.info("Emitting a single connection. connectionId [{}].", connectionId);
+                logger.info("connectionId[{}]: Emitting a single connection.", connectionId);
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
                     connectionOptions, eventHubName, provider, handlerProvider, tokenManagerProvider, messageSerializer,
@@ -590,16 +594,16 @@ public class EventHubClientBuilder {
             connectionString(connectionString);
         }
 
+        if (proxyOptions == null) {
+            proxyOptions = getDefaultProxyConfiguration(configuration);
+        }
+
         // If the proxy has been configured by the user but they have overridden the TransportType with something that
         // is not AMQP_WEB_SOCKETS.
         if (proxyOptions != null && proxyOptions.isProxyAddressConfigured()
             && transport != AmqpTransportType.AMQP_WEB_SOCKETS) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Cannot use a proxy when TransportType is not AMQP."));
-        }
-
-        if (proxyOptions == null) {
-            proxyOptions = getDefaultProxyConfiguration(configuration);
+                "Cannot use a proxy when TransportType is not AMQP Web Sockets."));
         }
 
         final CbsAuthorizationType authorizationType = credentials instanceof EventHubSharedKeyCredential

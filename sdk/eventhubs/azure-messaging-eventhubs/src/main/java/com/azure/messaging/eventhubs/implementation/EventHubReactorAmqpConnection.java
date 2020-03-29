@@ -38,6 +38,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private static final String MANAGEMENT_ADDRESS = "$management";
 
     private final ClientLogger logger = new ClientLogger(EventHubReactorAmqpConnection.class);
+    private final TokenCredential tokenCredential;
     private final String connectionId;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
@@ -45,6 +46,9 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
     private final Mono<EventHubManagementNode> managementCreation;
+    private final Scheduler scheduler;
+
+    private volatile ManagementChannel managementChannel;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -60,6 +64,7 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
         String clientVersion) {
+
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
@@ -69,10 +74,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
 
-        final TokenCredential tokenCredential = connectionOptions.getTokenCredential();
-        final Scheduler scheduler = connectionOptions.getScheduler();
-        final AmqpRetryPolicy policy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
-
+        this.tokenCredential = connectionOptions.getTokenCredential();
+        this.scheduler = connectionOptions.getScheduler();
         this.managementCreation = getReactorConnection()
             .thenReturn(new ManagementChannel(
                 createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
@@ -80,6 +83,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             .repeat()
             .subscribeWith(new AmqpChannelProcessor<>(connectionId, eventHubName, state -> state.getEndpointStates(),
                 policy, new ClientLogger(String.format("%s [%s]", ManagementChannel.class, connectionId))));
+
+        this.messageSerializer = messageSerializer;
     }
 
     @Override
@@ -157,5 +162,15 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new EventHubReactorSession(session, handler, sessionName, reactorProvider, handlerProvider,
             getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions.getTryTimeout(), messageSerializer);
+    }
+
+    private synchronized ManagementChannel getOrCreateManagementChannel() {
+        if (managementChannel == null) {
+            managementChannel = new ManagementChannel(
+                createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS),
+                eventHubName, tokenCredential, tokenManagerProvider, this.messageSerializer, scheduler);
+        }
+
+        return managementChannel;
     }
 }

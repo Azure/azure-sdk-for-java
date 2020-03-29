@@ -163,7 +163,7 @@ class RecognizeEntityAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link RecognizeCategorizedEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
-     * @param documents A list of documents to recognize PII entities for.
+     * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *

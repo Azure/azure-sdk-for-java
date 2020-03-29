@@ -1,5 +1,7 @@
 parameters:
   ServiceDirectory: ''
+  Artifacts: []
+  AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
   Matrix:
@@ -33,7 +35,6 @@ parameters:
       OSVmImage: 'windows-2019'
       JavaVersion: '1.11'
       DisplayName: 'Windows - Java 11'
-  MavenTestPomFile: pom.xml
   PreRunSteps: []
   PostRunSteps: []
   TestName: LiveTest
@@ -93,6 +94,7 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Build and Install'
@@ -106,11 +108,10 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
-          mavenPomFile: ${{ parameters.MavenTestPomFile }}
+          mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 

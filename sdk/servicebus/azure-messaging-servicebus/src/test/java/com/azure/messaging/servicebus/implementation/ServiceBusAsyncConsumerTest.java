@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -28,6 +29,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -38,11 +40,15 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusAsyncConsumerTest {
+    private static final String LINK_NAME = "foo-bar";
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
     private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
+    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private final MessageLockContainer messageContainer = new MessageLockContainer();
+    private final Duration renewDuration = Duration.ofSeconds(5);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
@@ -60,10 +66,12 @@ class ServiceBusAsyncConsumerTest {
     private Function<ServiceBusReceivedMessage, Mono<Void>> onComplete;
     @Mock
     private Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    @Mock
+    private Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock;
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(20));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(90));
     }
 
     @AfterAll
@@ -101,7 +109,9 @@ class ServiceBusAsyncConsumerTest {
     void receiveAutoComplete() {
         // Arrange
         final boolean isAutoComplete = true;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, false, renewDuration, retryOptions, messageContainer, onComplete, onAbandon,
+            onRenewLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -127,7 +137,6 @@ class ServiceBusAsyncConsumerTest {
             .verifyComplete();
 
         verify(onComplete).apply(receivedMessage1);
-        verify(onComplete).apply(receivedMessage2);
     }
 
     /**
@@ -137,7 +146,9 @@ class ServiceBusAsyncConsumerTest {
     void receiveNoAutoComplete() {
         // Arrange
         final boolean isAutoComplete = false;
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, false, renewDuration, retryOptions, messageContainer, onComplete, onAbandon,
+            onRenewLock);
 
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
@@ -180,8 +191,9 @@ class ServiceBusAsyncConsumerTest {
             Assertions.fail("Should not complete");
             return Mono.empty();
         };
-        final String transferEntityPath = "some-transfer-path";
-        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(linkProcessor, serializer, isAutoComplete, onComplete, onAbandon);
+        final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor, serializer,
+            isAutoComplete, false, renewDuration, retryOptions, messageContainer, onComplete, onAbandon,
+            onRenewLock);
 
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);

@@ -108,4 +108,24 @@ public class Document extends Resource {
             remove(Constants.Properties.TTL);
         }
     }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
+
+    @Override
+    public String getString(String propertyName) {
+        return super.getString(propertyName);
+    }
+
+    @Override
+    public Integer getInt(String propertyName) {
+        return super.getInt(propertyName);
+    }
+
+    @Override
+    public Object get(String propertyName) {
+        return super.get(propertyName);
+    }
 }

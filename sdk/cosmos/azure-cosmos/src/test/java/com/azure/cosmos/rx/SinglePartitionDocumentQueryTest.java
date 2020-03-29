@@ -7,7 +7,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
@@ -61,7 +62,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         options.setPopulateQueryMetrics(queryMetricsEnabled);
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
-        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
+        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 99 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
@@ -89,7 +90,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
 
-        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (3 == d.getInt("prop") || 4 == d.getInt("prop"))).collect(Collectors.toList());
+        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (3 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") || 4 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop"))).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
@@ -116,7 +117,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(sqs, options, CosmosItemProperties.class);
 
-        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 3 == d.getInt("prop")).collect(Collectors.toList());
+        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> 3 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop")).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
@@ -189,7 +190,8 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(createdDocuments.stream()
-                        .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
+                        .sorted((e1, e2) -> Integer.compare(ModelBridgeInternal.getIntFromJsonSerializable(e1, "prop"),
+                            ModelBridgeInternal.getIntFromJsonSerializable(e2, "prop")))
                         .map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
@@ -224,14 +226,15 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         options.setRequestContinuation(page.getContinuationToken());
         queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
 
-        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
+        List<CosmosItemProperties> expectedDocs = createdDocuments.stream().filter(d -> (ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") > 2)).collect(Collectors.toList());
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         assertThat(expectedDocs).hasSize(createdDocuments.size() -3);
 
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .containsExactly(expectedDocs.stream()
-                        .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
+                        .sorted((e1, e2) -> Integer.compare(ModelBridgeInternal.getIntFromJsonSerializable(e1,"prop"),
+                            ModelBridgeInternal.getIntFromJsonSerializable(e2, "prop")))
                         .map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
@@ -263,7 +266,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_SinglePartitionDocumentQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -275,7 +278,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
             createdDocuments.add(createDocument(createdCollection, 99));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

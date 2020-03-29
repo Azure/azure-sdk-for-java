@@ -20,11 +20,12 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedListMultimap;
+import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Iterables;
+import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.api.Assertions;
@@ -476,7 +477,7 @@ public class DocumentProducerTest {
                     BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
                     BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
-                    QueryItem qi = new QueryItem("{ \"item\": " + Integer.toString(d.getInt(OrderByIntFieldName)) +
+                    QueryItem qi = new QueryItem("{ \"item\": " + d.getInt(OrderByIntFieldName) +
                                                          " }");
                     String json =
                             "{\"" + OrderByPayloadFieldName + "\" : " + d.toJson() + ", \"" + OrderByItemsFieldName + "\" : [ " + qi.toJson() + " ] }";

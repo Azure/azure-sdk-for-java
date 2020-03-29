@@ -19,6 +19,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SpatialSpec;
@@ -299,8 +300,8 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
-        CosmosAsyncClient client1 = clientBuilder().buildAsyncClient();
-        CosmosAsyncClient client2 = clientBuilder().buildAsyncClient();
+        CosmosAsyncClient client1 = getClientBuilder().buildAsyncClient();
+        CosmosAsyncClient client2 = getClientBuilder().buildAsyncClient();
 
         String dbId = CosmosDatabaseForTest.generateId();
         String collectionId = "coll";
@@ -326,12 +327,12 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
                 collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
             logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getCosmosResponseDiagnostics());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getResponseDiagnostics());
             logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
 
             //  DELETE the existing collection
@@ -348,16 +349,17 @@ public class CollectionCrudTest extends TestSuiteBase {
             readDocumentResponse = client1.getDatabase(dbId)
                                        .getContainer(collectionId)
                                        .readItem(newDocument.getId(),
-                                                 new PartitionKey(newDocument.get("mypk")),
+                                                 new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getCosmosResponseDiagnostics());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
             logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
 
             CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 
             assertThat(readDocument.getId().equals(newDocument.getId())).isTrue();
-            assertThat(readDocument.get("name").equals(newDocument.get("name"))).isTrue();
+            assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(readDocument, "name")
+                                          .equals(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "name"))).isTrue();
         } finally {
             safeDeleteDatabase(db);
             safeClose(client1);
@@ -367,7 +369,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
     }
 

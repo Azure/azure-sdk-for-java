@@ -8,11 +8,11 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
@@ -30,7 +30,7 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 

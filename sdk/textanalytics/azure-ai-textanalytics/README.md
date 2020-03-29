@@ -6,7 +6,6 @@ and includes six main functions:
 - Language Detection
 - Key Phrase Extraction
 - Named Entity Recognition
-- Recognition of Personally Identifiable Information 
 - Linked Entity Recognition
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
@@ -80,7 +79,7 @@ Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+    .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
@@ -88,13 +87,13 @@ The Azure Text Analytics client library provides a way to **rotate the existing 
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L73-L79 -->
 ```java
-TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
+AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .apiKey(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.updateCredential("{new_api_key}");
+credential.update("{new_api_key}");
 ```
 ##### **Option 2**: Create TextAnalyticsClient with Azure Active Directory Credential
 To use an [Azure Active Directory (AAD) token credential][aad_credential],
@@ -174,7 +173,6 @@ The following are types of text analysis that the service offers:
     Use named entity recognition (NER) to identify different entities in text and categorize them into pre-defined classes, or types.
     Entity recognition in the client library provides three different methods depending on what you are interested in.
     * `recognizeEntities()` can be used to identify and categorize entities in your text as people, places, organizations, date/time, quantities, percentages, currencies, and more.
-    * `recognizePiiEntities()` can be used to recognize personally identifiable information such as SSNs and bank account numbers.
     * `recognizeLinkedEntities()` can be used to identify and disambiguate the identity of an entity found in text (For example, determining whether
     "Mars" is being used as the planet or as the Roman god of war). This process uses Wikipedia as the knowledge base to which recognized entities are linked.
     
@@ -204,14 +202,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+    .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L53-L56 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+    .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
@@ -244,17 +242,8 @@ textAnalyticsClient.recognizeEntities(document).forEach(entity ->
         entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
 ```
 
-### Recognize PII (Personally Identifiable Information) entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L136 -->
-```java
-String document = "My SSN is 555-55-5555";
-textAnalyticsClient.recognizePiiEntities(document).forEach(piiEntity ->
-    System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %f.%n",
-        piiEntity.getText(), piiEntity.getCategory(), piiEntity.getSubCategory(), piiEntity.getConfidenceScore()));
-```
-
 ### Recognize linked entity
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L150 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L140 -->
 
 ```java
 String document = "Old Faithful is a geyser at Yellowstone Park.";
@@ -267,7 +256,7 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
 });
 ```
 ### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L157-L159 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L147-L149 -->
 ```java
 String document = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");

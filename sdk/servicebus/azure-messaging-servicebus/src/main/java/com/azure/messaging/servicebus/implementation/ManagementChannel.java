@@ -14,13 +14,14 @@ import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -34,21 +35,23 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.FROM_SEQUENCE_NUMBER;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION_VALUE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVER_SETTLE_MODE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVE_BY_SEQUENCE_NUMBER_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
  * operations increasing quotas, etc.
  */
 public class ManagementChannel implements ServiceBusManagementNode {
-    private final Scheduler scheduler;
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
     private final Duration operationTimeout;
@@ -61,14 +64,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private volatile boolean isDisposed;
 
     ManagementChannel(Mono<RequestResponseChannel> createRequestResponse, String fullyQualifiedNamespace,
-        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer, Scheduler scheduler,
-        Duration operationTimeout) {
+        String entityPath, TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
         this.createRequestResponse = createRequestResponse;
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
-        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
         this.operationTimeout = operationTimeout;
     }
@@ -97,8 +98,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<Instant> renewMessageLock(UUID lockToken) {
         return renewMessageLock(new UUID[]{lockToken})
-            .next()
-            .publishOn(scheduler);
+            .next();
     }
 
     /**
@@ -107,8 +107,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return peek(fromSequenceNumber, 1, null)
-            .last()
-            .publishOn(scheduler);
+            .last();
     }
 
     /**
@@ -117,8 +116,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
 
-        return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages, null)
-            .publishOn(scheduler);
+        return peek(this.lastPeekedSequenceNumber.get() + 1, maxMessages, null);
     }
 
     /**
@@ -127,8 +125,25 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Flux<ServiceBusReceivedMessage> peekBatch(int maxMessages, long fromSequenceNumber) {
 
-        return peek(fromSequenceNumber, maxMessages, null)
-            .publishOn(scheduler);
+        return peek(fromSequenceNumber, maxMessages, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber) {
+        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumber)
+            .next();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode,
+           long... sequenceNumbers) {
+        return receiveDeferredMessageBatch(receiveMode, null, sequenceNumbers);
     }
 
     /**
@@ -140,13 +155,54 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Flux<ServiceBusReceivedMessage> peek(long fromSequenceNumber, int maxMessages, UUID sessionId) {
-        return isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
-            final Message message = createManagementMessage(PEEK_OPERATION_VALUE, channel.getReceiveLinkName());
+        return isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+            final Message message = createManagementMessage(PEEK_OPERATION, channel.getReceiveLinkName());
+
+            // set mandatory properties on AMQP message body
+            final HashMap<String, Object> requestBodyMap = new HashMap<>();
+            requestBodyMap.put(FROM_SEQUENCE_NUMBER, fromSequenceNumber);
+            requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
+
+            if (!Objects.isNull(sessionId)) {
+                requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
+            }
+
+            message.setBody(new AmqpValue(requestBodyMap));
+
+            return channel.sendWithAck(message);
+        }).flatMapMany(amqpMessage -> {
+            final List<ServiceBusReceivedMessage> messageList =
+                messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
+
+            // Assign the last sequence number so that we can peek from next time
+            if (messageList.size() > 0) {
+                final ServiceBusReceivedMessage receivedMessage = messageList.get(messageList.size() - 1);
+
+                logger.info("Setting last peeked sequence number: {}", receivedMessage.getSequenceNumber());
+
+                if (receivedMessage.getSequenceNumber() > 0) {
+                    this.lastPeekedSequenceNumber.set(receivedMessage.getSequenceNumber());
+                }
+            }
+
+            return Flux.fromIterable(messageList);
+        }));
+    }
+
+    private Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, UUID sessionId,
+            long... fromSequenceNumbers) {
+        return isAuthorized(RECEIVE_BY_SEQUENCE_NUMBER_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+            final Message message = createManagementMessage(RECEIVE_BY_SEQUENCE_NUMBER_OPERATION,
+                channel.getReceiveLinkName());
 
             // set mandatory properties on AMQP message body
             HashMap<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put(REQUEST_RESPONSE_FROM_SEQUENCE_NUMBER, fromSequenceNumber);
-            requestBodyMap.put(MESSAGE_COUNT_KEY, maxMessages);
+
+            requestBodyMap.put(SEQUENCE_NUMBERS, Arrays.stream(fromSequenceNumbers)
+                .boxed().toArray(Long[]::new));
+
+            requestBodyMap.put(RECEIVER_SETTLE_MODE,
+                UnsignedInteger.valueOf(receiveMode == ReceiveMode.RECEIVE_AND_DELETE ? 0 : 1));
 
             if (!Objects.isNull(sessionId)) {
                 requestBodyMap.put(ManagementConstants.REQUEST_RESPONSE_SESSION_ID, sessionId);
@@ -196,7 +252,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         final Message message = createManagementMessage(UPDATE_DISPOSITION_OPERATION, linkName);
 
         final Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, lockTokens);
+        requestBody.put(LOCK_TOKENS_KEY, lockTokens);
         requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
 
         if (deadLetterReason != null) {
@@ -218,12 +274,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
     private Flux<Instant> renewMessageLock(UUID[] renewLockList) {
 
-        return  isAuthorized(PEEK_OPERATION_VALUE).thenMany(createRequestResponse.flatMap(channel -> {
+        return  isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
                 channel.getReceiveLinkName());
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS, renewLockList)));
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, renewLockList)));
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);

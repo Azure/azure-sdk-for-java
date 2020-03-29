@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +22,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
