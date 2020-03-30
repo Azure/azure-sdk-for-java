@@ -6,6 +6,15 @@
 
 package com.azure.management.containerregistry.samples;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.management.Azure;
+import com.azure.management.containerregistry.AccessKeyType;
+import com.azure.management.containerregistry.Registry;
+import com.azure.management.containerregistry.RegistryCredentials;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.samples.DockerUtils;
+import com.azure.management.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.exception.NotFoundException;
@@ -13,15 +22,6 @@ import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.containerregistry.AccessKeyType;
-import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.RegistryCredentials;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.DockerUtils;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.Date;
@@ -46,8 +46,8 @@ public class ManageContainerRegistry {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgACR", 15);
-        final String acrName = SdkContext.randomResourceName("acrsample", 20);
+        final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
+        final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_EAST;
         final String dockerImageName = "hello-world";
         final String dockerImageTag = "latest";
@@ -188,7 +188,7 @@ public class ManageContainerRegistry {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogLevel(LogLevel.BODY)
+                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

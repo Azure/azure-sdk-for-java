@@ -6,29 +6,30 @@
 
 package com.azure.management.containerregistry.samples;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.management.Azure;
+import com.azure.management.containerregistry.AccessKeyType;
+import com.azure.management.containerregistry.Registry;
+import com.azure.management.containerregistry.RegistryCredentials;
+import com.azure.management.containerregistry.Webhook;
+import com.azure.management.containerregistry.WebhookAction;
+import com.azure.management.containerregistry.WebhookEventInfo;
+import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.samples.DockerUtils;
+import com.azure.management.samples.Utils;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.PullImageResultCallback;
 import com.github.dockerjava.api.exception.NotFoundException;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Image;
-import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.containerregistry.AccessKeyType;
-import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.RegistryCredentials;
-import com.microsoft.azure.management.containerregistry.Webhook;
-import com.microsoft.azure.management.containerregistry.WebhookAction;
-import com.microsoft.azure.management.containerregistry.WebhookEventInfo;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.management.samples.DockerUtils;
-import com.microsoft.azure.management.samples.Utils;
-import com.microsoft.rest.LogLevel;
 
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Azure Container Registry sample for managing container registry with webhooks.
@@ -48,8 +49,8 @@ public class ManageContainerRegistryWithWebhooks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
-        final String rgName = SdkContext.randomResourceName("rgACR", 15);
-        final String acrName = SdkContext.randomResourceName("acrsample", 20);
+        final String rgName = azure.sdkContext().randomResourceName("rgACR", 15);
+        final String acrName = azure.sdkContext().randomResourceName("acrsample", 20);
         final Region region = Region.US_WEST_CENTRAL;
         final String dockerImageName = "hello-world";
         final String dockerImageTag = "latest";
@@ -98,7 +99,7 @@ public class ManageContainerRegistryWithWebhooks {
 
             Webhook webhook = azureRegistry.webhooks().get(webhookName1);
             webhook.ping();
-            List<WebhookEventInfo> webhookEvents = webhook.listEvents();
+            List<WebhookEventInfo> webhookEvents = webhook.listEvents().stream().collect(Collectors.toList());
             System.out.format("Found %d webhook events for: %s with container service: %s/n", webhookEvents.size(), webhook.name(), azureRegistry.name());
             for (WebhookEventInfo webhookEventInfo : webhookEvents) {
                 System.out.print("\t" + webhookEventInfo.eventResponseMessage().content());
@@ -119,7 +120,7 @@ public class ManageContainerRegistryWithWebhooks {
             dockerClient.pullImageCmd(dockerImageName)
                 .withTag(dockerImageTag)
                 .exec(new PullImageResultCallback())
-                .awaitSuccess();
+                .awaitCompletion();
             System.out.println("List local Docker images:");
             List<Image> images = dockerClient.listImagesCmd().withShowAll(true).exec();
             for (Image image : images) {
@@ -169,7 +170,7 @@ public class ManageContainerRegistryWithWebhooks {
             // Gets the container registry webhook after pushing a container image and list the event notifications
 
             webhook = azureRegistry.webhooks().get(webhookName1);
-            webhookEvents = webhook.listEvents();
+            webhookEvents = webhook.listEvents().stream().collect(Collectors.toList());
             System.out.format("Found %d webhook events for: %s with container service: %s/n", webhookEvents.size(), webhook.name(), azureRegistry.name());
             for (WebhookEventInfo webhookEventInfo : webhookEvents) {
                 System.out.print("\t" + webhookEventInfo.eventResponseMessage().content());
@@ -206,7 +207,7 @@ public class ManageContainerRegistryWithWebhooks {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                .withLogLevel(LogLevel.BODY)
+                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
                 .authenticate(credFile)
                 .withDefaultSubscription();
 
