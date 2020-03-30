@@ -36,6 +36,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.http to com.fasterxml.jackson.databind;

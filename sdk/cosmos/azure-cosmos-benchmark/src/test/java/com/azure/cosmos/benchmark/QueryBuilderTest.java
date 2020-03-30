@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlParameter;
 import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
@@ -45,7 +44,7 @@ public class QueryBuilderTest {
                                                                parameters));
         assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT * FROM root WHERE root.colName IN (@param1, @param2)");
-        assertThat(ModelBridgeInternal.getParametersFromSqlParameterList(queryBuilder.toSqlQuerySpec().getParameters())).containsExactlyElementsOf(parameters);
+        assertThat(queryBuilder.toSqlQuerySpec().getParameters()).containsExactlyElementsOf(parameters);
     }
 
     @Test(groups = {"unit"})
@@ -60,6 +59,6 @@ public class QueryBuilderTest {
                                                                parameters));
         assertThat(queryBuilder.toSqlQuerySpec().getQueryText())
                 .isEqualTo("SELECT TOP 5 * FROM root WHERE root.colName IN (@param1, @param2) ORDER BY root.prop");
-        assertThat(ModelBridgeInternal.getParametersFromSqlParameterList(queryBuilder.toSqlQuerySpec().getParameters())).containsExactlyElementsOf(parameters);
+        assertThat(queryBuilder.toSqlQuerySpec().getParameters()).containsExactlyElementsOf(parameters);
     }
 }

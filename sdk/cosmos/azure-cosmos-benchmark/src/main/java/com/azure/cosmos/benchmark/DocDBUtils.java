@@ -8,8 +8,9 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
+
+import java.util.Collections;
 
 class DocDBUtils {
 
@@ -19,7 +20,7 @@ class DocDBUtils {
     static Database getDatabase(AsyncDocumentClient client, String databaseId) {
         FeedResponse<Database> feedResponsePages = client
                 .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                        new SqlParameterList(new SqlParameter("@id", databaseId))), null)
+                    Collections.singletonList(new SqlParameter("@id", databaseId))), null)
                 .single().block();
 
         if (feedResponsePages.getResults().isEmpty()) {
@@ -33,7 +34,7 @@ class DocDBUtils {
         FeedResponse<DocumentCollection> feedResponsePages = client
                 .queryCollections(databaseLink,
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterList(new SqlParameter("@id", collectionId))),
+                                Collections.singletonList(new SqlParameter("@id", collectionId))),
                         null)
                 .single().block();
 

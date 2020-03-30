@@ -465,8 +465,4 @@ public final class ModelBridgeInternal {
         return jsonSerializable.getPropertyBag();
     }
 
-    public static List<SqlParameter> getParametersFromSqlParameterList(SqlParameterList sqlParameterList) {
-        return sqlParameterList.getParameters();
-    }
-
 }
