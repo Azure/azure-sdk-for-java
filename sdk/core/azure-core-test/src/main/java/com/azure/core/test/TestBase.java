@@ -41,8 +41,6 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
-    // Possible values for AZURE_TEST_ROLLING_STRATEGY: "ON", "OFF"(default)
-    public static final String AZURE_TEST_ROLLING_STRATEGY = "AZURE_TEST_ROLLING_STRATEGY";
     public static final int PLATFORM_COUNT = 6;
     private static final String AZURE_TEST_OS_NAME = "AZURE_TEST_OS_NAME";
     private static final String AZURE_TEST_JDK_VERSION = "AZURE_TEST_JDK_VERSION";
@@ -161,10 +159,6 @@ public abstract class TestBase implements BeforeEachCallback {
     private static Integer getPlatFormOffset() {
         String currentOs = Configuration.getGlobalConfiguration().get(AZURE_TEST_OS_NAME);
         String currentJdk = Configuration.getGlobalConfiguration().get(AZURE_TEST_JDK_VERSION);
-        System.out.println("--------------------------------");
-        System.out.println(currentOs);
-        System.out.println(currentJdk);
-        System.out.println("--------------------------------");
         return platformList.stream().filter(platform ->
             currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
             && currentJdk.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[1]

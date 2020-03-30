@@ -14,7 +14,6 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.params.provider.Arguments;
 
-import static com.azure.core.test.TestBase.AZURE_TEST_ROLLING_STRATEGY;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.PLATFORM_COUNT;
 import static com.azure.core.test.TestBase.getHttpClients;
@@ -44,17 +43,13 @@ public class TestHelper {
         List<HttpClient> httpClientList = getHttpClients().collect(Collectors.toList());
         long total = httpClientList.size() * serviceVersionCount;
         int offset = getOffset();
-        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_ROLLING_STRATEGY,
-            "OFF").equalsIgnoreCase("ON");
         int[] index = new int[1];
         httpClientList.forEach(httpClient -> {
             filteredKeyServiceVersion.forEach(keyServiceVersion -> {
-                if (!rollingStrategy) {
+                if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
                     argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                    index[0] += 1;
                 }
+                index[0] += 1;
             });
         });
 
