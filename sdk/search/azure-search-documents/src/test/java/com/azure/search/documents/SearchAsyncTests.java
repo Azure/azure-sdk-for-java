@@ -645,7 +645,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("text")
-            .setScoringParameters(new ScoringParameter("mytag", (GeoPoint) null))
+            .setScoringParameters(new ScoringParameter("mytag", Arrays.asList("", "concierge")))
             .setFilter("Rating eq 5 or Rating eq 1");
 
         Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
