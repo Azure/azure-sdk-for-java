@@ -56,17 +56,17 @@ class AnalyzeSentimentAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs The list of documents to analyze sentiments for.
+     * @param documents The list of documents to analyze sentiments for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
      */
-    TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<TextDocumentInput> textInputs,
+    TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<TextDocumentInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getAnalyzedSentimentResponseInPage(textInputs, options, context)).flux());
+                getAnalyzedSentimentResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
                 (continuationToken, pageSize) -> fluxError(logger, ex));
@@ -77,19 +77,19 @@ class AnalyzeSentimentAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link AnalyzeSentimentResult}.
      *
-     * @param textInputs The list of documents to analyze sentiments for.
+     * @param documents The list of documents to analyze sentiments for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link AnalyzeSentimentResult}.
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatchWithContext(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
 
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
 
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getAnalyzedSentimentResponseInPage(textInputs, options, context).flux());
+            getAnalyzedSentimentResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -180,19 +180,19 @@ class AnalyzeSentimentAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link AnalyzeSentimentResult} from a {@link SimpleResponse} of {@link SentimentResponse}.
      *
-     * @param textInputs A list of documents to recognize PII entities for.
+     * @param documents A list of documents to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link AnalyzeSentimentResult}.
      */
     private Mono<TextAnalyticsPagedResponse<AnalyzeSentimentResult>> getAnalyzedSentimentResponseInPage(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.sentimentWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(textInputs)),
+            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", textInputs.toString()))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
             .map(this::toTextAnalyticsPagedResponse);

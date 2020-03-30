@@ -11,14 +11,17 @@ import com.azure.cosmos.implementation.query.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
+import static java.lang.Integer.signum;
 
-public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<T>> {
+public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<T>>, Serializable {
     private static final Logger logger = LoggerFactory.getLogger(OrderbyRowComparer.class);
-    
+    private static final long serialVersionUID = 7296627879628897315L;
+
     private final List<SortOrder> sortOrders;
     private volatile List<ItemType> itemTypes;
 
@@ -60,9 +63,9 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
                 if (cmp != 0) {
                     switch (this.sortOrders.get(i)) {
                     case Ascending:
-                        return cmp;
+                        return signum(cmp);
                     case Descending:
-                        return -cmp;
+                        return -signum(cmp);
                     }
                 }
             }
@@ -72,14 +75,14 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             // Due to a bug in rxjava-extras <= 0.8.0.15 dependency,
             // if OrderbyRowComparer throws an unexpected exception,
             // then the observable returned by Transformers.orderedMergeWith(.) will never emit a terminal event.
-            // rxjava-extras lib provided a quick fix on the bugreport: 
+            // rxjava-extras lib provided a quick fix on the bugreport:
             // https://github.com/davidmoten/rxjava-extras/issues/30 (0.8.0.16)
             // we are also capturing the exception stacktrace here
             logger.error("Orderby Row comparision failed {}, {}", r1.toJson(), r2.toJson(), e);
             throw e;
         }
     }
-    
+
     private void checkOrderByItemType(List<QueryItem> orderByItems) {
         for (int i = 0; i < this.itemTypes.size(); ++i) {
             ItemType type = ItemTypeHelper.getOrderByItemType(orderByItems.get(i).getItem());

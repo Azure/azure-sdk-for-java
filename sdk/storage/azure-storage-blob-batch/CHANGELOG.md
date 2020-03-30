@@ -1,5 +1,8 @@
 # Release History
 
+## 12.5.0-beta.1 (Unreleased)
+
+
 ## 12.4.0 (2020-03-11)
 - Fixed bug where Blob Batch would fail when using AAD authorization.
 - Updated `azure-storage-blob` to version 12.5.0

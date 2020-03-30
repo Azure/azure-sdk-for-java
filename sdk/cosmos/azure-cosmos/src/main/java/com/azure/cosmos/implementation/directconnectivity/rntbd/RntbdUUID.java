@@ -10,7 +10,7 @@ import io.netty.handler.codec.CorruptedFrameException;
 
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class RntbdUUID {
 

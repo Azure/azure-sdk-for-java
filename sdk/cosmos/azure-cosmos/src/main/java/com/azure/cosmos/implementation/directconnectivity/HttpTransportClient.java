@@ -39,13 +39,13 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -213,7 +213,7 @@ public class HttpTransportClient extends TransportClient {
                     });
 
             return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
-                    httpRequest, activityId.toString(), rsp, physicalAddress));
+                    httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {
             return Mono.error(e);
@@ -290,33 +290,33 @@ public class HttpTransportClient extends TransportClient {
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContentAsByteBufFlux() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Delete:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.DELETE;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case Read:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.GET;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case ReadFeed:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.GET;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case Replace:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.PUT;
                 assert request.getContentAsByteBufFlux() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
@@ -324,7 +324,7 @@ public class HttpTransportClient extends TransportClient {
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = new HttpMethod("PATCH");
                 assert request.getContentAsByteBufFlux() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
@@ -333,7 +333,7 @@ public class HttpTransportClient extends TransportClient {
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContentAsByteBufFlux() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.HttpHeaders.CONTENT_TYPE, request);
                 break;
@@ -342,20 +342,20 @@ public class HttpTransportClient extends TransportClient {
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
                 assert request.getContentAsByteBufFlux() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Head:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.HEAD;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case HeadFeed:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.HEAD;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             default:
@@ -394,7 +394,7 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_READ_ONLY_SCRIPT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONTENT_SERIALIZATION_FORMAT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONTINUATION, request.getContinuation());
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId.toString());
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, request);
 
@@ -705,7 +705,7 @@ public class HttpTransportClient extends TransportClient {
                     List<String> lsnValues = null;
                     String[] headerValues = response.headers().values(WFConstants.BackendHeaders.LSN);
                     if (headerValues != null) {
-                        lsnValues = com.google.common.collect.Lists.newArrayList(headerValues);
+                        lsnValues = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
 
                     if (lsnValues != null) {
@@ -717,7 +717,8 @@ public class HttpTransportClient extends TransportClient {
                     List<String> partitionKeyRangeIdValues = null;
                     headerValues = response.headers().values(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
                     if (headerValues != null) {
-                        partitionKeyRangeIdValues = com.google.common.collect.Lists.newArrayList(headerValues);
+                        partitionKeyRangeIdValues
+                            = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
                     if (partitionKeyRangeIdValues != null) {
                         responsePartitionKeyRangeId = Lists.firstOrDefault(partitionKeyRangeIdValues, null);
@@ -938,7 +939,8 @@ public class HttpTransportClient extends TransportClient {
                             List<String> values = null;
                             headerValues = response.headers().values(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
                             if (headerValues != null) {
-                                values = com.google.common.collect.Lists.newArrayList(headerValues);
+                                values
+                                    = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                             }
                             if (values == null || values.isEmpty()) {
                                 logger.warn("RequestRateTooLargeException being thrown without RetryAfter.");

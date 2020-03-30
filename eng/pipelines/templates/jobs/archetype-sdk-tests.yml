@@ -1,5 +1,7 @@
 parameters:
   ServiceDirectory: ''
+  Artifacts: []
+  AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
   Matrix:
@@ -38,7 +40,7 @@ parameters:
   TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
-    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions)'
+    options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -pl $(ProjectList)'
     mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '$(JavaVersion)'
@@ -89,10 +91,27 @@ jobs:
 
       - ${{ parameters.PreRunSteps }}
 
+      - template: ../steps/generate-project-list.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
+
+      - task: Maven@3
+        displayName: 'Build and Install'
+        inputs:
+          mavenPomFile: pom.xml
+          goals: 'install'
+          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:
-          mavenPomFile: sdk/${{parameters.ServiceDirectory}}/pom.service.xml
+          mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 

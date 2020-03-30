@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InvalidPartitionException;
@@ -11,7 +12,7 @@ import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -167,7 +168,7 @@ public abstract class RxCollectionCache {
         if (request.requestContext.resolvedCollectionRid != null) {
             // Here we will issue backend call only if cache wasn't already refreshed (if whatever is there corresponds to previously resolved collection rid).
             DocumentCollection obsoleteValue = new DocumentCollection();
-            obsoleteValue.setResourceId(request.requestContext.resolvedCollectionRid);
+            ModelBridgeInternal.setResourceId(obsoleteValue, request.requestContext.resolvedCollectionRid);
 
             mono = this.collectionInfoByNameCache.getAsync(
                     resourceFullName,
@@ -187,7 +188,7 @@ public abstract class RxCollectionCache {
         return mono.doOnSuccess(aVoid -> request.requestContext.resolvedCollectionRid = null);
     }
 
-    private class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
+    private static class CollectionRidComparer implements IEqualityComparer<DocumentCollection> {
         public boolean areEqual(DocumentCollection left, DocumentCollection right) {
             if (left == null && right == null) {
                 return true;

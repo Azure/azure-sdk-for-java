@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -165,7 +165,7 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber();
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
         spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
                 .subscribe(subscriber);
@@ -182,7 +182,7 @@ public class ConsistencyWriterTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         Mockito.doReturn(false).doReturn(true).when(timeoutHelper).isElapsed();
         ConsistencyWriter spyConsistencyWriter = Mockito.spy(this.consistencyWriter);
-        TestSubscriber<StoreResponse> subscriber = new TestSubscriber();
+        TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
 
         spyConsistencyWriter.writeAsync(Mockito.mock(RxDocumentServiceRequest.class), timeoutHelper, false)
                 .subscribe(subscriber);

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.util.annotation.Nullable;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -140,7 +141,8 @@ public class JsonSerializable {
      *
      * @return the HashMap.
      */
-    public Map<String, Object> getMap() {
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 
@@ -150,7 +152,7 @@ public class JsonSerializable {
      * @param propertyName the property to look up.
      * @return true if the property exists.
      */
-    public boolean has(String propertyName) {
+    protected boolean has(String propertyName) {
         return this.propertyBag.has(propertyName);
     }
 
@@ -185,12 +187,8 @@ public class JsonSerializable {
         } else if (value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
-            if (castedValue != null) {
-                castedValue.populatePropertyBag();
-            }
-            this.propertyBag.set(propertyName, castedValue != null
-                                                   ? castedValue.propertyBag
-                                                   : null);
+            castedValue.populatePropertyBag();
+            this.propertyBag.set(propertyName, castedValue.propertyBag);
         } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.
@@ -230,7 +228,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the value of the property.
      */
-    public Object get(String propertyName) {
+    protected Object get(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return getValue(this.propertyBag.get(propertyName));
         } else {
@@ -244,7 +242,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the string value.
      */
-    public String getString(String propertyName) {
+    protected String getString(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asText();
         } else {
@@ -258,7 +256,11 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the boolean value.
      */
-    public Boolean getBoolean(String propertyName) {
+    // The method returning Boolean can be invoked as though it returned a value of type boolean,
+    // and the compiler will insert automatic unboxing of the Boolean value. If a null value is
+    // returned, this will result in a NPE. @Nullable is used indicate that returning null is permitted.
+    @Nullable
+    protected Boolean getBoolean(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asBoolean();
         } else {
@@ -272,9 +274,9 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the boolean value
      */
-    public Integer getInt(String propertyName) {
+    protected Integer getInt(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return Integer.valueOf(this.propertyBag.get(propertyName).asInt());
+            return this.propertyBag.get(propertyName).asInt();
         } else {
             return null;
         }
@@ -286,9 +288,9 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the long value
      */
-    public Long getLong(String propertyName) {
+    protected Long getLong(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return Long.valueOf(this.propertyBag.get(propertyName).asLong());
+            return this.propertyBag.get(propertyName).asLong();
         } else {
             return null;
         }
@@ -300,9 +302,9 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the double value.
      */
-    public Double getDouble(String propertyName) {
+    protected Double getDouble(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return new Double(this.propertyBag.get(propertyName).asDouble());
+            return this.propertyBag.get(propertyName).asDouble();
         } else {
             return null;
         }
@@ -321,7 +323,9 @@ public class JsonSerializable {
      * @return the object value.
      * @throws IllegalStateException thrown if an error occurs
      */
-    public <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
+    protected <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonObj = propertyBag.get(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -367,7 +371,9 @@ public class JsonSerializable {
      * @return the object collection.
      * @throws IllegalStateException thrown if an error occurs
      */
-    public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
+    protected <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
@@ -433,7 +439,7 @@ public class JsonSerializable {
      * before converting to required class.
      * @return the object collection.
      */
-    public <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
+    protected <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         return getList(propertyName, c, convertFromCamelCase);
     }
 
@@ -445,8 +451,7 @@ public class JsonSerializable {
      */
     ObjectNode getObject(String propertyName) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            ObjectNode jsonObj = (ObjectNode) this.propertyBag.get(propertyName);
-            return jsonObj;
+            return (ObjectNode) this.propertyBag.get(propertyName);
         }
         return null;
     }
@@ -476,11 +481,11 @@ public class JsonSerializable {
      * @param propertyNames that form the path to the property to get.
      * @return the value of the property.
      */
-    public Object getObjectByPath(List<String> propertyNames) {
+    protected Object getObjectByPath(List<String> propertyNames) {
         ObjectNode propBag = this.propertyBag;
         JsonNode value = null;
         String propertyName = null;
-        Integer matchedProperties = 0;
+        int matchedProperties = 0;
         Iterator<String> iterator = propertyNames.iterator();
         if (iterator.hasNext()) {
             do {
@@ -536,7 +541,7 @@ public class JsonSerializable {
      *
      * @return the byte buffer
      */
-    public ByteBuffer serializeJsonToByteBuffer() {
+    protected ByteBuffer serializeJsonToByteBuffer() {
         this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
@@ -567,7 +572,9 @@ public class JsonSerializable {
      * @throws IllegalArgumentException thrown if an error occurs
      * @throws IllegalStateException thrown when objectmapper is unable to read tree
      */
-    public <T> T toObject(Class<T> c) {
+    @SuppressWarnings("unchecked")
+    // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
+    protected <T> T toObject(Class<T> c) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
         //  tests accordingly
         if (CosmosItemProperties.class.isAssignableFrom(c)) {
@@ -610,7 +617,7 @@ public class JsonSerializable {
      *
      * @return the JSON string.
      */
-    public String toJson() {
+    protected String toJson() {
         return this.toJson(SerializationFormattingPolicy.NONE);
     }
 
@@ -620,7 +627,7 @@ public class JsonSerializable {
      * @param formattingPolicy the formatting policy to be used.
      * @return the JSON string.
      */
-    public String toJson(SerializationFormattingPolicy formattingPolicy) {
+    protected String toJson(SerializationFormattingPolicy formattingPolicy) {
         this.populatePropertyBag();
         if (SerializationFormattingPolicy.INDENTED.equals(formattingPolicy)) {
             return toPrettyJson(propertyBag);

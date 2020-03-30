@@ -27,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
@@ -35,10 +35,10 @@ public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestRecord.class);
 
-    private static final AtomicIntegerFieldUpdater REQUEST_LENGTH =
+    private static final AtomicIntegerFieldUpdater<RntbdRequestRecord> REQUEST_LENGTH =
         AtomicIntegerFieldUpdater.newUpdater(RntbdRequestRecord.class, "requestLength");
 
-    private static final AtomicIntegerFieldUpdater RESPONSE_LENGTH =
+    private static final AtomicIntegerFieldUpdater<RntbdRequestRecord> RESPONSE_LENGTH =
         AtomicIntegerFieldUpdater.newUpdater(RntbdRequestRecord.class, "responseLength");
 
     private static final AtomicReferenceFieldUpdater<RntbdRequestRecord, Stage> STAGE =

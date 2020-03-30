@@ -20,7 +20,6 @@ public class Messages {
     public static final String MESSAGE_NOT_OF_TYPE = getMessage("MESSAGE_NOT_OF_TYPE");
     public static final String REQUEST_VALUE_NOT_VALID = getMessage("REQUEST_VALUE_NOT_VALID");
 
-
     private static synchronized Properties getProperties() {
         if (properties != null) {
             return properties;

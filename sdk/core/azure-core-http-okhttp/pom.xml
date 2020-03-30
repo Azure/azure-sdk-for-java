@@ -44,8 +44,9 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal>
-      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.80</jacoco.min.branchcoverage>
   </properties>
 
   <developers>
@@ -80,6 +81,13 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.2.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-test</artifactId>
+      <version>1.2.0-beta.1</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <type>test-jar</type>
       <scope>test</scope>
     </dependency>
     <dependency>

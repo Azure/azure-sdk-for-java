@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -244,11 +244,11 @@ public class CosmosClientException extends RuntimeException {
      *
      * @return Cosmos Response Diagnostic Statistics associated with this exception.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
         return cosmosResponseDiagnostics;
     }
 
-    CosmosClientException setCosmosResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
+    CosmosClientException setResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
         this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
         return this;
     }
@@ -266,7 +266,7 @@ public class CosmosClientException extends RuntimeException {
         if (cosmosError != null) {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
+                innerErrorMessage = String.valueOf(ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
             }
         }
         return innerErrorMessage;

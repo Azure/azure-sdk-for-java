@@ -15,6 +15,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -41,15 +42,35 @@ import java.util.stream.Collector;
 
 import static com.azure.core.amqp.implementation.RetryUtil.getRetryPolicy;
 import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
- * The client to send messages to a Service Bus resource.
+ * An <b>asynchronous</b> client to send messages to a Service Bus resource.
+ *
+ * <p><strong>Create an instance of sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation}
+ *
+ * <p><strong>Create an instance of sender using default credential</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential}
+ *
+ * <p><strong>Send messages to a Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
+ *
+ * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize}
+ *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements Closeable {
+    /**
+     * The default maximum allowable size, in bytes, for a batch to be sent.
+     */
+    static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
+
+    private static final CreateBatchOptions DEFAULT_BATCH_OPTIONS =  new CreateBatchOptions();
 
     private final ClientLogger logger = new ClientLogger(ServiceBusSenderAsyncClient.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -57,28 +78,26 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
-    private final String entityName;
+    private final String entityPath;
+    private final MessagingEntityType entityType;
     private final ServiceBusConnectionProcessor connectionProcessor;
-
-    /**
-     * The default maximum allowable size, in bytes, for a batch to be sent.
-     */
-    public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to
      */
-    ServiceBusSenderAsyncClient(String entityName, ServiceBusConnectionProcessor connectionProcessor,
-        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+    ServiceBusSenderAsyncClient(String entityPath, MessagingEntityType entityType,
+                                ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
+                                TracerProvider tracerProvider, MessageSerializer messageSerializer) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-        this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
+        this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
+        this.entityType = entityType;
     }
 
     /**
@@ -95,8 +114,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @return The name of the Service Bus resource.
      */
-    public String getEntityName() {
-        return entityName;
+    public String getEntityPath() {
+        return entityPath;
     }
 
     /**
@@ -130,6 +149,47 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
 
         //TODO (hemanttanwar): Implement session id feature.
         return Mono.error(new IllegalStateException("Not implemented."));
+    }
+
+    /**
+     * Creates a {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
+     *
+     * @return A {@link ServiceBusMessageBatch} that can fit as many messages as the transport allows.
+     */
+    public Mono<ServiceBusMessageBatch> createBatch() {
+        return createBatch(DEFAULT_BATCH_OPTIONS);
+    }
+
+    /**
+     * Creates an {@link ServiceBusMessageBatch} configured with the options specified.
+     *
+     * @param options A set of options used to configure the {@link ServiceBusMessageBatch}.
+     * @return A new {@link ServiceBusMessageBatch} configured with the given options.
+     * @throws NullPointerException if {@code options} is null.
+     */
+    public Mono<ServiceBusMessageBatch> createBatch(CreateBatchOptions options) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+
+        final int maxSize = options.getMaximumSizeInBytes();
+
+        return getSendLink().flatMap(link -> link.getLinkSize().flatMap(size -> {
+            final int maximumLinkSize = size > 0
+                ? size
+                : MAX_MESSAGE_LENGTH_BYTES;
+
+            if (maxSize > maximumLinkSize) {
+                return monoError(logger, new IllegalArgumentException(String.format(Locale.US,
+                        "CreateBatchOptions.getMaximumSizeInBytes (%s bytes) is larger than the link size"
+                            + " (%s bytes).", maxSize, maximumLinkSize)));
+            }
+
+            final int batchSize = maxSize > 0
+                ? maxSize
+                : maximumLinkSize;
+
+            return Mono.just(
+                new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer));
+        }));
     }
 
     /**
@@ -222,12 +282,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
 
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityName))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(x -> x.schedule(message, scheduledEnqueueTime))
-            .flatMap(scheduleSequenceNumber -> {
-                System.out.println(getClass().getName() + ".schedule scheduleSequenceNumber = " + scheduleSequenceNumber);
-                return Mono.just(scheduleSequenceNumber);
-            });
+            .flatMap(scheduleSequenceNumber -> Mono.just(scheduleSequenceNumber));
     }
 
     /**
@@ -239,7 +296,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityName))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(x -> x.cancelSchedule(sequenceNumber));
     }
 
@@ -279,8 +336,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     private Mono<AmqpSendLink> getSendLink() {
-        final String entityPath = entityName;
-        final String linkName = entityName;
+        final String entityPath = this.entityPath;
+        final String linkName = this.entityPath;
 
         return connectionProcessor
             .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));

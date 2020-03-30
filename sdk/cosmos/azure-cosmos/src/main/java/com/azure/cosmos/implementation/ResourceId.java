@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -180,21 +180,21 @@ public class ResourceId {
                         ResourceId.blockCopy(buffer, 8, subCollRes, 0, 8);
 
                         long subCollectionResource = ByteBuffer.wrap(buffer, 8, 8).getLong();
-                        if ((subCollRes[7] >> 4) == (byte) CollectionChildResourceType.Document) {
+                        if ((subCollRes[7] >> 4) == CollectionChildResourceType.Document) {
                             rid.document = subCollectionResource;
 
                             if (buffer.length == 20) {
                                 rid.attachment = ByteBuffer.wrap(buffer, 16, 4).getInt();
                             }
-                        } else if (Math.abs(subCollRes[7] >> 4) == (byte) CollectionChildResourceType.StoredProcedure) {
+                        } else if (Math.abs(subCollRes[7] >> 4) == CollectionChildResourceType.StoredProcedure) {
                             rid.storedProcedure = subCollectionResource;
-                        } else if ((subCollRes[7] >> 4) == (byte) CollectionChildResourceType.Trigger) {
+                        } else if ((subCollRes[7] >> 4) == CollectionChildResourceType.Trigger) {
                             rid.trigger = subCollectionResource;
-                        } else if ((subCollRes[7] >> 4) == (byte) CollectionChildResourceType.UserDefinedFunction) {
+                        } else if ((subCollRes[7] >> 4) == CollectionChildResourceType.UserDefinedFunction) {
                             rid.userDefinedFunction = subCollectionResource;
-                        } else if ((subCollRes[7] >> 4) == (byte) CollectionChildResourceType.Conflict) {
+                        } else if ((subCollRes[7] >> 4) == CollectionChildResourceType.Conflict) {
                             rid.conflict = subCollectionResource;
-                        } else if ((subCollRes[7] >> 4) == (byte) CollectionChildResourceType.PartitionKeyRange) {
+                        } else if ((subCollRes[7] >> 4) == CollectionChildResourceType.PartitionKeyRange) {
                             rid.partitionKeyRange = subCollectionResource;
                         } else {
                             return Pair.of(false, rid);
@@ -231,8 +231,7 @@ public class ResourceId {
         }
 
         if (buffer == null || buffer.length > ResourceId.Length) {
-            buffer = null;
-            return Pair.of(false, buffer);
+            return Pair.of(false, null);
         }
 
         return Pair.of(true, buffer);
@@ -372,7 +371,7 @@ public class ResourceId {
         rid.document = this.document;
         return rid;
     }
-    
+
     public long getPartitionKeyRange() {
         return this.partitionKeyRange;
     }
@@ -456,22 +455,22 @@ public class ResourceId {
 
         if (this.documentCollection != 0)
             ResourceId.blockCopy(
-                    convertToBytesUsingByteBuffer(this.documentCollection), 
+                    convertToBytesUsingByteBuffer(this.documentCollection),
                     0, val, 4, 4);
         else if (this.user != 0)
-            ResourceId.blockCopy(convertToBytesUsingByteBuffer(this.user), 
+            ResourceId.blockCopy(convertToBytesUsingByteBuffer(this.user),
                     0, val, 4, 4);
 
         if (this.storedProcedure != 0)
             ResourceId.blockCopy(
-                    convertToBytesUsingByteBuffer(this.storedProcedure), 
+                    convertToBytesUsingByteBuffer(this.storedProcedure),
                     0, val, 8, 8);
         else if (this.trigger != 0)
             ResourceId.blockCopy(convertToBytesUsingByteBuffer(this.trigger),
                     0, val, 8, 8);
         else if (this.userDefinedFunction != 0)
             ResourceId.blockCopy(
-                    convertToBytesUsingByteBuffer(this.userDefinedFunction), 
+                    convertToBytesUsingByteBuffer(this.userDefinedFunction),
                     0, val, 8, 8);
         else if (this.conflict != 0)
             ResourceId.blockCopy(convertToBytesUsingByteBuffer(this.conflict),
@@ -481,16 +480,16 @@ public class ResourceId {
                     0, val, 8, 8);
         else if (this.permission != 0)
             ResourceId.blockCopy(
-                    convertToBytesUsingByteBuffer(this.permission), 
+                    convertToBytesUsingByteBuffer(this.permission),
                     0, val, 8, 8);
         else if (this.partitionKeyRange != 0)
             ResourceId.blockCopy(
-                    convertToBytesUsingByteBuffer(this.partitionKeyRange), 
+                    convertToBytesUsingByteBuffer(this.partitionKeyRange),
                     0, val, 8, 8);
 
         if (this.attachment != 0)
             ResourceId.blockCopy(
-                    convertToBytesUsingByteBuffer(this.attachment), 
+                    convertToBytesUsingByteBuffer(this.attachment),
                     0, val, 16, 4);
 
         return val;
@@ -506,6 +505,29 @@ public class ResourceId {
         }
 
         return Arrays.equals(this.getValue(), other.getValue());
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // When a class define covariant version of equals(Object) method, in this case
+        // equals(ResourceId), it is necessary to define equals(Object) method explicitly.
+        // EQ_SELF_USE_OBJECT
+        //
+        if (object == null) {
+            return false;
+        }
+        if(this == object) {
+            return true;
+        }
+        if(object instanceof ResourceId) {
+            return this.equals((ResourceId) object);
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/9046
+        return super.hashCode();
     }
 
     // Using a byte however, we only need nibble here.

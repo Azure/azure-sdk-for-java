@@ -37,7 +37,8 @@ import java.util.UUID;
  */
 final class MessageUtils {
     public static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
-    private static final int LOCK_TOKEN_SIZE = 16;
+    static final int LOCK_TOKEN_SIZE = 16;
+
     private static final int GUID_SIZE = 16;
     private static final int MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES = 512;
 
@@ -58,7 +59,30 @@ final class MessageUtils {
             return ZERO_LOCK_TOKEN;
         }
 
-        byte[] reOrderedBytes = new byte[GUID_SIZE];
+        final byte[] reOrderedBytes = reorderBytes(dotNetBytes);
+
+        final ByteBuffer buffer = ByteBuffer.wrap(reOrderedBytes);
+        final long mostSignificantBits = buffer.getLong();
+        final long leastSignificantBits = buffer.getLong();
+        return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    public static byte[] convertUUIDToDotNetBytes(UUID uniqueId) {
+        if (uniqueId == null || uniqueId.equals(ZERO_LOCK_TOKEN)) {
+            return new byte[GUID_SIZE];
+        }
+
+        ByteBuffer buffer = ByteBuffer.allocate(GUID_SIZE);
+        buffer.putLong(uniqueId.getMostSignificantBits());
+        buffer.putLong(uniqueId.getLeastSignificantBits());
+        byte[] javaBytes = buffer.array();
+
+        // The .NET bytes for a UUID.
+        return reorderBytes(javaBytes);
+    }
+
+    private static byte[] reorderBytes(byte[] javaBytes) {
+        byte[] reorderedBytes = new byte[GUID_SIZE];
         for (int i = 0; i < GUID_SIZE; i++) {
             int indexInReorderedBytes;
             switch (i) {
@@ -90,16 +114,11 @@ final class MessageUtils {
                     indexInReorderedBytes = i;
             }
 
-            reOrderedBytes[indexInReorderedBytes] = dotNetBytes[i];
+            reorderedBytes[indexInReorderedBytes] = javaBytes[i];
         }
 
-        ByteBuffer buffer = ByteBuffer.wrap(reOrderedBytes);
-        long mostSignificantBits = buffer.getLong();
-        long leastSignificantBits = buffer.getLong();
-        return new UUID(mostSignificantBits, leastSignificantBits);
+        return reorderedBytes;
     }
-
-
 
     private static int getPayloadSize(Message msg) {
         if (msg == null || msg.getBody() == null) {
@@ -144,7 +163,8 @@ final class MessageUtils {
 
         return annotationsSize + applicationPropertiesSize + payloadSize;
     }
-    static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message, int maxMessageSize)  {
+    static Pair<byte[], Integer> encodeMessageToOptimalSizeArray
+        (Message message, int maxMessageSize)  {
         int payloadSize = MessageUtils.getDataSerializedSize(message);
         int allocationSize = Math.min(payloadSize + MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         byte[] encodedBytes = new byte[allocationSize];
@@ -163,9 +183,7 @@ final class MessageUtils {
         try {
             return message.encode(encodedBytes, offset, length);
         } catch (BufferOverflowException exception) {
-            System.out.println("MessageUtils.encodeMessageToCustomArray BufferOverflowException "+exception);
             throw exception;
-            //throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s KB", length / 1024), exception);
         }
     }
     static int sizeof(Object obj) {
@@ -214,7 +232,8 @@ final class MessageUtils {
         }
 
         if (obj instanceof UUID) {
-            // UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe..we can treat it as a string of 36 chars = 72 bytes.
+            // UUID is internally represented as 16 bytes. But how does ProtonJ encode it? To be safe..
+            // we can treat it as a string of 36 chars = 72 bytes.
             //return 72;
             return 16;
         }

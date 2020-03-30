@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.query.aggregation.SumAggregator;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Constants;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
@@ -40,7 +42,7 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
         this.component = component;
         AggregateOperator aggregateOperator = aggregateOperators.iterator().next();
-        
+
         switch (aggregateOperator) {
             case Average:
                 this.aggregator = new AverageAggregator();
@@ -65,23 +67,23 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
     @SuppressWarnings("unchecked")
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
-        
+
         return this.component.drainAsync(maxPageSize)
                 .collectList()
                 .map( superList -> {
-                    
+
                     double requestCharge = 0;
                     List<Document> aggregateResults = new ArrayList<Document>();
                     HashMap<String, String> headers = new HashMap<String, String>();
-                    
+
                     for(FeedResponse<T> page : superList) {
-                        
+
                         if (page.getResults().size() == 0) {
                             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                             FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                             return (FeedResponse<T>) frp;
                         }
-                        
+
                         Document doc = ((Document)page.getResults().get(0));
                         requestCharge += page.getRequestCharge();
                         QueryItem values = new QueryItem(doc.toJson());
@@ -95,8 +97,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                             }
                         }
                     }
-                    
-                    if (this.aggregator.getResult() == null || !this.aggregator.getResult().equals(Undefined.Value())) {
+
+                    if (this.aggregator.getResult() == null || !this.aggregator.getResult().equals(Undefined.value())) {
                         Document aggregateDocument = new Document();
                         BridgeInternal.setProperty(aggregateDocument, Constants.Properties.VALUE, this.aggregator.getResult());
                         aggregateResults.add(aggregateDocument);
@@ -105,8 +107,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                     headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                     FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
                     if(!queryMetricsMap.isEmpty()) {
-                        for(String key: queryMetricsMap.keySet()) {
-                            BridgeInternal.putQueryMetricsIntoMap(frp, key, queryMetricsMap.get(key));
+                        for(Map.Entry<String, QueryMetrics> entry: queryMetricsMap.entrySet()) {
+                            BridgeInternal.putQueryMetricsIntoMap(frp, entry.getKey(), entry.getValue());
                         }
                     }
                     return (FeedResponse<T>) frp;

@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;

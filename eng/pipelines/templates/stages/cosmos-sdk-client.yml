@@ -8,8 +8,9 @@ stages:
     - template: ../jobs/archetype-sdk-client.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
         TestMatrix:
           Linux - Java 8:
             OSName: 'Linux'
@@ -62,6 +63,8 @@ stages:
         TestName: Emulator
         DisableAzureResourceCreation: true
         ServiceDirectory: cosmos
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
@@ -87,7 +90,7 @@ stages:
 
         TestStepMavenInputs:
           goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaVersion)
 

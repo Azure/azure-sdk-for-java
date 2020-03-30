@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -316,7 +317,7 @@ public class AddressResolver implements IAddressResolver {
         });
     }
 
-    private class RefreshState {
+    private static class RefreshState {
 
         volatile boolean collectionCacheIsUptoDate;
         volatile boolean collectionRoutingMapCacheIsUptoDate;
@@ -513,7 +514,7 @@ public class AddressResolver implements IAddressResolver {
                         Mono<RefreshState> newRefreshStateObs = newCollectionObs.flatMap(collectionValueHolder -> {
                             state.collection = collectionValueHolder.v;
 
-                            if (collectionValueHolder.v.getResourceId() != state.routingMap.getCollectionUniqueId()) {
+                            if (!StringUtils.equals(collectionValueHolder.v.getResourceId(), state.routingMap.getCollectionUniqueId())) {
                                 // Collection cache was stale. We resolved to new Rid. routing map cache is potentially stale
                                 // for this new collection rid. Mark it as such.
                                 state.collectionRoutingMapCacheIsUptoDate = false;
@@ -552,7 +553,7 @@ public class AddressResolver implements IAddressResolver {
         // Optimization to not refresh routing map unnecessary. As we keep track of parent child relationships,
         // we can determine that a range is gone just by looking up in the routing map.
         if (collectionCacheIsUpToDate && routingMapCacheIsUpToDate ||
-            collectionCacheIsUpToDate && routingMap.IsGone(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId())) {
+            collectionCacheIsUpToDate && routingMap.isGone(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId())) {
             String errorMessage = String.format(
                 RMResources.PartitionKeyRangeNotFound,
                 request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId(),
@@ -687,7 +688,7 @@ public class AddressResolver implements IAddressResolver {
         return null;
     }
 
-    private class ResolutionResult {
+    private static class ResolutionResult {
         final PartitionKeyRange TargetPartitionKeyRange;
         final AddressInformation[] Addresses;
 

@@ -40,8 +40,8 @@ public class Address extends Resource {
         super(jsonString);
     }
 
-    public boolean IsPrimary() {
-        return super.getBoolean(Constants.Properties.IS_PRIMARY);
+    public boolean isPrimary() {
+        return Boolean.TRUE.equals(super.getBoolean(Constants.Properties.IS_PRIMARY));
     }
 
     void setIsPrimary(boolean isPrimary) {
@@ -86,5 +86,10 @@ public class Address extends Resource {
 
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
         BridgeInternal.setProperty(this, Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+    }
+
+    @Override
+    public Object get(String propertyName) {
+        return super.get(propertyName);
     }
 }

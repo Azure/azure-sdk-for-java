@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.sun.management.OperatingSystemMXBean;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -34,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
@@ -67,7 +68,6 @@ class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.connectionMode = ConnectionMode.DIRECT;
-        this.retryContext = retryContext;
     }
 
     private static String formatDateTime(ZonedDateTime dateTime) {
@@ -82,6 +82,7 @@ class ClientSideRequestStatistics {
     }
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
+        Objects.requireNonNull(request, "request is required and cannot be null.");
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.DIRECT;
 
@@ -92,7 +93,7 @@ class ClientSideRequestStatistics {
         storeResponseStatistics.requestResourceType = request.getResourceType();
 
         URI locationEndPoint = null;
-        if (request != null && request.requestContext != null) {
+        if (request.requestContext != null) {
             this.retryContext = new RetryContext(request.requestContext.retryContext);
             if (request.requestContext.locationEndpointToRoute != null) {
                 locationEndPoint = request.requestContext.locationEndpointToRoute;
@@ -127,15 +128,17 @@ class ClientSideRequestStatistics {
                 this.requestEndTime = responseTime;
             }
 
-            if (rxDocumentServiceRequest != null 
-                    && rxDocumentServiceRequest.requestContext != null 
+            if (rxDocumentServiceRequest != null
+                    && rxDocumentServiceRequest.requestContext != null
                     && rxDocumentServiceRequest.requestContext.retryContext != null) {
                 rxDocumentServiceRequest.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
                 this.retryContext = new RetryContext(rxDocumentServiceRequest.requestContext.retryContext);
             }
 
             this.gatewayStatistics = new GatewayStatistics();
-            this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+            if (rxDocumentServiceRequest != null) {
+                this.gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
+            }
             if (storeResponse != null) {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
@@ -258,6 +261,8 @@ class ClientSideRequestStatistics {
 
     private static class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
 
+        private static final long serialVersionUID = -1029068207700658765L;
+
         ZonedDateTimeSerializer() {
             super(ZonedDateTime.class);
         }
@@ -272,6 +277,8 @@ class ClientSideRequestStatistics {
     }
 
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
+
+        private static final long serialVersionUID = -2746532297176812860L;
 
         ClientSideRequestStatisticsSerializer() {
             super(ClientSideRequestStatistics.class);
@@ -327,7 +334,7 @@ class ClientSideRequestStatistics {
         }
     }
 
-    private class AddressResolutionStatistics {
+    private static class AddressResolutionStatistics {
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
         ZonedDateTime startTime;
         @JsonSerialize(using = ZonedDateTimeSerializer.class)
@@ -335,7 +342,7 @@ class ClientSideRequestStatistics {
         String targetEndpoint;
     }
 
-    private class GatewayStatistics {
+    private static class GatewayStatistics {
         String sessionToken;
         OperationType operationType;
         int statusCode;

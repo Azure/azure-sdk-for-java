@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 /**
  * Sample demonstrates how to recognize the linked entities of document.
@@ -17,14 +17,14 @@ public class RecognizeLinkedEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The text that needs be analyzed.
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
+        // The document that needs be analyzed.
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
 
-        client.recognizeLinkedEntities(text).forEach(linkedEntity -> {
+        client.recognizeLinkedEntities(document).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
             System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),

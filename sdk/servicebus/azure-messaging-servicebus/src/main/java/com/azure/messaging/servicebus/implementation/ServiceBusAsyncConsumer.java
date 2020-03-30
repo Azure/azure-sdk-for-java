@@ -3,13 +3,15 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -17,23 +19,30 @@ import java.util.function.Function;
  * A package-private consumer responsible for reading {@link ServiceBusMessage} from a specific Service Bus.
  */
 public class ServiceBusAsyncConsumer implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor;
     private final MessageSerializer messageSerializer;
     private final ServiceBusMessageProcessor processor;
+    private final String linkName;
 
-    public ServiceBusAsyncConsumer(ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
-        MessageSerializer messageSerializer, boolean isAutoComplete,
-        Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction) {
+    public ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
+        MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
+        Duration autoLockRenewalDuration, AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer,
+        Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
+        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
+        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock) {
+
+        this.linkName = linkName;
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
         this.processor = amqpReceiveLinkProcessor
-            .doOnSubscribe(e -> {
-                logger.info("There was a subscription.");
-            })
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, completeFunction));
+            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, autoLockRenewalDuration,
+                retryOptions, messageLockContainer, onComplete, onAbandon, onRenewLock));
+    }
+
+    public String getLinkName() {
+        return linkName;
     }
 
     /**

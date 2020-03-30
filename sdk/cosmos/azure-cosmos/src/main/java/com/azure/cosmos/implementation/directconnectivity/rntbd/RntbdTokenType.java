@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.google.common.base.Utf8;
+import com.azure.cosmos.implementation.guava25.base.Utf8;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.CorruptedFrameException;
@@ -11,7 +11,7 @@ import io.netty.handler.codec.CorruptedFrameException;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 enum RntbdTokenType {

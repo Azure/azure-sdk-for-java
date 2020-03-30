@@ -13,7 +13,7 @@ import reactor.core.scheduler.Schedulers;
 
 class AsyncReadBenchmark extends AsyncBenchmark<PojoizedJson> {
 
-    class LatencySubscriber<T> extends BaseSubscriber<T> {
+    static class LatencySubscriber<T> extends BaseSubscriber<T> {
 
         Timer.Context context;
         BaseSubscriber<PojoizedJson> baseSubscriber;

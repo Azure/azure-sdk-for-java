@@ -7,12 +7,13 @@ import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.CorruptedFrameException;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.AbstractMap;
 import java.util.List;
@@ -508,7 +509,9 @@ class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> {
         return new Entry(name, token.getValue(String.class));
     }
 
-    private static final class Entry extends AbstractMap.SimpleImmutableEntry<String, String> {
+    private static final class Entry extends AbstractMap.SimpleImmutableEntry<String, String> implements Serializable {
+        private static final long serialVersionUID = -5926883743469858929L;
+
         Entry(final String name, final String value) {
             super(name, value);
         }

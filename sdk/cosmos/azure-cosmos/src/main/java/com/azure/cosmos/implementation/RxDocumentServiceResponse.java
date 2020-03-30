@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
@@ -10,11 +11,9 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.models.Resource;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -114,6 +113,8 @@ public class RxDocumentServiceResponse {
         return resource;
     }
 
+    @SuppressWarnings("unchecked")
+    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
         byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
@@ -171,14 +172,6 @@ public class RxDocumentServiceResponse {
             return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", Arrays.toString(json)), e);
-        }
-    }
-
-    private static String toJson(Object object){
-        try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Can't serialize the object into the json string", e);
         }
     }
 

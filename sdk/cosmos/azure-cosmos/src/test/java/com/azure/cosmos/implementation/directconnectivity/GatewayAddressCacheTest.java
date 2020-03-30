@@ -23,8 +23,8 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.Matchers;
@@ -121,6 +121,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     }
 
     @Test(groups = { "direct" }, dataProvider = "protocolProvider", timeOut = TIMEOUT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void getMasterAddressesViaGatewayAsync(Protocol protocol) throws Exception {
         Configs configs = ConfigsBuilder.instance().withProtocol(protocol).build();
         // ask gateway for the addresses
@@ -319,6 +320,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @Test(groups = { "direct" },
             dataProvider = "openAsyncTargetAndTargetPartitionsKeyRangeAndCollectionLinkParams",
             timeOut = TIMEOUT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void tryGetAddresses_ForDataPartitions_Suboptimal_Refresh(
             List<String> allPartitionKeyRangeIds,
             String partitionKeyRangeId,
@@ -365,13 +367,13 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
         final AtomicInteger fetchCounter = new AtomicInteger(0);
-        Mockito.doAnswer(new Answer() {
+        Mockito.doAnswer(new Answer<Mono<List<Address>>>() {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
                 RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
                 String collectionRid = invocationOnMock.getArgumentAt(1, String.class);
-                List partitionKeyRangeIds = invocationOnMock.getArgumentAt(2, List.class);
+                List<String> partitionKeyRangeIds = invocationOnMock.getArgumentAt(2, List.class);
                 boolean forceRefresh = invocationOnMock.getArgumentAt(3, Boolean.class);
 
                 int cnt = fetchCounter.getAndIncrement();
@@ -392,7 +394,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         forceRefresh);
             }
         }).when(spyCache).getServerAddressesViaGatewayAsync(Matchers.any(RxDocumentServiceRequest.class), Matchers.anyString(),
-                Matchers.anyList(), Matchers.anyBoolean());
+                Matchers.anyListOf(String.class), Matchers.anyBoolean());
 
         httpClientWrapper.capturedRequests.clear();
 
@@ -586,7 +588,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
         final AtomicInteger getMasterAddressesViaGatewayAsyncInvocation = new AtomicInteger(0);
-        Mockito.doAnswer(new Answer() {
+        Mockito.doAnswer(new Answer<Mono<List<Address>>>() {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
@@ -623,7 +625,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         null);
                 }
             }).when(spyCache).getMasterAddressesViaGatewayAsync(Matchers.any(RxDocumentServiceRequest.class), Matchers.any(ResourceType.class), Matchers.anyString(),
-                Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyBoolean(), Matchers.anyMap());
+                Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
 
 
         RxDocumentServiceRequest req =
@@ -676,7 +678,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         GatewayAddressCache spyCache = Mockito.spy(origCache);
 
         final AtomicInteger getMasterAddressesViaGatewayAsyncInvocation = new AtomicInteger(0);
-        Mockito.doAnswer(new Answer() {
+        Mockito.doAnswer(new Answer<Mono<List<Address>>>() {
             @Override
             public Mono<List<Address>> answer(InvocationOnMock invocationOnMock) throws Throwable {
 
@@ -715,7 +717,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                         null);
             }
         }).when(spyCache).getMasterAddressesViaGatewayAsync(Matchers.any(RxDocumentServiceRequest.class), Matchers.any(ResourceType.class), Matchers.anyString(),
-                Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyBoolean(), Matchers.anyMap());
+                Matchers.anyString(), Matchers.anyBoolean(), Matchers.anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
 
         RxDocumentServiceRequest req =
                 RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Database,
@@ -768,7 +770,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     private static void assertEqual(AddressInformation actual, Address expected) {
         assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
-        assertThat(actual.isPrimary()).isEqualTo(expected.IsPrimary());
+        assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {

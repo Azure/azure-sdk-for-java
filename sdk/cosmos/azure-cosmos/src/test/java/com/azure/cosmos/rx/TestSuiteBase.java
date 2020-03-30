@@ -21,7 +21,8 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
@@ -54,8 +55,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.CaseFormat;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -243,7 +244,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 Object propertyValue = null;
                 if (paths != null && !paths.isEmpty()) {
                     List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = doc.getObjectByPath(pkPath);
+                    propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
                     if (propertyValue == null) {
                         partitionKey = PartitionKey.NONE;
                     } else {
@@ -311,8 +312,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         logger.info("Finished truncating collection {}.", cosmosContainerId);
     }
 
+    @SuppressWarnings({"fallthrough"})
     protected static void waitIfNeededForReplicasToCatchUp(CosmosClientBuilder clientBuilder) {
-        switch (clientBuilder.getConsistencyLevel()) {
+        switch (CosmosBridgeInternal.getConsistencyLevel(clientBuilder)) {
             case EVENTUAL:
             case CONSISTENT_PREFIX:
                 logger.info(" additional wait in EVENTUAL mode so the replica catch up");
@@ -466,7 +468,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
-    public Flux<CosmosAsyncItemResponse> bulkInsert(CosmosAsyncContainer cosmosContainer,
+    public Flux<CosmosAsyncItemResponse<CosmosItemProperties>> bulkInsert(CosmosAsyncContainer cosmosContainer,
                                                     List<CosmosItemProperties> documentDefinitionList,
                                                     int concurrencyLevel) {
         List<Mono<CosmosAsyncItemResponse<CosmosItemProperties>>> result =
@@ -481,7 +483,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                          List<CosmosItemProperties> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> (CosmosItemProperties)itemResponse.getItem())
+            .map(itemResponse -> itemResponse.getItem())
             .collectList()
             .block();
     }
@@ -737,14 +739,17 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator) {
         validateSuccess(single, validator, subscriberValidationTimeout);
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosResponse> void validateSuccess(Mono<T> single, CosmosResponseValidator<T> validator, long timeout) {
         validateSuccess(single.flux(), validator, timeout);
     }
 
+    @SuppressWarnings("rawtypes")
     public static <T extends CosmosResponse> void validateSuccess(Flux<T> flowable,
                                                                   CosmosResponseValidator<T> validator, long timeout) {
 
@@ -758,11 +763,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values().get(0));
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends Resource, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
         throws InterruptedException {
         validateFailure(mono.flux(), validator, subscriberValidationTimeout);
     }
 
+    @SuppressWarnings("rawtypes")
     public static <T extends Resource, U extends CosmosResponse> void validateFailure(Flux<U> flowable,
                                                                                       FailureValidator validator, long timeout) throws InterruptedException {
 
@@ -776,6 +783,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosAsyncItemResponse> void validateItemSuccess(
         Mono<T> responseMono, CosmosItemResponseValidator validator) {
 
@@ -788,6 +796,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values().get(0));
     }
 
+    @SuppressWarnings("rawtypes")
     public <T extends CosmosAsyncItemResponse> void validateItemFailure(
         Mono<T> responseMono, FailureValidator validator) {
         TestSubscriber<CosmosAsyncItemResponse> testSubscriber = new TestSubscriber<>();
@@ -915,11 +924,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 preferredLocations)));
         }
 
-        cosmosConfigurations.forEach(c -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-            c.getConnectionPolicy().getConnectionMode(),
-            c.getConsistencyLevel(),
-            extractConfigs(c).getProtocol()
-        ));
+        cosmosConfigurations.forEach(c -> {
+            ConnectionPolicy connectionPolicy = CosmosBridgeInternal.getConnectionPolicy(c);
+            ConsistencyLevel consistencyLevel = CosmosBridgeInternal.getConsistencyLevel(c);
+            logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
+                connectionPolicy.getConnectionMode(),
+                consistencyLevel,
+                extractConfigs(c).getProtocol()
+            );
+        });
 
         cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null));
 
@@ -973,6 +986,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    @SuppressWarnings("fallthrough")
     static List<ConsistencyLevel> allEqualOrLowerConsistencies(ConsistencyLevel accountConsistency) {
         List<ConsistencyLevel> testConsistencies = new ArrayList<>();
         switch (accountConsistency) {
@@ -1006,11 +1020,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 preferredLocations)));
         }
 
-        cosmosConfigurations.forEach(c -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
-            c.getConnectionPolicy().getConnectionMode(),
-            c.getConsistencyLevel(),
-            extractConfigs(c).getProtocol()
-        ));
+        cosmosConfigurations.forEach(c -> {
+            ConnectionPolicy connectionPolicy = CosmosBridgeInternal.getConnectionPolicy(c);
+            ConsistencyLevel consistencyLevel = CosmosBridgeInternal.getConsistencyLevel(c);
+            logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
+                connectionPolicy.getConnectionMode(),
+                consistencyLevel,
+                extractConfigs(c).getProtocol()
+            );
+        });
 
         cosmosConfigurations.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, isMultiMasterEnabled, preferredLocations));
 
@@ -1023,10 +1041,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         connectionPolicy.setThrottlingRetryOptions(options);
-        return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
-            .setCosmosKeyCredential(cosmosKeyCredential)
-            .setConnectionPolicy(connectionPolicy)
-            .setConsistencyLevel(ConsistencyLevel.SESSION);
+        return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+            .keyCredential(cosmosKeyCredential)
+            .connectionPolicy(connectionPolicy)
+            .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations) {
@@ -1034,10 +1052,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         connectionPolicy.setUsingMultipleWriteLocations(multiMasterEnabled);
         connectionPolicy.setPreferredLocations(preferredLocations);
-        return new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
-            .setCosmosKeyCredential(cosmosKeyCredential)
-            .setConnectionPolicy(connectionPolicy)
-            .setConsistencyLevel(consistencyLevel);
+        return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+            .keyCredential(cosmosKeyCredential)
+            .connectionPolicy(connectionPolicy)
+            .consistencyLevel(consistencyLevel);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient() {
@@ -1062,10 +1080,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 
-        CosmosClientBuilder builder = new CosmosClientBuilder().setEndpoint(TestConfigurations.HOST)
-            .setCosmosKeyCredential(cosmosKeyCredential)
-            .setConnectionPolicy(connectionPolicy)
-            .setConsistencyLevel(consistencyLevel);
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+            .keyCredential(cosmosKeyCredential)
+            .connectionPolicy(connectionPolicy)
+            .consistencyLevel(consistencyLevel);
 
         return injectConfigs(builder, configs);
     }
@@ -1083,17 +1101,6 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosClientBuilder copyCosmosClientBuilder(CosmosClientBuilder builder) {
-        CosmosClientBuilder copy = new CosmosClientBuilder();
-
-        copy.setEndpoint(builder.getEndpoint())
-            .setKey(builder.getKey())
-            .setConnectionPolicy(builder.getConnectionPolicy())
-            .setConsistencyLevel(builder.getConsistencyLevel())
-            .setCosmosKeyCredential(builder.getCosmosKeyCredential())
-            .setPermissions(builder.getPermissions())
-            .setCosmosAuthorizationTokenResolver(builder.getCosmosAuthorizationTokenResolver())
-            .setResourceToken(builder.getResourceToken());
-
-        return copy;
+        return CosmosBridgeInternal.cloneCosmosClientBuilder(builder);
     }
 }

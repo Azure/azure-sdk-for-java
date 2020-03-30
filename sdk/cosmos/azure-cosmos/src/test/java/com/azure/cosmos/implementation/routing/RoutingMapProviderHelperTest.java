@@ -6,8 +6,8 @@ package com.azure.cosmos.implementation.routing;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -154,7 +154,7 @@ public class RoutingMapProviderHelperTest {
                                                           new PartitionKeyRange("6", "0040", "FF"));
         Mono<List<PartitionKeyRange>> listSingle = Mono.just(rangeList);
 
-        Map<Range, List<PartitionKeyRange>> resultMap = new HashMap<>();
+        Map<Range<String>, List<PartitionKeyRange>> resultMap = new HashMap<>();
 
         resultMap.put(new Range<>("000D", "0012", true, false),
                       Collections.singletonList(new PartitionKeyRange("2", "000D", "0012")));
@@ -164,12 +164,13 @@ public class RoutingMapProviderHelperTest {
                       Collections.singletonList(new PartitionKeyRange("4", "0015", "00120")));
 
         Mockito.doAnswer(invocationOnMock -> {
+            @SuppressWarnings("rawtypes")
             Range range = invocationOnMock.getArgumentAt(1, Range.class);
             return Mono.just(new Utils.ValueHolder<>(resultMap.get(range)));
         }).when(routingMapProviderMock).tryGetOverlappingRangesAsync(Matchers.anyString(),
                                                                      Matchers.any(),
                                                                      Matchers.anyBoolean(),
-                                                                     Matchers.anyMap());
+                                                                     Matchers.anyMapOf(String.class, Object.class));
 
         Mono<List<PartitionKeyRange>> overlappingRanges;
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,

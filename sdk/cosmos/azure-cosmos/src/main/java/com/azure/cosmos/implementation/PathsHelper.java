@@ -5,14 +5,15 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.Resource;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.commons.text.StringEscapeUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Used internally to provide utility methods to work with the resource's path in the Azure Cosmos DB database service.
@@ -465,7 +466,7 @@ public class PathsHelper {
             return false;
         }
 
-        switch (resourcePathSegment.toLowerCase()) {
+        switch (resourcePathSegment.toLowerCase(Locale.ROOT)) {
             case Paths.ATTACHMENTS_PATH_SEGMENT:
             case Paths.COLLECTIONS_PATH_SEGMENT:
             case Paths.DATABASES_PATH_SEGMENT:
