@@ -21,6 +21,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Scheduler;
 
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class ManagementChannel implements EventHubManagementNode {
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
     private final TokenManagerProvider tokenManagerProvider;
-    private final DirectProcessor<AmqpEndpointState> endpointStateProcessor = DirectProcessor.create();
+    private final ReplayProcessor<AmqpEndpointState> endpointStateProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointStateSink =
         endpointStateProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final Disposable subscription;

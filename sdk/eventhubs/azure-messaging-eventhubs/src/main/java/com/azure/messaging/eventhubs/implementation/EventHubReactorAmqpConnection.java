@@ -69,14 +69,11 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
-        this.retryOptions = connectionOptions.getRetry();
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
-
+        this.retryOptions = connectionOptions.getRetry();
         this.tokenCredential = connectionOptions.getTokenCredential();
         this.scheduler = connectionOptions.getScheduler();
-
-        final AmqpRetryPolicy policy = RetryUtil.getRetryPolicy(retryOptions);
     }
 
     @Override
