@@ -29,7 +29,7 @@ public final class IndexAction<T> {
     private Map<String, Object> properties;
 
     @JsonAnyGetter
-    private Map<String, Object> getParamMap() {
+    public Map<String, Object> getParamMap() {
         return properties;
     }
 

@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Abstract base class for functions that can modify document scores during
- * ranking.
+ * Base type for functions that can modify document scores during ranking.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = ScoringFunction.class)
 @JsonTypeName("ScoringFunction")

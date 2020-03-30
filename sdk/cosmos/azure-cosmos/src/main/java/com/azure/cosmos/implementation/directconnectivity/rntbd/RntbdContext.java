@@ -17,7 +17,7 @@ import java.util.UUID;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.CurrentProtocolVersion;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdContextHeader;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 public final class RntbdContext {
 

@@ -177,7 +177,7 @@ directive:
           .replace(/(class IndexAction)/g, "$1<T>")
           .replace(/(Unmatched properties from the message are deserialized this collection)/g, "The document on which the action will be performed.")
           .replace(/(@JsonProperty\(value = ""\))/g, "@JsonUnwrapped")
-          .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    @JsonAnyGetter\n    private Map<String, Object> getParamMap() {\n        return properties;\n    }")
+          .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    @JsonAnyGetter\n    public Map<String, Object> getParamMap() {\n        return properties;\n    }")
           .replace(/(Get the additionalProperties property: Unmatched properties from the\n\s+\* message are deserialized this collection.)/g, "Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.")
           .replace(/(@return the additionalProperties value.)/g, "@return the document value.")
           .replace(/(public Map<String, Object> getAdditionalProperties\(\) {\s+return this.additionalProperties;\s+})/g, "public T getDocument() {\n        return this.document;\n    }")
@@ -327,4 +327,43 @@ directive:
       where: $
       transform: >-
         return $.replace(/public class (.*) \{/, "public abstract class $1 {")
+
+    # Changed RegexFlags to List of RegexFlags in PatternAnalyzer and PatterTokenizer
+    - from: swagger-document
+      where: $.definitions.PatternAnalyzer.properties.flags
+      transform: >
+        if ($['$ref']) {
+            delete $['$ref'];
+            $.type = 'array'
+            $.items = {
+                "$ref" : "#/definitions/RegexFlags"
+            }
+        }
+    - from: swagger-document
+      where: $.definitions.PatternTokenizer.properties.flags
+      transform: >
+        if ($['$ref']) {
+            delete $['$ref'];
+            $.type = 'array'
+            $.items = {
+                "$ref" : "#/definitions/RegexFlags"
+            }
+        }
+    
+    # Added custom serializer and deserializer for PatternAnalyzer and PatternTokenizer
+    - from: 
+      - PatternTokenizer.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternTokenizerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternTokenizerDeserializer\.class)")
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternTokenizerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternTokenizerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
+    
+    - from: 
+      - PatternAnalyzer.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternAnalyzerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternAnalyzerDeserializer\.class)")
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
 ```
