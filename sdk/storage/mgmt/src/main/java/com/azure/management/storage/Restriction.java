@@ -42,7 +42,7 @@ public final class Restriction {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -53,7 +53,7 @@ public final class Restriction {
      * 
      * @return the values value.
      */
-    public List<String> getValues() {
+    public List<String> values() {
         return this.values;
     }
 
@@ -66,7 +66,7 @@ public final class Restriction {
      * 
      * @return the reasonCode value.
      */
-    public ReasonCode getReasonCode() {
+    public ReasonCode reasonCode() {
         return this.reasonCode;
     }
 
@@ -80,7 +80,7 @@ public final class Restriction {
      * @param reasonCode the reasonCode value to set.
      * @return the Restriction object itself.
      */
-    public Restriction setReasonCode(ReasonCode reasonCode) {
+    public Restriction withReasonCode(ReasonCode reasonCode) {
         this.reasonCode = reasonCode;
         return this;
     }

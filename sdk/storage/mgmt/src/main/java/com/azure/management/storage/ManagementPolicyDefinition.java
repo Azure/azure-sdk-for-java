@@ -29,7 +29,7 @@ public final class ManagementPolicyDefinition {
      * 
      * @return the actions value.
      */
-    public ManagementPolicyAction getActions() {
+    public ManagementPolicyAction actions() {
         return this.actions;
     }
 
@@ -39,7 +39,7 @@ public final class ManagementPolicyDefinition {
      * @param actions the actions value to set.
      * @return the ManagementPolicyDefinition object itself.
      */
-    public ManagementPolicyDefinition setActions(ManagementPolicyAction actions) {
+    public ManagementPolicyDefinition withActions(ManagementPolicyAction actions) {
         this.actions = actions;
         return this;
     }
@@ -49,7 +49,7 @@ public final class ManagementPolicyDefinition {
      * 
      * @return the filters value.
      */
-    public ManagementPolicyFilter getFilters() {
+    public ManagementPolicyFilter filters() {
         return this.filters;
     }
 
@@ -59,7 +59,7 @@ public final class ManagementPolicyDefinition {
      * @param filters the filters value to set.
      * @return the ManagementPolicyDefinition object itself.
      */
-    public ManagementPolicyDefinition setFilters(ManagementPolicyFilter filters) {
+    public ManagementPolicyDefinition withFilters(ManagementPolicyFilter filters) {
         this.filters = filters;
         return this;
     }

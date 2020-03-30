@@ -27,8 +27,6 @@ import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * A proton-j AMQP connection to an Azure Event Hub instance. Adds additional support for management operations.
  */
@@ -38,20 +36,15 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private static final String MANAGEMENT_ADDRESS = "$management";
 
     private final ClientLogger logger = new ClientLogger(EventHubReactorAmqpConnection.class);
-    /**
-     * Keeps track of the opened send links. Links are key'd by their entityPath. The send link for allowing the service
-     * load balance messages is the eventHubName.
-     */
-    private final ConcurrentHashMap<String, AmqpSendLink> sendLinks = new ConcurrentHashMap<>();
+    private final TokenCredential tokenCredential;
     private final String connectionId;
-    private final String eventHubName;
     private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final TokenManagerProvider tokenManagerProvider;
     private final AmqpRetryOptions retryOptions;
     private final MessageSerializer messageSerializer;
-    private final TokenCredential tokenCredential;
     private final Scheduler scheduler;
+    private final String eventHubName;
 
     private volatile ManagementChannel managementChannel;
 
@@ -73,14 +66,14 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, tokenManagerProvider,
             messageSerializer, product, clientVersion, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
-        this.eventHubName = eventHubName;
         this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.tokenManagerProvider = tokenManagerProvider;
+        this.messageSerializer = messageSerializer;
+        this.eventHubName = eventHubName;
         this.retryOptions = connectionOptions.getRetry();
         this.tokenCredential = connectionOptions.getTokenCredential();
         this.scheduler = connectionOptions.getScheduler();
-        this.messageSerializer = messageSerializer;
     }
 
     @Override
@@ -138,9 +131,15 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     public void dispose() {
-        logger.info("Disposing of connection.");
-        sendLinks.forEach((key, value) -> value.dispose());
-        sendLinks.clear();
+        if (isDisposed()) {
+            return;
+        }
+
+        logger.info("connectionId[{}]: Disposing of connection.", connectionId);
+
+        if (managementChannel != null) {
+            managementChannel.close();
+        }
 
         super.dispose();
     }

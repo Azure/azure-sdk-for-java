@@ -28,7 +28,7 @@ public final class EncryptionScopeKeyVaultProperties {
      * 
      * @return the keyUri value.
      */
-    public String getKeyUri() {
+    public String keyUri() {
         return this.keyUri;
     }
 
@@ -41,7 +41,7 @@ public final class EncryptionScopeKeyVaultProperties {
      * @param keyUri the keyUri value to set.
      * @return the EncryptionScopeKeyVaultProperties object itself.
      */
-    public EncryptionScopeKeyVaultProperties setKeyUri(String keyUri) {
+    public EncryptionScopeKeyVaultProperties withKeyUri(String keyUri) {
         this.keyUri = keyUri;
         return this;
     }

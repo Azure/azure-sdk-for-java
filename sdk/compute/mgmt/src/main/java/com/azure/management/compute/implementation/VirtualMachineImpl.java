@@ -1912,7 +1912,7 @@ class VirtualMachineImpl
                     String uri = inner()
                             .storageProfile()
                             .osDisk().vhd().uri()
-                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().getBlob());
+                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
                     inner().storageProfile().osDisk().vhd().withUri(uri);
                 }
                 UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
@@ -2476,7 +2476,7 @@ class VirtualMachineImpl
         }
 
         BootDiagnosticsHandler withBootDiagnostics(StorageAccount storageAccount) {
-            return this.withBootDiagnostics(storageAccount.endPoints().primary().getBlob());
+            return this.withBootDiagnostics(storageAccount.endPoints().primary().blob());
         }
 
         BootDiagnosticsHandler withoutBootDiagnostics() {
@@ -2541,7 +2541,7 @@ class VirtualMachineImpl
             vmInner()
                     .diagnosticsProfile()
                     .bootDiagnostics()
-                    .withStorageUri(storageAccount.endPoints().primary().getBlob());
+                    .withStorageUri(storageAccount.endPoints().primary().blob());
         }
 
         private VirtualMachineInner vmInner() {

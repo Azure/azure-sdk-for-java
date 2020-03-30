@@ -140,7 +140,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
                     .create();
 
             // Create storage container to store troubleshooting results
-            String accountKey = storageAccount.getKeys().get(0).getValue();
+            String accountKey = storageAccount.getKeys().get(0).value();
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s", storageAccount.name(), accountKey);
             BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
             BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(storageContainerName);
@@ -150,7 +150,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             Troubleshooting troubleshooting = nw.troubleshoot()
                     .withTargetResourceId(connection.id())
                     .withStorageAccount(storageAccount.id())
-                    .withStoragePath(storageAccount.endPoints().primary().getBlob() + storageContainerName)
+                    .withStoragePath(storageAccount.endPoints().primary().blob() + storageContainerName)
                     .execute();
             System.out.println("Troubleshooting status is: " + troubleshooting.code());
 
@@ -166,7 +166,7 @@ public final class ManageVpnGatewayVNet2VNetConnection {
             troubleshooting = nw.troubleshoot()
                     .withTargetResourceId(connection.id())
                     .withStorageAccount(storageAccount.id())
-                    .withStoragePath(storageAccount.endPoints().primary().getBlob() + storageContainerName)
+                    .withStoragePath(storageAccount.endPoints().primary().blob() + storageContainerName)
                     .execute();
             System.out.println("Troubleshooting status is: " + troubleshooting.code());
 

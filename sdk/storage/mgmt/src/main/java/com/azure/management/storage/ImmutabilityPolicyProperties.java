@@ -57,7 +57,7 @@ public class ImmutabilityPolicyProperties {
      * 
      * @return the etag value.
      */
-    public String getEtag() {
+    public String etag() {
         return this.etag;
     }
 
@@ -67,7 +67,7 @@ public class ImmutabilityPolicyProperties {
      * 
      * @return the updateHistory value.
      */
-    public List<UpdateHistoryProperty> getUpdateHistory() {
+    public List<UpdateHistoryProperty> updateHistory() {
         return this.updateHistory;
     }
 
@@ -78,7 +78,7 @@ public class ImmutabilityPolicyProperties {
      * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
-    public Integer getImmutabilityPeriodSinceCreationInDays() {
+    public Integer immutabilityPeriodSinceCreationInDays() {
         return this.immutabilityPeriodSinceCreationInDays;
     }
 
@@ -91,7 +91,7 @@ public class ImmutabilityPolicyProperties {
      * immutabilityPeriodSinceCreationInDays value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
-    public ImmutabilityPolicyProperties setImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         this.immutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         return this;
     }
@@ -102,7 +102,7 @@ public class ImmutabilityPolicyProperties {
      * 
      * @return the state value.
      */
-    public ImmutabilityPolicyState getState() {
+    public ImmutabilityPolicyState state() {
         return this.state;
     }
 
@@ -116,7 +116,7 @@ public class ImmutabilityPolicyProperties {
      * 
      * @return the allowProtectedAppendWrites value.
      */
-    public Boolean isAllowProtectedAppendWrites() {
+    public Boolean allowProtectedAppendWrites() {
         return this.allowProtectedAppendWrites;
     }
 
@@ -132,7 +132,7 @@ public class ImmutabilityPolicyProperties {
      * to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
-    public ImmutabilityPolicyProperties setAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
+    public ImmutabilityPolicyProperties withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
         this.allowProtectedAppendWrites = allowProtectedAppendWrites;
         return this;
     }

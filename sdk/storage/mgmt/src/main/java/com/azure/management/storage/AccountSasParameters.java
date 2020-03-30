@@ -74,7 +74,7 @@ public final class AccountSasParameters {
      * 
      * @return the services value.
      */
-    public Services getServices() {
+    public Services services() {
         return this.services;
     }
 
@@ -86,7 +86,7 @@ public final class AccountSasParameters {
      * @param services the services value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setServices(Services services) {
+    public AccountSasParameters withServices(Services services) {
         this.services = services;
         return this;
     }
@@ -100,7 +100,7 @@ public final class AccountSasParameters {
      * 
      * @return the resourceTypes value.
      */
-    public SignedResourceTypes getResourceTypes() {
+    public SignedResourceTypes resourceTypes() {
         return this.resourceTypes;
     }
 
@@ -114,7 +114,7 @@ public final class AccountSasParameters {
      * @param resourceTypes the resourceTypes value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setResourceTypes(SignedResourceTypes resourceTypes) {
+    public AccountSasParameters withResourceTypes(SignedResourceTypes resourceTypes) {
         this.resourceTypes = resourceTypes;
         return this;
     }
@@ -126,7 +126,7 @@ public final class AccountSasParameters {
      * 
      * @return the permissions value.
      */
-    public Permissions getPermissions() {
+    public Permissions permissions() {
         return this.permissions;
     }
 
@@ -138,7 +138,7 @@ public final class AccountSasParameters {
      * @param permissions the permissions value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setPermissions(Permissions permissions) {
+    public AccountSasParameters withPermissions(Permissions permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -149,7 +149,7 @@ public final class AccountSasParameters {
      * 
      * @return the iPAddressOrRange value.
      */
-    public String getIPAddressOrRange() {
+    public String iPAddressOrRange() {
         return this.iPAddressOrRange;
     }
 
@@ -160,7 +160,7 @@ public final class AccountSasParameters {
      * @param iPAddressOrRange the iPAddressOrRange value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setIPAddressOrRange(String iPAddressOrRange) {
+    public AccountSasParameters withIPAddressOrRange(String iPAddressOrRange) {
         this.iPAddressOrRange = iPAddressOrRange;
         return this;
     }
@@ -171,7 +171,7 @@ public final class AccountSasParameters {
      * 
      * @return the protocols value.
      */
-    public HttpProtocol getProtocols() {
+    public HttpProtocol protocols() {
         return this.protocols;
     }
 
@@ -182,7 +182,7 @@ public final class AccountSasParameters {
      * @param protocols the protocols value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setProtocols(HttpProtocol protocols) {
+    public AccountSasParameters withProtocols(HttpProtocol protocols) {
         this.protocols = protocols;
         return this;
     }
@@ -193,7 +193,7 @@ public final class AccountSasParameters {
      * 
      * @return the sharedAccessStartTime value.
      */
-    public OffsetDateTime getSharedAccessStartTime() {
+    public OffsetDateTime sharedAccessStartTime() {
         return this.sharedAccessStartTime;
     }
 
@@ -204,7 +204,7 @@ public final class AccountSasParameters {
      * @param sharedAccessStartTime the sharedAccessStartTime value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setSharedAccessStartTime(OffsetDateTime sharedAccessStartTime) {
+    public AccountSasParameters withSharedAccessStartTime(OffsetDateTime sharedAccessStartTime) {
         this.sharedAccessStartTime = sharedAccessStartTime;
         return this;
     }
@@ -215,7 +215,7 @@ public final class AccountSasParameters {
      * 
      * @return the sharedAccessExpiryTime value.
      */
-    public OffsetDateTime getSharedAccessExpiryTime() {
+    public OffsetDateTime sharedAccessExpiryTime() {
         return this.sharedAccessExpiryTime;
     }
 
@@ -226,7 +226,7 @@ public final class AccountSasParameters {
      * @param sharedAccessExpiryTime the sharedAccessExpiryTime value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setSharedAccessExpiryTime(OffsetDateTime sharedAccessExpiryTime) {
+    public AccountSasParameters withSharedAccessExpiryTime(OffsetDateTime sharedAccessExpiryTime) {
         this.sharedAccessExpiryTime = sharedAccessExpiryTime;
         return this;
     }
@@ -236,7 +236,7 @@ public final class AccountSasParameters {
      * 
      * @return the keyToSign value.
      */
-    public String getKeyToSign() {
+    public String keyToSign() {
         return this.keyToSign;
     }
 
@@ -246,7 +246,7 @@ public final class AccountSasParameters {
      * @param keyToSign the keyToSign value to set.
      * @return the AccountSasParameters object itself.
      */
-    public AccountSasParameters setKeyToSign(String keyToSign) {
+    public AccountSasParameters withKeyToSign(String keyToSign) {
         this.keyToSign = keyToSign;
         return this;
     }

@@ -33,7 +33,7 @@ public final class StorageAccountListResultInner {
      * 
      * @return the value value.
      */
-    public List<StorageAccountInner> getValue() {
+    public List<StorageAccountInner> value() {
         return this.value;
     }
 
@@ -44,7 +44,7 @@ public final class StorageAccountListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

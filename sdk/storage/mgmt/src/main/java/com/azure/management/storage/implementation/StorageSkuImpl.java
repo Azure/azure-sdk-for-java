@@ -32,18 +32,18 @@ class StorageSkuImpl implements StorageSku {
 
     @Override
     public SkuName name() {
-        return this.inner.getName();
+        return this.inner.name();
     }
 
     @Override
     public SkuTier tier() {
-        return this.inner.getTier();
+        return this.inner.tier();
     }
 
     @Override
     public StorageResourceType resourceType() {
-        if (this.inner.getResourceType() != null) {
-            return StorageResourceType.fromString(this.inner.getResourceType());
+        if (this.inner.resourceType() != null) {
+            return StorageResourceType.fromString(this.inner.resourceType());
         } else {
             return null;
         }
@@ -52,8 +52,8 @@ class StorageSkuImpl implements StorageSku {
     @Override
     public List<Region> regions() {
         List<Region> regions = new ArrayList<>();
-        if (this.inner.getLocations() != null) {
-            for (String location : this.inner.getLocations()) {
+        if (this.inner.locations() != null) {
+            for (String location : this.inner.locations()) {
                 regions.add(Region.fromName(location));
             }
         }
@@ -62,8 +62,8 @@ class StorageSkuImpl implements StorageSku {
 
     @Override
     public List<SKUCapability> capabilities() {
-        if (this.inner.getCapabilities() != null) {
-            return this.inner.getCapabilities();
+        if (this.inner.capabilities() != null) {
+            return this.inner.capabilities();
         } else {
             return new ArrayList<>();
         }
@@ -71,8 +71,8 @@ class StorageSkuImpl implements StorageSku {
 
     @Override
     public List<Restriction> restrictions() {
-        if (this.inner.getRestrictions() != null) {
-            return this.inner.getRestrictions();
+        if (this.inner.restrictions() != null) {
+            return this.inner.restrictions();
         } else {
             return new ArrayList<>();
         }
@@ -80,13 +80,13 @@ class StorageSkuImpl implements StorageSku {
 
     @Override
     public Kind storageAccountKind() {
-        return this.inner.getKind();
+        return this.inner.kind();
     }
 
     @Override
     public StorageAccountSkuType storageAccountSku() {
         if (this.resourceType() != null && this.resourceType().equals(StorageResourceType.STORAGE_ACCOUNTS)) {
-            return StorageAccountSkuType.fromSkuName(this.inner.getName());
+            return StorageAccountSkuType.fromSkuName(this.inner.name());
         }
         return null;
     }

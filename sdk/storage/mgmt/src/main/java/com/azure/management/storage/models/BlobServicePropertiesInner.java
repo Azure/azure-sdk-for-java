@@ -84,7 +84,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the sku value.
      */
-    public Sku getSku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -96,7 +96,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the cors value.
      */
-    public CorsRules getCors() {
+    public CorsRules cors() {
         return this.cors;
     }
 
@@ -109,7 +109,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @param cors the cors value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setCors(CorsRules cors) {
+    public BlobServicePropertiesInner withCors(CorsRules cors) {
         this.cors = cors;
         return this;
     }
@@ -122,7 +122,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the defaultServiceVersion value.
      */
-    public String getDefaultServiceVersion() {
+    public String defaultServiceVersion() {
         return this.defaultServiceVersion;
     }
 
@@ -135,7 +135,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setDefaultServiceVersion(String defaultServiceVersion) {
+    public BlobServicePropertiesInner withDefaultServiceVersion(String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
         return this;
     }
@@ -146,7 +146,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the deleteRetentionPolicy value.
      */
-    public DeleteRetentionPolicy getDeleteRetentionPolicy() {
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
         return this.deleteRetentionPolicy;
     }
 
@@ -157,7 +157,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+    public BlobServicePropertiesInner withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
         this.deleteRetentionPolicy = deleteRetentionPolicy;
         return this;
     }
@@ -179,7 +179,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @param isVersioningEnabled the isVersioningEnabled value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setIsVersioningEnabled(Boolean isVersioningEnabled) {
+    public BlobServicePropertiesInner withIsVersioningEnabled(Boolean isVersioningEnabled) {
         this.isVersioningEnabled = isVersioningEnabled;
         return this;
     }
@@ -190,7 +190,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the automaticSnapshotPolicyEnabled value.
      */
-    public Boolean isAutomaticSnapshotPolicyEnabled() {
+    public Boolean automaticSnapshotPolicyEnabled() {
         return this.automaticSnapshotPolicyEnabled;
     }
 
@@ -202,7 +202,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled) {
+    public BlobServicePropertiesInner withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled) {
         this.automaticSnapshotPolicyEnabled = automaticSnapshotPolicyEnabled;
         return this;
     }
@@ -213,7 +213,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the changeFeed value.
      */
-    public ChangeFeed getChangeFeed() {
+    public ChangeFeed changeFeed() {
         return this.changeFeed;
     }
 
@@ -224,7 +224,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @param changeFeed the changeFeed value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setChangeFeed(ChangeFeed changeFeed) {
+    public BlobServicePropertiesInner withChangeFeed(ChangeFeed changeFeed) {
         this.changeFeed = changeFeed;
         return this;
     }
@@ -235,7 +235,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the restorePolicy value.
      */
-    public RestorePolicyProperties getRestorePolicy() {
+    public RestorePolicyProperties restorePolicy() {
         return this.restorePolicy;
     }
 
@@ -246,7 +246,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * @param restorePolicy the restorePolicy value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setRestorePolicy(RestorePolicyProperties restorePolicy) {
+    public BlobServicePropertiesInner withRestorePolicy(RestorePolicyProperties restorePolicy) {
         this.restorePolicy = restorePolicy;
         return this;
     }
@@ -257,7 +257,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * 
      * @return the containerDeleteRetentionPolicy value.
      */
-    public DeleteRetentionPolicy getContainerDeleteRetentionPolicy() {
+    public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
         return this.containerDeleteRetentionPolicy;
     }
 
@@ -269,7 +269,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
      * value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner setContainerDeleteRetentionPolicy(DeleteRetentionPolicy containerDeleteRetentionPolicy) {
+    public BlobServicePropertiesInner withContainerDeleteRetentionPolicy(DeleteRetentionPolicy containerDeleteRetentionPolicy) {
         this.containerDeleteRetentionPolicy = containerDeleteRetentionPolicy;
         return this;
     }

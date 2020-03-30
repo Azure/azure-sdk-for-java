@@ -38,6 +38,7 @@ import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
@@ -74,7 +75,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
+    private final ReplayProcessor<AmqpEndpointState> endpointProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);

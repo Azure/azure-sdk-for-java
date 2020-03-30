@@ -65,7 +65,7 @@ public final class Endpoints {
      * 
      * @return the blob value.
      */
-    public String getBlob() {
+    public String blob() {
         return this.blob;
     }
 
@@ -74,7 +74,7 @@ public final class Endpoints {
      * 
      * @return the queue value.
      */
-    public String getQueue() {
+    public String queue() {
         return this.queue;
     }
 
@@ -83,7 +83,7 @@ public final class Endpoints {
      * 
      * @return the table value.
      */
-    public String getTable() {
+    public String table() {
         return this.table;
     }
 
@@ -92,7 +92,7 @@ public final class Endpoints {
      * 
      * @return the file value.
      */
-    public String getFile() {
+    public String file() {
         return this.file;
     }
 
@@ -101,7 +101,7 @@ public final class Endpoints {
      * 
      * @return the web value.
      */
-    public String getWeb() {
+    public String web() {
         return this.web;
     }
 
@@ -110,7 +110,7 @@ public final class Endpoints {
      * 
      * @return the dfs value.
      */
-    public String getDfs() {
+    public String dfs() {
         return this.dfs;
     }
 
@@ -120,7 +120,7 @@ public final class Endpoints {
      * 
      * @return the microsoftEndpoints value.
      */
-    public StorageAccountMicrosoftEndpoints getMicrosoftEndpoints() {
+    public StorageAccountMicrosoftEndpoints microsoftEndpoints() {
         return this.microsoftEndpoints;
     }
 
@@ -131,7 +131,7 @@ public final class Endpoints {
      * @param microsoftEndpoints the microsoftEndpoints value to set.
      * @return the Endpoints object itself.
      */
-    public Endpoints setMicrosoftEndpoints(StorageAccountMicrosoftEndpoints microsoftEndpoints) {
+    public Endpoints withMicrosoftEndpoints(StorageAccountMicrosoftEndpoints microsoftEndpoints) {
         this.microsoftEndpoints = microsoftEndpoints;
         return this;
     }
@@ -142,7 +142,7 @@ public final class Endpoints {
      * 
      * @return the internetEndpoints value.
      */
-    public StorageAccountInternetEndpoints getInternetEndpoints() {
+    public StorageAccountInternetEndpoints internetEndpoints() {
         return this.internetEndpoints;
     }
 
@@ -153,7 +153,7 @@ public final class Endpoints {
      * @param internetEndpoints the internetEndpoints value to set.
      * @return the Endpoints object itself.
      */
-    public Endpoints setInternetEndpoints(StorageAccountInternetEndpoints internetEndpoints) {
+    public Endpoints withInternetEndpoints(StorageAccountInternetEndpoints internetEndpoints) {
         this.internetEndpoints = internetEndpoints;
         return this;
     }

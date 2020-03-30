@@ -51,7 +51,7 @@ public final class LeaseContainerRequest {
      * 
      * @return the action value.
      */
-    public LeaseContainerRequestAction getAction() {
+    public LeaseContainerRequestAction action() {
         return this.action;
     }
 
@@ -62,7 +62,7 @@ public final class LeaseContainerRequest {
      * @param action the action value to set.
      * @return the LeaseContainerRequest object itself.
      */
-    public LeaseContainerRequest setAction(LeaseContainerRequestAction action) {
+    public LeaseContainerRequest withAction(LeaseContainerRequestAction action) {
         this.action = action;
         return this;
     }
@@ -73,7 +73,7 @@ public final class LeaseContainerRequest {
      * 
      * @return the leaseId value.
      */
-    public String getLeaseId() {
+    public String leaseId() {
         return this.leaseId;
     }
 
@@ -84,7 +84,7 @@ public final class LeaseContainerRequest {
      * @param leaseId the leaseId value to set.
      * @return the LeaseContainerRequest object itself.
      */
-    public LeaseContainerRequest setLeaseId(String leaseId) {
+    public LeaseContainerRequest withLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -96,7 +96,7 @@ public final class LeaseContainerRequest {
      * 
      * @return the breakPeriod value.
      */
-    public Integer getBreakPeriod() {
+    public Integer breakPeriod() {
         return this.breakPeriod;
     }
 
@@ -108,7 +108,7 @@ public final class LeaseContainerRequest {
      * @param breakPeriod the breakPeriod value to set.
      * @return the LeaseContainerRequest object itself.
      */
-    public LeaseContainerRequest setBreakPeriod(Integer breakPeriod) {
+    public LeaseContainerRequest withBreakPeriod(Integer breakPeriod) {
         this.breakPeriod = breakPeriod;
         return this;
     }
@@ -120,7 +120,7 @@ public final class LeaseContainerRequest {
      * 
      * @return the leaseDuration value.
      */
-    public Integer getLeaseDuration() {
+    public Integer leaseDuration() {
         return this.leaseDuration;
     }
 
@@ -132,7 +132,7 @@ public final class LeaseContainerRequest {
      * @param leaseDuration the leaseDuration value to set.
      * @return the LeaseContainerRequest object itself.
      */
-    public LeaseContainerRequest setLeaseDuration(Integer leaseDuration) {
+    public LeaseContainerRequest withLeaseDuration(Integer leaseDuration) {
         this.leaseDuration = leaseDuration;
         return this;
     }
@@ -143,7 +143,7 @@ public final class LeaseContainerRequest {
      * 
      * @return the proposedLeaseId value.
      */
-    public String getProposedLeaseId() {
+    public String proposedLeaseId() {
         return this.proposedLeaseId;
     }
 
@@ -154,7 +154,7 @@ public final class LeaseContainerRequest {
      * @param proposedLeaseId the proposedLeaseId value to set.
      * @return the LeaseContainerRequest object itself.
      */
-    public LeaseContainerRequest setProposedLeaseId(String proposedLeaseId) {
+    public LeaseContainerRequest withProposedLeaseId(String proposedLeaseId) {
         this.proposedLeaseId = proposedLeaseId;
         return this;
     }

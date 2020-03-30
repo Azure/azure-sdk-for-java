@@ -24,7 +24,7 @@ public final class FileServiceItemsInner {
      * 
      * @return the value value.
      */
-    public List<FileServicePropertiesInner> getValue() {
+    public List<FileServicePropertiesInner> value() {
         return this.value;
     }
 }

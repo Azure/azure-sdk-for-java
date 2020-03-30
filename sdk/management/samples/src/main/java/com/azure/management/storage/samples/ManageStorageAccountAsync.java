@@ -77,7 +77,7 @@ public final class ManageStorageAccountAsync {
                         return storageAccount.getKeysAsync()
                                 .flatMap(storageAccountKeys -> {
                                     System.out.println("Regenerating first storage account access key");
-                                    return storageAccount.regenerateKeyAsync(storageAccountKeys.get(0).getKeyName());
+                                    return storageAccount.regenerateKeyAsync(storageAccountKeys.get(0).keyName());
                                 });
                     })
                     .map(storageAccountKeys -> {

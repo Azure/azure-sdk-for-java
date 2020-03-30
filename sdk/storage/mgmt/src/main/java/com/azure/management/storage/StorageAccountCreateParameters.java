@@ -120,7 +120,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the sku value.
      */
-    public Sku getSku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -130,7 +130,7 @@ public class StorageAccountCreateParameters {
      * @param sku the sku value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setSku(Sku sku) {
+    public StorageAccountCreateParameters withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -140,7 +140,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the kind value.
      */
-    public Kind getKind() {
+    public Kind kind() {
         return this.kind;
     }
 
@@ -150,7 +150,7 @@ public class StorageAccountCreateParameters {
      * @param kind the kind value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setKind(Kind kind) {
+    public StorageAccountCreateParameters withKind(Kind kind) {
         this.kind = kind;
         return this;
     }
@@ -164,7 +164,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -178,7 +178,7 @@ public class StorageAccountCreateParameters {
      * @param location the location value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setLocation(String location) {
+    public StorageAccountCreateParameters withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -193,7 +193,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the tags value.
      */
-    public Map<String, String> getTags() {
+    public Map<String, String> tags() {
         return this.tags;
     }
 
@@ -208,7 +208,7 @@ public class StorageAccountCreateParameters {
      * @param tags the tags value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setTags(Map<String, String> tags) {
+    public StorageAccountCreateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -218,7 +218,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the identity value.
      */
-    public Identity getIdentity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -228,7 +228,7 @@ public class StorageAccountCreateParameters {
      * @param identity the identity value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setIdentity(Identity identity) {
+    public StorageAccountCreateParameters withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -241,7 +241,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the customDomain value.
      */
-    public CustomDomain getCustomDomain() {
+    public CustomDomain customDomain() {
         return this.customDomain;
     }
 
@@ -254,7 +254,7 @@ public class StorageAccountCreateParameters {
      * @param customDomain the customDomain value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setCustomDomain(CustomDomain customDomain) {
+    public StorageAccountCreateParameters withCustomDomain(CustomDomain customDomain) {
         this.customDomain = customDomain;
         return this;
     }
@@ -265,7 +265,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the encryption value.
      */
-    public Encryption getEncryption() {
+    public Encryption encryption() {
         return this.encryption;
     }
 
@@ -276,7 +276,7 @@ public class StorageAccountCreateParameters {
      * @param encryption the encryption value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setEncryption(Encryption encryption) {
+    public StorageAccountCreateParameters withEncryption(Encryption encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -286,7 +286,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the networkRuleSet value.
      */
-    public NetworkRuleSet getNetworkRuleSet() {
+    public NetworkRuleSet networkRuleSet() {
         return this.networkRuleSet;
     }
 
@@ -296,7 +296,7 @@ public class StorageAccountCreateParameters {
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setNetworkRuleSet(NetworkRuleSet networkRuleSet) {
+    public StorageAccountCreateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
         return this;
     }
@@ -307,7 +307,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the accessTier value.
      */
-    public AccessTier getAccessTier() {
+    public AccessTier accessTier() {
         return this.accessTier;
     }
 
@@ -318,7 +318,7 @@ public class StorageAccountCreateParameters {
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setAccessTier(AccessTier accessTier) {
+    public StorageAccountCreateParameters withAccessTier(AccessTier accessTier) {
         this.accessTier = accessTier;
         return this;
     }
@@ -329,7 +329,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
-    public AzureFilesIdentityBasedAuthentication getAzureFilesIdentityBasedAuthentication() {
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
         return this.azureFilesIdentityBasedAuthentication;
     }
 
@@ -341,7 +341,7 @@ public class StorageAccountCreateParameters {
      * azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountCreateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
@@ -353,7 +353,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the enableHttpsTrafficOnly value.
      */
-    public Boolean isEnableHttpsTrafficOnly() {
+    public Boolean enableHttpsTrafficOnly() {
         return this.enableHttpsTrafficOnly;
     }
 
@@ -365,7 +365,7 @@ public class StorageAccountCreateParameters {
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
+    public StorageAccountCreateParameters withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
         this.enableHttpsTrafficOnly = enableHttpsTrafficOnly;
         return this;
     }
@@ -387,7 +387,7 @@ public class StorageAccountCreateParameters {
      * @param isHnsEnabled the isHnsEnabled value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setIsHnsEnabled(Boolean isHnsEnabled) {
+    public StorageAccountCreateParameters withIsHnsEnabled(Boolean isHnsEnabled) {
         this.isHnsEnabled = isHnsEnabled;
         return this;
     }
@@ -398,7 +398,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the largeFileSharesState value.
      */
-    public LargeFileSharesState getLargeFileSharesState() {
+    public LargeFileSharesState largeFileSharesState() {
         return this.largeFileSharesState;
     }
 
@@ -409,7 +409,7 @@ public class StorageAccountCreateParameters {
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+    public StorageAccountCreateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
         return this;
     }
@@ -420,7 +420,7 @@ public class StorageAccountCreateParameters {
      * 
      * @return the routingPreference value.
      */
-    public RoutingPreference getRoutingPreference() {
+    public RoutingPreference routingPreference() {
         return this.routingPreference;
     }
 
@@ -431,7 +431,7 @@ public class StorageAccountCreateParameters {
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters setRoutingPreference(RoutingPreference routingPreference) {
+    public StorageAccountCreateParameters withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
     }

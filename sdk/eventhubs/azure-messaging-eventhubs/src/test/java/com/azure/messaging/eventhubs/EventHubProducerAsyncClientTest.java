@@ -34,6 +34,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -117,7 +118,7 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
-    private final Scheduler testScheduler = Schedulers.newSingle("test");
+    private final Scheduler testScheduler = Schedulers.newElastic("test");
 
     @BeforeAll
     static void beforeAll() {
@@ -130,7 +131,7 @@ class EventHubProducerAsyncClientTest {
     }
 
     @BeforeEach
-    void setup() {
+    void setup(TestInfo testInfo) {
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
@@ -153,7 +154,7 @@ class EventHubProducerAsyncClientTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown(TestInfo testInfo) {
         testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
         Mockito.reset(sendLink, connection);
@@ -237,7 +238,7 @@ class EventHubProducerAsyncClientTest {
         final Semaphore semaphore = new Semaphore(1);
         // In our actual client builder, we allow this.
         final EventHubProducerAsyncClient flexibleProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.elastic(),
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, testScheduler,
             false, onClientClosed);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
@@ -264,7 +265,7 @@ class EventHubProducerAsyncClientTest {
         // Assert
         Assertions.assertTrue(semaphore.tryAcquire(30, TimeUnit.SECONDS));
 
-        verify(sendLink, times(1)).send(any(Message.class));
+        verify(sendLink).send(any(Message.class));
         verify(sendLink).send(singleMessageCaptor.capture());
 
         final Message message = singleMessageCaptor.getValue();

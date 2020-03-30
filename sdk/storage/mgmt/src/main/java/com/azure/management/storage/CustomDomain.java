@@ -32,7 +32,7 @@ public final class CustomDomain {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -43,7 +43,7 @@ public final class CustomDomain {
      * @param name the name value to set.
      * @return the CustomDomain object itself.
      */
-    public CustomDomain setName(String name) {
+    public CustomDomain withName(String name) {
         this.name = name;
         return this;
     }
@@ -55,7 +55,7 @@ public final class CustomDomain {
      * 
      * @return the useSubDomainName value.
      */
-    public Boolean isUseSubDomainName() {
+    public Boolean useSubDomainName() {
         return this.useSubDomainName;
     }
 
@@ -67,7 +67,7 @@ public final class CustomDomain {
      * @param useSubDomainName the useSubDomainName value to set.
      * @return the CustomDomain object itself.
      */
-    public CustomDomain setUseSubDomainName(Boolean useSubDomainName) {
+    public CustomDomain withUseSubDomainName(Boolean useSubDomainName) {
         this.useSubDomainName = useSubDomainName;
         return this;
     }

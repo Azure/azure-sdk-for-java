@@ -111,7 +111,7 @@ class ManagementPolicyImpl extends
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return this.inner().getLastModifiedTime();
+        return this.inner().lastModifiedTime();
     }
 
     @Override
@@ -121,7 +121,7 @@ class ManagementPolicyImpl extends
 
     @Override
     public ManagementPolicySchema policy() {
-        return this.inner().getPolicy();
+        return this.inner().policy();
     }
 
     @Override
@@ -131,42 +131,42 @@ class ManagementPolicyImpl extends
 
     @Override
     public List<PolicyRule> rules() {
-        List<ManagementPolicyRule> originalRules = this.policy().getRules();
+        List<ManagementPolicyRule> originalRules = this.policy().rules();
         List<PolicyRule> returnRules = new ArrayList<>();
         for (ManagementPolicyRule originalRule : originalRules) {
-            List<String> originalBlobTypes = originalRule.getDefinition().getFilters().getBlobTypes();
+            List<String> originalBlobTypes = originalRule.definition().filters().blobTypes();
             List<BlobTypes> returnBlobTypes = new ArrayList<>();
             for (String originalBlobType : originalBlobTypes) {
                 returnBlobTypes.add(BlobTypes.fromString(originalBlobType));
             }
-            PolicyRule returnRule = new PolicyRuleImpl(originalRule.getName())
+            PolicyRule returnRule = new PolicyRuleImpl(originalRule.name())
                     .withLifecycleRuleType()
                     .withBlobTypesToFilterFor(returnBlobTypes);
 
             // building up prefixes to filter on
-            if (originalRule.getDefinition().getFilters().getPrefixMatch() != null) {
-                ((PolicyRuleImpl) returnRule).withPrefixesToFilterFor(originalRule.getDefinition().getFilters().getPrefixMatch());
+            if (originalRule.definition().filters().prefixMatch() != null) {
+                ((PolicyRuleImpl) returnRule).withPrefixesToFilterFor(originalRule.definition().filters().prefixMatch());
             }
 
             // building up actions on base blob
-            ManagementPolicyBaseBlob originalBaseBlobActions = originalRule.getDefinition().getActions().getBaseBlob();
+            ManagementPolicyBaseBlob originalBaseBlobActions = originalRule.definition().actions().baseBlob();
             if (originalBaseBlobActions != null) {
-                if (originalBaseBlobActions.getTierToCool() != null) {
-                    ((PolicyRuleImpl) returnRule).withTierToCoolActionOnBaseBlob(originalBaseBlobActions.getTierToCool().getDaysAfterModificationGreaterThan());
+                if (originalBaseBlobActions.tierToCool() != null) {
+                    ((PolicyRuleImpl) returnRule).withTierToCoolActionOnBaseBlob(originalBaseBlobActions.tierToCool().daysAfterModificationGreaterThan());
                 }
-                if (originalBaseBlobActions.getTierToArchive() != null) {
-                    ((PolicyRuleImpl) returnRule).withTierToArchiveActionOnBaseBlob(originalBaseBlobActions.getTierToArchive().getDaysAfterModificationGreaterThan());
+                if (originalBaseBlobActions.tierToArchive() != null) {
+                    ((PolicyRuleImpl) returnRule).withTierToArchiveActionOnBaseBlob(originalBaseBlobActions.tierToArchive().daysAfterModificationGreaterThan());
                 }
-                if (originalBaseBlobActions.getDelete() != null) {
-                    ((PolicyRuleImpl) returnRule).withDeleteActionOnBaseBlob(originalBaseBlobActions.getDelete().getDaysAfterModificationGreaterThan());
+                if (originalBaseBlobActions.delete() != null) {
+                    ((PolicyRuleImpl) returnRule).withDeleteActionOnBaseBlob(originalBaseBlobActions.delete().daysAfterModificationGreaterThan());
                 }
             }
 
             // build up actions on snapshot
-            ManagementPolicySnapShot originalSnapshotActions = originalRule.getDefinition().getActions().getSnapshot();
+            ManagementPolicySnapShot originalSnapshotActions = originalRule.definition().actions().snapshot();
             if (originalSnapshotActions != null) {
-                if (originalSnapshotActions.getDelete() != null) {
-                    ((PolicyRuleImpl) returnRule).withDeleteActionOnSnapShot(originalSnapshotActions.getDelete().getDaysAfterCreationGreaterThan());
+                if (originalSnapshotActions.delete() != null) {
+                    ((PolicyRuleImpl) returnRule).withDeleteActionOnSnapShot(originalSnapshotActions.delete().daysAfterCreationGreaterThan());
                 }
             }
             returnRules.add(returnRule);
@@ -198,27 +198,27 @@ class ManagementPolicyImpl extends
 
     void defineRule(PolicyRuleImpl policyRuleImpl) {
         if (isInCreateMode()) {
-            if (this.cpolicy.getRules() == null) {
-                this.cpolicy.setRules(new ArrayList<ManagementPolicyRule>());
+            if (this.cpolicy.rules() == null) {
+                this.cpolicy.withRules(new ArrayList<ManagementPolicyRule>());
             }
-            List<ManagementPolicyRule> rules = this.cpolicy.getRules();
+            List<ManagementPolicyRule> rules = this.cpolicy.rules();
             rules.add(policyRuleImpl.inner());
-            this.cpolicy.setRules(rules);
+            this.cpolicy.withRules(rules);
         } else {
-            if (this.upolicy.getRules() == null) {
-                this.upolicy.setRules(new ArrayList<ManagementPolicyRule>());
+            if (this.upolicy.rules() == null) {
+                this.upolicy.withRules(new ArrayList<ManagementPolicyRule>());
             }
-            List<ManagementPolicyRule> rules = this.upolicy.getRules();
+            List<ManagementPolicyRule> rules = this.upolicy.rules();
             rules.add(policyRuleImpl.inner());
-            this.upolicy.setRules(rules);
+            this.upolicy.withRules(rules);
         }
     }
 
     @Override
     public PolicyRule.Update updateRule(String name) {
         ManagementPolicyRule ruleToUpdate = null;
-        for (ManagementPolicyRule rule : this.policy().getRules()) {
-            if (rule.getName().equals(name)) {
+        for (ManagementPolicyRule rule : this.policy().rules()) {
+            if (rule.name().equals(name)) {
                 ruleToUpdate = rule;
             }
         }
@@ -231,17 +231,17 @@ class ManagementPolicyImpl extends
     @Override
     public Update withoutRule(String name) {
         ManagementPolicyRule ruleToDelete = null;
-        for (ManagementPolicyRule rule : this.policy().getRules()) {
-            if (rule.getName().equals(name)) {
+        for (ManagementPolicyRule rule : this.policy().rules()) {
+            if (rule.name().equals(name)) {
                 ruleToDelete = rule;
             }
         }
         if (ruleToDelete == null) {
             throw new UnsupportedOperationException("There is no rule that exists with the name " + name + " so this rule can not be deleted.");
         }
-        List<ManagementPolicyRule> currentRules = this.upolicy.getRules();
+        List<ManagementPolicyRule> currentRules = this.upolicy.rules();
         currentRules.remove(ruleToDelete);
-        this.upolicy.setRules(currentRules);
+        this.upolicy.withRules(currentRules);
         return this;
     }
 }

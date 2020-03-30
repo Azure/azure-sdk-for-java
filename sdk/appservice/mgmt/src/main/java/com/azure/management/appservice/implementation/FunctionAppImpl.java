@@ -198,7 +198,7 @@ class FunctionAppImpl
                     .map(storageAccountKeys -> storageAccountKeys.get(0))
                     .zipWith(cachedAppServicePlanObservable, (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
                         String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                                storageAccountToSet.name(), storageAccountKey.getValue());
+                                storageAccountToSet.name(), storageAccountKey.value());
                         addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
                         addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
                         if (OperatingSystem.WINDOWS.equals(operatingSystem()) && // as Portal logic, only Windows plan would have following appSettings

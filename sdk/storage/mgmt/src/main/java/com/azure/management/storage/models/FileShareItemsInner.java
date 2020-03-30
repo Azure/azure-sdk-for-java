@@ -31,7 +31,7 @@ public final class FileShareItemsInner {
      * 
      * @return the value value.
      */
-    public List<FileShareItemInner> getValue() {
+    public List<FileShareItemInner> value() {
         return this.value;
     }
 
@@ -42,7 +42,7 @@ public final class FileShareItemsInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

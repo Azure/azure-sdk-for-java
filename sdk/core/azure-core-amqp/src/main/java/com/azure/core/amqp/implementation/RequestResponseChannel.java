@@ -51,11 +51,11 @@ public class RequestResponseChannel implements Disposable {
 
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
-    private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final FluxSink<AmqpEndpointState> endpointStatesSink =
         endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ClientLogger logger;
 
     private final Sender sendLink;
     private final Receiver receiveLink;
@@ -92,6 +92,7 @@ public class RequestResponseChannel implements Disposable {
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer,
             SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
@@ -126,6 +127,7 @@ public class RequestResponseChannel implements Disposable {
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
+        //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
@@ -156,6 +158,18 @@ public class RequestResponseChannel implements Disposable {
                 dispose();
             })
         );
+        //@formatter:on
+
+        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+        // encounter a race condition. So, we are forced to use the dispatcher.
+        try {
+            provider.getReactorDispatcher().invoke(() -> {
+                sendLink.open();
+                receiveLink.open();
+            });
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
+        }
     }
 
     /**
@@ -164,7 +178,7 @@ public class RequestResponseChannel implements Disposable {
      * @return The endpoint states for the request/response channel.
      */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
+        return endpointStates;
     }
 
     /**
@@ -203,19 +217,6 @@ public class RequestResponseChannel implements Disposable {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(
                 "Cannot send a message when request response channel is disposed.")));
-        }
-
-        if (!hasOpened.getAndSet(true)) {
-            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
-            // encounter a race condition. So, we are forced to use the dispatcher.
-            try {
-                provider.getReactorDispatcher().invoke(() -> {
-                    sendLink.open();
-                    receiveLink.open();
-                });
-            } catch (IOException e) {
-                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
-            }
         }
 
         if (message == null) {
