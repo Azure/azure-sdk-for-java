@@ -425,13 +425,17 @@ public abstract class KeyClientTestBase extends TestBase {
             Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
             .collect(Collectors.toList());
         int serviceVersionCount = filteredKeyServiceVersion.size();
-        List<HttpClient> httpClientList = getHttpClients().collect(Collectors.toList());
+        List<HttpClient> httpClientList = getHttpClients();
         long total = httpClientList.size() * serviceVersionCount;
         int offset = getOffset();
         int[] index = new int[1];
+        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
+            .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
         httpClientList.forEach(httpClient -> {
             filteredKeyServiceVersion.forEach(keyServiceVersion -> {
-                if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
+                if (!rollingStrategy) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
                     argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
                 }
                 index[0] += 1;

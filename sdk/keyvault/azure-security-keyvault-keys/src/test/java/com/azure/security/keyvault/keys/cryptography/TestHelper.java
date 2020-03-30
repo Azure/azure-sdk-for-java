@@ -14,6 +14,8 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.params.provider.Arguments;
 
+import static com.azure.core.test.TestBase.AZURE_TEST_HTTP_CLIENTS;
+import static com.azure.core.test.TestBase.AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.PLATFORM_COUNT;
 import static com.azure.core.test.TestBase.getHttpClients;
@@ -40,13 +42,17 @@ public class TestHelper {
             Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
                 .collect(Collectors.toList());
         int serviceVersionCount = filteredKeyServiceVersion.size();
-        List<HttpClient> httpClientList = getHttpClients().collect(Collectors.toList());
+        List<HttpClient> httpClientList = getHttpClients();
         long total = httpClientList.size() * serviceVersionCount;
         int offset = getOffset();
         int[] index = new int[1];
+        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
+            .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
         httpClientList.forEach(httpClient -> {
             filteredKeyServiceVersion.forEach(keyServiceVersion -> {
-                if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
+                if (!rollingStrategy) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
                     argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
                 }
                 index[0] += 1;

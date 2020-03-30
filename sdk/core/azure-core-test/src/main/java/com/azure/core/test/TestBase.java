@@ -13,6 +13,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,9 @@ import java.util.stream.Stream;
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
+    public static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
+    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING = "rolling";
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final int PLATFORM_COUNT = 6;
@@ -157,11 +159,11 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     private static Integer getPlatFormOffset() {
-        String currentOs = Configuration.getGlobalConfiguration().get(AZURE_TEST_OS_NAME);
-        String currentJdk = Configuration.getGlobalConfiguration().get(AZURE_TEST_JDK_VERSION);
+        String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);;
+        String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);;
         return platformList.stream().filter(platform ->
             currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
-            && currentJdk.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[1]
+            && currentJdk.trim().toLowerCase(Locale.ROOT).startsWith(platform.split(",")[1]
                 .toLowerCase(Locale.ROOT))
         ).map(platformList::indexOf).findFirst().orElse(null);
     }
@@ -192,13 +194,14 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    public static Stream<HttpClient> getHttpClients() {
+    public static List<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.
-            return Stream.of(new HttpClient[]{null});
+            return Arrays.asList(new HttpClient[]{null});
         }
-        return HttpClientProviders.getAllHttpClients().stream().filter(TestBase::shouldClientBeTested);
+        return HttpClientProviders.getAllHttpClients().stream()
+            .filter(TestBase::shouldClientBeTested).collect(Collectors.toList());
     }
 
     /**
@@ -210,7 +213,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
      * </ul>
      *
-     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case insensitive.
+     * Environment values currently supported are: "ALL", "rolling", "netty", "okhttp" which is case insensitive.
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
@@ -222,7 +225,8 @@ public abstract class TestBase implements BeforeEachCallback {
         if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
             return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
         }
-        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)) {
+        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL) ||
+            configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING)) {
             return true;
         }
         String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
