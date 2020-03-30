@@ -174,7 +174,7 @@ public final class AutocompleteRequest {
      *
      * @return the useFuzzyMatching value.
      */
-    public Boolean isUseFuzzyMatching() {
+    public Boolean useFuzzyMatching() {
         return this.useFuzzyMatching;
     }
 
