@@ -8,7 +8,7 @@ pr:
   - vnext
 
 variables:
-  DefaultOptions: '--settings settings.xml -Dmaven.wagon.http.pool=false'
+  DefaultOptions: '--settings eng/settings.xml -Dmaven.wagon.http.pool=false'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
       - task: Maven@3
         displayName: 'install'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: sdk/management/pom.xml
           options: '--batch-mode $(DefaultOptions) $(ProfileFlag) -pl !azure-samples javadoc:aggregate -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
