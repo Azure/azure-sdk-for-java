@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
@@ -63,13 +64,15 @@ public class ServiceBusClientBuilderTest {
             null, null);
 
         // Act
-        final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
+        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .proxyOptions(proxyConfig)
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .buildSenderClientBuilder()
+            .queueName("test-queue-name");
 
         // Assert
-        assertNotNull(builder.buildSenderClientBuilder().buildAsyncClient());
+        assertNotNull(builder.buildAsyncClient());
     }
 
     @Test
