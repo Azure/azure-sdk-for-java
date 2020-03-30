@@ -701,6 +701,24 @@ class AzureFileSystemProviderTest extends APISpec {
         !client.exists()
     }
 
+    def "DirectoryStream"() {
+        setup:
+        def fs = createFS(config)
+        def resource = new AzureResource(fs.getPath("a" + generateBlobName()))
+        resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+        resource = new AzureResource(fs.getPath("b" + generateBlobName()))
+        resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+
+        when:
+        def it = fs.provider().newDirectoryStream(fs.getPath(getDefaultDir(fs)),
+            {path -> path.getFileName().toString().startsWith("a")}).iterator()
+
+        then:
+        it.hasNext()
+        it.next().getFileName().toString().startsWith("a")
+        !it.hasNext()
+    }
+
     def basicSetupForCopyTest(FileSystem fs) {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.

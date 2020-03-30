@@ -62,8 +62,8 @@ class AzureDirectoryStreamTest extends APISpec {
         numFiles | absolute | _
         0        | true     | _ // empty iterator
         5        | true     | _ // small number of files
-        6000     | true     | _ // requires internally following continuation token
-        5        | false    | _ // Tests listing relative paths goes to default dir.
+        6000     | true     | _ // requires internally following continuation token. Live only
+        5        | false    | _ // Tests listing relative paths goes to default dir
     }
 
     // If listing results include directories, they should not be recursively listed. Only immediate children are
@@ -81,7 +81,7 @@ class AzureDirectoryStreamTest extends APISpec {
             listResultResource.putDirectoryBlob(null)
         }
 
-        // Put some children in the list result. These should not be returned.
+        // Put some children under listResultResource. These should not be returned.
         if (!isEmpty) {
             for (int i = 0; i < 3; i++) {
                 ((AzurePath) listResultResource.getPath().resolve(generateBlobName())).toBlobClient().getBlockBlobClient()
@@ -95,11 +95,11 @@ class AzureDirectoryStreamTest extends APISpec {
         then:
         it.hasNext()
         it.next().toString() == listResultResource.getPath().toString()
-        !it.hasNext() // Listing should not be recursive.
+        !it.hasNext() // Listing should not be recursive
 
         where:
         virtual | isEmpty
-        true    | false // can't have empty virtual directory
+        true    | false // Can't have empty virtual directory
         false   | false
         false   | true
     }

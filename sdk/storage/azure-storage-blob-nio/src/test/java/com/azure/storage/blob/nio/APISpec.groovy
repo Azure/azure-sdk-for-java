@@ -82,7 +82,7 @@ class APISpec extends Specification {
 
     String blobPrefix = "javablob"
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -556,7 +556,7 @@ class APISpec extends Specification {
 
     def checkBlobIsDir(BlobClient blobClient) {
          String isDir = blobClient.getPropertiesWithResponse(null, null, null)
-             .getValue().getMetadata().get(AzureFileSystemProvider.DIR_METADATA_MARKER)
+             .getValue().getMetadata().get(AzureResource.DIR_METADATA_MARKER)
         return isDir != null && isDir == "true"
     }
 

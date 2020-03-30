@@ -193,6 +193,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     /**
+     * Returns an {@link AzureDirectoryStream} for iterating over the contents of a directory.
+     *
      * {@inheritDoc}
      */
     @Override

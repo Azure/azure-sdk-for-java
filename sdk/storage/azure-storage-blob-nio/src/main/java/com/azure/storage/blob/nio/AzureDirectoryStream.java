@@ -19,7 +19,14 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * Is asynchronously closeable. Closing the stream from any thread will cause the stream to stop returning elements.
+ * An object for iterating the contents of a directory.
+ *
+ * This type does not validate that the given path is a directory; a listing call will be made against the given
+ * resource in either case, and if the resource is a file, it will simply return 0 results (assuming there are no
+ * other files that {@link AzurePath#startsWith(String) start with} the given path.
+ *
+ * This type is asynchronously closeable, i.e. closing the stream from any thread will cause the stream to stop
+ * returning elements at that point.
  *
  * {@inheritDoc}
  */
