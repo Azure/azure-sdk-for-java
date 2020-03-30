@@ -14,7 +14,6 @@ import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
-import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -35,9 +34,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     private final AtomicBoolean isRequested = new AtomicBoolean();
     private final AtomicBoolean isRetryPending = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final AtomicInteger counter = new AtomicInteger();
 
-    private final Object connectionLock = new Object();
+    private final Object lock = new Object();
     private final AmqpRetryPolicy retryPolicy;
     private final String connectionId;
     private final String entityPath;
@@ -46,11 +44,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     private volatile Subscription upstream;
     private volatile ConcurrentLinkedDeque<ChannelSubscriber<T>> subscribers = new ConcurrentLinkedDeque<>();
     private volatile Throwable lastError;
-    private volatile AmqpChannelSubscriber<T> currentChannel;
-    private volatile String currentChannelIdentifier = null;
-    private volatile AmqpChannelSubscriber<T> pendingChannel;
-    private volatile String pendingChannelIdentifier = null;
-
+    private volatile T currentChannel;
+    private volatile Disposable connectionSubscription;
     private volatile Disposable retrySubscription;
 
     public AmqpChannelProcessor(String connectionId, String entityPath,
@@ -70,52 +65,57 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             isRequested.set(true);
             subscription.request(1);
         } else {
-            final Throwable error = logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Processor cannot be subscribed to with multiple upstreams. connectionId: %s. entityPath: %s",
-                connectionId, entityPath)));
-
-            onError(Operators.onOperatorError(subscription, error, Context.empty()));
+            logger.warning("Processors can only be subscribed to once.");
         }
     }
 
     @Override
     public void onNext(T amqpChannel) {
+        logger.info("connectionId[{}] entityPath[{}]: Setting next AMQP channel.", connectionId, entityPath);
+
         Objects.requireNonNull(amqpChannel, "'amqpChannel' cannot be null.");
 
-        if (isDisposed()) {
-            logger.warning("connectionId[{}] entityPath[{}]: Cannot emit another item. Processor is closed.",
-                connectionId, entityPath);
+        final T oldChannel;
+        final Disposable oldSubscription;
+        synchronized (lock) {
+            oldChannel = currentChannel;
+            oldSubscription = connectionSubscription;
 
-            Operators.onNextDropped(amqpChannel, Context.empty());
-            return;
+            currentChannel = amqpChannel;
+
+            final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
+            subscribers = new ConcurrentLinkedDeque<>();
+
+            currentSubscribers.forEach(subscription -> subscription.onNext(amqpChannel));
+
+            connectionSubscription = endpointStatesFunction.apply(amqpChannel).subscribe(
+                state -> {
+                    // Connection was successfully opened, we can reset the retry interval.
+                    if (state == AmqpEndpointState.ACTIVE) {
+                        retryAttempts.set(0);
+                    }
+                },
+                error -> {
+                    setAndClearChannel();
+                    onError(error);
+                },
+                () -> {
+                    if (isDisposed()) {
+                        logger.info("Channel is disposed.");
+                    } else {
+                        logger.info("Channel closed.");
+                        setAndClearChannel();
+                    }
+                });
         }
 
-        final String identifier = connectionId + "_" + counter.incrementAndGet();
+        close(oldChannel);
 
-        logger.info("connectionId[{}] entityPath[{}] subscriberId[{}]: Waiting for active status.",
-            connectionId, entityPath, identifier);
-
-        final AmqpChannelSubscriber<T> subscriber = endpointStatesFunction.apply(amqpChannel)
-            .subscribeWith(new AmqpChannelSubscriber<>(identifier, amqpChannel));
-        synchronized (connectionLock) {
-            if (currentChannel != null) {
-                currentChannel.dispose();
-                currentChannel = null;
-            }
-
-            pendingChannelIdentifier = identifier;
-            pendingChannel = subscriber;
+        if (oldSubscription != null) {
+            oldSubscription.dispose();
         }
 
         isRequested.set(false);
-        subscriber.isOpen().subscribe(
-            isActive -> {
-                if (isActive) {
-                    onEndpointActive(identifier);
-                }
-            },
-            error -> onEndpointError(identifier, error),
-            () -> onEndpointComplete(identifier));
     }
 
     @Override
@@ -123,8 +123,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         Objects.requireNonNull(throwable, "'throwable' is required.");
 
         if (isRetryPending.get() && retryPolicy.calculateRetryDelay(throwable, retryAttempts.get()) != null) {
-            logger.warning("connectionId[{}]: Retry is already pending. Ignoring transient error.",
-                connectionId, throwable);
+            logger.warning("Retry is already pending. Ignoring transient error.", throwable);
             return;
         }
 
@@ -155,15 +154,14 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 return;
             }
 
-            logger.warning("connectionId[{}]: Retry #{}. Transient error occurred. Retrying after {} ms.",
-                connectionId, attempt, retryInterval.toMillis(), throwable);
+            logger.warning("Retry #{}. Transient error occurred. Retrying after {} ms.",
+                attempt, retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
-                    logger.info("connectionId[{}]: Retry #{}. Not requesting from upstream. Processor is disposed.",
-                        connectionId, attempt);
+                    logger.info("Retry #{}. Not requesting from upstream. Processor is disposed.", attempt);
                 } else {
-                    logger.info("connectionId[{}]: Retry #{}. Requesting from upstream.", connectionId, attempt);
+                    logger.info("Retry #{}. Requesting from upstream.", attempt);
 
                     requestUpstream();
                     isRetryPending.set(false);
@@ -173,12 +171,12 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             return;
         }
 
-        logger.warning("connectionId[{}]: Non-retryable error occurred in connection.", connectionId, throwable);
+        logger.warning("Non-retryable error occurred in connection.", throwable);
         lastError = throwable;
         isDisposed.set(true);
         dispose();
 
-        synchronized (connectionLock) {
+        synchronized (lock) {
             final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
             subscribers = new ConcurrentLinkedDeque<>();
 
@@ -186,21 +184,12 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
     }
 
-    /**
-     * Upstream completed, so we terminate any subscribers waiting for a current connection. We don't close the existing
-     * connection (currentChannel) though.
-     */
     @Override
     public void onComplete() {
-        logger.info("connectionId[{}]: Upstream connection publisher was completed. Terminating processor.",
-            connectionId);
+        logger.info("Upstream connection publisher was completed. Terminating processor.");
 
-        // Already completed the processor before. Don't do it again.
-        if (isDisposed.getAndSet(true)) {
-            return;
-        }
-
-        synchronized (connectionLock) {
+        isDisposed.set(true);
+        synchronized (lock) {
             final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
             subscribers = new ConcurrentLinkedDeque<>();
 
@@ -214,7 +203,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             if (lastError != null) {
                 actual.onSubscribe(Operators.emptySubscription());
                 actual.onError(lastError);
-            } else if (currentChannel == null) {
+            } else {
                 Operators.error(actual, logger.logExceptionAsError(new IllegalStateException(
                     String.format("connectionId[%s] entityPath[%s]: Cannot subscribe. Processor is already terminated.",
                         connectionId, entityPath))));
@@ -223,19 +212,19 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             return;
         }
 
-        final ChannelSubscriber<T> subscriber = new ChannelSubscriber<>(actual, this);
+        final ChannelSubscriber<T> subscriber = new ChannelSubscriber<T>(actual, this);
         actual.onSubscribe(subscriber);
 
-        synchronized (connectionLock) {
+        synchronized (lock) {
             if (currentChannel != null) {
-                subscriber.complete(currentChannel.getChannel());
+                subscriber.complete(currentChannel);
                 return;
             }
-
-            subscribers.add(subscriber);
         }
 
-        if (!isDisposed() && !isRetryPending.get()) {
+        subscribers.add(subscriber);
+
+        if (!isRetryPending.get()) {
             requestUpstream();
         }
     }
@@ -252,16 +241,8 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
         onComplete();
 
-        synchronized (connectionLock) {
-            if (currentChannel != null) {
-                currentChannel.dispose();
-                currentChannel = null;
-            }
-
-            if (pendingChannel != null) {
-                pendingChannel.dispose();
-                pendingChannel = null;
-            }
+        synchronized (lock) {
+            setAndClearChannel();
         }
     }
 
@@ -271,14 +252,13 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     private void requestUpstream() {
-        if (isDisposed()) {
-            logger.warning("connectionId[{}] entityPath[{}]: Is already disposed.", connectionId, entityPath);
-        }
-
-        synchronized (connectionLock) {
-            if (currentChannel != null || pendingChannel != null) {
-                return;
-            }
+        if (currentChannel != null) {
+            logger.verbose("connectionId[{}] entityPath[{}]: Connection exists, not requesting another.",
+                connectionId, entityPath);
+            return;
+        } else if (isDisposed()) {
+            logger.verbose("connectionId[{}] entityPath[{}]: Is already disposed.", connectionId, entityPath);
+            return;
         }
 
         final Subscription subscription = UPSTREAM.get(this);
@@ -296,77 +276,25 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         }
     }
 
-    private void onEndpointComplete(String identifier) {
-        Objects.requireNonNull(identifier, "'identifier' cannot be null.");
-
-        synchronized (connectionLock) {
-            // They are the same instance. Ignore this status change.
-            if (identifier.equals(currentChannelIdentifier)) {
-                logger.info("connectionId[{}] entityPath[{}]: Current channel is closed.", connectionId, entityPath);
-                currentChannel.dispose();
-                currentChannel = null;
-                currentChannelIdentifier = null;
-            } else if (identifier.equals(pendingChannelIdentifier)) {
-                logger.info("connectionId[{}] entityPath[{}]: Pending channel is closed.", connectionId, entityPath);
-                pendingChannel.dispose();
-                pendingChannel = null;
-                pendingChannelIdentifier = null;
-            } else {
-                logger.warning("identifier[{}]: Unknown channel is closed. Skipping.", identifier);
-            }
+    private void setAndClearChannel() {
+        T oldChannel;
+        synchronized (lock) {
+            oldChannel = currentChannel;
+            currentChannel = null;
         }
 
-        requestUpstream();
+        close(oldChannel);
     }
 
-    private void onEndpointError(String identifier, Throwable error) {
-        Objects.requireNonNull(identifier, "'identifier' cannot be null.");
-
-        final AmqpChannelSubscriber<T> oldChannel;
-        synchronized (connectionLock) {
-            if (identifier.equals(currentChannelIdentifier)) {
-                logger.warning("identifier[{}] Current connection encountered an error.", identifier, error);
-                oldChannel = currentChannel;
-                currentChannel = null;
-            } else if (identifier.equals(pendingChannelIdentifier)) {
-                logger.warning("identifier[{}] Pending connection encountered an error.", identifier, error);
-                oldChannel = pendingChannel;
-                pendingChannel = null;
-            } else {
-                logger.warning("identifier[{}] Unknown connection encountered an error.", identifier, error);
-                oldChannel = null;
+    private void close(T channel) {
+        if (channel instanceof AutoCloseable) {
+            try {
+                ((AutoCloseable) channel).close();
+            } catch (Exception error) {
+                logger.warning("Error occurred closing item.", channel);
             }
-        }
-
-        if (oldChannel != null) {
-            oldChannel.dispose();
-        }
-
-        onError(error);
-    }
-
-    private void onEndpointActive(String identifier) {
-        Objects.requireNonNull(identifier, "'identifier' cannot be null.");
-        synchronized (connectionLock) {
-            // They are the same instance. Ignore this status change.
-            if (identifier.equals(currentChannelIdentifier)) {
-                logger.info("currentChannel is pointing to pendingChannel. Skipping.");
-            } else if (identifier.equals(pendingChannelIdentifier)) {
-                logger.info("connectionId[{}] entityPath[{}]: Setting active AMQP channel.", connectionId, entityPath);
-                currentChannel = pendingChannel;
-                currentChannelIdentifier = pendingChannelIdentifier;
-
-                pendingChannel = null;
-                pendingChannelIdentifier = null;
-
-                final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
-                subscribers = new ConcurrentLinkedDeque<>();
-                currentSubscribers.forEach(subscription -> subscription.onNext(currentChannel.getChannel()));
-
-                retryAttempts.set(0);
-            } else {
-                logger.warning("Unknown identifier [{}] notified of onEndpointActive. Skipping.", identifier);
-            }
+        } else if (channel instanceof Disposable) {
+            ((Disposable) channel).dispose();
         }
     }
 

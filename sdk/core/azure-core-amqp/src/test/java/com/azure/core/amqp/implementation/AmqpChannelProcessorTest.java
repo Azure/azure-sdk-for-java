@@ -77,7 +77,6 @@ class AmqpChannelProcessorTest {
         // Act & Assert
         StepVerifier.create(processor)
             .then(() -> publisher.next(connection1))
-            .expectNoEvent(Duration.ofSeconds(2))
             .then(() -> connection1.getSink().next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
             .verifyComplete();
@@ -312,7 +311,6 @@ class AmqpChannelProcessorTest {
             .subscribeWith(channelProcessor))
             .expectSubscription()
             .thenAwait(Duration.ofMinutes(10))
-            .expectNoEvent(Duration.ofMinutes(10))
             .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
             .expectNext(connection1)
             .verifyComplete();
@@ -336,7 +334,6 @@ class AmqpChannelProcessorTest {
         })
             .expectSubscription()
             .thenAwait(Duration.ofMinutes(10))
-            .expectNoEvent(Duration.ofMinutes(10))
             .then(() -> endpointSink.next(AmqpEndpointState.ACTIVE))
             .expectNext(contents)
             .verifyComplete();
