@@ -252,11 +252,7 @@ public final class ServiceBusClientBuilder {
                 return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
             }
-
-            return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId, serviceBusResourceName,
-                connectionOptions, provider, handlerProvider, tokenManagerProvider, messageSerializer, product,
-                clientVersion);
-        }).repeat();
+        }
 
         return sharedConnection;
     }

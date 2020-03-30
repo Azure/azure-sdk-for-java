@@ -66,7 +66,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param tokenManagerProvider Provides a token manager for authorizing with CBS node.
      * @param messageSerializer Serializes and deserializes proton-j messages.
      */
-    public ServiceBusReactorAmqpConnection(String connectionId, String entityPath, ConnectionOptions connectionOptions,
+    public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, String product,
         String clientVersion) {
