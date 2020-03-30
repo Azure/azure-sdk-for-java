@@ -215,6 +215,19 @@
                 }
             ],
             "functionAggregation": "sum"
+        },
+        {
+            "name": "text",
+            "functions": [
+                {
+                    "type": "tag",
+                    "boost": 2,
+                    "fieldName":"Tags",
+                    "tag": {
+                        "tagsParameter" : "mytag"
+                    }
+                }
+            ]
         }
     ]
 }
