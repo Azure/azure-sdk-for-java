@@ -366,4 +366,36 @@ directive:
         return $
         .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternAnalyzerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternAnalyzerDeserializer\.class)")
         .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
+
+    # Changed the boolean field name
+    - from:
+      - MagnitudeScoringParameters.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isShouldBoostBeyondRangeByConstant\(\) \{/g, "public Boolean shouldBoostBeyondRangeByConstant() {")
+
+    - from:
+      - SuggestOptions.java
+      - AutocompleteOptions.java
+      - AutocompleteRequest.java
+      - SuggestRequest.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isUseFuzzyMatching\(\) \{/g, "public Boolean useFuzzyMatching() {")
+ 
+    - from:
+      - WordDelimiterTokenFilter.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isGenerate(.*)\(\) \{/g, "public Boolean generate$1() {")
+
+    - from:
+      - OcrSkill.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isShouldDetectOrientation\(\) \{/g, "public Boolean shouldDetectOrientation() {")
 ```

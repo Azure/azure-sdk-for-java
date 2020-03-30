@@ -659,7 +659,7 @@ public final class SearchIndexAsyncClient {
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
-                .setUseFuzzyMatching(suggestOptions.isUseFuzzyMatching())
+                .setUseFuzzyMatching(suggestOptions.useFuzzyMatching())
                 .setHighlightPostTag(suggestOptions.getHighlightPostTag())
                 .setHighlightPreTag(suggestOptions.getHighlightPreTag())
                 .setMinimumCoverage(suggestOptions.getMinimumCoverage())
@@ -700,7 +700,7 @@ public final class SearchIndexAsyncClient {
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
-                .setUseFuzzyMatching(autocompleteOptions.isUseFuzzyMatching())
+                .setUseFuzzyMatching(autocompleteOptions.useFuzzyMatching())
                 .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
                 .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
                 .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
