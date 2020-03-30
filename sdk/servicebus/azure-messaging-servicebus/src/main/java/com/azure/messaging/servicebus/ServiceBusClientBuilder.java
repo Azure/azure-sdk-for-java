@@ -395,6 +395,7 @@ public final class ServiceBusClientBuilder {
         // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
+        private static final boolean DEFAULT_AUTO_COMPLETE = true;
 
         private boolean autoComplete;
         private Duration maxAutoLockRenewalDuration;
@@ -406,6 +407,7 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
+            autoComplete = DEFAULT_AUTO_COMPLETE;
         }
 
         /**
@@ -585,7 +587,7 @@ public final class ServiceBusClientBuilder {
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 }

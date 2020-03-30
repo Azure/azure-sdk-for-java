@@ -23,7 +23,7 @@ package com.azure.cosmos.implementation.guava25.base;
  * java.util.regex} library, but an alternate implementation can be supplied using the {@link
  * java.util.ServiceLoader} mechanism.
  */
-interface PatternCompiler {
+public interface PatternCompiler {
   /**
    * Compiles the given pattern.
    *

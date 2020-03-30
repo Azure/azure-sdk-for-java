@@ -1,0 +1,44 @@
+SqlServer
+    Deprecated
+        withNewFirewallRule()
+        withoutFirewallRule()
+    Removed
+    Changed return type
+        firewallRules()
+        elasticPools()
+
+SqlServers
+    Deprecated
+    Removed
+
+
+SqlFirewallRule
+    Deprecated
+    Removed
+
+SqlFirewallRules
+    Deprecated
+        getBySqlServer(SqlServer sqlServer, String name)
+        deleteBySqlServer(SqlServer sqlServer, String name)
+        listBySqlServer(SqlServer sqlServer, String name)
+    Removed
+        SupportsDeletingByParent interface
+
+SqlElasticPool
+    Deprecated
+        withDtu(int)
+        withDatabaseDtuMin(int)
+        withDatabaseDtuMax(int)
+        withStorageCapacity(int)
+        Update.withNewDatabase()
+        Update.withExistingDatabase()
+    Removed
+
+SqlElasticPools
+    Deprecated
+        getBySqlServer(SqlServer sqlServer, String name)
+        deleteBySqlServer(SqlServer sqlServer, String name)
+        listBySqlServer(SqlServer sqlServer, String name)
+    Removed
+        SupportsDeletingByParent interface
+
