@@ -76,7 +76,7 @@ public class VirtualNetworkGatewayTests extends TestBase {
         Troubleshooting troubleshooting = nw.troubleshoot()
                 .withTargetResourceId(connection1.id())
                 .withStorageAccount(storageAccount.id())
-                .withStoragePath(storageAccount.endPoints().primary().getBlob() + "results")
+                .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
                 .execute();
         Assertions.assertEquals("UnHealthy", troubleshooting.code());
 
@@ -91,7 +91,7 @@ public class VirtualNetworkGatewayTests extends TestBase {
         troubleshooting = nw.troubleshoot()
                 .withTargetResourceId(connection1.id())
                 .withStorageAccount(storageAccount.id())
-                .withStoragePath(storageAccount.endPoints().primary().getBlob() + "results")
+                .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
                 .execute();
         Assertions.assertEquals("Healthy", troubleshooting.code());
 

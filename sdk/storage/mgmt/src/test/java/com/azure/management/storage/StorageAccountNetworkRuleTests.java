@@ -65,9 +65,9 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
                 .withAccessFromIpAddress("23.20.0.0")
                 .create();
 
-        Assertions.assertNotNull(storageAccount2.inner().getNetworkRuleSet());
-        Assertions.assertNotNull(storageAccount2.inner().getNetworkRuleSet().getDefaultAction());
-        Assertions.assertNotNull(storageAccount2.inner().getNetworkRuleSet().getDefaultAction().equals(DefaultAction.DENY));
+        Assertions.assertNotNull(storageAccount2.inner().networkRuleSet());
+        Assertions.assertNotNull(storageAccount2.inner().networkRuleSet().defaultAction());
+        Assertions.assertNotNull(storageAccount2.inner().networkRuleSet().defaultAction().equals(DefaultAction.DENY));
 
         Assertions.assertNotNull(storageAccount2.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount2.networkSubnetsWithAccess().size());
@@ -91,9 +91,9 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
                 .withAccessFromIpAddress("23.20.0.0")
                 .create();
 
-        Assertions.assertNotNull(storageAccount3.inner().getNetworkRuleSet());
-        Assertions.assertNotNull(storageAccount3.inner().getNetworkRuleSet().getDefaultAction());
-        Assertions.assertNotNull(storageAccount3.inner().getNetworkRuleSet().getDefaultAction().equals(DefaultAction.ALLOW));
+        Assertions.assertNotNull(storageAccount3.inner().networkRuleSet());
+        Assertions.assertNotNull(storageAccount3.inner().networkRuleSet().defaultAction());
+        Assertions.assertNotNull(storageAccount3.inner().networkRuleSet().defaultAction().equals(DefaultAction.ALLOW));
 
         Assertions.assertNotNull(storageAccount3.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount3.networkSubnetsWithAccess().size());
@@ -117,9 +117,9 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
                 .withReadAccessToMetricsFromAnyNetwork()
                 .create();
 
-        Assertions.assertNotNull(storageAccount4.inner().getNetworkRuleSet());
-        Assertions.assertNotNull(storageAccount4.inner().getNetworkRuleSet().getDefaultAction());
-        Assertions.assertNotNull(storageAccount4.inner().getNetworkRuleSet().getDefaultAction().equals(DefaultAction.DENY));
+        Assertions.assertNotNull(storageAccount4.inner().networkRuleSet());
+        Assertions.assertNotNull(storageAccount4.inner().networkRuleSet().defaultAction());
+        Assertions.assertNotNull(storageAccount4.inner().networkRuleSet().defaultAction().equals(DefaultAction.DENY));
 
         Assertions.assertNotNull(storageAccount4.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount4.networkSubnetsWithAccess().size());

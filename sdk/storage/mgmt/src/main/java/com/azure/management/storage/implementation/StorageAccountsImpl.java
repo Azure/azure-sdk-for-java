@@ -70,7 +70,7 @@ class StorageAccountsImpl
 
     @Override
     public Mono<String> createSasTokenAsync(String resourceGroupName, String accountName, ServiceSasParameters parameters) {
-        return this.inner().listServiceSASAsync(resourceGroupName, accountName, parameters).map(listServiceSasResponseInner -> listServiceSasResponseInner.getServiceSasToken());
+        return this.inner().listServiceSASAsync(resourceGroupName, accountName, parameters).map(listServiceSasResponseInner -> listServiceSasResponseInner.serviceSasToken());
     }
 
     @Override

@@ -72,7 +72,7 @@ public final class ManageStorageAccount {
 
             System.out.println("Regenerating first storage account access key");
 
-            storageAccountKeys = storageAccount.regenerateKey(storageAccountKeys.get(0).getKeyName());
+            storageAccountKeys = storageAccount.regenerateKey(storageAccountKeys.get(0).keyName());
 
             Utils.print(storageAccountKeys);
 

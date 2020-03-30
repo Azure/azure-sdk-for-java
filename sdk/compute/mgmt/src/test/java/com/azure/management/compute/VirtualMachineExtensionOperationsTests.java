@@ -75,7 +75,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                 .withPublicSetting("ladCfg", new String(Base64.getEncoder().encode(jsonConfig.getBytes())))
                 .withPublicSetting("storageAccount", storageAccount.name())
                 .withProtectedSetting("storageAccountName", storageAccount.name())
-                .withProtectedSetting("storageAccountKey", storageAccount.getKeys().get(0).getValue())
+                .withProtectedSetting("storageAccountKey", storageAccount.getKeys().get(0).value())
                 .withProtectedSetting("storageAccountEndPoint", "https://core.windows.net:443/")
                 .attach()
                 .apply();

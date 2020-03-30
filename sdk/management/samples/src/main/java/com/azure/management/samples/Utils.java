@@ -541,7 +541,7 @@ public final class Utils {
                 info.append("\n\t\t\t").append(ipAddressRange);
             }
         }
-        info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.inner().isEnableHttpsTrafficOnly());
+        info.append("\n\t\tTraffic allowed from only HTTPS: ").append(storageAccount.inner().enableHttpsTrafficOnly());
 
         info.append("\n\tEncryption status: ");
         for (Map.Entry<StorageService, StorageAccountEncryptionStatus> eStatus : storageAccount.encryptionStatuses().entrySet()) {
@@ -559,8 +559,8 @@ public final class Utils {
     public static void print(List<StorageAccountKey> storageAccountKeys) {
         for (int i = 0; i < storageAccountKeys.size(); i++) {
             StorageAccountKey storageAccountKey = storageAccountKeys.get(i);
-            System.out.println("Key (" + i + ") " + storageAccountKey.getKeyName() + "="
-                    + storageAccountKey.getValue());
+            System.out.println("Key (" + i + ") " + storageAccountKey.keyName() + "="
+                    + storageAccountKey.value());
         }
     }
 

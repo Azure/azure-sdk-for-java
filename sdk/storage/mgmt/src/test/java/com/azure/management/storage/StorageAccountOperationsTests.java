@@ -78,11 +78,11 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
 
         // Regen key
         StorageAccountKey oldKey = keys.get(0);
-        List<StorageAccountKey> updatedKeys = storageAccount.regenerateKey(oldKey.getKeyName());
+        List<StorageAccountKey> updatedKeys = storageAccount.regenerateKey(oldKey.keyName());
         Assertions.assertTrue(updatedKeys.size() > 0);
         for (StorageAccountKey updatedKey : updatedKeys) {
-            if (updatedKey.getKeyName().equalsIgnoreCase(oldKey.getKeyName())) {
-                Assertions.assertNotEquals(oldKey.getValue(), updatedKey.getValue());
+            if (updatedKey.keyName().equalsIgnoreCase(oldKey.keyName())) {
+                Assertions.assertNotEquals(oldKey.value(), updatedKey.value());
                 break;
             }
         }
