@@ -80,6 +80,8 @@ public class EventPositionIntegrationTest extends IntegrationTestBase {
 
             EVENTS_PUSHED.set(receivedEvents.toArray(new EventData[0]));
         }
+
+        Assertions.assertNotNull(testData, "testData should not be null. Or we have set this up incorrectly.");
     }
 
     @Override

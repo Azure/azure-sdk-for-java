@@ -1,0 +1,607 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/applications?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:34 GMT",
+      "content-length" : "2106",
+      "ocp-aad-session-key" : "wP13o0pqrem6fmTfC2hedW3bpewWyMFgMmpNf1Lism4R1VuBzyzPaLgDCBQDmCbO1XXb8THTZzt5j-qxqaSjqwXob430lT3M3PbTAocPxHITs6-7myt9zkGVwwpTveL62m6IH7VmNAVEOsD0SwiCgAij5Etidv3oNWfMDPbxu3c.yWQhy8CIf4hc97L3SM48hpjwIHNEkEyf0KI_23GUHnc",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "4a412176-ed90-4a39-ac37-d6c5d487b020",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "8707096",
+      "client-request-id" : "e8bd88ae-91be-4663-ae7e-a3fb64e7372d",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "location" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/directoryObjects/1109e8fe-f33d-4fa7-8827-5381666d6025/Microsoft.DirectoryServices.Application",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#directoryObjects/@Element\",\"odata.type\":\"Microsoft.DirectoryServices.Application\",\"objectType\":\"Application\",\"objectId\":\"1109e8fe-f33d-4fa7-8827-5381666d6025\",\"deletionTimestamp\":null,\"acceptMappedClaims\":null,\"addIns\":[],\"appId\":\"00e654b4-2f7c-4510-8345-752f60148c0c\",\"applicationTemplateId\":null,\"appRoles\":[],\"availableToOtherTenants\":false,\"displayName\":\"spd107743547ebf\",\"errorUrl\":null,\"groupMembershipClaims\":null,\"homepage\":\"http://spd107743547ebf\",\"identifierUris\":[\"http://spd107743547ebf\"],\"informationalUrls\":{\"termsOfService\":null,\"support\":null,\"privacy\":null,\"marketing\":null},\"isDeviceOnlyAuthSupported\":null,\"keyCredentials\":[],\"knownClientApplications\":[],\"logoutUrl\":null,\"logo@odata.mediaEditLink\":\"directoryObjects/1109e8fe-f33d-4fa7-8827-5381666d6025/Microsoft.DirectoryServices.Application/logo\",\"logo@odata.mediaContentType\":\"application/json;odata=minimalmetadata\",\"logoUrl\":null,\"mainLogo@odata.mediaEditLink\":\"directoryObjects/1109e8fe-f33d-4fa7-8827-5381666d6025/Microsoft.DirectoryServices.Application/mainLogo\",\"oauth2AllowIdTokenImplicitFlow\":true,\"oauth2AllowImplicitFlow\":false,\"oauth2AllowUrlPathMatching\":false,\"oauth2Permissions\":[{\"adminConsentDescription\":\"Allow the application to access spd107743547ebf on behalf of the signed-in user.\",\"adminConsentDisplayName\":\"Access spd107743547ebf\",\"id\":\"0ede1f3c-527f-4fd3-8e3b-2013de962d22\",\"isEnabled\":true,\"type\":\"User\",\"userConsentDescription\":\"Allow the application to access spd107743547ebf on your behalf.\",\"userConsentDisplayName\":\"Access spd107743547ebf\",\"value\":\"user_impersonation\"}],\"oauth2RequirePostResponse\":false,\"optionalClaims\":null,\"orgRestrictions\":[],\"parentalControlSettings\":{\"countriesBlockedForMinors\":[],\"legalAgeGroupRule\":\"Allow\"},\"passwordCredentials\":[],\"publicClient\":null,\"publisherDomain\":\"AzureSDKTeam.onmicrosoft.com\",\"recordConsentConditions\":null,\"replyUrls\":[\"http://spd107743547ebf\"],\"requiredResourceAccess\":[],\"samlMetadataUrl\":null,\"signInAudience\":\"AzureADMyOrg\",\"tokenEncryptionKeyId\":null}",
+      "ocp-aad-diagnostics-server-name" : "/JobBrpFkR/7pijMuZ1+szDzkfKvEa/y7XtnoLF0dSE="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/applications/1109e8fe-f33d-4fa7-8827-5381666d6025/keyCredentials?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:35 GMT",
+      "content-length" : "158",
+      "ocp-aad-session-key" : "narStOZeEZBmrLiJ4w6yKQ0feecmCwSmBUvxGxTAFsemsID1A7KLmJve3a8ELAe7QDdDwF7DWvKxSvzpbROq12g0Pk1IBrTO5iXGTxJiW-HgKRL0a8mAtFn3H8AVD-aLyklViBhj-lVhU9CfdOK7zKD7TmZDzsH38UlsE5RBHs0.TPnvPjmWvYnALT90yIXnN0y16I1KQAsS3hOtmWgzUIY",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "bbcb5670-0ca1-4b1c-9302-2f721e5070c5",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "2877620",
+      "client-request-id" : "258d5769-07b3-406e-a1de-399d6e54d974",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#Collection(Microsoft.DirectoryServices.KeyCredential)\",\"value\":[]}",
+      "ocp-aad-diagnostics-server-name" : "8lVrSY0cb3yYmzhL1jb6bG/9VqDeaSkgeMUNwJzqewM="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/applications/1109e8fe-f33d-4fa7-8827-5381666d6025/passwordCredentials?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:37 GMT",
+      "content-length" : "163",
+      "ocp-aad-session-key" : "dzYHj42fII7uxngnkpglM7_01tEK-ASxN8IeictWjPzQICb8rfbc7c1VLEqpoIA8ZhTCK4WeUs9LF9tUMkNxPEWk8rPv06s6UfYK3Pt9PydOWoaogq8138-ltTfMQlEtE3IL8alv1LLvYysJzs1VsC0k4lTka_GnmMVv01r1d4M.FbykK8BPOinoEYJzNFX8b8F1qi68XdrYolxpvXDCjAA",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "cd5a2db1-7189-4cff-976b-98fa2409199a",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "16566988",
+      "client-request-id" : "3ec5a690-f84f-4b18-bf2f-b089f2582f3e",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#Collection(Microsoft.DirectoryServices.PasswordCredential)\",\"value\":[]}",
+      "ocp-aad-diagnostics-server-name" : "gVYeWZfSX9mkzriipUjAD9i6IZAJ5eI2PiGNN2hB0oU="
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/servicePrincipals?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:37 GMT",
+      "content-length" : "1697",
+      "ocp-aad-session-key" : "aem-U1Ra1Brc_0-o9JdBYdh73amVzLoYJLdQOXDzC9JCfIJ0ewxQ43VtJ-rdDjMlbf-8172AwD4UZjOzDMG_9fJiSKdCV-UcGDq39mdsTnf_Es8XP1kMWUY0dZrsmDX3R5KAScNWx7Q_aJRnlcXSbMm_pQcYDwL66xJiS1ffEfA.qNuW6aQQvlzUBr8pYt7u0crF8u1OC0Bz0_TKC1Vp7dc",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "f7345ece-45d7-40b8-a1d0-c9473dadf7e4",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "6705879",
+      "client-request-id" : "7d91c611-cee7-4ae7-a486-ce07c17274f2",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "location" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/directoryObjects/09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e/Microsoft.DirectoryServices.ServicePrincipal",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#directoryObjects/@Element\",\"odata.type\":\"Microsoft.DirectoryServices.ServicePrincipal\",\"objectType\":\"ServicePrincipal\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"deletionTimestamp\":null,\"accountEnabled\":true,\"addIns\":[],\"alternativeNames\":[],\"appDisplayName\":\"spd107743547ebf\",\"appId\":\"00e654b4-2f7c-4510-8345-752f60148c0c\",\"applicationTemplateId\":null,\"appOwnerTenantId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"appRoles\":[],\"displayName\":\"spd107743547ebf\",\"errorUrl\":null,\"homepage\":\"http://spd107743547ebf\",\"informationalUrls\":{\"termsOfService\":null,\"support\":null,\"privacy\":null,\"marketing\":null},\"keyCredentials\":[],\"logoutUrl\":null,\"notificationEmailAddresses\":[],\"oauth2Permissions\":[{\"adminConsentDescription\":\"Allow the application to access spd107743547ebf on behalf of the signed-in user.\",\"adminConsentDisplayName\":\"Access spd107743547ebf\",\"id\":\"0ede1f3c-527f-4fd3-8e3b-2013de962d22\",\"isEnabled\":true,\"type\":\"User\",\"userConsentDescription\":\"Allow the application to access spd107743547ebf on your behalf.\",\"userConsentDisplayName\":\"Access spd107743547ebf\",\"value\":\"user_impersonation\"}],\"passwordCredentials\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyEndDateTime\":null,\"preferredTokenSigningKeyThumbprint\":null,\"publisherName\":\"AzureSDKTeam\",\"replyUrls\":[\"http://spd107743547ebf\"],\"samlMetadataUrl\":null,\"samlSingleSignOnSettings\":null,\"servicePrincipalNames\":[\"00e654b4-2f7c-4510-8345-752f60148c0c\",\"http://spd107743547ebf\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADMyOrg\",\"tags\":[],\"tokenEncryptionKeyId\":null}",
+      "ocp-aad-diagnostics-server-name" : "UgRF+QN6DGd5AJCmGvbJggLDylwMRJ5AAuimvTk2tPs="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/domains?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:37 GMT",
+      "content-length" : "1227",
+      "ocp-aad-session-key" : "sYiLZuiU-dPEB6r3sz3wwDyNSp8nMK1jPaPEgtvceFoLKH7IIgXsftBV6bwhoU2eKK2svFSCixJqaYhketCzssCe-uNlvV2EtZ8Bmqi7q58GWgPCQlaxfybUWaBXPcgVSrFo7SZnRYtbp_gpI_roAgs0DVlzK0TfeLeZ5PC3-lk.ct9uz1SpMi4C0rQsNM6yCmAOhn0kfp-4RcaF9voLp6k",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "3f2c89fb-17e1-4a87-94ee-9cae76f3345d",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "2235028",
+      "client-request-id" : "2465d36a-d38a-49e7-82c5-9c81a5c351fd",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#domains\",\"value\":[{\"authenticationType\":\"Federated\",\"availabilityStatus\":null,\"isAdminManaged\":true,\"isDefault\":false,\"isDefaultForCloudRedirections\":false,\"isInitial\":false,\"isRoot\":false,\"isVerified\":false,\"name\":\"BFDevOpsNonRestricted.onmicrosoft.de\",\"supportedServices\":[],\"forceDeleteState\":null,\"state\":null,\"passwordValidityPeriodInDays\":null,\"passwordNotificationWindowInDays\":null},{\"authenticationType\":\"Managed\",\"availabilityStatus\":null,\"isAdminManaged\":true,\"isDefault\":true,\"isDefaultForCloudRedirections\":false,\"isInitial\":true,\"isRoot\":true,\"isVerified\":true,\"name\":\"AzureSDKTeam.onmicrosoft.com\",\"supportedServices\":[\"Email\",\"OfficeCommunicationsOnline\"],\"forceDeleteState\":null,\"state\":null,\"passwordValidityPeriodInDays\":null,\"passwordNotificationWindowInDays\":null},{\"authenticationType\":\"Managed\",\"availabilityStatus\":null,\"isAdminManaged\":true,\"isDefault\":false,\"isDefaultForCloudRedirections\":false,\"isInitial\":false,\"isRoot\":true,\"isVerified\":true,\"name\":\"azdevextest.com\",\"supportedServices\":[],\"forceDeleteState\":null,\"state\":null,\"passwordValidityPeriodInDays\":null,\"passwordNotificationWindowInDays\":null}]}",
+      "ocp-aad-diagnostics-server-name" : "1xKkKNXlZH9/UfFZHBaUKUlYOYWLeRVZUJpmsmgJSbc="
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/users?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:39 GMT",
+      "content-length" : "1666",
+      "ocp-aad-session-key" : "yUO8fjBH991UXvKS1IhgCxnj6XgHYTJPV-MAGVNO81xaFKF_z-Mqu2IJBHvvAAi9xAY-ib155llHPGSbCT4eIY7xruelw_FiF58EJjB6pX12XHIZ6BYz3GSrxXZSSSnIrGS0cuJn2qKYh4HOdpohaIVYUBr4ofiKDT9E6tefiyQ.6BnJlFmfzwm9vtE8dVA_OklKmod0KpUDsgQjCHmX6MM",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "bb7a951c-48a9-48ba-ab20-6c8d3e1ecdca",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "7213245",
+      "client-request-id" : "c68a715e-099a-46a4-a9de-099e1a743ba8",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "location" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/directoryObjects/b4c614ea-b6c3-4baa-bb64-f77580b8e698/Microsoft.DirectoryServices.User",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#directoryObjects/@Element\",\"odata.type\":\"Microsoft.DirectoryServices.User\",\"objectType\":\"User\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"deletionTimestamp\":null,\"accountEnabled\":true,\"ageGroup\":null,\"assignedLicenses\":[],\"assignedPlans\":[],\"city\":null,\"companyName\":null,\"consentProvidedForMinor\":null,\"country\":null,\"createdDateTime\":\"2020-03-02T11:51:39Z\",\"creationType\":null,\"department\":null,\"dirSyncEnabled\":null,\"displayName\":\"usb61057294981a\",\"employeeId\":null,\"facsimileTelephoneNumber\":null,\"givenName\":null,\"immutableId\":null,\"isCompromised\":null,\"jobTitle\":null,\"lastDirSyncTime\":null,\"legalAgeGroupClassification\":null,\"mail\":null,\"mailNickname\":\"usb61057294981a\",\"mobile\":null,\"onPremisesDistinguishedName\":null,\"onPremisesSecurityIdentifier\":null,\"otherMails\":[],\"passwordPolicies\":null,\"passwordProfile\":{\"password\":null,\"forceChangePasswordNextLogin\":true,\"enforceChangePasswordPolicy\":false},\"physicalDeliveryOfficeName\":null,\"postalCode\":null,\"preferredLanguage\":null,\"provisionedPlans\":[],\"provisioningErrors\":[],\"proxyAddresses\":[],\"refreshTokensValidFromDateTime\":\"2020-03-02T11:51:39.0863088Z\",\"showInAddressList\":null,\"signInNames\":[],\"sipProxyAddress\":null,\"state\":null,\"streetAddress\":null,\"surname\":null,\"telephoneNumber\":null,\"thumbnailPhoto@odata.mediaEditLink\":\"directoryObjects/b4c614ea-b6c3-4baa-bb64-f77580b8e698/Microsoft.DirectoryServices.User/thumbnailPhoto\",\"usageLocation\":null,\"userIdentities\":[],\"userPrincipalName\":\"usb61057294981a@AzureSDKTeam.onmicrosoft.com\",\"userState\":null,\"userStateChangedOn\":null,\"userType\":\"Member\"}",
+      "ocp-aad-diagnostics-server-name" : "gVYeWZfSX9mkzriipUjAD9i6IZAJ5eI2PiGNN2hB0oU="
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30014?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:42 GMT",
+      "content-length" : "315",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "5667a520-b513-477e-8cc1-d5f58992a9e1",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115143Z:5667a520-b513-477e-8cc1-d5f58992a9e1",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "5667a520-b513-477e-8cc1-d5f58992a9e1",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014\",\"name\":\"javacsmrg30014\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"westus\",\"tags\":{\"date\":\"2020-03-02T11:51:40.640262600Z\",\"product\":\"javasdk\",\"cause\":\"automation\"},\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/users/usb61057294981a?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:43 GMT",
+      "content-length" : "273",
+      "ocp-aad-session-key" : "CHF1D20URXCaPwrFm3BpQNmlUiMOMHqTiu-L2s4IWq4VBCdmJoRF_HwiMKvDc5mqy94HQn1jNQhcEk9iocekZ4_w1XK7kgA_PtVXvRQILewF3TASvhfvCsXPpW70bOwNu1GnVOV4vE-KPHjU4KcWdSuKyPsoUo61TLOGfuFOOiA.s3vuIHLtMJP3Ljq0a2i6nrTL3qTqHUEeT3GsP9eX9To",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "1a98feb3-afc4-4747-a5f7-b427b21fa217",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "2286966",
+      "client-request-id" : "07d16634-84a7-4554-af8e-3de33ccaa037",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.error\":{\"code\":\"Request_ResourceNotFound\",\"message\":{\"lang\":\"en\",\"value\":\"Resource 'usb61057294981a' does not exist or one of its queried reference-property objects are not present.\"},\"requestId\":\"1a98feb3-afc4-4747-a5f7-b427b21fa217\",\"date\":\"2020-03-02T11:51:44\"}}",
+      "ocp-aad-diagnostics-server-name" : "/JobBrpFkR/7pijMuZ1+szDzkfKvEa/y7XtnoLF0dSE="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/servicePrincipals?$filter=servicePrincipalNames/any%28c%3ac%20eq%20%27http%3a//spd107743547ebf%27%29&api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:43 GMT",
+      "content-length" : "1700",
+      "ocp-aad-session-key" : "hl8FAUSMlQQu4cs-fUdVFCu4nIqOkIamj5Gh9zkKfikvQ2sUF-yAOGGqar2Tv3-E-8r2CdlMp2DO0NGUtmkM-vQVGXfNC9BhjrGCG-fMgSq6YikopcvQw98A9edzPhSPGNO9-91DWKcW7Loh4IABQ4S0OWM7356oKCvpDE9-ySo.95ObNPx6OlaaH77GKQ15tDmJ0x2QPPpOx0O3qd075Ls",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "d8af5a2f-f291-4b68-a8be-ed9ee4f707d0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "2373055",
+      "client-request-id" : "87efe647-6f37-4a32-9e94-14a59db7ae95",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#directoryObjects\",\"value\":[{\"odata.type\":\"Microsoft.DirectoryServices.ServicePrincipal\",\"objectType\":\"ServicePrincipal\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"deletionTimestamp\":null,\"accountEnabled\":true,\"addIns\":[],\"alternativeNames\":[],\"appDisplayName\":\"spd107743547ebf\",\"appId\":\"00e654b4-2f7c-4510-8345-752f60148c0c\",\"applicationTemplateId\":null,\"appOwnerTenantId\":\"00000000-0000-0000-0000-000000000000\",\"appRoleAssignmentRequired\":false,\"appRoles\":[],\"displayName\":\"spd107743547ebf\",\"errorUrl\":null,\"homepage\":\"http://spd107743547ebf\",\"informationalUrls\":{\"termsOfService\":null,\"support\":null,\"privacy\":null,\"marketing\":null},\"keyCredentials\":[],\"logoutUrl\":null,\"notificationEmailAddresses\":[],\"oauth2Permissions\":[{\"adminConsentDescription\":\"Allow the application to access spd107743547ebf on behalf of the signed-in user.\",\"adminConsentDisplayName\":\"Access spd107743547ebf\",\"id\":\"0ede1f3c-527f-4fd3-8e3b-2013de962d22\",\"isEnabled\":true,\"type\":\"User\",\"userConsentDescription\":\"Allow the application to access spd107743547ebf on your behalf.\",\"userConsentDisplayName\":\"Access spd107743547ebf\",\"value\":\"user_impersonation\"}],\"passwordCredentials\":[],\"preferredSingleSignOnMode\":null,\"preferredTokenSigningKeyEndDateTime\":null,\"preferredTokenSigningKeyThumbprint\":null,\"publisherName\":\"AzureSDKTeam\",\"replyUrls\":[\"http://spd107743547ebf\"],\"samlMetadataUrl\":null,\"samlSingleSignOnSettings\":null,\"servicePrincipalNames\":[\"http://spd107743547ebf\",\"00e654b4-2f7c-4510-8345-752f60148c0c\"],\"servicePrincipalType\":\"Application\",\"signInAudience\":\"AzureADMyOrg\",\"tags\":[],\"tokenEncryptionKeyId\":null}]}",
+      "ocp-aad-diagnostics-server-name" : "1xKkKNXlZH9/UfFZHBaUKUlYOYWLeRVZUJpmsmgJSbc="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/users?$filter=displayName%20eq%20%27usb61057294981a%27&api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:44 GMT",
+      "content-length" : "1661",
+      "ocp-aad-session-key" : "ScjifYrTN_uaRUWYGDDABAUKA0mLF4erNr--VEkQBc2RM0JDDPlahQ2Aodw0_iDDt5kskDrZwriuEQDp6aGoEN4WtVB0-N6OoylyTYaDH2AfVrhtqkAGDJaBtrDEzpCLITKLjfG0Wym8l2mkBKlnxW_lchz7tuXESzE4tV08Gfg.ilTLSozqRpJ-V8gyDpcZBQbZ1iUttw9VLwxOxV-MzaI",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "755039ef-7800-45bc-9618-16a89c34cc2d",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "2325854",
+      "client-request-id" : "4acc0851-c10a-4055-b763-793842d46ef0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#directoryObjects\",\"value\":[{\"odata.type\":\"Microsoft.DirectoryServices.User\",\"objectType\":\"User\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"deletionTimestamp\":null,\"accountEnabled\":true,\"ageGroup\":null,\"assignedLicenses\":[],\"assignedPlans\":[],\"city\":null,\"companyName\":null,\"consentProvidedForMinor\":null,\"country\":null,\"createdDateTime\":\"2020-03-02T11:51:39Z\",\"creationType\":null,\"department\":null,\"dirSyncEnabled\":null,\"displayName\":\"usb61057294981a\",\"employeeId\":null,\"facsimileTelephoneNumber\":null,\"givenName\":null,\"immutableId\":null,\"isCompromised\":null,\"jobTitle\":null,\"lastDirSyncTime\":null,\"legalAgeGroupClassification\":null,\"mail\":null,\"mailNickname\":\"usb61057294981a\",\"mobile\":null,\"onPremisesDistinguishedName\":null,\"onPremisesSecurityIdentifier\":null,\"otherMails\":[],\"passwordPolicies\":null,\"passwordProfile\":{\"password\":null,\"forceChangePasswordNextLogin\":true,\"enforceChangePasswordPolicy\":false},\"physicalDeliveryOfficeName\":null,\"postalCode\":null,\"preferredLanguage\":null,\"provisionedPlans\":[],\"provisioningErrors\":[],\"proxyAddresses\":[],\"refreshTokensValidFromDateTime\":\"2020-03-02T11:51:39Z\",\"showInAddressList\":null,\"signInNames\":[],\"sipProxyAddress\":null,\"state\":null,\"streetAddress\":null,\"surname\":null,\"telephoneNumber\":null,\"thumbnailPhoto@odata.mediaEditLink\":\"directoryObjects/b4c614ea-b6c3-4baa-bb64-f77580b8e698/Microsoft.DirectoryServices.User/thumbnailPhoto\",\"usageLocation\":null,\"userIdentities\":[],\"userPrincipalName\":\"usb61057294981a@AzureSDKTeam.onmicrosoft.com\",\"userState\":null,\"userStateChangedOn\":null,\"userType\":\"Member\"}]}",
+      "ocp-aad-diagnostics-server-name" : "QlJ/a4ZnsyendoaPK0HX7IkzZkAn0WBB3t6eh8cDBic="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/servicePrincipals/09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e/keyCredentials?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:44 GMT",
+      "content-length" : "158",
+      "ocp-aad-session-key" : "W-6-2NMd8exDioDAPlLkw0NaF_pbbDJlitbDB_5XC7ztdiqbHiHmJOZ_uy0hSttO3J164C2-0wwkQf6sgEEAraIgkevTR9eIRBQgAdPCBecL6pWqr3fBTXI6VLcIfrYoUR0PqwDeN63xSIYbrjJVUz0tMcHO4AGsjznPhjbN4SQ.hdK8KkgGQthr3JxyPiv99aiLQ19u4dRlp0m5dpgJcSg",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "b95509d6-0043-4d73-80fd-a4aab1d7655d",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "3493919",
+      "client-request-id" : "ed0a45f2-5066-4d22-8f12-5e58c21061e9",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#Collection(Microsoft.DirectoryServices.KeyCredential)\",\"value\":[]}",
+      "ocp-aad-diagnostics-server-name" : "TDZAGBecobGZ+vWQ2KTi3URBXNSatGDNYjgtJnpnCpg="
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/servicePrincipals/09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e/passwordCredentials?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:44 GMT",
+      "content-length" : "163",
+      "ocp-aad-session-key" : "_v5ICSL-lyIY1bq2Fh3GcTUQ5jEzUw-VWSTmMna0OwJeMwkdjS_YD4r8wgkggD7TAdXCeAv3vygOGU4FoUo22Rk2yvmH6hxOjvLX4NWthqucxFSdpsabnafSX2pYpt3Mp_lyq6b6QnlHLBxTf9ulIu6GBxCU1f3uZz-A8_gIt5A.dWXr1mdk9VIAf5WfBFF195qnCKvfVRmH_DO0Tk-N3To",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "20f39c23-83de-4d04-8581-2179ea3adab8",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "2361693",
+      "client-request-id" : "8938d3a2-1336-429a-b33f-2379d4cbef42",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "dataserviceversion" : "3.0;",
+      "Body" : "{\"odata.metadata\":\"http://localhost:1234/00000000-0000-0000-0000-000000000000/$metadata#Collection(Microsoft.DirectoryServices.PasswordCredential)\",\"value\":[]}",
+      "ocp-aad-diagnostics-server-name" : "6dr5+boM/RjDHntZwNBkm4lP79g0fGcE3gWFk6LSiXI="
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:51:50 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1107",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "9007d578-2867-412d-a24d-2ccbc3b40219",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115151Z:9007d578-2867-412d-a24d-2ccbc3b40219",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "5df3edab-2862-4f14-b65c-ae0604c384e2",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203\",\"name\":\"java-keyvault-23203\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"permissions\":{\"keys\":[\"list\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\"]}},{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"permissions\":{\"keys\":[\"create\",\"restore\",\"purge\",\"unwrapKey\",\"wrapKey\",\"sign\",\"recover\",\"verify\",\"import\",\"backup\",\"list\",\"delete\",\"encrypt\",\"decrypt\",\"get\",\"update\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\",\"list\",\"create\"]}}],\"enabledForDeployment\":false,\"vaultUri\":\"https://java-keyvault-23203.vault.azure.net\",\"provisioningState\":\"RegisteringDns\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:52:21 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1103",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11940",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "36f7dcae-ac06-4cf6-9b1e-1c79d4a5c4d2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115221Z:36f7dcae-ac06-4cf6-9b1e-1c79d4a5c4d2",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "4dc8f202-5a01-4c03-ae89-b88c294c5b52",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203\",\"name\":\"java-keyvault-23203\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"permissions\":{\"keys\":[\"list\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\"]}},{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"permissions\":{\"keys\":[\"create\",\"restore\",\"purge\",\"unwrapKey\",\"wrapKey\",\"sign\",\"recover\",\"verify\",\"import\",\"backup\",\"list\",\"delete\",\"encrypt\",\"decrypt\",\"get\",\"update\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\",\"list\",\"create\"]}}],\"enabledForDeployment\":false,\"vaultUri\":\"https://java-keyvault-23203.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:52:51 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1103",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11939",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b23753a3-47d6-4630-854a-832fc4c6e6b0",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115251Z:b23753a3-47d6-4630-854a-832fc4c6e6b0",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "7ac88b43-5228-4182-bc1f-9aacda812f26",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203\",\"name\":\"java-keyvault-23203\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"permissions\":{\"keys\":[\"list\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\"]}},{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"permissions\":{\"keys\":[\"create\",\"restore\",\"purge\",\"unwrapKey\",\"wrapKey\",\"sign\",\"recover\",\"verify\",\"import\",\"backup\",\"list\",\"delete\",\"encrypt\",\"decrypt\",\"get\",\"update\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\",\"list\",\"create\"]}}],\"enabledForDeployment\":false,\"vaultUri\":\"https://java-keyvault-23203.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:52:52 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1345",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11938",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "585956b9-d332-46ff-89dd-492ad8d758db",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115253Z:585956b9-d332-46ff-89dd-492ad8d758db",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "95886a4b-8b52-42c9-9fdf-797f2fc3fdc7",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203\",\"name\":\"java-keyvault-23203\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"permissions\":{\"keys\":[\"list\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\"]}},{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"permissions\":{\"keys\":[\"create\",\"restore\",\"purge\",\"unwrapKey\",\"wrapKey\",\"sign\",\"recover\",\"verify\",\"import\",\"backup\",\"list\",\"delete\",\"encrypt\",\"decrypt\",\"get\",\"update\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\",\"list\",\"create\"]}}],\"enabledForDeployment\":false,\"vaultUri\":\"https://java-keyvault-23203.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}],\"nextLink\":\"http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults?api-version=2018-02-14-preview&$skiptoken=amF2YS1rZXl2YXVsdC0yMzIwMw==\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults?api-version=2018-02-14-preview&$skiptoken=amF2YS1rZXl2YXVsdC0yMzIwMw",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:52:54 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "12",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "b5e4d733-ec77-415f-b1af-a972c35955ca",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115254Z:b5e4d733-ec77-415f-b1af-a972c35955ca",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "d9a57b57-3286-4ec4-8b7c-978381325e6d",
+      "Body" : "{\"value\":[]}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:52:57 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "1356",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "8c9f4796-9c06-4584-919b-d333badfcc58",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115258Z:8c9f4796-9c06-4584-919b-d333badfcc58",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "1d817455-26fe-4635-a87c-2931550f811d",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203\",\"name\":\"java-keyvault-23203\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"westus\",\"tags\":{\"foo\":\"bar\"},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"accessPolicies\":[{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e\",\"permissions\":{\"keys\":[\"list\",\"create\",\"restore\",\"purge\",\"unwrapKey\",\"wrapKey\",\"sign\",\"recover\",\"verify\",\"backup\",\"import\",\"delete\",\"encrypt\",\"decrypt\",\"get\",\"update\"],\"secrets\":[],\"certificates\":[\"get\",\"create\",\"setissuers\",\"purge\",\"update\",\"listissuers\",\"import\",\"delete\",\"backup\",\"list\",\"restore\",\"manageissuers\",\"recover\",\"getissuers\",\"deleteissuers\",\"managecontacts\"]}},{\"tenantId\":\"00000000-0000-0000-0000-000000000000\",\"objectId\":\"b4c614ea-b6c3-4baa-bb64-f77580b8e698\",\"permissions\":{\"keys\":[\"create\",\"restore\",\"purge\",\"unwrapKey\",\"wrapKey\",\"sign\",\"recover\",\"verify\",\"import\",\"backup\",\"list\",\"delete\",\"encrypt\",\"decrypt\",\"get\",\"update\"],\"secrets\":[\"recover\",\"set\",\"delete\",\"backup\",\"list\",\"get\",\"purge\",\"restore\"],\"certificates\":[\"get\",\"list\",\"create\"]}}],\"enabledForDeployment\":false,\"vaultUri\":\"https://java-keyvault-23203.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg30014/providers/Microsoft.KeyVault/vaults/java-keyvault-23203?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:53:02 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "8c2ee9e7-6970-4869-aa9e-0643ff26a534",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115302Z:8c2ee9e7-6970-4869-aa9e-0643ff26a534",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "7301a864-0bc4-4479-ba1b-b812b4d4ae6a",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/java-keyvault-23203?api-version=2018-02-14-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:53:22 GMT",
+      "server" : "Microsoft-IIS/10.0",
+      "content-length" : "88",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "c330ddc3-46fc-45b3-8193-698847cbe248",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115323Z:c330ddc3-46fc-45b3-8193-698847cbe248",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.271",
+      "x-ms-request-id" : "4137f81a-ccff-4ff5-bc2d-41f9baf086ad",
+      "Body" : "{\"error\":{\"code\":\"ResourceNotFound\",\"message\":\"The specified resource does not exist.\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/00000000-0000-0000-0000-000000000000/servicePrincipals/09e1d6b9-c78f-45b9-9d9a-1a6eb7fa627e?api-version=1.6",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:53:23 GMT",
+      "ocp-aad-session-key" : "lZD8TQz11FJvLFoSqG4YKs0oRYeoZWKynPQEyuOw7lIh9SD9nE3Pmrr7sjAE-4g8RMrBk-hlwwJXgYlqJ9PCBjnm2smj8oIIDTXIs8kaKQcD8lMNA3TxJd3AX8F6RNqkU7JKi0UB6wJ4EyTuE_MsgMuAeAPDW9D-qU4piSBDGH8.wpi7mYuHJ4Gm1SH-Epuh1F4IuewuxTVwTK1EcFdqM8s",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "request-id" : "3c66127c-1c48-427d-a3b9-ffe70e0d2183",
+      "StatusCode" : "204",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "duration" : "3551733",
+      "client-request-id" : "80d30ee3-af35-419f-aa77-14200e7c09b2",
+      "x-powered-by" : "ASP.NET",
+      "cache-control" : "no-cache",
+      "x-ms-dirapi-data-contract-version" : "1.6",
+      "Body" : "",
+      "ocp-aad-diagnostics-server-name" : "QlJ/a4ZnsyendoaPK0HX7IkzZkAn0WBB3t6eh8cDBic="
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg30014?api-version=2019-08-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.management/null (13.0.1; Windows 10 10.0)"
+    },
+    "Response" : {
+      "date" : "Mon, 02 Mar 2020 11:53:27 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14997",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "x-ms-correlation-request-id" : "4a3744ab-da4c-4710-be58-7d6822827fa2",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "SOUTHEASTASIA:20200302T115327Z:4a3744ab-da4c-4710-be58-7d6822827fa2",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1KQVZBQ1NNUkczMDAxNC1XRVNUVVMiLCJqb2JMb2NhdGlvbiI6Indlc3R1cyJ9?api-version=2019-08-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4a3744ab-da4c-4710-be58-7d6822827fa2",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "javacsmrg30014", "java-keyvault-23203", "spd107743547ebf", "usb61057294981a" ]
+}

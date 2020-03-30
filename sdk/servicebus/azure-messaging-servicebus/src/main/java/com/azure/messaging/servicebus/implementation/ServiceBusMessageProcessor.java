@@ -97,7 +97,10 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             subscription.request(1);
         } else {
-            logger.warning("This processor cannot be subscribed to with multiple upstreams.");
+            final Throwable error = logger.logExceptionAsError(new IllegalStateException(
+                "Processor cannot be subscribed to with multiple upstreams."));
+
+            onError(Operators.onOperatorError(subscription, error, Context.empty()));
         }
     }
 

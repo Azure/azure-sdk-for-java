@@ -252,9 +252,6 @@ public final class ServiceBusClientBuilder {
                 return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
             }
-
-            final int numberOfOpenClients = ++openClients;
-            logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
         }
 
         return sharedConnection;
@@ -292,8 +289,8 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
-            transport, retryOptions, proxyOptions, scheduler);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
+            proxyOptions, scheduler);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
