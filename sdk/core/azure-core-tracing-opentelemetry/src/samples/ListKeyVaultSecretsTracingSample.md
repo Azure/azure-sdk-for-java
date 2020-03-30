@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,7 +45,7 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.trace.TracerSdkFactory;
+import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 
@@ -58,29 +58,29 @@ public class Sample {
     final static String VAULT_URL = "<YOUR_VAULT_URL>";
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
-    private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
 
     static {
-        TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Sample");
+        TRACER_SDK_PROVIDER = configureOpenTelemetryAndLoggingExporter();
+        TRACER = TRACER_SDK_PROVIDER.get("Sample");
     }
 
     public static void main(String[] args) {
         doClientWork();
-        TRACER_SDK_FACTORY.shutdown();
+        TRACER_SDK_PROVIDER.shutdown();
     }
 
-    private static TracerSdkFactory configureOpenTelemetryAndLoggingExporter() {
+    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
         LoggingExporter exporter = new LoggingExporter();
-        TracerSdkFactory tracerSdkFactory = (TracerSdkFactory) OpenTelemetry.getTracerFactory();
-        tracerSdkFactory.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
+        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
 
-        return tracerSdkFactory;
+        return tracerSdkProvider;
     }
 
     private static void doClientWork() {
         SecretClient secretClient = new SecretClientBuilder()
-            .vaultUrl(VAULT_URL)
+            .vaultUrl("VAULT_URL")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
