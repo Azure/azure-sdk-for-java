@@ -39,7 +39,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean hasDownstream = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final AtomicBoolean isRequested = new AtomicBoolean();
     private final AtomicInteger linkCreditRequest = new AtomicInteger(1);
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
 
@@ -204,8 +203,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (oldSubscription != null) {
             oldSubscription.dispose();
         }
-
-        isRequested.set(false);
     }
 
     /**
@@ -384,13 +381,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         }
 
-        // subscribe(CoreSubscriber) may have requested a subscriber already.
-        if (!isRequested.getAndSet(true)) {
-            logger.info("AmqpReceiveLink not requested, yet. Requesting one.");
-            upstream.request(1);
-        } else {
-            logger.info("AmqpRecieveLink already requested.");
-        }
+        logger.info("Requesting for a new AmqpReceiveLink from upstream.");
+        upstream.request(1);
     }
 
     private void onDispose() {
