@@ -44,8 +44,6 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final int PLATFORM_COUNT = 6;
-    private static final String AZURE_TEST_OS_NAME = "AZURE_TEST_OS_NAME";
-    private static final String AZURE_TEST_JDK_VERSION = "AZURE_TEST_JDK_VERSION";
     private static Map<DayOfWeek, Integer> calendarMap;
     private static List<String> platformList;
 
@@ -182,10 +180,12 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     private static void buildCalendarMap() {
+        System.out.println("before: " + calendarMap.size());
         if (calendarMap != null) {
             return;
         }
-        calendarMap = new HashMap<DayOfWeek, Integer>();
+        System.out.println("after:" + calendarMap.size());
+        calendarMap = new HashMap<>();
         calendarMap.put(DayOfWeek.MONDAY, 0);
         calendarMap.put(DayOfWeek.TUESDAY, 1);
         calendarMap.put(DayOfWeek.WEDNESDAY, 2);
