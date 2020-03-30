@@ -180,11 +180,9 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     private static void buildCalendarMap() {
-        System.out.println("before: " + calendarMap.size());
         if (calendarMap != null) {
             return;
         }
-        System.out.println("after:" + calendarMap.size());
         calendarMap = new HashMap<>();
         calendarMap.put(DayOfWeek.MONDAY, 0);
         calendarMap.put(DayOfWeek.TUESDAY, 1);
