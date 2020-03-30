@@ -43,6 +43,7 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
@@ -77,7 +78,7 @@ public final class ServiceBusClientBuilder {
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
-    private volatile int openClients;
+    private final AtomicInteger openClients = new AtomicInteger();
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -208,13 +209,23 @@ public final class ServiceBusClientBuilder {
      */
     void onClientClose() {
         synchronized (connectionLock) {
-            final int numberOfOpenClients = --openClients;
+            final int numberOfOpenClients = openClients.decrementAndGet();
             logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
 
-            if (numberOfOpenClients == 0) {
-                logger.info("No more open clients, closing shared connection.");
+            if (numberOfOpenClients > 0) {
+                return;
+            }
+
+            if (numberOfOpenClients < 0) {
+                logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
+            }
+
+            logger.info("No more open clients, closing shared connection.");
+            if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
+            } else {
+                logger.warning("Shared ServiceBusConnectionProcessor was already disposed.");
             }
         }
     }
@@ -253,6 +264,9 @@ public final class ServiceBusClientBuilder {
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
             }
         }
+
+        final int numberOfOpenClients = openClients.incrementAndGet();
+        logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
         return sharedConnection;
     }
@@ -369,7 +383,7 @@ public final class ServiceBusClientBuilder {
             final String entityName = queueOrTopicName != null ? queueOrTopicName : connectionStringEntityName;
 
             return new ServiceBusSenderAsyncClient(entityName, connectionProcessor, retryOptions, tracerProvider,
-                messageSerializer);
+                messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
@@ -574,7 +588,7 @@ public final class ServiceBusClientBuilder {
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, false, receiveMessageOptions, connectionProcessor, tracerProvider,
-                messageSerializer, messageLockContainer);
+                messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
