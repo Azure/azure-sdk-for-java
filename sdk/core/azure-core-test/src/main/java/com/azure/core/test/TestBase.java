@@ -7,13 +7,13 @@ import com.azure.core.implementation.http.HttpClientProviders;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.provider.Arguments;
 
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
@@ -149,7 +150,7 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return The offset according to day of the week and platform information
      */
-    public static int getOffset() {
+    private static int getOffset() {
         LocalDate today = LocalDate.now();
         buildCalendarMap();
         buildPlatformList();
@@ -194,11 +195,39 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     /**
+     * Get test arguments need to run for the test framework based on the service version.
+     *
+     * @param serviceVersionList The service version argument for the parameterized tests.
+     * @return Stream of arguments for parameterized test framework.
+     */
+    public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList) {
+        List<Arguments> argumentsList = new ArrayList<>();
+        int serviceVersionCount = serviceVersionList.size();
+        List<HttpClient> httpClientList = getHttpClients();
+        long total = httpClientList.size() * serviceVersionCount;
+        int offset = getOffset();
+        int[] index = new int[1];
+        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
+            .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
+        httpClientList.forEach(httpClient -> {
+            serviceVersionList.forEach(keyServiceVersion -> {
+                if (!rollingStrategy) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                }
+                index[0] += 1;
+            });
+        });
+        return argumentsList.stream();
+    }
+
+    /**
      * Returns a list of {@link HttpClient HttpClients} that should be tested.
      *
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    public static List<HttpClient> getHttpClients() {
+    private static List<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.

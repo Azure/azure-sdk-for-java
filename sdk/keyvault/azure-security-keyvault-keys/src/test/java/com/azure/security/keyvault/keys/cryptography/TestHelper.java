@@ -12,12 +12,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.azure.security.keyvault.keys.KeyClientTestBase;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_HTTP_CLIENTS;
 import static com.azure.core.test.TestBase.AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.PLATFORM_COUNT;
+import static com.azure.core.test.TestBase.getArgumentsFromServiceVersion;
 import static com.azure.core.test.TestBase.getHttpClients;
 import static com.azure.core.test.TestBase.getOffset;
 
@@ -37,29 +40,11 @@ public class TestHelper {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        List<CryptographyServiceVersion> filteredKeyServiceVersion =
+        CryptographyServiceVersion[] filteredKeyServiceVersion =
             Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                .collect(Collectors.toList());
-        int serviceVersionCount = filteredKeyServiceVersion.size();
-        List<HttpClient> httpClientList = getHttpClients();
-        long total = httpClientList.size() * serviceVersionCount;
-        int offset = getOffset();
-        int[] index = new int[1];
-        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
-            .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
-        httpClientList.forEach(httpClient -> {
-            filteredKeyServiceVersion.forEach(keyServiceVersion -> {
-                if (!rollingStrategy) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                }
-                index[0] += 1;
-            });
-        });
+                .toArray(CryptographyServiceVersion[]::new);
 
-        return argumentsList.stream();
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
     }
 
     /**

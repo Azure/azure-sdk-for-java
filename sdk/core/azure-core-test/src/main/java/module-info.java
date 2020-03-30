@@ -8,6 +8,7 @@ module com.azure.core.test {
     requires com.fasterxml.jackson.datatype.jsr310;
     requires org.junit.jupiter.api;
     requires reactor.test;
+    requires org.junit.jupiter.params;
 
     exports com.azure.core.test;
     exports com.azure.core.test.http;

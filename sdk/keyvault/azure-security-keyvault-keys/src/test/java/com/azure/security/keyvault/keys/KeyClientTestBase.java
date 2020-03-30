@@ -420,29 +420,11 @@ public abstract class KeyClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        List<KeyServiceVersion> filteredKeyServiceVersion =
+        KeyServiceVersion[] filteredKeyServiceVersion =
             Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
-            .collect(Collectors.toList());
-        int serviceVersionCount = filteredKeyServiceVersion.size();
-        List<HttpClient> httpClientList = getHttpClients();
-        long total = httpClientList.size() * serviceVersionCount;
-        int offset = getOffset();
-        int[] index = new int[1];
-        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
-            .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
-        httpClientList.forEach(httpClient -> {
-            filteredKeyServiceVersion.forEach(keyServiceVersion -> {
-                if (!rollingStrategy) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                }
-                index[0] += 1;
-            });
-        });
+                .toArray(KeyServiceVersion[]::new);
 
-        return argumentsList.stream();
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
     }
 
     /**
