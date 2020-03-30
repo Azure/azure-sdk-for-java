@@ -118,7 +118,7 @@ class EventHubProducerAsyncClientTest {
     private EventHubConnectionProcessor connectionProcessor;
     private TracerProvider tracerProvider;
     private ConnectionOptions connectionOptions;
-    private final Scheduler testScheduler = Schedulers.newSingle("test");
+    private final Scheduler testScheduler = Schedulers.newElastic("test");
 
     @BeforeAll
     static void beforeAll() {
@@ -132,7 +132,6 @@ class EventHubProducerAsyncClientTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        System.out.printf("STARTING TEST: [%s]%n", testInfo.getDisplayName());
         MockitoAnnotations.initMocks(this);
 
         tracerProvider = new TracerProvider(Collections.emptyList());
@@ -156,7 +155,6 @@ class EventHubProducerAsyncClientTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        System.out.printf("ENDING TEST: [%s]%n", testInfo.getDisplayName());
         testScheduler.dispose();
         Mockito.framework().clearInlineMocks();
         Mockito.reset(sendLink, connection);

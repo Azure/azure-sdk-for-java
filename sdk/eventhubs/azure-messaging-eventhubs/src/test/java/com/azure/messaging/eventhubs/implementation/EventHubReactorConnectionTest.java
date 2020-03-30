@@ -40,6 +40,7 @@ import reactor.test.StepVerifier;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -71,13 +72,15 @@ public class EventHubReactorConnectionTest {
     private ReactorHandlerProvider handlerProvider;
     @Mock
     private Session session;
+    @Mock
+    private Record record;
 
     private ConnectionOptions connectionOptions;
     private static String product;
     private static String clientVersion;
 
     @BeforeAll
-    public static void init() throws Exception {
+    public static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
         product = properties.get("name");
         clientVersion = properties.get("version");
@@ -94,6 +97,10 @@ public class EventHubReactorConnectionTest {
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(), connectionHandler))
             .thenReturn(reactorConnection);
         when(reactor.process()).thenReturn(true);
+        when(reactor.attachments()).thenReturn(record);
+
+        final RejectedExecutionException rejectedException = this.reactor.attachments()
+            .get(RejectedExecutionException.class, RejectedExecutionException.class);
 
         final ProxyOptions proxy = ProxyOptions.SYSTEM_DEFAULTS;
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
