@@ -276,11 +276,13 @@ public class ReactorConnection implements AmqpConnection {
             return;
         }
 
+        logger.info("connectionId[{}]: Disposing of ReactorConnection.", connectionId);
         subscriptions.dispose();
         endpointStatesSink.complete();
 
         final String[] keys = sessionMap.keySet().toArray(new String[0]);
         for (String key : keys) {
+            logger.info("connectionId[{}]: Removing session '{}'", connectionId, key);
             removeSession(key);
         }
 
@@ -314,11 +316,15 @@ public class ReactorConnection implements AmqpConnection {
             .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
                 messageSerializer, senderSettleMode, receiverSettleMode))
+            .doOnNext(e -> {
+                logger.info("Emitting new response channel. connectionId: {}. entityPath: {}. linkName: {}.",
+                    getId(), entityPath, linkName);
+            })
             .repeat();
 
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
-            new ClientLogger(RequestResponseChannel.class + "<" + sessionName + ">")));
+            new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, sessionName))));
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
