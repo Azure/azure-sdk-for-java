@@ -202,7 +202,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
         final Instant datePushed = Instant.now();
 
         try {
@@ -223,7 +223,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Pushing events to partition. Message tracking value: {}", messageId);
 
-        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId).collectList().block();
+        final List<EventData> events = TestUtils.getEvents(numberOfEvents, messageId);
         final Instant datePushed = Instant.now();
 
         try {

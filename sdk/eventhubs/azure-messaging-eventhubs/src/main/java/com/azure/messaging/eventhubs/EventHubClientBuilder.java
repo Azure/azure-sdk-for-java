@@ -530,8 +530,12 @@ public class EventHubClientBuilder {
             }
 
             logger.info("No more open clients, closing shared connection.");
-            eventHubConnectionProcessor.dispose();
-            eventHubConnectionProcessor = null;
+            if (eventHubConnectionProcessor != null) {
+                eventHubConnectionProcessor.dispose();
+                eventHubConnectionProcessor = null;
+            } else {
+                logger.warning("Shared EventHubConnectionProcessor was already disposed.");
+            }
         }
     }
 
