@@ -42,7 +42,7 @@ public final class CheckNameAvailabilityResultInner {
      * 
      * @return the nameAvailable value.
      */
-    public Boolean isNameAvailable() {
+    public Boolean nameAvailable() {
         return this.nameAvailable;
     }
 
@@ -53,7 +53,7 @@ public final class CheckNameAvailabilityResultInner {
      * 
      * @return the reason value.
      */
-    public Reason getReason() {
+    public Reason reason() {
         return this.reason;
     }
 
@@ -63,7 +63,7 @@ public final class CheckNameAvailabilityResultInner {
      * 
      * @return the message value.
      */
-    public String getMessage() {
+    public String message() {
         return this.message;
     }
 }

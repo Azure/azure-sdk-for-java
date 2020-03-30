@@ -32,7 +32,7 @@ public final class EncryptionScopeListResultInner {
      * 
      * @return the value value.
      */
-    public List<EncryptionScopeInner> getValue() {
+    public List<EncryptionScopeInner> value() {
         return this.value;
     }
 
@@ -43,7 +43,7 @@ public final class EncryptionScopeListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

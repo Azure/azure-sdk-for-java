@@ -75,8 +75,8 @@ public class ManageSqlServerSecurityAlertPolicy {
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .create();
-            String accountKey = storageAccount.getKeys().get(0).getValue();
-            String blobEntrypoint = storageAccount.endPoints().primary().getBlob();
+            String accountKey = storageAccount.getKeys().get(0).value();
+            String blobEntrypoint = storageAccount.endPoints().primary().blob();
 
             // ============================================================
             // Create a Server Security Alert Policy.

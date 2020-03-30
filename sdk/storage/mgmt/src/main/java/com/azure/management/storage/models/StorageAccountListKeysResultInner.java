@@ -27,7 +27,7 @@ public final class StorageAccountListKeysResultInner {
      * 
      * @return the keys value.
      */
-    public List<StorageAccountKey> getKeys() {
+    public List<StorageAccountKey> keys() {
         return this.keys;
     }
 }

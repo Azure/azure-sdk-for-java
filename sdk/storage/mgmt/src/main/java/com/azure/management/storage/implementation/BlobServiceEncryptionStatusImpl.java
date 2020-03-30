@@ -28,7 +28,7 @@ class BlobServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImpl
         if (super.encryptionServices == null) {
             return null;
         } else {
-            return super.encryptionServices.getBlob();
+            return super.encryptionServices.blob();
         }
     }
 }

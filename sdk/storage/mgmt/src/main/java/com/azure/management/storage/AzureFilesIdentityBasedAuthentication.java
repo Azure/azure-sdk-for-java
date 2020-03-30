@@ -30,7 +30,7 @@ public final class AzureFilesIdentityBasedAuthentication {
      * 
      * @return the directoryServiceOptions value.
      */
-    public DirectoryServiceOptions getDirectoryServiceOptions() {
+    public DirectoryServiceOptions directoryServiceOptions() {
         return this.directoryServiceOptions;
     }
 
@@ -41,7 +41,7 @@ public final class AzureFilesIdentityBasedAuthentication {
      * @param directoryServiceOptions the directoryServiceOptions value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication setDirectoryServiceOptions(DirectoryServiceOptions directoryServiceOptions) {
+    public AzureFilesIdentityBasedAuthentication withDirectoryServiceOptions(DirectoryServiceOptions directoryServiceOptions) {
         this.directoryServiceOptions = directoryServiceOptions;
         return this;
     }
@@ -51,7 +51,7 @@ public final class AzureFilesIdentityBasedAuthentication {
      * 
      * @return the activeDirectoryProperties value.
      */
-    public ActiveDirectoryProperties getActiveDirectoryProperties() {
+    public ActiveDirectoryProperties activeDirectoryProperties() {
         return this.activeDirectoryProperties;
     }
 
@@ -62,7 +62,7 @@ public final class AzureFilesIdentityBasedAuthentication {
      * set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication setActiveDirectoryProperties(ActiveDirectoryProperties activeDirectoryProperties) {
+    public AzureFilesIdentityBasedAuthentication withActiveDirectoryProperties(ActiveDirectoryProperties activeDirectoryProperties) {
         this.activeDirectoryProperties = activeDirectoryProperties;
         return this;
     }

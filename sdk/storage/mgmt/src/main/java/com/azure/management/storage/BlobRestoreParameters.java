@@ -31,7 +31,7 @@ public final class BlobRestoreParameters {
      * 
      * @return the timeToRestore value.
      */
-    public OffsetDateTime getTimeToRestore() {
+    public OffsetDateTime timeToRestore() {
         return this.timeToRestore;
     }
 
@@ -41,7 +41,7 @@ public final class BlobRestoreParameters {
      * @param timeToRestore the timeToRestore value to set.
      * @return the BlobRestoreParameters object itself.
      */
-    public BlobRestoreParameters setTimeToRestore(OffsetDateTime timeToRestore) {
+    public BlobRestoreParameters withTimeToRestore(OffsetDateTime timeToRestore) {
         this.timeToRestore = timeToRestore;
         return this;
     }
@@ -51,7 +51,7 @@ public final class BlobRestoreParameters {
      * 
      * @return the blobRanges value.
      */
-    public List<BlobRestoreRange> getBlobRanges() {
+    public List<BlobRestoreRange> blobRanges() {
         return this.blobRanges;
     }
 
@@ -61,7 +61,7 @@ public final class BlobRestoreParameters {
      * @param blobRanges the blobRanges value to set.
      * @return the BlobRestoreParameters object itself.
      */
-    public BlobRestoreParameters setBlobRanges(List<BlobRestoreRange> blobRanges) {
+    public BlobRestoreParameters withBlobRanges(List<BlobRestoreRange> blobRanges) {
         this.blobRanges = blobRanges;
         return this;
     }

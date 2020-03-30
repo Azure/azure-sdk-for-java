@@ -25,7 +25,7 @@ public final class ChangeFeed {
      * 
      * @return the enabled value.
      */
-    public Boolean isEnabled() {
+    public Boolean enabled() {
         return this.enabled;
     }
 
@@ -36,7 +36,7 @@ public final class ChangeFeed {
      * @param enabled the enabled value to set.
      * @return the ChangeFeed object itself.
      */
-    public ChangeFeed setEnabled(Boolean enabled) {
+    public ChangeFeed withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }

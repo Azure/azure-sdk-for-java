@@ -24,7 +24,7 @@ public final class ListServiceSasResponseInner {
      * 
      * @return the serviceSasToken value.
      */
-    public String getServiceSasToken() {
+    public String serviceSasToken() {
         return this.serviceSasToken;
     }
 }

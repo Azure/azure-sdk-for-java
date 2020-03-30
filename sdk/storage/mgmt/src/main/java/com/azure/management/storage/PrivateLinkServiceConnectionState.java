@@ -38,7 +38,7 @@ public final class PrivateLinkServiceConnectionState {
      * 
      * @return the status value.
      */
-    public PrivateEndpointServiceConnectionStatus getStatus() {
+    public PrivateEndpointServiceConnectionStatus status() {
         return this.status;
     }
 
@@ -49,7 +49,7 @@ public final class PrivateLinkServiceConnectionState {
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
-    public PrivateLinkServiceConnectionState setStatus(PrivateEndpointServiceConnectionStatus status) {
+    public PrivateLinkServiceConnectionState withStatus(PrivateEndpointServiceConnectionStatus status) {
         this.status = status;
         return this;
     }
@@ -60,7 +60,7 @@ public final class PrivateLinkServiceConnectionState {
      * 
      * @return the description value.
      */
-    public String getDescription() {
+    public String description() {
         return this.description;
     }
 
@@ -71,7 +71,7 @@ public final class PrivateLinkServiceConnectionState {
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
-    public PrivateLinkServiceConnectionState setDescription(String description) {
+    public PrivateLinkServiceConnectionState withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -82,7 +82,7 @@ public final class PrivateLinkServiceConnectionState {
      * 
      * @return the actionRequired value.
      */
-    public String getActionRequired() {
+    public String actionRequired() {
         return this.actionRequired;
     }
 
@@ -93,7 +93,7 @@ public final class PrivateLinkServiceConnectionState {
      * @param actionRequired the actionRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
-    public PrivateLinkServiceConnectionState setActionRequired(String actionRequired) {
+    public PrivateLinkServiceConnectionState withActionRequired(String actionRequired) {
         this.actionRequired = actionRequired;
         return this;
     }

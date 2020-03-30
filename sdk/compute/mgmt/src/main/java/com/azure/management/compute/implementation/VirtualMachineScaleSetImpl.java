@@ -1745,13 +1745,13 @@ public class VirtualMachineScaleSetImpl
             StorageAccount storageAccount = this.<StorageAccount>taskResult(storageAccountKey);
             storageProfile.osDisk()
                     .vhdContainers()
-                    .add(mergePath(storageAccount.endPoints().primary().getBlob(), containerName));
+                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
         }
 
         for (StorageAccount storageAccount : this.existingStorageAccountsToAssociate) {
             storageProfile.osDisk()
                     .vhdContainers()
-                    .add(mergePath(storageAccount.endPoints().primary().getBlob(), containerName));
+                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
         }
         this.creatableStorageAccountKeys.clear();
         this.existingStorageAccountsToAssociate.clear();
@@ -2820,7 +2820,7 @@ public class VirtualMachineScaleSetImpl
         }
 
         BootDiagnosticsHandler withBootDiagnostics(StorageAccount storageAccount) {
-            return this.withBootDiagnostics(storageAccount.endPoints().primary().getBlob());
+            return this.withBootDiagnostics(storageAccount.endPoints().primary().blob());
         }
 
         BootDiagnosticsHandler withoutBootDiagnostics() {
@@ -2897,7 +2897,7 @@ public class VirtualMachineScaleSetImpl
                     .virtualMachineProfile()
                     .diagnosticsProfile()
                     .bootDiagnostics()
-                    .withStorageUri(storageAccount.endPoints().primary().getBlob());
+                    .withStorageUri(storageAccount.endPoints().primary().blob());
         }
 
         private VirtualMachineScaleSetInner vmssInner() {

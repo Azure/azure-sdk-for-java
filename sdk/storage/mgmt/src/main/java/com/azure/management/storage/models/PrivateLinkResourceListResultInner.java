@@ -25,7 +25,7 @@ public final class PrivateLinkResourceListResultInner {
      * 
      * @return the value value.
      */
-    public List<PrivateLinkResource> getValue() {
+    public List<PrivateLinkResource> value() {
         return this.value;
     }
 
@@ -35,7 +35,7 @@ public final class PrivateLinkResourceListResultInner {
      * @param value the value value to set.
      * @return the PrivateLinkResourceListResultInner object itself.
      */
-    public PrivateLinkResourceListResultInner setValue(List<PrivateLinkResource> value) {
+    public PrivateLinkResourceListResultInner withValue(List<PrivateLinkResource> value) {
         this.value = value;
         return this;
     }

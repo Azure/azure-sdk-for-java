@@ -44,7 +44,7 @@ public final class UsageInner {
      * 
      * @return the unit value.
      */
-    public UsageUnit getUnit() {
+    public UsageUnit unit() {
         return this.unit;
     }
 
@@ -54,7 +54,7 @@ public final class UsageInner {
      * 
      * @return the currentValue value.
      */
-    public Integer getCurrentValue() {
+    public Integer currentValue() {
         return this.currentValue;
     }
 
@@ -64,7 +64,7 @@ public final class UsageInner {
      * 
      * @return the limit value.
      */
-    public Integer getLimit() {
+    public Integer limit() {
         return this.limit;
     }
 
@@ -73,7 +73,7 @@ public final class UsageInner {
      * 
      * @return the name value.
      */
-    public UsageName getName() {
+    public UsageName name() {
         return this.name;
     }
 }

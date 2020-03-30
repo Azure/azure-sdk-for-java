@@ -72,7 +72,7 @@ public final class MetricSpecification {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -82,7 +82,7 @@ public final class MetricSpecification {
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setName(String name) {
+    public MetricSpecification withName(String name) {
         this.name = name;
         return this;
     }
@@ -92,7 +92,7 @@ public final class MetricSpecification {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -102,7 +102,7 @@ public final class MetricSpecification {
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setDisplayName(String displayName) {
+    public MetricSpecification withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -113,7 +113,7 @@ public final class MetricSpecification {
      * 
      * @return the displayDescription value.
      */
-    public String getDisplayDescription() {
+    public String displayDescription() {
         return this.displayDescription;
     }
 
@@ -124,7 +124,7 @@ public final class MetricSpecification {
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setDisplayDescription(String displayDescription) {
+    public MetricSpecification withDisplayDescription(String displayDescription) {
         this.displayDescription = displayDescription;
         return this;
     }
@@ -134,7 +134,7 @@ public final class MetricSpecification {
      * 
      * @return the unit value.
      */
-    public String getUnit() {
+    public String unit() {
         return this.unit;
     }
 
@@ -144,7 +144,7 @@ public final class MetricSpecification {
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setUnit(String unit) {
+    public MetricSpecification withUnit(String unit) {
         this.unit = unit;
         return this;
     }
@@ -155,7 +155,7 @@ public final class MetricSpecification {
      * 
      * @return the dimensions value.
      */
-    public List<Dimension> getDimensions() {
+    public List<Dimension> dimensions() {
         return this.dimensions;
     }
 
@@ -166,7 +166,7 @@ public final class MetricSpecification {
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setDimensions(List<Dimension> dimensions) {
+    public MetricSpecification withDimensions(List<Dimension> dimensions) {
         this.dimensions = dimensions;
         return this;
     }
@@ -176,7 +176,7 @@ public final class MetricSpecification {
      * 
      * @return the aggregationType value.
      */
-    public String getAggregationType() {
+    public String aggregationType() {
         return this.aggregationType;
     }
 
@@ -186,7 +186,7 @@ public final class MetricSpecification {
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setAggregationType(String aggregationType) {
+    public MetricSpecification withAggregationType(String aggregationType) {
         this.aggregationType = aggregationType;
         return this;
     }
@@ -197,7 +197,7 @@ public final class MetricSpecification {
      * 
      * @return the fillGapWithZero value.
      */
-    public Boolean isFillGapWithZero() {
+    public Boolean fillGapWithZero() {
         return this.fillGapWithZero;
     }
 
@@ -208,7 +208,7 @@ public final class MetricSpecification {
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setFillGapWithZero(Boolean fillGapWithZero) {
+    public MetricSpecification withFillGapWithZero(Boolean fillGapWithZero) {
         this.fillGapWithZero = fillGapWithZero;
         return this;
     }
@@ -219,7 +219,7 @@ public final class MetricSpecification {
      * 
      * @return the category value.
      */
-    public String getCategory() {
+    public String category() {
         return this.category;
     }
 
@@ -230,7 +230,7 @@ public final class MetricSpecification {
      * @param category the category value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setCategory(String category) {
+    public MetricSpecification withCategory(String category) {
         this.category = category;
         return this;
     }
@@ -240,7 +240,7 @@ public final class MetricSpecification {
      * 
      * @return the resourceIdDimensionNameOverride value.
      */
-    public String getResourceIdDimensionNameOverride() {
+    public String resourceIdDimensionNameOverride() {
         return this.resourceIdDimensionNameOverride;
     }
 
@@ -251,7 +251,7 @@ public final class MetricSpecification {
      * resourceIdDimensionNameOverride value to set.
      * @return the MetricSpecification object itself.
      */
-    public MetricSpecification setResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
+    public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
         return this;
     }

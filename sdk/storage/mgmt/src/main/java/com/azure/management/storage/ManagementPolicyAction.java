@@ -29,7 +29,7 @@ public final class ManagementPolicyAction {
      * 
      * @return the baseBlob value.
      */
-    public ManagementPolicyBaseBlob getBaseBlob() {
+    public ManagementPolicyBaseBlob baseBlob() {
         return this.baseBlob;
     }
 
@@ -39,7 +39,7 @@ public final class ManagementPolicyAction {
      * @param baseBlob the baseBlob value to set.
      * @return the ManagementPolicyAction object itself.
      */
-    public ManagementPolicyAction setBaseBlob(ManagementPolicyBaseBlob baseBlob) {
+    public ManagementPolicyAction withBaseBlob(ManagementPolicyBaseBlob baseBlob) {
         this.baseBlob = baseBlob;
         return this;
     }
@@ -49,7 +49,7 @@ public final class ManagementPolicyAction {
      * 
      * @return the snapshot value.
      */
-    public ManagementPolicySnapShot getSnapshot() {
+    public ManagementPolicySnapShot snapshot() {
         return this.snapshot;
     }
 
@@ -59,7 +59,7 @@ public final class ManagementPolicyAction {
      * @param snapshot the snapshot value to set.
      * @return the ManagementPolicyAction object itself.
      */
-    public ManagementPolicyAction setSnapshot(ManagementPolicySnapShot snapshot) {
+    public ManagementPolicyAction withSnapshot(ManagementPolicySnapShot snapshot) {
         this.snapshot = snapshot;
         return this;
     }
