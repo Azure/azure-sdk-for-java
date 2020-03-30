@@ -1,5 +1,7 @@
-package com.azure.core.amqp.implementation;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
+package com.azure.core.amqp.implementation;
 
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.util.logging.ClientLogger;
