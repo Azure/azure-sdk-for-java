@@ -41,13 +41,15 @@ import com.azure.management.compute.ImageDataDisk;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineCustomImage;
 import com.azure.management.compute.VirtualMachineExtension;
+import com.azure.management.containerregistry.AccessKeyType;
+import com.azure.management.containerregistry.Registry;
+import com.azure.management.containerregistry.RegistryCredentials;
 import com.azure.management.containerservice.ContainerService;
 import com.azure.management.containerservice.ContainerServiceOrchestratorTypes;
 import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
-import com.azure.management.cosmosdb.Location;
 import com.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryObject;
@@ -1196,24 +1198,24 @@ public final class Utils {
 //        }
 //        System.out.println(info.toString());
 //    }
-//
-//    /**
-//     * Print an Azure Container Registry.
-//     *
-//     * @param azureRegistry an Azure Container Registry
-//     */
-//    public static void print(Registry azureRegistry) {
-//        StringBuilder info = new StringBuilder();
-//
-//        RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-//        info.append("Azure Container Registry: ").append(azureRegistry.id())
-//                .append("\n\tName: ").append(azureRegistry.name())
-//                .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
-//                .append("\n\tUser: ").append(acrCredentials.username())
-//                .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
-//                .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
-//        System.out.println(info.toString());
-//    }
+
+    /**
+     * Print an Azure Container Registry.
+     *
+     * @param azureRegistry an Azure Container Registry
+     */
+    public static void print(Registry azureRegistry) {
+        StringBuilder info = new StringBuilder();
+
+        RegistryCredentials acrCredentials = azureRegistry.getCredentials();
+        info.append("Azure Container Registry: ").append(azureRegistry.id())
+                .append("\n\tName: ").append(azureRegistry.name())
+                .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
+                .append("\n\tUser: ").append(acrCredentials.username())
+                .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+                .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
+        System.out.println(info.toString());
+    }
 
     /**
      * Print an Azure Container Service.
