@@ -40,7 +40,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractReceiptSourceUrl() {
         receiptSourceUrlRunner((sourceUrl) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceipt(sourceUrl);
+                client.beginExtractReceiptFromUrl(sourceUrl);
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
         });
@@ -50,7 +50,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     void extractReceiptSourceUrlTextDetails() {
         receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextDetails) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceipt(sourceUrl, includeTextDetails, null);
+                client.beginExtractReceiptFromUrl(sourceUrl, includeTextDetails, null);
             syncPoller.waitForCompletion();
             validateReceiptResult(includeTextDetails, getExtractedReceipts(), syncPoller.getFinalResult());
         });
@@ -87,7 +87,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
-            client.beginExtractReceipt(RECEIPT_URL).getFinalResult());
+            client.beginExtractReceiptFromUrl(RECEIPT_URL).getFinalResult());
     }
 
     /**
@@ -100,7 +100,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             new AzureKeyCredential(INVALID_KEY)).buildClient();
 
         // Action and Assert
-        assertThrows(HttpResponseException.class, () -> client.beginExtractReceipt(RECEIPT_URL));
+        assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptFromUrl(RECEIPT_URL));
     }
 
     /**
@@ -116,7 +116,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         credential.update(INVALID_KEY);
 
         // Action and Assert
-        assertThrows(HttpResponseException.class, () -> client.beginExtractReceipt(RECEIPT_URL));
+        assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptFromUrl(RECEIPT_URL));
     }
 
     /**
@@ -135,7 +135,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
-            client.beginExtractReceipt(RECEIPT_URL).getFinalResult());
+            client.beginExtractReceiptFromUrl(RECEIPT_URL).getFinalResult());
     }
 
     /**
@@ -160,7 +160,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
-            client.beginExtractReceipt(RECEIPT_URL).getFinalResult());
+            client.beginExtractReceiptFromUrl(RECEIPT_URL).getFinalResult());
     }
 
     /**
@@ -184,6 +184,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
-            client.beginExtractReceipt(RECEIPT_URL).getFinalResult());
+            client.beginExtractReceiptFromUrl(RECEIPT_URL).getFinalResult());
     }
 }

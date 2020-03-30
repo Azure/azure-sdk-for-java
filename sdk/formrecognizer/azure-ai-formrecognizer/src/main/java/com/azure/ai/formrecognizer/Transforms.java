@@ -35,11 +35,21 @@ import java.util.regex.Pattern;
  */
 final class Transforms {
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
+    // Pattern match to find all digits in the provided string.
     private static final Pattern COMPILE = Pattern.compile("[^0-9]+");
 
     private Transforms() {
     }
 
+    /**
+     * Helper method to convert the {@link com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult}
+     * service level receipt model to list of {@link ExtractedReceipt}.
+     *
+     * @param analyzeResult The result of the analyze receipt operation returned by the service.
+     * @param includeTextDetails When set to true, a list of references to the text elements is returned in the read result.
+     *
+     * @return A list of {@link ExtractedReceipt} to represent the list of extracted receipt information.
+     */
     static IterableStream<ExtractedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResult = analyzeResult.getDocumentResults();
@@ -96,6 +106,16 @@ final class Transforms {
         return new IterableStream<>(extractedReceiptList);
     }
 
+    /**
+     * Helper method that converts the incoming service field value to one of the strongly typed SDK level {@link FieldValue} with
+     * reference elements set when {@code includeTextDetails} is set to true.
+     *
+     * @param fieldValue The named field values returned by the service.
+     * @param readResults The result containing the list of element references when includeTextDetails is set to true.
+     * @param includeTextDetails When set to true, a list of references to the text elements is returned in the read result.
+     *
+     * @return The strongly typed {@link FieldValue} for the field input.
+     */
     private static FieldValue<?> setFieldValue(com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue,
                                                List<ReadResult> readResults, boolean includeTextDetails) {
         FieldValue<?> value;
@@ -123,12 +143,29 @@ final class Transforms {
         return value;
     }
 
+    /**
+     * Helper method that converts the service returned page information to SDK model {@link PageMetadata}.
+     *
+     * @param readResultItem A read result item returned from the service containing the page information for provided
+     * input.
+     *
+     * @return The {@link PageMetadata} for the receipt page.
+     */
     private static PageMetadata getPageInfo(ReadResult readResultItem) {
         return new PageMetadata(TextLanguage.fromString(readResultItem.getLanguage().toString()),
             readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
             readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()));
     }
 
+    /**
+     * Helper method to set the text reference elements on FieldValue/fields when {@code includeTextDetails} set to true.
+     *
+     * @param readResults The ReadResult containing the resolved references for text elements.
+     * @param elements When includeTextDetails is set to true, a list of references to the text
+     * elements constituting this field value.
+     *
+     * @return The updated {@link FieldValue} object with list if referenced elements.
+     */
     private static List<Element> setReferenceElements(List<ReadResult> readResults, List<String> elements) {
         List<Element> elementList = new ArrayList<>();
         elements.forEach(elementString -> {
@@ -155,6 +192,14 @@ final class Transforms {
         return elementList;
     }
 
+    /**
+     * Helper method to convert the service level modeled eight numbers representing the four points to SDK level
+     * {@link BoundingBox}.
+     *
+     * @param boundingBox A list of eight numbers representing the four points of a box.
+     *
+     * @return A {@link BoundingBox}.
+     */
     private static BoundingBox toBoundingBox(List<Float> boundingBox) {
         List<Point> pointList = new ArrayList<>();
         for (int i = 0; i < boundingBox.size(); i += 2) {
@@ -164,6 +209,16 @@ final class Transforms {
         return new BoundingBox(pointList);
     }
 
+    /**
+     * Helper method to convert the service level {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray() value items}
+     * to SDK level {@link ReceiptItem receipt items}.
+     *
+     * @param fieldValue The named field values returned by the service.
+     * @param readResults The result containing the list of element references when includeTextDetails is set to true.
+     * @param includeTextDetails When set to true, a list of references to the text elements is returned in the read result.
+     *
+     * @return A list of {@link ReceiptItem}.
+     */
     private static List<ReceiptItem> toReceiptItems(
         List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValue, List<ReadResult> readResults, boolean includeTextDetails) {
         List<ReceiptItem> receiptItemList = new ArrayList<>();
@@ -189,6 +244,15 @@ final class Transforms {
         return receiptItemList;
     }
 
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueInteger()}
+     * to a SDK level {@link IntegerValue}
+     *
+     * @param serviceIntegerValue The integer value returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueInteger()}.
+     *
+     * @return The {@link IntegerValue}.
+     */
     private static IntegerValue toFieldValueInteger(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                         serviceIntegerValue) {
         if (serviceIntegerValue.getValueNumber() != null) {
@@ -200,12 +264,30 @@ final class Transforms {
         return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), 0);
     }
 
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}
+     * to a SDK level {@link StringValue}
+     *
+     * @param serviceStringValue The string value returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()} ()}.
+     *
+     * @return The {@link StringValue}.
+     */
     private static StringValue toFieldValueString(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                       serviceStringValue) {
         return new StringValue(serviceStringValue.getText(), toBoundingBox(serviceStringValue.getBoundingBox()),
             serviceStringValue.getValueString());
     }
 
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueNumber()}
+     * to a SDK level {@link FloatValue}
+     *
+     * @param serviceFloatValue The float value returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueNumber()} .
+     *
+     * @return The {@link FloatValue}.
+     */
     private static FloatValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                      serviceFloatValue) {
         return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()),

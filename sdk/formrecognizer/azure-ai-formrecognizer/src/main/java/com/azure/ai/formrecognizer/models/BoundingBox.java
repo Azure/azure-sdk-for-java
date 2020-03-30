@@ -11,7 +11,7 @@ import java.util.List;
  * Quadrangle bounding box, with coordinates specified relative to the top-left of the original image
  */
 @Immutable
-public class BoundingBox {
+public final class BoundingBox {
     /**
      * Coordinates specified relative to the top-left of the element in {@link Point}.
      */

@@ -19,5 +19,4 @@ public abstract class Element extends RawItem {
     }
 
     abstract ElementType getType();
-
 }

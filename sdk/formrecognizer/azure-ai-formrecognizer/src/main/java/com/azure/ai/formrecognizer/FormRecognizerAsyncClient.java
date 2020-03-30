@@ -27,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -75,32 +76,37 @@ public final class FormRecognizerAsyncClient {
     /**
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * with an error message indicating absence of cancellation support</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl) {
-        return beginExtractReceipt(sourceUrl, false, null);
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceiptFromUrl(String sourceUrl) {
+        return beginExtractReceiptFromUrl(sourceUrl, false, null);
     }
 
     /**
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * with an error message indicating absence of cancellation support</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * one second is used.
+     * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl,
-                                                                                             boolean includeTextDetails,
-                                                                                             Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>
+        beginExtractReceiptFromUrl(String sourceUrl, boolean includeTextDetails,
+                               Duration pollInterval) {
+        Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
         return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
             extractReceiptPollOperation(),
@@ -111,13 +117,15 @@ public final class FormRecognizerAsyncClient {
     /**
      * Detects and extracts data from receipts data using optical character recognition (OCR) and a prebuilt receipt
      * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * with an error message indicating absence of cancellation support</p>
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param formContentType Supported Media types.
+     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * one second is used.
+     * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
@@ -125,7 +133,9 @@ public final class FormRecognizerAsyncClient {
     public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(
         Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
         Duration pollInterval) {
-        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(1);
+        Objects.requireNonNull(data, "'data' is required and cannot be null.");
+
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
         return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
             extractReceiptPollOperation(),

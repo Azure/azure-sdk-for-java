@@ -46,7 +46,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptSourceUrl() {
         receiptSourceUrlRunner((sourceUrl) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceipt(sourceUrl).getSyncPoller();
+                client.beginExtractReceiptFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
         });
@@ -56,7 +56,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptSourceUrlTextDetails() {
         receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextDetails) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceipt(sourceUrl, includeTextDetails, null).getSyncPoller();
+                client.beginExtractReceiptFromUrl(sourceUrl, includeTextDetails, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(true, getExtractedReceipts(), syncPoller.getFinalResult());
         });

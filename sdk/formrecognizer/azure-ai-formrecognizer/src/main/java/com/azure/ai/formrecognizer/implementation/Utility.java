@@ -14,8 +14,11 @@ import java.nio.ByteBuffer;
 /**
  * Utility method class.
  */
-public class Utility {
+public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+
+    private Utility() {
+    }
 
     /**
      * A utility method for converting the input stream to Flux of ByteBuffer.
@@ -26,26 +29,23 @@ public class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data) {
+        return Flux.just(toByteArray(data));
+    }
+
+    private static ByteBuffer toByteArray(InputStream in) {
         try {
-            return Flux.just(toByteArray(data));
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int len;
+
+            // read bytes from the input stream and store them in buffer
+            while ((len = in.read(buffer)) != -1) {
+                // write bytes from the buffer into output stream
+                os.write(buffer, 0, len);
+            }
+            return ByteBuffer.wrap(os.toByteArray());
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-    }
-
-    private static ByteBuffer toByteArray(InputStream in) throws IOException {
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-
-        byte[] buffer = new byte[1024];
-        int len;
-
-        // read bytes from the input stream and store them in buffer
-        while ((len = in.read(buffer)) != -1) {
-            // write bytes from the buffer into output stream
-            os.write(buffer, 0, len);
-        }
-
-        return ByteBuffer.wrap(os.toByteArray());
     }
 }

@@ -19,22 +19,17 @@ public class ExtractPrebuiltReceiptAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         final FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential(""))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceipt(receiptUrl, true, Duration.ofSeconds(1));
+            client.beginExtractReceiptFromUrl(receiptUrl, true, Duration.ofSeconds(1));
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller
             .last()
             .flatMap(trainingOperationResponse -> {
-                try {
-                    Thread.sleep(20000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 if (trainingOperationResponse.getStatus().isComplete()) {
                     System.out.println("Polling completed successfully");
                     // training completed successfully, retrieving final result.
@@ -46,7 +41,7 @@ public class ExtractPrebuiltReceiptAsync {
                 }
             }).block();
 
-        for (ExtractedReceipt extractedReceiptItem : receiptPageResults) {
+        receiptPageResults.forEach(extractedReceiptItem -> {
             System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
             System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
             System.out.printf("Merchant Address %s%n", extractedReceiptItem.getMerchantAddress().getText());
@@ -59,6 +54,6 @@ public class ExtractPrebuiltReceiptAsync {
                 System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
                 System.out.println();
             });
-        }
+        });
     }
 }

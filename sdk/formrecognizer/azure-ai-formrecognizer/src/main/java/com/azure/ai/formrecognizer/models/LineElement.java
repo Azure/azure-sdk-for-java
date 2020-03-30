@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * Creates an element of {@link ElementType#LINE}
  */
 @Immutable
-public class LineElement extends Element {
+public final class LineElement extends Element {
 
     /*
      * Type of the element.

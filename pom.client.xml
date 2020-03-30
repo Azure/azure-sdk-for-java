@@ -967,6 +967,7 @@
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED

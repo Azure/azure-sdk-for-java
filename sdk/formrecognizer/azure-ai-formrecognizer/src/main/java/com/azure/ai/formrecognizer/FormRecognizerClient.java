@@ -45,51 +45,56 @@ public final class FormRecognizerClient {
     /**
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * with an error message indicating absence of cancellation support</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl) {
-        return beginExtractReceipt(sourceUrl, false, null);
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceiptFromUrl(String sourceUrl) {
+        return beginExtractReceiptFromUrl(sourceUrl, false, null);
     }
 
     /**
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * with an error message indicating absence of cancellation support</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * one second is used.
+     * 5 seconds is used.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(String sourceUrl,
-                                                                                             boolean includeTextDetails,
-                                                                                             Duration pollInterval) {
-        return client.beginExtractReceipt(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
+        beginExtractReceiptFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
+        return client.beginExtractReceiptFromUrl(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
     }
 
     /**
      * Detects and extracts data from receipt data using optical character recognition (OCR) and a prebuilt
      * trained receipt model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * with an error message indicating absence of cancellation support</p>
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param formContentType Supported Media types.
+     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * one second is used.
+     * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
         beginExtractReceipt(InputStream data, long length, FormContentType formContentType, boolean includeTextDetails,
-                            Duration pollInterval) {
+                        Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
         return client.beginExtractReceipt(buffer, length, includeTextDetails, formContentType, pollInterval)

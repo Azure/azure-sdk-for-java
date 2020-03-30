@@ -214,7 +214,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
+            ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
     }
 

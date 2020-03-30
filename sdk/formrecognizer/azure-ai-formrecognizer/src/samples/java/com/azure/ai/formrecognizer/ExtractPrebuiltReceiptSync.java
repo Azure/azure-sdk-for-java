@@ -32,20 +32,21 @@ public class ExtractPrebuiltReceiptSync {
         // Instantiate a client that will be used to call the service.
 
         final FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential(""))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("///contoso-receipt.png");
+        File sourceFile = new File("///contoso-allinone.jpg");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
+
         SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
             client.beginExtractReceipt(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
                 Duration.ofSeconds(4));
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 
-        for (ExtractedReceipt extractedReceiptItem : receiptPageResults) {
+        receiptPageResults.forEach(extractedReceiptItem -> {
             System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
             System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
             System.out.printf("Merchant Name Value: %s%n", extractedReceiptItem.getMerchantName().getValue());
@@ -63,6 +64,6 @@ public class ExtractPrebuiltReceiptSync {
                 System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
                 System.out.println();
             });
-        }
+        });
     }
 }

@@ -9,17 +9,17 @@ import com.azure.core.annotation.Immutable;
  * The Point model.
  */
 @Immutable
-public class Point {
+public final class Point {
 
     /*
      * The x-axis point coordinate.
      */
-    private final Float xCoordinate;
+    private final float xCoordinate;
 
     /*
      * The y-axis point coordinate.
      */
-    private final Float yCoordinate;
+    private final float yCoordinate;
 
     /**
      * Creates a Point object.
@@ -27,7 +27,7 @@ public class Point {
      * @param xCoordinate The x-axis point coordinate.
      * @param yCoordinate The y-axis point coordinate.
      */
-    public Point(final Float xCoordinate, final Float yCoordinate) {
+    public Point(final float xCoordinate, final float yCoordinate) {
         this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordinate;
     }
@@ -37,7 +37,7 @@ public class Point {
      *
      * @return The x-axis coordinate value.
      */
-    public Float getX() {
+    public float getX() {
         return this.xCoordinate;
     }
 
@@ -46,7 +46,7 @@ public class Point {
      *
      * @return The y-axis coordinate value.
      */
-    public Float getY() {
+    public float getY() {
         return this.yCoordinate;
     }
 }

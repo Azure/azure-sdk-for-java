@@ -1,6 +1,6 @@
 # Azure Form Recognizer client library for Java
 Form Recognizer is a cloud-based cognitive service that uses machine learning technology to identify and extract text, 
-key/value pairs and table data from form documents.
+key-value pairs and table data from form documents.
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
@@ -54,14 +54,14 @@ az cognitiveservices account create \
 ```
 ### Authenticate the client
 In order to interact with the Form Recognizer service, you will need to create an instance of the `FormRecognizerClient` 
-class. You will need an **endpoint** and either an **API key** to instantiate a client 
-object. And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
+class. You will need an **endpoint** and an **API key** to instantiate a client object, 
+they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
 Form Recognizer resource. See the full details regarding [authentication][authentication] of Cognitive Services.
 
 #### Get credentials
 The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
 
-##### **Option 1**: Create FormRecognizerClient with API Key Credential
+##### Create FormRecognizerClient with API Key Credential
 To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
    under the "Quickstart" section or by running the following Azure CLI command:
 
@@ -69,24 +69,24 @@ To use an [API key][api_key], provide the key as a string. This can be found in 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L34-L37 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L38-L41 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(new FormRecognizerApiKeyCredential("{api_key}"))
+    .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L54-60 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L58-L64 -->
 ```java
-FormRecognizerApiKeyCredential credential = new FormRecognizerApiKeyCredential("{api_key}");
+AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.updateCredential("{new_api_key}");
+credential.update("{new_api_key}");
 ```
 
 ## Key concepts
@@ -103,17 +103,17 @@ The following sections provide several code snippets covering some of the most c
 Form Recognizer support both synchronous and asynchronous client creation by using
 `FormRecognizerClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L34-L37 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L38-L41 -->
 ``` java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(new FormRecognizerApiKeyCredential("{api_key}"))
+    .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L44-L47 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L48-L51 -->
 ``` java
-FormRecognizerAsyncClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(new FormRecognizerApiKeyCredential("{api_key}"))
+FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+    .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
@@ -121,6 +121,25 @@ FormRecognizerAsyncClient formRecognizerClient = new FormRecognizerClientBuilder
 ### Extract receipt information
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L68-L86 -->
 ```java
+String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
+SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
+    formRecognizerClient.beginExtractReceipt(receiptSourceUrl);
+IterableStream<ExtractedReceipt> extractedReceipts = syncPoller.getFinalResult();
+
+for (ExtractedReceipt extractedReceiptItem : extractedReceipts) {
+    System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
+    System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
+    System.out.printf("Merchant Address %s%n", extractedReceiptItem.getMerchantAddress().getText());
+    System.out.printf("Merchant Phone Number %s%n", extractedReceiptItem.getMerchantPhoneNumber().getText());
+    System.out.printf("Total: %s%n", extractedReceiptItem.getTotal().getText());
+    System.out.printf("Receipt Items: %n");
+    extractedReceiptItem.getReceiptItems().forEach(receiptItem -> {
+        System.out.printf("Name: %s%n", receiptItem.getName().getText());
+        System.out.printf("Quantity: %s%n", receiptItem.getQuantity().getText());
+        System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
+        System.out.println();
+    });
+}
 ```
 For more detailed examples, refer to [here][samples_readme].
 
@@ -130,20 +149,14 @@ Form Recognizer clients raise exceptions.
 TODO
 
 ### Enable client logging
-You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
-example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
-be found here: [log levels][LogLevels].
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite 
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help 
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
 [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
-
-### Default SSL library
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides 
-better performance compared to the default SSL implementation within the JDK. For more information, including how to 
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
 
 ## Next steps
 - Samples are explained in detail [here][samples_readme].
@@ -178,6 +191,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [form_recognizer_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [form_recognizer_async_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerAsyncClient.java
 [form_recognizer_sync_client]: src/main/java/com/azure/ai/formrecognizer/FormRecognizerClient.java
-[LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2FREADME.png)

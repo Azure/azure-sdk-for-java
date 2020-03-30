@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -41,10 +42,9 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #apiKey(AzureKeyCredential) apiKey(FormRecognizerApiKeyCredential)} gives
+ * {@link #apiKey(AzureKeyCredential)} gives
  * the builder access credential.
  * </p>
- * TODO: add code snippets
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
@@ -60,7 +60,7 @@ import java.util.Objects;
 public final class FormRecognizerClientBuilder {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
-    private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
+    private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
     static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
@@ -135,6 +135,8 @@ public final class FormRecognizerClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+
         // Global Env configuration store
         final Configuration buildConfiguration = (configuration == null)
             ? Configuration.getGlobalConfiguration().clone() : configuration;
@@ -143,7 +145,6 @@ public final class FormRecognizerClientBuilder {
             version != null ? version : FormRecognizerServiceVersion.getLatest();
 
         // Endpoint cannot be null, which is required in request authentication
-        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
@@ -164,13 +165,13 @@ public final class FormRecognizerClientBuilder {
                 buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersPolicy(headers));
-            policies.add(new AddDatePolicy());
 
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
 
+            policies.add(new AddDatePolicy());
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
             pipeline = new HttpPipelineBuilder()
@@ -191,7 +192,7 @@ public final class FormRecognizerClientBuilder {
      * Sets the service endpoint for the Azure Form Recognizer instance.
      *
      * @param endpoint The URL of the Azure Form Recognizer instance service requests to and receive responses from.
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
@@ -214,11 +215,11 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
-     * Sets the credential to use when authenticating HTTP requests for this FormRecognizerClientImplBuilder.
+     * Sets the credential to use when authenticating HTTP requests for this FormRecognizerClientBuilder.
      *
      * @param apiKeyCredential API key credential
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
     public FormRecognizerClientBuilder apiKey(AzureKeyCredential apiKeyCredential) {
@@ -233,7 +234,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;

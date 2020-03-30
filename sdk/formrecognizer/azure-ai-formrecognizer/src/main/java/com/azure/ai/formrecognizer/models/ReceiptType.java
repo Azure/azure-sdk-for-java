@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The ReceiptType model.
  */
 @Immutable
-public class ReceiptType {
+public final class ReceiptType {
 
     /*
      * The type of the receipt.

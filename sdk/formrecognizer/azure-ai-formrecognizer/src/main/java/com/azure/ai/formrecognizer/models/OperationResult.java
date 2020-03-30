@@ -11,7 +11,7 @@ import java.util.Objects;
  * The OperationResult model.
  */
 @Immutable
-public class OperationResult {
+public final class OperationResult {
     /**
      * Identifier which contains the result of the model/analyze operation.
      */

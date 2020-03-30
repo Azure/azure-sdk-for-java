@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The PageMetadata model.
  */
 @Immutable
-public class PageMetadata {
+public final class PageMetadata {
     /*
      * The detected language on the page overall.
      */
