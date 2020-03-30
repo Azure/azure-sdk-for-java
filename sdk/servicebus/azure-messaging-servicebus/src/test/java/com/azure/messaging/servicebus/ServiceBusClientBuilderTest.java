@@ -40,7 +40,7 @@ public class ServiceBusClientBuilderTest {
         assertThrows(IllegalArgumentException.class, () -> {
             final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
             builder.buildSenderClientBuilder()
-                .entityName(QUEUE_NAME)
+                .queueName(QUEUE_NAME)
                 .buildAsyncClient();
         });
     }
@@ -50,7 +50,7 @@ public class ServiceBusClientBuilderTest {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
         final ServiceBusSenderAsyncClient client = builder.connectionString(NAMESPACE_CONNECTION_STRING)
             .buildSenderClientBuilder()
-            .entityName(QUEUE_NAME)
+            .queueName(QUEUE_NAME)
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -97,5 +97,4 @@ public class ServiceBusClientBuilderTest {
                 "Invalid namespace name: %s", namespace), exception);
         }
     }
-
 }

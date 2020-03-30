@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         sender = createBuilder()
             .buildSenderClientBuilder()
-            .entityName(getTopicName())
+            .queueName(getQueueName())
             .buildClient();
     }
 

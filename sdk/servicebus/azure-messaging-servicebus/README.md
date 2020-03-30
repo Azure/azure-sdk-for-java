@@ -115,7 +115,7 @@ String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
     .connectionString(connectionString)
     .buildSenderClientBuilder()
-    .entityName("<< QUEUE OR TOPIC NAME >>")
+    .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
 ```
 

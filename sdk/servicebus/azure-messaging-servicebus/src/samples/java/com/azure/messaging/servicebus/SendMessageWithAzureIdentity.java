@@ -46,7 +46,7 @@ public class SendMessageWithAzureIdentity {
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>", credential)
             .buildSenderClientBuilder()
-            .entityName("<<queue-or-topic-name>>")
+            .queueName("<<queue-or-topic-name>>")
             .buildAsyncClient();
 
         senderAsyncClient.send(guestCheckInEvent)

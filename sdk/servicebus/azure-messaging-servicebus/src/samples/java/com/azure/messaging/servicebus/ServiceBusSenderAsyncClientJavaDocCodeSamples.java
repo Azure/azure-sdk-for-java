@@ -31,7 +31,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
             .buildSenderClientBuilder()
-            .entityName("<QUEUE-NAME>")
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
 
@@ -49,7 +49,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .credential("<<fully-qualified-namespace>>",
                 new DefaultAzureCredentialBuilder().build())
             .buildSenderClientBuilder()
-            .entityName("<QUEUE-NAME>")
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential
 
@@ -67,7 +67,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
             .buildSenderClientBuilder()
-            .entityName("<QUEUE OR TOPIC NAME>")
+            .queueName("<QUEUE OR TOPIC NAME>")
             .buildAsyncClient();
 
         // Creating a batch without options set, will allow for automatic routing of events to any partition.

@@ -19,7 +19,7 @@ public class ReadmeSamples {
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .buildSenderClientBuilder()
-            .entityName("<< QUEUE OR TOPIC NAME >>")
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
     }
 

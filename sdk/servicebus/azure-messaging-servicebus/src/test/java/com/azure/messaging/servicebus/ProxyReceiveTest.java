@@ -81,7 +81,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
         final ServiceBusSenderAsyncClient sender = builder.buildSenderClientBuilder()
-            .entityName(queueName)
+            .queueName(queueName)
             .buildAsyncClient();
 
         final ServiceBusReceiverAsyncClient receiver = builder.buildReceiverClientBuilder()

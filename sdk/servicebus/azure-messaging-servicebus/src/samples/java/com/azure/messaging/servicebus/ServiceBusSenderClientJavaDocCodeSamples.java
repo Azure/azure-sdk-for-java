@@ -28,7 +28,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
             .buildSenderClientBuilder()
-            .entityName("queue-name")
+            .queueName("queue-name")
             .buildClient();
 
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
@@ -77,7 +77,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
             .buildSenderClientBuilder()
-            .entityName("<QUEUE-NAME>")
+            .queueName("<< QUEUE NAME >>")
             .buildClient();
 
         final ServiceBusMessage firstMessage = new ServiceBusMessage("message-1".getBytes(UTF_8));

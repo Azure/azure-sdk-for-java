@@ -27,7 +27,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         final String queueName = getQueueName();
         if (queueName != null) {
             logger.info("Using queueName: {}", queueName);
-            builder.entityName(queueName);
+            builder.queueName(queueName);
         } else {
             logger.info("Using entityPath from connection string.");
         }
@@ -85,7 +85,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final ServiceBusSenderAsyncClient credentialSender = createBuilder(true)
             .buildSenderClientBuilder()
-            .entityName(getQueueName())
+            .queueName(getQueueName())
             .buildAsyncClient();
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
