@@ -18,7 +18,8 @@ import java.time.Instant;
  */
 public interface ServiceBusManagementNode extends AutoCloseable {
     /**
-     * Completes a message given its lock token.
+     * Updates the disposition status of a message given its lock token.
+     *
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
     Mono<Void> updateDisposition(UUID lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
@@ -26,12 +27,14 @@ public interface ServiceBusManagementNode extends AutoCloseable {
 
     /**
      * This will return next available message to peek.
+     *
      * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
     Mono<ServiceBusReceivedMessage> peek();
 
     /**
      * @param fromSequenceNumber to peek message from.
+     *
      * @return {@link Mono} of {@link ServiceBusReceivedMessage}.
      */
     Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber);
@@ -63,6 +66,24 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return {@link Instant} representing the pending renew.
      */
     Mono<Instant> renewMessageLock(UUID messageLock);
+
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred message can only be received by using
+     * sequence number.
+     *
+     * @param sequenceNumber The {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     */
+    Mono<ServiceBusReceivedMessage> receiveDeferredMessage(ReceiveMode receiveMode, long sequenceNumber);
+
+    /**
+     * Receives a deferred {@link ServiceBusReceivedMessage}. Deferred messages can only be received by using
+     * sequence number.
+     *
+     * @param sequenceNumbers The sequence numbers from the {@link ServiceBusReceivedMessage#getSequenceNumber()}.
+     * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
+     */
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessageBatch(ReceiveMode receiveMode, long... sequenceNumbers);
 
     @Override
     void close();

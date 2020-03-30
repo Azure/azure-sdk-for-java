@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
@@ -24,6 +25,7 @@ class QueryPlanRetriever {
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
                                                                QueryFeature.OrderBy.name() + ", " +
                                                                QueryFeature.OffsetAndLimit.name() + ", " +
+                                                               QueryFeature.Distinct.name() + ", " +
                                                                QueryFeature.Top.name();
 
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(IDocumentQueryClient queryClient,
@@ -40,7 +42,7 @@ class QueryPlanRetriever {
                                                                                  resourceLink,
                                                                                  requestHeaders);
         request.UseGatewayMode = true;
-        request.setByteBuffer(sqlQuerySpec.serializeJsonToByteBuffer());
+        request.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         final DocumentClientRetryPolicy retryPolicyInstance =
             queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy();

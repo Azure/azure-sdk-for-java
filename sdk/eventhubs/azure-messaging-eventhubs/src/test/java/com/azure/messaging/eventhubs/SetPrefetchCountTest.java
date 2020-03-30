@@ -9,19 +9,20 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
+import reactor.test.StepVerifier;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 /**
  * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
-@Disabled("Set prefetch tests do not work because they try to send very large number of events at once.")
-public class SetPrefetchCountTest extends IntegrationTestBase {
+@Disabled("Set prefetch tests do not work because they try to send very large number of events at once."
+    + "https://github.com/Azure/azure-sdk-for-java/issues/9659")
+class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     // Default number of events to fetch when creating the consumer.
     private static final int DEFAULT_PREFETCH_COUNT = 500;
@@ -34,81 +35,74 @@ public class SetPrefetchCountTest extends IntegrationTestBase {
     private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
-    private EventHubAsyncClient client;
     private EventHubConsumerAsyncClient consumer;
+    private EventHubClientBuilder builder;
 
-    public SetPrefetchCountTest() {
+    SetPrefetchCountTest() {
         super(new ClientLogger(SetPrefetchCountTest.class));
     }
 
     @Override
     protected void beforeTest() {
-        client = createBuilder().buildAsyncClient();
+        builder = createBuilder()
+            .shareConnection()
+            .prefetchCount(DEFAULT_PREFETCH_COUNT)
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
 
         if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
             final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
 
-            final EventHubProducerAsyncClient producer = client.createProducer();
-            testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
+            try (EventHubProducerAsyncClient producer = createBuilder().buildAsyncProducerClient()) {
+                testData = setupEventTestData(producer, NUMBER_OF_EVENTS, options);
+                Assertions.assertNotNull(testData);
+            }
         }
     }
 
     @Override
     protected void afterTest() {
-        dispose(consumer, client);
+        dispose(consumer);
     }
 
     /**
      * Test that we can use a very large prefetch number.
      */
     @Test
-    public void setLargePrefetchCount() throws InterruptedException {
+    public void setLargePrefetchCount() {
         // Arrange
         // Since we cannot test receiving very large prefetch like 10000 in a unit test, DefaultPrefetchCount * 3 was
         // chosen
         final int eventCount = NUMBER_OF_EVENTS;
-        final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
+        final EventPosition position = EventPosition.fromEnqueuedTime(
+            testData.getEnqueuedTime().minus(Duration.ofMinutes(5)));
 
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 2000);
+        consumer = builder.prefetchCount(2000).buildAsyncConsumerClient();
 
-        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+        // Act & Assert
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
-            .take(eventCount).subscribe(event -> countDownLatch.countDown());
-
-        // Act
-        try {
-            countDownLatch.await(1, TimeUnit.MINUTES);
-
-            // Assert
-            Assertions.assertEquals(0, countDownLatch.getCount());
-        } finally {
-            subscription.dispose();
-        }
+            .take(eventCount))
+            .expectNextCount(eventCount)
+            .verifyComplete();
     }
 
     /**
      * Test for small prefetch count on EventHubConsumer continues to get messages.
      */
     @Test
-    public void setSmallPrefetchCount() throws InterruptedException {
+    public void setSmallPrefetchCount() {
         // Arrange
         final int eventCount = 30;
-        final CountDownLatch countDownLatch = new CountDownLatch(eventCount);
+        final EventPosition position = EventPosition.fromEnqueuedTime(
+            testData.getEnqueuedTime().minus(Duration.ofMinutes(5)));
 
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, 11);
+        consumer = builder.prefetchCount(11).buildAsyncConsumerClient();
 
-        final Disposable subscription = consumer.receiveFromPartition(PARTITION_ID, EventPosition.fromEnqueuedTime(testData.getEnqueuedTime()))
+        // Act & Assert
+        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
             .filter(x -> isMatchingEvent(x, testData.getMessageTrackingId()))
-            .take(eventCount).subscribe(event -> countDownLatch.countDown());
-
-        try {
-            // Act
-            countDownLatch.await(45, TimeUnit.SECONDS);
-
-            // Assert
-            Assertions.assertEquals(0, countDownLatch.getCount());
-        } finally {
-            subscription.dispose();
-        }
+            .take(eventCount))
+            .expectNextCount(eventCount)
+            .verifyComplete();
     }
 }

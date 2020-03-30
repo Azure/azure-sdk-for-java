@@ -49,8 +49,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Builder spanBuilder = getSpanBuilder(spanName, context);
         Span span = spanBuilder.startSpan();
         if (span.isRecording()) {
-            // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
-            String tracingNamespace = getOrDefault(context, "az.tracing.namespace", null, String.class);
+            String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
             if (tracingNamespace != null) {
                 span.setAttribute(AZ_NAMESPACE_KEY, AttributeValue.stringAttributeValue(tracingNamespace));
             }
@@ -87,9 +86,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
                 spanBuilder = getSpanBuilder(spanName, context);
                 span = spanBuilder.setSpanKind(Span.Kind.PRODUCER).startSpan();
                 if (span.isRecording()) {
-                    span.setAttribute(AZ_NAMESPACE_KEY,
-                        AttributeValue.stringAttributeValue(getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, "",
-                            String.class)));
+                    // If span is sampled in, add additional request attributes
+                    addSpanRequestAttributes(span, context, spanName);
                 }
                 // Add diagnostic Id and trace-headers to Context
                 context = setContextData(span);
@@ -270,6 +268,10 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Long messageEnqueuedTime = getOrDefault(context, MESSAGE_ENQUEUED_TIME, null, Long.class);
         if (messageEnqueuedTime != null) {
             span.setAttribute(MESSAGE_ENQUEUED_TIME, messageEnqueuedTime);
+        }
+        String tracingNamespace = getOrDefault(context, AZ_TRACING_NAMESPACE_KEY, null, String.class);
+        if (tracingNamespace != null) {
+            span.setAttribute(AZ_NAMESPACE_KEY, tracingNamespace);
         }
     }
 

@@ -18,8 +18,10 @@ import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.HashIndex;
 import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKey;
@@ -30,8 +32,8 @@ import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -77,12 +79,12 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IncludedPath includedPath1 = new IncludedPath();
         includedPath1.setPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
-        includedPath1.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
+        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
         IncludedPath includedPath2 = new IncludedPath();
         includedPath2.setPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
@@ -145,7 +147,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         CosmosItemProperties doc2Inserted = BridgeInternal.getProperties(collection
                                                                              .createItem(doc2, new CosmosItemRequestOptions())
                                                                              .block());
-        CosmosItemProperties doc2Replacement = new CosmosItemProperties(doc1Inserted.toJson());
+        CosmosItemProperties doc2Replacement = new CosmosItemProperties(ModelBridgeInternal.toJsonFromJsonSerializable(doc1Inserted));
         doc2Replacement.setId( doc2Inserted.getId());
 
         try {
@@ -186,11 +188,11 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IncludedPath includedPath1 = new IncludedPath();
         includedPath1.setPath("/name/?");
-        includedPath1.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath1.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
 
         IncludedPath includedPath2 = new IncludedPath();
         includedPath2.setPath("/description/?");
-        includedPath2.setIndexes(Collections.singletonList(new HashIndex(DataType.STRING, 7)));
+        includedPath2.setIndexes(Collections.singletonList(Index.hash(DataType.STRING, 7)));
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
@@ -219,10 +221,10 @@ public class UniqueIndexTest extends TestSuiteBase {
     public void before_UniqueIndexTest() {
         // set up the client
         client = new CosmosClientBuilder()
-                .setEndpoint(TestConfigurations.HOST)
-                .setKey(TestConfigurations.MASTER_KEY)
-                .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                .setConsistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
+            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

@@ -51,7 +51,8 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
         transport.addTransportLayer(webSocket);
 
-        logger.verbose("Adding web sockets transport layer for hostname[{}]", hostName);
+        logger.verbose("connectionId[{}] Adding web sockets transport layer for hostname[{}]",
+            getConnectionId(), hostName);
 
         super.addTransportLayers(event, transport);
     }

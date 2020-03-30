@@ -22,6 +22,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -50,12 +51,12 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildClient();
+        this.client = getClientBuilder().buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container1 = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        client1 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
-        client2 = copyCosmosClientBuilder(clientBuilder()).setConnectionReuseAcrossClientsEnabled(true).buildClient();
+        client1 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
+        client2 = copyCosmosClientBuilder(getClientBuilder()).connectionReuseAcrossClientsEnabled(true).buildClient();
 
         container1 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
         container2 = client1.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
@@ -104,7 +105,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemProperties properties1 = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse1 = container1.createItem(properties1);
         CosmosItemResponse<CosmosItemProperties> readResponse1 = container1.readItem(properties1.getId(),
-                                                                                    new PartitionKey(properties1.get("mypk")),
+                                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties1, "mypk")),
                                                                                     new CosmosItemRequestOptions(),
                                                                                     CosmosItemProperties.class);
         validateItemResponse(properties1, readResponse1);
@@ -112,7 +113,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemProperties properties2 = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse2 = container2.createItem(properties2);
         CosmosItemResponse<CosmosItemProperties> readResponse2 = container2.readItem(properties2.getId(),
-            new PartitionKey(properties2.get("mypk")),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties2, "mypk")),
             new CosmosItemRequestOptions(),
             CosmosItemProperties.class);
         validateItemResponse(properties2, readResponse2);
@@ -127,13 +128,13 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
+        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
         CosmosItemResponse<CosmosItemProperties> replace = container1.replaceItem(properties,
                                                               properties.getId(),
-                                                              new PartitionKey(properties.get("mypk")),
+                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                               options);
-        assertThat(BridgeInternal.getProperties(replace).get("newProp")).isEqualTo(newPropValue);
+        assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(BridgeInternal.getProperties(replace), "newProp")).isEqualTo(newPropValue);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -143,7 +144,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         CosmosItemResponse<?> deleteResponse = container1.deleteItem(properties.getId(),
-                                                                    new PartitionKey(properties.get("mypk")),
+                                                                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                     options);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
     }
@@ -273,6 +274,6 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
     }
 
     private boolean ifDirectMode() {
-        return (clientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
+        return (getClientBuilder().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT);
     }
 }

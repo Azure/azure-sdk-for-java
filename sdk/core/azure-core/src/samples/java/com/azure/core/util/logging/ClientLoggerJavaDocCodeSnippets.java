@@ -20,26 +20,47 @@ public class ClientLoggerJavaDocCodeSnippets {
         String name = getName();
 
         // BEGIN: com.azure.core.util.logging.clientlogger.verbose
-        logger.verbose("A formattable message. Hello, {}", name);
+        logger.verbose("A log message");
         // END: com.azure.core.util.logging.clientlogger.verbose
 
+        // BEGIN: com.azure.core.util.logging.clientlogger.verbose#string-object
+        logger.verbose("A formattable message. Hello, {}", name);
+        // END: com.azure.core.util.logging.clientlogger.verbose#string-object
+
         // BEGIN: com.azure.core.util.logging.clientlogger.info
-        logger.info("A formattable message. Hello, {}", name);
+        logger.info("A log message");
         // END: com.azure.core.util.logging.clientlogger.info
 
+        // BEGIN: com.azure.core.util.logging.clientlogger.info#string-object
+        logger.info("A formattable message. Hello, {}", name);
+        // END: com.azure.core.util.logging.clientlogger.info#string-object
+
         // BEGIN: com.azure.core.util.logging.clientlogger.warning
+        Throwable detailedException = new IllegalArgumentException("A exception with a detailed message");
+        logger.warning(detailedException.getMessage());
+        // END: com.azure.core.util.logging.clientlogger.warning
+
+        // BEGIN: com.azure.core.util.logging.clientlogger.warning#string-object
         Throwable exception = new IllegalArgumentException("An invalid argument was encountered.");
         logger.warning("A formattable message. Hello, {}", name, exception);
-        // END: com.azure.core.util.logging.clientlogger.warning
+        // END: com.azure.core.util.logging.clientlogger.warning#string-object
 
         File resource = getFile();
         // BEGIN: com.azure.core.util.logging.clientlogger.error
         try {
             upload(resource);
         } catch (IOException ex) {
-            logger.error("A formattable message. Hello, {}", name, ex);
+            logger.error(ex.getMessage());
         }
         // END: com.azure.core.util.logging.clientlogger.error
+
+        // BEGIN: com.azure.core.util.logging.clientlogger.error#string-object
+        try {
+            upload(resource);
+        } catch (IOException ex) {
+            logger.error("A formattable message. Hello, {}", name, ex);
+        }
+        // END: com.azure.core.util.logging.clientlogger.error#string-object
     }
 
     /**

@@ -801,7 +801,7 @@
   </Match>
 
   <Match>
-    <Class name="com.azure.cosmos.models.DatabaseAccount"/>
+    <Class name="com.azure.cosmos.implementation.DatabaseAccount"/>
     <Method name="getQueryEngineConfiguration"/>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
@@ -1885,6 +1885,64 @@
     IM_BAD_CHECK_FOR_ODD,
     RC_REF_COMPARISON,
     REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exclude vendor-ed apache-commons types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.apachecommons(.+)"/>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    IS2_INCONSISTENT_SYNC,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    SE_BAD_FIELD,
+    SE_TRANSIENT_FIELD_NOT_RESTORED,
+    ES_COMPARING_PARAMETER_STRING_WITH_EQ,
+    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
+    DM_CONVERT_CASE"/>
+  </Match>
+
+    <!-- Exclude vendor-ed guava25 types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.guava25(.+)"/>
+    <Bug pattern="BC_BAD_CAST_TO_ABSTRACT_COLLECTION,
+    BC_UNCONFIRMED_CAST,
+    BC_UNCONFIRMED_CAST_OF_RETURN_VALUE,
+    DLS_DEAD_LOCAL_STORE,
+    DLS_DEAD_LOCAL_STORE_IN_RETURN,
+    DMI_NONSERIALIZABLE_OBJECT_WRITTEN,
+    DP_CREATE_CLASSLOADER_INSIDE_DO_PRIVILEGED,
+    EQ_DOESNT_OVERRIDE_EQUALS,
+    HE_EQUALS_NO_HASHCODE,
+    HE_EQUALS_USE_HASHCODE,
+    HE_HASHCODE_NO_EQUALS,
+    HE_INHERITS_EQUALS_USE_HASHCODE,
+    IA_AMBIGUOUS_INVOCATION_OF_INHERITED_OR_OUTER_METHOD,
+    IS2_INCONSISTENT_SYNC,
+    IT_NO_SUCH_ELEMENT,
+    NM_SAME_SIMPLE_NAME_AS_INTERFACE,
+    NP_LOAD_OF_KNOWN_NULL_VALUE,
+    NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE,
+    NS_NON_SHORT_CIRCUIT,
+    PZLA_PREFER_ZERO_LENGTH_ARRAYS,
+    RI_REDUNDANT_INTERFACES,
+    RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT,
+    SA_FIELD_SELF_ASSIGNMENT,
+    SE_BAD_FIELD,
+    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
+    SE_INNER_CLASS,
+    SE_NO_SERIALVERSIONID,
+    SE_TRANSIENT_FIELD_NOT_RESTORED,
+    SF_SWITCH_FALLTHROUGH,
+    UC_USELESS_CONDITION,
+    UMAC_UNCALLABLE_METHOD_OF_ANONYMOUS_CLASS,
+    UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
+    UWF_UNWRITTEN_FIELD"/>
+    </Match>
+    
+  <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
+  <Match>
+    <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>
+    <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
 
 </FindBugsFilter>

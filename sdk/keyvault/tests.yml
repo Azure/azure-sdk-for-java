@@ -3,9 +3,19 @@ trigger: none
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
-      TimeoutInMinutes: 200
-      MaxParallel: 3
+      TimeoutInMinutes: 240
+      MaxParallel: 2
       ServiceDirectory: keyvault
+      Artifacts:
+        - name: azure-security-keyvault-certificates
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultcertificates
+        - name: azure-security-keyvault-keys
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultkeys
+        - name: azure-security-keyvault-secrets
+          groupId: com.azure
+          safeName: azuresecuritykeyvaultsecrets
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_TEST_HTTP_CLIENTS: ALL

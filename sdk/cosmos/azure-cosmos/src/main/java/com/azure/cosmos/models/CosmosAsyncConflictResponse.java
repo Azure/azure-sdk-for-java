@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncConflict;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ResourceResponse;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * The type Cosmos async conflict response.

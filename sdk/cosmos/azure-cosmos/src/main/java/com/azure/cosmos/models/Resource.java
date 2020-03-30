@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -133,15 +133,13 @@ public class Resource extends JsonSerializable {
         return super.getString(Constants.Properties.R_ID);
     }
 
-    // TODO: make private
-
     /**
      * Set the ID associated with the resource.
      *
      * @param resourceId the ID associated with the resource.
      * @return the resource.
      */
-    public Resource setResourceId(String resourceId) {
+    Resource setResourceId(String resourceId) {
         super.set(Constants.Properties.R_ID, resourceId);
         return this;
     }

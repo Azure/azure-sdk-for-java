@@ -211,12 +211,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             assertNotNull(deletedSecretResponse.getRecoveryId());
             assertNotNull(deletedSecretResponse.getScheduledPurgeDate());
             assertEquals(secretToDelete.getName(), deletedSecretResponse.getName());
-
-            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToDelete.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
-            sleepInRecordMode(15000);
         });
     }
 
@@ -252,13 +246,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
                         assertNotNull(deletedSecretResponse.getScheduledPurgeDate());
                         assertEquals(secretToDeleteAndGet.getName(), deletedSecretResponse.getName());
                     }).verifyComplete();
-
-            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretToDeleteAndGet.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
-            pollOnSecretPurge(secretToDeleteAndGet.getName());
-            sleepInRecordMode(10000);
         });
     }
 
@@ -453,15 +440,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             sleepInRecordMode(30000);
 
             assertEquals(secrets.size(), output.size());
-
-            PollerFlux<DeletedSecret, Void> poller = client.beginDeleteSecret(secretName);
-            poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).blockLast();
-
-            StepVerifier.create(client.purgeDeletedSecretWithResponse(secretName))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
-            pollOnSecretPurge(secretName);
         });
     }
 
@@ -491,24 +469,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
             }).blockLast();
             assertEquals(0, secrets.size());
         });
-    }
-
-    private void pollOnSecretDeletion(String secretName) {
-        int pendingPollCount = 0;
-        while (pendingPollCount < 30) {
-            DeletedSecret deletedSecret = null;
-            try {
-                deletedSecret = client.getDeletedSecret(secretName).block();
-            } catch (ResourceNotFoundException e) {
-            }
-            if (deletedSecret == null) {
-                sleepInRecordMode(2000);
-                pendingPollCount += 1;
-            } else {
-                return;
-            }
-        }
-        System.err.printf("Deleted Secret %s not found \n", secretName);
     }
 
     private void pollOnSecretPurge(String secretName) {

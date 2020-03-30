@@ -27,8 +27,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = RntbdRequestRecord.JsonSerializer.class)
 public final class RntbdRequestRecord extends CompletableFuture<StoreResponse> {
