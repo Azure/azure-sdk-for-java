@@ -257,8 +257,8 @@ public class ConnectionHandler extends Handler {
         }
 
         if (condition == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "notifyErrorContext does not have an ErrorCondition."));
+            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: notifyErrorContext does not have an ErrorCondition.", getConnectionId())));
         }
 
         // if the remote-peer abruptly closes the connection without issuing close frame issue one

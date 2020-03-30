@@ -120,7 +120,6 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-
       - task: Maven@3
         displayName: $(DisplayName)
         inputs:

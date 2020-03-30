@@ -21,16 +21,16 @@ public class ReactorHandler extends BaseHandler {
     private static final int REACTOR_IO_POLL_TIMEOUT = 20;
 
     private final ClientLogger logger = new ClientLogger(ReactorHandler.class);
-    private final String name;
+    private final String connectionId;
 
-    public ReactorHandler(final String name) {
-        Objects.requireNonNull(name);
-        this.name = name;
+    public ReactorHandler(final String connectionId) {
+        Objects.requireNonNull(connectionId);
+        this.connectionId = connectionId;
     }
 
     @Override
     public void onReactorInit(Event e) {
-        logger.info("name[{}] reactor.onReactorInit", name);
+        logger.info("connectionId[{}] reactor.onReactorInit", connectionId);
 
         final Reactor reactor = e.getReactor();
         reactor.setTimeout(REACTOR_IO_POLL_TIMEOUT);
@@ -38,6 +38,6 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorFinal(Event e) {
-        logger.info("name[{}] reactor.onReactorFinal", name);
+        logger.info("connectionId[{}] reactor.onReactorFinal. event: {}", connectionId, e);
     }
 }
