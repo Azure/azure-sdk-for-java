@@ -25,7 +25,6 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.Closeable;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
@@ -60,7 +59,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
-public final class ServiceBusReceiverAsyncClient implements Closeable {
+public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();

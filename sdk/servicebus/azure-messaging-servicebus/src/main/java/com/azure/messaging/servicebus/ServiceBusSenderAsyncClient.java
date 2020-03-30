@@ -22,7 +22,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.io.Closeable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,7 +62,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
-public final class ServiceBusSenderAsyncClient implements Closeable {
+public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
