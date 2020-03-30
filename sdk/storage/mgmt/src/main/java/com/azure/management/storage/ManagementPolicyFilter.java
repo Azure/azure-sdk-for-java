@@ -31,7 +31,7 @@ public final class ManagementPolicyFilter {
      * 
      * @return the prefixMatch value.
      */
-    public List<String> getPrefixMatch() {
+    public List<String> prefixMatch() {
         return this.prefixMatch;
     }
 
@@ -42,7 +42,7 @@ public final class ManagementPolicyFilter {
      * @param prefixMatch the prefixMatch value to set.
      * @return the ManagementPolicyFilter object itself.
      */
-    public ManagementPolicyFilter setPrefixMatch(List<String> prefixMatch) {
+    public ManagementPolicyFilter withPrefixMatch(List<String> prefixMatch) {
         this.prefixMatch = prefixMatch;
         return this;
     }
@@ -53,7 +53,7 @@ public final class ManagementPolicyFilter {
      * 
      * @return the blobTypes value.
      */
-    public List<String> getBlobTypes() {
+    public List<String> blobTypes() {
         return this.blobTypes;
     }
 
@@ -64,7 +64,7 @@ public final class ManagementPolicyFilter {
      * @param blobTypes the blobTypes value to set.
      * @return the ManagementPolicyFilter object itself.
      */
-    public ManagementPolicyFilter setBlobTypes(List<String> blobTypes) {
+    public ManagementPolicyFilter withBlobTypes(List<String> blobTypes) {
         this.blobTypes = blobTypes;
         return this;
     }

@@ -30,7 +30,7 @@ public final class RestorePolicyProperties {
      * 
      * @return the enabled value.
      */
-    public boolean isEnabled() {
+    public boolean enabled() {
         return this.enabled;
     }
 
@@ -40,7 +40,7 @@ public final class RestorePolicyProperties {
      * @param enabled the enabled value to set.
      * @return the RestorePolicyProperties object itself.
      */
-    public RestorePolicyProperties setEnabled(boolean enabled) {
+    public RestorePolicyProperties withEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -51,7 +51,7 @@ public final class RestorePolicyProperties {
      * 
      * @return the days value.
      */
-    public Integer getDays() {
+    public Integer days() {
         return this.days;
     }
 
@@ -62,7 +62,7 @@ public final class RestorePolicyProperties {
      * @param days the days value to set.
      * @return the RestorePolicyProperties object itself.
      */
-    public RestorePolicyProperties setDays(Integer days) {
+    public RestorePolicyProperties withDays(Integer days) {
         this.days = days;
         return this;
     }

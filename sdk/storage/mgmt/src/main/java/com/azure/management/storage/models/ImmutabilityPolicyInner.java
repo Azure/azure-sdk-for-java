@@ -48,7 +48,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
      * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
-    public Integer getImmutabilityPeriodSinceCreationInDays() {
+    public Integer immutabilityPeriodSinceCreationInDays() {
         return this.immutabilityPeriodSinceCreationInDays;
     }
 
@@ -61,7 +61,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
      * immutabilityPeriodSinceCreationInDays value to set.
      * @return the ImmutabilityPolicyInner object itself.
      */
-    public ImmutabilityPolicyInner setImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyInner withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         this.immutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         return this;
     }
@@ -72,7 +72,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
      * 
      * @return the state value.
      */
-    public ImmutabilityPolicyState getState() {
+    public ImmutabilityPolicyState state() {
         return this.state;
     }
 
@@ -86,7 +86,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
      * 
      * @return the allowProtectedAppendWrites value.
      */
-    public Boolean isAllowProtectedAppendWrites() {
+    public Boolean allowProtectedAppendWrites() {
         return this.allowProtectedAppendWrites;
     }
 
@@ -102,7 +102,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
      * to set.
      * @return the ImmutabilityPolicyInner object itself.
      */
-    public ImmutabilityPolicyInner setAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
+    public ImmutabilityPolicyInner withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
         this.allowProtectedAppendWrites = allowProtectedAppendWrites;
         return this;
     }

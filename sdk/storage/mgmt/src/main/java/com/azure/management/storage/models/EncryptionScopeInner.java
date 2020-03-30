@@ -59,7 +59,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * 
      * @return the source value.
      */
-    public EncryptionScopeSource getSource() {
+    public EncryptionScopeSource source() {
         return this.source;
     }
 
@@ -70,7 +70,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * @param source the source value to set.
      * @return the EncryptionScopeInner object itself.
      */
-    public EncryptionScopeInner setSource(EncryptionScopeSource source) {
+    public EncryptionScopeInner withSource(EncryptionScopeSource source) {
         this.source = source;
         return this;
     }
@@ -81,7 +81,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * 
      * @return the state value.
      */
-    public EncryptionScopeState getState() {
+    public EncryptionScopeState state() {
         return this.state;
     }
 
@@ -92,7 +92,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * @param state the state value to set.
      * @return the EncryptionScopeInner object itself.
      */
-    public EncryptionScopeInner setState(EncryptionScopeState state) {
+    public EncryptionScopeInner withState(EncryptionScopeState state) {
         this.state = state;
         return this;
     }
@@ -103,7 +103,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * 
      * @return the creationTime value.
      */
-    public OffsetDateTime getCreationTime() {
+    public OffsetDateTime creationTime() {
         return this.creationTime;
     }
 
@@ -113,7 +113,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * 
      * @return the lastModifiedTime value.
      */
-    public OffsetDateTime getLastModifiedTime() {
+    public OffsetDateTime lastModifiedTime() {
         return this.lastModifiedTime;
     }
 
@@ -124,7 +124,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * 
      * @return the keyVaultProperties value.
      */
-    public EncryptionScopeKeyVaultProperties getKeyVaultProperties() {
+    public EncryptionScopeKeyVaultProperties keyVaultProperties() {
         return this.keyVaultProperties;
     }
 
@@ -136,7 +136,7 @@ public class EncryptionScopeInner extends ProxyResource {
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionScopeInner object itself.
      */
-    public EncryptionScopeInner setKeyVaultProperties(EncryptionScopeKeyVaultProperties keyVaultProperties) {
+    public EncryptionScopeInner withKeyVaultProperties(EncryptionScopeKeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
         return this;
     }

@@ -27,6 +27,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import java.util.Map;
 import reactor.core.publisher.Mono;
 
@@ -67,37 +69,37 @@ public final class FileSharesInner {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileShareItemsInner>> list(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$maxpagesize") String maxpagesize, @QueryParam("$filter") String filter);
+        Mono<SimpleResponse<FileShareItemsInner>> list(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$maxpagesize") String maxpagesize, @QueryParam("$filter") String filter, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileShareInner>> create(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") FileShareInner fileShare);
+        Mono<SimpleResponse<FileShareInner>> create(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") FileShareInner fileShare, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileShareInner>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") FileShareInner fileShare);
+        Mono<SimpleResponse<FileShareInner>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") FileShareInner fileShare, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileShareInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<FileShareInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/default/shares/{shareName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @PathParam("shareName") String shareName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileShareItemsInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<FileShareItemsInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -113,14 +115,15 @@ public final class FileSharesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FileShareItemInner>> listSinglePageAsync(String resourceGroupName, String accountName, String maxpagesize, String filter) {
-        return service.list(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), maxpagesize, filter)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), maxpagesize, filter, context))
+            .<PagedResponse<FileShareItemInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -154,6 +157,7 @@ public final class FileSharesInner {
     public PagedFlux<FileShareItemInner> listAsync(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
         final String filter = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -188,6 +192,7 @@ public final class FileSharesInner {
     public PagedIterable<FileShareItemInner> list(String resourceGroupName, String accountName) {
         final String maxpagesize = null;
         final String filter = null;
+        final Context context = null;
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, maxpagesize, filter));
     }
 
@@ -206,9 +211,10 @@ public final class FileSharesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> createWithResponseAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
         FileShareInner fileShare = new FileShareInner();
-        fileShare.setMetadata(metadata);
-        fileShare.setShareQuota(shareQuota);
-        return service.create(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileShare);
+        fileShare.withMetadata(metadata);
+        fileShare.withShareQuota(shareQuota);
+        return FluxUtil.withContext(context -> service.create(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileShare, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -267,9 +273,10 @@ public final class FileSharesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> updateWithResponseAsync(String resourceGroupName, String accountName, String shareName, Map<String, String> metadata, Integer shareQuota) {
         FileShareInner fileShare = new FileShareInner();
-        fileShare.setMetadata(metadata);
-        fileShare.setShareQuota(shareQuota);
-        return service.update(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileShare);
+        fileShare.withMetadata(metadata);
+        fileShare.withShareQuota(shareQuota);
+        return FluxUtil.withContext(context -> service.update(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileShare, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -325,7 +332,8 @@ public final class FileSharesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileShareInner>> getWithResponseAsync(String resourceGroupName, String accountName, String shareName) {
-        return service.get(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -377,7 +385,8 @@ public final class FileSharesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String shareName) {
-        return service.delete(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, accountName, shareName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -421,13 +430,14 @@ public final class FileSharesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<FileShareItemInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<FileShareItemInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

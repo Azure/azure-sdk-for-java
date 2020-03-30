@@ -31,7 +31,7 @@ public final class ListContainerItemsInner {
      * 
      * @return the value value.
      */
-    public List<ListContainerItemInner> getValue() {
+    public List<ListContainerItemInner> value() {
         return this.value;
     }
 
@@ -42,7 +42,7 @@ public final class ListContainerItemsInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

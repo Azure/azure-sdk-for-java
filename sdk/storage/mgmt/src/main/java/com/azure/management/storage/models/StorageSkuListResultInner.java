@@ -25,7 +25,7 @@ public final class StorageSkuListResultInner {
      * 
      * @return the value value.
      */
-    public List<SkuInformationInner> getValue() {
+    public List<SkuInformationInner> value() {
         return this.value;
     }
 }

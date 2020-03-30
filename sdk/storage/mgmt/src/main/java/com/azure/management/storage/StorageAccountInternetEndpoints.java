@@ -41,7 +41,7 @@ public final class StorageAccountInternetEndpoints {
      * 
      * @return the blob value.
      */
-    public String getBlob() {
+    public String blob() {
         return this.blob;
     }
 
@@ -50,7 +50,7 @@ public final class StorageAccountInternetEndpoints {
      * 
      * @return the file value.
      */
-    public String getFile() {
+    public String file() {
         return this.file;
     }
 
@@ -59,7 +59,7 @@ public final class StorageAccountInternetEndpoints {
      * 
      * @return the web value.
      */
-    public String getWeb() {
+    public String web() {
         return this.web;
     }
 
@@ -68,7 +68,7 @@ public final class StorageAccountInternetEndpoints {
      * 
      * @return the dfs value.
      */
-    public String getDfs() {
+    public String dfs() {
         return this.dfs;
     }
 }

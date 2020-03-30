@@ -31,7 +31,7 @@ public final class DeleteRetentionPolicy {
      * 
      * @return the enabled value.
      */
-    public Boolean isEnabled() {
+    public Boolean enabled() {
         return this.enabled;
     }
 
@@ -42,7 +42,7 @@ public final class DeleteRetentionPolicy {
      * @param enabled the enabled value to set.
      * @return the DeleteRetentionPolicy object itself.
      */
-    public DeleteRetentionPolicy setEnabled(Boolean enabled) {
+    public DeleteRetentionPolicy withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -54,7 +54,7 @@ public final class DeleteRetentionPolicy {
      * 
      * @return the days value.
      */
-    public Integer getDays() {
+    public Integer days() {
         return this.days;
     }
 
@@ -66,7 +66,7 @@ public final class DeleteRetentionPolicy {
      * @param days the days value to set.
      * @return the DeleteRetentionPolicy object itself.
      */
-    public DeleteRetentionPolicy setDays(Integer days) {
+    public DeleteRetentionPolicy withDays(Integer days) {
         this.days = days;
         return this;
     }

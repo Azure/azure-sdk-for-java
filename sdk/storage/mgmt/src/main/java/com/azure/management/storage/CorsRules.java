@@ -26,7 +26,7 @@ public final class CorsRules {
      * 
      * @return the corsRules value.
      */
-    public List<CorsRule> getCorsRules() {
+    public List<CorsRule> corsRules() {
         return this.corsRules;
     }
 
@@ -37,7 +37,7 @@ public final class CorsRules {
      * @param corsRules the corsRules value to set.
      * @return the CorsRules object itself.
      */
-    public CorsRules setCorsRules(List<CorsRule> corsRules) {
+    public CorsRules withCorsRules(List<CorsRule> corsRules) {
         this.corsRules = corsRules;
         return this;
     }
