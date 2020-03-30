@@ -10,7 +10,8 @@ public enum MessagingEntityType {
     QUEUE(0),
     TOPIC(1),
     SUBSCRIPTION(2),
-    FILTER(3);
+    FILTER(3),
+    UNKNOWN(-1);
 
     private int enumValue;
     MessagingEntityType(int enumValue) {

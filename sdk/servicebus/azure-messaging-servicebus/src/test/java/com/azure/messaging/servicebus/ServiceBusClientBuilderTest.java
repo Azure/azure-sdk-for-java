@@ -68,8 +68,7 @@ public class ServiceBusClientBuilderTest {
             .connectionString(CORRECT_CONNECTION_STRING)
             .proxyOptions(proxyConfig)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .buildSenderClientBuilder()
-            .queueName("test-queue-name");
+            .buildSenderClientBuilder();
 
         // Assert
         assertNotNull(builder.buildAsyncClient());

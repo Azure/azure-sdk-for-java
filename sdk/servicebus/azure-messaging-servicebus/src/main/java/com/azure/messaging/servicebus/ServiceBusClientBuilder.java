@@ -346,9 +346,9 @@ public final class ServiceBusClientBuilder {
 
         final MessagingEntityType entityType;
 
-        if (!hasQueueName && !hasTopicName) {
+        if (!hasConnectionStringEntity && !hasQueueName && !hasTopicName) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Cannot build client without setting either a queueName or topicName"));
+                "Cannot build client without setting either a queueName or topicName."));
         } else if (hasQueueName && hasTopicName) {
             throw logger.logExceptionAsError(new IllegalStateException(String.format(
                 "Cannot build client with both queueName (%s) and topicName (%s) set.", queueName, topicName)));
@@ -360,7 +360,7 @@ public final class ServiceBusClientBuilder {
             }
 
             entityType = MessagingEntityType.QUEUE;
-        } else {
+        } else if (hasTopicName) {
             if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
                 throw logger.logExceptionAsError(new IllegalStateException(String.format(
                     "topicName (%s) is different than the connectionString's EntityPath (%s).",
@@ -368,6 +368,9 @@ public final class ServiceBusClientBuilder {
             }
 
             entityType = MessagingEntityType.TOPIC;
+        } else {
+            // It is a connection string entity path.
+            entityType = MessagingEntityType.UNKNOWN;
         }
 
         return entityType;
@@ -431,6 +434,9 @@ public final class ServiceBusClientBuilder {
                     break;
                 case TOPIC:
                     entityName = topicName;
+                    break;
+                case UNKNOWN:
+                    entityName = connectionStringEntityName;
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown entity type: " + entityType);
