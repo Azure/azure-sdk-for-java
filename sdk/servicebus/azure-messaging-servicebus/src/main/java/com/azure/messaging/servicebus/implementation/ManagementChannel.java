@@ -8,7 +8,6 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -58,6 +57,7 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.CANCEL_SCHEDULED_MESSAGE_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SCHEDULE_MESSAGE_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE_ID;
@@ -353,9 +353,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
      *
      * @param messageToSchedule The message which needs to be scheduled.
      * @return Map of key and value in Amqp format.
+     * @throws AmqpException When payload exceeded maximum message allowed size.
      */
-    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule) {
-
+    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule)
+        throws AmqpException {
+        int maxMessageSize = MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES;
         Map<String, Object> requestBodyMap = new HashMap<>();
         List<Message> messagesToSchedule = new ArrayList<>();
         messagesToSchedule.add(messageSerializer.serialize(messageToSchedule));
@@ -363,7 +365,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         for (Message message : messagesToSchedule) {
             final int payloadSize = messageSerializer.getSize(message);
             final int allocationSize =
-                Math.min(payloadSize + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+                Math.min(payloadSize + MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
             final byte[] bytes = new byte[allocationSize];
 
             int encodedSize;
@@ -374,20 +376,21 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     String.format(Locale.US,
                         "Error sending. Size of the payload exceeded maximum message size: %s kb",
                         maxMessageSize / 1024);
-                final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                    errorMessage, exception, handler.getErrorContext(sender));
-
-                return Mono.error(error);
+                final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                    errorMessage, exception, getErrorContext());
+                throw error;
             }
 
 
             HashMap<String, Object> messageEntry = new HashMap<>();
-            Pair<byte[], Integer> encodedPair;
-            encodedPair = MessageUtils.encodeMessageToOptimalSizeArray(message,
-                MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES);
+            //Pair<byte[], Integer> encodedPair;
+            //encodedPair = MessageUtils.encodeMessageToOptimalSizeArray(message,
+            //    MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES);
 
-            messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(encodedPair.getFirstItem(),
-                0, encodedPair.getSecondItem()));
+            //messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(encodedPair.getFirstItem(),
+            //    0, encodedPair.getSecondItem()));
+            messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(bytes,
+                    0, encodedSize));
             messageEntry.put(REQUEST_RESPONSE_MESSAGE_ID, message.getMessageId());
             messageList.add(messageEntry);
         }
@@ -429,7 +432,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION,
                 channel.getReceiveLinkName());
-            Map<String, Object> requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule);
+            Map<String, Object> requestBodyMap;
+            try {
+                requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule);
+            } catch (AmqpException amqpEx) {
+                return Mono.error(amqpEx);
+            }
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
             return channel.sendWithAck(requestMessage);

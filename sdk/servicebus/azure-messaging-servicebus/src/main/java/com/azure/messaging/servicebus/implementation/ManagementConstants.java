@@ -44,4 +44,5 @@ class ManagementConstants {
 
     // TODO(Hemant) :This value should be read from Receive Link
     static final int MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES = 512;
+    static final int MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES = 512;
 }
