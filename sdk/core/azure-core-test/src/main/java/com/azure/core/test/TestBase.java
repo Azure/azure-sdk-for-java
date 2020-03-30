@@ -169,6 +169,9 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     private static void buildPlatformList() {
+        if (platformList != null) {
+            return;
+        }
         platformList = new ArrayList<>();
         platformList.add("win,8");
         platformList.add("win,11");
@@ -179,6 +182,9 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     private static void buildCalendarMap() {
+        if (calendarMap != null) {
+            return;
+        }
         calendarMap = new HashMap<DayOfWeek, Integer>();
         calendarMap.put(DayOfWeek.MONDAY, 0);
         calendarMap.put(DayOfWeek.TUESDAY, 1);
