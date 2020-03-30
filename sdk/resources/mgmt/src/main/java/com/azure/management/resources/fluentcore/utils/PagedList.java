@@ -27,11 +27,13 @@ import java.util.Objects;
 @Deprecated
 public final class PagedList<E> implements List<E> {
 
+    // The invariant is that before / after read-only method, items + pagedResponseIterator is the complete pagedIterable.
+
     /** The items retrieved. */
     private final List<E> items;
 
     /** The paged response iterator for not retrieved items. */
-    private final Iterator<PagedResponse<E>> pagedResponseIterator;
+    private Iterator<PagedResponse<E>> pagedResponseIterator;
 
     /**
      * Creates an instance of PagedList.
@@ -161,17 +163,18 @@ public final class PagedList<E> implements List<E> {
     @Override
     public void clear() {
         items.clear();
+        pagedResponseIterator = Collections.emptyIterator();
     }
 
     @Override
     public E get(int index) {
-        ensureIndex(index);
+        tryLoadToIndex(index);
         return items.get(index);
     }
 
     @Override
     public E set(int index, E element) {
-        ensureIndex(index);
+        tryLoadToIndex(index);
         return items.set(index, element);
     }
 
@@ -182,7 +185,7 @@ public final class PagedList<E> implements List<E> {
 
     @Override
     public E remove(int index) {
-        ensureIndex(index);
+        tryLoadToIndex(index);
         return items.remove(index);
     }
 
@@ -219,7 +222,7 @@ public final class PagedList<E> implements List<E> {
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        ensureIndex(index);
+        tryLoadToIndex(index);
         return new ListItr(index);
     }
 
@@ -231,7 +234,7 @@ public final class PagedList<E> implements List<E> {
         return items.subList(fromIndex, toIndex);
     }
 
-    private void ensureIndex(int index) {
+    private void tryLoadToIndex(int index) {
         while (index >= items.size() && hasNextPage()) {
             loadNextPage();
         }
