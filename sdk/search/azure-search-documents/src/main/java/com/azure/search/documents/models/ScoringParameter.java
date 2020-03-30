@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,7 @@ public final class ScoringParameter {
     private final String name;
     private final List<String> values;
 
-    private static final String SEPARATOR = "-";
+    private static final String DASH = "-";
     private static final String COMMA = ",";
     private static final String SINGLE_QUOTE = "'";
     /**
@@ -40,8 +39,8 @@ public final class ScoringParameter {
         Objects.requireNonNull(name);
         Objects.requireNonNull(values);
         this.name = name;
-        this.values = new ArrayList<>();
-        this.values.addAll(values);
+        // Deep clone the values.
+        this.values = new ArrayList<>(values);
     }
 
     /**
@@ -69,13 +68,11 @@ public final class ScoringParameter {
      * @return The values of scoring parameter.
      */
     public List<String> getValues() {
-        return values;
+        return new ArrayList<>(values);
     }
 
     private static List<String> toLonLatStrings(GeoPoint point) {
-        if (point == null) {
-            return null;
-        }
+        Objects.requireNonNull(point);
         return Arrays.asList(String.valueOf(point.getLongitude()), String.valueOf(point.getLatitude()));
     }
 
@@ -89,16 +86,15 @@ public final class ScoringParameter {
     @JsonValue
     public String toString() {
         String flattenValue = values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
-            .map(this::escapeValue).collect(Collectors.joining(COMMA));
+            .map(ScoringParameter::escapeValue).collect(Collectors.joining(COMMA));
         if (CoreUtils.isNullOrEmpty(flattenValue)) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("There must be at least one valid value for scoring parameter values."));
         }
-        return name + SEPARATOR + values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
-                .map(this::escapeValue).collect(Collectors.joining(COMMA));
+        return name + DASH + flattenValue;
     }
 
-    private String escapeValue(String value) {
+    private static String escapeValue(String value) {
         if (value.contains("'")) {
             value = value.replace("'", "''");
         }
