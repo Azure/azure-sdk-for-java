@@ -96,7 +96,7 @@ public final class SqlQuerySpec extends JsonSerializable {
     @Override
     protected void populatePropertyBag() {
         super.populatePropertyBag();
-        boolean defaultParameters = (this.parameters != null && this.parameters.size() != 0);
+        boolean defaultParameters = (this.parameters != null && this.parameters.getParameters().size() != 0);
 
         if (defaultParameters) {
             super.set("parameters", this.parameters);

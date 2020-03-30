@@ -218,7 +218,7 @@ implements IDocumentQueryExecutionContext<T> {
             SqlParameterList params = querySpec.getParameters();
             // SqlQuerySpec::getParameters is guaranteed to return non-null SqlParameterList list
             // hence no null check for params is necessary.
-            Utils.checkStateOrThrow(params.size() > 0, "query.parameters",
+            Utils.checkStateOrThrow(ModelBridgeInternal.getParametersFromSqlParameterList(params).size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
 

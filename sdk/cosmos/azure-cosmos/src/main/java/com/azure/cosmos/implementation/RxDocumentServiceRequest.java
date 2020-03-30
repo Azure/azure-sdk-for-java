@@ -437,7 +437,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         case SqlQuery:
             // The querySpec.getParameters() method always ensure the returned value is non-null
             // hence null check is not required here.
-            if (querySpec.getParameters().size() > 0) {
+            if (ModelBridgeInternal.getParametersFromSqlParameterList(querySpec.getParameters()).size() > 0) {
                 throw new IllegalArgumentException(
                         String.format("Unsupported argument in query compatibility mode '{%s}'",
                                 queryCompatibilityMode.toString()));
