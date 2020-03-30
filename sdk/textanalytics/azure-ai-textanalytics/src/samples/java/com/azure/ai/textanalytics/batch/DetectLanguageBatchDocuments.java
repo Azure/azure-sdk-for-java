@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to detect the languages of documents.
+ * Sample demonstrates how to detect the languages of {@link DetectLanguageInput} documents.
  */
 public class DetectLanguageBatchDocuments {
     /**

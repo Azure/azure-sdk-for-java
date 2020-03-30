@@ -9,13 +9,14 @@ import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to recognize the entities of documents.
+ * Sample demonstrates how to recognize the entities of {@code String} documents.
  */
 public class RecognizeEntitiesBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to recognize the entities of documents.
+     * Main method to invoke this demo about how to recognize the entities of {@code String} documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -33,10 +34,10 @@ public class RecognizeEntitiesBatchStringDocuments {
         );
 
         // Recognizing batch entities
+        AtomicInteger counter = new AtomicInteger();
         client.recognizeEntitiesBatch(inputs).forEach(entitiesResult -> {
             // Recognized entities for each of documents from a batch of documents
-            System.out.printf("%nDocument ID: %s%n", entitiesResult.getId());
-            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(entitiesResult.getId())));
+            System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());

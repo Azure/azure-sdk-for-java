@@ -9,13 +9,14 @@ import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to extract the key phrases of documents.
+ * Sample demonstrates how to extract the key phrases of {@code String} documents.
  */
 public class ExtractKeyPhrasesBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of documents.
+     * Main method to invoke this demo about how to extract the key phrases of {@code String} documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -33,10 +34,10 @@ public class ExtractKeyPhrasesBatchStringDocuments {
         );
 
         // Extracting batch key phrases
+        AtomicInteger counter = new AtomicInteger();
         client.extractKeyPhrasesBatch(inputs).forEach(extractKeyPhraseResult -> {
             // Extracted key phrase for each of documents from a batch of documents
-            System.out.printf("%nDocument ID: %s%n", extractKeyPhraseResult.getId());
-            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(extractKeyPhraseResult.getId())));
+            System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
 
             if (extractKeyPhraseResult.isError()) {
                 // Erroneous document

@@ -5,19 +5,22 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
- * Sample demonstrates how to analyze the sentiments of documents.
+ * Sample demonstrates how to analyze the sentiments of {@code String} documents.
  */
 public class AnalyzeSentimentBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to analyze the sentiments of documents.
+     * Main method to invoke this demo about how to analyze the sentiments of {@code String} documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -36,9 +39,9 @@ public class AnalyzeSentimentBatchStringDocuments {
         );
 
         // Analyzing batch sentiments
+        AtomicInteger counter = new AtomicInteger();
         client.analyzeSentimentBatch(inputs).forEach(analyzeSentimentResult -> {
-            System.out.printf("%nDocument ID: %s%n", analyzeSentimentResult.getId());
-            System.out.printf("document: %s%n", inputs.get(Integer.parseInt(analyzeSentimentResult.getId())));
+            System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
             if (analyzeSentimentResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());

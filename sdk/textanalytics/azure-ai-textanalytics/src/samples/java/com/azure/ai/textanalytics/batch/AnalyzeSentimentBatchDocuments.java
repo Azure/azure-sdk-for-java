@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to analyze the sentiments of documents.
+ * Sample demonstrates how to analyze the sentiments of {@link TextDocumentInput} documents.
  */
 public class AnalyzeSentimentBatchDocuments {
     /**

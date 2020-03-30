@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to extract the key phrases of documents.
+ * Sample demonstrates how to extract the key phrases of {@link TextDocumentInput} documents.
  */
 public class ExtractKeyPhrasesBatchDocuments {
     /**

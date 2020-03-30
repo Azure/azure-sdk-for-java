@@ -10,13 +10,14 @@ import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to detect the languages of documents.
+ * Sample demonstrates how to detect the languages of {@code String} documents.
  */
 public class DetectLanguageBatchStringDocuments {
     /**
-     * Main method to invoke this demo about how to detect the languages of documents.
+     * Main method to invoke this demo about how to detect the languages of {@code String} documents.
      *
      * @param args Unused arguments to the program.
      */
@@ -34,10 +35,10 @@ public class DetectLanguageBatchStringDocuments {
         );
 
         // Detecting batch languages
+        AtomicInteger counter = new AtomicInteger();
         client.detectLanguageBatch(inputs).forEach(detectLanguageResult -> {
             // Detected languages for a document from a batch of documents
-            System.out.printf("%nDocument ID: %s%n", detectLanguageResult.getId());
-            System.out.printf("Document: %s%n", inputs.get(Integer.parseInt(detectLanguageResult.getId())));
+            System.out.printf("Document: %s%n", inputs.get(counter.getAndIncrement()));
             if (detectLanguageResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiments of documents.
+ * Sample demonstrates how to asynchronously analyze the sentiments of {@link TextDocumentInput} documents.
  */
 public class AnalyzeSentimentBatchDocumentsAsync {
     /**

@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously recognize the linked entities of documents.
+ * Sample demonstrates how to asynchronously recognize the linked entities of {@link TextDocumentInput} documents.
  */
 public class RecognizeLinkedEntitiesBatchDocumentsAsync {
     /**

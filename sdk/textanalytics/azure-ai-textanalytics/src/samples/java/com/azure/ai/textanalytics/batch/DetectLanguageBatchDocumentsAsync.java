@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously detect the languages of documents.
+ * Sample demonstrates how to asynchronously detect the languages of {@link DetectLanguageInput} documents.
  */
 public class DetectLanguageBatchDocumentsAsync {
     /**

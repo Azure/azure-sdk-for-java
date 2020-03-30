@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously extract the key phrases of documents.
+ * Sample demonstrates how to asynchronously extract the key phrases of {@link TextDocumentInput} documents.
  */
 public class ExtractKeyPhrasesBatchDocumentsAsync {
     /**

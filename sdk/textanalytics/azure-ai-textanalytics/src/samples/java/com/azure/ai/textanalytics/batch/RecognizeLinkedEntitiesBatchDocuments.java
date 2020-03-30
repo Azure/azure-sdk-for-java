@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Sample demonstrates how to recognize the linked entities of documents.
+ * Sample demonstrates how to recognize the linked entities of {@link TextDocumentInput} documents.
  */
 public class RecognizeLinkedEntitiesBatchDocuments {
     /**
