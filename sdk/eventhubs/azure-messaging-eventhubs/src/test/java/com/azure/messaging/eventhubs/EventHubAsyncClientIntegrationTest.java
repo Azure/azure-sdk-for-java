@@ -47,13 +47,13 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         } else {
             logger.info("Pushing... events to partition.");
 
-            final EventHubProducerAsyncClient testClient = createBuilder()
+            try (EventHubProducerAsyncClient testClient = createBuilder()
                 .transportType(transportType)
-                .buildAsyncProducerClient();
-
-            final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-            testData = setupEventTestData(testClient, NUMBER_OF_EVENTS, options);
-            logger.warning("Pushed events to partition.");
+                .buildAsyncProducerClient()) {
+                final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
+                testData = setupEventTestData(testClient, NUMBER_OF_EVENTS, options);
+                logger.warning("Pushed events to partition.");
+            }
         }
     }
 
