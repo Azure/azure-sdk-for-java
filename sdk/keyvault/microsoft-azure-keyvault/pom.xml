@@ -153,7 +153,7 @@ the MIT License. See License.txt in the project root for license information. --
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
           <stopKey>STOP</stopKey>
-          <waitForChild>false</waitForChild>
+          <waitForChild>true</waitForChild>
           <jettyXml>./jetty.xml</jettyXml>
         </configuration>
         <executions>
