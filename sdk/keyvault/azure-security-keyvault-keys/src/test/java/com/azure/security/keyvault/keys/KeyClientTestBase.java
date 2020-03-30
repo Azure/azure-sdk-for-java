@@ -433,15 +433,15 @@ public abstract class KeyClientTestBase extends TestBase {
             "OFF").equalsIgnoreCase("ON");
         int[] index = new int[1];
         httpClientList.forEach(httpClient -> {
-                filteredKeyServiceVersion.forEach(keyServiceVersion -> {
-                    if (!rollingStrategy) {
-                        argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                    } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
-                        argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
-                        index[0] += 1;
-                    }
-                });
+            filteredKeyServiceVersion.forEach(keyServiceVersion -> {
+                if (!rollingStrategy) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                }
+                index[0] += 1;
             });
+        });
 
         return argumentsList.stream();
     }
