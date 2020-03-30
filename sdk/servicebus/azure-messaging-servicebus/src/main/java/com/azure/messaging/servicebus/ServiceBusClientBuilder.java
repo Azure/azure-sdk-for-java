@@ -337,26 +337,75 @@ public final class ServiceBusClientBuilder {
         return item == null || item.isEmpty();
     }
 
+    private static MessagingEntityType validateEntityPaths(ClientLogger logger, String connectionStringEntityName,
+        String topicName, String queueName) {
+
+        final boolean hasTopicName = !isNullOrEmpty(topicName);
+        final boolean hasQueueName = !isNullOrEmpty(queueName);
+        final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
+
+        final MessagingEntityType entityType;
+
+        if (!hasQueueName && !hasTopicName) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot build client without setting either a queueName or topicName"));
+        } else if (hasQueueName && hasTopicName) {
+            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot build client with both queueName (%s) and topicName (%s) set.", queueName, topicName)));
+        } else if (hasQueueName) {
+            if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "queueName (%s) is different than the connectionString's EntityPath (%s).",
+                    queueName, connectionStringEntityName)));
+            }
+
+            entityType = MessagingEntityType.QUEUE;
+        } else {
+            if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "topicName (%s) is different than the connectionString's EntityPath (%s).",
+                    topicName, connectionStringEntityName)));
+            }
+
+            entityType = MessagingEntityType.TOPIC;
+        }
+
+        return entityType;
+    }
+
     /**
      * Builder for creating {@link ServiceBusSenderClient} and {@link ServiceBusSenderAsyncClient} to publish messages
      * to Service Bus.
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusSenderClient.class, ServiceBusSenderAsyncClient.class})
     public final class ServiceBusSenderClientBuilder {
-        private String queueOrTopicName;
+        private String queueName;
+        private String topicName;
 
         private ServiceBusSenderClientBuilder() {
         }
 
         /**
-         * Sets the name of the Service Bus resource to publish messages to.
+         * Sets the name of the Service Bus queue to publish messages to.
          *
-         * @param queueOrTopicName Name of the Service Bus resource to publish messages to.
+         * @param queueName Name of the queue.
          *
-         * @return The updated {@link ServiceBusSenderClientBuilder} builder.
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
          */
-        public ServiceBusSenderClientBuilder entityName(String queueOrTopicName) {
-            this.queueOrTopicName = queueOrTopicName;
+        public ServiceBusSenderClientBuilder queueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the Service Bus topic to publish messages to.
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
+         */
+        public ServiceBusSenderClientBuilder topicName(String topicName) {
+            this.topicName = topicName;
             return this;
         }
 
@@ -365,22 +414,27 @@ public final class ServiceBusClientBuilder {
          * ServiceBusMessage} to a Service Bus queue or topic.
          *
          * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
 
-            if (isNullOrEmpty(connectionStringEntityName) && isNullOrEmpty(queueOrTopicName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Cannot create sender without setting the entityName"));
+            final String entityName;
+            switch (entityType) {
+                case QUEUE:
+                    entityName = queueName;
+                    break;
+                case TOPIC:
+                    entityName = topicName;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown entity type: " + entityType);
             }
-            if (!isNullOrEmpty(connectionStringEntityName) && !isNullOrEmpty(queueOrTopicName)
-                && !connectionStringEntityName.equals(queueOrTopicName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "entityName '%s' from connection string does not match the queueOrTopicName '%s' set in sender.",
-                    connectionStringEntityName, queueOrTopicName)));
-            }
-
-            final String entityName = queueOrTopicName != null ? queueOrTopicName : connectionStringEntityName;
 
             return new ServiceBusSenderAsyncClient(entityName, connectionProcessor, retryOptions, tracerProvider,
                 messageSerializer, ServiceBusClientBuilder.this::onClientClose);
@@ -437,7 +491,9 @@ public final class ServiceBusClientBuilder {
         /**
          * Sets if lock should be automatically renewed.
          *
-         * @param isLockAutoRenewed {@code true} if the lock should be automatically renewed; {@code false} otherwise.
+         * @param isLockAutoRenewed {@code true} if the lock should be automatically renewed; {@code false}
+         *     otherwise.
+         *
          * @return The updated {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder isLockAutoRenewed(boolean isLockAutoRenewed) {
@@ -504,7 +560,6 @@ public final class ServiceBusClientBuilder {
          * @param subscriptionName Name of the subscription.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         *
          * @see #topicName A topic name should be set as well.
          */
         public ServiceBusReceiverClientBuilder subscriptionName(String subscriptionName) {
@@ -518,7 +573,6 @@ public final class ServiceBusClientBuilder {
          * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         *
          * @see #subscriptionName A subscription name should be set as well.
          */
         public ServiceBusReceiverClientBuilder topicName(String topicName) {
@@ -531,44 +585,31 @@ public final class ServiceBusClientBuilder {
          * messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            final boolean hasTopicName = !isNullOrEmpty(topicName);
-            final boolean hasQueueName = !isNullOrEmpty(queueName);
-            final boolean hasSubscription = !isNullOrEmpty(subscriptionName);
-            final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
 
-            final MessagingEntityType entityType;
             final String entityPath;
+            switch (entityType) {
+                case QUEUE:
+                    entityPath = queueName;
+                    break;
+                case TOPIC:
+                    if (isNullOrEmpty(subscriptionName)) {
+                        throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                            "topicName (%s) must have a subscriptionName associated with it.", topicName)));
+                    }
 
-            if (!hasQueueName && !hasTopicName) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Cannot build receiver without setting either a queueName or topicName + subscriptionName."));
-            } else if (hasQueueName && hasTopicName) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "Cannot build receiver with both queueName (%s) and topicName (%s) set.",
-                    queueName, topicName)));
-            } else if (hasQueueName) {
-                if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                        "queueName (%s) is different than connectionString entityName (%s).",
-                        queueName, connectionStringEntityName)));
-                }
-
-                entityPath = queueName;
-                entityType = MessagingEntityType.QUEUE;
-            } else {
-                if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                        "topicName (%s) is different than connectionString entityName (%s).",
-                        topicName, connectionStringEntityName)));
-                } else if (!hasSubscription) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                        "topicName (%s) must have a subscriptionName associated with it.", topicName)));
-                }
-
-                entityPath = topicName;
-                entityType = MessagingEntityType.TOPIC;
+                    entityPath = topicName;
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unknown entity type: " + entityType);
             }
 
             if (prefetchCount < 1) {
@@ -592,8 +633,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
-         * messages} from a specific queue or topic.
+         * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
+         * from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          */
