@@ -260,7 +260,7 @@ public final class ServiceBusClientBuilder {
                         clientVersion);
                 }).repeat();
 
-                return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
+                sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
             }
         }

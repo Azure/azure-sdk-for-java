@@ -24,7 +24,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
@@ -197,19 +196,19 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
-    protected void dispose(Closeable... closeables) {
+    protected void dispose(AutoCloseable... closeables) {
         if (closeables == null || closeables.length == 0) {
             return;
         }
 
-        for (final Closeable closeable : closeables) {
+        for (final AutoCloseable closeable : closeables) {
             if (closeable == null) {
                 continue;
             }
 
             try {
                 closeable.close();
-            } catch (IOException error) {
+            } catch (Exception error) {
                 logger.error(String.format("[%s]: %s didn't close properly.", testName,
                     closeable.getClass().getSimpleName()), error);
             }

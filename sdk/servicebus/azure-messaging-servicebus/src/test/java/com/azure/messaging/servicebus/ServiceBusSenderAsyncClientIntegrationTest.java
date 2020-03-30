@@ -76,4 +76,34 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             }))
             .verifyComplete();
     }
+
+    /**
+     * Verifies that we can send using credentials.
+     */
+    @Test
+    void sendWithCredentials() {
+        // Arrange
+        final ServiceBusSenderAsyncClient credentialSender = createBuilder(true)
+            .buildSenderClientBuilder()
+            .entityName(getQueueName())
+            .buildAsyncClient();
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
+
+        // Act & Assert
+        try {
+            StepVerifier.create(credentialSender.createBatch()
+                .flatMap(batch -> {
+                    messages.forEach(m -> {
+                        Assertions.assertTrue(batch.tryAdd(m));
+                    });
+
+                    return credentialSender.send(batch);
+                }))
+                .expectComplete()
+                .verify();
+        } finally {
+            credentialSender.close();
+        }
+    }
 }
