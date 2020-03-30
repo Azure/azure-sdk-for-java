@@ -22,7 +22,7 @@ import java.util.Objects;
  * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch}</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.servicebussenderclient.createBatch#CreateBatchOptions-int}
  *
- * @see ServiceBusClientBuilder#buildSenderClientBuilder()
+ * @see ServiceBusClientBuilder#sender()
  * @see ServiceBusSenderAsyncClient To communicate with a Service Bus resource using an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)

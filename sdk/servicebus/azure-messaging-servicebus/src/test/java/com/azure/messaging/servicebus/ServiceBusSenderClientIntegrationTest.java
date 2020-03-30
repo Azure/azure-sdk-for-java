@@ -21,7 +21,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         sender = createBuilder()
-            .buildSenderClientBuilder()
+            .sender()
             .queueName(getQueueName())
             .buildClient();
     }

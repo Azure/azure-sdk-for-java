@@ -191,7 +191,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusSenderClientBuilder}.
      */
-    public ServiceBusSenderClientBuilder buildSenderClientBuilder() {
+    public ServiceBusSenderClientBuilder sender() {
         return new ServiceBusSenderClientBuilder();
     }
 
@@ -200,7 +200,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusReceiverClientBuilder}.
      */
-    public ServiceBusReceiverClientBuilder buildReceiverClientBuilder() {
+    public ServiceBusReceiverClientBuilder receiver() {
         return new ServiceBusReceiverClientBuilder();
     }
 

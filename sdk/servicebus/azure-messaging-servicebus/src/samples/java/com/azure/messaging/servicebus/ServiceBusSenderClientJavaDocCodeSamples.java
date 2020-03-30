@@ -27,7 +27,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
-            .buildSenderClientBuilder()
+            .sender()
             .queueName("queue-name")
             .buildClient();
 
@@ -44,7 +44,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
     public void sendBatch() {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .connectionString("fake-string")
-            .buildSenderClientBuilder()
+            .sender()
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createBatch
@@ -76,7 +76,7 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
-            .buildSenderClientBuilder()
+            .sender()
             .queueName("<< QUEUE NAME >>")
             .buildClient();
 

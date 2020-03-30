@@ -22,7 +22,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        ServiceBusSenderClientBuilder builder = createBuilder().buildSenderClientBuilder();
+        ServiceBusSenderClientBuilder builder = createBuilder().sender();
 
         final String queueName = getQueueName();
         if (queueName != null) {
@@ -84,7 +84,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     void sendWithCredentials() {
         // Arrange
         final ServiceBusSenderAsyncClient credentialSender = createBuilder(true)
-            .buildSenderClientBuilder()
+            .sender()
             .queueName(getQueueName())
             .buildAsyncClient();
         final String messageId = UUID.randomUUID().toString();

@@ -40,7 +40,7 @@ public class ServiceBusClientBuilderTest {
     public void missingConnectionString() {
         assertThrows(IllegalArgumentException.class, () -> {
             final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
-            builder.buildSenderClientBuilder()
+            builder.sender()
                 .queueName(QUEUE_NAME)
                 .buildAsyncClient();
         });
@@ -50,7 +50,7 @@ public class ServiceBusClientBuilderTest {
     public void defaultProxyConfigurationBuilder() {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder();
         final ServiceBusSenderAsyncClient client = builder.connectionString(NAMESPACE_CONNECTION_STRING)
-            .buildSenderClientBuilder()
+            .sender()
             .queueName(QUEUE_NAME)
             .buildAsyncClient();
 
@@ -68,7 +68,7 @@ public class ServiceBusClientBuilderTest {
             .connectionString(CORRECT_CONNECTION_STRING)
             .proxyOptions(proxyConfig)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .buildSenderClientBuilder();
+            .sender();
 
         // Assert
         assertNotNull(builder.buildAsyncClient());
@@ -87,7 +87,7 @@ public class ServiceBusClientBuilderTest {
                 .proxyOptions(proxyConfig);
 
             // Assert
-            assertNotNull(builder.buildSenderClientBuilder().buildAsyncClient());
+            assertNotNull(builder.sender().buildAsyncClient());
         });
     }
 
