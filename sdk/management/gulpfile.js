@@ -126,7 +126,7 @@ function codegen(project, cb) {
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm=true ' +
-                        ' --generate-client-as-impl=true --implementation-subpackage=models --sync-methods=all --required-parameter-client-methods=true ' +
+                        ' --generate-client-as-impl=true --implementation-subpackage=models --sync-methods=all --required-parameter-client-methods=true --add-context-parameter=true ' +
                         generator +
                         ` --namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +
@@ -169,13 +169,13 @@ async function prepareBuild() {
 }
 
 async function prepareStage() {
-    return gulp.src('./target/site/apidocs/**/*').pipe(gulp.dest('./dist')); 
+    return gulp.src('./target/site/apidocs/**/*').pipe(gulp.dest('./dist'));
 }
 
 async function preparePublish() {
     var options = {};
     if(process.env.GH_TOKEN){
-        options.remoteUrl = 'https://' + process.env.GH_TOKEN + '@github.com/azure/azure-libraries-for-java.git'  
+        options.remoteUrl = 'https://' + process.env.GH_TOKEN + '@github.com/azure/azure-libraries-for-java.git'
     }
     return gulp.src('./dist/**/*').pipe(gulpif(!argv.dryrun, ghPages(options)));
 }
