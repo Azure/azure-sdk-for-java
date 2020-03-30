@@ -25,6 +25,10 @@ import com.azure.management.compute.VirtualMachineImages;
 import com.azure.management.compute.VirtualMachineScaleSets;
 import com.azure.management.compute.VirtualMachines;
 import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.containerregistry.Registries;
+import com.azure.management.containerregistry.RegistryTaskRuns;
+import com.azure.management.containerregistry.RegistryTasks;
+import com.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.azure.management.containerservice.ContainerServices;
 import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
@@ -109,7 +113,7 @@ public final class Azure {
     private final SqlServerManager sqlServerManager;
     //    private final ServiceBusManager serviceBusManager;
 //    private final ContainerInstanceManager containerInstanceManager;
-//    private final ContainerRegistryManager containerRegistryManager;
+    private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
 //    private final SearchServiceManager searchServiceManager;
     private final CosmosDBManager cosmosDBManager;
@@ -418,7 +422,7 @@ public final class Azure {
         this.sqlServerManager = SqlServerManager.authenticate(restClient, tenantId, subscriptionId, sdkContext);
 //        this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId, sdkContext);
 //        this.containerInstanceManager = ContainerInstanceManager.authenticate(restClient, subscriptionId, sdkContext);
-//        this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId, sdkContext);
+        this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId, sdkContext);
         this.containerServiceManager = ContainerServiceManager.authenticate(restClient, subscriptionId, sdkContext);
         this.cosmosDBManager = CosmosDBManager.authenticate(restClient, subscriptionId, sdkContext);
 //        this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId, sdkContext);
@@ -818,30 +822,27 @@ public final class Azure {
 //    public ContainerGroups containerGroups() {
 //        return containerInstanceManager.containerGroups();
 //    }
-//
-//    /**
-//     * @return entry point to managing Container Registries.
-//     */
-//    @Beta(SinceVersion.V1_1_0)
-//    public Registries containerRegistries() {
-//        return containerRegistryManager.containerRegistries();
-//    }
-//
-//    /**
-//     * @return entry point to managing Container Registry RegistryTasks.
-//     */
-//    @Beta
-//    public RegistryTasks containerRegistryTasks() {
-//        return containerRegistryManager.containerRegistryTasks();
-//    }
-//
-//    /**
-//     * @return entry point to managing Container Registry RegistryTask Runs.
-//     */
-//    @Beta
-//    public RegistryTaskRuns containerRegistryTaskRuns() {
-//        return containerRegistryManager.registryTaskRuns();
-//    }
+
+    /**
+     * @return entry point to managing Container Registries.
+     */
+    public Registries containerRegistries() {
+        return containerRegistryManager.containerRegistries();
+    }
+
+    /**
+     * @return entry point to managing Container Registry RegistryTasks.
+     */
+    public RegistryTasks containerRegistryTasks() {
+        return containerRegistryManager.containerRegistryTasks();
+    }
+
+    /**
+     * @return entry point to managing Container Registry RegistryTask Runs.
+     */
+    public RegistryTaskRuns containerRegistryTaskRuns() {
+        return containerRegistryManager.registryTaskRuns();
+    }
 
     /**
      * @return entry point to managing Container Regsitries.
