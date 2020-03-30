@@ -220,7 +220,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
-     * client Http client needs to check
+     * @param client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
      */
     public static boolean shouldClientBeTested(HttpClient client) {
