@@ -105,7 +105,7 @@ public final class FormRecognizerAsyncClient {
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult());
+            fetchExtractReceiptResult(includeTextDetails));
     }
 
     /**
@@ -130,7 +130,7 @@ public final class FormRecognizerAsyncClient {
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            fetchExtractReceiptResult());
+            fetchExtractReceiptResult(includeTextDetails));
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptAnalyzeActivationOperation(
@@ -183,11 +183,12 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<IterableStream<ExtractedReceipt>>>
-        fetchExtractReceiptResult() {
+        fetchExtractReceiptResult(boolean includeTextDetails) {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeReceiptResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> toReceipt(modelSimpleResponse.getValue().getAnalyzeResult()));
+                .map(modelSimpleResponse -> toReceipt(modelSimpleResponse.getValue().getAnalyzeResult(),
+                    includeTextDetails));
         };
     }
 
@@ -195,14 +196,14 @@ public final class FormRecognizerAsyncClient {
         SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
         PollResponse<OperationResult> operationResultPollResponse) {
         LongRunningOperationStatus status = null;
-        switch (analyzeOperationResultSimpleResponse.getValue().getStatus().toString()) {
-            case "inProgress":
+        switch (analyzeOperationResultSimpleResponse.getValue().getStatus()) {
+            case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
-            case "completed":
+            case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
-            case "failed":
+            case FAILED:
                 status = LongRunningOperationStatus.FAILED;
                 break;
             default:

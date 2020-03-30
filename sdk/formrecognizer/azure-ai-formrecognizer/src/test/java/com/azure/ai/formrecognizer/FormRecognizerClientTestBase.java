@@ -30,7 +30,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +54,83 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+
+    static void validateReceiptResult(boolean includeTextDetails, IterableStream<ExtractedReceipt> expectedReceipts,
+                                      IterableStream<ExtractedReceipt> actualResult) {
+        List<ExtractedReceipt> expectedReceiptList = expectedReceipts.stream().collect(Collectors.toList());
+        List<ExtractedReceipt> actualReceiptList = actualResult.stream().collect(Collectors.toList());
+
+        assertEquals(expectedReceiptList.size(), actualReceiptList.size());
+        for (int i = 0; i < actualReceiptList.size(); i++) {
+            validateReceipt(expectedReceiptList.get(i), actualReceiptList.get(i), includeTextDetails);
+        }
+    }
+
+    private static void validateReceipt(ExtractedReceipt expectedReceipt, ExtractedReceipt actualExtractedReceipt,
+                                        boolean includeTextDetails) {
+        validatePageMetadata(expectedReceipt.getPageMetadata(), actualExtractedReceipt.getPageMetadata());
+        assertEquals(expectedReceipt.getReceiptType().getType(), actualExtractedReceipt.getReceiptType().getType());
+        assertEquals(expectedReceipt.getReceiptType().getConfidence(), actualExtractedReceipt.getReceiptType().getConfidence());
+        validateFieldValue(expectedReceipt.getMerchantName(), actualExtractedReceipt.getMerchantName(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getMerchantPhoneNumber(), actualExtractedReceipt.getMerchantPhoneNumber(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getMerchantAddress(), actualExtractedReceipt.getMerchantAddress(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getTotal(), actualExtractedReceipt.getTotal(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getSubtotal(), actualExtractedReceipt.getSubtotal(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getTax(), actualExtractedReceipt.getTax(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getTip(), actualExtractedReceipt.getTip(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getTransactionDate(), actualExtractedReceipt.getTransactionDate(), includeTextDetails);
+        validateFieldValue(expectedReceipt.getTransactionTime(), actualExtractedReceipt.getTransactionTime(), includeTextDetails);
+        assertEquals(expectedReceipt.getReceiptItems().size(), expectedReceipt.getReceiptItems().size());
+        validateReceiptItems(expectedReceipt.getReceiptItems(), actualExtractedReceipt.getReceiptItems(), includeTextDetails);
+    }
+
+    private static void validateReceiptItems(List<ReceiptItem> actualReceiptItems, List<ReceiptItem> expectedReceiptItems, boolean includeTextDetails) {
+        for (int i = 0; i < actualReceiptItems.size(); i++) {
+            ReceiptItem expectedReceiptItem = expectedReceiptItems.get(i);
+            ReceiptItem actualReceiptItem = actualReceiptItems.get(i);
+            validateFieldValue(expectedReceiptItem.getName(), actualReceiptItem.getName(), includeTextDetails);
+            validateFieldValue(expectedReceiptItem.getQuantity(), actualReceiptItem.getQuantity(), includeTextDetails);
+            validateFieldValue(expectedReceiptItem.getTotalPrice(), actualReceiptItem.getTotalPrice(), includeTextDetails);
+        }
+    }
+
+    private static void validateFieldValue(FieldValue<?> actualFieldValue, FieldValue<?> expectedFieldValue, boolean includeTextDetails) {
+        if (actualFieldValue != null) {
+            assertEquals(actualFieldValue.getValue(), actualFieldValue.getValue());
+            if (includeTextDetails) {
+                assertEquals(expectedFieldValue.getElements().size(), actualFieldValue.getElements().size());
+                validateReferenceElements(expectedFieldValue.getElements(), actualFieldValue.getElements());
+            }
+        }
+    }
+
+    private static void validateReferenceElements(List<Element> expectedElements, List<Element> actualElements) {
+        for (int i = 0; i < actualElements.size(); i++) {
+            Element expectedElement = expectedElements.get(i);
+            Element actualElement = actualElements.get(i);
+            assertEquals(expectedElement.getText(), actualElement.getText());
+            validateBoundingBox(expectedElement.getBoundingBox().getPoints(), actualElement.getBoundingBox().getPoints());
+        }
+    }
+
+    private static void validateBoundingBox(List<Point> expectedPoints, List<Point> actualPoints) {
+        assertEquals(expectedPoints.size(), actualPoints.size());
+        for (int i = 0; i < actualPoints.size(); i++) {
+            Point expectedPoint = expectedPoints.get(i);
+            Point actualPoint = actualPoints.get(i);
+            assertEquals(expectedPoint.getX(), actualPoint.getX());
+            assertEquals(expectedPoint.getY(), actualPoint.getY());
+        }
+    }
+
+    private static void validatePageMetadata(PageMetadata expectedPageInfo, PageMetadata actualPageInfo) {
+        assertEquals(expectedPageInfo.getPageNumber(), actualPageInfo.getPageNumber());
+        assertEquals(expectedPageInfo.getLanguage(), actualPageInfo.getLanguage());
+        assertEquals(expectedPageInfo.getPageHeight(), actualPageInfo.getPageHeight());
+        assertEquals(expectedPageInfo.getPageWidth(), actualPageInfo.getPageWidth());
+        assertEquals(expectedPageInfo.getUnit(), actualPageInfo.getUnit());
+        assertEquals(expectedPageInfo.getTextAngle(), actualPageInfo.getTextAngle());
+    }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         // TODO: #9252 AAD not supported by service
@@ -148,10 +225,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     abstract void extractReceiptSourceUrlTextDetails();
 
     @Test
-    abstract void extractReceiptData() throws FileNotFoundException;
+    abstract void extractReceiptData() throws IOException;
 
     @Test
-    abstract void extractReceiptDataTextDetails() throws FileNotFoundException;
+    abstract void extractReceiptDataTextDetails();
 
     void receiptSourceUrlRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.RECEIPT_URL);
@@ -161,86 +238,11 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         testRunner.accept(TestUtils.RECEIPT_URL, true);
     }
 
-    void receiptDataRunner(Consumer<InputStream> testRunner) throws FileNotFoundException {
+    void receiptDataRunner(Consumer<InputStream> testRunner) {
         testRunner.accept(getReceiptFileData());
     }
 
-    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) throws FileNotFoundException {
+    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
         testRunner.accept(getReceiptFileData(), true);
-    }
-
-    static void validateReceiptResult(boolean includeTextDetails, IterableStream<ExtractedReceipt> expectedReceipts,
-                                      IterableStream<ExtractedReceipt> actualResult) {
-        List<ExtractedReceipt> expectedReceiptList = expectedReceipts.stream().collect(Collectors.toList());
-        List<ExtractedReceipt> actualReceiptList = actualResult.stream().collect(Collectors.toList());
-
-        assertEquals(expectedReceiptList.size(), actualReceiptList.size());
-        for (int i = 0; i < actualReceiptList.size(); i++) {
-            validateReceipt(expectedReceiptList.get(i), actualReceiptList.get(i), includeTextDetails);
-        }
-    }
-
-    private static void validateReceipt(ExtractedReceipt expectedReceipt, ExtractedReceipt actualExtractedReceipt,
-                                        boolean includeTextDetails) {
-        validatePageMetadata(expectedReceipt.getPageMetadata(), actualExtractedReceipt.getPageMetadata());
-        assertEquals(expectedReceipt.getReceiptType().getType(), actualExtractedReceipt.getReceiptType().getType());
-        assertEquals(expectedReceipt.getReceiptType().getConfidence(), actualExtractedReceipt.getReceiptType().getConfidence());
-        validateFieldValue(expectedReceipt.getMerchantName(), actualExtractedReceipt.getMerchantName(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getMerchantName(), actualExtractedReceipt.getMerchantPhoneNumber(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getMerchantAddress(), actualExtractedReceipt.getMerchantAddress(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTotal(), actualExtractedReceipt.getTotal(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getSubtotal(), actualExtractedReceipt.getSubtotal(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTax(), actualExtractedReceipt.getTax(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTip(), actualExtractedReceipt.getTip(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTransactionDate(), actualExtractedReceipt.getTransactionDate(), includeTextDetails);
-        validateFieldValue(expectedReceipt.getTransactionTime(), actualExtractedReceipt.getTransactionTime(), includeTextDetails);
-        assertEquals(expectedReceipt.getReceiptItems().size(), expectedReceipt.getReceiptItems().size());
-        validateReceiptItems(expectedReceipt.getReceiptItems(), actualExtractedReceipt.getReceiptItems());
-    }
-
-    private static void validateReceiptItems(List<ReceiptItem> actualReceiptItems, List<ReceiptItem> expectedReceiptItems) {
-        for (int i = 0; i < actualReceiptItems.size(); i++) {
-            ReceiptItem expectedReceiptItem = expectedReceiptItems.get(i);
-            ReceiptItem actualReceiptItem = actualReceiptItems.get(i);
-            assertEquals(expectedReceiptItem.getName(), actualReceiptItem.getName());
-            assertEquals(expectedReceiptItem.getQuantity(), actualReceiptItem.getQuantity());
-            assertEquals(expectedReceiptItem.getTotalPrice(), actualReceiptItem.getTotalPrice());
-        }
-    }
-
-    private static void validateFieldValue(FieldValue<?> actualFieldValue, FieldValue<?> expectedFieldValue, boolean includeTextDetails) {
-        assertEquals(actualFieldValue.getValue(), actualFieldValue.getValue());
-        assertEquals(expectedFieldValue.getConfidence(), actualFieldValue.getConfidence());
-        if (includeTextDetails) {
-            assertEquals(expectedFieldValue.getElements().size(), actualFieldValue.getElements().size());
-            validateReferenceElements(expectedFieldValue.getElements(), actualFieldValue.getElements());
-        }
-    }
-
-    private static void validateReferenceElements(List<Element> expectedElements, List<Element> actualElements) {
-        for (int i = 0; i < actualElements.size(); i++) {
-            Element expectedElement = expectedElements.get(i);
-            Element actualElement = actualElements.get(i);
-            assertEquals(expectedElement.getText(), actualElement.getText());
-            validateBoundingBox(expectedElement.getBoundingBox().getPoints(), actualElement.getBoundingBox().getPoints());
-        }
-    }
-
-    private static void validateBoundingBox(List<Point> expectedPoints, List<Point> actualPoints) {
-        assertEquals(expectedPoints.size(), actualPoints.size());
-        for (int i = 0; i < actualPoints.size(); i++) {
-            Point expectedPoint = expectedPoints.get(i);
-            Point actualPoint = actualPoints.get(i);
-            assertEquals(expectedPoint.getX(), actualPoint.getY());
-        }
-    }
-
-    private static void validatePageMetadata(PageMetadata expectedPageInfo, PageMetadata actualPageInfo) {
-        assertEquals(expectedPageInfo.getPageNumber(), actualPageInfo.getPageNumber());
-        assertEquals(expectedPageInfo.getLanguage(), actualPageInfo.getLanguage());
-        assertEquals(expectedPageInfo.getPageHeight(), actualPageInfo.getPageHeight());
-        assertEquals(expectedPageInfo.getPageWidth(), actualPageInfo.getPageWidth());
-        assertEquals(expectedPageInfo.getUnit(), actualPageInfo.getUnit());
-        assertEquals(expectedPageInfo.getTextAngle(), actualPageInfo.getTextAngle());
     }
 }

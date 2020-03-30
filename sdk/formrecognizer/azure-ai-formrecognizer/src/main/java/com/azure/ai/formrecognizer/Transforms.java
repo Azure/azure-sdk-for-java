@@ -40,7 +40,7 @@ final class Transforms {
     private Transforms() {
     }
 
-    static IterableStream<ExtractedReceipt> toReceipt(AnalyzeResult analyzeResult) {
+    static IterableStream<ExtractedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResult = analyzeResult.getDocumentResults();
         List<ExtractedReceipt> extractedReceiptList = new ArrayList<>();
@@ -54,38 +54,38 @@ final class Transforms {
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 switch (key) {
                     case "ReceiptType":
-                        extractedReceiptItem.setReceiptType(new ReceiptType(fieldValue.getText(),
+                        extractedReceiptItem.setReceiptType(new ReceiptType(fieldValue.getValueString(),
                             fieldValue.getConfidence()));
                         break;
                     case "MerchantName":
-                        extractedReceiptItem.setMerchantName(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setMerchantName(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "MerchantAddress":
-                        extractedReceiptItem.setMerchantAddress(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setMerchantAddress(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "MerchantPhoneNumber":
-                        extractedReceiptItem.setMerchantPhoneNumber(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setMerchantPhoneNumber(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "Subtotal":
-                        extractedReceiptItem.setSubtotal(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setSubtotal(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "Tax":
-                        extractedReceiptItem.setTax(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTax(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "Tip":
-                        extractedReceiptItem.setTip(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTip(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "Total":
-                        extractedReceiptItem.setTotal(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTotal(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "TransactionDate":
-                        extractedReceiptItem.setTransactionDate(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTransactionDate(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "TransactionTime":
-                        extractedReceiptItem.setTransactionTime(setFieldValue(fieldValue, readResults));
+                        extractedReceiptItem.setTransactionTime(setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                     case "Items":
-                        extractedReceiptItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray(), readResults));
+                        extractedReceiptItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray(), readResults, includeTextDetails));
                         break;
                     default:
                         break;
@@ -97,7 +97,7 @@ final class Transforms {
     }
 
     private static FieldValue<?> setFieldValue(com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue,
-                                            List<ReadResult> readResults) {
+                                               List<ReadResult> readResults, boolean includeTextDetails) {
         FieldValue<?> value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
@@ -117,7 +117,9 @@ final class Transforms {
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        value.setElements(setReferenceElements(readResults, fieldValue.getElements()));
+        if (includeTextDetails) {
+            value.setElements(setReferenceElements(readResults, fieldValue.getElements()));
+        }
         return value;
     }
 
@@ -163,20 +165,20 @@ final class Transforms {
     }
 
     private static List<ReceiptItem> toReceiptItems(
-        List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValue, List<ReadResult> readResults) {
+        List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValue, List<ReadResult> readResults, boolean includeTextDetails) {
         List<ReceiptItem> receiptItemList = new ArrayList<>();
         fieldValue.forEach(fieldValue1 -> {
             ReceiptItem receiptItem = new ReceiptItem();
             fieldValue1.getValueObject().forEach((key, fieldValue2) -> {
                 switch (key) {
                     case "Quantity":
-                        receiptItem.setQuantity(setFieldValue(fieldValue2, readResults));
+                        receiptItem.setQuantity(setFieldValue(fieldValue2, readResults, includeTextDetails));
                         break;
                     case "Name":
-                        receiptItem.setName(setFieldValue(fieldValue2, readResults));
+                        receiptItem.setName(setFieldValue(fieldValue2, readResults, includeTextDetails));
                         break;
                     case "TotalPrice":
-                        receiptItem.setTotalPrice(setFieldValue(fieldValue2, readResults));
+                        receiptItem.setTotalPrice(setFieldValue(fieldValue2, readResults, includeTextDetails));
                         break;
                     default:
                         break;
@@ -188,25 +190,25 @@ final class Transforms {
     }
 
     private static IntegerValue toFieldValueInteger(com.azure.ai.formrecognizer.implementation.models.FieldValue
-                                                        fieldValue2) {
-        if (fieldValue2.getValueNumber() != null) {
+                                                        serviceIntegerValue) {
+        if (serviceIntegerValue.getValueNumber() != null) {
             // TODO: Do not need this check, service team bug
-            return new IntegerValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()),
-                fieldValue2.getValueInteger());
+            return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()),
+                serviceIntegerValue.getValueInteger());
         }
 
-        return new IntegerValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()), 0);
+        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), 0);
     }
 
     private static StringValue toFieldValueString(com.azure.ai.formrecognizer.implementation.models.FieldValue
-                                                      fieldValue2) {
-        return new StringValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()),
-            fieldValue2.getValueString());
+                                                      serviceStringValue) {
+        return new StringValue(serviceStringValue.getText(), toBoundingBox(serviceStringValue.getBoundingBox()),
+            serviceStringValue.getValueString());
     }
 
     private static FloatValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
-                                                     fieldValue2) {
-        return new FloatValue(fieldValue2.getText(), toBoundingBox(fieldValue2.getBoundingBox()),
-            fieldValue2.getValueNumber());
+                                                     serviceFloatValue) {
+        return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()),
+            serviceFloatValue.getValueNumber());
     }
 }

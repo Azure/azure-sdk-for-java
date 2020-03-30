@@ -9,5 +9,5 @@ module com.azure.ai.formrecognizer {
 
     opens com.azure.ai.formrecognizer.implementation to com.fasterxml.jackson.databind;
     opens com.azure.ai.formrecognizer.models to com.fasterxml.jackson.databind;
-    opens com.azure.ai.formrecognizer.implementation.models to com.fasterxml.jackson.databind;
+    opens com.azure.ai.formrecognizer.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
 }

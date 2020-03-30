@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://form-recognizer-canary.cognitiveservices.azure.com/formrecognizer/v2.0-preview//prebuilt/receipt/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8ec28a9d-a7a7-4309-8ce5-c7db9016ad7b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "614ac956-ad17-4bb9-a1e6-19ca5164f416",
+      "WWW-Authenticate" : "AzureApiManagementKey realm=\"https://form-recognizer-canary.cognitiveservices.azure.com/formrecognizer\",name=\"Ocp-Apim-Subscription-Key\",type=\"header\"",
+      "retry-after" : "0",
+      "Content-Length" : "225",
+      "StatusCode" : "401",
+      "Body" : "{\"error\":{\"code\":\"401\",\"message\": \"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.\"}}",
+      "Date" : "Mon, 30 Mar 2020 06:53:53 GMT",
+      "Content-Type" : "application/json"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
