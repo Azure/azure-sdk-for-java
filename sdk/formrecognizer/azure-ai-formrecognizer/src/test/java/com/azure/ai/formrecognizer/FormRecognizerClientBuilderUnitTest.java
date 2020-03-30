@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -63,6 +63,6 @@ public class FormRecognizerClientBuilderUnitTest {
      */
     @Test
     public void emptyApiKey() {
-        assertThrows(IllegalArgumentException.class, () -> new FormRecognizerApiKeyCredential(""));
+        assertThrows(IllegalArgumentException.class, () -> new AzureKeyCredential(""));
     }
 }

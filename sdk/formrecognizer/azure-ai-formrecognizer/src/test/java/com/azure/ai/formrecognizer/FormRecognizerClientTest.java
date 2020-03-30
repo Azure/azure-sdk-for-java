@@ -5,8 +5,8 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -83,7 +83,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void validKey() {
         // Arrange
         final FormRecognizerClient client = createClientBuilder(getEndpoint(),
-            new FormRecognizerApiKeyCredential(getApiKey())).buildClient();
+            new AzureKeyCredential(getApiKey())).buildClient();
 
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
@@ -97,7 +97,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void invalidKey() {
         // Arrange
         final FormRecognizerClient client = createClientBuilder(getEndpoint(),
-            new FormRecognizerApiKeyCredential(INVALID_KEY)).buildClient();
+            new AzureKeyCredential(INVALID_KEY)).buildClient();
 
         // Action and Assert
         assertThrows(HttpResponseException.class, () -> client.beginExtractReceipt(RECEIPT_URL));
@@ -109,11 +109,11 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @Test
     public void updateToInvalidKey() {
         // Arrange
-        final FormRecognizerApiKeyCredential credential = new FormRecognizerApiKeyCredential(getApiKey());
+        final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
         final FormRecognizerClient client = createClientBuilder(getEndpoint(), credential).buildClient();
 
         // Update to invalid key
-        credential.updateCredential(INVALID_KEY);
+        credential.update(INVALID_KEY);
 
         // Action and Assert
         assertThrows(HttpResponseException.class, () -> client.beginExtractReceipt(RECEIPT_URL));
@@ -125,13 +125,13 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @Test
     public void updateToValidKey() {
         // Arrange
-        final FormRecognizerApiKeyCredential credential =
-            new FormRecognizerApiKeyCredential(INVALID_KEY);
+        final AzureKeyCredential credential =
+            new AzureKeyCredential(INVALID_KEY);
 
         final FormRecognizerClient client = createClientBuilder(getEndpoint(), credential).buildClient();
 
         // Update to valid key
-        credential.updateCredential(getApiKey());
+        credential.update(getApiKey());
 
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
@@ -146,7 +146,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         // Arrange
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .endpoint(getEndpoint())
-            .apiKey(new FormRecognizerApiKeyCredential(getApiKey()))
+            .apiKey(new AzureKeyCredential(getApiKey()))
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(null);
@@ -171,7 +171,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         // Arrange
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .endpoint(getEndpoint())
-            .apiKey(new FormRecognizerApiKeyCredential(getApiKey()))
+            .apiKey(new AzureKeyCredential(getApiKey()))
             .configuration(Configuration.getGlobalConfiguration())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 

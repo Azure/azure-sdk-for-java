@@ -3,17 +3,17 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
-import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -41,7 +41,7 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #apiKey(FormRecognizerApiKeyCredential) apiKey(FormRecognizerApiKeyCredential)} gives
+ * {@link #apiKey(AzureKeyCredential) apiKey(FormRecognizerApiKeyCredential)} gives
  * the builder access credential.
  * </p>
  * TODO: add code snippets
@@ -58,10 +58,13 @@ import java.util.Objects;
  */
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
+
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = "application/json";
     private static final String ACCEPT_HEADER = "Accept";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
+    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
+
     private static final String NAME = "name";
     private static final String VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -73,7 +76,7 @@ public final class FormRecognizerClientBuilder {
     private final String clientVersion;
 
     private String endpoint;
-    private FormRecognizerApiKeyCredential credential;
+    private AzureKeyCredential credential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private HttpPipeline httpPipeline;
@@ -109,7 +112,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return A FormRecognizerClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(FormRecognizerApiKeyCredential) apiKey} has not been set.
+     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerClient buildClient() {
@@ -128,7 +131,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @return A FormRecognizerAsyncClient with the options set from the builder.
      * @throws NullPointerException if {@link #endpoint(String) endpoint} or
-     * {@link #apiKey(FormRecognizerApiKeyCredential) apiKey} has not been set.
+     * {@link #apiKey(AzureKeyCredential) apiKey} has not been set.
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
@@ -150,7 +153,7 @@ public final class FormRecognizerClientBuilder {
 
             // Authentications
             if (credential != null) {
-                policies.add(new ApiKeyCredentialPolicy(credential));
+                policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
                 throw logger.logExceptionAsError(
@@ -218,7 +221,7 @@ public final class FormRecognizerClientBuilder {
      * @return The updated FormRecognizerClientImplBuilder object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
-    public FormRecognizerClientBuilder apiKey(FormRecognizerApiKeyCredential apiKeyCredential) {
+    public FormRecognizerClientBuilder apiKey(AzureKeyCredential apiKeyCredential) {
         this.credential = Objects.requireNonNull(apiKeyCredential, "'apiKeyCredential' cannot be null.");
         return this;
     }

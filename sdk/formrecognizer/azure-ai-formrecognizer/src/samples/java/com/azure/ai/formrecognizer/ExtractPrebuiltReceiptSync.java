@@ -5,8 +5,8 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
-import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -32,7 +32,7 @@ public class ExtractPrebuiltReceiptSync {
         // Instantiate a client that will be used to call the service.
 
         final FormRecognizerClient client = new FormRecognizerClientBuilder()
-            .apiKey(new FormRecognizerApiKeyCredential(""))
+            .apiKey(new AzureKeyCredential(""))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 

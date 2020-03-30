@@ -3,19 +3,19 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.ApiKeyCredentialPolicy;
 import com.azure.ai.formrecognizer.models.Element;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FieldValue;
-import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -41,6 +41,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.getReceiptFileData;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -135,10 +136,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         // TODO: #9252 AAD not supported by service
         // TokenCredential credential = null;
-        FormRecognizerApiKeyCredential credential = null;
+        AzureKeyCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
-            credential = new FormRecognizerApiKeyCredential(getApiKey());
+            credential = new AzureKeyCredential(getApiKey());
         }
 
         HttpClient httpClient;
@@ -152,7 +153,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         if (credential != null) {
-            policies.add(new ApiKeyCredentialPolicy(credential));
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
         }
 
         policies.add(new RetryPolicy());
@@ -186,7 +187,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
      *
      * @return {@link FormRecognizerClientBuilder}
      */
-    FormRecognizerClientBuilder createClientBuilder(String endpoint, FormRecognizerApiKeyCredential credential) {
+    FormRecognizerClientBuilder createClientBuilder(String endpoint, AzureKeyCredential credential) {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .apiKey(credential)
             .endpoint(endpoint);

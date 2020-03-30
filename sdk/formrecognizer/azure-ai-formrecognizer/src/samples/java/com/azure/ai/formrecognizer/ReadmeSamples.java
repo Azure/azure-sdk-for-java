@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
-import com.azure.ai.formrecognizer.models.FormRecognizerApiKeyCredential;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.util.IterableStream;
@@ -36,7 +36,7 @@ public class ReadmeSamples {
      */
     public void useApiKeySyncClient() {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new FormRecognizerApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -46,7 +46,7 @@ public class ReadmeSamples {
      */
     public void useApiKeyAsyncClient() {
         FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
-            .apiKey(new FormRecognizerApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -55,13 +55,13 @@ public class ReadmeSamples {
      * Code snippet for rotating API key of the client
      */
     public void rotatingApiKey() {
-        FormRecognizerApiKeyCredential credential = new FormRecognizerApiKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .apiKey(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.updateCredential("{new_api_key}");
+        credential.update("{new_api_key}");
     }
 
     public void extractReceipt() {
