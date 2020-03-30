@@ -13,11 +13,16 @@ import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.Skillset;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
 import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
@@ -32,7 +37,8 @@ public final class TestHelpers {
          * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
          * therefore we set the expected ETag value to the ETag returned from the service.
          */
-        assertReflectionEquals(expected.setETag(actual.getETag()), actual);
+        assertObjectEquals(expected.setETag(actual.getETag()), actual);
+        //assertReflectionEquals(expected.setETag(actual.getETag()), actual);
     }
 
     static void assertIndexesEqual(Index expected, Index actual) {
@@ -41,7 +47,8 @@ public final class TestHelpers {
          * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
          * therefore we set the expected ETag value to the ETag returned from the service.
          */
-        assertReflectionEquals(expected.setETag(actual.getETag()), actual, IGNORE_DEFAULTS);
+        assertObjectEquals(expected.setETag(actual.getETag()), actual);
+       // assertReflectionEquals(expected.setETag(actual.getETag()), actual, IGNORE_DEFAULTS);
     }
 
     static void assertIndexersEqual(Indexer expected, Indexer actual) {
@@ -151,5 +158,19 @@ public final class TestHelpers {
      */
     public static MatchConditions generateIfNotChangedAccessCondition(String eTag) {
         return new MatchConditions().setIfMatch(eTag);
+    }
+
+    public static void assertObjectEquals(Object expected, Object actual, Object ... ignoreFields) {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode expectedNode = mapper.valueToTree(expected);
+        ObjectNode actualNode = mapper.valueToTree(actual);
+        Iterator<Map.Entry<String, JsonNode>> fields = expectedNode.fields();
+        while (fields.hasNext()) {
+            Map.Entry<String, JsonNode> field = fields.next();
+            String fieldName = field.getKey();
+            if (field.getValue() != null) {
+                assertEquals(field.getValue(), actualNode.get(fieldName));
+            }
+        }
     }
 }
