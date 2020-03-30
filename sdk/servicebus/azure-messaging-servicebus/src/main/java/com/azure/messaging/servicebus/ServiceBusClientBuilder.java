@@ -252,9 +252,6 @@ public final class ServiceBusClientBuilder {
                 return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
             }
-
-            final int numberOfOpenClients = ++openClients;
-            logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
         }
 
         return sharedConnection;
@@ -292,8 +289,8 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
-            transport, retryOptions, proxyOptions, scheduler);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
+            proxyOptions, scheduler);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
@@ -382,7 +379,7 @@ public final class ServiceBusClientBuilder {
          * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
          */
         public ServiceBusSenderClient buildClient() {
-            return new ServiceBusSenderClient(buildAsyncClient());
+            return new ServiceBusSenderClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 
@@ -395,6 +392,7 @@ public final class ServiceBusClientBuilder {
         // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
+        private static final boolean DEFAULT_AUTO_COMPLETE = true;
 
         private boolean autoComplete;
         private Duration maxAutoLockRenewalDuration;
@@ -406,6 +404,7 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
+            autoComplete = DEFAULT_AUTO_COMPLETE;
         }
 
         /**
@@ -585,7 +584,7 @@ public final class ServiceBusClientBuilder {
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 }

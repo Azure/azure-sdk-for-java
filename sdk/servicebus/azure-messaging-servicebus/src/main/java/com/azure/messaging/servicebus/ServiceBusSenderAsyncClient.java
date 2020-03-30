@@ -48,6 +48,19 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
+ *
+ * <p><strong>Create an instance of sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation}
+ *
+ * <p><strong>Create an instance of sender using default credential</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential}
+ *
+ * <p><strong>Send messages to a Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
+ *
+ * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize}
+ *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusSenderAsyncClient implements Closeable {
@@ -97,7 +110,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @return The name of the Service Bus resource.
      */
-    public String getEntityName() {
+    public String getEntityPath() {
         return entityName;
     }
 

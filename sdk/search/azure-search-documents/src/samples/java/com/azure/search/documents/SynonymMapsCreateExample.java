@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.Field;
@@ -28,7 +29,7 @@ public class SynonymMapsCreateExample {
     public static void main(String[] args) {
         SearchServiceClient serviceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_ADMIN_KEY))
+            .credential(new AzureKeyCredential(API_ADMIN_KEY))
             .buildClient();
 
         String synonymMapName = "desc-synonymmap";

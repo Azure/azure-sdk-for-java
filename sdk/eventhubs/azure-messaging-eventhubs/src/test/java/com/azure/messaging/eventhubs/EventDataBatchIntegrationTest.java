@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,8 +31,8 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
-    private EventHubAsyncClient client;
     private EventHubProducerAsyncClient producer;
+    private EventHubClientBuilder builder;
 
     @Mock
     private ErrorContextProvider contextProvider;
@@ -44,13 +45,16 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     protected void beforeTest() {
         MockitoAnnotations.initMocks(this);
 
-        client = createBuilder().shareConnection().buildAsyncClient();
-        producer = client.createProducer();
+        builder = createBuilder()
+            .shareConnection()
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+        producer = builder.buildAsyncProducerClient();
     }
 
     @Override
     protected void afterTest() {
-        dispose(producer, client);
+        dispose(producer);
     }
 
     /**
@@ -60,7 +64,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendSmallEventsFullBatch() {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, null, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -83,7 +87,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -109,7 +113,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
@@ -123,17 +127,17 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getCount());
         final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
+        final Instant now = Instant.now();
         try {
             // Creating consumers on all the partitions and subscribing to the receive event.
-            final List<String> partitionIds = client.getPartitionIds().collectList().block(TIMEOUT);
+            final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
             Assertions.assertNotNull(partitionIds);
 
             for (String id : partitionIds) {
-                final EventHubConsumerAsyncClient consumer =
-                    client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
+                final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
 
                 consumers.add(consumer);
-                consumer.receiveFromPartition(id, EventPosition.latest()).subscribe(partitionEvent -> {
+                consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
                     EventData event = partitionEvent.getData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;
@@ -176,7 +180,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()));
+            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;

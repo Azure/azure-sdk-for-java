@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SearchIndexClientBuilderTests {
-    private final SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential("0123");
+    private final AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential("0123");
     private final String searchEndpoint = "https://test.search.windows.net";
     private final String indexName = "myindex";
     private final SearchServiceVersion apiVersion = SearchServiceVersion.V2019_05_06;
@@ -152,7 +153,7 @@ public class SearchIndexClientBuilderTests {
     @Test
     public void credentialWithEmptyApiKeyThrowsIllegalArgumentException() {
         assertThrows(IllegalArgumentException.class, () -> new SearchIndexClientBuilder()
-            .credential(new SearchApiKeyCredential("")));
+            .credential(new AzureKeyCredential("")));
     }
 
     @Test

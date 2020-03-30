@@ -30,6 +30,7 @@ import java.util.UUID;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
@@ -41,7 +42,6 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private static final String PAYLOAD = "test-message";
 
     private final MessageSerializer serializer = new EventHubMessageSerializer();
-    private EventHubAsyncClient client;
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
     private SendOptions sendOptions;
@@ -54,15 +54,16 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     protected void beforeTest() {
         sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
 
-        client = createBuilder().shareConnection()
-            .buildAsyncClient();
-        producer = client.createProducer();
-        consumer = client.createConsumer(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME, DEFAULT_PREFETCH_COUNT);
+        final EventHubClientBuilder builder = createBuilder().shareConnection()
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+            .prefetchCount(DEFAULT_PREFETCH_COUNT);
+        producer = builder.buildAsyncProducerClient();
+        consumer = builder.buildAsyncConsumerClient();
     }
 
     @Override
     protected void afterTest() {
-        dispose(producer, consumer, client);
+        dispose(producer, consumer);
     }
 
     /**

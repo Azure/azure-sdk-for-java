@@ -5,10 +5,8 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -28,7 +26,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEn
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedCategorizedEntities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -317,71 +314,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
             StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options).byPage())
                 .assertNext(response -> validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), response))
-                .verifyComplete());
-    }
-
-    // Personally Identifiable Information Entities
-    @Test
-    public void recognizePiiEntitiesForTextInput() {
-        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
-        PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.65);
-        StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
-            .assertNext(response -> validatePiiEntity(piiEntity0, response))
-            .assertNext(response -> validatePiiEntity(piiEntity, response))
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizePiiEntitiesForEmptyText() {
-        StepVerifier.create(client.recognizePiiEntities(""))
-            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForFaultyText() {
-        StepVerifier.create(client.recognizePiiEntities("!@#%%"))
-            .expectNextCount(0)
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInput() {
-        recognizeBatchPiiRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInputShowStatistics() {
-        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, options).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchStringInput() {
-        recognizePiiStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListLanguageHint() {
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListStringWithOptions() {
-        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, null, options).byPage())
-                .assertNext(response -> validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), response))
                 .verifyComplete());
     }
 

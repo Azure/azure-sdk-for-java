@@ -35,6 +35,8 @@ public interface IMessageSessionEntity {
 
     /**
      * Gets the message sessions, enabling you to browse sessions on queues.
+     * Only sessions with active messages in the queue are returned.
+     * The sessions on the deadletter queue or sessions having a SessionState as 'active' and no messages are not returned with this call.
      *
      * @return A collection of sessions.
      * @throws InterruptedException if the current thread was interrupted while waiting.
@@ -44,6 +46,8 @@ public interface IMessageSessionEntity {
 
     /**
      * Retrieves all message sessions whose session state was updated since lastUpdatedTime.
+     * Only sessions with active messages in the queue are returned.
+     * The sessions on the deadletter queue or sessions having a SessionState as 'active' and no messages are not returned with this call.
      *
      * @param lastUpdatedTime The time the session was last updated.
      * @return A collection of sessions.
@@ -54,6 +58,8 @@ public interface IMessageSessionEntity {
 
     /**
      * Asynchronously gets the message sessions, enabling you to browse sessions on queues.
+     * Only sessions with active messages in the queue are returned.
+     * The sessions on the deadletter queue or sessions having a SessionState as 'active' and no messages are not returned with this call.
      *
      * @return a CompletableFuture representing the pending operation to get sessions.
      * @see IMessageSessionEntity#getMessageSessions
@@ -62,6 +68,8 @@ public interface IMessageSessionEntity {
 
     /**
      * Asynchronously retrieves all message sessions whose session state was updated since lastUpdatedTime.
+     * Only sessions with active messages in the queue are returned.
+     * The sessions on the deadletter queue or sessions having a SessionState as 'active' and no messages are not returned with this call.
      *
      * @param lastUpdatedTime The time the session was last updated.
      * @return a CompletableFuture representing the pending operation to get sessions.

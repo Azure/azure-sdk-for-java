@@ -166,10 +166,7 @@ class ActiveClientTokenManagerTest {
             .then(() -> tokenManager.authorize().block(TIMEOUT))
             .expectNext(AmqpResponseCode.ACCEPTED)
             .expectNext(AmqpResponseCode.ACCEPTED)
-            .then(() -> {
-                System.out.println("Closing");
-                tokenManager.close();
-            })
+            .then(() -> tokenManager.close())
             .expectComplete()
             .verify(Duration.ofSeconds(30));
     }

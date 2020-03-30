@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.Field;
@@ -20,7 +21,7 @@ public class CreateIndexExample {
     private static final String INDEX_NAME = "good-food";
 
     public static void main(String[] args) {
-        SearchApiKeyCredential searchApiKeyCredential = new SearchApiKeyCredential(ADMIN_KEY);
+        AzureKeyCredential searchApiKeyCredential = new AzureKeyCredential(ADMIN_KEY);
 
         SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)

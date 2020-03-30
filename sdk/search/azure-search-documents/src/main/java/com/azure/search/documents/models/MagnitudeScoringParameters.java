@@ -84,7 +84,7 @@ public final class MagnitudeScoringParameters {
      *
      * @return the shouldBoostBeyondRangeByConstant value.
      */
-    public Boolean isShouldBoostBeyondRangeByConstant() {
+    public Boolean shouldBoostBeyondRangeByConstant() {
         return this.shouldBoostBeyondRangeByConstant;
     }
 
