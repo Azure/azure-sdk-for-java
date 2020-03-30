@@ -6,6 +6,7 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
@@ -47,6 +48,7 @@ abstract class AsyncBenchmark<T> {
     final Logger logger;
     final CosmosAsyncClient cosmosClient;
     final CosmosAsyncContainer cosmosAsyncContainer;
+    final CosmosAsyncDatabase cosmosAsyncDatabase;
 
     final String partitionKey;
     final Configuration configuration;
@@ -61,15 +63,17 @@ abstract class AsyncBenchmark<T> {
             .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
             .buildAsyncClient();
+        configuration = cfg;
+        cosmosAsyncDatabase = cosmosClient.createDatabaseIfNotExists(this.configuration.getDatabaseId()).block().getDatabase();
+        cosmosAsyncContainer =
+            cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), Configuration.PARTITION_KEY, configuration.getThroughput()).block().getContainer();
 
-        cosmosAsyncContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
 
         logger = LoggerFactory.getLogger(this.getClass());
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
-        configuration = cfg;
 
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
@@ -130,6 +134,8 @@ abstract class AsyncBenchmark<T> {
     }
 
     void shutdown() {
+        cosmosAsyncContainer.delete().block();
+        logger.info("Deleted test container {}" , this.configuration.getCollectionId());
         cosmosClient.close();
     }
 

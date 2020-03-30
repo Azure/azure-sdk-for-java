@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosContainer;
+import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
@@ -50,6 +51,7 @@ abstract class SyncBenchmark<T> {
 
     final Logger logger;
     final CosmosClient cosmosClient;
+    final CosmosDatabase cosmosDatabase;
     final CosmosContainer cosmosContainer;
 
     final String partitionKey;
@@ -99,8 +101,8 @@ abstract class SyncBenchmark<T> {
             .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
             .buildClient();
-
-        cosmosContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().getContainer();
+        cosmosDatabase = cosmosClient.createDatabaseIfNotExists(cfg.getDatabaseId()).getDatabase();
+        cosmosContainer = cosmosDatabase.createContainerIfNotExists(cfg.getDatabaseId(), Configuration.PARTITION_KEY).getContainer();
 
         logger = LoggerFactory.getLogger(this.getClass());
 
@@ -174,6 +176,8 @@ abstract class SyncBenchmark<T> {
     }
 
     void shutdown() {
+        cosmosContainer.delete();
+        logger.info("Deleted test container {}" , this.configuration.getCollectionId());
         cosmosClient.close();
         executorService.shutdown();
     }
