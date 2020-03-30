@@ -18,6 +18,7 @@ public class ContainerRegistryTests extends SamplesTestBase {
         super(TestBase.RunCondition.LIVE_ONLY);
     }
 
+    // TODO: fix docker tls error
     @Test
     public void testManageContainerRegistry() {
         Assertions.assertTrue(ManageContainerRegistry.runSample(azure));
