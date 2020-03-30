@@ -11,10 +11,7 @@ import org.reactivestreams.Processor;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
-import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
@@ -112,7 +109,11 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
 
         isRequested.set(false);
         subscriber.isOpen().subscribe(
-            e -> onEndpointActive(identifier),
+            isActive -> {
+                if (isActive) {
+                    onEndpointActive(identifier);
+                }
+            },
             error -> onEndpointError(identifier, error),
             () -> onEndpointComplete(identifier));
     }

@@ -5,10 +5,10 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Operators;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.util.context.Context;
 
 import java.util.Objects;
@@ -23,7 +23,7 @@ public final class AmqpChannelSubscriber<T> extends BaseSubscriber<AmqpEndpointS
     private final T amqpChannel;
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final ClientLogger logger;
-    private final DirectProcessor<Boolean> isOpenProcessor = DirectProcessor.create();
+    private final ReplayProcessor<Boolean> isOpenProcessor = ReplayProcessor.cacheLast();
     private final FluxSink<Boolean> isOpenSink = isOpenProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private final String identifier;
 

@@ -17,15 +17,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -162,9 +163,9 @@ class AmqpChannelProcessorTest {
         // Arrange
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
             new AmqpErrorContext("test-namespace"));
-        final TestPublisher<TestObject> publisher = TestPublisher.createCold();
-        final AmqpChannelProcessor<TestObject> processor = publisher.next(connection1)
-            .flux().subscribeWith(channelProcessor);
+
+        final Flux<TestObject> publisher = createSink(connection1, connection2);
+        final AmqpChannelProcessor<TestObject> processor = publisher.subscribeWith(channelProcessor);
 
         when(retryPolicy.calculateRetryDelay(amqpException, 1)).thenReturn(Duration.ofSeconds(1));
         when(retryPolicy.getMaxRetries()).thenReturn(3);
@@ -177,11 +178,13 @@ class AmqpChannelProcessorTest {
             .verifyComplete();
 
         connection1.getSink().error(amqpException);
-        publisher.next(connection2);
         connection2.getSink().next(AmqpEndpointState.ACTIVE);
 
         // Expect that the next connection is returned to us.
         StepVerifier.create(processor)
+            .then(() -> {
+
+            })
             .expectNext(connection2)
             .verifyComplete();
 
@@ -315,7 +318,6 @@ class AmqpChannelProcessorTest {
             .verifyComplete();
     }
 
-
     /**
      * Verifies that this AmqpChannelProcessor won't time out even if the 5 minutes default timeout occurs. This is
      * possible when there is a disconnect for a long period of time.
@@ -340,8 +342,29 @@ class AmqpChannelProcessorTest {
             .verifyComplete();
     }
 
+    private static Flux<TestObject> createSink(TestObject... connections) {
+        return Flux.create(emitter -> {
+            final AtomicInteger counter = new AtomicInteger();
+
+            emitter.onRequest(request -> {
+                for (int i = 0; i < request; i++) {
+                    final int index = counter.getAndIncrement();
+
+                    if (index == connections.length) {
+                        emitter.error(new RuntimeException(String.format(
+                            "Cannot emit more. Index: %s. # of Connections: %s",
+                            index, connections.length)));
+                        break;
+                    }
+
+                    emitter.next(connections[index]);
+                }
+            });
+        }, FluxSink.OverflowStrategy.BUFFER);
+    }
+
     static final class TestObject {
-        private final DirectProcessor<AmqpEndpointState> processor = DirectProcessor.create();
+        private final ReplayProcessor<AmqpEndpointState> processor = ReplayProcessor.cacheLast();
         private final FluxSink<AmqpEndpointState> sink = processor.sink(FluxSink.OverflowStrategy.BUFFER);
 
         public Flux<AmqpEndpointState> getStates() {
