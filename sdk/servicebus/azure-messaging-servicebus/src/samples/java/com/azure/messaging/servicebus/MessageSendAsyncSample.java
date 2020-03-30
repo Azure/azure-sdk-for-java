@@ -40,10 +40,12 @@ public class MessageSendAsyncSample {
         // sending the message.
 
         senderAsyncClient.send(message).subscribe();
-        try {
-            Thread.sleep(10000);
-        } catch (Exception ee) {
 
+        // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
+        // the peek operation.
+        try {
+            Thread.sleep(Duration.ofSeconds(20).toMillis());
+        } catch (InterruptedException ignored) {
         }
     }
 
@@ -72,7 +74,7 @@ public class MessageSendAsyncSample {
         // message has been delivered to the Service Bus. It completes with an error if an exception occurred while sending
         // the message.
 
-        senderAsyncClient.scheduleMessage(message, Instant.now().plusSeconds(1 * MessageSendAsyncSample.60L))
+        senderAsyncClient.scheduleMessage(message, Instant.now().plusSeconds(1 * 60L))
             .subscribe(aLong -> {
                 System.out.println("!! After schedule message  sequence : " + aLong);
             });

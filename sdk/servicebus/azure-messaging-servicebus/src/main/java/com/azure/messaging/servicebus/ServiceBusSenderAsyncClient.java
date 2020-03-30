@@ -283,8 +283,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(x -> x.schedule(message, scheduledEnqueueTime))
-            .flatMap(scheduleSequenceNumber -> Mono.just(scheduleSequenceNumber));
+            .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime));
     }
 
     /**
@@ -297,7 +296,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(x -> x.cancelSchedule(sequenceNumber));
+            .flatMap(managementNode -> managementNode.cancelSchedule(sequenceNumber));
     }
 
     /**

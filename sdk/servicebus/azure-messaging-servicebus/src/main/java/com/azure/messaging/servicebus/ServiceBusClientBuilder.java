@@ -573,7 +573,7 @@ public final class ServiceBusClientBuilder {
         final boolean hasQueueName = !isNullOrEmpty(queueName);
         final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
 
-        String clientType = isReceiver? "receiver" : "sender";
+        String clientType = isReceiver ? "receiver" : "sender";
         String missingEntityError = isReceiver
             ? "Cannot build receiver without setting either a queueName or topicName + subscriptionName."
             : "Cannot build sender without setting either a queueName or topicName.";

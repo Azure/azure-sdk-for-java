@@ -317,7 +317,7 @@ public class ServiceBusSenderAsyncClientTest {
     @Test
     void cancelScheduleMessage() {
         // Arrange
-        long sequenceNumberReturned =10;
+        long sequenceNumberReturned = 10;
 
         when(managementNode.cancelSchedule(any(Long.class)))
             .thenReturn(Mono.empty());

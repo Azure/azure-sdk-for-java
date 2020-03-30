@@ -3,10 +3,12 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.ClientConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -25,6 +27,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -357,6 +361,26 @@ public class ManagementChannel implements ServiceBusManagementNode {
         messagesToSchedule.add(messageSerializer.serialize(messageToSchedule));
         Collection<HashMap<String, Object>> messageList = new LinkedList<>();
         for (Message message : messagesToSchedule) {
+            final int payloadSize = messageSerializer.getSize(message);
+            final int allocationSize =
+                Math.min(payloadSize + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+            final byte[] bytes = new byte[allocationSize];
+
+            int encodedSize;
+            try {
+                encodedSize = message.encode(bytes, 0, allocationSize);
+            } catch (BufferOverflowException exception) {
+                final String errorMessage =
+                    String.format(Locale.US,
+                        "Error sending. Size of the payload exceeded maximum message size: %s kb",
+                        maxMessageSize / 1024);
+                final Throwable error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                    errorMessage, exception, handler.getErrorContext(sender));
+
+                return Mono.error(error);
+            }
+
+
             HashMap<String, Object> messageEntry = new HashMap<>();
             Pair<byte[], Integer> encodedPair;
             encodedPair = MessageUtils.encodeMessageToOptimalSizeArray(message,
@@ -376,7 +400,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
     }
 
-    private <T> Mono<Void> cancelSchedule(Long[] cancelScheduleNumbers) {
+    private Mono<Void> cancelSchedule(Long[] cancelScheduleNumbers) {
         return  isAuthorized(CANCEL_SCHEDULED_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(CANCEL_SCHEDULED_MESSAGE_OPERATION,
@@ -384,7 +408,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(Collections.singletonMap(SEQUENCE_NUMBERS, cancelScheduleNumbers)));
             return channel.sendWithAck(requestMessage);
-        }).flatMapMany(responseMessage -> {
+        }).map(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
             if (statusCode ==  AmqpResponseCode.OK.getValue()) {
@@ -416,8 +440,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not schedule message.",
                     getErrorContext()));
             }
-
             return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
+           // return messageSerializer.deserializeList(responseMessage, Long.class);
         }));
     }
 

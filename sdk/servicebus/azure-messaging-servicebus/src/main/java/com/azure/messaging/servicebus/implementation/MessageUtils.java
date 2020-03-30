@@ -163,19 +163,12 @@ final class MessageUtils {
 
         return annotationsSize + applicationPropertiesSize + payloadSize;
     }
-    static Pair<byte[], Integer> encodeMessageToOptimalSizeArray
-        (Message message, int maxMessageSize)  {
+    static Pair<byte[], Integer> encodeMessageToOptimalSizeArray(Message message, int maxMessageSize) {
+
         int payloadSize = MessageUtils.getDataSerializedSize(message);
         int allocationSize = Math.min(payloadSize + MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
         byte[] encodedBytes = new byte[allocationSize];
         int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, allocationSize);
-        return new Pair<>(encodedBytes, encodedSize);
-    }
-
-    static Pair<byte[], Integer> encodeMessageToMaxSizeArray(Message message, int maxMessageSize) {
-        // May be we should reduce memory allocations. Use a pool of byte arrays or something
-        byte[] encodedBytes = new byte[maxMessageSize];
-        int encodedSize = encodeMessageToCustomArray(message, encodedBytes, 0, maxMessageSize);
         return new Pair<>(encodedBytes, encodedSize);
     }
 
