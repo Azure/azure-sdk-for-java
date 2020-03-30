@@ -39,10 +39,10 @@ import java.util.stream.Stream;
 public abstract class TestBase implements BeforeEachCallback {
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
-    public static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
-    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
-    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING = "rolling";
-    public static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
+    private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
+    private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
+    private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING = "rolling";
+    private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final int PLATFORM_COUNT = 6;
     private static Map<DayOfWeek, Integer> calendarMap;
@@ -227,7 +227,7 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    public static List<HttpClient> getHttpClients() {
+    private static List<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.

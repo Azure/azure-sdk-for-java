@@ -443,14 +443,12 @@ public abstract class SecretClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
+        SecretServiceVersion[] filteredKeyServiceVersion =
+            Arrays.stream(SecretServiceVersion.values())
+                .filter(SecretClientTestBase::shouldServiceVersionBeTested)
+                .toArray(SecretServiceVersion[]::new);
 
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(SecretServiceVersion.values()).filter(SecretClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
-        return argumentsList.stream();
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
     }
 
     /**

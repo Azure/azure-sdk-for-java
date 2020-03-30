@@ -613,14 +613,12 @@ public abstract class CertificateClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(CertificateServiceVersion.values()).filter(
-                    CertificateClientTestBase::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
-        return argumentsList.stream();
+        CertificateServiceVersion[] filteredKeyServiceVersion =
+            Arrays.stream(CertificateServiceVersion.values())
+                .filter(CertificateClientTestBase::shouldServiceVersionBeTested)
+                .toArray(CertificateServiceVersion[]::new);
+
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
     }
 
     /**

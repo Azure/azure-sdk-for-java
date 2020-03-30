@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.getArgumentsFromServiceVersion;
 import static com.azure.core.test.TestBase.getHttpClients;
 
 class TestHelper {
@@ -29,13 +30,11 @@ class TestHelper {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(ConfigurationServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
-        return argumentsList.stream();
+        ConfigurationServiceVersion[] filteredKeyServiceVersion =
+            Arrays.stream(ConfigurationServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
+                .toArray(ConfigurationServiceVersion[]::new);
+
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
     }
 
     /**
