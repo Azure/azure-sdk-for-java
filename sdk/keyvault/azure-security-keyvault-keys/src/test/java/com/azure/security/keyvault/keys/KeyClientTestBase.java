@@ -24,6 +24,9 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -45,8 +48,8 @@ public abstract class KeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     private static final String AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS";
-//    private static final String SERVICE_VERSION_FROM_ENV =
-//        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
+    private static final String SERVICE_VERSION_FROM_ENV =
+        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_KEYS_SERVICE_VERSIONS);
 
     @Override
     protected String getTestName() {
@@ -419,21 +422,27 @@ public abstract class KeyClientTestBase extends TestBase {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-
-        getHttpClients()
-            .forEach(httpClient -> {
-                int offset = getOffset();
-                KeyServiceVersion[] keyServiceVersions = KeyServiceVersion.values();
-                int count = keyServiceVersions.length;
-                for (int i = 0; i < count; i++) {
-                    if (i % 6 == ((6 + offset) - getPlatFormOffset()) % count) {
-                        argumentsList.add(Arguments.of(httpClient, keyServiceVersions[i]));
+        List<KeyServiceVersion> filteredKeyServiceVersion =
+            Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
+            .collect(Collectors.toList());
+        int serviceVersionCount = filteredKeyServiceVersion.size();
+        List<HttpClient> httpClientList = getHttpClients().collect(Collectors.toList());
+        long total = httpClientList.size() * serviceVersionCount;
+        int offset = getOffset();
+        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_ROLLING_STRATEGY,
+            "OFF").equalsIgnoreCase("ON");
+        int[] index = new int[1];
+        httpClientList.forEach(httpClient -> {
+                filteredKeyServiceVersion.forEach(keyServiceVersion -> {
+                    if (!rollingStrategy) {
+                        argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                    } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
+                        argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                        index[0] += 1;
                     }
-                }
-//                getOffset()
-//                Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
-//                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+                });
             });
+
         return argumentsList.stream();
     }
 
@@ -453,15 +462,15 @@ public abstract class KeyClientTestBase extends TestBase {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-//    private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
-//        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-//            return KeyServiceVersion.getLatest().equals(serviceVersion);
-//        }
-//        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
-//            return true;
-//        }
-//        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
-//        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-//            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
-//    }
+    private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
+        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
+            return KeyServiceVersion.getLatest().equals(serviceVersion);
+        }
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+            return true;
+        }
+        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
+        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
+            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
 }

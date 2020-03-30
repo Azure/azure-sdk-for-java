@@ -9,15 +9,16 @@ import com.azure.core.util.CoreUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import org.junit.jupiter.params.provider.Arguments;
 
+import static com.azure.core.test.TestBase.AZURE_TEST_ROLLING_STRATEGY;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.PLATFORM_COUNT;
 import static com.azure.core.test.TestBase.getHttpClients;
 import static com.azure.core.test.TestBase.getOffset;
-import static com.azure.core.test.TestBase.getPlatFormOffset;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -36,23 +37,30 @@ public class TestHelper {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-
-        getHttpClients()
-            .forEach(httpClient -> {
-                int offset = getOffset();
-                CryptographyServiceVersion[] cryptographyServiceVersions = CryptographyServiceVersion.values();
-                int count = cryptographyServiceVersions.length;
-                for (int i = 0; i < count; i++) {
-                    if (i % 6 == ((6 + offset) - getPlatFormOffset()) % count) {
-                        argumentsList.add(Arguments.of(httpClient, cryptographyServiceVersions[i]));
-                    }
+        List<CryptographyServiceVersion> filteredKeyServiceVersion =
+            Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
+                .collect(Collectors.toList());
+        int serviceVersionCount = filteredKeyServiceVersion.size();
+        List<HttpClient> httpClientList = getHttpClients().collect(Collectors.toList());
+        long total = httpClientList.size() * serviceVersionCount;
+        int offset = getOffset();
+        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_ROLLING_STRATEGY,
+            "OFF").equalsIgnoreCase("ON");
+        int[] index = new int[1];
+        httpClientList.forEach(httpClient -> {
+            filteredKeyServiceVersion.forEach(keyServiceVersion -> {
+                if (!rollingStrategy) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
+                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                    index[0] += 1;
                 }
-//                getOffset()
-//                Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
-//                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
+        });
+
         return argumentsList.stream();
     }
+
     /**
      * Returns whether the given service version match the rules of test framework.
      *
