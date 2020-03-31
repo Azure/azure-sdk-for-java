@@ -280,11 +280,15 @@ public abstract class TestBase implements BeforeEachCallback {
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
         System.out.println(currentOs);
         System.out.println(currentJdk);
-        return platformList.stream().filter(platform ->
-            currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
-                && currentJdk.trim().toLowerCase(Locale.ROOT).startsWith(platform.split(",")[1]
-                .toLowerCase(Locale.ROOT))
-        ).map(platformList::indexOf).findFirst().orElse(null);
+        for (int i = 0; i < platformList.size(); i++) {
+            if (currentOs.toLowerCase(Locale.ROOT).contains(platformList.get(i).split(",")[0].toLowerCase(Locale.ROOT))
+                && currentJdk.toLowerCase(Locale.ROOT).contains(
+                    platformList.get(i).split(",")[1].toLowerCase(Locale.ROOT))) {
+                System.out.println(i);
+                return i;
+            }
+        }
+        return null;
     }
 
     private static List<String> buildPlatformList() {
