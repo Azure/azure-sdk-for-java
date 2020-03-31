@@ -4,6 +4,8 @@ import re
 import json
 from xml.sax.saxutils import escape, unescape
 import argparse
+import pdb
+import fnmatch
 
 # run this from the root of the repository
 root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
@@ -11,6 +13,8 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 SNIPPET_BEGIN = r"\s*\/\/\s*BEGIN\:\s+(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 SNIPPET_END = r"\s*\/\/\s*END\:\s+(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 SNIPPET_CALL = r"(?P<leadingspace>.*)\{\@codesnippet(?P<snippetid>.*)\}"
+WHITESPACE_EXTRACTION = r"(?P<leadingspace>\s*).*"
+SAMPLE_PATH_GLOB = "**/src/samples/java/**"
 
 EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
 
@@ -43,14 +47,28 @@ class SnippetDict:
         if key not in self.snippet_dict:
             self.snippet_dict[key] = []
         else:
-            raise "Duplicate snippet begin."
+            raise "Duplicate snippet begin detected. Offending key is {}.".format(key)
 
     def process_line(self, line):
         self.snippet_dict = {k: v + [line] for k, v in self.snippet_dict.items()}
 
     def finalize_snippet(self, key):
-        return self.snippet_dict.pop(key)
+        try:
+            return self.snippet_dict.pop(key)
+        except:
+            print("Unable to finalize snippet w/ key {}".format(key))
+            return None
 
+def space_snippet(snippet_list):
+    # find least indentation
+    white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
+
+    # now trim all the lines by that amount
+    white_space_for_replacement = min(white_space, key=len)
+
+    # return the list
+    pdb.set_trace()
+    return [line.replace(white_space_for_replacement, "") for line in snippet_list]
 
 def get_snippets_from_file(file):
     finished_snippets = {}
@@ -65,10 +83,12 @@ def get_snippets_from_file(file):
 
             if begin:
                 id_beginning = begin.groupdict()["id"]
+                print("beginning {}".format(id_beginning))
                 running_dict.begin_snippet(id_beginning)
             elif end:
                 id_ending = end.groupdict()["id"]
                 ending = running_dict.finalize_snippet(id_ending)
+                print("ending {}".format(id_ending))
                 finished_snippets[id_ending] = ending
             elif running_dict:
                 running_dict.process_line(line)
@@ -101,9 +121,10 @@ if __name__ == "__main__":
     snippet_files = [
         source_file
         for source_file in all_files
-        if ("snippet" in source_file.lower() or "sample" in source_file.lower())
+        if fnmatch.fnmatch(source_file, SAMPLE_PATH_GLOB)
         and not check_exclusion(source_file, EXCLUSION_ARRAY)
     ]
+
     snippets = {}
 
     for file in snippet_files:
