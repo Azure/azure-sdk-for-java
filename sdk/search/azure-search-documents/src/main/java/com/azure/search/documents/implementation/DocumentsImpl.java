@@ -35,6 +35,7 @@ import com.azure.search.documents.models.IndexBatchBase;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SearchOptions;
@@ -242,7 +243,7 @@ public final class DocumentsImpl {
         if (searchOptions != null) {
             queryType = searchOptions.getQueryType();
         }
-        List<String> scoringParameters = null;
+        List<ScoringParameter> scoringParameters = null;
         if (searchOptions != null) {
             scoringParameters = searchOptions.getScoringParameters();
         }
