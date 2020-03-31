@@ -178,6 +178,7 @@ final class PartitionBasedLoadBalancer {
 
             // add the current event processor to the map if it doesn't exist
             ownerPartitionMap.putIfAbsent(this.ownerId, new ArrayList<>());
+            logger.verbose("Current partition distribution {}", format(ownerPartitionMap));
 
             if (CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
                 /*
@@ -263,6 +264,18 @@ final class PartitionBasedLoadBalancer {
 
             claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
         });
+    }
+
+    private String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+        return ownerPartitionMap.entrySet()
+            .stream()
+            .map(entry -> {
+                StringBuilder sb = new StringBuilder();
+                sb.append(entry.getKey()).append("=[");
+                sb.append(entry.getValue().stream().map(po -> po.getPartitionId()).collect(Collectors.joining(",")));
+                sb.append("]");
+                return sb.toString();
+            }).collect(Collectors.joining(";"));
     }
 
     /*

@@ -22,7 +22,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        ServiceBusSenderClientBuilder builder = createBuilder().buildSenderClientBuilder();
+        ServiceBusSenderClientBuilder builder = createBuilder().sender();
 
         final String queueName = getQueueName();
         if (queueName != null) {
@@ -75,5 +75,35 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 return sender.send(batch);
             }))
             .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can send using credentials.
+     */
+    @Test
+    void sendWithCredentials() {
+        // Arrange
+        final ServiceBusSenderAsyncClient credentialSender = createBuilder(true)
+            .sender()
+            .queueName(getQueueName())
+            .buildAsyncClient();
+        final String messageId = UUID.randomUUID().toString();
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(5, messageId);
+
+        // Act & Assert
+        try {
+            StepVerifier.create(credentialSender.createBatch()
+                .flatMap(batch -> {
+                    messages.forEach(m -> {
+                        Assertions.assertTrue(batch.tryAdd(m));
+                    });
+
+                    return credentialSender.send(batch);
+                }))
+                .expectComplete()
+                .verify();
+        } finally {
+            credentialSender.close();
+        }
     }
 }

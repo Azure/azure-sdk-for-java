@@ -73,6 +73,7 @@ public class ServiceBusSenderAsyncClientTest {
     private ServiceBusManagementNode managementNode;
     @Mock
     private ServiceBusMessage message;
+    private Runnable onClientClose;
 
     @Captor
     private ArgumentCaptor<org.apache.qpid.proton.message.Message> singleMessageCaptor;
@@ -120,8 +121,9 @@ public class ServiceBusSenderAsyncClientTest {
         connectionProcessor = Mono.fromCallable(() -> connection).repeat(10).subscribeWith(
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getRetry()));
+
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, connectionProcessor,
-            retryOptions, tracerProvider, messageSerializer);
+            retryOptions, tracerProvider, messageSerializer, onClientClose);
 
         when(connection.getManagementNode(anyString(), any(MessagingEntityType.class)))
             .thenReturn(just(managementNode));
@@ -328,4 +330,30 @@ public class ServiceBusSenderAsyncClientTest {
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
             .verifyComplete();
     }
+
+    /**
+     * Verifies that the onClientClose is called.
+     */
+    @Test
+    void callsClientClose() {
+        // Act
+        sender.close();
+
+        // Assert
+        verify(onClientClose).run();
+    }
+
+    /**
+     * Verifies that the onClientClose is only called once.
+     */
+    @Test
+    void callsClientCloseOnce() {
+        // Act
+        sender.close();
+        sender.close();
+
+        // Assert
+        verify(onClientClose).run();
+    }
+
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
- * Represents a credential that uses a key authenticate to an Azure Service.
+ * Represents a credential that uses a key to authenticate to an Azure Service.
  */
 public final class AzureKeyCredential {
     private final ClientLogger logger = new ClientLogger(AzureKeyCredential.class);

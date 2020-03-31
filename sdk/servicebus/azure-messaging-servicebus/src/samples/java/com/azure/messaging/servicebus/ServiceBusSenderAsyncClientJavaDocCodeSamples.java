@@ -30,8 +30,8 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
-            .buildSenderClientBuilder()
-            .queueName("<QUEUE-NAME>")
+            .sender()
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
 
@@ -48,8 +48,8 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>",
                 new DefaultAzureCredentialBuilder().build())
-            .buildSenderClientBuilder()
-            .queueName("<QUEUE-NAME>")
+            .sender()
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential
 
@@ -66,7 +66,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
-            .buildSenderClientBuilder()
+            .sender()
             .queueName("<QUEUE OR TOPIC NAME>")
             .buildAsyncClient();
 
@@ -90,7 +90,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
      */
     public void batchSizeLimited() {
         final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .buildSenderClientBuilder()
+            .sender()
             .buildAsyncClient();
 
         final ServiceBusMessage firstMessage = new ServiceBusMessage("92".getBytes(UTF_8));

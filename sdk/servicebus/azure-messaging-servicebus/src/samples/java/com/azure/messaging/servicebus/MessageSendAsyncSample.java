@@ -28,7 +28,7 @@ public class MessageSendAsyncSample {
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildSenderClientBuilder()
+            .sender()
             .queueName("<queue-name>")
             .buildAsyncClient();
 
@@ -63,7 +63,7 @@ public class MessageSendAsyncSample {
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildSenderClientBuilder()
+            .sender()
             .queueName("<queue-name")
             .buildAsyncClient();
 
@@ -103,9 +103,8 @@ public class MessageSendAsyncSample {
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildSenderClientBuilder()
-            .queueName("hemant-test1")
-            //.queueName("<queue-name>")
+            .sender()
+            .queueName("<queue-name>")
             .buildAsyncClient();
 
         // Create an message to send.

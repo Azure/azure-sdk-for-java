@@ -1,0 +1,34 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-18.04'
+
+steps:
+- bash: |
+    git config --global user.name "Azure-Fluent"
+    git config --global user.email "azfluent@microsoft.com"
+- task: MavenAuthenticate@0
+  inputs:
+    mavenServiceConnections: azure-libraries-for-java-maven
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m -Dversion=$(VERSION) -DdevVersion=$(DEVVERSION)-SNAPSHOT'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'com.microsoft.azure:bundler-maven-plugin:auto'
+- bash: |
+    git log -2
+    git push https://$(GITHUB_TOKEN)@github.com/azure-fluent/azure-libraries-for-java HEAD:refs/heads/$(VERSION) -f
+    python3 tools/pull-request.py azure azure-libraries-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
+  env:
+    GITHUB_TOKEN: $(GITHUB_TOKEN)

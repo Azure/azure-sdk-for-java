@@ -1,0 +1,90 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+package com.azure.management.dns.implementation;
+
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.dns.models.RecordSetInner;
+import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import com.azure.management.dns.DnsRecordSets;
+import com.azure.management.dns.RecordType;
+
+/**
+ * The base implementation for Dns Record sets.
+ */
+abstract class DnsRecordSetsBaseImpl<RecordSetT, RecordSetImplT extends RecordSetT>
+    extends
+        ReadableWrappersImpl<RecordSetT, RecordSetImplT, RecordSetInner>
+    implements
+        DnsRecordSets<RecordSetT> {
+    /**
+     * the parent DNS zone of the record set.
+     */
+    protected final DnsZoneImpl dnsZone;
+    /**
+     * the record type in the record set.
+     */
+    protected  final RecordType recordType;
+
+    /**
+     * Creates DnsRecordSetsBaseImpl.
+     *
+     * @param parent the parent DNS zone of the record set
+     * @param recordType the record type in the record set
+     */
+    DnsRecordSetsBaseImpl(DnsZoneImpl parent, RecordType recordType) {
+        this.dnsZone = parent;
+        this.recordType = recordType;
+    }
+
+    @Override
+    public PagedIterable<RecordSetT> list() {
+        return listIntern(null, null);
+    }
+
+    @Override
+    public PagedIterable<RecordSetT> list(String recordSetNameSuffix) {
+        return listIntern(recordSetNameSuffix, null);
+    }
+
+    @Override
+    public PagedIterable<RecordSetT> list(int pageSize) {
+        return listIntern(null, pageSize);
+    }
+
+    @Override
+    public PagedIterable<RecordSetT> list(String recordSetNameSuffix, int pageSize) {
+        return listIntern(recordSetNameSuffix, pageSize);
+    }
+
+    @Override
+    public PagedFlux<RecordSetT> listAsync() {
+        return listInternAsync(null, null);
+    }
+
+    @Override
+    public PagedFlux<RecordSetT> listAsync(String recordSetNameSuffix) {
+        return listInternAsync(recordSetNameSuffix, null);
+    }
+
+    @Override
+    public PagedFlux<RecordSetT> listAsync(int pageSize) {
+        return listInternAsync(null, pageSize);
+    }
+
+    @Override
+    public PagedFlux<RecordSetT> listAsync(String recordSetNameSuffix, int pageSize) {
+        return listInternAsync(recordSetNameSuffix, pageSize);
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
+    }
+
+    protected abstract PagedIterable<RecordSetT> listIntern(String recordSetNameSuffix, Integer pageSize);
+    protected abstract PagedFlux<RecordSetT> listInternAsync(String recordSetNameSuffix, Integer pageSize);
+}

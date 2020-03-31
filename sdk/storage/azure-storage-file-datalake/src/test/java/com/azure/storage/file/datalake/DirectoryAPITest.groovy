@@ -707,6 +707,7 @@ class DirectoryAPITest extends APISpec {
         properties.getMetadata()
         !properties.getAccessTierChangeTime()
         !properties.getEncryptionKeySha256()
+        properties.isDirectory()
 
     }
 
