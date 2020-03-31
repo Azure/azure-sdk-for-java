@@ -53,7 +53,7 @@ jobs:
       # - task: Maven@3
       #   displayName: 'Run StyleCheck'
       #   inputs:
-      #     mavenPomFile: pom.xml
+      #     mavenPomFile: sdk/management/pom.xml
       #     options: '$(DefaultOptions) $(ProfileFlag)'
       #     mavenOptions: '$(LoggingOptions)'
       #     javaHomeOption: 'JDKVersion'
@@ -65,7 +65,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run Tests on Java 8'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: sdk/management/pom.xml
           options: '--batch-mode $(DefaultOptions) $(ProfileFlag) -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
