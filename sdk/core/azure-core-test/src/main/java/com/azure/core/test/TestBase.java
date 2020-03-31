@@ -45,7 +45,7 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING = "rolling";
     public static final int PLATFORM_COUNT = 6;
-    private static final List<String> platformList = buildPlatformList();
+    private static final List<String> PLATFORM_LIST = buildPlatformList();
     private static final String HTTP_CLIENT_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
 
@@ -280,10 +280,10 @@ public abstract class TestBase implements BeforeEachCallback {
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
         System.out.println(currentOs);
         System.out.println(currentJdk);
-        for (int i = 0; i < platformList.size(); i++) {
-            if (currentOs.toLowerCase(Locale.ROOT).contains(platformList.get(i).split(",")[0].toLowerCase(Locale.ROOT))
+        for (int i = 0; i < PLATFORM_LIST.size(); i++) {
+            if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].toLowerCase(Locale.ROOT))
                 && currentJdk.toLowerCase(Locale.ROOT).contains(
-                    platformList.get(i).split(",")[1].toLowerCase(Locale.ROOT))) {
+                    PLATFORM_LIST.get(i).split(",")[1].toLowerCase(Locale.ROOT))) {
                 System.out.println(i);
                 return i;
             }
