@@ -86,7 +86,7 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L61-L68 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L59-L66 -->
 ```java
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
     .build();
@@ -123,7 +123,7 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ca
 
 The snippet below creates an asynchronous Service Bus sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L24-L29 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L22-L27 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
@@ -135,7 +135,7 @@ ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
 
 The snippet below creates an asynchronous Service Bus receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L36-L41 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L34-L39 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
@@ -147,7 +147,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 
 The snippet below creates an asynchronous Service Bus receiver with default token credential.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L48-L54 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L46-L52 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
@@ -158,40 +158,25 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 ### Send Message Examples
-#### Send message to Queue or Topic
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
 a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
 or topic.
 
-#### Create a Sender and send message to queue or topic
-Example of sending a message asynchronously is documented [here][sample-send-async-message].
-
-
-#### Send message with Azure Active Directory credentials
-Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
-
-#### Send a batch of messages 
-Example of sending a message asynchronously using active directory credential is documented [here][sample-send-batch-messages].
+* [`Sending a message asynchronously`][sample-send-async-message].
+* [`Sending a message asynchronously using active directory credential`][sample-send-async-aad-message].
+* [`Send message in batch`][sample-send-batch-messages].
 
 ### Receive Message Examples
 
-#### Receive message from Queue or Subscription
 You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or
 a synchronous [`ServiceBusReceiverClient`][ServiceBusReceiverClient]. Each receiver can receive message from either, a queue,
 or subscriber.
 
-##### Create a Receiver and receive message from queue or subscriber
-Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
-
-#### Receive message with Azure Active Directory credentials
-Example of receiving a message asynchronously using active directory credential is documented [here][sample-receive-async-aad-message].
-
-#### Receive messages and settle them
-Example of receiving a message asynchronously and settling them is documented [here][sample-receive-message-and-settle].
-
-#### Receive batch of messages synchronously
-Example of receiving stream of messages synchronously is documented [here][sample-receive-message-batch-synchronously].
+* [`Receiving a message asynchronously`][sample-receive-async-message].
+* [`Receiving a message asynchronously using active directory credential`][sample-receive-async-aad-message].
+* [`Receiving a message asynchronously and settling`][sample-receive-message-and-settle].
+* [`Receiving stream of messages synchronously`][sample-receive-message-batch-synchronously].
 
 ## Troubleshooting
 
@@ -291,6 +276,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [ServiceBusSenderAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
+[ServiceBusSenderClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderClient.java
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
 [service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java

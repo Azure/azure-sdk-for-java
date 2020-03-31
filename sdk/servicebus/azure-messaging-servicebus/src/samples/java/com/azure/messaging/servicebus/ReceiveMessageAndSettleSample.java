@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * it. Settling of message include accept, defer and abandon the message as needed.
  */
 public class ReceiveMessageAndSettleSample {
-    private static Duration TIMEOUT = Duration.ofSeconds(15);
+    private static final Duration TIME_OUT = Duration.ofSeconds(15);
 
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
@@ -78,19 +78,19 @@ public class ReceiveMessageAndSettleSample {
                 switch (actionToTake) {
                     case "COMPLETE":
                         System.out.println("Completing message.");
-                        receiverAsyncClient.complete(received).block(TIMEOUT);
+                        receiverAsyncClient.complete(received).block(TIME_OUT);
                         break;
                     case "ABANDON":
                         System.out.println("Abandon message.");
-                        receiverAsyncClient.abandon(received).block(TIMEOUT);
+                        receiverAsyncClient.abandon(received).block(TIME_OUT);
                         break;
                     case "DEFER":
                         System.out.println("Defer message.");
-                        receiverAsyncClient.defer(received).block(TIMEOUT);
+                        receiverAsyncClient.defer(received).block(TIME_OUT);
                         break;
                     default:
                         System.out.println("Deadletter message.");
-                        receiverAsyncClient.deadLetter(received).block(TIMEOUT);
+                        receiverAsyncClient.deadLetter(received).block(TIME_OUT);
                 }
             });
 

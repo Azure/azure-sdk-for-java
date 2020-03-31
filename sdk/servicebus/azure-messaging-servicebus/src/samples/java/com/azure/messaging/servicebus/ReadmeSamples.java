@@ -4,8 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
