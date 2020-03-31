@@ -27,7 +27,7 @@ have to be online at the same time.
 - [Examples](#examples)
   - [Send Message Examples](#send-message-examples)
   - [Receive Message Examples](#receive-message-examples)
-  [Troubleshooting](#troubleshooting)
+- [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
   - [Common exceptions](#common-exceptions)
