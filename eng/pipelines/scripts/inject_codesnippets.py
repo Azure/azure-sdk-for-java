@@ -12,7 +12,7 @@ root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 SNIPPET_BEGIN = r"\s*\/\/\s*BEGIN\:\s+(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
 SNIPPET_END = r"\s*\/\/\s*END\:\s+(?P<id>[a-zA-Z0-9\.\#\-\_]*)\s*"
-SNIPPET_CALL = r"(?P<leadingspace>.*)\{\@codesnippet(?P<snippetid>.*)\}"
+SNIPPET_CALL = r"(?P<leadingspace>.*\*).*\{\@codesnippet(?P<snippetid>.*)\}"
 WHITESPACE_EXTRACTION = r"(?P<leadingspace>\s*).*"
 SAMPLE_PATH_GLOB = "**/src/samples/java/**"
 
@@ -57,18 +57,21 @@ class SnippetDict:
             return self.snippet_dict.pop(key)
         except:
             print("Unable to finalize snippet w/ key {}".format(key))
-            return None
+            return [""]
 
-def space_snippet(snippet_list):
-    # find least indentation
-    white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
+def re_space_snippet(snippet_list):
+    try:
+        # find identation (or whitespace characters) on the left side
+        white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
+    except:
+        print(snippet_list)
+        exit(1)
 
-    # now trim all the lines by that amount
+    # now figure out the shortest one
     white_space_for_replacement = min(white_space, key=len)
 
-    # return the list
-    pdb.set_trace()
-    return [line.replace(white_space_for_replacement, "") for line in snippet_list]
+    # return the list, replacing leading whitespace with the specified amount
+    return [line.replace(white_space_for_replacement, "", 1) for line in snippet_list]
 
 def get_snippets_from_file(file):
     finished_snippets = {}
@@ -141,7 +144,7 @@ if __name__ == "__main__":
 
                 if snippet_ref:
                     id_ending = snippet_ref.groupdict()["snippetid"].strip()
-                    lead_space = snippet_ref.groupdict()["leadingspace"]
+                    lead_space = snippet_ref.groupdict()["leadingspace"] + " "
                     if id_ending in snippets:
                         result_array = [
                             lead_space + "<pre>\n",
@@ -150,7 +153,7 @@ if __name__ == "__main__":
                                     "".join(
                                         map(
                                             lambda x: lead_space + x,
-                                            snippets[id_ending],
+                                            re_space_snippet(snippets[id_ending]),
                                         )
                                     )
                                 ),
