@@ -421,6 +421,7 @@ public final class ServiceBusClientBuilder {
          *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}
+         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
@@ -439,7 +440,8 @@ public final class ServiceBusClientBuilder {
                     entityName = connectionStringEntityName;
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown entity type: " + entityType);
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
             return new ServiceBusSenderAsyncClient(entityName, connectionProcessor, retryOptions, tracerProvider,
@@ -451,6 +453,11 @@ public final class ServiceBusClientBuilder {
          * to a Service Bus queue or topic.
          *
          * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}
+         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderClient buildClient() {
             return new ServiceBusSenderClient(buildAsyncClient(), retryOptions.getTryTimeout());
@@ -596,6 +603,7 @@ public final class ServiceBusClientBuilder {
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
@@ -615,7 +623,8 @@ public final class ServiceBusClientBuilder {
                     entityPath = topicName;
                     break;
                 default:
-                    throw new IllegalArgumentException("Unknown entity type: " + entityType);
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
             if (prefetchCount < 1) {
@@ -643,6 +652,12 @@ public final class ServiceBusClientBuilder {
          * from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusReceiverClient buildClient() {
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
