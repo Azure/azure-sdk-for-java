@@ -136,7 +136,7 @@
         <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
         <configuration>
           <scanIntervalSeconds>0</scanIntervalSeconds>
-          <stopPort>11069</stopPort>
+          <stopPort>11079</stopPort>
           <stopKey>stop-azure-keyvault-extensions</stopKey>
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>

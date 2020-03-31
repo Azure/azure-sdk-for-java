@@ -152,7 +152,7 @@ the MIT License. See License.txt in the project root for license information. --
         <configuration>
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
-          <stopKey>STOP</stopKey>
+          <stopKey>stop-azure-keyvault</stopKey>
           <stopWait>20</stopWait>
           <waitForChild>false</waitForChild>
           <jettyXml>../../../jetty.xml</jettyXml>
