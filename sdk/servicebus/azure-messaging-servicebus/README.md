@@ -165,7 +165,7 @@ or topic.
 
 * [`Sending a message asynchronously`][sample-send-async-message].
 * [`Sending a message asynchronously using active directory credential`][sample-send-async-aad-message].
-* [`Send message in batch`][sample-send-batch-messages].
+* [`Send message in batch synchronously`][sample-send-batch-messages].
 
 ### Receive Message Examples
 
@@ -176,7 +176,7 @@ or subscriber.
 * [`Receiving a message asynchronously`][sample-receive-async-message].
 * [`Receiving a message asynchronously using active directory credential`][sample-receive-async-aad-message].
 * [`Receiving a message asynchronously and settling`][sample-receive-message-and-settle].
-* [`Receiving stream of messages synchronously`][sample-receive-message-batch-synchronously].
+* [`Receiving messages batch synchronously`][sample-receive-message-batch-synchronously].
 
 ## Troubleshooting
 
@@ -277,7 +277,8 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [ServiceBusSenderAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
 [ServiceBusSenderClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderClient.java
-[ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
+[ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
+[ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java
 [sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
