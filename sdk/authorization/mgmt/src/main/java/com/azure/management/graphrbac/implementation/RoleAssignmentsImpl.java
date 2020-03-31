@@ -40,7 +40,7 @@ class RoleAssignmentsImpl
         if (roleAssignmentInner == null) {
             return null;
         }
-        return new RoleAssignmentImpl(roleAssignmentInner.getName(), roleAssignmentInner, manager());
+        return new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager());
     }
 
     @Override
@@ -52,7 +52,7 @@ class RoleAssignmentsImpl
     public Mono<RoleAssignment> getByIdAsync(String id) {
         return inner().getByIdAsync(id)
                 .onErrorResume(CloudException.class, e -> Mono.empty())
-                .map(roleAssignmentInner -> new RoleAssignmentImpl(roleAssignmentInner.getName(), roleAssignmentInner, manager()));
+                .map(roleAssignmentInner -> new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager()));
     }
 
     @Override
@@ -74,7 +74,7 @@ class RoleAssignmentsImpl
     public Mono<RoleAssignment> getByScopeAsync(String scope,  String name) {
         return inner().getAsync(scope, name)
                 .onErrorResume(CloudException.class, e-> Mono.empty())
-                .map(roleAssignmentInner -> new RoleAssignmentImpl(roleAssignmentInner.getName(), roleAssignmentInner, manager()));
+                .map(roleAssignmentInner -> new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager()));
     }
 
     @Override
@@ -86,7 +86,7 @@ class RoleAssignmentsImpl
     public Mono<RoleAssignment> deleteByIdAsync(String id) {
         return inner().deleteByIdAsync(id)
                 .onErrorResume(CloudException.class, e -> Mono.empty())
-                .map(roleAssignmentInner -> new RoleAssignmentImpl(roleAssignmentInner.getName(), roleAssignmentInner, manager()));
+                .map(roleAssignmentInner -> new RoleAssignmentImpl(roleAssignmentInner.name(), roleAssignmentInner, manager()));
     }
 
     @Override

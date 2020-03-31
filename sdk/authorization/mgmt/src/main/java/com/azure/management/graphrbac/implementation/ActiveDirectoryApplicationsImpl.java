@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.azure.management.graphrbac.ActiveDirectoryApplications;
+import com.azure.management.graphrbac.GraphErrorException;
 import com.azure.management.graphrbac.models.ApplicationInner;
 import com.azure.management.graphrbac.models.ApplicationsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
@@ -96,7 +97,7 @@ class ActiveDirectoryApplicationsImpl
 
     @Override
     protected ActiveDirectoryApplicationImpl wrapModel(String name) {
-        return new ActiveDirectoryApplicationImpl(new ApplicationInner().setDisplayName(name), manager());
+        return new ActiveDirectoryApplicationImpl(new ApplicationInner().withDisplayName(name), manager());
     }
 
     @Override
