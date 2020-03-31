@@ -45,6 +45,7 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
+import static com.azure.core.util.FluxUtil.readFile;
 
 /**
  * Client to a file system. It may only be instantiated through a {@link DataLakeFileSystemClientBuilder} or via the
@@ -465,12 +466,9 @@ public class DataLakeFileSystemAsyncClient {
      * @return A {@link Mono} containing a {@link DataLakeFileAsyncClient} used to interact with the file created.
      */
     public Mono<DataLakeFileAsyncClient> createFile(String fileName) {
-        try {
-            return createFile(fileName, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createFile(fileName, false);
     }
+
     /**
      * Creates a new file within a file system. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
@@ -581,12 +579,9 @@ public class DataLakeFileSystemAsyncClient {
      * created.
      */
     public Mono<DataLakeDirectoryAsyncClient> createDirectory(String directoryName) {
-        try {
-            return createDirectory(directoryName, false);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return createDirectory(directoryName, false);
     }
+    
     /**
      * Creates a new directory within a file system. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
