@@ -58,6 +58,8 @@ public class AsynReadWithMultipleClients<T> {
     private Meter failureMeter;
     private Timer latency;
     private Map<CosmosAsyncClient, List<PojoizedJson>> clientDocsMap = new HashMap<>();
+    private List<CosmosAsyncDatabase> databaseListToClear = new ArrayList<>();
+    private List<CosmosAsyncContainer> collectionListToClear = new ArrayList<>();
 
     AsynReadWithMultipleClients(Configuration cfg) {
         logger = LoggerFactory.getLogger(this.getClass());
@@ -148,11 +150,25 @@ public class AsynReadWithMultipleClients<T> {
     }
 
     void shutdown() {
+        for (CosmosAsyncDatabase database : databaseListToClear) {
+            database.delete().block();
+        }
+
+        if (databaseListToClear.size() > 0) {
+            logger.info("Deleted database {} created on accounts for this test", this.configuration.getDatabaseId());
+        }
+
+        for (CosmosAsyncContainer container : collectionListToClear) {
+            container.delete().block();
+        }
+
+        if (collectionListToClear.size() > 0) {
+            logger.info("Deleted collection {} created on accounts for this test", this.configuration.getCollectionId());
+        }
+
         for (CosmosAsyncClient asyncClient : clientDocsMap.keySet()) {
-            asyncClient.getDatabase(configuration.getDatabaseId()).getContainer(this.configuration.getCollectionId()).delete().block();
             asyncClient.close();
         }
-        logger.info("Deleted test containers {} for all the hosts" , this.configuration.getCollectionId());
     }
 
     protected void onSuccess() {
@@ -212,9 +228,37 @@ public class AsynReadWithMultipleClients<T> {
                         .connectionReuseAcrossClientsEnabled(true)
                         .buildAsyncClient();
                     List<PojoizedJson> docsToRead = new ArrayList<>();
-                    CosmosAsyncDatabase cosmosAsyncDatabase = asyncClient.createDatabaseIfNotExists(this.configuration.getDatabaseId()).block().getDatabase();
-                    CosmosAsyncContainer cosmosAsyncContainer =
-                        cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), Configuration.PARTITION_KEY, configuration.getThroughput()).block().getContainer();
+                    CosmosAsyncDatabase cosmosAsyncDatabase = null;
+                    CosmosAsyncContainer cosmosAsyncContainer = null;
+                    boolean databaseCreated = false;
+                    try {
+                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
+                    } catch (CosmosClientException e) {
+                        if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                            cosmosAsyncDatabase = asyncClient.createDatabase(this.configuration.getDatabaseId()).block().getDatabase();
+                            logger.info("Database {} is created for this test on host {}", this.configuration.getDatabaseId(), endpoint);
+                            databaseCreated = true;
+                            databaseListToClear.add(cosmosAsyncDatabase);
+                        } else {
+                            throw e;
+                        }
+                    }
+
+                    try {
+                        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
+                    } catch (CosmosClientException e) {
+                        if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                            cosmosAsyncContainer =
+                                cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY, this.configuration.getThroughput()).block().getContainer();
+                            logger.info("Collection {} is created for this test on host {}", this.configuration.getCollectionId(), endpoint);
+                            if(!databaseCreated) {
+                                collectionListToClear.add(cosmosAsyncContainer);
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+
                     String partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
                         .getPaths().iterator().next().split("/")[1];
                     String dataFieldValue = RandomStringUtils.randomAlphabetic(this.configuration.getDocumentDataFieldSize());

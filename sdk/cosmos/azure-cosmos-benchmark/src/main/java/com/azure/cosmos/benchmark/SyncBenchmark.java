@@ -6,8 +6,10 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
@@ -48,11 +50,13 @@ abstract class SyncBenchmark<T> {
 
     private Meter successMeter;
     private Meter failureMeter;
+    private boolean databaseCreated;
+    private boolean collectionCreated;
 
     final Logger logger;
     final CosmosClient cosmosClient;
-    final CosmosDatabase cosmosDatabase;
-    final CosmosContainer cosmosContainer;
+    CosmosContainer cosmosContainer;
+    CosmosDatabase cosmosDatabase;
 
     final String partitionKey;
     final Configuration configuration;
@@ -94,23 +98,43 @@ abstract class SyncBenchmark<T> {
 
     SyncBenchmark(Configuration cfg) throws Exception {
         executorService = Executors.newFixedThreadPool(cfg.getConcurrency());
-
+        configuration = cfg;
+        logger = LoggerFactory.getLogger(this.getClass());
         cosmosClient = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
             .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
             .buildClient();
-        cosmosDatabase = cosmosClient.createDatabaseIfNotExists(cfg.getDatabaseId()).getDatabase();
-        cosmosContainer = cosmosDatabase.createContainerIfNotExists(cfg.getDatabaseId(), Configuration.PARTITION_KEY).getContainer();
 
-        logger = LoggerFactory.getLogger(this.getClass());
+        try {
+            cosmosDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().getDatabase();
+            logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
+        } catch (CosmosClientException e) {
+            if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                cosmosDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).getDatabase();
+                databaseCreated = true;
+            } else {
+                throw e;
+            }
+        }
+
+        try {
+            cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId()).read().getContainer();
+        } catch (CosmosClientException e) {
+            if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY, this.configuration.getThroughput()).getContainer();
+                logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
+                collectionCreated = true;
+            } else {
+                throw e;
+            }
+        }
 
         partitionKey = cosmosContainer.read().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
-        configuration = cfg;
 
         ArrayList<CompletableFuture<PojoizedJson>> createDocumentFutureList = new ArrayList<>();
 
@@ -176,8 +200,14 @@ abstract class SyncBenchmark<T> {
     }
 
     void shutdown() {
-        cosmosContainer.delete();
-        logger.info("Deleted test container {}" , this.configuration.getCollectionId());
+        if (this.databaseCreated) {
+            cosmosDatabase.delete();
+            logger.info("Deleted temporary database {} created for this test", this.configuration.getDatabaseId());
+        } else if (this.collectionCreated) {
+            cosmosContainer.delete();
+            logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
+        }
+
         cosmosClient.close();
         executorService.shutdown();
     }
