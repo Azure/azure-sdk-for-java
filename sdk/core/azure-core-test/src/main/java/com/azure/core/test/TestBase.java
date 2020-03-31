@@ -10,13 +10,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,7 +28,10 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
@@ -44,9 +44,9 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING = "rolling";
     private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+    public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING = "rolling";
     public static final int PLATFORM_COUNT = 6;
-    private static Map<DayOfWeek, Integer> calendarMap;
-    private static List<String> platformList;
+    private static List<String> platformList = buildPlatformList();
 
     private static TestMode testMode;
 
@@ -152,12 +152,11 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     private static int getOffset() {
         if (testMode == TestMode.PLAYBACK) {
-            return 0;
+            return -1;
         }
         LocalDate today = LocalDate.now();
-        buildCalendarMap();
         buildPlatformList();
-        return calendarMap.get(today.getDayOfWeek()) + getPlatFormOffset();
+        return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
     }
 
     private static Integer getPlatFormOffset() {
@@ -170,31 +169,15 @@ public abstract class TestBase implements BeforeEachCallback {
         ).map(platformList::indexOf).findFirst().orElse(null);
     }
 
-    private static void buildPlatformList() {
-        if (platformList != null) {
-            return;
-        }
-        platformList = new ArrayList<>();
+    private static List<String> buildPlatformList() {
+        List<String> platformList = new ArrayList<>();
         platformList.add("win,8");
         platformList.add("win,11");
         platformList.add("mac,8");
         platformList.add("mac,11");
         platformList.add("linux,8");
         platformList.add("linux,11");
-    }
-
-    private static void buildCalendarMap() {
-        if (calendarMap != null) {
-            return;
-        }
-        calendarMap = new HashMap<>();
-        calendarMap.put(DayOfWeek.MONDAY, 0);
-        calendarMap.put(DayOfWeek.TUESDAY, 1);
-        calendarMap.put(DayOfWeek.WEDNESDAY, 2);
-        calendarMap.put(DayOfWeek.THURSDAY, 3);
-        calendarMap.put(DayOfWeek.FRIDAY, 4);
-        calendarMap.put(DayOfWeek.SATURDAY, 5);
-        calendarMap.put(DayOfWeek.SUNDAY, 6);
+        return platformList;
     }
 
     /**
@@ -203,27 +186,33 @@ public abstract class TestBase implements BeforeEachCallback {
      * @param serviceVersionList The service version argument for the parameterized tests.
      * @return Stream of arguments for parameterized test framework.
      */
-    public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList) {
+    public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList,
+        boolean rollingServiceVersion) {
         List<Arguments> argumentsList = new ArrayList<>();
         int serviceVersionCount = serviceVersionList.size();
         List<HttpClient> httpClientList = getHttpClients();
-        long total = httpClientList.size() * serviceVersionCount;
-        int offset = getOffset();
-        int[] index = new int[1];
-        boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
+        int httpClientCount = httpClientList.size();
+        boolean rollingHttpClient = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
             .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
-        httpClientList.forEach(httpClient -> {
-            serviceVersionList.forEach(serviceVersion -> {
-                if (!rollingStrategy) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
-                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
-                    System.out.print("----------HttpClient: " + httpClient.toString() + ", ServiceVersion: "
-                        + serviceVersion.getVersion() + "----------");
-                }
-                index[0] += 1;
-            });
-        });
+        for (ServiceVersion s: serviceVersionList) {
+            for (HttpClient h: httpClientList) {
+                argumentsList.add(Arguments.of(h, s));
+            }
+        }
+        int offset = getOffset();
+        if (rollingServiceVersion && rollingHttpClient) {
+            return IntStream.range(0, argumentsList.size())
+                .filter(n -> n % PLATFORM_COUNT == offset % argumentsList.size())
+                .mapToObj(i -> argumentsList.get(i));
+        } else if (rollingServiceVersion) {
+            return IntStream.range(0, argumentsList.size())
+                .filter(n -> (n / httpClientCount) % PLATFORM_COUNT == offset % serviceVersionCount)
+                .mapToObj(i -> argumentsList.get(i));
+        } else if (rollingHttpClient) {
+            return IntStream.range(0, argumentsList.size())
+                .filter(n -> n % httpClientCount % PLATFORM_COUNT  == offset % httpClientCount)
+                .mapToObj(i -> argumentsList.get(i));
+        }
         return argumentsList.stream();
     }
 
@@ -239,7 +228,7 @@ public abstract class TestBase implements BeforeEachCallback {
             return Arrays.asList(new HttpClient[]{null});
         }
         return HttpClientProviders.getAllHttpClients().stream()
-            .filter(TestBase::shouldClientBeTested).collect(Collectors.toList());
+            .filter(TestBase::shouldClientBeTested).collect(toList());
     }
 
     /**

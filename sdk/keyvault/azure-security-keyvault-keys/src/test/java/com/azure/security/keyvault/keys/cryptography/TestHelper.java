@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING;
 import static com.azure.core.test.TestBase.getArgumentsFromServiceVersion;
 
 
@@ -34,8 +35,9 @@ public class TestHelper {
         CryptographyServiceVersion[] filteredKeyServiceVersion =
             Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
                 .toArray(CryptographyServiceVersion[]::new);
-
-        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
+        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV
+            .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
     }
 
     /**

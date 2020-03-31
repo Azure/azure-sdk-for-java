@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
+import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING;
 import static com.azure.core.test.TestBase.getArgumentsFromServiceVersion;
 
 class TestHelper {
@@ -31,7 +32,9 @@ class TestHelper {
             Arrays.stream(ConfigurationServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
                 .toArray(ConfigurationServiceVersion[]::new);
 
-        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
+        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV
+            .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
     }
 
     /**
@@ -54,7 +57,8 @@ class TestHelper {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return ConfigurationServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV) ||
+            AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");

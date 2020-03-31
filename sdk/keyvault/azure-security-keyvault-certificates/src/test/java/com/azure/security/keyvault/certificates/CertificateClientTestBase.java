@@ -618,7 +618,9 @@ public abstract class CertificateClientTestBase extends TestBase {
                 .filter(CertificateClientTestBase::shouldServiceVersionBeTested)
                 .toArray(CertificateServiceVersion[]::new);
 
-        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
+        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV
+            .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
     }
 
     /**

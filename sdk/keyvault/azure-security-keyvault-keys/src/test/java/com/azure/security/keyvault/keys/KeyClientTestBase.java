@@ -422,8 +422,9 @@ public abstract class KeyClientTestBase extends TestBase {
         KeyServiceVersion[] filteredKeyServiceVersion =
             Arrays.stream(KeyServiceVersion.values()).filter(KeyClientTestBase::shouldServiceVersionBeTested)
                 .toArray(KeyServiceVersion[]::new);
-
-        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion));
+        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV
+            .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
+        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
     }
 
     /**
