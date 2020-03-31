@@ -69,7 +69,7 @@ public class ServiceBusClientBuilderTest {
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         // Assert
-        assertNotNull(builder.buildSenderClientBuilder().buildAsyncClient());
+        assertNotNull(builder.buildSenderClientBuilder().queueName(QUEUE_NAME).buildAsyncClient());
     }
 
     @Test
