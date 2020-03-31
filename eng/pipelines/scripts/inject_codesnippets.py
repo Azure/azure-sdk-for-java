@@ -60,12 +60,8 @@ class SnippetDict:
             return [""]
 
 def re_space_snippet(snippet_list):
-    try:
-        # find identation (or whitespace characters) on the left side
-        white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
-    except:
-        print(snippet_list)
-        exit(1)
+    # find identation (or whitespace characters) on the left side
+    white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
 
     # now figure out the shortest one
     white_space_for_replacement = min(white_space, key=len)
