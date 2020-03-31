@@ -35,7 +35,7 @@ public class TestHelper {
         CryptographyServiceVersion[] filteredKeyServiceVersion =
             Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
                 .toArray(CryptographyServiceVersion[]::new);
-        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV
+        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV != null && SERVICE_VERSION_FROM_ENV
             .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
         return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
     }
@@ -60,7 +60,8 @@ public class TestHelper {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)
+            || AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
             return true;
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");

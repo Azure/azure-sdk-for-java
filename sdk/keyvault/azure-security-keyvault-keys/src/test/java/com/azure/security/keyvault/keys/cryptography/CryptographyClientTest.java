@@ -57,7 +57,9 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
         System.out.println("----------------------------------");
-        System.out.println(httpClient.toString());
+        if (httpClient != null) {
+            System.out.println(httpClient.toString());
+        }
         System.out.println(serviceVersion.toString());
         System.out.println("----------------------------------");
         initializeKeyClient(httpClient);

@@ -59,7 +59,10 @@ public class AadCredentialTest extends TestBase {
     public void aadAuthenticationAzConfigClient(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
         throws Exception {
         System.out.println("----------------------------------");
-        System.out.println(httpClient.toString());
+
+        if (httpClient != null) {
+            System.out.println(httpClient.toString());
+        }
         System.out.println(serviceVersion.toString());
         System.out.println("----------------------------------");
         setup(httpClient, serviceVersion);

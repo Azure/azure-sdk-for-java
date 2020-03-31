@@ -63,7 +63,9 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @MethodSource("getTestParameters")
     public void createCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         System.out.println("----------------------------------");
-        System.out.println(httpClient.toString());
+        if (httpClient != null) {
+            System.out.println(httpClient.toString());
+        }
         System.out.println(serviceVersion.toString());
         System.out.println("----------------------------------");
         createCertificateClient(httpClient, serviceVersion);

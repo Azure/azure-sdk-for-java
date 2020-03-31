@@ -47,7 +47,9 @@ public class SecretClientTest extends SecretClientTestBase {
     @MethodSource("getTestParameters")
     public void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         System.out.println("----------------------------------");
-        System.out.println(httpClient.toString());
+        if (httpClient != null) {
+            System.out.println(httpClient.toString());
+        }
         System.out.println(serviceVersion.toString());
         System.out.println("----------------------------------");
         initializeClient(httpClient, serviceVersion);

@@ -52,7 +52,9 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         System.out.println("----------------------------------");
-        System.out.println(httpClient.toString());
+        if (httpClient != null) {
+            System.out.println(httpClient.toString());
+        }
         System.out.println(serviceVersion.toString());
         System.out.println("----------------------------------");
         getKeyClient(httpClient, serviceVersion);

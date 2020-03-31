@@ -47,6 +47,8 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING = "rolling";
     public static final int PLATFORM_COUNT = 6;
     private static List<String> platformList = buildPlatformList();
+    private static final String HTTP_CLIENT_FROM_ENV =
+        Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
 
     private static TestMode testMode;
 
@@ -155,7 +157,6 @@ public abstract class TestBase implements BeforeEachCallback {
             return -1;
         }
         LocalDate today = LocalDate.now();
-        buildPlatformList();
         return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
     }
 
@@ -192,8 +193,7 @@ public abstract class TestBase implements BeforeEachCallback {
         int serviceVersionCount = serviceVersionList.size();
         List<HttpClient> httpClientList = getHttpClients();
         int httpClientCount = httpClientList.size();
-        boolean rollingHttpClient = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
-            .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
+        boolean rollingHttpClient = HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
         for (ServiceVersion s: serviceVersionList) {
             for (HttpClient h: httpClientList) {
                 argumentsList.add(Arguments.of(h, s));
@@ -203,15 +203,15 @@ public abstract class TestBase implements BeforeEachCallback {
         if (rollingServiceVersion && rollingHttpClient) {
             return IntStream.range(0, argumentsList.size())
                 .filter(n -> n % PLATFORM_COUNT == offset % argumentsList.size())
-                .mapToObj(i -> argumentsList.get(i));
+                .mapToObj(argumentsList::get);
         } else if (rollingServiceVersion) {
             return IntStream.range(0, argumentsList.size())
                 .filter(n -> (n / httpClientCount) % PLATFORM_COUNT == offset % serviceVersionCount)
-                .mapToObj(i -> argumentsList.get(i));
+                .mapToObj(argumentsList::get);
         } else if (rollingHttpClient) {
             return IntStream.range(0, argumentsList.size())
                 .filter(n -> n % httpClientCount % PLATFORM_COUNT  == offset % httpClientCount)
-                .mapToObj(i -> argumentsList.get(i));
+                .mapToObj(argumentsList::get);
         }
         return argumentsList.stream();
     }
@@ -248,15 +248,14 @@ public abstract class TestBase implements BeforeEachCallback {
      * @return Boolean indicates whether filters out the client or not.
      */
     public static boolean shouldClientBeTested(HttpClient client) {
-        String configuredHttpClientToTest = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS);
-        if (CoreUtils.isNullOrEmpty(configuredHttpClientToTest)) {
+        if (HTTP_CLIENT_FROM_ENV.trim().toLowerCase(Locale.ROOT).contains("netty")) {
             return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
         }
-        if (configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL) ||
-            configuredHttpClientToTest.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING)) {
+        if (HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL) ||
+            HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING)) {
             return true;
         }
-        String[] configuredHttpClientList = configuredHttpClientToTest.split(",");
+        String[] configuredHttpClientList = HTTP_CLIENT_FROM_ENV.split(",");
         return Arrays.stream(configuredHttpClientList).anyMatch(configuredHttpClient ->
             client.getClass().getSimpleName().toLowerCase(Locale.ROOT)
                 .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
