@@ -108,9 +108,9 @@ with Service Bus, please refer to [the associated documentation][aad_authorizati
   typically receive and process messages in the order in which they were added to the queue, and only one message 
   consumer receives and processes each message.
 
-- In contrast to queues, in which each message is processed by a single consumer, **topics and subscriptions** provide 
-  a one-to-many form of communication, in a publish/subscribe pattern. Useful for scaling to large numbers of 
-  recipients, each published message is made available to each subscription registered with the topic.
+- In contrast to queues **topics and subscriptions** provide a one-to-many form of communication, in a publish/subscribe
+  pattern. Useful for scaling to large numbers of recipients, each published message is made available to each 
+  subscription registered with the topic.
 
 ## Examples
 ### Create a sender or receiver using connection string
