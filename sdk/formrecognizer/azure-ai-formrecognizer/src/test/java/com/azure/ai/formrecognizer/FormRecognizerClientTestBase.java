@@ -3,11 +3,11 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.Element;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FieldValue;
 import com.azure.ai.formrecognizer.models.PageMetadata;
-import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
@@ -112,18 +112,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             Element expectedElement = expectedElements.get(i);
             Element actualElement = actualElements.get(i);
             assertEquals(expectedElement.getText(), actualElement.getText());
-            validateBoundingBox(expectedElement.getBoundingBox().getPoints(), actualElement.getBoundingBox().getPoints());
+            validateBoundingBox(expectedElement.getBoundingBox(), actualElement.getBoundingBox());
         }
     }
 
-    private static void validateBoundingBox(List<Point> expectedPoints, List<Point> actualPoints) {
-        assertEquals(expectedPoints.size(), actualPoints.size());
-        for (int i = 0; i < actualPoints.size(); i++) {
-            Point expectedPoint = expectedPoints.get(i);
-            Point actualPoint = actualPoints.get(i);
-            assertEquals(expectedPoint.getX(), actualPoint.getX());
-            assertEquals(expectedPoint.getY(), actualPoint.getY());
-        }
+    private static void validateBoundingBox(BoundingBox expectedPoints, BoundingBox actualPoints) {
+        assertEquals(expectedPoints.getTopLeft().getX(), actualPoints.getTopLeft().getX());
+        assertEquals(expectedPoints.getTopLeft().getY(), actualPoints.getTopLeft().getY());
+        assertEquals(expectedPoints.getTopRight().getX(), actualPoints.getTopRight().getX());
+        assertEquals(expectedPoints.getTopRight().getY(), actualPoints.getTopRight().getY());
+        assertEquals(expectedPoints.getBottomRight().getX(), actualPoints.getBottomRight().getX());
+        assertEquals(expectedPoints.getBottomRight().getY(), actualPoints.getBottomRight().getY());
+        assertEquals(expectedPoints.getBottomLeft().getX(), actualPoints.getBottomLeft().getX());
+        assertEquals(expectedPoints.getBottomLeft().getY(), actualPoints.getBottomLeft().getY());
     }
 
     private static void validatePageMetadata(PageMetadata expectedPageInfo, PageMetadata actualPageInfo) {

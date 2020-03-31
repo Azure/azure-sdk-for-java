@@ -210,12 +210,17 @@ final class Transforms {
      * @return A {@link BoundingBox}.
      */
     private static BoundingBox toBoundingBox(List<Float> boundingBox) {
-        List<Point> pointList = new ArrayList<>();
-        for (int i = 0; i < boundingBox.size(); i += 2) {
-            Point point = new Point(boundingBox.get(i), boundingBox.get(i + 1));
-            pointList.add(point);
+        BoundingBox boundingBox1 = null;
+        if (boundingBox.size() == 8) {
+            Point topLeft = new Point(boundingBox.get(0), boundingBox.get(1));
+            Point topRight = new Point(boundingBox.get(2), boundingBox.get(3));
+            Point bottomLeft = new Point(boundingBox.get(4), boundingBox.get(5));
+            Point bottomRight = new Point(boundingBox.get(6), boundingBox.get(7));
+            boundingBox1 = new BoundingBox(topLeft, topRight, bottomLeft, bottomRight);
+        } else {
+            return null;
         }
-        return new BoundingBox(pointList);
+        return boundingBox1;
     }
 
     /**
