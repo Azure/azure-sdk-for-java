@@ -78,7 +78,7 @@ public final class OAuth2Permission {
      * 
      * @return the adminConsentDescription value.
      */
-    public String getAdminConsentDescription() {
+    public String adminConsentDescription() {
         return this.adminConsentDescription;
     }
 
@@ -89,7 +89,7 @@ public final class OAuth2Permission {
      * @param adminConsentDescription the adminConsentDescription value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setAdminConsentDescription(String adminConsentDescription) {
+    public OAuth2Permission withAdminConsentDescription(String adminConsentDescription) {
         this.adminConsentDescription = adminConsentDescription;
         return this;
     }
@@ -101,7 +101,7 @@ public final class OAuth2Permission {
      * 
      * @return the adminConsentDisplayName value.
      */
-    public String getAdminConsentDisplayName() {
+    public String adminConsentDisplayName() {
         return this.adminConsentDisplayName;
     }
 
@@ -113,7 +113,7 @@ public final class OAuth2Permission {
      * @param adminConsentDisplayName the adminConsentDisplayName value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setAdminConsentDisplayName(String adminConsentDisplayName) {
+    public OAuth2Permission withAdminConsentDisplayName(String adminConsentDisplayName) {
         this.adminConsentDisplayName = adminConsentDisplayName;
         return this;
     }
@@ -135,7 +135,7 @@ public final class OAuth2Permission {
      * @param id the id value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setId(String id) {
+    public OAuth2Permission withId(String id) {
         this.id = id;
         return this;
     }
@@ -161,7 +161,7 @@ public final class OAuth2Permission {
      * @param isEnabled the isEnabled value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setIsEnabled(Boolean isEnabled) {
+    public OAuth2Permission withIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
     }
@@ -174,7 +174,7 @@ public final class OAuth2Permission {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -187,7 +187,7 @@ public final class OAuth2Permission {
      * @param type the type value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setType(String type) {
+    public OAuth2Permission withType(String type) {
         this.type = type;
         return this;
     }
@@ -198,7 +198,7 @@ public final class OAuth2Permission {
      * 
      * @return the userConsentDescription value.
      */
-    public String getUserConsentDescription() {
+    public String userConsentDescription() {
         return this.userConsentDescription;
     }
 
@@ -209,7 +209,7 @@ public final class OAuth2Permission {
      * @param userConsentDescription the userConsentDescription value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setUserConsentDescription(String userConsentDescription) {
+    public OAuth2Permission withUserConsentDescription(String userConsentDescription) {
         this.userConsentDescription = userConsentDescription;
         return this;
     }
@@ -220,7 +220,7 @@ public final class OAuth2Permission {
      * 
      * @return the userConsentDisplayName value.
      */
-    public String getUserConsentDisplayName() {
+    public String userConsentDisplayName() {
         return this.userConsentDisplayName;
     }
 
@@ -231,7 +231,7 @@ public final class OAuth2Permission {
      * @param userConsentDisplayName the userConsentDisplayName value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setUserConsentDisplayName(String userConsentDisplayName) {
+    public OAuth2Permission withUserConsentDisplayName(String userConsentDisplayName) {
         this.userConsentDisplayName = userConsentDisplayName;
         return this;
     }
@@ -242,7 +242,7 @@ public final class OAuth2Permission {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -253,7 +253,7 @@ public final class OAuth2Permission {
      * @param value the value value to set.
      * @return the OAuth2Permission object itself.
      */
-    public OAuth2Permission setValue(String value) {
+    public OAuth2Permission withValue(String value) {
         this.value = value;
         return this;
     }

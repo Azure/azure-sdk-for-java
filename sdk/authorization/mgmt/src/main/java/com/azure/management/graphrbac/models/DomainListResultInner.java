@@ -26,7 +26,7 @@ public final class DomainListResultInner {
      * 
      * @return the value value.
      */
-    public List<DomainInner> getValue() {
+    public List<DomainInner> value() {
         return this.value;
     }
 
@@ -36,7 +36,7 @@ public final class DomainListResultInner {
      * @param value the value value to set.
      * @return the DomainListResultInner object itself.
      */
-    public DomainListResultInner setValue(List<DomainInner> value) {
+    public DomainListResultInner withValue(List<DomainInner> value) {
         this.value = value;
         return this;
     }

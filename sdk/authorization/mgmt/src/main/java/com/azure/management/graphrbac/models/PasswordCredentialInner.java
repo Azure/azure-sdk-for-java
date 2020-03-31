@@ -9,7 +9,6 @@ package com.azure.management.graphrbac.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -59,7 +58,7 @@ public final class PasswordCredentialInner {
      * 
      * @return the startDate value.
      */
-    public OffsetDateTime getStartDate() {
+    public OffsetDateTime startDate() {
         return this.startDate;
     }
 
@@ -69,7 +68,7 @@ public final class PasswordCredentialInner {
      * @param startDate the startDate value to set.
      * @return the PasswordCredentialInner object itself.
      */
-    public PasswordCredentialInner setStartDate(OffsetDateTime startDate) {
+    public PasswordCredentialInner withStartDate(OffsetDateTime startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -79,7 +78,7 @@ public final class PasswordCredentialInner {
      * 
      * @return the endDate value.
      */
-    public OffsetDateTime getEndDate() {
+    public OffsetDateTime endDate() {
         return this.endDate;
     }
 
@@ -89,7 +88,7 @@ public final class PasswordCredentialInner {
      * @param endDate the endDate value to set.
      * @return the PasswordCredentialInner object itself.
      */
-    public PasswordCredentialInner setEndDate(OffsetDateTime endDate) {
+    public PasswordCredentialInner withEndDate(OffsetDateTime endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -99,7 +98,7 @@ public final class PasswordCredentialInner {
      * 
      * @return the keyId value.
      */
-    public String getKeyId() {
+    public String keyId() {
         return this.keyId;
     }
 
@@ -109,7 +108,7 @@ public final class PasswordCredentialInner {
      * @param keyId the keyId value to set.
      * @return the PasswordCredentialInner object itself.
      */
-    public PasswordCredentialInner setKeyId(String keyId) {
+    public PasswordCredentialInner withKeyId(String keyId) {
         this.keyId = keyId;
         return this;
     }
@@ -119,7 +118,7 @@ public final class PasswordCredentialInner {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -129,7 +128,7 @@ public final class PasswordCredentialInner {
      * @param value the value value to set.
      * @return the PasswordCredentialInner object itself.
      */
-    public PasswordCredentialInner setValue(String value) {
+    public PasswordCredentialInner withValue(String value) {
         this.value = value;
         return this;
     }
@@ -139,7 +138,7 @@ public final class PasswordCredentialInner {
      * 
      * @return the customKeyIdentifier value.
      */
-    public byte[] getCustomKeyIdentifier() {
+    public byte[] customKeyIdentifier() {
         return CoreUtils.clone(this.customKeyIdentifier);
     }
 
@@ -149,7 +148,7 @@ public final class PasswordCredentialInner {
      * @param customKeyIdentifier the customKeyIdentifier value to set.
      * @return the PasswordCredentialInner object itself.
      */
-    public PasswordCredentialInner setCustomKeyIdentifier(byte[] customKeyIdentifier) {
+    public PasswordCredentialInner withCustomKeyIdentifier(byte[] customKeyIdentifier) {
         this.customKeyIdentifier = CoreUtils.clone(customKeyIdentifier);
         return this;
     }
@@ -160,7 +159,7 @@ public final class PasswordCredentialInner {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -171,7 +170,7 @@ public final class PasswordCredentialInner {
      * @param additionalProperties the additionalProperties value to set.
      * @return the PasswordCredentialInner object itself.
      */
-    public PasswordCredentialInner setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public PasswordCredentialInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

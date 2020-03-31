@@ -6,9 +6,7 @@
 
 /**
  * Package containing the implementations and inner classes for
- * AuthorizationManagementClient.
- * Role based access control provides you a way to apply granular level policy
- * administration down to individual resources or resource groups. These calls
- * handle provider operations.
+ * GraphRbacManagementClient.
+ * The Graph RBAC Management Client.
  */
 package com.azure.management.graphrbac.models;

@@ -27,7 +27,7 @@ public final class GroupGetMemberGroupsResultInner {
      * 
      * @return the value value.
      */
-    public List<String> getValue() {
+    public List<String> value() {
         return this.value;
     }
 
@@ -38,7 +38,7 @@ public final class GroupGetMemberGroupsResultInner {
      * @param value the value value to set.
      * @return the GroupGetMemberGroupsResultInner object itself.
      */
-    public GroupGetMemberGroupsResultInner setValue(List<String> value) {
+    public GroupGetMemberGroupsResultInner withValue(List<String> value) {
         this.value = value;
         return this;
     }

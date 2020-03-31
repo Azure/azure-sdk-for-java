@@ -43,7 +43,7 @@ public final class InformationalUrl {
      * 
      * @return the termsOfService value.
      */
-    public String getTermsOfService() {
+    public String termsOfService() {
         return this.termsOfService;
     }
 
@@ -53,7 +53,7 @@ public final class InformationalUrl {
      * @param termsOfService the termsOfService value to set.
      * @return the InformationalUrl object itself.
      */
-    public InformationalUrl setTermsOfService(String termsOfService) {
+    public InformationalUrl withTermsOfService(String termsOfService) {
         this.termsOfService = termsOfService;
         return this;
     }
@@ -63,7 +63,7 @@ public final class InformationalUrl {
      * 
      * @return the marketing value.
      */
-    public String getMarketing() {
+    public String marketing() {
         return this.marketing;
     }
 
@@ -73,7 +73,7 @@ public final class InformationalUrl {
      * @param marketing the marketing value to set.
      * @return the InformationalUrl object itself.
      */
-    public InformationalUrl setMarketing(String marketing) {
+    public InformationalUrl withMarketing(String marketing) {
         this.marketing = marketing;
         return this;
     }
@@ -83,7 +83,7 @@ public final class InformationalUrl {
      * 
      * @return the privacy value.
      */
-    public String getPrivacy() {
+    public String privacy() {
         return this.privacy;
     }
 
@@ -93,7 +93,7 @@ public final class InformationalUrl {
      * @param privacy the privacy value to set.
      * @return the InformationalUrl object itself.
      */
-    public InformationalUrl setPrivacy(String privacy) {
+    public InformationalUrl withPrivacy(String privacy) {
         this.privacy = privacy;
         return this;
     }
@@ -103,7 +103,7 @@ public final class InformationalUrl {
      * 
      * @return the support value.
      */
-    public String getSupport() {
+    public String support() {
         return this.support;
     }
 
@@ -113,7 +113,7 @@ public final class InformationalUrl {
      * @param support the support value to set.
      * @return the InformationalUrl object itself.
      */
-    public InformationalUrl setSupport(String support) {
+    public InformationalUrl withSupport(String support) {
         this.support = support;
         return this;
     }

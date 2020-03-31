@@ -25,14 +25,14 @@ public final class ServicePrincipalListResultInner {
      * the URL to get the next set of results.
      */
     @JsonProperty(value = "odata.nextLink")
-    private String odatanextLink;
+    private String odataNextLink;
 
     /**
      * Get the value property: the list of service principals.
      * 
      * @return the value value.
      */
-    public List<ServicePrincipalInner> getValue() {
+    public List<ServicePrincipalInner> value() {
         return this.value;
     }
 
@@ -42,28 +42,28 @@ public final class ServicePrincipalListResultInner {
      * @param value the value value to set.
      * @return the ServicePrincipalListResultInner object itself.
      */
-    public ServicePrincipalListResultInner setValue(List<ServicePrincipalInner> value) {
+    public ServicePrincipalListResultInner withValue(List<ServicePrincipalInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the odatanextLink property: the URL to get the next set of results.
+     * Get the odataNextLink property: the URL to get the next set of results.
      * 
-     * @return the odatanextLink value.
+     * @return the odataNextLink value.
      */
-    public String getOdatanextLink() {
-        return this.odatanextLink;
+    public String odataNextLink() {
+        return this.odataNextLink;
     }
 
     /**
-     * Set the odatanextLink property: the URL to get the next set of results.
+     * Set the odataNextLink property: the URL to get the next set of results.
      * 
-     * @param odatanextLink the odatanextLink value to set.
+     * @param odataNextLink the odataNextLink value to set.
      * @return the ServicePrincipalListResultInner object itself.
      */
-    public ServicePrincipalListResultInner setOdatanextLink(String odatanextLink) {
-        this.odatanextLink = odatanextLink;
+    public ServicePrincipalListResultInner withOdataNextLink(String odataNextLink) {
+        this.odataNextLink = odataNextLink;
         return this;
     }
 }

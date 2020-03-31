@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The RoleAssignmentListResult model.
+ * The ClassicAdministratorListResult model.
  */
 @Fluent
-public final class RoleAssignmentListResultInner {
+public final class ClassicAdministratorListResultInner {
     /*
-     * Role assignment list.
+     * An array of administrators.
      */
     @JsonProperty(value = "value")
-    private List<RoleAssignmentInner> value;
+    private List<ClassicAdministratorInner> value;
 
     /*
      * The URL to use for getting the next set of results.
@@ -26,21 +26,21 @@ public final class RoleAssignmentListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Role assignment list.
+     * Get the value property: An array of administrators.
      * 
      * @return the value value.
      */
-    public List<RoleAssignmentInner> value() {
+    public List<ClassicAdministratorInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: Role assignment list.
+     * Set the value property: An array of administrators.
      * 
      * @param value the value value to set.
-     * @return the RoleAssignmentListResultInner object itself.
+     * @return the ClassicAdministratorListResultInner object itself.
      */
-    public RoleAssignmentListResultInner withValue(List<RoleAssignmentInner> value) {
+    public ClassicAdministratorListResultInner withValue(List<ClassicAdministratorInner> value) {
         this.value = value;
         return this;
     }
@@ -60,9 +60,9 @@ public final class RoleAssignmentListResultInner {
      * results.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the RoleAssignmentListResultInner object itself.
+     * @return the ClassicAdministratorListResultInner object itself.
      */
-    public RoleAssignmentListResultInner withNextLink(String nextLink) {
+    public ClassicAdministratorListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

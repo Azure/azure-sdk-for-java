@@ -19,7 +19,7 @@ public final class OAuth2PermissionGrantInner {
      * Microsoft.DirectoryServices.OAuth2PermissionGrant
      */
     @JsonProperty(value = "odata.type")
-    private String odatatype;
+    private String odataType;
 
     /*
      * The id of the resource's service principal granted consent to
@@ -75,24 +75,24 @@ public final class OAuth2PermissionGrantInner {
     private String expiryTime;
 
     /**
-     * Get the odatatype property:
+     * Get the odataType property:
      * Microsoft.DirectoryServices.OAuth2PermissionGrant.
      * 
-     * @return the odatatype value.
+     * @return the odataType value.
      */
-    public String getOdatatype() {
-        return this.odatatype;
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
-     * Set the odatatype property:
+     * Set the odataType property:
      * Microsoft.DirectoryServices.OAuth2PermissionGrant.
      * 
-     * @param odatatype the odatatype value to set.
+     * @param odataType the odataType value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setOdatatype(String odatatype) {
-        this.odatatype = odatatype;
+    public OAuth2PermissionGrantInner withOdataType(String odataType) {
+        this.odataType = odataType;
         return this;
     }
 
@@ -103,7 +103,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the clientId value.
      */
-    public String getClientId() {
+    public String clientId() {
         return this.clientId;
     }
 
@@ -115,7 +115,7 @@ public final class OAuth2PermissionGrantInner {
      * @param clientId the clientId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setClientId(String clientId) {
+    public OAuth2PermissionGrantInner withClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
@@ -125,7 +125,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the objectId value.
      */
-    public String getObjectId() {
+    public String objectId() {
         return this.objectId;
     }
 
@@ -135,7 +135,7 @@ public final class OAuth2PermissionGrantInner {
      * @param objectId the objectId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setObjectId(String objectId) {
+    public OAuth2PermissionGrantInner withObjectId(String objectId) {
         this.objectId = objectId;
         return this;
     }
@@ -146,7 +146,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the consentType value.
      */
-    public ConsentType getConsentType() {
+    public ConsentType consentType() {
         return this.consentType;
     }
 
@@ -157,7 +157,7 @@ public final class OAuth2PermissionGrantInner {
      * @param consentType the consentType value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setConsentType(ConsentType consentType) {
+    public OAuth2PermissionGrantInner withConsentType(ConsentType consentType) {
         this.consentType = consentType;
         return this;
     }
@@ -169,7 +169,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the principalId value.
      */
-    public String getPrincipalId() {
+    public String principalId() {
         return this.principalId;
     }
 
@@ -181,7 +181,7 @@ public final class OAuth2PermissionGrantInner {
      * @param principalId the principalId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setPrincipalId(String principalId) {
+    public OAuth2PermissionGrantInner withPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
     }
@@ -192,7 +192,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the resourceId value.
      */
-    public String getResourceId() {
+    public String resourceId() {
         return this.resourceId;
     }
 
@@ -203,7 +203,7 @@ public final class OAuth2PermissionGrantInner {
      * @param resourceId the resourceId value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setResourceId(String resourceId) {
+    public OAuth2PermissionGrantInner withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -215,7 +215,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the scope value.
      */
-    public String getScope() {
+    public String scope() {
         return this.scope;
     }
 
@@ -227,7 +227,7 @@ public final class OAuth2PermissionGrantInner {
      * @param scope the scope value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setScope(String scope) {
+    public OAuth2PermissionGrantInner withScope(String scope) {
         this.scope = scope;
         return this;
     }
@@ -237,7 +237,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the startTime value.
      */
-    public String getStartTime() {
+    public String startTime() {
         return this.startTime;
     }
 
@@ -247,7 +247,7 @@ public final class OAuth2PermissionGrantInner {
      * @param startTime the startTime value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setStartTime(String startTime) {
+    public OAuth2PermissionGrantInner withStartTime(String startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -257,7 +257,7 @@ public final class OAuth2PermissionGrantInner {
      * 
      * @return the expiryTime value.
      */
-    public String getExpiryTime() {
+    public String expiryTime() {
         return this.expiryTime;
     }
 
@@ -267,7 +267,7 @@ public final class OAuth2PermissionGrantInner {
      * @param expiryTime the expiryTime value to set.
      * @return the OAuth2PermissionGrantInner object itself.
      */
-    public OAuth2PermissionGrantInner setExpiryTime(String expiryTime) {
+    public OAuth2PermissionGrantInner withExpiryTime(String expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }

@@ -8,7 +8,6 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -70,7 +69,7 @@ public final class KeyCredentialInner {
      * 
      * @return the startDate value.
      */
-    public OffsetDateTime getStartDate() {
+    public OffsetDateTime startDate() {
         return this.startDate;
     }
 
@@ -80,7 +79,7 @@ public final class KeyCredentialInner {
      * @param startDate the startDate value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setStartDate(OffsetDateTime startDate) {
+    public KeyCredentialInner withStartDate(OffsetDateTime startDate) {
         this.startDate = startDate;
         return this;
     }
@@ -90,7 +89,7 @@ public final class KeyCredentialInner {
      * 
      * @return the endDate value.
      */
-    public OffsetDateTime getEndDate() {
+    public OffsetDateTime endDate() {
         return this.endDate;
     }
 
@@ -100,7 +99,7 @@ public final class KeyCredentialInner {
      * @param endDate the endDate value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setEndDate(OffsetDateTime endDate) {
+    public KeyCredentialInner withEndDate(OffsetDateTime endDate) {
         this.endDate = endDate;
         return this;
     }
@@ -110,7 +109,7 @@ public final class KeyCredentialInner {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -120,7 +119,7 @@ public final class KeyCredentialInner {
      * @param value the value value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setValue(String value) {
+    public KeyCredentialInner withValue(String value) {
         this.value = value;
         return this;
     }
@@ -130,7 +129,7 @@ public final class KeyCredentialInner {
      * 
      * @return the keyId value.
      */
-    public String getKeyId() {
+    public String keyId() {
         return this.keyId;
     }
 
@@ -140,7 +139,7 @@ public final class KeyCredentialInner {
      * @param keyId the keyId value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setKeyId(String keyId) {
+    public KeyCredentialInner withKeyId(String keyId) {
         this.keyId = keyId;
         return this;
     }
@@ -151,7 +150,7 @@ public final class KeyCredentialInner {
      * 
      * @return the usage value.
      */
-    public String getUsage() {
+    public String usage() {
         return this.usage;
     }
 
@@ -162,7 +161,7 @@ public final class KeyCredentialInner {
      * @param usage the usage value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setUsage(String usage) {
+    public KeyCredentialInner withUsage(String usage) {
         this.usage = usage;
         return this;
     }
@@ -173,7 +172,7 @@ public final class KeyCredentialInner {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -184,7 +183,7 @@ public final class KeyCredentialInner {
      * @param type the type value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setType(String type) {
+    public KeyCredentialInner withType(String type) {
         this.type = type;
         return this;
     }
@@ -194,7 +193,7 @@ public final class KeyCredentialInner {
      * 
      * @return the customKeyIdentifier value.
      */
-    public String getCustomKeyIdentifier() {
+    public String customKeyIdentifier() {
         return this.customKeyIdentifier;
     }
 
@@ -204,7 +203,7 @@ public final class KeyCredentialInner {
      * @param customKeyIdentifier the customKeyIdentifier value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setCustomKeyIdentifier(String customKeyIdentifier) {
+    public KeyCredentialInner withCustomKeyIdentifier(String customKeyIdentifier) {
         this.customKeyIdentifier = customKeyIdentifier;
         return this;
     }
@@ -215,7 +214,7 @@ public final class KeyCredentialInner {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -226,7 +225,7 @@ public final class KeyCredentialInner {
      * @param additionalProperties the additionalProperties value to set.
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public KeyCredentialInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
