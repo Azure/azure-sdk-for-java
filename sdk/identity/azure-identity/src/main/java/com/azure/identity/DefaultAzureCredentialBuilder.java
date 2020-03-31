@@ -36,52 +36,47 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
 
 
     /**
-     * Specifies whether the {@link EnvironmentCredential} will be excluded from the {@link DefaultAzureCredential}
-     * authentication flow. Setting to true disables reading authentication details from the process' environment
+     * Excludes the {@link EnvironmentCredential} from the {@link DefaultAzureCredential}
+     * authentication flow and disables reading authentication details from the process' environment
      * variables.
      *
-     * @param shouldExclude the status indicating to exclude the credential or not.
      * @return An updated instance of this builder with the Environment credential exclusion set as specified.
      */
-    public DefaultAzureCredentialBuilder excludeEnvironmentCredential(boolean shouldExclude) {
-        excludeEnvironmentCredential = shouldExclude;
+    public DefaultAzureCredentialBuilder excludeEnvironmentCredential() {
+        excludeEnvironmentCredential = true;
         return this;
     }
 
     /**
-     * Specifies whether the {@link ManagedIdentityCredential} will be excluded from the {@link DefaultAzureCredential}
-     * authentication flow. Setting to true disables authenticating with managed identity endpoints.
+     * Excludes the {@link ManagedIdentityCredential} from the {@link DefaultAzureCredential}
+     * authentication flow and disables authenticating with managed identity endpoints.
      *
-     * @param shouldExclude the status indicating to exclude the credential or not.
      * @return An updated instance of this builder with the Managed Identity credential exclusion set as specified.
      */
-    public DefaultAzureCredentialBuilder excludeManagedIdentityCredential(boolean shouldExclude) {
-        excludeManagedIdentityCredential = shouldExclude;
+    public DefaultAzureCredentialBuilder excludeManagedIdentityCredential() {
+        excludeManagedIdentityCredential = true;
         return this;
     }
 
     /**
-     * Specifies whether the {@link SharedTokenCacheCredential} will be excluded from the {@link DefaultAzureCredential}
-     * authentication flow. Setting to true disables single sign on authentication with development tools which write
+     * Excludes the {@link SharedTokenCacheCredential} from the {@link DefaultAzureCredential}
+     * authentication flow and disables single sign on authentication with development tools which write
      * to the shared token cache.
      *
-     * @param shouldExclude the status indicating to exclude the credential or not.
      * @return An updated instance of this builder with the Shared Token Cache credential exclusion set as specified.
      */
-    public DefaultAzureCredentialBuilder excludeSharedTokenCacheCredential(boolean shouldExclude) {
-        excludeSharedTokenCacheCredential = shouldExclude;
+    public DefaultAzureCredentialBuilder excludeSharedTokenCacheCredential() {
+        excludeSharedTokenCacheCredential = true;
         return this;
     }
 
     /**
-     * Specifies whether the {@link AzureCliCredential} will be excluded from the {@link DefaultAzureCredential}
-     * authentication flow.
+     * Excludes the {@link AzureCliCredential} from the {@link DefaultAzureCredential} authentication flow.
      *
-     * @param shouldExclude the status indicating to exclude the credential or not.
      * @return An updated instance of this builder with the Azure Cli credential exclusion set as specified.
      */
-    public DefaultAzureCredentialBuilder excludeAzureCliCredential(boolean shouldExclude) {
-        excludeAzureCliCredential = shouldExclude;
+    public DefaultAzureCredentialBuilder excludeAzureCliCredential() {
+        excludeAzureCliCredential = true;
         return this;
     }
 
