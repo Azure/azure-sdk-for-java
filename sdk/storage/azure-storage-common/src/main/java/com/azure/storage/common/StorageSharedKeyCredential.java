@@ -158,7 +158,7 @@ public final class StorageSharedKeyCredential {
         }
 
         /* Culture-sensitive word sort */
-        Collections.sort(xmsHeaderNameArray, Collator.getInstance());
+        Collections.sort(xmsHeaderNameArray, Collator.getInstance(Locale.ROOT));
 
         final StringBuilder canonicalizedHeaders = new StringBuilder();
         for (final String key : xmsHeaderNameArray) {
