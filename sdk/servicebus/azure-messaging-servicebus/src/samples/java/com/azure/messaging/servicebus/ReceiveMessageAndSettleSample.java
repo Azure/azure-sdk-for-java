@@ -15,6 +15,8 @@ import java.util.concurrent.TimeUnit;
  * it. Settling of message include accept, defer and abandon the message as needed.
  */
 public class ReceiveMessageAndSettleSample {
+    private static Duration TIMEOUT = Duration.ofSeconds(15);
+
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
      * Queue
@@ -40,6 +42,7 @@ public class ReceiveMessageAndSettleSample {
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .isLockAutoRenewed(true)
             .queueName("<<queue-name>>")
+            .isAutoComplete(false)
             .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
 
@@ -48,9 +51,9 @@ public class ReceiveMessageAndSettleSample {
                 Instant latest = Instant.MIN;
 
                 // Simulate some sort of long processing. Sleep should not be used in production system.
-                for (int i = 0; i < 3; i++) {
+                for (int i = 0; i < 2; i++) {
                     try {
-                        TimeUnit.SECONDS.sleep(15);
+                        TimeUnit.SECONDS.sleep(5);
                     } catch (InterruptedException error) {
                         System.out.println("Error occurred while sleeping: " + error);
                     }
@@ -60,37 +63,45 @@ public class ReceiveMessageAndSettleSample {
 
                 //This is application business logic to take action based on some application logic.
                 // For demo purpose we are using a property for application logic.
-                String propertyValue = "UNDEFINED";
-                if (received.getProperties().get("SOME_USER_PROPERTY") != null) {
-                    propertyValue = (String) received.getProperties().get("SOME_USER_PROPERTY");
+                String actionToTake = null;
+
+                String payload = new String(received.getBody());
+
+                if (payload.contains("complete")) {
+                    actionToTake = "COMPLETE";
+                } else if (payload.contains("abandon")) {
+                    actionToTake = "ABANDON";
+                } else if (payload.contains("defer")) {
+                    actionToTake = "DEFER";
                 }
 
-                switch (propertyValue) {
-                    case "VALUE-1":
+                System.out.println("Got message actionToTake = " + actionToTake);
+
+                switch (actionToTake) {
+                    case "COMPLETE":
                         System.out.println("Completing message.");
-                        receiverAsyncClient.complete(received).block(Duration.ofSeconds(15));
+                        receiverAsyncClient.complete(received).block(TIMEOUT);
                         break;
-                    case "VALUE-2":
+                    case "ABANDON":
                         System.out.println("Abandon message.");
-                        receiverAsyncClient.abandon(received).block(Duration.ofSeconds(15));
+                        receiverAsyncClient.abandon(received).block(TIMEOUT);
                         break;
-                    case "VALUE-3":
+                    case "DEFER":
                         System.out.println("Defer message.");
-                        receiverAsyncClient.defer(received).block(Duration.ofSeconds(15));
+                        receiverAsyncClient.defer(received).block(TIMEOUT);
                         break;
                     default:
                         System.out.println("Deadletter message.");
-                        receiverAsyncClient.deadLetter(received).block(Duration.ofSeconds(15));
+                        receiverAsyncClient.deadLetter(received).block(TIMEOUT);
                 }
             });
 
         // Receiving messages from the queue for a duration of 20 seconds.
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         try {
-            Thread.sleep(Duration.ofSeconds(20).toMillis());
+            Thread.sleep(Duration.ofSeconds(60).toMillis());
         } catch (InterruptedException ignored) {
         }
-
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
