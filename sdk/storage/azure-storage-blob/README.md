@@ -37,6 +37,9 @@ az storage account create \
     --location <location>
 ```
 
+Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
+http(s)://<storage-account-name>.blob.core.windows.net
+
 ### Authenticate the client
 
 In order to interact with the Storage Service (Blob, Queue, Message, MessageId, File) you'll need to create an instance of the Service Client class.
@@ -104,6 +107,30 @@ Blob Storage is designed for:
 - Writing to log files
 - Storing data for backup and restore, disaster recovery, and archiving
 - Storing data for analysis by an on-premises or Azure-hosted service
+
+### URL format
+Blobs are addressable using the following URL format:
+The following URL addresses a blob:
+https://myaccount.blob.core.windows.net/mycontainer/myblob
+
+#### Resource URI Syntax
+For the storage account, the base URI for blob operations includes the name of the account only:
+
+```$xslt
+https://myaccount.blob.core.windows.net
+```
+
+For a container, the base URI includes the name of the account and the name of the container:
+
+```$xslt
+https://myaccount.blob.core.windows.net/mycontainer
+```
+
+For a blob, the base URI includes the name of the account, the name of the container and the name of the blob:
+
+```$xslt
+https://myaccount.blob.core.windows.net/mycontainer/myblob
+```
 
 ## Examples
 
