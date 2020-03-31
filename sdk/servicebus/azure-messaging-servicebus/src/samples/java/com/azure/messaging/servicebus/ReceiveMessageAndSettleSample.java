@@ -74,7 +74,7 @@ public class ReceiveMessageAndSettleSample {
                 } else if (payload.contains("defer")) {
                     actionToTake = "DEFER";
                 }
-                
+
                 switch (actionToTake) {
                     case "COMPLETE":
                         System.out.println("Completing message.");
