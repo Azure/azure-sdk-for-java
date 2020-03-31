@@ -185,13 +185,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 .doOnTerminate(() -> {
                     lock.lock();
                     complete = true;
-                    try {
-                        transferComplete.signal();
-                    } catch (IllegalMonitorStateException e) {
-                        this.lastError = new IOException(e.getMessage());
-                        lock.unlock();
-                    }
-
+                    transferComplete.signal();
                     lock.unlock();
                 })
                 .subscribe();
