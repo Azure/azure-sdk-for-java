@@ -74,8 +74,8 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
 
     @Override
     protected VaultImpl wrapModel(String name) {
-        VaultInner inner = new VaultInner().setProperties(new VaultProperties());
-        inner.getProperties().setTenantId(UUID.fromString(tenantId));
+        VaultInner inner = new VaultInner().withProperties(new VaultProperties());
+        inner.properties().withTenantId(UUID.fromString(tenantId));
         return new VaultImpl(name, inner, this.manager(), graphRbacManager);
     }
 
@@ -143,12 +143,12 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
         final KeyVaultManager manager = this.manager();
         return getDeletedAsync(vaultName, location).flatMap(deletedVault -> {
             VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
-            parameters.setLocation(deletedVault.location());
-            parameters.setTags(deletedVault.inner().getProperties().getTags());
-            parameters.setProperties(new VaultProperties()
-                    .setCreateMode(CreateMode.RECOVER)
-                    .setSku(new Sku().setName(SkuName.STANDARD))
-                    .setTenantId(UUID.fromString(tenantId))
+            parameters.withLocation(deletedVault.location());
+            parameters.withTags(deletedVault.inner().properties().tags());
+            parameters.withProperties(new VaultProperties()
+                    .withCreateMode(CreateMode.RECOVER)
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withTenantId(UUID.fromString(tenantId))
             );
             return inner().createOrUpdateAsync(resourceGroupName, vaultName, parameters).map(inner -> (Vault) new VaultImpl(inner.getId(), inner, manager, graphRbacManager));
         });
