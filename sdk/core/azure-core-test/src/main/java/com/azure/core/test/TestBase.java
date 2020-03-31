@@ -210,11 +210,13 @@ public abstract class TestBase implements BeforeEachCallback {
         boolean rollingStrategy = Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS)
             .equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
         httpClientList.forEach(httpClient -> {
-            serviceVersionList.forEach(keyServiceVersion -> {
+            serviceVersionList.forEach(serviceVersion -> {
                 if (!rollingStrategy) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
                 } else if (index[0] % PLATFORM_COUNT == (offset % PLATFORM_COUNT) % total) {
-                    argumentsList.add(Arguments.of(httpClient, keyServiceVersion));
+                    argumentsList.add(Arguments.of(httpClient, serviceVersion));
+                    System.out.print("----------HttpClient: " + httpClient.toString() + ", ServiceVersion: "
+                        + serviceVersion.getVersion() + "----------");
                 }
                 index[0] += 1;
             });
