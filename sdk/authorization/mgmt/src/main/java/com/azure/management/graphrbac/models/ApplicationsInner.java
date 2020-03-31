@@ -10,6 +10,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -27,12 +28,15 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.graphrbac.AddOwnerParameters;
 import com.azure.management.graphrbac.ApplicationCreateParameters;
 import com.azure.management.graphrbac.ApplicationUpdateParameters;
+import com.azure.management.graphrbac.GraphErrorException;
 import com.azure.management.graphrbac.KeyCredentialsUpdateParameters;
 import com.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
-import com.azure.management.graphrbac.implementation.GraphErrorException;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
 /**
@@ -55,7 +59,7 @@ public final class ApplicationsInner {
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    public ApplicationsInner(GraphRbacManagementClientImpl client) {
+    ApplicationsInner(GraphRbacManagementClientImpl client) {
         this.service = RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -68,80 +72,95 @@ public final class ApplicationsInner {
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementClientApplications")
     private interface ApplicationsService {
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/applications")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationInner>> create(@HostParam("$host") String host, @PathParam("tenantID") String tenantID, @BodyParam("application/json") ApplicationCreateParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationInner>> create(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") ApplicationCreateParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationInner>> get(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationInner>> get(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Patch("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> patch(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") ApplicationUpdateParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> patch(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") ApplicationUpdateParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwners(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwners(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/{tenantID}/applications/{applicationObjectId}/$links/owners")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addOwner(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") AddOwnerParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> addOwner(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") AddOwnerParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{tenantID}/applications/{applicationObjectId}/$links/owners/{ownerObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeOwner(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("ownerObjectId") String ownerObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> removeOwner(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("ownerObjectId") String ownerObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<KeyCredentialListResultInner>> listKeyCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<KeyCredentialListResultInner>> listKeyCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Patch("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updateKeyCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") KeyCredentialsUpdateParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> updateKeyCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") KeyCredentialsUpdateParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<PasswordCredentialListResultInner>> listPasswordCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<PasswordCredentialListResultInner>> listPasswordCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Patch("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updatePasswordCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> updatePasswordCredentials(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/servicePrincipalsByAppId/{applicationID}/objectId")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(@HostParam("$host") String host, @PathParam("tenantID") String tenantID, @PathParam("applicationID") String applicationID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @PathParam("applicationID") String applicationID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> listNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationListResultInner>> listNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -154,7 +173,8 @@ public final class ApplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ApplicationInner>> createWithResponseAsync(ApplicationCreateParameters parameters) {
-        return service.create(this.client.getHost(), this.client.getTenantID(), parameters, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.create(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -193,26 +213,28 @@ public final class ApplicationsInner {
     /**
      * Lists applications by filter parameters.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter) {
-        return service.list(this.client.getHost(), filter, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists applications by filter parameters.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -227,7 +249,22 @@ public final class ApplicationsInner {
     /**
      * Lists applications by filter parameters.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ApplicationInner> listAsync() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists applications by filter parameters.
+     * 
+     * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,22 +275,36 @@ public final class ApplicationsInner {
     }
 
     /**
+     * Lists applications by filter parameters.
+     * 
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationInner> list() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedIterable<>(listAsync(filter));
+    }
+
+    /**
      * Delete an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId) {
-        return service.delete(this.client.getHost(), applicationObjectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Delete an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,7 +318,7 @@ public final class ApplicationsInner {
     /**
      * Delete an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -280,20 +331,21 @@ public final class ApplicationsInner {
     /**
      * Get an application by object ID.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ApplicationInner>> getWithResponseAsync(String applicationObjectId) {
-        return service.get(this.client.getHost(), applicationObjectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get an application by object ID.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -313,7 +365,7 @@ public final class ApplicationsInner {
     /**
      * Get an application by object ID.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -326,7 +378,7 @@ public final class ApplicationsInner {
     /**
      * Update an existing application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @param parameters Request parameters for updating a new application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -334,13 +386,14 @@ public final class ApplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, ApplicationUpdateParameters parameters) {
-        return service.patch(this.client.getHost(), applicationObjectId, this.client.getTenantID(), parameters, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.patch(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update an existing application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @param parameters Request parameters for updating a new application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -355,7 +408,7 @@ public final class ApplicationsInner {
     /**
      * Update an existing application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @param parameters Request parameters for updating a new application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -369,26 +422,28 @@ public final class ApplicationsInner {
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId The object ID of the application for which to get owners.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId) {
-        return service.listOwners(this.client.getHost(), applicationObjectId, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listOwners(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId The object ID of the application for which to get owners.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -403,7 +458,7 @@ public final class ApplicationsInner {
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId The object ID of the application for which to get owners.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -416,65 +471,69 @@ public final class ApplicationsInner {
     /**
      * Add an owner to an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a owner to an application.
+     * @param applicationObjectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, AddOwnerParameters parameters) {
-        return service.addOwner(this.client.getHost(), applicationObjectId, this.client.getTenantID(), parameters, this.client.getApiVersion());
+    public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String url) {
+        AddOwnerParameters parameters = new AddOwnerParameters();
+        parameters.withUrl(url);
+        return FluxUtil.withContext(context -> service.addOwner(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Add an owner to an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a owner to an application.
+     * @param applicationObjectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOwnerAsync(String applicationObjectId, AddOwnerParameters parameters) {
-        return addOwnerWithResponseAsync(applicationObjectId, parameters)
+    public Mono<Void> addOwnerAsync(String applicationObjectId, String url) {
+        return addOwnerWithResponseAsync(applicationObjectId, url)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Add an owner to an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a owner to an application.
+     * @param applicationObjectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOwner(String applicationObjectId, AddOwnerParameters parameters) {
-        addOwnerAsync(applicationObjectId, parameters).block();
+    public void addOwner(String applicationObjectId, String url) {
+        addOwnerAsync(applicationObjectId, url).block();
     }
 
     /**
      * Remove a member from owners.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param ownerObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId) {
-        return service.removeOwner(this.client.getHost(), applicationObjectId, ownerObjectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.removeOwner(this.client.getHost(), applicationObjectId, ownerObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Remove a member from owners.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param ownerObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -488,8 +547,8 @@ public final class ApplicationsInner {
     /**
      * Remove a member from owners.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param ownerObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -502,26 +561,28 @@ public final class ApplicationsInner {
     /**
      * Get the keyCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId) {
-        return service.listKeyCredentials(this.client.getHost(), applicationObjectId, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            null,
-            null));
+        return FluxUtil.withContext(context -> service.listKeyCredentials(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<KeyCredentialInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the keyCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -535,7 +596,7 @@ public final class ApplicationsInner {
     /**
      * Get the keyCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -548,69 +609,74 @@ public final class ApplicationsInner {
     /**
      * Update the keyCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for a KeyCredentials update operation.
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of KeyCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, KeyCredentialsUpdateParameters parameters) {
-        return service.updateKeyCredentials(this.client.getHost(), applicationObjectId, this.client.getTenantID(), parameters, this.client.getApiVersion());
+    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, List<KeyCredentialInner> value) {
+        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
+        parameters.withValue(value);
+        return FluxUtil.withContext(context -> service.updateKeyCredentials(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update the keyCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for a KeyCredentials update operation.
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of KeyCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, KeyCredentialsUpdateParameters parameters) {
-        return updateKeyCredentialsWithResponseAsync(applicationObjectId, parameters)
+    public Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, List<KeyCredentialInner> value) {
+        return updateKeyCredentialsWithResponseAsync(applicationObjectId, value)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update the keyCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for a KeyCredentials update operation.
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of KeyCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateKeyCredentials(String applicationObjectId, KeyCredentialsUpdateParameters parameters) {
-        updateKeyCredentialsAsync(applicationObjectId, parameters).block();
+    public void updateKeyCredentials(String applicationObjectId, List<KeyCredentialInner> value) {
+        updateKeyCredentialsAsync(applicationObjectId, value).block();
     }
 
     /**
      * Get the passwordCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String applicationObjectId) {
-        return service.listPasswordCredentials(this.client.getHost(), applicationObjectId, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            null,
-            null));
+        return FluxUtil.withContext(context -> service.listPasswordCredentials(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<PasswordCredentialInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -624,7 +690,7 @@ public final class ApplicationsInner {
     /**
      * Get the passwordCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -637,63 +703,67 @@ public final class ApplicationsInner {
     /**
      * Update passwordCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for a PasswordCredentials update operation.
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of PasswordCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, PasswordCredentialsUpdateParameters parameters) {
-        return service.updatePasswordCredentials(this.client.getHost(), applicationObjectId, this.client.getTenantID(), parameters, this.client.getApiVersion());
+    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, List<PasswordCredentialInner> value) {
+        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
+        parameters.withValue(value);
+        return FluxUtil.withContext(context -> service.updatePasswordCredentials(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update passwordCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for a PasswordCredentials update operation.
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of PasswordCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, PasswordCredentialsUpdateParameters parameters) {
-        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, parameters)
+    public Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, List<PasswordCredentialInner> value) {
+        return updatePasswordCredentialsWithResponseAsync(applicationObjectId, value)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update passwordCredentials associated with an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for a PasswordCredentials update operation.
+     * @param applicationObjectId Application object ID.
+     * @param value A collection of PasswordCredentials.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePasswordCredentials(String applicationObjectId, PasswordCredentialsUpdateParameters parameters) {
-        updatePasswordCredentialsAsync(applicationObjectId, parameters).block();
+    public void updatePasswordCredentials(String applicationObjectId, List<PasswordCredentialInner> value) {
+        updatePasswordCredentialsAsync(applicationObjectId, value).block();
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
      * 
-     * @param applicationID MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationID The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(String applicationID) {
-        return service.getServicePrincipalsIdByAppId(this.client.getHost(), this.client.getTenantID(), applicationID, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getServicePrincipalsIdByAppId(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantID(), applicationID, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
      * 
-     * @param applicationID MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationID The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -713,7 +783,7 @@ public final class ApplicationsInner {
     /**
      * Gets an object id for a given application id from the current tenant.
      * 
-     * @param applicationID MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationID The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -726,20 +796,22 @@ public final class ApplicationsInner {
     /**
      * Gets a list of applications from the current tenant.
      * 
-     * @param nextLink MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(this.client.getHost(), nextLink, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -752,12 +824,14 @@ public final class ApplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink) {
-        return service.listOwnersNext(nextLink).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listOwnersNext(nextLink, context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

@@ -38,7 +38,7 @@ public final class PasswordProfile {
      * 
      * @return the password value.
      */
-    public String getPassword() {
+    public String password() {
         return this.password;
     }
 
@@ -48,7 +48,7 @@ public final class PasswordProfile {
      * @param password the password value to set.
      * @return the PasswordProfile object itself.
      */
-    public PasswordProfile setPassword(String password) {
+    public PasswordProfile withPassword(String password) {
         this.password = password;
         return this;
     }
@@ -59,7 +59,7 @@ public final class PasswordProfile {
      * 
      * @return the forceChangePasswordNextLogin value.
      */
-    public Boolean isForceChangePasswordNextLogin() {
+    public Boolean forceChangePasswordNextLogin() {
         return this.forceChangePasswordNextLogin;
     }
 
@@ -71,7 +71,7 @@ public final class PasswordProfile {
      * value to set.
      * @return the PasswordProfile object itself.
      */
-    public PasswordProfile setForceChangePasswordNextLogin(Boolean forceChangePasswordNextLogin) {
+    public PasswordProfile withForceChangePasswordNextLogin(Boolean forceChangePasswordNextLogin) {
         this.forceChangePasswordNextLogin = forceChangePasswordNextLogin;
         return this;
     }
@@ -82,7 +82,7 @@ public final class PasswordProfile {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -93,7 +93,7 @@ public final class PasswordProfile {
      * @param additionalProperties the additionalProperties value to set.
      * @return the PasswordProfile object itself.
      */
-    public PasswordProfile setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public PasswordProfile withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

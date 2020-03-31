@@ -25,14 +25,14 @@ public final class DirectoryObjectListResultInner {
      * The URL to get the next set of results.
      */
     @JsonProperty(value = "odata.nextLink")
-    private String odatanextLink;
+    private String odataNextLink;
 
     /**
      * Get the value property: A collection of DirectoryObject.
      * 
      * @return the value value.
      */
-    public List<DirectoryObjectInner> getValue() {
+    public List<DirectoryObjectInner> value() {
         return this.value;
     }
 
@@ -42,28 +42,28 @@ public final class DirectoryObjectListResultInner {
      * @param value the value value to set.
      * @return the DirectoryObjectListResultInner object itself.
      */
-    public DirectoryObjectListResultInner setValue(List<DirectoryObjectInner> value) {
+    public DirectoryObjectListResultInner withValue(List<DirectoryObjectInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the odatanextLink property: The URL to get the next set of results.
+     * Get the odataNextLink property: The URL to get the next set of results.
      * 
-     * @return the odatanextLink value.
+     * @return the odataNextLink value.
      */
-    public String getOdatanextLink() {
-        return this.odatanextLink;
+    public String odataNextLink() {
+        return this.odataNextLink;
     }
 
     /**
-     * Set the odatanextLink property: The URL to get the next set of results.
+     * Set the odataNextLink property: The URL to get the next set of results.
      * 
-     * @param odatanextLink the odatanextLink value to set.
+     * @param odataNextLink the odataNextLink value to set.
      * @return the DirectoryObjectListResultInner object itself.
      */
-    public DirectoryObjectListResultInner setOdatanextLink(String odatanextLink) {
-        this.odatanextLink = odatanextLink;
+    public DirectoryObjectListResultInner withOdataNextLink(String odataNextLink) {
+        this.odataNextLink = odataNextLink;
         return this;
     }
 }

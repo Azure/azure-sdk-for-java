@@ -39,23 +39,23 @@ class RoleDefinitionImpl
 
     @Override
     public String roleName() {
-        return inner().getRoleName();
+        return inner().roleName();
     }
 
     @Override
     public String description() {
-        return inner().getDescription();
+        return inner().description();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override
     public Set<Permission> permissions() {
         HashSet<Permission> ret = new HashSet<>();
-        for (PermissionInner inner : inner().getPermissions()) {
+        for (PermissionInner inner : inner().permissions()) {
             ret.add(new PermissionImpl(inner));
         }
         return ret;
@@ -63,7 +63,7 @@ class RoleDefinitionImpl
 
     @Override
     public Set<String> assignableScopes() {
-        return Collections.unmodifiableSet(new HashSet(inner().getAssignableScopes()));
+        return Collections.unmodifiableSet(new HashSet(inner().assignableScopes()));
     }
 
     @Override
@@ -78,6 +78,6 @@ class RoleDefinitionImpl
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 }

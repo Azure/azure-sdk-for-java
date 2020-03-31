@@ -17,7 +17,7 @@ import com.azure.core.management.AzureEnvironment;
 /**
  * A builder for creating a new instance of the GraphRbacManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = GraphRbacManagementClientImpl.class)
+@ServiceClientBuilder(serviceClients = {GraphRbacManagementClientImpl.class})
 public final class GraphRbacManagementClientBuilder {
     /*
      * The tenant ID.
@@ -52,12 +52,12 @@ public final class GraphRbacManagementClientBuilder {
     }
 
     /*
-     * The API version to use for this operation.
+     * Api Version
      */
     private String apiVersion;
 
     /**
-     * Sets The API version to use for this operation.
+     * Sets Api Version.
      * 
      * @param apiVersion the apiVersion value.
      * @return the GraphRbacManagementClientBuilder.

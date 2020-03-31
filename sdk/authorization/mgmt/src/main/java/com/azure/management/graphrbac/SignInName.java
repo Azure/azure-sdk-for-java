@@ -42,7 +42,7 @@ public final class SignInName {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -53,7 +53,7 @@ public final class SignInName {
      * @param type the type value to set.
      * @return the SignInName object itself.
      */
-    public SignInName setType(String type) {
+    public SignInName withType(String type) {
         this.type = type;
         return this;
     }
@@ -64,7 +64,7 @@ public final class SignInName {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -75,7 +75,7 @@ public final class SignInName {
      * @param value the value value to set.
      * @return the SignInName object itself.
      */
-    public SignInName setValue(String value) {
+    public SignInName withValue(String value) {
         this.value = value;
         return this;
     }
@@ -87,7 +87,7 @@ public final class SignInName {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -99,7 +99,7 @@ public final class SignInName {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SignInName object itself.
      */
-    public SignInName setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public SignInName withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

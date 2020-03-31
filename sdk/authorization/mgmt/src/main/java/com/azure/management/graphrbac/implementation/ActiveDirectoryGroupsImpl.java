@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryGroups;
+import com.azure.management.graphrbac.GraphErrorException;
 import com.azure.management.graphrbac.models.ADGroupInner;
 import com.azure.management.graphrbac.models.GroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
@@ -76,7 +77,7 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     protected ActiveDirectoryGroupImpl wrapModel(String name) {
-        return wrapModel(new ADGroupInner().setDisplayName(name));
+        return wrapModel(new ADGroupInner().withDisplayName(name));
     }
 
     @Override

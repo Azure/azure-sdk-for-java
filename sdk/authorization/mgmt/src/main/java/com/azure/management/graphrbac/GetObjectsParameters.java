@@ -45,7 +45,7 @@ public final class GetObjectsParameters {
      * 
      * @return the objectIds value.
      */
-    public List<String> getObjectIds() {
+    public List<String> objectIds() {
         return this.objectIds;
     }
 
@@ -55,7 +55,7 @@ public final class GetObjectsParameters {
      * @param objectIds the objectIds value to set.
      * @return the GetObjectsParameters object itself.
      */
-    public GetObjectsParameters setObjectIds(List<String> objectIds) {
+    public GetObjectsParameters withObjectIds(List<String> objectIds) {
         this.objectIds = objectIds;
         return this;
     }
@@ -65,7 +65,7 @@ public final class GetObjectsParameters {
      * 
      * @return the types value.
      */
-    public List<String> getTypes() {
+    public List<String> types() {
         return this.types;
     }
 
@@ -75,7 +75,7 @@ public final class GetObjectsParameters {
      * @param types the types value to set.
      * @return the GetObjectsParameters object itself.
      */
-    public GetObjectsParameters setTypes(List<String> types) {
+    public GetObjectsParameters withTypes(List<String> types) {
         this.types = types;
         return this;
     }
@@ -86,7 +86,7 @@ public final class GetObjectsParameters {
      * 
      * @return the includeDirectoryObjectReferences value.
      */
-    public Boolean isIncludeDirectoryObjectReferences() {
+    public Boolean includeDirectoryObjectReferences() {
         return this.includeDirectoryObjectReferences;
     }
 
@@ -98,7 +98,7 @@ public final class GetObjectsParameters {
      * includeDirectoryObjectReferences value to set.
      * @return the GetObjectsParameters object itself.
      */
-    public GetObjectsParameters setIncludeDirectoryObjectReferences(Boolean includeDirectoryObjectReferences) {
+    public GetObjectsParameters withIncludeDirectoryObjectReferences(Boolean includeDirectoryObjectReferences) {
         this.includeDirectoryObjectReferences = includeDirectoryObjectReferences;
         return this;
     }
@@ -109,7 +109,7 @@ public final class GetObjectsParameters {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -120,7 +120,7 @@ public final class GetObjectsParameters {
      * @param additionalProperties the additionalProperties value to set.
      * @return the GetObjectsParameters object itself.
      */
-    public GetObjectsParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public GetObjectsParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

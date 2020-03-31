@@ -61,10 +61,10 @@ class ServicePrincipalImpl
     private Set<String> passwordCredentialsToDelete;
 
     ServicePrincipalImpl(ServicePrincipalInner innerObject, GraphRbacManager manager) {
-        super(innerObject.getDisplayName(), innerObject);
+        super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.createParameters = new ServicePrincipalCreateParameters();
-        this.createParameters.setAccountEnabled(true);
+        this.createParameters.withAccountEnabled(true);
         this.cachedRoleAssignments = new HashMap<>();
         this.rolesToCreate = new HashMap<>();
         this.rolesToDelete = new HashSet<>();
@@ -78,12 +78,12 @@ class ServicePrincipalImpl
 
     @Override
     public String applicationId() {
-        return inner().getAppId();
+        return inner().appId();
     }
 
     @Override
     public List<String> servicePrincipalNames() {
-        return inner().getServicePrincipalNames();
+        return inner().servicePrincipalNames();
     }
 
     @Override
@@ -112,7 +112,7 @@ class ServicePrincipalImpl
         if (isInCreateMode()) {
             if (applicationCreatable != null) {
                 ActiveDirectoryApplication application = this.taskResult(applicationCreatable.key());
-                createParameters.setAppId(application.applicationId());
+                createParameters.withAppId(application.applicationId());
             }
             sp = manager.inner().servicePrincipals().createAsync(createParameters)
                     .map(innerToFluentMap(this));
@@ -146,7 +146,7 @@ class ServicePrincipalImpl
             }
             mono = mono.concatWith(manager().inner().servicePrincipals().updateKeyCredentialsAsync(
                     sp.id(),
-                    new KeyCredentialsUpdateParameters().setValue(updateKeyCredentials)
+                    updateKeyCredentials
             ).then(Mono.just(ServicePrincipalImpl.this))).last();
         }
         if (!passwordCredentialsToCreate.isEmpty() || !passwordCredentialsToDelete.isEmpty()) {
@@ -163,7 +163,7 @@ class ServicePrincipalImpl
             }
             mono = mono.concatWith(manager().inner().servicePrincipals().updatePasswordCredentialsAsync(
                     sp.id(),
-                    new PasswordCredentialsUpdateParameters().setValue(updatePasswordCredentials)
+                    updatePasswordCredentials
             ).then(Mono.just(ServicePrincipalImpl.this))).last();
         }
         return mono.flatMap(servicePrincipal -> {
@@ -272,13 +272,13 @@ class ServicePrincipalImpl
 
     @Override
     public ServicePrincipalImpl withExistingApplication(String id) {
-        createParameters.setAppId(id);
+        createParameters.withAppId(id);
         return this;
     }
 
     @Override
     public ServicePrincipalImpl withExistingApplication(ActiveDirectoryApplication application) {
-        createParameters.setAppId(application.applicationId());
+        createParameters.withAppId(application.applicationId());
         return this;
     }
 
@@ -321,7 +321,7 @@ class ServicePrincipalImpl
 
     @Override
     public String id() {
-        return inner().getObjectId();
+        return inner().objectId();
     }
 
     @Override

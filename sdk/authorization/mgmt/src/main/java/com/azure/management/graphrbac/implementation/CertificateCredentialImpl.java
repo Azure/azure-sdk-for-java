@@ -37,19 +37,19 @@ class CertificateCredentialImpl<T>
 
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
-        if (keyCredential.getCustomKeyIdentifier() != null && !keyCredential.getCustomKeyIdentifier().isEmpty()) {
-            this.name = new String(Base64.getDecoder().decode(keyCredential.getCustomKeyIdentifier()));
+        if (keyCredential.customKeyIdentifier() != null && !keyCredential.customKeyIdentifier().isEmpty()) {
+            this.name = new String(Base64.getDecoder().decode(keyCredential.customKeyIdentifier()));
         } else {
-            this.name = keyCredential.getKeyId();
+            this.name = keyCredential.keyId();
         }
     }
 
     CertificateCredentialImpl(String name, HasCredential<?> parent) {
         super(new KeyCredentialInner()
-                .setUsage("Verify")
-                .setCustomKeyIdentifier(Base64.getEncoder().encodeToString(name.getBytes()))
-                .setStartDate(OffsetDateTime.now())
-                .setEndDate(OffsetDateTime.now().plusYears(1)));
+                .withUsage("Verify")
+                .withCustomKeyIdentifier(Base64.getEncoder().encodeToString(name.getBytes()))
+                .withStartDate(OffsetDateTime.now())
+                .withEndDate(OffsetDateTime.now().plusYears(1)));
         this.name = name;
         this.parent = parent;
     }
@@ -66,17 +66,17 @@ class CertificateCredentialImpl<T>
 
     @Override
     public OffsetDateTime startDate() {
-        return inner().getStartDate();
+        return inner().startDate();
     }
 
     @Override
     public OffsetDateTime endDate() {
-        return inner().getEndDate();
+        return inner().endDate();
     }
 
     @Override
     public String value() {
-        return inner().getValue();
+        return inner().value();
     }
 
 
@@ -90,7 +90,7 @@ class CertificateCredentialImpl<T>
     @Override
     public CertificateCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
-        inner().setStartDate(startDate);
+        inner().withStartDate(startDate);
         // Adjust end time
         withDuration(Duration.between(original, endDate()));
         return this;
@@ -98,31 +98,31 @@ class CertificateCredentialImpl<T>
 
     @Override
     public CertificateCredentialImpl<T> withDuration(Duration duration) {
-        inner().setEndDate(startDate().plus(duration));
+        inner().withEndDate(startDate().plus(duration));
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withAsymmetricX509Certificate() {
-        inner().setType(CertificateType.ASYMMETRIC_X509_CERT.toString());
+        inner().withType(CertificateType.ASYMMETRIC_X509_CERT.toString());
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withSymmetricEncryption() {
-        inner().setType(CertificateType.SYMMETRIC.toString());
+        inner().withType(CertificateType.SYMMETRIC.toString());
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withPublicKey(byte[] certificate) {
-        inner().setValue(Base64.getEncoder().encodeToString(certificate));
+        inner().withValue(Base64.getEncoder().encodeToString(certificate));
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withSecretKey(byte[] secret) {
-        inner().setValue(Base64.getEncoder().encodeToString(secret));
+        inner().withValue(Base64.getEncoder().encodeToString(secret));
         return this;
     }
 
@@ -169,7 +169,7 @@ class CertificateCredentialImpl<T>
 
     @Override
     public String id() {
-        return inner().getKeyId();
+        return inner().keyId();
     }
 
     @Override

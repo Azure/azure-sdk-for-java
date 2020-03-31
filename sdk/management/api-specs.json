@@ -26,8 +26,8 @@
   "authorization": {
     "dir": "../authorization/mgmt",
     "source": "specification/authorization/resource-manager/readme.md",
-    "package": "com.azure.management.graphrbac",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-01-01-preview"
+    "package": "com.azure.management.graphrbac --tag=package-2018-01-01-preview",
+    "args": "--track1-naming=true --payload-flattening-threshold=1"
   },
   "automation": {
     "dir": "../automation/mgmt",
@@ -169,7 +169,7 @@
     "dir": "../authorization/mgmt",
     "source": "specification/graphrbac/data-plane/readme.md",
     "package": "com.azure.management.graphrbac",
-    "args": "--payload-flattening-threshold=1 --tag=1.6"
+    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=1.6"
   },
   "iothub": {
     "dir": "../devices/mgmt",

@@ -78,7 +78,7 @@ class RoleAssignmentImpl
 
         return Mono.zip(objectIdObservable,
                     roleDefinitionIdObservable,
-                    (objectId, roleDefinitionId) -> new RoleAssignmentCreateParameters().setPrincipalId(objectId).setRoleDefinitionId(roleDefinitionId))
+                    (objectId, roleDefinitionId) -> new RoleAssignmentCreateParameters().withPrincipalId(objectId).withRoleDefinitionId(roleDefinitionId))
                 .flatMap(roleAssignmentPropertiesInner -> manager().roleInner().roleAssignments()
                 .createAsync(scope(), name(), roleAssignmentPropertiesInner)
                 .retryWhen(throwableFlux -> throwableFlux.zipWith(Flux.range(1, 30), (throwable, integer) -> {
@@ -104,17 +104,17 @@ class RoleAssignmentImpl
 
     @Override
     public String scope() {
-        return inner().getScope();
+        return inner().scope();
     }
 
     @Override
     public String roleDefinitionId() {
-        return inner().getRoleDefinitionId();
+        return inner().roleDefinitionId();
     }
 
     @Override
     public String principalId() {
-        return inner().getPrincipalId();
+        return inner().principalId();
     }
 
     @Override
@@ -167,7 +167,7 @@ class RoleAssignmentImpl
 
     @Override
     public RoleAssignmentImpl withScope(String scope) {
-        this.inner().setScope(scope);
+        this.inner().withScope(scope);
         return this;
     }
 

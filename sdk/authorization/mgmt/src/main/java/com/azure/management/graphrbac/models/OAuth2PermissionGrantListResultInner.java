@@ -25,14 +25,14 @@ public final class OAuth2PermissionGrantListResultInner {
      * the URL to get the next set of results.
      */
     @JsonProperty(value = "odata.nextLink")
-    private String odatanextLink;
+    private String odataNextLink;
 
     /**
      * Get the value property: the list of oauth2 permissions grants.
      * 
      * @return the value value.
      */
-    public List<OAuth2PermissionGrantInner> getValue() {
+    public List<OAuth2PermissionGrantInner> value() {
         return this.value;
     }
 
@@ -42,28 +42,28 @@ public final class OAuth2PermissionGrantListResultInner {
      * @param value the value value to set.
      * @return the OAuth2PermissionGrantListResultInner object itself.
      */
-    public OAuth2PermissionGrantListResultInner setValue(List<OAuth2PermissionGrantInner> value) {
+    public OAuth2PermissionGrantListResultInner withValue(List<OAuth2PermissionGrantInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the odatanextLink property: the URL to get the next set of results.
+     * Get the odataNextLink property: the URL to get the next set of results.
      * 
-     * @return the odatanextLink value.
+     * @return the odataNextLink value.
      */
-    public String getOdatanextLink() {
-        return this.odatanextLink;
+    public String odataNextLink() {
+        return this.odataNextLink;
     }
 
     /**
-     * Set the odatanextLink property: the URL to get the next set of results.
+     * Set the odataNextLink property: the URL to get the next set of results.
      * 
-     * @param odatanextLink the odatanextLink value to set.
+     * @param odataNextLink the odataNextLink value to set.
      * @return the OAuth2PermissionGrantListResultInner object itself.
      */
-    public OAuth2PermissionGrantListResultInner setOdatanextLink(String odatanextLink) {
-        this.odatanextLink = odatanextLink;
+    public OAuth2PermissionGrantListResultInner withOdataNextLink(String odataNextLink) {
+        this.odataNextLink = odataNextLink;
         return this;
     }
 }
