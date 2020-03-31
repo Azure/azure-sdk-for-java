@@ -136,10 +136,10 @@ public class DefaultAzureCredentialTest {
     @Test(expected = IllegalArgumentException.class)
     public void testExcludeCredentials() throws Exception {
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeEnvironmentCredential(true)
-                                                .excludeAzureCliCredential(true)
-                                                .excludeManagedIdentityCredential(true)
-                                                .excludeSharedTokenCacheCredential(true)
+                                                .excludeEnvironmentCredential()
+                                                .excludeAzureCliCredential()
+                                                .excludeManagedIdentityCredential()
+                                                .excludeSharedTokenCacheCredential()
                                                 .build();
     }
 
@@ -150,7 +150,7 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeEnvironmentCredential(true)
+                                                .excludeEnvironmentCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
@@ -167,7 +167,7 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeManagedIdentityCredential(true)
+                                                .excludeManagedIdentityCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
@@ -184,8 +184,8 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeEnvironmentCredential(true)
-                                                .excludeSharedTokenCacheCredential(true)
+                                                .excludeEnvironmentCredential()
+                                                .excludeSharedTokenCacheCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
@@ -202,8 +202,8 @@ public class DefaultAzureCredentialTest {
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         // test
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
-                                                .excludeEnvironmentCredential(true)
-                                                .excludeAzureCliCredential(true)
+                                                .excludeEnvironmentCredential()
+                                                .excludeAzureCliCredential()
                                                 .build();
         StepVerifier.create(credential.getToken(request1))
             .expectErrorMatches(t -> t instanceof RuntimeException && t.getMessage()
