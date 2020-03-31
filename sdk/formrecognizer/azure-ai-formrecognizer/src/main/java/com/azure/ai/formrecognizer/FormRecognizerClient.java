@@ -21,11 +21,6 @@ import java.time.Duration;
  * Operations allowed by the client are, detect language, recognize entities, recognize PII entities,
  * recognize linked entities, and analyze sentiment for a text input or a list of text inputs.
  *
- * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
- * TODO: codesnippet
- *
- * <p>View {@link FormRecognizerClientBuilder this} for additional ways to construct the client.</p>
- *
  * @see FormRecognizerClientBuilder
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)

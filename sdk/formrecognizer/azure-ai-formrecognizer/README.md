@@ -59,7 +59,7 @@ they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in 
 Form Recognizer resource. See the full details regarding [authentication][authentication] of Cognitive Services.
 
 #### Get credentials
-The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
+The authentication credential may be provided as the API key to your resource.
 
 ##### Create FormRecognizerClient with API Key Credential
 To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
@@ -174,7 +174,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials
+[azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#credentials
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
@@ -182,7 +182,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [create_new_resource]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#create-a-new-azure-cognitive-services-resource
-[package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
+[package]: TODO
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [samples_readme]: src/samples/README.md

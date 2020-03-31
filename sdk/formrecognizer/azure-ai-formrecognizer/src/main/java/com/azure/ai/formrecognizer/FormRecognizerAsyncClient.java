@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncHeaders;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
@@ -39,11 +38,6 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Operations allowed by the client are language detection, sentiment analysis, and recognition entities, PII entities,
  * and linked entities of a text input or list of test inputs.
  *
- * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
- * TODO: codesnippet
- *
- * <p>View {@link FormRecognizerClientBuilder} for additional ways to construct the client.</p>
- *
  * @see FormRecognizerClientBuilder
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
@@ -54,7 +48,7 @@ public final class FormRecognizerAsyncClient {
 
     /**
      * Create a {@code FormRecognizerAsyncClient} that sends requests to the Form Recognizer services's endpoint. Each
-     * service call goes through the {@link FormRecognizerClientBuilder#pipeline(HttpPipeline)}  http pipeline}.
+     * service call goes through the {@link FormRecognizerClientBuilder#pipeline(HttpPipeline)} http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
@@ -77,7 +71,7 @@ public final class FormRecognizerAsyncClient {
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support</p>
+     * with an error message indicating absence of cancellation support.</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
@@ -92,7 +86,7 @@ public final class FormRecognizerAsyncClient {
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support</p>
+     * with an error message indicating absence of cancellation support.</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
@@ -118,7 +112,7 @@ public final class FormRecognizerAsyncClient {
      * Detects and extracts data from receipts data using optical character recognition (OCR) and a prebuilt receipt
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support</p>
+     * with an error message indicating absence of cancellation support.</p>
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
@@ -149,10 +143,8 @@ public final class FormRecognizerAsyncClient {
             try {
                 return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
                     new SourcePath().setSource(sourceUrl))
-                    .map(response -> {
-                        final AnalyzeReceiptAsyncHeaders headers = response.getDeserializedHeaders();
-                        return new OperationResult(parseModelId(headers.getOperationLocation()));
-                    });
+                    .map(response -> new OperationResult(
+                        parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -165,10 +157,8 @@ public final class FormRecognizerAsyncClient {
             try {
                 return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
                     ContentType.fromString(formContentType.toString()), buffer, length)
-                    .map(response -> {
-                        final AnalyzeReceiptAsyncHeaders headers = response.getDeserializedHeaders();
-                        return new OperationResult(parseModelId(headers.getOperationLocation()));
-                    });
+                    .map(response -> new OperationResult(
+                        parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
@@ -205,7 +195,7 @@ public final class FormRecognizerAsyncClient {
     private Mono<PollResponse<OperationResult>> processAnalyzeModelResponse(
         SimpleResponse<AnalyzeOperationResult> analyzeOperationResultSimpleResponse,
         PollResponse<OperationResult> operationResultPollResponse) {
-        LongRunningOperationStatus status = null;
+        LongRunningOperationStatus status;
         switch (analyzeOperationResultSimpleResponse.getValue().getStatus()) {
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;

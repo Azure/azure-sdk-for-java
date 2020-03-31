@@ -35,26 +35,41 @@ public class StringValue extends FieldValue<String> {
         this.fieldValueType = FieldValueType.STRING;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getValue() {
         return this.valueString;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setValue(String value) {
         this.valueString = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldValueType getType() {
         return this.fieldValueType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Element> getElements() {
         return super.getElements();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Float getConfidence() {
         return super.getConfidence();

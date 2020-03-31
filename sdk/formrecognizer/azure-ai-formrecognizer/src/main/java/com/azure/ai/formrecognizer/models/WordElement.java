@@ -10,6 +10,7 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class WordElement extends Element {
+
     /*
      * Type of the element.
      */
@@ -26,16 +27,25 @@ public final class WordElement extends Element {
         this.elementType = ElementType.WORD;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ElementType getType() {
         return this.elementType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getText() {
         return super.getText();

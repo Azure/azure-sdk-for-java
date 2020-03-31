@@ -35,26 +35,41 @@ public class FloatValue extends FieldValue<Float> {
         this.fieldValueType = FieldValueType.NUMBER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Float getValue() {
         return this.valueNumber;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setValue(Float value) {
         this.valueNumber = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldValueType getType() {
         return this.fieldValueType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Element> getElements() {
         return super.getElements();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Float getConfidence() {
         return super.getConfidence();

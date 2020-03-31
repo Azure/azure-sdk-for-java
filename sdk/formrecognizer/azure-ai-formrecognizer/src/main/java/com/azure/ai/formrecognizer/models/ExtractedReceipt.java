@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The ExtractedReceipt model.
@@ -79,11 +80,15 @@ public class ExtractedReceipt {
     private FieldValue<?> transactionTime;
 
     /**
+     * Map of Extracted fields.
+     */
+    private Map<String, FieldValue<?>> extractedFields;
+
+    /**
      * Constructs an ExtractedReceipt.
      *
      * @param pageMetadata The Page info of the extracted receipt.
      * @param pageRange The page range of the extracted receipt
-     *
      */
     public ExtractedReceipt(final PageMetadata pageMetadata, PageRange pageRange) {
         this.pageMetadata = pageMetadata;
@@ -337,6 +342,27 @@ public class ExtractedReceipt {
      */
     public ExtractedReceipt setTransactionTime(final FieldValue<?> transactionTime) {
         this.transactionTime = transactionTime;
+        return this;
+    }
+
+    /**
+     * Gets the map of extracted fields.
+     *
+     * @return The map of extracted fields.
+     */
+    public Map<String, FieldValue<?>> getExtractedFields() {
+        return this.extractedFields;
+    }
+
+    /**
+     * Sets the map of extracted fields on the receipt object.
+     *
+     * @param extractedFields The map of extracted fields of the receipt.
+     *
+     * @return The updated {@link ExtractedReceipt} object.
+     */
+    public ExtractedReceipt setExtractedFields(final Map<String, FieldValue<?>> extractedFields) {
+        this.extractedFields = extractedFields;
         return this;
     }
 }

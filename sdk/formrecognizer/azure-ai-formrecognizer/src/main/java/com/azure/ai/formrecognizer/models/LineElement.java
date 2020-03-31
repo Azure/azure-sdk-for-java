@@ -27,16 +27,26 @@ public final class LineElement extends Element {
         this.elementType = ElementType.LINE;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ElementType getType() {
         return this.elementType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getText() {
         return super.getText();

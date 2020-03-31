@@ -35,21 +35,34 @@ public class IntegerValue extends FieldValue<Integer> {
         this.fieldValueType = FieldValueType.INTEGER;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Integer getValue() {
         return this.valueInteger;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setValue(Integer value) {
         this.valueInteger = value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FieldValueType getType() {
         return this.fieldValueType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<Element> getElements() {
         return super.getElements();

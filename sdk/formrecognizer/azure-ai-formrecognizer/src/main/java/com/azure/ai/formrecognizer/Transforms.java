@@ -20,6 +20,7 @@ import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
+import com.azure.ai.formrecognizer.models.ReceiptItemKey;
 import com.azure.ai.formrecognizer.models.ReceiptType;
 import com.azure.ai.formrecognizer.models.StringValue;
 import com.azure.ai.formrecognizer.models.TextLanguage;
@@ -28,15 +29,22 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import static com.azure.ai.formrecognizer.models.ReceiptItemKey.NAME;
+import static com.azure.ai.formrecognizer.models.ReceiptItemKey.PRICE;
+import static com.azure.ai.formrecognizer.models.ReceiptItemKey.QUANTITY;
+import static com.azure.ai.formrecognizer.models.ReceiptItemKey.TOTAL_PRICE;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
  */
 final class Transforms {
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
-    // Pattern match to find all digits in the provided string.
+    // Pattern match to find all non-digits in the provided string.
     private static final Pattern COMPILE = Pattern.compile("[^0-9]+");
 
     private Transforms() {
@@ -68,7 +76,7 @@ final class Transforms {
                 pageRange = new PageRange(receiptPageRange.get(0), receiptPageRange.get(1));
             }
             ExtractedReceipt extractedReceiptItem = new ExtractedReceipt(pageMetadata, pageRange);
-
+            Map<String, FieldValue<?>> extractedFieldMap = new HashMap<>();
             // add receipt fields
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 switch (key) {
@@ -107,9 +115,12 @@ final class Transforms {
                         extractedReceiptItem.setReceiptItems(toReceiptItems(fieldValue.getValueArray(), readResults, includeTextDetails));
                         break;
                     default:
+                        extractedFieldMap.putIfAbsent(key, setFieldValue(fieldValue, readResults, includeTextDetails));
                         break;
                 }
             });
+            // adding other detected extra fields
+            extractedReceiptItem.setExtractedFields(extractedFieldMap);
             extractedReceiptList.add(extractedReceiptItem);
         }
         return new IterableStream<>(extractedReceiptList);
@@ -210,7 +221,7 @@ final class Transforms {
      * @return A {@link BoundingBox}.
      */
     private static BoundingBox toBoundingBox(List<Float> boundingBox) {
-        BoundingBox boundingBox1 = null;
+        BoundingBox boundingBox1;
         if (boundingBox.size() == 8) {
             Point topLeft = new Point(boundingBox.get(0), boundingBox.get(1));
             Point topRight = new Point(boundingBox.get(2), boundingBox.get(3));
@@ -227,34 +238,32 @@ final class Transforms {
      * Helper method to convert the service level {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray() value items}
      * to SDK level {@link ReceiptItem receipt items}.
      *
-     * @param fieldValue The named field values returned by the service.
+     * @param fieldValueItems The named field values returned by the service.
      * @param readResults The result containing the list of element references when includeTextDetails is set to true.
      * @param includeTextDetails When set to true, a list of references to the text elements is returned in the read result.
      *
      * @return A list of {@link ReceiptItem}.
      */
     private static List<ReceiptItem> toReceiptItems(
-        List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValue, List<ReadResult> readResults, boolean includeTextDetails) {
+        List<com.azure.ai.formrecognizer.implementation.models.FieldValue> fieldValueItems, List<ReadResult> readResults, boolean includeTextDetails) {
         List<ReceiptItem> receiptItemList = new ArrayList<>();
-        fieldValue.forEach(fieldValue1 -> {
+        for (com.azure.ai.formrecognizer.implementation.models.FieldValue eachFieldValue : fieldValueItems) {
             ReceiptItem receiptItem = new ReceiptItem();
-            fieldValue1.getValueObject().forEach((key, fieldValue2) -> {
-                switch (key) {
-                    case "Quantity":
-                        receiptItem.setQuantity(setFieldValue(fieldValue2, readResults, includeTextDetails));
-                        break;
-                    case "Name":
-                        receiptItem.setName(setFieldValue(fieldValue2, readResults, includeTextDetails));
-                        break;
-                    case "TotalPrice":
-                        receiptItem.setTotalPrice(setFieldValue(fieldValue2, readResults, includeTextDetails));
-                        break;
-                    default:
-                        break;
+
+            for (ReceiptItemKey key : ReceiptItemKey.values()) {
+                com.azure.ai.formrecognizer.implementation.models.FieldValue item = eachFieldValue.getValueObject().get(key.toString());
+                if (QUANTITY.equals(key) && item != null) {
+                    receiptItem.setQuantity(setFieldValue(item, readResults, includeTextDetails));
+                } else if (NAME.equals(key) && item != null) {
+                    receiptItem.setName(setFieldValue(item, readResults, includeTextDetails));
+                } else if (PRICE.equals(key) && item != null) {
+                    receiptItem.setPrice(setFieldValue(item, readResults, includeTextDetails));
+                } else if (TOTAL_PRICE.equals(key) && item != null) {
+                    receiptItem.setTotalPrice(setFieldValue(item, readResults, includeTextDetails));
                 }
-            });
+            }
             receiptItemList.add(receiptItem);
-        });
+        }
         return receiptItemList;
     }
 

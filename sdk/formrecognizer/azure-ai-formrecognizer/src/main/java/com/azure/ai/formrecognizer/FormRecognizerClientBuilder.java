@@ -230,7 +230,8 @@ public final class FormRecognizerClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
-     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set. </p>
+     * <p>If {@code logOptions} isn't provided, the default options will use {@link HttpLogDetailLevel#NONE}
+     * which will prevent logging.</p>
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      *
@@ -305,7 +306,7 @@ public final class FormRecognizerClientBuilder {
     }
 
     /**
-     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     * Sets the {@link RetryPolicy#RetryPolicy()} that is used when each request is sent.
      * <p>
      * The default retry policy will be used if not provided {@link FormRecognizerClientBuilder#buildAsyncClient()}
      * to build {@link FormRecognizerAsyncClient} or {@link FormRecognizerClient}.

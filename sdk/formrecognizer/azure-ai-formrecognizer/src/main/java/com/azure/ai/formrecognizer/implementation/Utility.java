@@ -29,7 +29,8 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data) {
-        return Flux.just(toByteArray(data));
+        return Flux.just(toByteArray(data))
+            .doOnError(error -> LOGGER.warning("Failed to convert stream to byte array - {}", error));
     }
 
     private static ByteBuffer toByteArray(InputStream in) {

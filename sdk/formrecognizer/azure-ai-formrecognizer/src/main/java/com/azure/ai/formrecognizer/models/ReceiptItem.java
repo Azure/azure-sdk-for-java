@@ -22,6 +22,11 @@ public class ReceiptItem {
     private FieldValue<?> quantity;
 
     /*
+     * Price of the field value.
+     */
+    private FieldValue<?> price;
+
+    /*
      * Total price of the field value.
      */
     private FieldValue<?> totalPrice;
@@ -69,7 +74,28 @@ public class ReceiptItem {
     }
 
     /**
-     * Gets the total price of the Recipt Item.
+     * Gets the price of the Receipt Item.
+     *
+     * @return The total Price.
+     */
+    public FieldValue<?> getPrice() {
+        return price;
+    }
+
+    /**
+     * Sets the total price of the Receipt Item.
+     *
+     * @param price the price of Receipt Item.
+     *
+     * @return The updated ReceiptItem object.
+     */
+    public ReceiptItem setPrice(final FieldValue<?> price) {
+        this.price = price;
+        return this;
+    }
+
+    /**
+     * Gets the total price of the Receipt Item.
      *
      * @return The total Price.
      */
