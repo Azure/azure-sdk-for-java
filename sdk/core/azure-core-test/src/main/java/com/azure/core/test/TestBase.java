@@ -151,6 +151,9 @@ public abstract class TestBase implements BeforeEachCallback {
      * @return The offset according to day of the week and platform information
      */
     private static int getOffset() {
+        if (testMode == TestMode.PLAYBACK) {
+            return 0;
+        }
         LocalDate today = LocalDate.now();
         buildCalendarMap();
         buildPlatformList();
