@@ -379,6 +379,8 @@ public final class UsersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, boolean securityEnabledOnly) {
+        UserGetMemberGroupsParameters parameters = new UserGetMemberGroupsParameters();
+        parameters.withSecurityEnabledOnly(securityEnabledOnly);
         return FluxUtil.withContext(context -> service.getMemberGroups(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
             .<PagedResponse<String>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
