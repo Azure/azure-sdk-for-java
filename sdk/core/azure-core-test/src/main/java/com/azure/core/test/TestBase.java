@@ -272,14 +272,14 @@ public abstract class TestBase implements BeforeEachCallback {
             return -1;
         }
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
-        System.out.println(today.getDayOfWeek());
-        System.out.println(getPlatFormOffset());
         return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
     }
 
     private static Integer getPlatFormOffset() {
         String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
+        System.out.println(currentOs);
+        System.out.println(currentJdk);
         return platformList.stream().filter(platform ->
             currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
                 && currentJdk.trim().toLowerCase(Locale.ROOT).startsWith(platform.split(",")[1]
