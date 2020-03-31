@@ -162,7 +162,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createFile#String-boolean}
      *
      * @param fileName Name of the file to create.
      * @param overwrite Whether or not to overwrite, should a file exist.
@@ -284,7 +284,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String}
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.createSubdirectory#String-boolean}
      *
      * @param subdirectoryName Name of the sub-directory to create.
      * @return A {@link DataLakeDirectoryClient} used to interact with the sub-directory created.
