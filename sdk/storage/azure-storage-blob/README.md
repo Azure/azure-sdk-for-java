@@ -132,6 +132,8 @@ For a blob, the base URI includes the name of the account, the name of the conta
 https://myaccount.blob.core.windows.net/mycontainer/myblob
 ```
 
+Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:

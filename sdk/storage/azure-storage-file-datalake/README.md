@@ -157,6 +157,8 @@ For a file/directory, the base URI includes the name of the account, the name of
 https://myaccount.dfs.core.windows.net/myfilesystem/mypath
 ```
 
+Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
+
 ## Examples
 
 The following sections provide several code snippets covering some of the most common Azure Storage Blob tasks, including:
