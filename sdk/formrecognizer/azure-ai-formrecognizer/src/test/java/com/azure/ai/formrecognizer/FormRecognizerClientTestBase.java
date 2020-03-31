@@ -69,6 +69,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static void validateReceipt(ExtractedReceipt expectedReceipt, ExtractedReceipt actualExtractedReceipt,
                                         boolean includeTextDetails) {
+        assertEquals(expectedReceipt.getPageRange().getStartPageNumber(), actualExtractedReceipt.getPageRange().getStartPageNumber());
+        assertEquals(expectedReceipt.getPageRange().getEndPageNumber(), actualExtractedReceipt.getPageRange().getEndPageNumber());
         validatePageMetadata(expectedReceipt.getPageMetadata(), actualExtractedReceipt.getPageMetadata());
         assertEquals(expectedReceipt.getReceiptType().getType(), actualExtractedReceipt.getReceiptType().getType());
         assertEquals(expectedReceipt.getReceiptType().getConfidence(), actualExtractedReceipt.getReceiptType().getConfidence());

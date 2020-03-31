@@ -10,10 +10,16 @@ import java.util.List;
  * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueNumber()}
  */
 public class FloatValue extends FieldValue<Float> {
+
     /*
      * Floating point value.
      */
     private Float valueNumber;
+
+    /*
+     * Type of the FieldValue.
+     */
+    private final FieldValueType fieldValueType;
 
     /**
      * Constructs a FloatValue.
@@ -21,10 +27,12 @@ public class FloatValue extends FieldValue<Float> {
      * @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
      * @param valueNumber Floating point value.
+     * @param pageNumber The 1 based page number of the document on which this field is found.
      */
-    public FloatValue(String text, BoundingBox boundingBox, Float valueNumber) {
-        super(text, boundingBox);
+    public FloatValue(String text, BoundingBox boundingBox, Float valueNumber, int pageNumber) {
+        super(text, boundingBox, pageNumber);
         this.valueNumber = valueNumber;
+        this.fieldValueType = FieldValueType.NUMBER;
     }
 
     @Override
@@ -35,6 +43,11 @@ public class FloatValue extends FieldValue<Float> {
     @Override
     public void setValue(Float value) {
         this.valueNumber = value;
+    }
+
+    @Override
+    public FieldValueType getType() {
+        return this.fieldValueType;
     }
 
     @Override

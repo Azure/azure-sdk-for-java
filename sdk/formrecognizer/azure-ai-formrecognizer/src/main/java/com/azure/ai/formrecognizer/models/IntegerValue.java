@@ -6,7 +6,8 @@ package com.azure.ai.formrecognizer.models;
 import java.util.List;
 
 /**
- * The IntegerValue model.
+ * Class to represent the Integer value for
+ * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueInteger()}
  */
 public class IntegerValue extends FieldValue<Integer> {
 
@@ -15,16 +16,23 @@ public class IntegerValue extends FieldValue<Integer> {
      */
     private Integer valueInteger;
 
+    /*
+     * Type of the FieldValue.
+     */
+    private final FieldValueType fieldValueType;
+
     /**
      * Constructs an IntegerValue.
      *
      * @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
      * @param valueInteger Integer value.
+     * @param pageNumber The 1 based page number of the document on which this field is found.
      */
-    public IntegerValue(String text, BoundingBox boundingBox, Integer valueInteger) {
-        super(text, boundingBox);
+    public IntegerValue(String text, BoundingBox boundingBox, Integer valueInteger, int pageNumber) {
+        super(text, boundingBox, pageNumber);
         this.valueInteger = valueInteger;
+        this.fieldValueType = FieldValueType.INTEGER;
     }
 
     @Override
@@ -35,6 +43,11 @@ public class IntegerValue extends FieldValue<Integer> {
     @Override
     public void setValue(Integer value) {
         this.valueInteger = value;
+    }
+
+    @Override
+    public FieldValueType getType() {
+        return this.fieldValueType;
     }
 
     @Override

@@ -19,6 +19,11 @@ public class ExtractedReceipt {
     private final PageMetadata pageMetadata;
 
     /**
+     * The first and last page of the input receipt.
+     */
+    private final PageRange pageRange;
+
+    /**
      * List of extracted fields.
      */
     private List<ReceiptItem> receiptItems;
@@ -77,9 +82,12 @@ public class ExtractedReceipt {
      * Constructs an ExtractedReceipt.
      *
      * @param pageMetadata The Page info of the extracted receipt.
+     * @param pageRange The page range of the extracted receipt
+     *
      */
-    public ExtractedReceipt(final PageMetadata pageMetadata) {
+    public ExtractedReceipt(final PageMetadata pageMetadata, PageRange pageRange) {
         this.pageMetadata = pageMetadata;
+        this.pageRange = pageRange;
     }
 
     /**
@@ -89,6 +97,15 @@ public class ExtractedReceipt {
      */
     public PageMetadata getPageMetadata() {
         return this.pageMetadata;
+    }
+
+    /**
+     * Gets the page range information of the extracted receipt.
+     *
+     * @return The page range information of the extracted receipt.
+     */
+    public PageRange getPageRange() {
+        return this.pageRange;
     }
 
     /**

@@ -17,6 +17,7 @@ import com.azure.ai.formrecognizer.models.FloatValue;
 import com.azure.ai.formrecognizer.models.IntegerValue;
 import com.azure.ai.formrecognizer.models.LineElement;
 import com.azure.ai.formrecognizer.models.PageMetadata;
+import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
 import com.azure.ai.formrecognizer.models.ReceiptType;
@@ -57,10 +58,18 @@ final class Transforms {
 
         for (int i = 0; i < readResults.size(); i++) {
             ReadResult readResultItem = readResults.get(i);
-            PageMetadata pageMetadata = getPageInfo(readResultItem);
-            ExtractedReceipt extractedReceiptItem = new ExtractedReceipt(pageMetadata);
 
+            // add page Info
+            PageMetadata pageMetadata = getPageInfo(readResultItem);
+            PageRange pageRange = null;
             DocumentResult documentResultItem = documentResult.get(i);
+            List<Integer> receiptPageRange = documentResultItem.getPageRange();
+            if (receiptPageRange.size() == 2) {
+                pageRange = new PageRange(receiptPageRange.get(0), receiptPageRange.get(1));
+            }
+            ExtractedReceipt extractedReceiptItem = new ExtractedReceipt(pageMetadata, pageRange);
+
+            // add receipt fields
             documentResultItem.getFields().forEach((key, fieldValue) -> {
                 switch (key) {
                     case "ReceiptType":
@@ -258,30 +267,30 @@ final class Transforms {
         if (serviceIntegerValue.getValueNumber() != null) {
             // TODO: Do not need this check, service team bug
             return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()),
-                serviceIntegerValue.getValueInteger());
+                serviceIntegerValue.getValueInteger(), serviceIntegerValue.getPage());
         }
 
-        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), 0);
+        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), 0, serviceIntegerValue.getPage());
     }
 
     /**
      * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}
-     * to a SDK level {@link StringValue}
+     * to a SDK level {@link StringValue}.
      *
      * @param serviceStringValue The string value returned by the service in
-     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()} ()}.
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}.
      *
      * @return The {@link StringValue}.
      */
     private static StringValue toFieldValueString(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                       serviceStringValue) {
         return new StringValue(serviceStringValue.getText(), toBoundingBox(serviceStringValue.getBoundingBox()),
-            serviceStringValue.getValueString());
+            serviceStringValue.getValueString(), serviceStringValue.getPage());
     }
 
     /**
      * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueNumber()}
-     * to a SDK level {@link FloatValue}
+     * to a SDK level {@link FloatValue}.
      *
      * @param serviceFloatValue The float value returned by the service in
      * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueNumber()} .
@@ -291,6 +300,6 @@ final class Transforms {
     private static FloatValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                      serviceFloatValue) {
         return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()),
-            serviceFloatValue.getValueNumber());
+            serviceFloatValue.getValueNumber(), serviceFloatValue.getPage());
     }
 }

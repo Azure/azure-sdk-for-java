@@ -13,6 +13,11 @@ import java.util.List;
 public abstract class FieldValue<T> extends RawItem {
 
     /*
+     * The 1-based page number in the input document.
+     */
+    private final int pageNumber;
+
+    /*
      * Confidence score.
      */
     private Float confidence;
@@ -28,9 +33,11 @@ public abstract class FieldValue<T> extends RawItem {
      *
      * @param text Text content of the extracted field.
      * @param boundingBox Bounding Box of the extracted field.
+     * @param pageNumber The page number of teh extracted receipt on which this field exists
      */
-    FieldValue(String text, BoundingBox boundingBox) {
+    FieldValue(String text, BoundingBox boundingBox, int pageNumber) {
         super(text, boundingBox);
+        this.pageNumber = pageNumber;
     }
 
     /**
@@ -46,6 +53,22 @@ public abstract class FieldValue<T> extends RawItem {
      * @param value The value T.
      */
     public abstract void setValue(T value);
+
+    /**
+     * Get the 1-based page number in the input document.
+     *
+     * @return the page number value.
+     */
+    public int getPageNumber() {
+        return this.pageNumber;
+    }
+
+    /**
+     * Gets the {@link FieldValueType type} the field value.
+     *
+     * @return The {@link FieldValueType type} the field value.
+     */
+    public abstract FieldValueType getType();
 
     /**
      * Get the confidence property: Confidence score.
@@ -83,6 +106,7 @@ public abstract class FieldValue<T> extends RawItem {
      * list of references to the text elements constituting this field.
      *
      * @param elements the elements value to set.
+     *
      * @return the FieldValue object itself.
      */
     public FieldValue<T> setElements(final List<Element> elements) {
