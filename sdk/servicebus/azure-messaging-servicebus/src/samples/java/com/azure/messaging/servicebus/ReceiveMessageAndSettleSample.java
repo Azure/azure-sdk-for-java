@@ -61,7 +61,7 @@ public class ReceiveMessageAndSettleSample {
                     System.out.println("Message Locked Until " + latest);
                 }
 
-                //This is application business logic to take action based on some application logic.
+                // This is application business logic to take action based on some application logic.
                 // For demo purpose we are using a property for application logic.
                 String actionToTake = null;
 
@@ -74,9 +74,7 @@ public class ReceiveMessageAndSettleSample {
                 } else if (payload.contains("defer")) {
                     actionToTake = "DEFER";
                 }
-
-                System.out.println("Got message actionToTake = " + actionToTake);
-
+                
                 switch (actionToTake) {
                     case "COMPLETE":
                         System.out.println("Completing message.");
