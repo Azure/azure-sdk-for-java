@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,6 +44,19 @@ public final class SqlQuerySpec extends JsonSerializable {
         super();
         this.setQueryText(queryText);
         this.parameters = parameters;
+    }
+
+    /**
+     * Initializes a new instance of the SqlQuerySpec class with the text of the
+     * query and parameters.
+     *
+     * @param queryText the query text.
+     * @param parameters the query parameters.
+     */
+    public SqlQuerySpec(String queryText, SqlParameter... parameters) {
+        super();
+        this.setQueryText(queryText);
+        this.parameters = Arrays.asList(parameters);
     }
 
     /**
