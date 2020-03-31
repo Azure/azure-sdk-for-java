@@ -64,10 +64,14 @@ class FavoritesImpl extends WrapperImpl<FavoritesInner> implements Favorites {
     public Observable<ApplicationInsightsComponentFavorite> getAsync(String resourceGroupName, String resourceName, String favoriteId) {
         FavoritesInner client = this.inner();
         return client.getAsync(resourceGroupName, resourceName, favoriteId)
-        .map(new Func1<ApplicationInsightsComponentFavoriteInner, ApplicationInsightsComponentFavorite>() {
+        .flatMap(new Func1<ApplicationInsightsComponentFavoriteInner, Observable<ApplicationInsightsComponentFavorite>>() {
             @Override
-            public ApplicationInsightsComponentFavorite call(ApplicationInsightsComponentFavoriteInner inner) {
-                return wrapModel(inner);
+            public Observable<ApplicationInsightsComponentFavorite> call(ApplicationInsightsComponentFavoriteInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ApplicationInsightsComponentFavorite)wrapModel(inner));
+                }
             }
        });
     }
