@@ -111,7 +111,7 @@ class ActiveDirectoryGroupImpl
         }
         if (!membersToAdd.isEmpty()) {
             group = group.flatMap(o -> Flux.fromIterable(membersToAdd)
-                    .flatMap(s -> manager().inner().groups().addMemberAsync(id(), new GroupAddMemberParameters().setUrl(s)))
+                    .flatMap(s -> manager().inner().groups().addMemberAsync(id(), s))
                     .singleOrEmpty()
                     .thenReturn(Mono.just(this))
                     .doFinally(signalType -> membersToAdd.clear()));
@@ -134,7 +134,7 @@ class ActiveDirectoryGroupImpl
     @Override
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         membersToAdd.add(String.format("%s%s/directoryObjects/%s",
-                manager().inner().host(), manager().tenantId(), objectId));
+                manager().inner().getHost(), manager().tenantId(), objectId));
         return this;
     }
 
