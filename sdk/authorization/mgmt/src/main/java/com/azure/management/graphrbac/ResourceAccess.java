@@ -56,7 +56,7 @@ public final class ResourceAccess {
      * @param id the id value to set.
      * @return the ResourceAccess object itself.
      */
-    public ResourceAccess setId(String id) {
+    public ResourceAccess withId(String id) {
         this.id = id;
         return this;
     }
@@ -67,7 +67,7 @@ public final class ResourceAccess {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -78,7 +78,7 @@ public final class ResourceAccess {
      * @param type the type value to set.
      * @return the ResourceAccess object itself.
      */
-    public ResourceAccess setType(String type) {
+    public ResourceAccess withType(String type) {
         this.type = type;
         return this;
     }
@@ -91,7 +91,7 @@ public final class ResourceAccess {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -104,7 +104,7 @@ public final class ResourceAccess {
      * @param additionalProperties the additionalProperties value to set.
      * @return the ResourceAccess object itself.
      */
-    public ResourceAccess setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public ResourceAccess withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

@@ -9,6 +9,7 @@ package com.azure.management.graphrbac.models;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -25,7 +26,9 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.management.graphrbac.implementation.GraphErrorException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.management.graphrbac.GraphErrorException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -48,7 +51,7 @@ public final class DeletedApplicationsInner {
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    public DeletedApplicationsInner(GraphRbacManagementClientImpl client) {
+    DeletedApplicationsInner(GraphRbacManagementClientImpl client) {
         this.service = RestProxy.create(DeletedApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -61,44 +64,49 @@ public final class DeletedApplicationsInner {
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementClientDeletedApplications")
     private interface DeletedApplicationsService {
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/deletedApplications/{objectId}/restore")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationInner>> restore(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationInner>> restore(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/deletedApplications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{tenantID}/deletedApplications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> hardDelete(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> hardDelete(@HostParam("$host") String host, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ApplicationListResultInner>> listNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ApplicationListResultInner>> listNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
     }
 
     /**
      * Restores the deleted application in the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ApplicationInner>> restoreWithResponseAsync(String objectId) {
-        return service.restore(this.client.getHost(), objectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.restore(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Restores the deleted application in the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -118,7 +126,7 @@ public final class DeletedApplicationsInner {
     /**
      * Restores the deleted application in the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -131,26 +139,28 @@ public final class DeletedApplicationsInner {
     /**
      * Gets a list of deleted applications in the directory.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter) {
-        return service.list(this.client.getHost(), filter, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of deleted applications in the directory.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -165,7 +175,22 @@ public final class DeletedApplicationsInner {
     /**
      * Gets a list of deleted applications in the directory.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ApplicationInner> listAsync() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of deleted applications in the directory.
+     * 
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,22 +201,36 @@ public final class DeletedApplicationsInner {
     }
 
     /**
+     * Gets a list of deleted applications in the directory.
+     * 
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationInner> list() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedIterable<>(listAsync(filter));
+    }
+
+    /**
      * Hard-delete an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hardDeleteWithResponseAsync(String applicationObjectId) {
-        return service.hardDelete(this.client.getHost(), applicationObjectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.hardDelete(this.client.getHost(), applicationObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Hard-delete an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,7 +244,7 @@ public final class DeletedApplicationsInner {
     /**
      * Hard-delete an application.
      * 
-     * @param applicationObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param applicationObjectId Application object ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,19 +257,21 @@ public final class DeletedApplicationsInner {
     /**
      * Gets a list of deleted applications in the directory.
      * 
-     * @param nextLink MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(this.client.getHost(), nextLink, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

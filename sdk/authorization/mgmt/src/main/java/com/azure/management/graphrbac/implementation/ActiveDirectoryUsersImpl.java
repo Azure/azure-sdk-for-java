@@ -10,6 +10,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
 import com.azure.management.graphrbac.ActiveDirectoryUsers;
+import com.azure.management.graphrbac.GraphErrorException;
 import com.azure.management.graphrbac.models.UserInner;
 import com.azure.management.graphrbac.models.UsersInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
@@ -89,7 +90,7 @@ class ActiveDirectoryUsersImpl
 
     @Override
     protected ActiveDirectoryUserImpl wrapModel(String name) {
-        return new ActiveDirectoryUserImpl(new UserInner().setDisplayName(name), manager());
+        return new ActiveDirectoryUserImpl(new UserInner().withDisplayName(name), manager());
     }
 
     @Override

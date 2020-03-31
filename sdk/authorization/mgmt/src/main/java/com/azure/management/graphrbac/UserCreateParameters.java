@@ -27,7 +27,7 @@ public final class UserCreateParameters extends UserBase {
     private String displayName;
 
     /*
-     * The password profile associated with a user.
+     * Password Profile
      */
     @JsonProperty(value = "passwordProfile", required = true)
     private PasswordProfile passwordProfile;
@@ -56,7 +56,7 @@ public final class UserCreateParameters extends UserBase {
      * 
      * @return the accountEnabled value.
      */
-    public boolean isAccountEnabled() {
+    public boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -66,7 +66,7 @@ public final class UserCreateParameters extends UserBase {
      * @param accountEnabled the accountEnabled value to set.
      * @return the UserCreateParameters object itself.
      */
-    public UserCreateParameters setAccountEnabled(boolean accountEnabled) {
+    public UserCreateParameters withAccountEnabled(boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
@@ -76,7 +76,7 @@ public final class UserCreateParameters extends UserBase {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -86,29 +86,27 @@ public final class UserCreateParameters extends UserBase {
      * @param displayName the displayName value to set.
      * @return the UserCreateParameters object itself.
      */
-    public UserCreateParameters setDisplayName(String displayName) {
+    public UserCreateParameters withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
     /**
-     * Get the passwordProfile property: The password profile associated with a
-     * user.
+     * Get the passwordProfile property: Password Profile.
      * 
      * @return the passwordProfile value.
      */
-    public PasswordProfile getPasswordProfile() {
+    public PasswordProfile passwordProfile() {
         return this.passwordProfile;
     }
 
     /**
-     * Set the passwordProfile property: The password profile associated with a
-     * user.
+     * Set the passwordProfile property: Password Profile.
      * 
      * @param passwordProfile the passwordProfile value to set.
      * @return the UserCreateParameters object itself.
      */
-    public UserCreateParameters setPasswordProfile(PasswordProfile passwordProfile) {
+    public UserCreateParameters withPasswordProfile(PasswordProfile passwordProfile) {
         this.passwordProfile = passwordProfile;
         return this;
     }
@@ -120,7 +118,7 @@ public final class UserCreateParameters extends UserBase {
      * 
      * @return the userPrincipalName value.
      */
-    public String getUserPrincipalName() {
+    public String userPrincipalName() {
         return this.userPrincipalName;
     }
 
@@ -132,7 +130,7 @@ public final class UserCreateParameters extends UserBase {
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the UserCreateParameters object itself.
      */
-    public UserCreateParameters setUserPrincipalName(String userPrincipalName) {
+    public UserCreateParameters withUserPrincipalName(String userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
         return this;
     }
@@ -142,7 +140,7 @@ public final class UserCreateParameters extends UserBase {
      * 
      * @return the mailNickname value.
      */
-    public String getMailNickname() {
+    public String mailNickname() {
         return this.mailNickname;
     }
 
@@ -152,7 +150,7 @@ public final class UserCreateParameters extends UserBase {
      * @param mailNickname the mailNickname value to set.
      * @return the UserCreateParameters object itself.
      */
-    public UserCreateParameters setMailNickname(String mailNickname) {
+    public UserCreateParameters withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
         return this;
     }
@@ -162,7 +160,7 @@ public final class UserCreateParameters extends UserBase {
      * 
      * @return the mail value.
      */
-    public String getMail() {
+    public String mail() {
         return this.mail;
     }
 
@@ -172,7 +170,7 @@ public final class UserCreateParameters extends UserBase {
      * @param mail the mail value to set.
      * @return the UserCreateParameters object itself.
      */
-    public UserCreateParameters setMail(String mail) {
+    public UserCreateParameters withMail(String mail) {
         this.mail = mail;
         return this;
     }

@@ -10,6 +10,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -26,12 +27,14 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.graphrbac.AddOwnerParameters;
 import com.azure.management.graphrbac.CheckGroupMembershipParameters;
+import com.azure.management.graphrbac.GraphErrorException;
 import com.azure.management.graphrbac.GroupAddMemberParameters;
 import com.azure.management.graphrbac.GroupCreateParameters;
 import com.azure.management.graphrbac.GroupGetMemberGroupsParameters;
-import com.azure.management.graphrbac.implementation.GraphErrorException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -54,7 +57,7 @@ public final class GroupsInner {
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    public GroupsInner(GraphRbacManagementClientImpl client) {
+    GroupsInner(GraphRbacManagementClientImpl client) {
         this.service = RestProxy.create(GroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -67,80 +70,95 @@ public final class GroupsInner {
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementClientGroups")
     private interface GroupsService {
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/isMemberOf")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<CheckGroupMembershipResultInner>> isMemberOf(@HostParam("$host") String host, @PathParam("tenantID") String tenantID, @BodyParam("application/json") CheckGroupMembershipParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<CheckGroupMembershipResultInner>> isMemberOf(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") CheckGroupMembershipParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{tenantID}/groups/{groupObjectId}/$links/members/{memberObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeMember(@HostParam("$host") String host, @PathParam("groupObjectId") String groupObjectId, @PathParam("memberObjectId") String memberObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> removeMember(@HostParam("$host") String host, @PathParam("groupObjectId") String groupObjectId, @PathParam("memberObjectId") String memberObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/{tenantID}/groups/{groupObjectId}/$links/members")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addMember(@HostParam("$host") String host, @PathParam("groupObjectId") String groupObjectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") GroupAddMemberParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> addMember(@HostParam("$host") String host, @PathParam("groupObjectId") String groupObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") GroupAddMemberParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/groups")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ADGroupInner>> create(@HostParam("$host") String host, @PathParam("tenantID") String tenantID, @BodyParam("application/json") GroupCreateParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ADGroupInner>> create(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") GroupCreateParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/groups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<GroupListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<GroupListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/groups/{objectId}/members")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> getGroupMembers(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> getGroupMembers(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/groups/{objectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<ADGroupInner>> get(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ADGroupInner>> get(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{tenantID}/groups/{objectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/groups/{objectId}/getMemberGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<GroupGetMemberGroupsResultInner>> getMemberGroups(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") GroupGetMemberGroupsParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<GroupGetMemberGroupsResultInner>> getMemberGroups(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") GroupGetMemberGroupsParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/groups/{objectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwners(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwners(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/{tenantID}/groups/{objectId}/$links/owners")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addOwner(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("tenantID") String tenantID, @BodyParam("application/json") AddOwnerParameters parameters, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> addOwner(@HostParam("$host") String host, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, @BodyParam("application/json") AddOwnerParameters parameters, Context context);
 
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{tenantID}/groups/{objectId}/$links/owners/{ownerObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeOwner(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("ownerObjectId") String ownerObjectId, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> removeOwner(@HostParam("$host") String host, @PathParam("objectId") String objectId, @PathParam("ownerObjectId") String ownerObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<GroupListResultInner>> listNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<GroupListResultInner>> listNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> getGroupMembersNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> getGroupMembersNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -153,7 +171,8 @@ public final class GroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(CheckGroupMembershipParameters parameters) {
-        return service.isMemberOf(this.client.getHost(), this.client.getTenantID(), parameters, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.isMemberOf(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -192,22 +211,23 @@ public final class GroupsInner {
     /**
      * Remove a member from a group.
      * 
-     * @param groupObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param memberObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId) {
-        return service.removeMember(this.client.getHost(), groupObjectId, memberObjectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.removeMember(this.client.getHost(), groupObjectId, memberObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Remove a member from a group.
      * 
-     * @param groupObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param memberObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -221,8 +241,8 @@ public final class GroupsInner {
     /**
      * Remove a member from a group.
      * 
-     * @param groupObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param memberObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param groupObjectId The object ID of the group from which to remove the member.
+     * @param memberObjectId Member object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -235,44 +255,47 @@ public final class GroupsInner {
     /**
      * Add a member to a group.
      * 
-     * @param groupObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a member to a group.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, GroupAddMemberParameters parameters) {
-        return service.addMember(this.client.getHost(), groupObjectId, this.client.getTenantID(), parameters, this.client.getApiVersion());
+    public Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String url) {
+        GroupAddMemberParameters parameters = new GroupAddMemberParameters();
+        parameters.withUrl(url);
+        return FluxUtil.withContext(context -> service.addMember(this.client.getHost(), groupObjectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Add a member to a group.
      * 
-     * @param groupObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a member to a group.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addMemberAsync(String groupObjectId, GroupAddMemberParameters parameters) {
-        return addMemberWithResponseAsync(groupObjectId, parameters)
+    public Mono<Void> addMemberAsync(String groupObjectId, String url) {
+        return addMemberWithResponseAsync(groupObjectId, url)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Add a member to a group.
      * 
-     * @param groupObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a member to a group.
+     * @param groupObjectId The object ID of the group to which to add the member.
+     * @param url A member object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addMember(String groupObjectId, GroupAddMemberParameters parameters) {
-        addMemberAsync(groupObjectId, parameters).block();
+    public void addMember(String groupObjectId, String url) {
+        addMemberAsync(groupObjectId, url).block();
     }
 
     /**
@@ -285,7 +308,8 @@ public final class GroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ADGroupInner>> createWithResponseAsync(GroupCreateParameters parameters) {
-        return service.create(this.client.getHost(), this.client.getTenantID(), parameters, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.create(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -324,26 +348,28 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ADGroupInner>> listSinglePageAsync(String filter) {
-        return service.list(this.client.getHost(), filter, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<ADGroupInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets list of groups for the current tenant.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -358,7 +384,22 @@ public final class GroupsInner {
     /**
      * Gets list of groups for the current tenant.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ADGroupInner> listAsync() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets list of groups for the current tenant.
+     * 
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -369,28 +410,43 @@ public final class GroupsInner {
     }
 
     /**
+     * Gets list of groups for the current tenant.
+     * 
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ADGroupInner> list() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedIterable<>(listAsync(filter));
+    }
+
+    /**
      * Gets the members of a group.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersSinglePageAsync(String objectId) {
-        return service.getGroupMembers(this.client.getHost(), objectId, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.getGroupMembers(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the members of a group.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -405,7 +461,7 @@ public final class GroupsInner {
     /**
      * Gets the members of a group.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group whose members should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -418,20 +474,21 @@ public final class GroupsInner {
     /**
      * Gets group information from the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the user for which to get group information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ADGroupInner>> getWithResponseAsync(String objectId) {
-        return service.get(this.client.getHost(), objectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets group information from the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the user for which to get group information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -451,7 +508,7 @@ public final class GroupsInner {
     /**
      * Gets group information from the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the user for which to get group information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -464,20 +521,21 @@ public final class GroupsInner {
     /**
      * Delete a group from the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
-        return service.delete(this.client.getHost(), objectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Delete a group from the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -491,7 +549,7 @@ public final class GroupsInner {
     /**
      * Delete a group from the directory.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -504,75 +562,81 @@ public final class GroupsInner {
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for GetMemberGroups API call.
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, GroupGetMemberGroupsParameters parameters) {
-        return service.getMemberGroups(this.client.getHost(), objectId, this.client.getTenantID(), parameters, this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            null,
-            null));
+    public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, boolean securityEnabledOnly) {
+        GroupGetMemberGroupsParameters parameters = new GroupGetMemberGroupsParameters();
+        parameters.withSecurityEnabledOnly(securityEnabledOnly);
+        return FluxUtil.withContext(context -> service.getMemberGroups(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for GetMemberGroups API call.
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getMemberGroupsAsync(String objectId, GroupGetMemberGroupsParameters parameters) {
+    public PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
         return new PagedFlux<>(
-            () -> getMemberGroupsSinglePageAsync(objectId, parameters));
+            () -> getMemberGroupsSinglePageAsync(objectId, securityEnabledOnly));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for GetMemberGroups API call.
+     * @param objectId The object ID of the group for which to get group membership.
+     * @param securityEnabledOnly If true, only membership in security-enabled groups should be checked. Otherwise, membership in all groups should be checked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, GroupGetMemberGroupsParameters parameters) {
-        return new PagedIterable<>(getMemberGroupsAsync(objectId, parameters));
+    public PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
+        return new PagedIterable<>(getMemberGroupsAsync(objectId, securityEnabledOnly));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group for which to get owners.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId) {
-        return service.listOwners(this.client.getHost(), objectId, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listOwners(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group for which to get owners.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -587,7 +651,7 @@ public final class GroupsInner {
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group for which to get owners.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -600,65 +664,69 @@ public final class GroupsInner {
     /**
      * Add an owner to a group.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a owner to an application.
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, AddOwnerParameters parameters) {
-        return service.addOwner(this.client.getHost(), objectId, this.client.getTenantID(), parameters, this.client.getApiVersion());
+    public Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String url) {
+        AddOwnerParameters parameters = new AddOwnerParameters();
+        parameters.withUrl(url);
+        return FluxUtil.withContext(context -> service.addOwner(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantID(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Add an owner to a group.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a owner to an application.
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addOwnerAsync(String objectId, AddOwnerParameters parameters) {
-        return addOwnerWithResponseAsync(objectId, parameters)
+    public Mono<Void> addOwnerAsync(String objectId, String url) {
+        return addOwnerWithResponseAsync(objectId, url)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Add an owner to a group.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param parameters Request parameters for adding a owner to an application.
+     * @param objectId The object ID of the application to which to add the owner.
+     * @param url A owner object URL, such as "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd", where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the owner (user, application, servicePrincipal, group) to be added.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addOwner(String objectId, AddOwnerParameters parameters) {
-        addOwnerAsync(objectId, parameters).block();
+    public void addOwner(String objectId, String url) {
+        addOwnerAsync(objectId, url).block();
     }
 
     /**
      * Remove a member from owners.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param ownerObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId) {
-        return service.removeOwner(this.client.getHost(), objectId, ownerObjectId, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.removeOwner(this.client.getHost(), objectId, ownerObjectId, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Remove a member from owners.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param ownerObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -672,8 +740,8 @@ public final class GroupsInner {
     /**
      * Remove a member from owners.
      * 
-     * @param objectId MISSING·SCHEMA-DESCRIPTION-STRING.
-     * @param ownerObjectId MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param objectId The object ID of the group from which to remove the owner.
+     * @param ownerObjectId Owner object id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -686,39 +754,43 @@ public final class GroupsInner {
     /**
      * Gets a list of groups for the current tenant.
      * 
-     * @param nextLink MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ADGroupInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(this.client.getHost(), nextLink, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<ADGroupInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the members of a group.
      * 
-     * @param nextLink MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersNextSinglePageAsync(String nextLink) {
-        return service.getGroupMembersNext(this.client.getHost(), nextLink, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.getGroupMembersNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -731,12 +803,14 @@ public final class GroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink) {
-        return service.listOwnersNext(nextLink).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listOwnersNext(nextLink, context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

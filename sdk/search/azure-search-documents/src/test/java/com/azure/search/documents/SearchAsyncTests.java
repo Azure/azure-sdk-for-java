@@ -5,9 +5,11 @@ package com.azure.search.documents;
 
 import com.azure.search.documents.models.CoordinateSystem;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.ValueFacetResult;
@@ -611,11 +613,43 @@ public class SearchAsyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
-            .setScoringParameters("myloc-'-122','49'")
+            .setScoringParameters(new ScoringParameter("myloc", GeoPoint.create(49, -122)))
             .setFilter("Rating eq 5 or Rating eq 1");
 
         Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
         assertHotelIdSequenceEqual(Arrays.asList("2", "1"), response);
+    }
+
+    @Test
+    public void searchWithScoringProfileEscaper() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
+        SearchOptions searchOptions = new SearchOptions()
+            .setScoringProfile("text")
+            .setScoringParameters(new ScoringParameter("mytag", Arrays.asList("concierge", "Hello, O''Brien")))
+            .setFilter("Rating eq 5 or Rating eq 1");
+
+        Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
+        assertHotelIdSequenceEqual(Arrays.asList("1", "2"), response);
+    }
+
+    @Test
+    public void searchWithScoringParametersEmpty() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
+        SearchOptions searchOptions = new SearchOptions()
+            .setScoringProfile("text")
+            .setScoringParameters(new ScoringParameter("mytag", Arrays.asList("", "concierge")))
+            .setFilter("Rating eq 5 or Rating eq 1");
+
+        Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
+        assertHotelIdSequenceEqual(Arrays.asList("1", "2"), response);
     }
 
     @Test

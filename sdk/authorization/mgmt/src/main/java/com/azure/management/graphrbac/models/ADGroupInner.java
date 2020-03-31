@@ -54,7 +54,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -64,7 +64,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * @param displayName the displayName value to set.
      * @return the ADGroupInner object itself.
      */
-    public ADGroupInner setDisplayName(String displayName) {
+    public ADGroupInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -76,7 +76,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * 
      * @return the mailEnabled value.
      */
-    public Boolean isMailEnabled() {
+    public Boolean mailEnabled() {
         return this.mailEnabled;
     }
 
@@ -88,7 +88,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * @param mailEnabled the mailEnabled value to set.
      * @return the ADGroupInner object itself.
      */
-    public ADGroupInner setMailEnabled(Boolean mailEnabled) {
+    public ADGroupInner withMailEnabled(Boolean mailEnabled) {
         this.mailEnabled = mailEnabled;
         return this;
     }
@@ -98,7 +98,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * 
      * @return the mailNickname value.
      */
-    public String getMailNickname() {
+    public String mailNickname() {
         return this.mailNickname;
     }
 
@@ -108,7 +108,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * @param mailNickname the mailNickname value to set.
      * @return the ADGroupInner object itself.
      */
-    public ADGroupInner setMailNickname(String mailNickname) {
+    public ADGroupInner withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
         return this;
     }
@@ -118,7 +118,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * 
      * @return the securityEnabled value.
      */
-    public Boolean isSecurityEnabled() {
+    public Boolean securityEnabled() {
         return this.securityEnabled;
     }
 
@@ -128,7 +128,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * @param securityEnabled the securityEnabled value to set.
      * @return the ADGroupInner object itself.
      */
-    public ADGroupInner setSecurityEnabled(Boolean securityEnabled) {
+    public ADGroupInner withSecurityEnabled(Boolean securityEnabled) {
         this.securityEnabled = securityEnabled;
         return this;
     }
@@ -138,7 +138,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * 
      * @return the mail value.
      */
-    public String getMail() {
+    public String mail() {
         return this.mail;
     }
 
@@ -148,7 +148,7 @@ public final class ADGroupInner extends DirectoryObjectInner {
      * @param mail the mail value to set.
      * @return the ADGroupInner object itself.
      */
-    public ADGroupInner setMail(String mail) {
+    public ADGroupInner withMail(String mail) {
         this.mail = mail;
         return this;
     }

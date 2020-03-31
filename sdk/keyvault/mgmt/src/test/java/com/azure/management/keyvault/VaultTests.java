@@ -55,21 +55,21 @@ public class VaultTests extends KeyVaultManagementTest {
                     .create();
             Assertions.assertNotNull(vault);
             Assertions.assertFalse(vault.softDeleteEnabled());
-            Assertions.assertEquals(vault.networkRuleSet().getBypass(), NetworkRuleBypassOptions.AZURE_SERVICES);
+            Assertions.assertEquals(vault.networkRuleSet().bypass(), NetworkRuleBypassOptions.AZURE_SERVICES);
             
             // GET
             vault = keyVaultManager.vaults().getByResourceGroup(RG_NAME, VAULT_NAME);
             Assertions.assertNotNull(vault);
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
-                    Assertions.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST }, policy.permissions().getKeys().toArray());
-                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().getSecrets().size());
-                    Assertions.assertArrayEquals(new CertificatePermissions[] { CertificatePermissions.GET }, policy.permissions().getCertificates().toArray());
+                    Assertions.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST }, policy.permissions().keys().toArray());
+                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().secrets().size());
+                    Assertions.assertArrayEquals(new CertificatePermissions[] { CertificatePermissions.GET }, policy.permissions().certificates().toArray());
                 }
                 if (policy.objectId().equals(user.id())) {
-                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().getKeys().size());
-                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().getSecrets().size());
-                    Assertions.assertEquals(3, policy.permissions().getCertificates().size());
+                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
+                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().secrets().size());
+                    Assertions.assertEquals(3, policy.permissions().certificates().size());
                 }
             }
             // LIST
@@ -92,9 +92,9 @@ public class VaultTests extends KeyVaultManagementTest {
                     .apply();
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
-                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().getKeys().size());
-                    Assertions.assertEquals(0, policy.permissions().getSecrets().size());
-                    Assertions.assertEquals(CertificatePermissions.values().size(), policy.permissions().getCertificates().size());
+                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
+                    Assertions.assertEquals(0, policy.permissions().secrets().size());
+                    Assertions.assertEquals(CertificatePermissions.values().size(), policy.permissions().certificates().size());
                 }
             }
             
@@ -149,14 +149,14 @@ public class VaultTests extends KeyVaultManagementTest {
             Assertions.assertNotNull(vault);
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
-                    Assertions.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST }, policy.permissions().getKeys().toArray());
-                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().getSecrets().size());
-                    Assertions.assertArrayEquals(new CertificatePermissions[] { CertificatePermissions.GET }, policy.permissions().getCertificates().toArray());
+                    Assertions.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST }, policy.permissions().keys().toArray());
+                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().secrets().size());
+                    Assertions.assertArrayEquals(new CertificatePermissions[] { CertificatePermissions.GET }, policy.permissions().certificates().toArray());
                 }
                 if (policy.objectId().equals(user.id())) {
-                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().getKeys().size());
-                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().getSecrets().size());
-                    Assertions.assertEquals(3, policy.permissions().getCertificates().size());
+                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
+                    Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().secrets().size());
+                    Assertions.assertEquals(3, policy.permissions().certificates().size());
                 }
             }
             // LIST
@@ -179,9 +179,9 @@ public class VaultTests extends KeyVaultManagementTest {
                     .apply();
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
-                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().getKeys().size());
-                    Assertions.assertEquals(0, policy.permissions().getSecrets().size());
-                    Assertions.assertEquals(CertificatePermissions.values().size(), policy.permissions().getCertificates().size());
+                    Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
+                    Assertions.assertEquals(0, policy.permissions().secrets().size());
+                    Assertions.assertEquals(CertificatePermissions.values().size(), policy.permissions().certificates().size());
                 }
             }
             

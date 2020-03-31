@@ -7,36 +7,64 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The GraphError model.
  */
+@JsonFlatten
 @Fluent
-public final class GraphError {
+public class GraphError {
     /*
-     * Active Directory OData error information.
+     * Error code.
      */
-    @JsonProperty(value = "odata.error")
-    private OdataError odataerror;
+    @JsonProperty(value = "odata\\.error.code")
+    private String code;
+
+    /*
+     * Error message value.
+     */
+    @JsonProperty(value = "odata\\.error.message.value")
+    private String message;
 
     /**
-     * Get the odataerror property: Active Directory OData error information.
+     * Get the code property: Error code.
      * 
-     * @return the odataerror value.
+     * @return the code value.
      */
-    public OdataError getOdataerror() {
-        return this.odataerror;
+    public String code() {
+        return this.code;
     }
 
     /**
-     * Set the odataerror property: Active Directory OData error information.
+     * Set the code property: Error code.
      * 
-     * @param odataerror the odataerror value to set.
+     * @param code the code value to set.
      * @return the GraphError object itself.
      */
-    public GraphError setOdataerror(OdataError odataerror) {
-        this.odataerror = odataerror;
+    public GraphError withCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
+     * Get the message property: Error message value.
+     * 
+     * @return the message value.
+     */
+    public String message() {
+        return this.message;
+    }
+
+    /**
+     * Set the message property: Error message value.
+     * 
+     * @param message the message value to set.
+     * @return the GraphError object itself.
+     */
+    public GraphError withMessage(String message) {
+        this.message = message;
         return this;
     }
 }

@@ -104,9 +104,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
     private List<String> identifierUris;
 
     /*
-     * Represents a group of URIs that provide terms of service, marketing,
-     * support and privacy policy information about an application. The default
-     * value for each string is null.
+     * URLs with more information about the application.
      */
     @JsonProperty(value = "informationalUrls")
     private InformationalUrl informationalUrls;
@@ -245,7 +243,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the appId value.
      */
-    public String getAppId() {
+    public String appId() {
         return this.appId;
     }
 
@@ -255,7 +253,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param appId the appId value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAppId(String appId) {
+    public ApplicationInner withAppId(String appId) {
         this.appId = appId;
         return this;
     }
@@ -267,7 +265,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the allowGuestsSignIn value.
      */
-    public Boolean isAllowGuestsSignIn() {
+    public Boolean allowGuestsSignIn() {
         return this.allowGuestsSignIn;
     }
 
@@ -279,7 +277,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param allowGuestsSignIn the allowGuestsSignIn value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAllowGuestsSignIn(Boolean allowGuestsSignIn) {
+    public ApplicationInner withAllowGuestsSignIn(Boolean allowGuestsSignIn) {
         this.allowGuestsSignIn = allowGuestsSignIn;
         return this;
     }
@@ -290,7 +288,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the allowPassthroughUsers value.
      */
-    public Boolean isAllowPassthroughUsers() {
+    public Boolean allowPassthroughUsers() {
         return this.allowPassthroughUsers;
     }
 
@@ -301,7 +299,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param allowPassthroughUsers the allowPassthroughUsers value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAllowPassthroughUsers(Boolean allowPassthroughUsers) {
+    public ApplicationInner withAllowPassthroughUsers(Boolean allowPassthroughUsers) {
         this.allowPassthroughUsers = allowPassthroughUsers;
         return this;
     }
@@ -312,7 +310,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the appLogoUrl value.
      */
-    public String getAppLogoUrl() {
+    public String appLogoUrl() {
         return this.appLogoUrl;
     }
 
@@ -323,7 +321,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param appLogoUrl the appLogoUrl value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAppLogoUrl(String appLogoUrl) {
+    public ApplicationInner withAppLogoUrl(String appLogoUrl) {
         this.appLogoUrl = appLogoUrl;
         return this;
     }
@@ -335,7 +333,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the appRoles value.
      */
-    public List<AppRole> getAppRoles() {
+    public List<AppRole> appRoles() {
         return this.appRoles;
     }
 
@@ -347,7 +345,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param appRoles the appRoles value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAppRoles(List<AppRole> appRoles) {
+    public ApplicationInner withAppRoles(List<AppRole> appRoles) {
         this.appRoles = appRoles;
         return this;
     }
@@ -357,7 +355,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the appPermissions value.
      */
-    public List<String> getAppPermissions() {
+    public List<String> appPermissions() {
         return this.appPermissions;
     }
 
@@ -367,7 +365,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param appPermissions the appPermissions value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAppPermissions(List<String> appPermissions) {
+    public ApplicationInner withAppPermissions(List<String> appPermissions) {
         this.appPermissions = appPermissions;
         return this;
     }
@@ -378,7 +376,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the availableToOtherTenants value.
      */
-    public Boolean isAvailableToOtherTenants() {
+    public Boolean availableToOtherTenants() {
         return this.availableToOtherTenants;
     }
 
@@ -389,7 +387,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param availableToOtherTenants the availableToOtherTenants value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setAvailableToOtherTenants(Boolean availableToOtherTenants) {
+    public ApplicationInner withAvailableToOtherTenants(Boolean availableToOtherTenants) {
         this.availableToOtherTenants = availableToOtherTenants;
         return this;
     }
@@ -399,7 +397,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -409,7 +407,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param displayName the displayName value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setDisplayName(String displayName) {
+    public ApplicationInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -420,7 +418,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the errorUrl value.
      */
-    public String getErrorUrl() {
+    public String errorUrl() {
         return this.errorUrl;
     }
 
@@ -431,7 +429,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param errorUrl the errorUrl value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setErrorUrl(String errorUrl) {
+    public ApplicationInner withErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
         return this;
     }
@@ -442,7 +440,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the groupMembershipClaims value.
      */
-    public GroupMembershipClaimTypes getGroupMembershipClaims() {
+    public GroupMembershipClaimTypes groupMembershipClaims() {
         return this.groupMembershipClaims;
     }
 
@@ -453,7 +451,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param groupMembershipClaims the groupMembershipClaims value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setGroupMembershipClaims(GroupMembershipClaimTypes groupMembershipClaims) {
+    public ApplicationInner withGroupMembershipClaims(GroupMembershipClaimTypes groupMembershipClaims) {
         this.groupMembershipClaims = groupMembershipClaims;
         return this;
     }
@@ -463,7 +461,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the homepage value.
      */
-    public String getHomepage() {
+    public String homepage() {
         return this.homepage;
     }
 
@@ -473,7 +471,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param homepage the homepage value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setHomepage(String homepage) {
+    public ApplicationInner withHomepage(String homepage) {
         this.homepage = homepage;
         return this;
     }
@@ -484,7 +482,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the identifierUris value.
      */
-    public List<String> getIdentifierUris() {
+    public List<String> identifierUris() {
         return this.identifierUris;
     }
 
@@ -495,33 +493,29 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param identifierUris the identifierUris value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setIdentifierUris(List<String> identifierUris) {
+    public ApplicationInner withIdentifierUris(List<String> identifierUris) {
         this.identifierUris = identifierUris;
         return this;
     }
 
     /**
-     * Get the informationalUrls property: Represents a group of URIs that
-     * provide terms of service, marketing, support and privacy policy
-     * information about an application. The default value for each string is
-     * null.
+     * Get the informationalUrls property: URLs with more information about the
+     * application.
      * 
      * @return the informationalUrls value.
      */
-    public InformationalUrl getInformationalUrls() {
+    public InformationalUrl informationalUrls() {
         return this.informationalUrls;
     }
 
     /**
-     * Set the informationalUrls property: Represents a group of URIs that
-     * provide terms of service, marketing, support and privacy policy
-     * information about an application. The default value for each string is
-     * null.
+     * Set the informationalUrls property: URLs with more information about the
+     * application.
      * 
      * @param informationalUrls the informationalUrls value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setInformationalUrls(InformationalUrl informationalUrls) {
+    public ApplicationInner withInformationalUrls(InformationalUrl informationalUrls) {
         this.informationalUrls = informationalUrls;
         return this;
     }
@@ -546,7 +540,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
+    public ApplicationInner withIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
         this.isDeviceOnlyAuthSupported = isDeviceOnlyAuthSupported;
         return this;
     }
@@ -556,7 +550,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the keyCredentials value.
      */
-    public List<KeyCredentialInner> getKeyCredentials() {
+    public List<KeyCredentialInner> keyCredentials() {
         return this.keyCredentials;
     }
 
@@ -566,7 +560,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param keyCredentials the keyCredentials value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+    public ApplicationInner withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -580,7 +574,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the knownClientApplications value.
      */
-    public List<String> getKnownClientApplications() {
+    public List<String> knownClientApplications() {
         return this.knownClientApplications;
     }
 
@@ -594,7 +588,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param knownClientApplications the knownClientApplications value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setKnownClientApplications(List<String> knownClientApplications) {
+    public ApplicationInner withKnownClientApplications(List<String> knownClientApplications) {
         this.knownClientApplications = knownClientApplications;
         return this;
     }
@@ -604,7 +598,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the logoutUrl value.
      */
-    public String getLogoutUrl() {
+    public String logoutUrl() {
         return this.logoutUrl;
     }
 
@@ -614,7 +608,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param logoutUrl the logoutUrl value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setLogoutUrl(String logoutUrl) {
+    public ApplicationInner withLogoutUrl(String logoutUrl) {
         this.logoutUrl = logoutUrl;
         return this;
     }
@@ -625,7 +619,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the oauth2AllowImplicitFlow value.
      */
-    public Boolean isOauth2AllowImplicitFlow() {
+    public Boolean oauth2AllowImplicitFlow() {
         return this.oauth2AllowImplicitFlow;
     }
 
@@ -636,7 +630,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param oauth2AllowImplicitFlow the oauth2AllowImplicitFlow value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
+    public ApplicationInner withOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
         this.oauth2AllowImplicitFlow = oauth2AllowImplicitFlow;
         return this;
     }
@@ -648,7 +642,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the oauth2AllowUrlPathMatching value.
      */
-    public Boolean isOauth2AllowUrlPathMatching() {
+    public Boolean oauth2AllowUrlPathMatching() {
         return this.oauth2AllowUrlPathMatching;
     }
 
@@ -661,7 +655,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
+    public ApplicationInner withOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
         this.oauth2AllowUrlPathMatching = oauth2AllowUrlPathMatching;
         return this;
     }
@@ -674,7 +668,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the oauth2Permissions value.
      */
-    public List<OAuth2Permission> getOauth2Permissions() {
+    public List<OAuth2Permission> oauth2Permissions() {
         return this.oauth2Permissions;
     }
 
@@ -687,7 +681,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param oauth2Permissions the oauth2Permissions value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setOauth2Permissions(List<OAuth2Permission> oauth2Permissions) {
+    public ApplicationInner withOauth2Permissions(List<OAuth2Permission> oauth2Permissions) {
         this.oauth2Permissions = oauth2Permissions;
         return this;
     }
@@ -700,7 +694,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the oauth2RequirePostResponse value.
      */
-    public Boolean isOauth2RequirePostResponse() {
+    public Boolean oauth2RequirePostResponse() {
         return this.oauth2RequirePostResponse;
     }
 
@@ -714,7 +708,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
+    public ApplicationInner withOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
         this.oauth2RequirePostResponse = oauth2RequirePostResponse;
         return this;
     }
@@ -725,7 +719,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the orgRestrictions value.
      */
-    public List<String> getOrgRestrictions() {
+    public List<String> orgRestrictions() {
         return this.orgRestrictions;
     }
 
@@ -736,7 +730,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param orgRestrictions the orgRestrictions value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setOrgRestrictions(List<String> orgRestrictions) {
+    public ApplicationInner withOrgRestrictions(List<String> orgRestrictions) {
         this.orgRestrictions = orgRestrictions;
         return this;
     }
@@ -747,7 +741,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the optionalClaims value.
      */
-    public OptionalClaims getOptionalClaims() {
+    public OptionalClaims optionalClaims() {
         return this.optionalClaims;
     }
 
@@ -758,7 +752,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param optionalClaims the optionalClaims value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setOptionalClaims(OptionalClaims optionalClaims) {
+    public ApplicationInner withOptionalClaims(OptionalClaims optionalClaims) {
         this.optionalClaims = optionalClaims;
         return this;
     }
@@ -769,7 +763,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the passwordCredentials value.
      */
-    public List<PasswordCredentialInner> getPasswordCredentials() {
+    public List<PasswordCredentialInner> passwordCredentials() {
         return this.passwordCredentials;
     }
 
@@ -780,7 +774,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+    public ApplicationInner withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
@@ -791,7 +785,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the preAuthorizedApplications value.
      */
-    public List<PreAuthorizedApplication> getPreAuthorizedApplications() {
+    public List<PreAuthorizedApplication> preAuthorizedApplications() {
         return this.preAuthorizedApplications;
     }
 
@@ -803,7 +797,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setPreAuthorizedApplications(List<PreAuthorizedApplication> preAuthorizedApplications) {
+    public ApplicationInner withPreAuthorizedApplications(List<PreAuthorizedApplication> preAuthorizedApplications) {
         this.preAuthorizedApplications = preAuthorizedApplications;
         return this;
     }
@@ -815,7 +809,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the publicClient value.
      */
-    public Boolean isPublicClient() {
+    public Boolean publicClient() {
         return this.publicClient;
     }
 
@@ -827,7 +821,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param publicClient the publicClient value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setPublicClient(Boolean publicClient) {
+    public ApplicationInner withPublicClient(Boolean publicClient) {
         this.publicClient = publicClient;
         return this;
     }
@@ -838,7 +832,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the publisherDomain value.
      */
-    public String getPublisherDomain() {
+    public String publisherDomain() {
         return this.publisherDomain;
     }
 
@@ -849,7 +843,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param publisherDomain the publisherDomain value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setPublisherDomain(String publisherDomain) {
+    public ApplicationInner withPublisherDomain(String publisherDomain) {
         this.publisherDomain = publisherDomain;
         return this;
     }
@@ -860,7 +854,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the replyUrls value.
      */
-    public List<String> getReplyUrls() {
+    public List<String> replyUrls() {
         return this.replyUrls;
     }
 
@@ -871,7 +865,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param replyUrls the replyUrls value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setReplyUrls(List<String> replyUrls) {
+    public ApplicationInner withReplyUrls(List<String> replyUrls) {
         this.replyUrls = replyUrls;
         return this;
     }
@@ -885,7 +879,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the requiredResourceAccess value.
      */
-    public List<RequiredResourceAccess> getRequiredResourceAccess() {
+    public List<RequiredResourceAccess> requiredResourceAccess() {
         return this.requiredResourceAccess;
     }
 
@@ -899,7 +893,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param requiredResourceAccess the requiredResourceAccess value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
+    public ApplicationInner withRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
         this.requiredResourceAccess = requiredResourceAccess;
         return this;
     }
@@ -910,7 +904,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the samlMetadataUrl value.
      */
-    public String getSamlMetadataUrl() {
+    public String samlMetadataUrl() {
         return this.samlMetadataUrl;
     }
 
@@ -921,7 +915,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param samlMetadataUrl the samlMetadataUrl value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setSamlMetadataUrl(String samlMetadataUrl) {
+    public ApplicationInner withSamlMetadataUrl(String samlMetadataUrl) {
         this.samlMetadataUrl = samlMetadataUrl;
         return this;
     }
@@ -933,7 +927,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the signInAudience value.
      */
-    public String getSignInAudience() {
+    public String signInAudience() {
         return this.signInAudience;
     }
 
@@ -945,7 +939,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param signInAudience the signInAudience value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setSignInAudience(String signInAudience) {
+    public ApplicationInner withSignInAudience(String signInAudience) {
         this.signInAudience = signInAudience;
         return this;
     }
@@ -955,7 +949,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * 
      * @return the wwwHomepage value.
      */
-    public String getWwwHomepage() {
+    public String wwwHomepage() {
         return this.wwwHomepage;
     }
 
@@ -965,7 +959,7 @@ public final class ApplicationInner extends DirectoryObjectInner {
      * @param wwwHomepage the wwwHomepage value to set.
      * @return the ApplicationInner object itself.
      */
-    public ApplicationInner setWwwHomepage(String wwwHomepage) {
+    public ApplicationInner withWwwHomepage(String wwwHomepage) {
         this.wwwHomepage = wwwHomepage;
         return this;
     }

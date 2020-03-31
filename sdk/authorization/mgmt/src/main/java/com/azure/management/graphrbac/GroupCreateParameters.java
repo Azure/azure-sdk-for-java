@@ -48,11 +48,19 @@ public final class GroupCreateParameters {
     private Map<String, Object> additionalProperties;
 
     /**
+     * Creates an instance of GroupCreateParameters class.
+     */
+    public GroupCreateParameters() {
+        mailEnabled = false;
+        securityEnabled = true;
+    }
+
+    /**
      * Get the displayName property: Group display name.
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -62,7 +70,7 @@ public final class GroupCreateParameters {
      * @param displayName the displayName value to set.
      * @return the GroupCreateParameters object itself.
      */
-    public GroupCreateParameters setDisplayName(String displayName) {
+    public GroupCreateParameters withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -74,7 +82,7 @@ public final class GroupCreateParameters {
      * 
      * @return the mailEnabled value.
      */
-    public boolean isMailEnabled() {
+    public boolean mailEnabled() {
         return this.mailEnabled;
     }
 
@@ -86,7 +94,7 @@ public final class GroupCreateParameters {
      * @param mailEnabled the mailEnabled value to set.
      * @return the GroupCreateParameters object itself.
      */
-    public GroupCreateParameters setMailEnabled(boolean mailEnabled) {
+    public GroupCreateParameters withMailEnabled(boolean mailEnabled) {
         this.mailEnabled = mailEnabled;
         return this;
     }
@@ -96,7 +104,7 @@ public final class GroupCreateParameters {
      * 
      * @return the mailNickname value.
      */
-    public String getMailNickname() {
+    public String mailNickname() {
         return this.mailNickname;
     }
 
@@ -106,7 +114,7 @@ public final class GroupCreateParameters {
      * @param mailNickname the mailNickname value to set.
      * @return the GroupCreateParameters object itself.
      */
-    public GroupCreateParameters setMailNickname(String mailNickname) {
+    public GroupCreateParameters withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
         return this;
     }
@@ -118,7 +126,7 @@ public final class GroupCreateParameters {
      * 
      * @return the securityEnabled value.
      */
-    public boolean isSecurityEnabled() {
+    public boolean securityEnabled() {
         return this.securityEnabled;
     }
 
@@ -130,7 +138,7 @@ public final class GroupCreateParameters {
      * @param securityEnabled the securityEnabled value to set.
      * @return the GroupCreateParameters object itself.
      */
-    public GroupCreateParameters setSecurityEnabled(boolean securityEnabled) {
+    public GroupCreateParameters withSecurityEnabled(boolean securityEnabled) {
         this.securityEnabled = securityEnabled;
         return this;
     }
@@ -141,7 +149,7 @@ public final class GroupCreateParameters {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -152,7 +160,7 @@ public final class GroupCreateParameters {
      * @param additionalProperties the additionalProperties value to set.
      * @return the GroupCreateParameters object itself.
      */
-    public GroupCreateParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public GroupCreateParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

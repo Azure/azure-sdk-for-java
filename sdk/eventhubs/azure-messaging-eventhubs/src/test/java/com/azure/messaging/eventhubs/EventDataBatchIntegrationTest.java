@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -126,6 +127,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         final CountDownLatch countDownLatch = new CountDownLatch(batch.getCount());
         final List<EventHubConsumerAsyncClient> consumers = new ArrayList<>();
+        final Instant now = Instant.now();
         try {
             // Creating consumers on all the partitions and subscribing to the receive event.
             final List<String> partitionIds = producer.getPartitionIds().collectList().block(TIMEOUT);
@@ -135,7 +137,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                 final EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient();
 
                 consumers.add(consumer);
-                consumer.receiveFromPartition(id, EventPosition.latest()).subscribe(partitionEvent -> {
+                consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
                     EventData event = partitionEvent.getData();
                     if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
                         return;

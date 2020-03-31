@@ -492,13 +492,13 @@ public final class Utils {
                 .append("Name: ").append(vault.name())
                 .append("\n\tResource group: ").append(vault.resourceGroupName())
                 .append("\n\tRegion: ").append(vault.region())
-                .append("\n\tSku: ").append(vault.sku().getName()).append(" - ").append(vault.sku().getFamily())
+                .append("\n\tSku: ").append(vault.sku().name()).append(" - ").append(vault.sku().family())
                 .append("\n\tVault URI: ").append(vault.vaultUri())
                 .append("\n\tAccess policies: ");
         for (AccessPolicy accessPolicy : vault.accessPolicies()) {
             info.append("\n\t\tIdentity:").append(accessPolicy.objectId())
-                    .append("\n\t\tKey permissions: ").append(accessPolicy.permissions().getKeys().stream().map(KeyPermissions::toString).collect(Collectors.joining(", ")))
-                    .append("\n\t\tSecret permissions: ").append(accessPolicy.permissions().getSecrets().stream().map(SecretPermissions::toString).collect(Collectors.joining(", ")));
+                    .append("\n\t\tKey permissions: ").append(accessPolicy.permissions().keys().stream().map(KeyPermissions::toString).collect(Collectors.joining(", ")))
+                    .append("\n\t\tSecret permissions: ").append(accessPolicy.permissions().secrets().stream().map(SecretPermissions::toString).collect(Collectors.joining(", ")));
         }
         System.out.println(info.toString());
     }

@@ -21,13 +21,13 @@
     "dir": "../keyvault/mgmt",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.management.keyvault",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-02"
+    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=package-2018-02"
   },
   "authorization": {
     "dir": "../authorization/mgmt",
     "source": "specification/authorization/resource-manager/readme.md",
-    "package": "com.azure.management.graphrbac",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-01-01-preview"
+    "package": "com.azure.management.graphrbac --tag=package-2018-01-01-preview",
+    "args": "--track1-naming=true --payload-flattening-threshold=1"
   },
   "automation": {
     "dir": "../automation/mgmt",
@@ -169,7 +169,7 @@
     "dir": "../authorization/mgmt",
     "source": "specification/graphrbac/data-plane/readme.md",
     "package": "com.azure.management.graphrbac",
-    "args": "--payload-flattening-threshold=1 --tag=1.6"
+    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=1.6"
   },
   "iothub": {
     "dir": "../devices/mgmt",
@@ -307,7 +307,7 @@
     "dir": "../storage/mgmt",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.management.storage",
-    "args": "--payload-flattening-threshold=2 --tag=package-2019-06 --track1-naming=true"
+    "args": "--track1-naming=true --payload-flattening-threshold=2 --tag=package-2019-06"
   },
   "storsimple8000series": {
     "dir": "../storsimple8000series/mgmt",

@@ -38,7 +38,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
      * @param tenantID the tenantID value.
      * @return the service client itself.
      */
-    GraphRbacManagementClientImpl setTenantID(String tenantID) {
+    public GraphRbacManagementClientImpl setTenantID(String tenantID) {
         this.tenantID = tenantID;
         return this;
     }
@@ -63,18 +63,18 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
      * @param host the host value.
      * @return the service client itself.
      */
-    GraphRbacManagementClientImpl setHost(String host) {
+    public GraphRbacManagementClientImpl setHost(String host) {
         this.host = host;
         return this;
     }
 
     /**
-     * The API version to use for this operation.
+     * Api Version.
      */
     private String apiVersion;
 
     /**
-     * Gets The API version to use for this operation.
+     * Gets Api Version.
      * 
      * @return the apiVersion value.
      */
@@ -83,12 +83,12 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The API version to use for this operation.
+     * Sets Api Version.
      * 
      * @param apiVersion the apiVersion value.
      * @return the service client itself.
      */
-    GraphRbacManagementClientImpl setApiVersion(String apiVersion) {
+    public GraphRbacManagementClientImpl setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }

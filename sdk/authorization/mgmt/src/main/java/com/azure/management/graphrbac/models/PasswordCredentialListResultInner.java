@@ -26,7 +26,7 @@ public final class PasswordCredentialListResultInner {
      * 
      * @return the value value.
      */
-    public List<PasswordCredentialInner> getValue() {
+    public List<PasswordCredentialInner> value() {
         return this.value;
     }
 
@@ -36,7 +36,7 @@ public final class PasswordCredentialListResultInner {
      * @param value the value value to set.
      * @return the PasswordCredentialListResultInner object itself.
      */
-    public PasswordCredentialListResultInner setValue(List<PasswordCredentialInner> value) {
+    public PasswordCredentialListResultInner withValue(List<PasswordCredentialInner> value) {
         this.value = value;
         return this;
     }

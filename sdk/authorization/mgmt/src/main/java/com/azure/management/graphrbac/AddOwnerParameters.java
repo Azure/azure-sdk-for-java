@@ -34,7 +34,7 @@ public final class AddOwnerParameters {
      * 
      * @return the url value.
      */
-    public String getUrl() {
+    public String url() {
         return this.url;
     }
 
@@ -45,7 +45,7 @@ public final class AddOwnerParameters {
      * @param url the url value to set.
      * @return the AddOwnerParameters object itself.
      */
-    public AddOwnerParameters setUrl(String url) {
+    public AddOwnerParameters withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -56,7 +56,7 @@ public final class AddOwnerParameters {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -67,7 +67,7 @@ public final class AddOwnerParameters {
      * @param additionalProperties the additionalProperties value to set.
      * @return the AddOwnerParameters object itself.
      */
-    public AddOwnerParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public AddOwnerParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

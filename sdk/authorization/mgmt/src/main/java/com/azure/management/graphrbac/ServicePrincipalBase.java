@@ -62,7 +62,7 @@ public class ServicePrincipalBase {
      * 
      * @return the accountEnabled value.
      */
-    public Boolean isAccountEnabled() {
+    public Boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -73,7 +73,7 @@ public class ServicePrincipalBase {
      * @param accountEnabled the accountEnabled value to set.
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase setAccountEnabled(Boolean accountEnabled) {
+    public ServicePrincipalBase withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
@@ -85,7 +85,7 @@ public class ServicePrincipalBase {
      * 
      * @return the appRoleAssignmentRequired value.
      */
-    public Boolean isAppRoleAssignmentRequired() {
+    public Boolean appRoleAssignmentRequired() {
         return this.appRoleAssignmentRequired;
     }
 
@@ -98,7 +98,7 @@ public class ServicePrincipalBase {
      * set.
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase setAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+    public ServicePrincipalBase withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
         this.appRoleAssignmentRequired = appRoleAssignmentRequired;
         return this;
     }
@@ -109,7 +109,7 @@ public class ServicePrincipalBase {
      * 
      * @return the keyCredentials value.
      */
-    public List<KeyCredentialInner> getKeyCredentials() {
+    public List<KeyCredentialInner> keyCredentials() {
         return this.keyCredentials;
     }
 
@@ -120,7 +120,7 @@ public class ServicePrincipalBase {
      * @param keyCredentials the keyCredentials value to set.
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase setKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+    public ServicePrincipalBase withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -131,7 +131,7 @@ public class ServicePrincipalBase {
      * 
      * @return the passwordCredentials value.
      */
-    public List<PasswordCredentialInner> getPasswordCredentials() {
+    public List<PasswordCredentialInner> passwordCredentials() {
         return this.passwordCredentials;
     }
 
@@ -142,7 +142,7 @@ public class ServicePrincipalBase {
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase setPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+    public ServicePrincipalBase withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
@@ -153,7 +153,7 @@ public class ServicePrincipalBase {
      * 
      * @return the servicePrincipalType value.
      */
-    public String getServicePrincipalType() {
+    public String servicePrincipalType() {
         return this.servicePrincipalType;
     }
 
@@ -164,7 +164,7 @@ public class ServicePrincipalBase {
      * @param servicePrincipalType the servicePrincipalType value to set.
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase setServicePrincipalType(String servicePrincipalType) {
+    public ServicePrincipalBase withServicePrincipalType(String servicePrincipalType) {
         this.servicePrincipalType = servicePrincipalType;
         return this;
     }
@@ -175,7 +175,7 @@ public class ServicePrincipalBase {
      * 
      * @return the tags value.
      */
-    public List<String> getTags() {
+    public List<String> tags() {
         return this.tags;
     }
 
@@ -186,7 +186,7 @@ public class ServicePrincipalBase {
      * @param tags the tags value to set.
      * @return the ServicePrincipalBase object itself.
      */
-    public ServicePrincipalBase setTags(List<String> tags) {
+    public ServicePrincipalBase withTags(List<String> tags) {
         this.tags = tags;
         return this;
     }

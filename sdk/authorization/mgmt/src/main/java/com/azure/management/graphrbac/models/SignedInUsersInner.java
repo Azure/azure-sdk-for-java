@@ -8,6 +8,7 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -22,7 +23,9 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.management.graphrbac.implementation.GraphErrorException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.management.graphrbac.GraphErrorException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -45,7 +48,7 @@ public final class SignedInUsersInner {
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    public SignedInUsersInner(GraphRbacManagementClientImpl client) {
+    SignedInUsersInner(GraphRbacManagementClientImpl client) {
         this.service = RestProxy.create(SignedInUsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -58,20 +61,23 @@ public final class SignedInUsersInner {
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementClientSignedInUsers")
     private interface SignedInUsersService {
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/me")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<UserInner>> get(@HostParam("$host") String host, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<UserInner>> get(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/me/ownedObjects")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnedObjects(@HostParam("$host") String host, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnedObjects(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnedObjectsNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DirectoryObjectListResultInner>> listOwnedObjectsNext(@HostParam("$host") String host, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
     }
 
     /**
@@ -82,7 +88,8 @@ public final class SignedInUsersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<UserInner>> getWithResponseAsync() {
-        return service.get(this.client.getHost(), this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -122,13 +129,15 @@ public final class SignedInUsersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsSinglePageAsync() {
-        return service.listOwnedObjects(this.client.getHost(), this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listOwnedObjects(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -158,19 +167,21 @@ public final class SignedInUsersInner {
     /**
      * Get the list of directory objects that are owned by the user.
      * 
-     * @param nextLink MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param nextLink Next link for the list operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsNextSinglePageAsync(String nextLink) {
-        return service.listOwnedObjectsNext(this.client.getHost(), nextLink, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            res.getValue().getOdatanextLink(),
-            null));
+        return FluxUtil.withContext(context -> service.listOwnedObjectsNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().odataNextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

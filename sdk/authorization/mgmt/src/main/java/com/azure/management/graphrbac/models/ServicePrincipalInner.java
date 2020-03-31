@@ -46,7 +46,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
     private String appId;
 
     /*
-     * MISSING·SCHEMA-DESCRIPTION-STRING
+     * The appOwnerTenantId property.
      */
     @JsonProperty(value = "appOwnerTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String appOwnerTenantId;
@@ -160,7 +160,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the accountEnabled value.
      */
-    public Boolean isAccountEnabled() {
+    public Boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -171,7 +171,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param accountEnabled the accountEnabled value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setAccountEnabled(Boolean accountEnabled) {
+    public ServicePrincipalInner withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
@@ -181,7 +181,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the alternativeNames value.
      */
-    public List<String> getAlternativeNames() {
+    public List<String> alternativeNames() {
         return this.alternativeNames;
     }
 
@@ -191,7 +191,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param alternativeNames the alternativeNames value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setAlternativeNames(List<String> alternativeNames) {
+    public ServicePrincipalInner withAlternativeNames(List<String> alternativeNames) {
         this.alternativeNames = alternativeNames;
         return this;
     }
@@ -202,7 +202,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the appDisplayName value.
      */
-    public String getAppDisplayName() {
+    public String appDisplayName() {
         return this.appDisplayName;
     }
 
@@ -211,7 +211,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the appId value.
      */
-    public String getAppId() {
+    public String appId() {
         return this.appId;
     }
 
@@ -221,17 +221,17 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param appId the appId value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setAppId(String appId) {
+    public ServicePrincipalInner withAppId(String appId) {
         this.appId = appId;
         return this;
     }
 
     /**
-     * Get the appOwnerTenantId property: MISSING·SCHEMA-DESCRIPTION-STRING.
+     * Get the appOwnerTenantId property: The appOwnerTenantId property.
      * 
      * @return the appOwnerTenantId value.
      */
-    public String getAppOwnerTenantId() {
+    public String appOwnerTenantId() {
         return this.appOwnerTenantId;
     }
 
@@ -242,7 +242,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the appRoleAssignmentRequired value.
      */
-    public Boolean isAppRoleAssignmentRequired() {
+    public Boolean appRoleAssignmentRequired() {
         return this.appRoleAssignmentRequired;
     }
 
@@ -255,7 +255,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+    public ServicePrincipalInner withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
         this.appRoleAssignmentRequired = appRoleAssignmentRequired;
         return this;
     }
@@ -267,7 +267,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the appRoles value.
      */
-    public List<AppRole> getAppRoles() {
+    public List<AppRole> appRoles() {
         return this.appRoles;
     }
 
@@ -279,7 +279,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param appRoles the appRoles value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setAppRoles(List<AppRole> appRoles) {
+    public ServicePrincipalInner withAppRoles(List<AppRole> appRoles) {
         this.appRoles = appRoles;
         return this;
     }
@@ -289,7 +289,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -299,7 +299,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param displayName the displayName value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setDisplayName(String displayName) {
+    public ServicePrincipalInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -310,7 +310,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the errorUrl value.
      */
-    public String getErrorUrl() {
+    public String errorUrl() {
         return this.errorUrl;
     }
 
@@ -321,7 +321,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param errorUrl the errorUrl value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setErrorUrl(String errorUrl) {
+    public ServicePrincipalInner withErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
         return this;
     }
@@ -332,7 +332,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the homepage value.
      */
-    public String getHomepage() {
+    public String homepage() {
         return this.homepage;
     }
 
@@ -343,7 +343,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param homepage the homepage value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setHomepage(String homepage) {
+    public ServicePrincipalInner withHomepage(String homepage) {
         this.homepage = homepage;
         return this;
     }
@@ -354,7 +354,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the keyCredentials value.
      */
-    public List<KeyCredentialInner> getKeyCredentials() {
+    public List<KeyCredentialInner> keyCredentials() {
         return this.keyCredentials;
     }
 
@@ -365,7 +365,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param keyCredentials the keyCredentials value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+    public ServicePrincipalInner withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -376,7 +376,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the logoutUrl value.
      */
-    public String getLogoutUrl() {
+    public String logoutUrl() {
         return this.logoutUrl;
     }
 
@@ -387,7 +387,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param logoutUrl the logoutUrl value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setLogoutUrl(String logoutUrl) {
+    public ServicePrincipalInner withLogoutUrl(String logoutUrl) {
         this.logoutUrl = logoutUrl;
         return this;
     }
@@ -398,7 +398,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the oauth2Permissions value.
      */
-    public List<OAuth2Permission> getOauth2Permissions() {
+    public List<OAuth2Permission> oauth2Permissions() {
         return this.oauth2Permissions;
     }
 
@@ -408,7 +408,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the passwordCredentials value.
      */
-    public List<PasswordCredentialInner> getPasswordCredentials() {
+    public List<PasswordCredentialInner> passwordCredentials() {
         return this.passwordCredentials;
     }
 
@@ -419,7 +419,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+    public ServicePrincipalInner withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
@@ -430,7 +430,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the preferredTokenSigningKeyThumbprint value.
      */
-    public String getPreferredTokenSigningKeyThumbprint() {
+    public String preferredTokenSigningKeyThumbprint() {
         return this.preferredTokenSigningKeyThumbprint;
     }
 
@@ -442,7 +442,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * preferredTokenSigningKeyThumbprint value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setPreferredTokenSigningKeyThumbprint(String preferredTokenSigningKeyThumbprint) {
+    public ServicePrincipalInner withPreferredTokenSigningKeyThumbprint(String preferredTokenSigningKeyThumbprint) {
         this.preferredTokenSigningKeyThumbprint = preferredTokenSigningKeyThumbprint;
         return this;
     }
@@ -453,7 +453,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the publisherName value.
      */
-    public String getPublisherName() {
+    public String publisherName() {
         return this.publisherName;
     }
 
@@ -464,7 +464,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param publisherName the publisherName value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setPublisherName(String publisherName) {
+    public ServicePrincipalInner withPublisherName(String publisherName) {
         this.publisherName = publisherName;
         return this;
     }
@@ -477,7 +477,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the replyUrls value.
      */
-    public List<String> getReplyUrls() {
+    public List<String> replyUrls() {
         return this.replyUrls;
     }
 
@@ -490,7 +490,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param replyUrls the replyUrls value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setReplyUrls(List<String> replyUrls) {
+    public ServicePrincipalInner withReplyUrls(List<String> replyUrls) {
         this.replyUrls = replyUrls;
         return this;
     }
@@ -501,7 +501,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the samlMetadataUrl value.
      */
-    public String getSamlMetadataUrl() {
+    public String samlMetadataUrl() {
         return this.samlMetadataUrl;
     }
 
@@ -512,7 +512,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param samlMetadataUrl the samlMetadataUrl value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setSamlMetadataUrl(String samlMetadataUrl) {
+    public ServicePrincipalInner withSamlMetadataUrl(String samlMetadataUrl) {
         this.samlMetadataUrl = samlMetadataUrl;
         return this;
     }
@@ -523,7 +523,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the servicePrincipalNames value.
      */
-    public List<String> getServicePrincipalNames() {
+    public List<String> servicePrincipalNames() {
         return this.servicePrincipalNames;
     }
 
@@ -534,7 +534,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param servicePrincipalNames the servicePrincipalNames value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setServicePrincipalNames(List<String> servicePrincipalNames) {
+    public ServicePrincipalInner withServicePrincipalNames(List<String> servicePrincipalNames) {
         this.servicePrincipalNames = servicePrincipalNames;
         return this;
     }
@@ -545,7 +545,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the servicePrincipalType value.
      */
-    public String getServicePrincipalType() {
+    public String servicePrincipalType() {
         return this.servicePrincipalType;
     }
 
@@ -556,7 +556,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param servicePrincipalType the servicePrincipalType value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setServicePrincipalType(String servicePrincipalType) {
+    public ServicePrincipalInner withServicePrincipalType(String servicePrincipalType) {
         this.servicePrincipalType = servicePrincipalType;
         return this;
     }
@@ -567,7 +567,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * 
      * @return the tags value.
      */
-    public List<String> getTags() {
+    public List<String> tags() {
         return this.tags;
     }
 
@@ -578,7 +578,7 @@ public final class ServicePrincipalInner extends DirectoryObjectInner {
      * @param tags the tags value to set.
      * @return the ServicePrincipalInner object itself.
      */
-    public ServicePrincipalInner setTags(List<String> tags) {
+    public ServicePrincipalInner withTags(List<String> tags) {
         this.tags = tags;
         return this;
     }
