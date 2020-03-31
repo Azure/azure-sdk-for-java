@@ -1,9 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.identity;
 
 /**
  * Defines fields exposing the well known authority hosts for the Azure Public Cloud and sovereign clouds.
  */
-public class KnownAuthorityHosts {
+public final class KnownAuthorityHosts {
+
+    private KnownAuthorityHosts() { }
 
     /**
      * The host of the Azure Active Directory authority for tenants in the Azure Public Cloud.
