@@ -62,6 +62,10 @@ public class CertificateClientTest extends CertificateClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void createCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
+        System.out.println("----------------------------------");
+        System.out.println(httpClient.toString());
+        System.out.println(serviceVersion.toString());
+        System.out.println("----------------------------------");
         createCertificateClient(httpClient, serviceVersion);
         createCertificateRunner((policy) -> {
             String certName = generateResourceId("testCer");

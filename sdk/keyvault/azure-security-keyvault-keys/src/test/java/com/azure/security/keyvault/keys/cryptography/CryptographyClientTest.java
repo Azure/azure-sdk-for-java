@@ -56,6 +56,10 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.security.keyvault.keys.cryptography.TestHelper#getTestParameters")
     public void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception {
+        System.out.println("----------------------------------");
+        System.out.println(httpClient.toString());
+        System.out.println(serviceVersion.toString());
+        System.out.println("----------------------------------");
         initializeKeyClient(httpClient);
         encryptDecryptRsaRunner(keyPair -> {
             JsonWebKey key = JsonWebKey.fromRsa(keyPair);

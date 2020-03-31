@@ -46,6 +46,10 @@ public class SecretClientTest extends SecretClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setSecret(HttpClient httpClient, SecretServiceVersion serviceVersion) {
+        System.out.println("----------------------------------");
+        System.out.println(httpClient.toString());
+        System.out.println(serviceVersion.toString());
+        System.out.println("----------------------------------");
         initializeClient(httpClient, serviceVersion);
         setSecretRunner((expected) -> assertSecretEquals(expected, client.setSecret(expected)));
     }
