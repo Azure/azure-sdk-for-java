@@ -363,6 +363,7 @@ class FileSystemAPITest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @Unroll
     def "Create file overwrite"() {
         setup:
         def pathName = generatePathName()
@@ -607,6 +608,7 @@ class FileSystemAPITest extends APISpec {
         notThrown(DataLakeStorageException)
     }
 
+    @Unroll
     def "Create dir overwrite"() {
         setup:
         def pathName = generatePathName()
