@@ -141,19 +141,19 @@ https://myaccount.dfs.core.windows.net/myfilesystem/myfile
 #### Resource URI Syntax
 For the storage account, the base URI for datalake operations includes the name of the account only:
 
-```$xslt
+```
 https://myaccount.dfs.core.windows.net
 ```
 
 For a file system, the base URI includes the name of the account and the name of the file system:
 
-```$xslt
+```
 https://myaccount.dfs.core.windows.net/myfilesystem
 ```
 
 For a file/directory, the base URI includes the name of the account, the name of the file system and the name of the path:
 
-```$xslt
+```
 https://myaccount.dfs.core.windows.net/myfilesystem/mypath
 ```
 

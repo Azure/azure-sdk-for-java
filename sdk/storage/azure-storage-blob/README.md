@@ -116,19 +116,19 @@ https://myaccount.blob.core.windows.net/mycontainer/myblob
 #### Resource URI Syntax
 For the storage account, the base URI for blob operations includes the name of the account only:
 
-```$xslt
+```
 https://myaccount.blob.core.windows.net
 ```
 
 For a container, the base URI includes the name of the account and the name of the container:
 
-```$xslt
+```
 https://myaccount.blob.core.windows.net/mycontainer
 ```
 
 For a blob, the base URI includes the name of the account, the name of the container and the name of the blob:
 
-```$xslt
+```
 https://myaccount.blob.core.windows.net/mycontainer/myblob
 ```
 
