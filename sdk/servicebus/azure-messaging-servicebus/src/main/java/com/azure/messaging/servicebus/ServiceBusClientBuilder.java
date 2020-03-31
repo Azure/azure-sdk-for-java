@@ -332,8 +332,7 @@ public final class ServiceBusClientBuilder {
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusSenderClient.class, ServiceBusSenderAsyncClient.class})
     public final class ServiceBusSenderClientBuilder {
-        private String queueName;
-        private String topicName;
+        private String queueOrTopicName;
 
         private ServiceBusSenderClientBuilder() {
         }
@@ -341,24 +340,12 @@ public final class ServiceBusClientBuilder {
         /**
          * Sets the name of the Service Bus resource to publish messages to.
          *
-         * @param topicName Name of the Service Bus topic to publish messages to.
+         * @param queueOrTopicName Name of the Service Bus resource to publish messages to.
          *
          * @return The updated {@link ServiceBusSenderClientBuilder} builder.
          */
-        public ServiceBusSenderClientBuilder topicName(String topicName) {
-            this.topicName = topicName;
-            return this;
-        }
-
-        /**
-         * Sets the name of the Service Bus resource to publish messages to.
-         *
-         * @param queueName Name of the Service Bus queue to publish messages to.
-         *
-         * @return The updated {@link ServiceBusSenderClientBuilder} builder.
-         */
-        public ServiceBusSenderClientBuilder queueName(String queueName) {
-            this.queueName = queueName;
+        public ServiceBusSenderClientBuilder entityName(String queueOrTopicName) {
+            this.queueOrTopicName = queueOrTopicName;
             return this;
         }
 
@@ -371,11 +358,21 @@ public final class ServiceBusClientBuilder {
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
 
-            final Entity entity = validateEntityPath(false, queueName, topicName, null,
-                connectionStringEntityName);
+            if (isNullOrEmpty(connectionStringEntityName) && isNullOrEmpty(queueOrTopicName)) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot create sender without setting the entityName"));
+            }
+            if (!isNullOrEmpty(connectionStringEntityName) && !isNullOrEmpty(queueOrTopicName)
+                && !connectionStringEntityName.equals(queueOrTopicName)) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "entityName '%s' from connection string does not match the queueOrTopicName '%s' set in sender.",
+                    connectionStringEntityName, queueOrTopicName)));
+            }
 
-            return new ServiceBusSenderAsyncClient(entity.getEntityPath(), entity.getEntityType(), connectionProcessor,
-                retryOptions, tracerProvider, messageSerializer);
+            final String entityName = queueOrTopicName != null ? queueOrTopicName : connectionStringEntityName;
+
+            return new ServiceBusSenderAsyncClient(entityName, connectionProcessor, retryOptions, tracerProvider,
+                messageSerializer);
         }
 
         /**
@@ -525,12 +522,43 @@ public final class ServiceBusClientBuilder {
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
+            final boolean hasTopicName = !isNullOrEmpty(topicName);
+            final boolean hasQueueName = !isNullOrEmpty(queueName);
+            final boolean hasSubscription = !isNullOrEmpty(subscriptionName);
+            final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
 
-            Entity entity = validateEntityPath(true, queueName, topicName, subscriptionName,
-                connectionStringEntityName);
+            final MessagingEntityType entityType;
+            final String entityPath;
 
-            final String entityPath = entity.getEntityPath();
-            final MessagingEntityType entityType = entity.getEntityType();
+            if (!hasQueueName && !hasTopicName) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot build receiver without setting either a queueName or topicName + subscriptionName."));
+            } else if (hasQueueName && hasTopicName) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "Cannot build receiver with both queueName (%s) and topicName (%s) set.",
+                    queueName, topicName)));
+            } else if (hasQueueName) {
+                if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
+                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                        "queueName (%s) is different than connectionString entityName (%s).",
+                        queueName, connectionStringEntityName)));
+                }
+
+                entityPath = queueName;
+                entityType = MessagingEntityType.QUEUE;
+            } else {
+                if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
+                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                        "topicName (%s) is different than connectionString entityName (%s).",
+                        topicName, connectionStringEntityName)));
+                } else if (!hasSubscription) {
+                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                        "topicName (%s) must have a subscriptionName associated with it.", topicName)));
+                }
+
+                entityPath = topicName;
+                entityType = MessagingEntityType.TOPIC;
+            }
 
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
@@ -560,73 +588,6 @@ public final class ServiceBusClientBuilder {
          */
         public ServiceBusReceiverClient buildClient() {
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
-        }
-    }
-
-    /*
-     * Validate queueName, topicName, subscriptionName and entity name given in connection string.
-     */
-    private Entity validateEntityPath(boolean isReceiver, String queueName, String topicName, String subscriptionName,
-            String connectionStringEntityName) {
-
-        final boolean hasTopicName = !isNullOrEmpty(topicName);
-        final boolean hasQueueName = !isNullOrEmpty(queueName);
-        final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
-
-        String clientType = isReceiver ? "receiver" : "sender";
-        String missingEntityError = isReceiver
-            ? "Cannot build receiver without setting either a queueName or topicName + subscriptionName."
-            : "Cannot build sender without setting either a queueName or topicName.";
-
-        final Entity entity;
-        if (!hasQueueName && !hasTopicName) {
-            throw logger.logExceptionAsError(new IllegalStateException(missingEntityError));
-        } else if (hasQueueName && hasTopicName) {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                "Cannot build %s with both queueName (%s) and topicName (%s) set.",
-                clientType, queueName, topicName)));
-        } else if (hasQueueName) {
-            if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "queueName (%s) is different than connectionString entityName (%s).",
-                    queueName, connectionStringEntityName)));
-            }
-
-            entity = new Entity(queueName, MessagingEntityType.QUEUE);
-        } else {
-            if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "topicName (%s) is different than connectionString entityName (%s).",
-                    topicName, connectionStringEntityName)));
-            } else if (isReceiver && isNullOrEmpty(subscriptionName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "topicName (%s) must have a subscriptionName associated with it.", topicName)));
-            }
-
-            entity = new Entity(topicName, MessagingEntityType.TOPIC);
-        }
-
-        return entity;
-    }
-
-    /**
-     *  Internal representation for Entity.
-     */
-    static final class Entity {
-        final String entityPath;
-        final MessagingEntityType entityType;
-
-        Entity(String entityPath, MessagingEntityType entityType) {
-            this.entityPath = entityPath;
-            this.entityType = entityType;
-        }
-
-        String getEntityPath() {
-            return this.entityPath;
-        }
-
-        MessagingEntityType getEntityType() {
-            return this.entityType;
         }
     }
 }
