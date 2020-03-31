@@ -7,7 +7,6 @@ import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
-import org.apache.qpid.proton.codec.messaging.AmqpValueType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -56,8 +55,6 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
      */
     @Test
     public void getMetadata() {
-        AmqpValueType
-
         // Arrange
         final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
 
