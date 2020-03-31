@@ -2,6 +2,7 @@
 
 ## 12.6.0-beta.1 (Unreleased)
 - Added a constant for the directory metadata marker. 
+- Fixed bug where x-ms headers were not being word-sorted. 
 
 ## 12.5.0 (2020-03-11)
 - Added types that enabled buffered upload in datalake.
