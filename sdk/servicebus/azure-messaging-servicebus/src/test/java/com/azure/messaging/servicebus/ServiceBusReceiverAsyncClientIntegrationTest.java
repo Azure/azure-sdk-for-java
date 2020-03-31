@@ -36,15 +36,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String queueName = getQueueName();
         Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-        sender = createBuilder().buildSenderClientBuilder().entityName(queueName).buildAsyncClient();
+        sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
         receiver = createBuilder()
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName(queueName)
             .isAutoComplete(true)
             .buildAsyncClient();
 
         receiverManual = createBuilder()
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName(queueName)
             .isAutoComplete(false)
             .buildAsyncClient();
@@ -230,7 +230,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
-            .buildReceiverClientBuilder()
+            .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .isLockAutoRenewed(true)
             .queueName(getQueueName())

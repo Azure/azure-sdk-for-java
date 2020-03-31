@@ -114,8 +114,8 @@ The snippet below creates an asynchronous Service Bus sender.
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildSenderClientBuilder()
-    .entityName("<< QUEUE OR TOPIC NAME >>")
+    .sender()
+    .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
 ```
 
@@ -126,7 +126,7 @@ The snippet below creates an asynchronous Service Bus receiver.
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildReceiverClientBuilder()
+    .receiver()
     .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
 ```

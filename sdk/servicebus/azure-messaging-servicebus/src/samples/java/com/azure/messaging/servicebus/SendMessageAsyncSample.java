@@ -17,16 +17,16 @@ public class SendMessageAsyncSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 
-        // Create a Queue or Topic in that Service Bus namespace.
-        String queueOrTopicName = "queueOrTopicName";
+        // Create a Queue in that Service Bus namespace.
+        String queueName = "queueName";
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildSenderClientBuilder()
-            .entityName(queueOrTopicName)
+            .sender()
+            .queueName(queueName)
             .buildAsyncClient();
 
         // Create a message to send.

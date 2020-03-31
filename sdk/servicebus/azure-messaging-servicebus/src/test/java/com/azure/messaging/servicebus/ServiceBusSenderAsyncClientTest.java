@@ -64,6 +64,8 @@ public class ServiceBusSenderAsyncClientTest {
     private TokenCredential tokenCredential;
     @Mock
     private ErrorContextProvider errorContextProvider;
+    @Mock
+    private Runnable onClientClose;
 
     @Captor
     private ArgumentCaptor<org.apache.qpid.proton.message.Message> singleMessageCaptor;
@@ -112,7 +114,7 @@ public class ServiceBusSenderAsyncClientTest {
             new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                 connectionOptions.getRetry()));
         sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer);
+            tracerProvider, messageSerializer, onClientClose);
     }
 
     @AfterEach
@@ -287,4 +289,30 @@ public class ServiceBusSenderAsyncClientTest {
         final Message message = singleMessageCaptor.getValue();
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
     }
+
+    /**
+     * Verifies that the onClientClose is called.
+     */
+    @Test
+    void callsClientClose() {
+        // Act
+        sender.close();
+
+        // Assert
+        verify(onClientClose).run();
+    }
+
+    /**
+     * Verifies that the onClientClose is only called once.
+     */
+    @Test
+    void callsClientCloseOnce() {
+        // Act
+        sender.close();
+        sender.close();
+
+        // Assert
+        verify(onClientClose).run();
+    }
+
 }
