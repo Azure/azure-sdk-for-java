@@ -475,7 +475,7 @@ public final class ServiceBusClientBuilder {
         private static final int DEFAULT_PREFETCH_COUNT = 1;
         private static final boolean DEFAULT_AUTO_COMPLETE = true;
 
-        private boolean autoComplete;
+        private boolean isAutoComplete;
         private Duration maxAutoLockRenewalDuration;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private boolean isLockAutoRenewed;
@@ -485,7 +485,7 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
-            autoComplete = DEFAULT_AUTO_COMPLETE;
+            isAutoComplete = DEFAULT_AUTO_COMPLETE;
         }
 
         /**
@@ -497,7 +497,7 @@ public final class ServiceBusClientBuilder {
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
          */
         public ServiceBusReceiverClientBuilder isAutoComplete(boolean autoComplete) {
-            this.autoComplete = autoComplete;
+            this.isAutoComplete = autoComplete;
             return this;
         }
 
@@ -630,16 +630,22 @@ public final class ServiceBusClientBuilder {
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-            } else if (maxAutoLockRenewalDuration != null
-                && (maxAutoLockRenewalDuration.isZero() || maxAutoLockRenewalDuration.isNegative())) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "maxAutoLockRenewalDuration (%s) cannot be less than or equal to a duration of zero.",
-                    maxAutoLockRenewalDuration)));
+            }
+
+            if (isLockAutoRenewed) {
+                if (maxAutoLockRenewalDuration == null) {
+                    throw logger.logExceptionAsError(new IllegalStateException(
+                        "'maxAutoLockRenewalDuration' is required when 'isLockAutoRenewed' is enabled."));
+                } else if (maxAutoLockRenewalDuration.isZero() || maxAutoLockRenewalDuration.isNegative()) {
+                    throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                        "maxAutoLockRenewalDuration (%s) cannot be less than or equal to a duration of zero.",
+                        maxAutoLockRenewalDuration)));
+                }
             }
 
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions(autoComplete, receiveMode,
+            final ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions(isAutoComplete, receiveMode,
                 prefetchCount, isLockAutoRenewed, maxAutoLockRenewalDuration);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
@@ -660,7 +666,17 @@ public final class ServiceBusClientBuilder {
          * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
+            final ServiceBusReceiverAsyncClient client = buildAsyncClient();
+
+            if (isLockAutoRenewed) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot use 'isLockAutoRenewed' when using synchronous client."));
+            } else if (isAutoComplete) {
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Cannot use 'isAutoComplete' when using synchronous client."));
+            }
+
+            return new ServiceBusReceiverClient(client, retryOptions.getTryTimeout());
         }
     }
 }
