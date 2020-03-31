@@ -355,8 +355,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * @return Map of key and value in Amqp format.
      * @throws AmqpException When payload exceeded maximum message allowed size.
      */
-    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule)
-        throws AmqpException {
+    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule) {
         int maxMessageSize = MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES;
         Map<String, Object> requestBodyMap = new HashMap<>();
         List<Message> messagesToSchedule = new ArrayList<>();
@@ -376,19 +375,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     String.format(Locale.US,
                         "Error sending. Size of the payload exceeded maximum message size: %s kb",
                         maxMessageSize / 1024);
-                final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                    errorMessage, exception, getErrorContext());
-                throw error;
+                throw logger.logExceptionAsWarning(new AmqpException(false,
+                    AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, getErrorContext()));
             }
 
-
             HashMap<String, Object> messageEntry = new HashMap<>();
-            //Pair<byte[], Integer> encodedPair;
-            //encodedPair = MessageUtils.encodeMessageToOptimalSizeArray(message,
-            //    MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES);
 
-            //messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(encodedPair.getFirstItem(),
-            //    0, encodedPair.getSecondItem()));
             messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(bytes,
                     0, encodedSize));
             messageEntry.put(REQUEST_RESPONSE_MESSAGE_ID, message.getMessageId());
@@ -417,10 +409,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             if (statusCode ==  AmqpResponseCode.OK.getValue()) {
                 return Mono.empty();
             }
-            return Mono.error(new AmqpException(false, "Could not cancel schedule message with sequence  "
-                + cancelScheduleNumbers.toString(),
+            return Mono.error(new AmqpException(false, "Could not cancel schedule message with sequence "
+                + Arrays.toString(cancelScheduleNumbers), getErrorContext()));
 
-                new AmqpErrorContext(fullyQualifiedNamespace)));
         })).then();
     }
 
@@ -433,11 +424,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION,
                 channel.getReceiveLinkName());
             Map<String, Object> requestBodyMap;
-            try {
-                requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule);
-            } catch (AmqpException amqpEx) {
-                return Mono.error(amqpEx);
-            }
+            requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule);
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
             return channel.sendWithAck(requestMessage);
@@ -449,7 +436,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     getErrorContext()));
             }
             return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
-           // return messageSerializer.deserializeList(responseMessage, Long.class);
         }));
     }
 

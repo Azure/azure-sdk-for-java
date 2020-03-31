@@ -71,6 +71,8 @@ public class ServiceBusSenderAsyncClientTest {
     private ErrorContextProvider errorContextProvider;
     @Mock
     private ServiceBusManagementNode managementNode;
+    @Mock
+    private ServiceBusMessage message;
 
     @Captor
     private ArgumentCaptor<org.apache.qpid.proton.message.Message> singleMessageCaptor;
@@ -305,11 +307,11 @@ public class ServiceBusSenderAsyncClientTest {
         // Arrange
         long sequenceNumberReturned = 10;
 
-        when(managementNode.schedule(any(ServiceBusMessage.class), any(Instant.class)))
+        when(managementNode.schedule(eq(message), any(Instant.class)))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
-        StepVerifier.create(sender.scheduleMessage(mock(ServiceBusMessage.class), mock(Instant.class)))
+        StepVerifier.create(sender.scheduleMessage(message, mock(Instant.class)))
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
     }
@@ -319,7 +321,7 @@ public class ServiceBusSenderAsyncClientTest {
         // Arrange
         long sequenceNumberReturned = 10;
 
-        when(managementNode.cancelSchedule(any(Long.class)))
+        when(managementNode.cancelSchedule(eq(sequenceNumberReturned)))
             .thenReturn(Mono.empty());
 
         // Act & Assert

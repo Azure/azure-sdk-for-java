@@ -609,7 +609,10 @@ public final class ServiceBusClientBuilder {
         return entity;
     }
 
-    class Entity {
+    /**
+     *  Internal representation for Entity.
+     */
+    static final class Entity {
         final String entityPath;
         final MessagingEntityType entityType;
 
