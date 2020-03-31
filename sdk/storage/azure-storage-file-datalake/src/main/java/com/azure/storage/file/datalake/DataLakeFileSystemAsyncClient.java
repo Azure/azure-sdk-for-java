@@ -581,7 +581,7 @@ public class DataLakeFileSystemAsyncClient {
     public Mono<DataLakeDirectoryAsyncClient> createDirectory(String directoryName) {
         return createDirectory(directoryName, false);
     }
-    
+
     /**
      * Creates a new directory within a file system. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
