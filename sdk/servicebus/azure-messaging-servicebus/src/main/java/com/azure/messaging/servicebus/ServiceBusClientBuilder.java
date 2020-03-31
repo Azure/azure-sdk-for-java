@@ -489,7 +489,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets whether or not to automatically complete a received message after it has been processed.
+         * Sets whether or not to automatically complete a received message after it has been processed. Only supported
+         * when using the <b>asynchronous</b> {@link ServiceBusReceiverAsyncClient receiver client}.
          *
          * @param autoComplete {@code true} to automatically complete a received message after it has been
          *     processed; {@code false} otherwise.
@@ -502,7 +503,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Sets if lock should be automatically renewed.
+         * Sets if lock should be automatically renewed. Only supported when using the <b>asynchronous</b>
+         * {@link ServiceBusReceiverAsyncClient receiver client}.
          *
          * @param isLockAutoRenewed {@code true} if the lock should be automatically renewed; {@code false}
          *     otherwise.
@@ -603,7 +605,8 @@ public final class ServiceBusClientBuilder {
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String) queueName()}
+         *     or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
@@ -663,7 +666,8 @@ public final class ServiceBusClientBuilder {
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String) queueName()}
+         *     or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
             final ServiceBusReceiverAsyncClient client = buildAsyncClient();
