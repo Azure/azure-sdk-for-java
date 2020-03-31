@@ -280,10 +280,10 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
-[sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java
-[sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
+[sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
+[sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
 [sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentity.java
-[sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIDentity.java
+[sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIdentity.java
 [sample-send-batch-messages]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageBatchWithConnectionStringSample.java
 [sample-receive-message-and-settle]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleSample.java
 [sample-receive-message-batch-synchronously]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageStreamSyncSample.java
