@@ -675,18 +675,20 @@
   <!-- Azure search has generated code mixed with hand-written in these packages -->
   <Match>
     <And>
-      <Package name="~com\.azure\.search\.documents\.(implementation|models)(.*)"/>
+      <Package name="~com\.azure\.search\.documents\.models"/>
       <Not>
         <Or>
           <!-- Hand-written classes should be specified here to be checked  -->
-          <Class name="com.azure.search.documents.implementation.GeoPointDeserializer"/>
-          <Class name="com.azure.search.documents.implementation.Iso8601DateDeserializer"/>
-          <Class name="com.azure.search.documents.implementation.SerializationUtil"/>
+<!--          <Class name="com.azure.search.documents.implementation.GeoPointDeserializer"/>-->
+<!--          <Class name="com.azure.search.documents.implementation.Iso8601DateDeserializer"/>-->
+<!--          <Class name="com.azure.search.documents.implementation.SerializationUtil"/>-->
           <Class name="com.azure.search.documents.models.CoordinateSystem"/>
           <Class name="com.azure.search.documents.models.GeoPoint"/>
           <Class name="com.azure.search.documents.models.IndexBatch"/>
           <Class name="com.azure.search.documents.models.ValueFacetResult"/>
           <Class name="com.azure.search.documents.models.RangeFacetResult"/>
+          <Class name="com.azure.search.documents.models.IndexBatchException"/>
+          <Class name="com.azure.search.documents.models.ScoringParameter"/>
         </Or>
       </Not>
     </And>
@@ -1937,7 +1939,7 @@
     UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
     UWF_UNWRITTEN_FIELD"/>
     </Match>
-    
+
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
     <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>

@@ -5,90 +5,82 @@ package com.azure.search.documents;
 
 import com.azure.core.http.MatchConditions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.LoudHotel;
 import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
-import com.azure.search.documents.models.DataSource;
-import com.azure.search.documents.models.Index;
-import com.azure.search.documents.models.Indexer;
+
 import com.azure.search.documents.models.Skillset;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.unitils.reflectionassert.ReflectionAssert.assertLenientEquals;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class contains helper methods for running Azure Search tests.
  */
 public final class TestHelpers {
-    static void assertDataSourcesEqual(DataSource expected, DataSource actual) {
-        /*
-         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-         * therefore we set the expected ETag value to the ETag returned from the service.
-         */
-        assertObjectEquals(expected.setETag(actual.getETag()), actual);
-        //assertReflectionEquals(expected.setETag(actual.getETag()), actual);
-    }
 
-    static void assertIndexesEqual(Index expected, Index actual) {
-        /*
-         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-         * therefore we set the expected ETag value to the ETag returned from the service.
-         */
-        assertObjectEquals(expected.setETag(actual.getETag()), actual);
-       // assertReflectionEquals(expected.setETag(actual.getETag()), actual, IGNORE_DEFAULTS);
-    }
+//    static void assertIndexesEqual(Index expected, Index actual) {
+//        /*
+//         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
+//         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
+//         * therefore we set the expected ETag value to the ETag returned from the service.
+//         */
+//        assertObjectEquals(expected, actual, true, "etag");
+//    }
+//
+//    static void assertIndexersEqual(Indexer expected, Indexer actual) {
+//        /*
+//         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
+//         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
+//         * therefore we set the expected ETag value to the ETag returned from the service.
+//         */
+//        assertObjectEquals(expected, actual, true, "etag");
+//    }
+//
+//    static void assertSkillsetsEqual(Skillset expected, Skillset actual) {
+//        /*
+//         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
+//         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
+//         * therefore we set the expected ETag value to the ETag returned from the service.
+//         */
+//        assertObjectEquals(expected, actual, true, "etag");
+//    }
 
-    static void assertIndexersEqual(Indexer expected, Indexer actual) {
-        /*
-         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-         * therefore we set the expected ETag value to the ETag returned from the service.
-         */
-        assertReflectionEquals(expected.setETag(actual.getETag()), actual, IGNORE_DEFAULTS);
-    }
+//    static void assertHotelsEqual(Hotel expected, Hotel actual) {
+//        assertObjectEquals(expected, actual, true);
+//    }
 
-    static void assertSkillsetsEqual(Skillset expected, Skillset actual) {
-        /*
-         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-         * therefore we set the expected ETag value to the ETag returned from the service.
-         */
-        assertReflectionEquals(expected.setETag(actual.getETag()), actual, IGNORE_DEFAULTS);
-    }
+//    static void assertLoudHotelsEqual(LoudHotel expected, LoudHotel actual) {
+//        assertObjectEquals(expected, actual, true);
+//    }
+//
+//    static void assetModelsWithPrimitivesEqual(ModelWithPrimitiveCollections expected,
+//        ModelWithPrimitiveCollections actual) {
+//        assertObjectEquals(expected, actual, true);
+//    }
 
-    static void assertHotelsEqual(Hotel expected, Hotel actual) {
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-    }
+//    static void assertDocumentsEqual(Map<String, Object> expected, Map<String, Object> actual) {
+//        assertLenientEquals(expected, actual);
+//        assertObjectEquals(expected, actual, true);
+//    }
 
-    static void assertLoudHotelsEqual(LoudHotel expected, LoudHotel actual) {
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-    }
-
-    static void assetModelsWithPrimitivesEqual(ModelWithPrimitiveCollections expected,
-        ModelWithPrimitiveCollections actual) {
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-    }
-
-    static void assertDocumentsEqual(Map<String, Object> expected, Map<String, Object> actual) {
-        assertLenientEquals(expected, actual);
-    }
-
-    static void assetNonNullableModelsEqual(NonNullableModel expected, NonNullableModel actual) {
-        assertReflectionEquals(expected, actual, IGNORE_DEFAULTS);
-    }
+//    static void assetNonNullableModelsEqual(NonNullableModel expected, NonNullableModel actual) {
+//        assertObjectEquals(expected, actual, true);
+//    }
 
     /**
      * Checks if the passed {@link CharSequence} is {@code null}, empty, or only contains spaces.
@@ -160,17 +152,78 @@ public final class TestHelpers {
         return new MatchConditions().setIfMatch(eTag);
     }
 
-    public static void assertObjectEquals(Object expected, Object actual, Object ... ignoreFields) {
+    public static void assertObjectEquals(Object expected, Object actual) {
+        JacksonAdapter jacksonAdapter = new JacksonAdapter();
+        try {
+            assertEquals(jacksonAdapter.serialize(expected, SerializerEncoding.JSON),
+                jacksonAdapter.serialize(actual, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            fail("There is something wrong happen in serializer.");
+        }
+    }
+
+    public static void assertObjectEquals(Object expected, Object actual, boolean ignoreDefaults,
+        String ... ignoreFields) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode expectedNode = mapper.valueToTree(expected);
         ObjectNode actualNode = mapper.valueToTree(actual);
-        Iterator<Map.Entry<String, JsonNode>> fields = expectedNode.fields();
-        while (fields.hasNext()) {
-            Map.Entry<String, JsonNode> field = fields.next();
-            String fieldName = field.getKey();
-            if (field.getValue() != null) {
-                assertEquals(field.getValue(), actualNode.get(fieldName));
+        assertOnMapIterator(expectedNode.fields(), actualNode, ignoreDefaults, ignoreFields);
+    }
+
+    private static void assertOnMapIterator(Iterator<Map.Entry<String, JsonNode>> expectedNode,
+        ObjectNode actualNode, boolean ignoreDefaults, String[] ignoreFields) {
+        while (expectedNode.hasNext()) {
+            assertTrue(actualNode.fields().hasNext());
+            Map.Entry<String, JsonNode> expectedField = expectedNode.next();
+            //Map.Entry<String, JsonNode> actualField = actualNode.fields().next();
+            String fieldName = expectedField.getKey();
+            if (!doesFieldNeedCheck(fieldName, expectedField.getValue(), ignoreDefaults, ignoreFields)) {
+                continue;
+            }
+            //Map.Entry<String, JsonNode> actualField = actualNode.next();
+            if (expectedField.getValue().isValueNode()) {
+                assertEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()));
+            } else if (expectedField.getValue().isArray()) {
+                Iterator<JsonNode> expectedArray = expectedField.getValue().elements();
+                Iterator<JsonNode> actualArray = actualNode.get(expectedField.getKey()).elements();
+                while (expectedArray.hasNext() ) {
+                    assertTrue(actualArray.hasNext());
+                    Iterator<JsonNode> expectedElements = expectedArray.next().elements();
+                    Iterator<JsonNode> actualElements = actualArray.next().elements();
+                    while (expectedElements.hasNext()) {
+                        assertTrue(actualElements.hasNext());
+                        JsonNode a = expectedElements.next();
+                        JsonNode b = actualElements.next();
+                        if (Arrays.asList(ignoreFields).contains(fieldName)) {
+                            continue;
+                        }
+                        if (!doesFieldNeedCheck(null, a, true)) {
+                            continue;
+                        }
+                        assertEquals(a.asText(), b.asText());
+                    }
+                }
+            } else {
+                assertObjectEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()), ignoreDefaults, ignoreFields);
             }
         }
+    }
+
+    private static boolean doesFieldNeedCheck(String fieldName, JsonNode fieldValue,
+        boolean ignoreDefaults, String... ignoreFields) {
+        if (Arrays.asList(ignoreFields).contains(fieldName)) {
+            return false;
+        }
+
+        if (ignoreDefaults) {
+            if (fieldValue.isNull()) {
+                return false;
+            }
+            if (fieldValue.isBoolean() && !fieldValue.asBoolean()) {
+                return false;
+            }
+            return !fieldValue.isNumber() || fieldValue.asDouble() != 0.0D;
+        }
+        return true;
     }
 }

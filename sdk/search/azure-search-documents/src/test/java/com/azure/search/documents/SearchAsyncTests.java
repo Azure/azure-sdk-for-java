@@ -39,6 +39,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.models.QueryType.SIMPLE;
 import static com.azure.search.documents.models.SearchMode.ALL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -192,8 +193,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchResult> results = client.search("*", searchOptions, generateRequestOptions()).log();
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(0)))
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(1)))
+            .assertNext(res -> assertObjectEquals(res.getDocument(), expectedDocsList.get(0), true))
+            .assertNext(res -> assertObjectEquals(res.getDocument(), expectedDocsList.get(1), true))
             .verifyComplete();
     }
 
@@ -444,7 +445,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         assertEquals(hotelsList.size(), actualResults.size());
         for (int i = 0; i < hotelsList.size(); i++) {
-            TestHelpers.assertHotelsEqual(hotelsList.get(i), actualResults.get(i));
+            assertObjectEquals(hotelsList.get(i), actualResults.get(i), true);
         }
     }
 
@@ -472,8 +473,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
         StepVerifier.create(results.byPage()).assertNext(res -> {
             Iterator<SearchResult> iterator = res.getElements().iterator();
-            TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(iterator.next().getDocument(), NonNullableModel.class));
-            TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(iterator.next().getDocument(), NonNullableModel.class));
+            assertObjectEquals(doc1, convertToType(iterator.next().getDocument(), NonNullableModel.class), true);
+            assertObjectEquals(doc2, convertToType(iterator.next().getDocument(), NonNullableModel.class), true);
             assertFalse(iterator.hasNext());
         }).verifyComplete();
     }
