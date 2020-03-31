@@ -146,7 +146,7 @@ class ServicePrincipalImpl
             }
             mono = mono.concatWith(manager().inner().servicePrincipals().updateKeyCredentialsAsync(
                     sp.id(),
-                    new KeyCredentialsUpdateParameters().withValue(updateKeyCredentials)
+                    updateKeyCredentials
             ).then(Mono.just(ServicePrincipalImpl.this))).last();
         }
         if (!passwordCredentialsToCreate.isEmpty() || !passwordCredentialsToDelete.isEmpty()) {
@@ -163,7 +163,7 @@ class ServicePrincipalImpl
             }
             mono = mono.concatWith(manager().inner().servicePrincipals().updatePasswordCredentialsAsync(
                     sp.id(),
-                    new PasswordCredentialsUpdateParameters().withValue(updatePasswordCredentials)
+                    updatePasswordCredentials
             ).then(Mono.just(ServicePrincipalImpl.this))).last();
         }
         return mono.flatMap(servicePrincipal -> {
