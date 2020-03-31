@@ -25,15 +25,9 @@ have to be online at the same time.
   - [Authenticate the client](#authenticate-the-client)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
-  - [Create a sender or receiver using connection string](#create-a-sender-or-receiver-using-connection-string)
-  - [Send Message to Queue or Topic](#send-message-to-queue-or-topic)
-  - [Receive message from Queue or Subscription](#receive-message-from-queue-or-subscription)
-  - [Send message with Azure Active Directory credentials](#send-message-with-azure-active-directory-credentials)
-  - [Send a batch of messages](#send-a-batch-of-messages)
-  - [Receive message with Azure Active Directory credentials](#receive-message-with-azure-active-directory-credentials)
-  - [Receive messages and settle them](#receive-messages-and-settle-them)
-  - [Receive stream of messages synchronously](#receive-stream-of-messages-synchronously)
-- [Troubleshooting](#troubleshooting)
+  - [Send Message Examples](#send-message-examples)
+  - [Receive Message Examples](#receive-message-examples)
+  [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
   - [Common exceptions](#common-exceptions)
@@ -92,13 +86,11 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L60-L69 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L61-L68 -->
 ```java
-ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-    .clientId("<< APPLICATION (CLIENT) ID >>")
-    .clientSecret("<< APPLICATION SECRET >>")
-    .tenantId("<< DIRECTORY (TENANT) ID >>")
+DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
     .build();
+
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .credential("<<fully-qualified-namespace>>", credential)
     .buildReceiverClientBuilder()
@@ -114,22 +106,11 @@ with Service Bus, please refer to [the associated documentation][aad_authorizati
 
 - **Queues** offer First In, First Out (FIFO) message delivery to one or more competing consumers. That is, receivers 
   typically receive and process messages in the order in which they were added to the queue, and only one message 
-  consumer receives and processes each message. A key benefit of using queues is to achieve "temporal decoupling" of
-  application components. In other words, the producers (senders) and consumers (receivers) do not have to be sending  
-  and receiving messages at the same time, because messages are stored durably in the queue. Furthermore, the producer 
-  does not have to wait for a reply from the consumer in order to continue to process and send messages.
+  consumer receives and processes each message.
 
 - In contrast to queues, in which each message is processed by a single consumer, **topics and subscriptions** provide 
   a one-to-many form of communication, in a publish/subscribe pattern. Useful for scaling to large numbers of 
-  recipients, each published message is made available to each subscription registered with the topic. Messages are 
-  sent to a topic and delivered to one or more associated subscriptions, depending on filter rules that can be set on
-  a per-subscription basis. The subscriptions can use additional filters to restrict the messages that they want to
-  receive. Messages are sent to a topic in the same way they are sent to a queue, but messages are not received from
-  the topic directly. Instead, they are received from subscriptions. A topic subscription resembles a virtual queue
-  that receives copies of the messages that are sent to the topic. Messages are received from a subscription
-  identically to the way they are received from a queue.
-  By way of comparison, the message-sending functionality of a queue maps directly to a topic and its message-receiving
-  functionality maps to a subscription.
+  recipients, each published message is made available to each subscription registered with the topic.
 
 ## Examples
 ### Create a sender or receiver using connection string
@@ -142,42 +123,42 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ca
 
 The snippet below creates an asynchronous Service Bus sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L21-L26 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L24-L29 -->
 ```java
- */
-public void createAsynchronousServiceBusSender() {
-    String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
-    ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-        .connectionString(connectionString)
-        .buildSenderClientBuilder()
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
+ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+    .connectionString(connectionString)
+    .buildSenderClientBuilder()
+    .entityName("<< QUEUE OR TOPIC NAME >>")
+    .buildAsyncClient();
 ```
 
 The snippet below creates an asynchronous Service Bus receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L33-L38 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L36-L41 -->
 ```java
- */
-public void createAsynchronousServiceBusReceiver() {
-    String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
-    ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-        .connectionString(connectionString)
-        .buildReceiverClientBuilder()
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .connectionString(connectionString)
+    .buildReceiverClientBuilder()
+    .queueName("<< QUEUE NAME >>")
+    .buildAsyncClient();
 ```
 
 The snippet below creates an asynchronous Service Bus receiver with default token credential.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L45-L51 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L48-L54 -->
 ```java
- */
-public void createAsynchronousServiceBusReceiverWithAzureIdentity() {
-    TokenCredential credential = new DefaultAzureCredentialBuilder()
-        .build();
-    ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-        .credential("<<fully-qualified-namespace>>", credential)
-        .buildReceiverClientBuilder()
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .build();
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .credential("<<fully-qualified-namespace>>", credential)
+    .buildReceiverClientBuilder()
+    .queueName("<<queue-name>>")
+    .buildAsyncClient();
 ```
-
-### Send message to Queue or Topic
+### Send Message Examples
+#### Send message to Queue or Topic
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
 a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
@@ -186,28 +167,31 @@ or topic.
 #### Create a Sender and send message to queue or topic
 Example of sending a message asynchronously is documented [here][sample-send-async-message].
 
-### Receive message from Queue or Subscription
+
+#### Send message with Azure Active Directory credentials
+Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
+
+#### Send a batch of messages 
+Example of sending a message asynchronously using active directory credential is documented [here][sample-send-batch-messages].
+
+### Receive Message Examples
+
+#### Receive message from Queue or Subscription
 You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or
 a synchronous [`ServiceBusReceiverClient`][ServiceBusReceiverClient]. Each receiver can receive message from either, a queue,
 or subscriber.
 
-#### Create a Receiver and receive message from queue or subscriber
+##### Create a Receiver and receive message from queue or subscriber
 Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
 
-### Send message with Azure Active Directory credentials
-Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
-
-### Send a batch of messages 
-Example of sending a message asynchronously using active directory credential is documented [here][sample-send-batch-messages].
-
-### Receive message with Azure Active Directory credentials
+#### Receive message with Azure Active Directory credentials
 Example of receiving a message asynchronously using active directory credential is documented [here][sample-receive-async-aad-message].
 
-### Receive messages and settle them
+#### Receive messages and settle them
 Example of receiving a message asynchronously and settling them is documented [here][sample-receive-message-and-settle].
 
-### Receive stream of messages synchronously
-Example of receiving stream of messages synchronously is documented [here][sample-receive-message-stream-synchronously].
+#### Receive batch of messages synchronously
+Example of receiving stream of messages synchronously is documented [here][sample-receive-message-batch-synchronously].
 
 ## Troubleshooting
 
@@ -315,6 +299,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIDentity.java
 [sample-send-batch-messages]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageBatchWithConnectionStringSample.java
 [sample-receive-message-and-settle]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleSample.java
-[sample-receive-message-stream-synchronously]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageStreamSyncSample.java
+[sample-receive-message-batch-synchronously]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageStreamSyncSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)
