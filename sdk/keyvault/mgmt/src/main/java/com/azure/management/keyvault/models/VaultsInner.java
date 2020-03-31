@@ -39,7 +39,6 @@ import com.azure.management.keyvault.VaultCreateOrUpdateParameters;
 import com.azure.management.keyvault.VaultPatchParameters;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
-import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -48,7 +47,7 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in
  * Vaults.
  */
-public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSupportsListing<VaultInner>, InnerSupportsDelete<Void> {
+public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSupportsDelete<Void> {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -61,7 +60,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Initializes an instance of VaultsInner.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VaultsInner(KeyVaultManagementClientImpl client) {
@@ -117,7 +116,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/vaults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VaultListResultInner>> list(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<VaultListResultInner>> listBySubscription(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.KeyVault/deletedVaults")
@@ -188,7 +187,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -204,7 +203,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -222,7 +221,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -237,7 +236,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -253,7 +252,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -275,7 +274,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -290,7 +289,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +304,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,7 +319,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Deletes the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,7 +333,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,7 +348,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -370,7 +369,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets the specified Azure key vault.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName The name of the vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -384,7 +383,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -403,7 +402,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -426,7 +425,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Update access policies in a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param vaultName Name of the vault.
      * @param operationKind Name of the operation.
@@ -442,7 +441,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,7 +463,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -480,7 +479,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -497,7 +496,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -511,7 +510,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the vault belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -526,15 +525,15 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<VaultInner>> listSinglePageAsync(Integer top) {
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+    public Mono<PagedResponse<VaultInner>> listBySubscriptionSinglePageAsync(Integer top) {
+        return FluxUtil.withContext(context -> service.listBySubscription(this.client.getHost(), top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
             .<PagedResponse<VaultInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -547,63 +546,63 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VaultInner> listAsync(Integer top) {
+    public PagedFlux<VaultInner> listBySubscriptionAsync(Integer top) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(top),
+            () -> listBySubscriptionSinglePageAsync(top),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<VaultInner> listAsync() {
+    public PagedFlux<VaultInner> listBySubscriptionAsync() {
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(top),
+            () -> listBySubscriptionSinglePageAsync(top),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultInner> list(Integer top) {
-        return new PagedIterable<>(listAsync(top));
+    public PagedIterable<VaultInner> listBySubscription(Integer top) {
+        return new PagedIterable<>(listBySubscriptionAsync(top));
     }
 
     /**
      * The List operation gets information about the vaults associated with the subscription.
-     *
+     * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VaultInner> list() {
+    public PagedIterable<VaultInner> listBySubscription() {
         final Integer top = null;
         final Context context = null;
-        return new PagedIterable<>(listAsync(top));
+        return new PagedIterable<>(listBySubscriptionAsync(top));
     }
 
     /**
      * Gets information about the deleted vaults in a subscription.
-     *
+     * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -622,7 +621,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets information about the deleted vaults in a subscription.
-     *
+     * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -635,7 +634,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets information about the deleted vaults in a subscription.
-     *
+     * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -646,7 +645,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,7 +660,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -682,7 +681,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Gets the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the vault.
      * @param location The location of the deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,7 +695,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -711,7 +710,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -728,7 +727,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -741,8 +740,86 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
     }
 
     /**
+     * The List operation gets information about the vaults associated with the subscription.
+     * 
+     * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<Resource>> listSinglePageAsync(Integer top) {
+        final String filter = "resourceType eq 'Microsoft.KeyVault/vaults'";
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<Resource>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     * 
+     * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Resource> listAsync(Integer top) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(top),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     * 
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Resource> listAsync() {
+        final Integer top = null;
+        final Context context = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(top),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     * 
+     * @param top Maximum number of results to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Resource> list(Integer top) {
+        return new PagedIterable<>(listAsync(top));
+    }
+
+    /**
+     * The List operation gets information about the vaults associated with the subscription.
+     * 
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Resource> list() {
+        final Integer top = null;
+        final Context context = null;
+        return new PagedIterable<>(listAsync(top));
+    }
+
+    /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param name The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -758,7 +835,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param name The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -778,7 +855,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Checks that the vault name is valid and is not already in use.
-     *
+     * 
      * @param name The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -791,7 +868,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -807,7 +884,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -829,7 +906,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Create or update a key vault in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param vaultName Name of the vault.
      * @param parameters Parameters for creating or updating a vault.
@@ -844,7 +921,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -859,7 +936,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -874,7 +951,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Permanently deletes the specified vault. aka Purges the deleted Azure key vault.
-     *
+     * 
      * @param vaultName The name of the soft-deleted vault.
      * @param location The location of the soft-deleted vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -888,7 +965,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -909,7 +986,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -930,7 +1007,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -951,7 +1028,7 @@ public final class VaultsInner implements InnerSupportsGet<VaultInner>, InnerSup
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
