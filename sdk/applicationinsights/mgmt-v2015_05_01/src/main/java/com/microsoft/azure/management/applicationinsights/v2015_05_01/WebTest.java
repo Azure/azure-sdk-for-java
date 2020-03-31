@@ -113,7 +113,9 @@ public interface WebTest extends HasInner<WebTestInner>, Resource, GroupableReso
         interface WithLocations {
            /**
             * Specifies locations.
-            */
+            * @param locations A list of where to physically run the tests from to give global coverage for accessibility of your application
+            * @return the next definition stage
+*/
             WithSyntheticMonitorId withLocations(List<WebTestGeolocation> locations);
         }
 
@@ -123,7 +125,9 @@ public interface WebTest extends HasInner<WebTestInner>, Resource, GroupableReso
         interface WithSyntheticMonitorId {
            /**
             * Specifies syntheticMonitorId.
-            */
+            * @param syntheticMonitorId Unique ID of this WebTest. This is typically the same value as the Name field
+            * @return the next definition stage
+*/
             WithWebTestKind withSyntheticMonitorId(String syntheticMonitorId);
         }
 
@@ -133,7 +137,9 @@ public interface WebTest extends HasInner<WebTestInner>, Resource, GroupableReso
         interface WithWebTestKind {
            /**
             * Specifies webTestKind.
-            */
+            * @param webTestKind The kind of web test this is, valid choices are ping and multistep. Possible values include: 'ping', 'multistep'
+            * @return the next definition stage
+*/
             WithWebTestName withWebTestKind(WebTestKind webTestKind);
         }
 
@@ -143,76 +149,92 @@ public interface WebTest extends HasInner<WebTestInner>, Resource, GroupableReso
         interface WithWebTestName {
            /**
             * Specifies webTestName.
-            */
+            * @param webTestName User defined name if this WebTest
+            * @return the next definition stage
+*/
             WithCreate withWebTestName(String webTestName);
         }
 
         /**
-         * The stage of the webtest update allowing to specify Configuration.
+         * The stage of the webtest definition allowing to specify Configuration.
          */
         interface WithConfiguration {
             /**
              * Specifies configuration.
+             * @param configuration An XML configuration specification for a WebTest
+             * @return the next definition stage
              */
             WithCreate withConfiguration(WebTestPropertiesConfiguration configuration);
         }
 
         /**
-         * The stage of the webtest update allowing to specify Description.
+         * The stage of the webtest definition allowing to specify Description.
          */
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description Purpose/user defined descriptive test for this WebTest
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
 
         /**
-         * The stage of the webtest update allowing to specify Enabled.
+         * The stage of the webtest definition allowing to specify Enabled.
          */
         interface WithEnabled {
             /**
              * Specifies enabled.
+             * @param enabled Is the test actively being monitored
+             * @return the next definition stage
              */
             WithCreate withEnabled(Boolean enabled);
         }
 
         /**
-         * The stage of the webtest update allowing to specify Frequency.
+         * The stage of the webtest definition allowing to specify Frequency.
          */
         interface WithFrequency {
             /**
              * Specifies frequency.
+             * @param frequency Interval in seconds between test runs for this WebTest. Default value is 300
+             * @return the next definition stage
              */
             WithCreate withFrequency(Integer frequency);
         }
 
         /**
-         * The stage of the webtest update allowing to specify Kind.
+         * The stage of the webtest definition allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind The kind of web test that this web test watches. Choices are ping and multistep. Possible values include: 'ping', 'multistep'
+             * @return the next definition stage
              */
             WithCreate withKind(WebTestKind kind);
         }
 
         /**
-         * The stage of the webtest update allowing to specify RetryEnabled.
+         * The stage of the webtest definition allowing to specify RetryEnabled.
          */
         interface WithRetryEnabled {
             /**
              * Specifies retryEnabled.
+             * @param retryEnabled Allow for retries should this WebTest fail
+             * @return the next definition stage
              */
             WithCreate withRetryEnabled(Boolean retryEnabled);
         }
 
         /**
-         * The stage of the webtest update allowing to specify Timeout.
+         * The stage of the webtest definition allowing to specify Timeout.
          */
         interface WithTimeout {
             /**
              * Specifies timeout.
+             * @param timeout Seconds until this WebTest will timeout and fail. Default value is 30
+             * @return the next definition stage
              */
             WithCreate withTimeout(Integer timeout);
         }
@@ -236,71 +258,85 @@ public interface WebTest extends HasInner<WebTestInner>, Resource, GroupableReso
      */
     interface UpdateStages {
         /**
-         * The stage of the webtest {0} allowing to specify Configuration.
+         * The stage of the webtest update allowing to specify Configuration.
          */
         interface WithConfiguration {
             /**
              * Specifies configuration.
+             * @param configuration An XML configuration specification for a WebTest
+             * @return the next update stage
              */
             Update withConfiguration(WebTestPropertiesConfiguration configuration);
         }
 
         /**
-         * The stage of the webtest {0} allowing to specify Description.
+         * The stage of the webtest update allowing to specify Description.
          */
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description Purpose/user defined descriptive test for this WebTest
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
 
         /**
-         * The stage of the webtest {0} allowing to specify Enabled.
+         * The stage of the webtest update allowing to specify Enabled.
          */
         interface WithEnabled {
             /**
              * Specifies enabled.
+             * @param enabled Is the test actively being monitored
+             * @return the next update stage
              */
             Update withEnabled(Boolean enabled);
         }
 
         /**
-         * The stage of the webtest {0} allowing to specify Frequency.
+         * The stage of the webtest update allowing to specify Frequency.
          */
         interface WithFrequency {
             /**
              * Specifies frequency.
+             * @param frequency Interval in seconds between test runs for this WebTest. Default value is 300
+             * @return the next update stage
              */
             Update withFrequency(Integer frequency);
         }
 
         /**
-         * The stage of the webtest {0} allowing to specify Kind.
+         * The stage of the webtest update allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind The kind of web test that this web test watches. Choices are ping and multistep. Possible values include: 'ping', 'multistep'
+             * @return the next update stage
              */
             Update withKind(WebTestKind kind);
         }
 
         /**
-         * The stage of the webtest {0} allowing to specify RetryEnabled.
+         * The stage of the webtest update allowing to specify RetryEnabled.
          */
         interface WithRetryEnabled {
             /**
              * Specifies retryEnabled.
+             * @param retryEnabled Allow for retries should this WebTest fail
+             * @return the next update stage
              */
             Update withRetryEnabled(Boolean retryEnabled);
         }
 
         /**
-         * The stage of the webtest {0} allowing to specify Timeout.
+         * The stage of the webtest update allowing to specify Timeout.
          */
         interface WithTimeout {
             /**
              * Specifies timeout.
+             * @param timeout Seconds until this WebTest will timeout and fail. Default value is 30
+             * @return the next update stage
              */
             Update withTimeout(Integer timeout);
         }

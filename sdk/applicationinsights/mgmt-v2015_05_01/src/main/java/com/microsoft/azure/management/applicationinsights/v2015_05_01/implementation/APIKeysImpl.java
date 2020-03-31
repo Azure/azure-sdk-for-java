@@ -56,10 +56,14 @@ class APIKeysImpl extends WrapperImpl<APIKeysInner> implements APIKeys {
     public Observable<ApplicationInsightsComponentAPIKey> getAsync(String resourceGroupName, String resourceName, String keyId) {
         APIKeysInner client = this.inner();
         return client.getAsync(resourceGroupName, resourceName, keyId)
-        .map(new Func1<ApplicationInsightsComponentAPIKeyInner, ApplicationInsightsComponentAPIKey>() {
+        .flatMap(new Func1<ApplicationInsightsComponentAPIKeyInner, Observable<ApplicationInsightsComponentAPIKey>>() {
             @Override
-            public ApplicationInsightsComponentAPIKey call(ApplicationInsightsComponentAPIKeyInner inner) {
-                return wrapModel(inner);
+            public Observable<ApplicationInsightsComponentAPIKey> call(ApplicationInsightsComponentAPIKeyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ApplicationInsightsComponentAPIKey)wrapModel(inner));
+                }
             }
        });
     }
