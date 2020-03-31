@@ -148,43 +148,10 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     /**
-     * Get offset which determines the rolling strategy.
-     *
-     * @return The offset according to day of the week and platform information
-     */
-    private static int getOffset() {
-        if (testMode == TestMode.PLAYBACK) {
-            return -1;
-        }
-        LocalDate today = LocalDate.now();
-        return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
-    }
-
-    private static Integer getPlatFormOffset() {
-        String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);;
-        String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);;
-        return platformList.stream().filter(platform ->
-            currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
-            && currentJdk.trim().toLowerCase(Locale.ROOT).startsWith(platform.split(",")[1]
-                .toLowerCase(Locale.ROOT))
-        ).map(platformList::indexOf).findFirst().orElse(null);
-    }
-
-    private static List<String> buildPlatformList() {
-        List<String> platformList = new ArrayList<>();
-        platformList.add("win,8");
-        platformList.add("win,11");
-        platformList.add("mac,8");
-        platformList.add("mac,11");
-        platformList.add("linux,8");
-        platformList.add("linux,11");
-        return platformList;
-    }
-
-    /**
      * Get test arguments need to run for the test framework based on the service version.
      *
      * @param serviceVersionList The service version argument for the parameterized tests.
+     * @param rollingServiceVersion Indicates whether the service version parameters need to rolling.
      * @return Stream of arguments for parameterized test framework.
      */
     public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList,
@@ -247,7 +214,7 @@ public abstract class TestBase implements BeforeEachCallback {
      * @param client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
      */
-    public static boolean shouldClientBeTested(HttpClient client) {
+    private static boolean shouldClientBeTested(HttpClient client) {
         if (HTTP_CLIENT_FROM_ENV.trim().toLowerCase(Locale.ROOT).contains("netty")) {
             return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
         }
@@ -294,5 +261,39 @@ public abstract class TestBase implements BeforeEachCallback {
         } catch (InterruptedException ex) {
             throw logger.logExceptionAsWarning(new IllegalStateException(ex));
         }
+    }
+
+    /**
+     * Get offset which determines the rolling strategy.
+     *
+     * @return The offset according to day of the week and platform information
+     */
+    private static int getOffset() {
+        if (testMode == TestMode.PLAYBACK) {
+            return -1;
+        }
+        LocalDate today = LocalDate.now();
+        return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
+    }
+
+    private static Integer getPlatFormOffset() {
+        String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);;
+        String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);;
+        return platformList.stream().filter(platform ->
+            currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
+                && currentJdk.trim().toLowerCase(Locale.ROOT).startsWith(platform.split(",")[1]
+                .toLowerCase(Locale.ROOT))
+        ).map(platformList::indexOf).findFirst().orElse(null);
+    }
+
+    private static List<String> buildPlatformList() {
+        List<String> platformList = new ArrayList<>();
+        platformList.add("win,8");
+        platformList.add("win,11");
+        platformList.add("mac,8");
+        platformList.add("mac,11");
+        platformList.add("linux,8");
+        platformList.add("linux,11");
+        return platformList;
     }
 }
