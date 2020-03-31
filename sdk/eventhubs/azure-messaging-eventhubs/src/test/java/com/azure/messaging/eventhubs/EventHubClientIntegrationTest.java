@@ -6,7 +6,6 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
