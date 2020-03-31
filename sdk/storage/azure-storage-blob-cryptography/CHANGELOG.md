@@ -1,7 +1,8 @@
 # Release History
 
 ## 12.6.0-beta.1 (Unreleased)
-
+- It is now possible to specify a key/keyResolver after they specify a pipeline/client on the builder.
+- The builder will now throw if a pipeline/client was already configured for decryption as the encryption info may conflict.
 
 ## 12.5.0 (2020-03-11)
 - Fixed a bug where the EncryptedBlockClientBuilder.pipeline method would not allow the client to support decryption.
