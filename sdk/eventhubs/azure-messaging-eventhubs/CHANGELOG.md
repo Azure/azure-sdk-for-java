@@ -1,7 +1,8 @@
 # Release History
 
-## 5.0.3 (2020-03-10)
+## 5.0.3 (2020-03-31)
 - Fix bug where producers and consumers would be unable to get partition information after a reconnect.
+- Fix bug where consumers would not be able to request for a new receive link after a reconnect.
 
 ## 5.0.2 (2020-02-13)
 - Fix bug where producers and consumers would not be able to block in their consuming code.
