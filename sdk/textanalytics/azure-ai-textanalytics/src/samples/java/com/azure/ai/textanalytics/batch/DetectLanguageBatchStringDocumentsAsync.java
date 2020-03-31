@@ -30,22 +30,23 @@ public class DetectLanguageBatchStringDocumentsAsync {
             .buildAsyncClient();
 
         // The texts that need be analyzed.
-        List<String> inputs = Arrays.asList(
+        List<String> documents = Arrays.asList(
             "This is written in English.",
             "Este es un documento  escrito en Español."
         );
 
-        // Detecting batch languages
+        // Detecting language for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.detectLanguageBatch(inputs).subscribe(
+        client.detectLanguageBatch(documents, "US").subscribe(
             detectLanguageResult -> {
-                System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
+                // Detected language for each document
+                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (detectLanguageResult.isError()) {
                     // Erroneous document
                     System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
                 } else {
                     // Valid document
-                    final DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
+                    DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
                         language.getName(), language.getIso6391Name(), language.getScore());
                 }

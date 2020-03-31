@@ -32,18 +32,18 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
             .buildAsyncClient();
 
         // The texts that need be analyzed.
-        List<String> inputs = Arrays.asList(
+        List<String> documents = Arrays.asList(
             "The hotel was dark and unclean. I wouldn't recommend staying there.",
             "The restaurant had amazing gnocchi! The waiters were excellent.",
             "The hotel was dark and unclean. The restaurant had amazing gnocchi!"
         );
 
-        // Analyzing batch sentiments
+        // Analyzing sentiment for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.analyzeSentimentBatch(inputs).subscribe(
+        client.analyzeSentimentBatch(documents, "en").subscribe(
             analyzeSentimentResult -> {
-                // Analyzed sentiment for each of documents from documents
-                System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
+                // Analyzed sentiment for each document
+                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (analyzeSentimentResult.isError()) {
                     // Erroneous document
                     System.out.printf("Cannot analyze sentiment. Error: %s%n", analyzeSentimentResult.getError().getMessage());
@@ -56,7 +56,7 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
                     documentSentiment.getSentences().forEach(sentenceSentiment -> {
                         SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
                         System.out.printf(
-                            "Analyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                            "\tAnalyzed sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
                             sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
                     });
                 }

@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
@@ -28,25 +29,25 @@ public class RecognizeEntitiesBatchStringDocuments {
             .buildClient();
 
         // The texts that need be analyzed.
-        List<String> inputs = Arrays.asList(
+        List<String> documents = Arrays.asList(
             "Satya Nadella is the CEO of Microsoft.",
             "Elon Musk is the CEO of SpaceX and Tesla."
         );
 
-        // Recognizing batch entities
+        // Recognizing entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizeEntitiesBatch(inputs).forEach(entitiesResult -> {
+        for (RecognizeCategorizedEntitiesResult entitiesResult : client.recognizeEntitiesBatch(documents, "en")) {
             // Recognized entities for each of documents from a batch of documents
-            System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
+            System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (entitiesResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot recognize entities. Error: %s%n", entitiesResult.getError().getMessage());
-                return;
+            } else {
+                // Valid document
+                entitiesResult.getEntities().forEach(entity -> System.out.printf(
+                    "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
+                    entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
             }
-            // Valid document
-            entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
-        });
+        }
     }
 }

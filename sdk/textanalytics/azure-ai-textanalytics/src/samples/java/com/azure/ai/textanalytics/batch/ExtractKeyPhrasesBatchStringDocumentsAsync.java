@@ -29,23 +29,23 @@ public class ExtractKeyPhrasesBatchStringDocumentsAsync {
             .buildAsyncClient();
 
         // The texts that need be analyzed.
-        List<String> inputs = Arrays.asList(
+        List<String> documents = Arrays.asList(
             "My cat might need to see a veterinarian.",
             "The pitot tube is used to measure airspeed."
         );
 
-        // Extracting batch key phrases\
+        // Extracting key phrases for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.extractKeyPhrasesBatch(inputs).subscribe(
+        client.extractKeyPhrasesBatch(documents, "en").subscribe(
             extractKeyPhraseResult -> {
-                System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
+                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (extractKeyPhraseResult.isError()) {
                     // Erroneous document
                     System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
                 } else {
                     // Valid document
                     System.out.println("Extracted phrases:");
-                    extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("%s.%n", keyPhrases));
+                    extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                 }
             },
             error -> System.err.println("There was an error extracting key phrases of the documents." + error),

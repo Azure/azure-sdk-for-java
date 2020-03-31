@@ -29,25 +29,25 @@ public class DetectLanguageBatchStringDocuments {
             .buildClient();
 
         // The texts that need be analyzed.
-        List<String> inputs = Arrays.asList(
+        List<String> documents = Arrays.asList(
             "This is written in English.",
             "Este es un documento  escrito en Español."
         );
 
-        // Detecting batch languages
+        // Detecting language for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.detectLanguageBatch(inputs).forEach(detectLanguageResult -> {
-            // Detected languages for a document from a batch of documents
-            System.out.printf("Document: %s%n", inputs.get(counter.getAndIncrement()));
+        client.detectLanguageBatch(documents, "US").forEach(detectLanguageResult -> {
+            // Detected language for each document
+            System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (detectLanguageResult.isError()) {
                 // Erroneous document
                 System.out.printf("Cannot detect language. Error: %s%n", detectLanguageResult.getError().getMessage());
-                return;
+            } else {
+                // Valid document
+                DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
+                System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
+                    language.getName(), language.getIso6391Name(), language.getScore());
             }
-            // Valid document
-            final DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
-            System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-                language.getName(), language.getIso6391Name(), language.getScore());
         });
     }
 }

@@ -29,16 +29,16 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
             .buildAsyncClient();
 
         // The texts that need be analyzed.
-        List<String> inputs = Arrays.asList(
+        List<String> documents = Arrays.asList(
             "Old Faithful is a geyser at Yellowstone Park.",
             "Mount Shasta has lenticular clouds."
         );
 
-        // Recognizing batch entities
+        // Recognizing linked entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizeLinkedEntitiesBatch(inputs).subscribe(
-           entitiesResult -> {
-                System.out.printf("%nDocument: %s%n", inputs.get(counter.getAndIncrement()));
+        client.recognizeLinkedEntitiesBatch(documents, "en").subscribe(
+            entitiesResult -> {
+                System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (entitiesResult.isError()) {
                     // Erroneous document
                     System.out.printf("Cannot recognize linked entities. Error: %s%n", entitiesResult.getError().getMessage());
@@ -46,11 +46,10 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
                     // Valid document
                     entitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
-                        System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                            linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
-                            linkedEntity.getDataSource());
+                        System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                            linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
                         linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                            "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                            "\tMatched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                     });
                 }
             },
