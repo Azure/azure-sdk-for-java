@@ -679,9 +679,6 @@
       <Not>
         <Or>
           <!-- Hand-written classes should be specified here to be checked  -->
-<!--          <Class name="com.azure.search.documents.implementation.GeoPointDeserializer"/>-->
-<!--          <Class name="com.azure.search.documents.implementation.Iso8601DateDeserializer"/>-->
-<!--          <Class name="com.azure.search.documents.implementation.SerializationUtil"/>-->
           <Class name="com.azure.search.documents.models.CoordinateSystem"/>
           <Class name="com.azure.search.documents.models.GeoPoint"/>
           <Class name="com.azure.search.documents.models.IndexBatch"/>

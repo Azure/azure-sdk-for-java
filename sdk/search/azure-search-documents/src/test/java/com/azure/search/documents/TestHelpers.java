@@ -7,12 +7,7 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.test.environment.models.Hotel;
-import com.azure.search.documents.test.environment.models.LoudHotel;
-import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
-import com.azure.search.documents.test.environment.models.NonNullableModel;
 
-import com.azure.search.documents.models.Skillset;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,56 +27,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * This class contains helper methods for running Azure Search tests.
  */
 public final class TestHelpers {
-
-//    static void assertIndexesEqual(Index expected, Index actual) {
-//        /*
-//         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-//         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-//         * therefore we set the expected ETag value to the ETag returned from the service.
-//         */
-//        assertObjectEquals(expected, actual, true, "etag");
-//    }
-//
-//    static void assertIndexersEqual(Indexer expected, Indexer actual) {
-//        /*
-//         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-//         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-//         * therefore we set the expected ETag value to the ETag returned from the service.
-//         */
-//        assertObjectEquals(expected, actual, true, "etag");
-//    }
-//
-//    static void assertSkillsetsEqual(Skillset expected, Skillset actual) {
-//        /*
-//         * Using 'assertReflectionEquals' will perform a deep check for the objects being equal, this will trigger the
-//         * ETag to be checked. This value is unknown at the time of the test running so the value should be ignored,
-//         * therefore we set the expected ETag value to the ETag returned from the service.
-//         */
-//        assertObjectEquals(expected, actual, true, "etag");
-//    }
-
-//    static void assertHotelsEqual(Hotel expected, Hotel actual) {
-//        assertObjectEquals(expected, actual, true);
-//    }
-
-//    static void assertLoudHotelsEqual(LoudHotel expected, LoudHotel actual) {
-//        assertObjectEquals(expected, actual, true);
-//    }
-//
-//    static void assetModelsWithPrimitivesEqual(ModelWithPrimitiveCollections expected,
-//        ModelWithPrimitiveCollections actual) {
-//        assertObjectEquals(expected, actual, true);
-//    }
-
-//    static void assertDocumentsEqual(Map<String, Object> expected, Map<String, Object> actual) {
-//        assertLenientEquals(expected, actual);
-//        assertObjectEquals(expected, actual, true);
-//    }
-
-//    static void assetNonNullableModelsEqual(NonNullableModel expected, NonNullableModel actual) {
-//        assertObjectEquals(expected, actual, true);
-//    }
-
     /**
      * Checks if the passed {@link CharSequence} is {@code null}, empty, or only contains spaces.
      *
@@ -175,12 +120,10 @@ public final class TestHelpers {
         while (expectedNode.hasNext()) {
             assertTrue(actualNode.fields().hasNext());
             Map.Entry<String, JsonNode> expectedField = expectedNode.next();
-            //Map.Entry<String, JsonNode> actualField = actualNode.fields().next();
             String fieldName = expectedField.getKey();
             if (!doesFieldNeedCheck(fieldName, expectedField.getValue(), ignoreDefaults, ignoreFields)) {
                 continue;
             }
-            //Map.Entry<String, JsonNode> actualField = actualNode.next();
             if (expectedField.getValue().isValueNode()) {
                 assertEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()));
             } else if (expectedField.getValue().isArray()) {
