@@ -32,7 +32,7 @@ import java.util.Arrays;
 
 class Configuration {
 
-    final static String DEFAULT_PARTITION_KEY = "/pk";
+    final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
     private MeterRegistry graphiteMeterRegistry;

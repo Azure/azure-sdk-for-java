@@ -123,7 +123,7 @@ abstract class SyncBenchmark<T> {
             cosmosContainer = cosmosDatabase.getContainer(this.configuration.getCollectionId()).read().getContainer();
         } catch (CosmosClientException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY, this.configuration.getThroughput()).getContainer();
+                cosmosContainer = cosmosDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).getContainer();
                 logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
