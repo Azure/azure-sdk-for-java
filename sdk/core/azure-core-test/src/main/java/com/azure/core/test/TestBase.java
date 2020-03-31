@@ -6,11 +6,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.implementation.http.HttpClientProviders;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,7 +27,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Locale;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -46,7 +45,7 @@ public abstract class TestBase implements BeforeEachCallback {
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING = "rolling";
     public static final int PLATFORM_COUNT = 6;
-    private static List<String> platformList = buildPlatformList();
+    private static final List<String> platformList = buildPlatformList();
     private static final String HTTP_CLIENT_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
 
@@ -218,8 +217,8 @@ public abstract class TestBase implements BeforeEachCallback {
         if (HTTP_CLIENT_FROM_ENV.trim().toLowerCase(Locale.ROOT).contains("netty")) {
             return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
         }
-        if (HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL) ||
-            HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING)) {
+        if (HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)
+            || HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING)) {
             return true;
         }
         String[] configuredHttpClientList = HTTP_CLIENT_FROM_ENV.split(",");
@@ -272,13 +271,14 @@ public abstract class TestBase implements BeforeEachCallback {
         if (testMode == TestMode.PLAYBACK) {
             return -1;
         }
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.systemDefault());
+        System.out.println(today.getDayOfWeek());
         return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
     }
 
     private static Integer getPlatFormOffset() {
-        String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);;
-        String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);;
+        String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
         return platformList.stream().filter(platform ->
             currentOs.trim().toLowerCase(Locale.ROOT).contains(platform.split(",")[0].toLowerCase(Locale.ROOT))
                 && currentJdk.trim().toLowerCase(Locale.ROOT).startsWith(platform.split(",")[1]
