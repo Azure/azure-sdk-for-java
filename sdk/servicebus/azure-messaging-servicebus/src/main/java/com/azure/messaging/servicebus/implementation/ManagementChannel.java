@@ -58,9 +58,9 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SCHEDULE_MESSAGE_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.REQUEST_RESPONSE_MESSAGE_ID;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGES;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_ID;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -381,12 +381,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             HashMap<String, Object> messageEntry = new HashMap<>();
 
-            messageEntry.put(REQUEST_RESPONSE_MESSAGE, new Binary(bytes,
-                    0, encodedSize));
-            messageEntry.put(REQUEST_RESPONSE_MESSAGE_ID, message.getMessageId());
+            messageEntry.put(MESSAGE, new Binary(bytes, 0, encodedSize));
+            messageEntry.put(MESSAGE_ID, message.getMessageId());
             messageList.add(messageEntry);
         }
-        requestBodyMap.put(REQUEST_RESPONSE_MESSAGES, messageList);
+        requestBodyMap.put(MESSAGES, messageList);
 
         return requestBodyMap;
     }
@@ -421,8 +420,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
         return  isAuthorized(SCHEDULE_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
-            Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION,
-                channel.getReceiveLinkName());
+            Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION, channel.getReceiveLinkName());
             Map<String, Object> requestBodyMap;
             requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule);
 

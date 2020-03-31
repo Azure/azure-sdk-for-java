@@ -42,7 +42,7 @@ public class MessageSendAsyncSample {
         senderAsyncClient.send(message).subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
-        // the peek operation.
+        // the operation.
         try {
             Thread.sleep(Duration.ofSeconds(20).toMillis());
         } catch (InterruptedException ignored) {
@@ -80,7 +80,7 @@ public class MessageSendAsyncSample {
             });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
-        // the peek operation.
+        // the operation.
         try {
             Thread.sleep(Duration.ofSeconds(20).toMillis());
         } catch (InterruptedException ignored) {
@@ -135,7 +135,7 @@ public class MessageSendAsyncSample {
             });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
-        // the peek operation.
+        // the operation.
         try {
             Thread.sleep(Duration.ofSeconds(20).toMillis());
         } catch (InterruptedException ignored) {
