@@ -84,8 +84,7 @@ stages:
               runOnce:
                 deploy:
                   steps:
-                    - checkout: azure-sdk-build-tools
-                      path: azure-sdk-build-tools
+                    - checkout: self
                     - pwsh: |
                         Get-ChildItem $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                         New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
@@ -94,13 +93,12 @@ stages:
                       workingDirectory: $(Pipeline.Workspace)
                       displayName: Stage artifacts
                       timeoutInMinutes: 5
-                    - pwsh: |
-                        $(Pipeline.Workspace)/azure-sdk-build-tools/scripts/create-tags-and-git-release.ps1 -artifactLocation $(Pipeline.Workspace)/${{artifact.safeName}} -packageRepository Maven -releaseSha $(Build.SourceVersion) -repoId "Azure/azure-sdk-for-java"
-                      workingDirectory: $(Pipeline.Workspace)
-                      displayName: 'Verify Package Tags and Create Git Releases'
-                      timeoutInMinutes: 5
-                      env:
-                        GH_TOKEN: $(azuresdk-github-pat)
+                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                      parameters:
+                        ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                        PackageRepository: Maven
+                        ReleaseSha: $(Build.SourceVersion)
+                        RepoId: Azure/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
@@ -118,8 +116,8 @@ stages:
                     steps:
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
-                      - template: ../../tools/gpg/gpg.yml
-                      - template: ../../tools/java-publishing/java-publishing.yml
+                      - template: /tools/gpg/gpg.yml
+                      - template: /tools/java-publishing/java-publishing.yml
                         parameters:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
@@ -128,7 +126,7 @@ stages:
                       # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                       # this is that the azure-sdk-for-java feed will have the package available immediately
                       # whereas Maven can take several hours for the package to become available.
-                      - template: ../../tools/java-publishing/java-publishing.yml
+                      - template: /tools/java-publishing/java-publishing.yml
                         parameters:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
@@ -149,8 +147,7 @@ stages:
                 runOnce:
                   deploy:
                     steps:
-                      - checkout: azure-sdk-build-tools
-                        path: azure-sdk-build-tools
+                      - checkout: self
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)
                           New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
@@ -161,7 +158,7 @@ stages:
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
                         workingDirectory: $(Pipeline.Workspace)
                         displayName: Output Visible Artifacts
-                      - template: ../../tools/generic-blob-upload/publish-blobs.yml
+                      - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
                           FolderForUpload: '$(Pipeline.Workspace)/${{artifact.safeName}}'
                           BlobSASKey: '$(azure-sdk-docs-prod-sas)'
@@ -169,7 +166,7 @@ stages:
                           TargetLanguage: 'java'
 
                           # we override the regular script path because we have cloned the build tools repo as a separate artifact.
-                          ScriptPath: '$(Pipeline.Workspace)/azure-sdk-build-tools/scripts/copy-docs-to-blobstorage.ps1'
+                          ScriptPath: 'eng/common/scripts/copy-docs-to-blobstorage.ps1'
 
           - ${{if ne(artifact.options.skipUpdatePackageVersion, 'true')}}:
             - deployment: UpdatePackageVersion
@@ -186,9 +183,7 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - checkout: azure-sdk-build-tools
-                        path: azure-sdk-build-tools
-                        
+
                       - task: UsePythonVersion@0
                         displayName: 'Use Python 3.6'
                         inputs:
@@ -206,13 +201,12 @@ stages:
                         workingDirectory: $(Pipeline.Workspace)/s/azure-sdk-for-java
                         displayName: Update pom files for new version of ${{ artifact.groupId }} ${{ artifact.name }}
 
-                      - template: ../steps/create-pull-request.yml
+                      - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
                         parameters:
                           RepoName: azure-sdk-for-java
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
-                          WorkingDirectory: $(Pipeline.Workspace)/s/azure-sdk-for-java
 
   - stage: Integration
     dependsOn: Signing
@@ -232,10 +226,10 @@ stages:
         artifact: ${{parameters.ArtifactName}}-signed
         timeoutInMinutes: 5
 
-      - template: ../../tools/gpg/gpg.yml
+      - template: /tools/gpg/gpg.yml
 
       - ${{ each artifact in parameters.Artifacts }}:
-        - template: ../../tools/java-publishing/java-publishing.yml
+        - template: /tools/java-publishing/java-publishing.yml
           parameters:
             ArtifactID: ${{artifact.name}}
             GroupID: ${{artifact.groupId}}
