@@ -40,6 +40,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.http to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.query to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.aggregation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
