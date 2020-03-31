@@ -273,6 +273,7 @@ public abstract class TestBase implements BeforeEachCallback {
         }
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
         System.out.println(today.getDayOfWeek());
+        System.out.println(getPlatFormOffset());
         return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
     }
 
