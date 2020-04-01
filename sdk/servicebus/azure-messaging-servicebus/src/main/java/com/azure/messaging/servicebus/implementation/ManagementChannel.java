@@ -418,18 +418,21 @@ public class ManagementChannel implements ServiceBusManagementNode {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
             if (statusCode != AmqpResponseCode.OK.getValue()) {
-                return Mono.error(logger.logExceptionAsError(new AmqpException(false,
+                /*return Mono.error(logger.logExceptionAsError(new AmqpException(false,
                     String.format("Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()), getErrorContext())));
+                        messageToSchedule.getMessageId()), getErrorContext())));*/
+                throw logger.logExceptionAsError(new AmqpException(false,
+                    String.format("Could not schedule message with message id: '%s'.",
+                        messageToSchedule.getMessageId()), getErrorContext()));
             }
 
             List<Long> sequenceNumberList = messageSerializer.deserializeList(responseMessage, Long.class);
             if (CoreUtils.isNullOrEmpty(sequenceNumberList)) {
-                return Mono.error(logger.logExceptionAsError(new AmqpException(false,
+                throw new AmqpException(false,
                     String.format("Service bus response empty. Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()), getErrorContext())));
+                        messageToSchedule.getMessageId()), getErrorContext());
             }
-            return Mono.just(sequenceNumberList.get(0));
+            return sequenceNumberList.get(0);
         })
         );
     }
