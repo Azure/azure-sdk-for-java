@@ -103,7 +103,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchDnsSuffix;
     protected String endpoint;
     AzureKeyCredential searchApiKeyCredential;
-    private static final boolean IS_DEBUG = true;
+    private static final boolean IS_DEBUG = false;
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
