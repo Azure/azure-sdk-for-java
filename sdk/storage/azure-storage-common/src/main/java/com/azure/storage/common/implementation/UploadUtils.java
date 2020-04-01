@@ -15,7 +15,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.LinkedList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -38,8 +37,6 @@ public class UploadUtils {
         ParallelTransferOptions parallelTransferOptions,
         final Function<Flux<ByteBuffer>, Mono<Response<T>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<T>>> uploadFull) {
-        final long[] bufferedDataSize = {0};
-        final LinkedList<ByteBuffer> cachedBuffers = new LinkedList<>();
 
         PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
@@ -69,7 +66,7 @@ public class UploadUtils {
      * @return Chunked data
      */
     public static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-        if(parallelTransferOptions.getBlockSizeLong() <= Integer.MAX_VALUE) {
+        if (parallelTransferOptions.getBlockSizeLong() <= Integer.MAX_VALUE) {
             int chunkSize = parallelTransferOptions.getBlockSizeLong().intValue();
             return data
                 .flatMapSequential(buffer -> {

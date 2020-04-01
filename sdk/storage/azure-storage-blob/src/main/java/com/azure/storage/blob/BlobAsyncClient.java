@@ -488,7 +488,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath,
+                    BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                         : Mono.empty());

@@ -44,7 +44,7 @@ final class UploadBufferPool {
     // The number of buffs we have allocated. We can query the queue for how many are available.
     private int numBuffs;
 
-    private long buffSize;
+    private final long buffSize;
 
     private BufferAggregator currentBuf;
 
@@ -113,10 +113,12 @@ final class UploadBufferPool {
             //int oldLimit = buf.limit();
             //buf.limit(buf.position() + this.currentBuf.remaining());
             //this.currentBuf.put(buf);
-            this.currentBuf.add(buf.duplicate().limit(buf.position() + (int)this.currentBuf.remaining()));
+            ByteBuffer duplicate = buf.duplicate();
+            duplicate.limit(buf.position() + (int) this.currentBuf.remaining());
+            this.currentBuf.add(duplicate);
             // Set the old limit so we can read to the end in the next buffer.
             //buf.limit(oldLimit);
-            buf.position(buf.position() + (int)this.currentBuf.remaining());
+            buf.position(buf.position() + (int) this.currentBuf.remaining());
 
             // Reset the position so we can read the buffer.
             //this.currentBuf.position(0);

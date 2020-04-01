@@ -81,7 +81,7 @@ public final class ParallelTransferOptions {
      * any data is sent. Must be greater than 0. May be null to accept default behavior, which is the maximum value the
      * service accepts for uploading in a single requests and is represented by
      * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES}.
-     * @deprecated Use {@link #ParallelTransferOptions(Long, Integer, ProgressReceiver, Integer)}
+     * @deprecated Use {@link #ParallelTransferOptions(Long, Integer, ProgressReceiver, Long)}
      */
     @Deprecated
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
@@ -172,7 +172,7 @@ public final class ParallelTransferOptions {
      * @deprecated Use {@link #getMaxSingleUploadSizeLong()}
      */
     @Deprecated
-    public Integer getMaxSingleUploadSize() { // TODO jumbo blob
+    public Integer getMaxSingleUploadSize() { // TODO (kasobol-msft) jumbo blob
         return this.maxSingleUploadSize == null ? null : Math.toIntExact(this.maxSingleUploadSize);
     }
 

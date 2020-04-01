@@ -44,7 +44,7 @@ public final class ParallelTransferOptions {
     @Deprecated
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
         Integer maxSingleUploadSize) {
-        this(blockSize == null ? null : Long.valueOf(blockSize) , numBuffers, progressReceiver,
+        this(blockSize == null ? null : Long.valueOf(blockSize), numBuffers, progressReceiver,
             maxSingleUploadSize == null ? null : Long.valueOf(maxSingleUploadSize));
     }
 
@@ -87,7 +87,7 @@ public final class ParallelTransferOptions {
      * @deprecated Use {@link #getBlockSizeLong()}.
      */
     @Deprecated
-    public Integer getBlockSize() { // TODO Jumbo Blob
+    public Integer getBlockSize() { // TODO (kasobol-msft) Jumbo Blob
         return this.blockSize == null ? null : Math.toIntExact(this.blockSize);
     }
 
@@ -121,7 +121,7 @@ public final class ParallelTransferOptions {
      * @deprecated Use {@link #getMaxSingleUploadSizeLong()}.
      */
     @Deprecated
-    public Integer getMaxSingleUploadSize() { // TODO Jumbo Blob
+    public Integer getMaxSingleUploadSize() { // TODO (kasobol-msft) Jumbo Blob
         return this.maxSingleUploadSize == null ? null : Math.toIntExact(this.maxSingleUploadSize);
     }
 

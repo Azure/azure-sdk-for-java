@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.implementation;
 
 import reactor.core.publisher.Flux;
@@ -33,7 +36,7 @@ public final class BufferAggregator {
         this.buffers = new LinkedList<>();
     }
 
-    public Flux<ByteBuffer> getBuffers(){
+    public Flux<ByteBuffer> getBuffers() {
         return Flux.fromIterable(this.buffers);
     }
 }

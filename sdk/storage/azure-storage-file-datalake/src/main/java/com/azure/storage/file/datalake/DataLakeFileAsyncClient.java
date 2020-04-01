@@ -389,7 +389,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES_LONG, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                         : Mono.empty());

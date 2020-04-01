@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob;
 
 import reactor.core.publisher.Flux;
@@ -11,7 +14,7 @@ final class BufferAggregator {
     private long size = 0;
     private List<ByteBuffer> buffers = new LinkedList<>();
 
-    public BufferAggregator(long limit) {
+    BufferAggregator(long limit) {
         this.limit = limit;
     }
 
@@ -33,7 +36,7 @@ final class BufferAggregator {
         this.buffers = new LinkedList<>();
     }
 
-    public Flux<ByteBuffer> getBuffers(){
+    public Flux<ByteBuffer> getBuffers() {
         return Flux.fromIterable(this.buffers);
     }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.implementation;
 
 import reactor.core.publisher.Flux;
@@ -11,7 +14,7 @@ final class PayloadSizeGate {
     private long size = 0;
     private Queue<ByteBuffer> byteBuffers = new LinkedList<>();
 
-    public PayloadSizeGate(long threshold) {
+    PayloadSizeGate(long threshold) {
         this.threshold = threshold;
     }
 
