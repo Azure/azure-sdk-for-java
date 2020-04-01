@@ -463,6 +463,22 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
+                <title>Azure Core - Serializer - Apache Avro</title>
+                <packages>com.azure.core.serializer.avro.apache*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - Jackson Avro</title>
+                <packages>com.azure.core.serializer.avro.jackson*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - Gson JSON</title>
+                <packages>com.azure.core.serializer.json.gson*</packages>
+              </group>
+              <group>
+                <title>Azure Core - Serializer - Jackson JSON</title>
+                <packages>com.azure.core.serializer.json.jackson*</packages>
+              </group>
+              <group>
                 <title>Azure App Configuration</title>
                 <packages>com.azure.data.appconfiguration*</packages>
               </group>
@@ -699,6 +715,10 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-apache/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-avro-jackson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-gson/src/samples/java
+                -snippetpath ${project.basedir}/sdk/core/azure-core-serializer-json-jackson/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
@@ -1308,6 +1328,10 @@
     <module>sdk/core/azure-core-management</module>
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
+    <module>sdk/core/azure-core-serializer-avro-apache</module>
+    <module>sdk/core/azure-core-serializer-avro-jackson</module>
+    <module>sdk/core/azure-core-serializer-json-gson</module>
+    <module>sdk/core/azure-core-serializer-json-jackson</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/cosmos/azure-cosmos</module>
