@@ -18,15 +18,15 @@ import java.util.UUID;
 import com.microsoft.azure.management.appservice.v2016_09_01.OperationStatus;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    OperationImpl(OperationInner inner,  AppServiceManager manager) {
+    OperationImpl(OperationInner inner,  WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
