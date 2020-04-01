@@ -674,6 +674,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .setIfNoneMatch(requestConditions.getIfNoneMatch())
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+        context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
             (long) 0, null, httpHeaders, lac, mac,

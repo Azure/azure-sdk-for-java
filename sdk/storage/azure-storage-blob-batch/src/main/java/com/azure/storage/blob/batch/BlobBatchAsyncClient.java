@@ -125,7 +125,8 @@ public final class BlobBatchAsyncClient {
             .flatMap(batchOperationInfo -> client.services()
                 .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
                     batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                    context == null ? Context.NONE.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)
+                    : context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }

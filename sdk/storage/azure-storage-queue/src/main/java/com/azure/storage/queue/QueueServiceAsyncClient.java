@@ -339,7 +339,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
-        return client.services().getPropertiesWithRestResponseAsync(context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        context = context == null ? Context.NONE : context;
+        return client.services().getPropertiesWithRestResponseAsync(
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -434,7 +436,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
-        return client.services().setPropertiesWithRestResponseAsync(properties, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        context = context == null ? Context.NONE : context;
+        return client.services().setPropertiesWithRestResponseAsync(properties,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -483,7 +487,9 @@ public final class QueueServiceAsyncClient {
     }
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
-        return client.services().getStatisticsWithRestResponseAsync(context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        context = context == null ? Context.NONE : context;
+        return client.services().getStatisticsWithRestResponseAsync(
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 

@@ -270,6 +270,7 @@ public final class ShareServiceAsyncClient {
     }
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
@@ -362,6 +363,7 @@ public final class ShareServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -490,6 +492,7 @@ public final class ShareServiceAsyncClient {
         if (CoreUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
             .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

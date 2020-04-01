@@ -367,6 +367,7 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
         return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -476,6 +477,7 @@ public final class BlobServiceAsyncClient {
             finalProperties.setStaticWebsite(properties.getStaticWebsite());
 
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -569,6 +571,7 @@ public final class BlobServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
         throwOnAnonymousAccess();
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
@@ -621,6 +624,8 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
         throwOnAnonymousAccess();
+        context = context == null ? Context.NONE : context;
+
         return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));

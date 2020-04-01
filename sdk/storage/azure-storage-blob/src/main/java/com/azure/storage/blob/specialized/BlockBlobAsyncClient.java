@@ -204,6 +204,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, contentMd5, metadata, requestConditions.getLeaseId(), tier,
@@ -284,6 +285,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
             base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
             encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -364,6 +366,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null, base64BlockId, 0,
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
@@ -512,6 +515,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
             new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),

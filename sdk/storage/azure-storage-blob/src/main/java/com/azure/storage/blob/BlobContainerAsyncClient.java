@@ -327,6 +327,7 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
         Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().createWithRestResponseAsync(
             null, null, metadata, accessType, null, blobContainerEncryptionScope,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -383,6 +384,7 @@ public final class BlobContainerAsyncClient {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.containers().deleteWithRestResponseAsync(null, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -430,6 +432,8 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<BlobContainerProperties>> getPropertiesWithResponse(String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return this.azureBlobStorage.containers()
             .getPropertiesWithRestResponseAsync(null, null, leaseId, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -489,6 +493,7 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions, Context context) {
+        context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         if (!validateNoETag(requestConditions) || requestConditions.getIfUnmodifiedSince() != null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -543,6 +548,7 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<BlobContainerAccessPolicies>> getAccessPolicyWithResponse(String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().getAccessPolicyWithRestResponseAsync(
             null, null, leaseId, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -638,6 +644,7 @@ public final class BlobContainerAsyncClient {
                 }
             }
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.containers().setAccessPolicyWithRestResponseAsync(
             null, identifiers, null, requestConditions.getLeaseId(), accessType, requestConditions.getIfModifiedSince(),
@@ -973,6 +980,7 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.containers().getAccountInfoWithRestResponseAsync(null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {

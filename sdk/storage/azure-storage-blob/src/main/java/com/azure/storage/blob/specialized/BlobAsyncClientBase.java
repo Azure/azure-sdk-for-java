@@ -1148,6 +1148,7 @@ public class BlobAsyncClientBase {
 
     Mono<Response<BlobProperties>> getPropertiesWithResponse(BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blobs().getPropertiesWithRestResponseAsync(
             null, null, snapshot, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -1220,6 +1221,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setHttpHeadersWithResponse(BlobHttpHeaders headers, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blobs().setHTTPHeadersWithRestResponseAsync(
             null, null, null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -1278,6 +1280,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blobs().setMetadataWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -1335,6 +1338,7 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobAsyncClientBase>> createSnapshotWithResponse(Map<String, String> metadata,
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blobs().createSnapshotWithRestResponseAsync(
             null, null, null, metadata, requestConditions.getIfModifiedSince(),
@@ -1399,6 +1403,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> setTierWithResponse(AccessTier tier, RehydratePriority priority, String leaseId,
         Context context) {
         StorageImplUtils.assertNotNull("tier", tier);
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blobs().setTierWithRestResponseAsync(
             null, null, tier, null, priority, null, leaseId,
@@ -1447,6 +1452,8 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<Void>> undeleteWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
+
         return this.azureBlobStorage.blobs().undeleteWithRestResponseAsync(null,
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -1493,6 +1500,7 @@ public class BlobAsyncClientBase {
     }
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.blobs().getAccountInfoWithRestResponseAsync(null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {

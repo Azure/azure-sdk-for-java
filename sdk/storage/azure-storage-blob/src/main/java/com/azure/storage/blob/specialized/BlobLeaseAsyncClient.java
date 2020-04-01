@@ -133,6 +133,7 @@ public final class BlobLeaseAsyncClient {
         Context context) {
         modifiedRequestConditions = (modifiedRequestConditions == null)
             ? new RequestConditions() : modifiedRequestConditions;
+        context = context == null ? Context.NONE : context;
         if (this.isBlob) {
             return this.client.blobs().acquireLeaseWithRestResponseAsync(null, null, null, duration, this.leaseId,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
@@ -190,6 +191,7 @@ public final class BlobLeaseAsyncClient {
     Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions, Context context) {
         modifiedRequestConditions = (modifiedRequestConditions == null)
             ? new RequestConditions() : modifiedRequestConditions;
+        context = context == null ? Context.NONE : context;
         if (this.isBlob) {
             return this.client.blobs().renewLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
@@ -199,7 +201,7 @@ public final class BlobLeaseAsyncClient {
         } else {
             return this.client.containers().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                null, context)
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }
@@ -247,10 +249,13 @@ public final class BlobLeaseAsyncClient {
     Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions, Context context) {
         modifiedRequestConditions = (modifiedRequestConditions == null)
             ? new RequestConditions() : modifiedRequestConditions;
+        context = context == null ? Context.NONE : context;
+
         if (this.isBlob) {
             return this.client.blobs().releaseLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, context)
+                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(response -> new SimpleResponse<>(response, null));
         } else {
             return this.client.containers().releaseLeaseWithRestResponseAsync(null, this.leaseId, null,
@@ -312,6 +317,8 @@ public final class BlobLeaseAsyncClient {
         RequestConditions modifiedRequestConditions, Context context) {
         modifiedRequestConditions = (modifiedRequestConditions == null)
             ? new RequestConditions() : modifiedRequestConditions;
+        context = context == null ? Context.NONE : context;
+
         if (this.isBlob) {
             return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null, breakPeriodInSeconds,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
@@ -372,6 +379,7 @@ public final class BlobLeaseAsyncClient {
         Context context) {
         modifiedRequestConditions = (modifiedRequestConditions == null)
             ? new RequestConditions() : modifiedRequestConditions;
+        context = context == null ? Context.NONE : context;
         if (this.isBlob) {
             return this.client.blobs().changeLeaseWithRestResponseAsync(null, null, this.leaseId, proposedId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
@@ -381,7 +389,7 @@ public final class BlobLeaseAsyncClient {
         } else {
             return this.client.containers().changeLeaseWithRestResponseAsync(null, this.leaseId, proposedId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                null, context)
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         }
     }

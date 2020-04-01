@@ -158,6 +158,7 @@ public final class SecretAsyncClient {
 
     Mono<Response<KeyVaultSecret>> setSecretWithResponse(KeyVaultSecret secret, Context context) {
         Objects.requireNonNull(secret, "The Secret input parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
         SecretRequestParameters parameters = new SecretRequestParameters()
             .setValue(secret.getValue())
             .setTags(secret.getProperties().getTags())
@@ -262,6 +263,7 @@ public final class SecretAsyncClient {
     }
 
     Mono<Response<KeyVaultSecret>> getSecretWithResponse(String name, String version, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.getSecret(vaultUrl, name, version == null ? "" : version, apiVersion, ACCEPT_LANGUAGE,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignoredValue -> logger.info("Retrieving secret - {}", name))
@@ -359,6 +361,7 @@ public final class SecretAsyncClient {
 
     Mono<Response<SecretProperties>> updateSecretPropertiesWithResponse(SecretProperties secretProperties, Context context) {
         Objects.requireNonNull(secretProperties, "The secret properties input parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
         SecretRequestParameters parameters = new SecretRequestParameters()
             .setTags(secretProperties.getTags())
             .setContentType(secretProperties.getContentType())
@@ -479,6 +482,7 @@ public final class SecretAsyncClient {
     }
 
     Mono<Response<DeletedSecret>> getDeletedSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.getDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving deleted secret - {}", name))
@@ -535,6 +539,7 @@ public final class SecretAsyncClient {
     }
 
     Mono<Response<Void>> purgeDeletedSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.purgeDeletedSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Purging deleted secret - {}", name))
@@ -649,6 +654,7 @@ public final class SecretAsyncClient {
     }
 
     Mono<Response<byte[]>> backupSecretWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.backupSecret(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Backing up secret - {}", name))
@@ -706,6 +712,7 @@ public final class SecretAsyncClient {
     }
 
     Mono<Response<KeyVaultSecret>> restoreSecretBackupWithResponse(byte[] backup, Context context) {
+        context = context == null ? Context.NONE : context;
         SecretRestoreRequestParameters parameters = new SecretRestoreRequestParameters().setSecretBackup(backup);
         return service.restoreSecret(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))

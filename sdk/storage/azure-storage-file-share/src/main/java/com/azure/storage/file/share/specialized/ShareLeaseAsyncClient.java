@@ -113,6 +113,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     Mono<Response<String>> acquireLeaseWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return this.client.files().acquireLeaseWithRestResponseAsync(null, null, null, -1, this.leaseId, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
@@ -155,6 +156,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     Mono<Response<Void>> releaseLeaseWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return this.client.files().releaseLeaseWithRestResponseAsync(null, null, this.leaseId,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -198,6 +200,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     Mono<Response<Void>> breakLeaseWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return this.client.files().breakLeaseWithRestResponseAsync(null, null, null, null, null,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, null));
@@ -242,6 +245,7 @@ public final class ShareLeaseAsyncClient {
     }
 
     Mono<Response<String>> changeLeaseWithResponse(String proposedId, Context context) {
+        context = context == null ? Context.NONE : context;
         return this.client.files().changeLeaseWithRestResponseAsync(null, null, this.leaseId, null, proposedId,
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));

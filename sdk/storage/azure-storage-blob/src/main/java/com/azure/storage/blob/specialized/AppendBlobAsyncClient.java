@@ -163,6 +163,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions, Context context) {
         requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -237,6 +238,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions, Context context) {
         appendBlobRequestConditions = appendBlobRequestConditions == null ? new AppendBlobRequestConditions()
             : appendBlobRequestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.appendBlobs().appendBlockWithRestResponseAsync(
             null, null, data, length, null, contentMd5, null, appendBlobRequestConditions.getLeaseId(),
@@ -322,6 +324,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.appendBlobs().appendBlockFromUrlWithRestResponseAsync(null, null, url, 0,
             sourceRange.toString(), sourceContentMD5, null, null, null, destRequestConditions.getLeaseId(),

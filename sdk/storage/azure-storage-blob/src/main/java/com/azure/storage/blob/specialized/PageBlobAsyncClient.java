@@ -209,6 +209,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("SequenceNumber must be greater than or equal to 0."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().createWithRestResponseAsync(null, null, 0, size, null, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -297,6 +298,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().uploadPagesWithRestResponseAsync(null, null, body,
             pageRange.getEnd() - pageRange.getStart() + 1, contentMd5, null, null, pageRangeStr,
@@ -414,6 +416,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().uploadPagesFromURLWithRestResponseAsync(
             null, null, url, sourceRangeString, 0, rangeString, sourceContentMd5, null, null,
@@ -492,6 +495,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             throw logger.logExceptionAsError(new IllegalArgumentException("pageRange cannot be null."));
         }
         String pageRangeStr = pageRangeToString(pageRange);
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().clearPagesWithRestResponseAsync(null, null, 0, null, pageRangeStr,
             pageBlobRequestConditions.getLeaseId(), pageBlobRequestConditions.getIfSequenceNumberLessThanOrEqualTo(),
@@ -554,6 +558,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         Context context) {
         blobRange = blobRange == null ? new BlobRange(0) : blobRange;
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().getPageRangesWithRestResponseAsync(null, null, getSnapshotId(), null,
             blobRange.toHeaderValue(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -688,6 +693,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'prevSnapshotUrl' is not a valid url."));
             }
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().getPageRangesDiffWithRestResponseAsync(null, null, getSnapshotId(),
             null, prevSnapshot, url, blobRange.toHeaderValue(), requestConditions.getLeaseId(),
@@ -750,6 +756,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
                 new IllegalArgumentException("size must be a multiple of PageBlobAsyncClient.PAGE_BYTES."));
         }
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().resizeWithRestResponseAsync(null, null, size, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -823,6 +830,7 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
         }
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
         sequenceNumber = action == SequenceNumberActionType.INCREMENT ? null : sequenceNumber;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.pageBlobs().updateSequenceNumberWithRestResponseAsync(null, null, action, null,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
@@ -912,6 +920,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw logger.logExceptionAsError(new IllegalArgumentException(e));
         }
+        context = context == null ? Context.NONE : context;
+
         return this.azureBlobStorage.pageBlobs().copyIncrementalWithRestResponseAsync(null, null, url, null,
             modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
             modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,

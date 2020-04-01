@@ -278,6 +278,7 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.directorys()
             .createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
@@ -333,6 +334,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys().deleteWithRestResponseAsync(shareName, directoryPath,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
@@ -385,6 +387,7 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys()
             .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -456,6 +459,7 @@ public class ShareDirectoryAsyncClient {
         String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
 
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys()
             .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
                 fileLastWriteTime, null, filePermission, filePermissionKey,
@@ -527,6 +531,7 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys()
             .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))

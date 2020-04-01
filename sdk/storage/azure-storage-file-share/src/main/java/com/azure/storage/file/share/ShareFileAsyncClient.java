@@ -944,6 +944,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileProperties>> getPropertiesWithResponse(ShareRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.files()
             .getPropertiesWithRestResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(),
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
@@ -1075,6 +1076,7 @@ public class ShareFileAsyncClient {
         String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
         String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.files()
             .setHTTPHeadersWithRestResponseAsync(shareName, filePath, fileAttributes, fileCreationTime,
@@ -1174,6 +1176,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
         try {
             return azureFileStorageClient.files()
                 .setMetadataWithRestResponseAsync(shareName, filePath, null, metadata,
@@ -1276,6 +1279,7 @@ public class ShareFileAsyncClient {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         long rangeOffset = (offset == null) ? 0L : offset;
         ShareFileRange range = new ShareFileRange(rangeOffset, rangeOffset + length - 1);
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
                 length, data, null, null, requestConditions.getLeaseId(),
@@ -1376,6 +1380,7 @@ public class ShareFileAsyncClient {
             ? new ShareRequestConditions() : destinationRequestConditions;
         ShareFileRange destinationRange = new ShareFileRange(destinationOffset, destinationOffset + length - 1);
         ShareFileRange sourceRange = new ShareFileRange(sourceOffset, sourceOffset + length - 1);
+        context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.files()
             .uploadRangeFromURLWithRestResponseAsync(shareName, filePath, destinationRange.toString(), sourceUrl, 0,
@@ -1465,6 +1470,7 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         ShareFileRange range = new ShareFileRange(offset, offset + length - 1);
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.files()
             .uploadRangeWithRestResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
                 0L, null, null, null, requestConditions.getLeaseId(),
@@ -1736,6 +1742,7 @@ public class ShareFileAsyncClient {
     }
 
     Mono<Response<CloseHandlesInfo>> forceCloseHandleWithResponse(String handleId, Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.files()
             .forceCloseHandlesWithRestResponseAsync(shareName, filePath, handleId, null, null, snapshot,
                 context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
