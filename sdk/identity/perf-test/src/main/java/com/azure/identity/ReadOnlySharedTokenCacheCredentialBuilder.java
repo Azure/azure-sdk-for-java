@@ -12,7 +12,7 @@ import java.util.HashMap;
  *
  * @see SharedTokenCacheCredential
  */
-public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
+public class ReadOnlySharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<ReadOnlySharedTokenCacheCredentialBuilder> {
     private String username;
 
     /**
@@ -22,17 +22,17 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
      */
-    public SharedTokenCacheCredentialBuilder username(String username) {
+    public ReadOnlySharedTokenCacheCredentialBuilder username(String username) {
         this.username = username;
         return this;
     }
 
     /**
-     * Creates a new {@link SharedTokenCacheCredentialBuilder} with the current configurations.
+     * Creates a new {@link ReadOnlySharedTokenCacheCredentialBuilder} with the current configurations.
      *
-     * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
+     * @return a {@link ReadOnlySharedTokenCacheCredentialBuilder} with the current configurations.
      */
-    public SharedTokenCacheCredential build() {
+    public ReadOnlySharedTokenCacheCredential build() {
         ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
                 put("cacheFileLocation", cacheFileLocation);
             }});
@@ -40,6 +40,6 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
             identityClientOptions.setPersistenceSettings(cacheFileLocation, keychainService, keychainAccount,
                     keyringName, keyringItemSchema, keyringItemName, attributes, useUnprotectedFileOnLinux);
         }
-        return new SharedTokenCacheCredential(username, clientId, tenantId, identityClientOptions);
+        return new ReadOnlySharedTokenCacheCredential(username, clientId, tenantId, identityClientOptions);
     }
 }

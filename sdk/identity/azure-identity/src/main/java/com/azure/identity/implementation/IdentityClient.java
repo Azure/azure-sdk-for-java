@@ -27,9 +27,12 @@ import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
+import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -56,6 +59,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +67,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * The identity client that contains APIs to retrieve access tokens
@@ -139,6 +145,14 @@ public class IdentityClient {
 
             if (options.getExecutorService() != null) {
                 publicClientApplicationBuilder.executorService(options.getExecutorService());
+            }
+            if (options.getPersistenceSettings() != null) {
+                try {
+                    publicClientApplicationBuilder.setTokenCacheAccessAspect(
+                            new PersistenceTokenCacheAccessAspect(options.getPersistenceSettings()));
+                } catch (IOException e) {
+                    throw logger.logExceptionAsWarning(new IllegalStateException(e));
+                }
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
@@ -478,6 +492,83 @@ public class IdentityClient {
                     .onErrorResume(t -> server.dispose().then(Mono.error(t)))
                     .flatMap(msalToken -> server.dispose().then(Mono.just(msalToken)));
             });
+    }
+
+    /**
+     * Gets token from shared token cache
+     * */
+    public Mono<AccessToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
+        String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
+        // find if the Public Client app with the requested username exists
+        return Mono.fromFuture(publicClientApplication.getAccounts())
+                .onErrorResume(t -> Mono.error(new ClientAuthenticationException(
+                        "Cannot get accounts from token cache. Error: " + t.getMessage(), null)))
+                .flatMap(set -> {
+                    IAccount requestedAccount;
+                    Map<String, IAccount> accounts = new HashMap<>(); // home account id -> account
+
+                    for (IAccount cached : set) {
+                        if (username == null || username.equals(cached.username())) {
+                            if (!accounts.containsKey(cached.homeAccountId())) { // only put the first one
+                                accounts.put(cached.homeAccountId(), cached);
+                            }
+                        }
+                    }
+
+                    if (accounts.size() == 0) {
+                        if (username == null) {
+                            return Mono.error(new RuntimeException("No accounts were discovered in the shared token cache."
+                                    + " To fix, authenticate through tooling supporting azure developer sign on."));
+                        } else {
+                            return Mono.error(new RuntimeException(String.format("User account '%s' was not found in the "
+                                    + "shared token cache. Discovered Accounts: [ '%s' ]", username, set.stream()
+                                    .map(IAccount::username).distinct().collect(Collectors.joining(", ")))));
+                        }
+                    } else if (accounts.size() > 1) {
+                        if (username == null) {
+                            return Mono.error(new RuntimeException("Multiple accounts were discovered in the shared token "
+                                    + "cache. To fix, set the AZURE_USERNAME and AZURE_TENANT_ID environment variable to the "
+                                    + "preferred username, or specify it when constructing SharedTokenCacheCredential."));
+                        } else {
+                            return Mono.error(new RuntimeException("Multiple entries for the user account " + username
+                                    + " were found in the shared token cache. This is not currently supported by the"
+                                    + " SharedTokenCacheCredential."));
+                        }
+                    } else {
+                        requestedAccount = accounts.values().iterator().next();
+                    }
+
+                    // if it does, then request the token
+                    SilentParameters params = SilentParameters.builder(
+                            new HashSet<>(request.getScopes()), requestedAccount)
+                            .authorityUrl(authorityUrl)
+                            .build();
+
+                    SilentParameters forceParams = SilentParameters.builder(
+                            new HashSet<>(request.getScopes()), requestedAccount)
+                            .authorityUrl(authorityUrl)
+                            .forceRefresh(true)
+                            .build();
+
+                    CompletableFuture<IAuthenticationResult> future;
+                    try {
+                        future = publicClientApplication.acquireTokenSilently(params);
+                        return Mono.fromFuture(() -> future).map(result ->
+                                    new MsalToken(result, options))
+                                .filter(t -> !t.isExpired())
+                                .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
+                                        try {
+                                            return publicClientApplication.acquireTokenSilently(forceParams);
+                                        } catch (MalformedURLException e) {
+                                            throw logger.logExceptionAsWarning(new RuntimeException(e));
+                                        }
+                                    }
+                                ).map(result -> new MsalToken(result, options))));
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                        return Mono.error(new RuntimeException("Token was not found"));
+                    }
+                });
     }
 
     /**

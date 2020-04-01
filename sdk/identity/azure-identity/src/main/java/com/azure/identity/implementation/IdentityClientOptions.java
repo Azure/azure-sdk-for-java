@@ -6,8 +6,14 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.identity.KeyringItemSchema;
+import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 
+import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
@@ -27,6 +33,7 @@ public final class IdentityClientOptions {
     private ExecutorService executorService;
     private Duration tokenRefreshOffset = Duration.ofMinutes(2);
     private HttpClient httpClient;
+    private PersistenceSettings persistenceSettings;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -189,6 +196,37 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
+        return this;
+    }
+
+    public PersistenceSettings getPersistenceSettings() {
+        return persistenceSettings;
+    }
+
+    public IdentityClientOptions setPersistenceSettings(Path cacheFileLocation, String keychainService,
+                                                        String keychainAccount, String keyringName,
+                                                        KeyringItemSchema keyringItemSchema, String keyringItemName,
+                                                        Map<String, String> keyringItemAttributes,
+                                                        boolean useUnprotectedFileOnLinux) {
+        String cacheFileName = cacheFileLocation.getFileName().toString();
+        Path cacheFileDirectory = cacheFileLocation.getParent();
+        List<String> attributeKeyList = new ArrayList<>(keyringItemAttributes.keySet());
+        while (attributeKeyList.size() < 2) {
+            attributeKeyList.add(null);
+        }
+        String key1 = attributeKeyList.get(0);
+        String key2 = attributeKeyList.get(1);
+        PersistenceSettings.Builder persistenceBuilder = PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
+                .setLinuxUseUnprotectedFileAsCacheStorage(useUnprotectedFileOnLinux);
+        if (keychainService != null && keychainAccount != null) {
+            persistenceBuilder.setMacKeychain(keychainService, keychainAccount);
+        }
+        if (keyringName != null && keyringItemName != null && keyringItemSchema != null) {
+            persistenceBuilder.setLinuxKeyring(keyringName, keyringItemSchema.toString(), keyringItemName,
+                    key1, keyringItemAttributes.getOrDefault(key1, null),
+                    key2, keyringItemAttributes.getOrDefault(key2, null));
+        }
+        this.persistenceSettings = persistenceBuilder.build();
         return this;
     }
 }

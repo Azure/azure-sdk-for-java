@@ -3,6 +3,10 @@
 
 package com.azure.identity;
 
+import com.azure.core.util.logging.ClientLogger;
+
+import java.nio.file.Path;
+import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -11,8 +15,17 @@ import java.util.concurrent.ForkJoinPool;
  * @param <T> the type of the credential builder
  */
 public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
+    private final ClientLogger logger = new ClientLogger(AadCredentialBuilderBase.class);
     String clientId;
     String tenantId;
+    Path cacheFileLocation;
+    String keychainService;
+    String keychainAccount;
+    String keyringName;
+    KeyringItemSchema keyringItemSchema;
+    String keyringItemName;
+    final LinkedHashMap<String, String> attributes = new LinkedHashMap<>(); // preserve order
+    boolean useUnprotectedFileOnLinux = false;
 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
@@ -68,6 +81,126 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     @SuppressWarnings("unchecked")
     public T executorService(ExecutorService executorService) {
         this.identityClientOptions.setExecutorService(executorService);
+        return (T) this;
+    }
+
+    /**
+     * Sets the location for the token cache file on Windows or Linux systems. The default
+     * location is <code>{user home}/AppData/Local/.IdentityService/msal.cache</code> on
+     * Windows and <code>~/.IdentityService/msal.cache</code> on Linux.
+     *
+     * @param cacheFileLocation The location for the token cache file.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T cacheFileLocation(Path cacheFileLocation) {
+        this.cacheFileLocation = cacheFileLocation;
+        return (T) this;
+    }
+
+    /**
+     * Sets the service name for the Keychain item on MacOS. The default value is
+     * "Microsoft.Developer.IdentityService".
+     *
+     * @param serviceName The service name for the Keychain item.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T keychainService(String serviceName) {
+        this.keychainService = serviceName;
+        return (T) this;
+    }
+
+    /**
+     * Sets the account name for the Keychain item on MacOS. The default value is
+     * "MSALCache".
+     *
+     * @param accountName The account name for the Keychain item.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T keychainAccount(String accountName) {
+        this.keychainAccount = accountName;
+        return (T) this;
+    }
+
+    /**
+     * Sets the name of the Gnome keyring to store the cache on Gnome keyring enabled
+     * Linux systems. The default value is "default".
+     *
+     * @param keyringName The name of the Gnome keyring.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T keyringName(String keyringName) {
+        this.keyringName = keyringName;
+        return (T) this;
+    }
+
+    /**
+     * Sets the schema of the Gnome keyring to store the cache on Gnome keyring enabled
+     * Linux systems. The default value is <code>KeyringItemSchema.GenericSecret</code>.
+     *
+     * @param keyringItemSchema The schema of the Gnome keyring.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T keyringItemSchema(KeyringItemSchema keyringItemSchema) {
+        this.keyringItemSchema = keyringItemSchema;
+        return (T) this;
+    }
+
+    /**
+     * Sets the name of the Gnome keyring item to store the cache on Gnome keyring enabled
+     * Linux systems. The default value is "MSALCache".
+     *
+     * @param keyringItemName The name of the Gnome keyring item.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T keyringItemName(String keyringItemName) {
+        this.keyringItemName = keyringItemName;
+        return (T) this;
+    }
+
+    /**
+     * Adds an attribute to the Gnome keyring item to store the cache on Gnome keyring enabled
+     * Linux systems. Only 2 attributes are allowed.
+     *
+     * @param attributeName The name of the attribute.
+     * @param attributeValue The value of the attribute.
+     *
+     * @return The updated T object.
+     * @throws IllegalArgumentException if there are already 2 attributes
+     */
+    @SuppressWarnings("unchecked")
+    public T addKeyringItemAttribute(String attributeName, String attributeValue) {
+        if (this.attributes.size() < 2) {
+            this.attributes.put(attributeName, attributeValue);
+        } else {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Currently does not support more than 2 attributes for linux Keyring"));
+        }
+        return (T) this;
+    }
+
+    /**
+     * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
+     * Gnome keyring on Linux. This is false by default.
+     *
+     * @param useUnprotectedFileOnLinux whether to use an unprotected file for cache storage.
+     *
+     * @return The updated T object.
+     */
+    @SuppressWarnings("unchecked")
+    public T useUnprotectedFileOnLinux(boolean useUnprotectedFileOnLinux) {
+        this.useUnprotectedFileOnLinux = useUnprotectedFileOnLinux;
         return (T) this;
     }
 }
