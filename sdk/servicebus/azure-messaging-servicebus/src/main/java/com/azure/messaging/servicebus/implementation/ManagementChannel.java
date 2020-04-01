@@ -13,7 +13,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -282,24 +281,29 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Instant> renewMessageLock(UUID lockToken) {
-        return  isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+        return  isAuthorized(PEEK_OPERATION).then(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
                 channel.getReceiveLinkName());
 
             requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, new UUID[]{lockToken})));
             return channel.sendWithAck(requestMessage);
-        }).flatMapMany(responseMessage -> {
+        }).flatMap(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
             if (statusCode !=  AmqpResponseCode.OK.getValue()) {
 
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not renew the lock.",
                     getErrorContext()));
             }
+            List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
+            if (renewTimeList ==  null || renewTimeList.size() == 0) {
+                return Mono.error(logger.logExceptionAsError(new AmqpException(false,
+                    String.format("Service bus response empty. "
+                        + "Could not renew message with lock token: '%s'.", lockToken.toString()),
+                    getErrorContext())));
+            }
             return Mono.just(messageSerializer.deserializeList(responseMessage, Instant.class).get(0));
-            //return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
         }));
-            //.next();
     }
 
     /**
@@ -409,19 +413,23 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
             return channel.sendWithAck(requestMessage);
-        }).flatMapMany(responseMessage -> {
+        }).flatMap(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
             if (statusCode != AmqpResponseCode.OK.getValue()) {
-                return FluxUtil.monoError(logger, new AmqpException(false,
+                return Mono.error(logger.logExceptionAsError(new AmqpException(false,
                     String.format("Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()),
-                    getErrorContext()));
+                        messageToSchedule.getMessageId()), getErrorContext())));
             }
-            return Mono.just(messageSerializer.deserializeList(responseMessage, Long.class).get(0));
-            //return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
+
+            List<Long> sequenceNumberList = messageSerializer.deserializeList(responseMessage, Long.class);
+            if (sequenceNumberList ==  null || sequenceNumberList.size() == 0) {
+                return Mono.error(logger.logExceptionAsError(new AmqpException(false,
+                    String.format("Service bus response empty. Could not schedule message with message id: '%s'.",
+                        messageToSchedule.getMessageId()), getErrorContext())));
+            }
+            return Mono.just(sequenceNumberList.get(0));
         }));
-            //.next();
     }
 
     /**
