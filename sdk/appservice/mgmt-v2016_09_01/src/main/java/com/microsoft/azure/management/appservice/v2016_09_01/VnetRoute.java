@@ -15,12 +15,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 
 /**
  * Type representing VnetRoute.
  */
-public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatable<VnetRoute.Update>, HasManager<AppServiceManager> {
+public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatable<VnetRoute.Update>, HasManager<WebManager> {
     /**
      * @return the endAddress value.
      */

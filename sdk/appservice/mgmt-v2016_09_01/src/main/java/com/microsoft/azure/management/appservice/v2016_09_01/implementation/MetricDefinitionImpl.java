@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2016_09_01.MetricAvailabilily;
 
 class MetricDefinitionImpl extends WrapperImpl<MetricDefinitionInner> implements MetricDefinition {
-    private final AppServiceManager manager;
-    MetricDefinitionImpl(MetricDefinitionInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    MetricDefinitionImpl(MetricDefinitionInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
