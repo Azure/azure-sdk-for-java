@@ -131,6 +131,7 @@ public enum NtfsFileAttributes {
         String[] splitAttributes = ntfsAttributes.split("\\|");
 
         for (String sa : splitAttributes) {
+            sa = sa.trim();
             if (sa.equals("ReadOnly")) {
                 attributes.add(NtfsFileAttributes.READ_ONLY);
             } else if (sa.equals("Hidden")) {
@@ -152,7 +153,7 @@ public enum NtfsFileAttributes {
             } else if (sa.equals("NoScrubData")) {
                 attributes.add(NtfsFileAttributes.NO_SCRUB_DATA);
             } else {
-                throw new IllegalArgumentException("value");
+                throw new IllegalArgumentException("FileAttribute '" + sa + "' not recognized.");
             }
         }
 
