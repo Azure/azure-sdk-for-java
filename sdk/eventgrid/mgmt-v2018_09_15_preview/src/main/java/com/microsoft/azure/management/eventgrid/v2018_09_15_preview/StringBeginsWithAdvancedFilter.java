@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * StringBeginsWith Filter.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType", defaultImpl = StringBeginsWithAdvancedFilter.class)
 @JsonTypeName("StringBeginsWith")
 public class StringBeginsWithAdvancedFilter extends AdvancedFilter {
     /**
