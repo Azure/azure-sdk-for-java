@@ -161,14 +161,14 @@ public final class ResourceUtils {
         String resourceType = resourceTypeFromResourceId(id).toLowerCase();
         // Exact match
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.getResourceType().equalsIgnoreCase(resourceType)) {
-                return prt.getApiVersions().get(0);
+            if (prt.resourceType().equalsIgnoreCase(resourceType)) {
+                return prt.apiVersions().get(0);
             }
         }
         // child resource, e.g. sites/config
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.getResourceType().toLowerCase().contains("/" + resourceType)) {
-                return prt.getApiVersions().get(0);
+            if (prt.resourceType().toLowerCase().contains("/" + resourceType)) {
+                return prt.apiVersions().get(0);
             }
         }
         // look for parent
@@ -177,7 +177,7 @@ public final class ResourceUtils {
             return defaultApiVersion(parentId, provider);
         } else {
             // Fallback: use a random one, not guaranteed to work
-            return provider.resourceTypes().get(0).getApiVersions().get(0);
+            return provider.resourceTypes().get(0).apiVersions().get(0);
         }
     }
 

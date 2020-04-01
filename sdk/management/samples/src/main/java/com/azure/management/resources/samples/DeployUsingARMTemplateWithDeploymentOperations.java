@@ -112,8 +112,8 @@ public final class DeployUsingARMTemplateWithDeploymentOperations {
                                     for (DeploymentOperation operation : deploymentOperations) {
                                         if (operation.targetResource() != null) {
                                             System.out.println(String.format("%s - %s: %s %s",
-                                                    operation.targetResource().getResourceName(),
-                                                    operation.targetResource().getResourceName(),
+                                                    operation.targetResource().resourceName(),
+                                                    operation.targetResource().resourceName(),
                                                     operation.provisioningState(),
                                                     operation.statusMessage() != null ? operation.statusMessage() : ""));
                                         }
