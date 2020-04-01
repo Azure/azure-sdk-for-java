@@ -109,15 +109,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Instant> renewMessageLock(UUID lockToken) {
-        return renewMessageLock(new UUID[]{lockToken})
-            .next();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize) {
         return scheduleMessage(message, scheduledEnqueueTime, maxSendLinkSize)
             .next();
@@ -294,14 +285,17 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return message;
     }
 
-    private Flux<Instant> renewMessageLock(UUID[] renewLockList) {
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Instant> renewMessageLock(UUID lockToken) {
         return  isAuthorized(PEEK_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(RENEW_LOCK_OPERATION,
                 channel.getReceiveLinkName());
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, renewLockList)));
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, new UUID[]{lockToken})));
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -311,7 +305,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
 
             return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
-        }));
+        }))
+            .next();
     }
 
     /**
