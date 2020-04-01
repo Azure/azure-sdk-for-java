@@ -54,10 +54,14 @@ class DomainTopicsImpl extends WrapperImpl<DomainTopicsInner> implements DomainT
     public Observable<DomainTopic> getAsync(String resourceGroupName, String domainName, String topicName) {
         DomainTopicsInner client = this.inner();
         return client.getAsync(resourceGroupName, domainName, topicName)
-        .map(new Func1<DomainTopicInner, DomainTopic>() {
+        .flatMap(new Func1<DomainTopicInner, Observable<DomainTopic>>() {
             @Override
-            public DomainTopic call(DomainTopicInner inner) {
-                return wrapModel(inner);
+            public Observable<DomainTopic> call(DomainTopicInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((DomainTopic)wrapModel(inner));
+                }
             }
        });
     }
