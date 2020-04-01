@@ -31,7 +31,7 @@ public final class ResourceGroupInner extends Resource {
      * 
      * @return the properties value.
      */
-    public ResourceGroupProperties getProperties() {
+    public ResourceGroupProperties properties() {
         return this.properties;
     }
 
@@ -41,7 +41,7 @@ public final class ResourceGroupInner extends Resource {
      * @param properties the properties value to set.
      * @return the ResourceGroupInner object itself.
      */
-    public ResourceGroupInner setProperties(ResourceGroupProperties properties) {
+    public ResourceGroupInner withProperties(ResourceGroupProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -52,7 +52,7 @@ public final class ResourceGroupInner extends Resource {
      * 
      * @return the managedBy value.
      */
-    public String getManagedBy() {
+    public String managedBy() {
         return this.managedBy;
     }
 
@@ -63,7 +63,7 @@ public final class ResourceGroupInner extends Resource {
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupInner object itself.
      */
-    public ResourceGroupInner setManagedBy(String managedBy) {
+    public ResourceGroupInner withManagedBy(String managedBy) {
         this.managedBy = managedBy;
         return this;
     }

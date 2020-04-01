@@ -42,7 +42,7 @@ public final class EncryptionServices {
      * 
      * @return the blob value.
      */
-    public EncryptionService getBlob() {
+    public EncryptionService blob() {
         return this.blob;
     }
 
@@ -53,7 +53,7 @@ public final class EncryptionServices {
      * @param blob the blob value to set.
      * @return the EncryptionServices object itself.
      */
-    public EncryptionServices setBlob(EncryptionService blob) {
+    public EncryptionServices withBlob(EncryptionService blob) {
         this.blob = blob;
         return this;
     }
@@ -64,7 +64,7 @@ public final class EncryptionServices {
      * 
      * @return the file value.
      */
-    public EncryptionService getFile() {
+    public EncryptionService file() {
         return this.file;
     }
 
@@ -75,7 +75,7 @@ public final class EncryptionServices {
      * @param file the file value to set.
      * @return the EncryptionServices object itself.
      */
-    public EncryptionServices setFile(EncryptionService file) {
+    public EncryptionServices withFile(EncryptionService file) {
         this.file = file;
         return this;
     }
@@ -86,7 +86,7 @@ public final class EncryptionServices {
      * 
      * @return the table value.
      */
-    public EncryptionService getTable() {
+    public EncryptionService table() {
         return this.table;
     }
 
@@ -97,7 +97,7 @@ public final class EncryptionServices {
      * @param table the table value to set.
      * @return the EncryptionServices object itself.
      */
-    public EncryptionServices setTable(EncryptionService table) {
+    public EncryptionServices withTable(EncryptionService table) {
         this.table = table;
         return this;
     }
@@ -108,7 +108,7 @@ public final class EncryptionServices {
      * 
      * @return the queue value.
      */
-    public EncryptionService getQueue() {
+    public EncryptionService queue() {
         return this.queue;
     }
 
@@ -119,7 +119,7 @@ public final class EncryptionServices {
      * @param queue the queue value to set.
      * @return the EncryptionServices object itself.
      */
-    public EncryptionServices setQueue(EncryptionService queue) {
+    public EncryptionServices withQueue(EncryptionService queue) {
         this.queue = queue;
         return this;
     }

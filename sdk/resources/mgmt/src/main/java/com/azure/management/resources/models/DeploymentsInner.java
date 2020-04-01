@@ -28,6 +28,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.DeploymentWhatIf;
 import com.azure.management.resources.ScopedDeployment;
@@ -75,361 +77,361 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
         @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Head("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistenceAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Boolean>> checkExistenceAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> getAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentExtendedInner>> getAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> cancelAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> cancelAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Head("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistenceAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Boolean>> checkExistenceAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> getAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentExtendedInner>> getAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> cancelAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> cancelAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters);
+        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtTenantScope(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtTenantScope(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Head("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistenceAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Boolean>> checkExistenceAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> getAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentExtendedInner>> getAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> cancelAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> cancelAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters);
+        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Head("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistenceAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Boolean>> checkExistenceAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> getAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentExtendedInner>> getAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> cancelAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> cancelAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> whatIfAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> whatIfAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Head("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistence(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Boolean>> checkExistence(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentExtendedInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> cancel(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> cancel(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentValidateResultInner>> validate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<DeploymentValidateResultInner>> validate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> whatIf(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> whatIf(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Resources/calculateTemplateHash")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<TemplateHashResultInner>> calculateTemplateHash(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object template);
+        Mono<SimpleResponse<TemplateHashResultInner>> calculateTemplateHash(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") Object template, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDeleteAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDeleteAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDeleteAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDeleteAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters);
+        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDeleteAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDeleteAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters);
+        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ScopedDeployment parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDeleteAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> beginDeleteAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<DeploymentsBeginWhatIfAtSubscriptionScopeResponse> beginWhatIfAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters);
+        Mono<DeploymentsBeginWhatIfAtSubscriptionScopeResponse> beginWhatIfAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters);
+        Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<DeploymentsBeginWhatIfResponse> beginWhatIf(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters);
+        Mono<DeploymentsBeginWhatIfResponse> beginWhatIf(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DeploymentWhatIf parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listAtSubscriptionScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentListResultInner>> listAtSubscriptionScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -443,7 +445,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope, String deploymentName) {
-        return service.deleteAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.deleteAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -488,7 +491,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceAtScopeWithResponseAsync(String scope, String deploymentName) {
-        return service.checkExistenceAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.checkExistenceAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -538,7 +542,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtScopeWithResponseAsync(String scope, String deploymentName, DeploymentInner parameters) {
-        return service.createOrUpdateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.createOrUpdateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -585,7 +590,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> getAtScopeWithResponseAsync(String scope, String deploymentName) {
-        return service.getAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -634,7 +640,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtScopeWithResponseAsync(String scope, String deploymentName) {
-        return service.cancelAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.cancelAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -678,7 +685,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtScopeWithResponseAsync(String scope, String deploymentName, DeploymentInner parameters) {
-        return service.validateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.validateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -729,7 +737,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtScopeWithResponseAsync(String scope, String deploymentName) {
-        return service.exportTemplateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.exportTemplateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -779,14 +788,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtScopeSinglePageAsync(String scope, String filter, Integer top) {
-        return service.listAtScope(this.client.getHost(), scope, filter, top, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtScope(this.client.getHost(), scope, filter, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -818,6 +828,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedFlux<DeploymentExtendedInner> listAtScopeAsync(String scope) {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, filter, top),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink));
@@ -850,6 +861,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedIterable<DeploymentExtendedInner> listAtScope(String scope) {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtScopeAsync(scope, filter, top));
     }
 
@@ -863,7 +875,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtTenantScopeWithResponseAsync(String deploymentName) {
-        return service.deleteAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.deleteAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -905,7 +918,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceAtTenantScopeWithResponseAsync(String deploymentName) {
-        return service.checkExistenceAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.checkExistenceAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -952,7 +966,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtTenantScopeWithResponseAsync(String deploymentName, ScopedDeployment parameters) {
-        return service.createOrUpdateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.createOrUpdateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -996,7 +1011,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> getAtTenantScopeWithResponseAsync(String deploymentName) {
-        return service.getAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1042,7 +1058,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtTenantScopeWithResponseAsync(String deploymentName) {
-        return service.cancelAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.cancelAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1083,7 +1100,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtTenantScopeWithResponseAsync(String deploymentName, ScopedDeployment parameters) {
-        return service.validateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.validateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1131,7 +1149,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtTenantScopeWithResponseAsync(String deploymentName) {
-        return service.exportTemplateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.exportTemplateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1178,14 +1197,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtTenantScopeSinglePageAsync(String filter, Integer top) {
-        return service.listAtTenantScope(this.client.getHost(), filter, top, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtTenantScope(this.client.getHost(), filter, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1214,6 +1234,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedFlux<DeploymentExtendedInner> listAtTenantScopeAsync() {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(filter, top),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
@@ -1243,6 +1264,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedIterable<DeploymentExtendedInner> listAtTenantScope() {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtTenantScopeAsync(filter, top));
     }
 
@@ -1257,7 +1279,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
-        return service.deleteAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.deleteAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1302,7 +1325,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
-        return service.checkExistenceAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.checkExistenceAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1352,7 +1376,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, ScopedDeployment parameters) {
-        return service.createOrUpdateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.createOrUpdateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1399,7 +1424,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> getAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
-        return service.getAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1448,7 +1474,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
-        return service.cancelAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.cancelAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1492,7 +1519,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, ScopedDeployment parameters) {
-        return service.validateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.validateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1543,7 +1571,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
-        return service.exportTemplateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.exportTemplateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1593,14 +1622,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtManagementGroupScopeSinglePageAsync(String groupId, String filter, Integer top) {
-        return service.listAtManagementGroupScope(this.client.getHost(), groupId, filter, top, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtManagementGroupScope(this.client.getHost(), groupId, filter, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1632,6 +1662,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedFlux<DeploymentExtendedInner> listAtManagementGroupScopeAsync(String groupId) {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, filter, top),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
@@ -1664,6 +1695,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId) {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, filter, top));
     }
 
@@ -1677,7 +1709,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtSubscriptionScopeWithResponseAsync(String deploymentName) {
-        return service.deleteAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.deleteAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1719,7 +1752,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceAtSubscriptionScopeWithResponseAsync(String deploymentName) {
-        return service.checkExistenceAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.checkExistenceAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1766,7 +1800,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentInner parameters) {
-        return service.createOrUpdateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.createOrUpdateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1810,7 +1845,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> getAtSubscriptionScopeWithResponseAsync(String deploymentName) {
-        return service.getAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.getAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1856,7 +1892,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAtSubscriptionScopeWithResponseAsync(String deploymentName) {
-        return service.cancelAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.cancelAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1897,7 +1934,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentInner parameters) {
-        return service.validateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.validateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1946,7 +1984,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> whatIfAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentWhatIf parameters) {
-        return service.whatIfAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.whatIfAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -1990,7 +2029,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtSubscriptionScopeWithResponseAsync(String deploymentName) {
-        return service.exportTemplateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.exportTemplateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2037,14 +2077,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listSinglePageAsync(String filter, Integer top) {
-        return service.list(this.client.getHost(), filter, top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2073,6 +2114,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedFlux<DeploymentExtendedInner> listAsync() {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
@@ -2102,6 +2144,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedIterable<DeploymentExtendedInner> list() {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAsync(filter, top));
     }
 
@@ -2116,7 +2159,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName) {
-        return service.delete(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2161,7 +2205,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName, String deploymentName) {
-        return service.checkExistence(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.checkExistence(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2211,7 +2256,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2258,7 +2304,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String deploymentName) {
-        return service.getByResourceGroup(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2307,7 +2354,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String deploymentName) {
-        return service.cancel(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.cancel(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2351,7 +2399,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentValidateResultInner>> validateWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return service.validate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.validate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2403,7 +2452,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> whatIfWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        return service.whatIf(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.whatIf(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2450,7 +2500,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateWithResponseAsync(String resourceGroupName, String deploymentName) {
-        return service.exportTemplate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.exportTemplate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2500,14 +2551,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String filter, Integer top) {
-        return service.listByResourceGroup(this.client.getHost(), resourceGroupName, filter, top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), resourceGroupName, filter, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2539,6 +2591,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedFlux<DeploymentExtendedInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -2571,6 +2624,7 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
     public PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top));
     }
 
@@ -2584,7 +2638,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TemplateHashResultInner>> calculateTemplateHashWithResponseAsync(Object template) {
-        return service.calculateTemplateHash(this.client.getHost(), this.client.getApiVersion(), template);
+        return FluxUtil.withContext(context -> service.calculateTemplateHash(this.client.getHost(), this.client.getApiVersion(), template, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2631,7 +2686,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtScopeWithResponseAsync(String scope, String deploymentName) {
-        return service.beginDeleteAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.beginDeleteAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2675,7 +2731,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtScopeWithResponseAsync(String scope, String deploymentName, DeploymentInner parameters) {
-        return service.beginCreateOrUpdateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.beginCreateOrUpdateAtScope(this.client.getHost(), scope, deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2725,7 +2782,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtTenantScopeWithResponseAsync(String deploymentName) {
-        return service.beginDeleteAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.beginDeleteAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2766,7 +2824,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScopeWithResponseAsync(String deploymentName, ScopedDeployment parameters) {
-        return service.beginCreateOrUpdateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.beginCreateOrUpdateAtTenantScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2815,7 +2874,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName) {
-        return service.beginDeleteAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.beginDeleteAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2859,7 +2919,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, ScopedDeployment parameters) {
-        return service.beginCreateOrUpdateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.beginCreateOrUpdateAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2909,7 +2970,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteAtSubscriptionScopeWithResponseAsync(String deploymentName) {
-        return service.beginDeleteAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.beginDeleteAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2950,7 +3012,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentInner parameters) {
-        return service.beginCreateOrUpdateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.beginCreateOrUpdateAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -2999,7 +3062,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentsBeginWhatIfAtSubscriptionScopeResponse> beginWhatIfAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentWhatIf parameters) {
-        return service.beginWhatIfAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.beginWhatIfAtSubscriptionScope(this.client.getHost(), deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3048,7 +3112,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String deploymentName) {
-        return service.beginDelete(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3092,7 +3157,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters) {
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3144,7 +3210,8 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentsBeginWhatIfResponse> beginWhatIfWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters) {
-        return service.beginWhatIf(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.beginWhatIf(this.client.getHost(), resourceGroupName, deploymentName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3194,14 +3261,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3214,14 +3282,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtTenantScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtTenantScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3234,14 +3303,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtManagementGroupScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtManagementGroupScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtManagementGroupScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3254,14 +3324,15 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listAtSubscriptionScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtSubscriptionScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtSubscriptionScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -3274,13 +3345,14 @@ public final class DeploymentsInner implements InnerSupportsGet<DeploymentExtend
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentExtendedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<DeploymentExtendedInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

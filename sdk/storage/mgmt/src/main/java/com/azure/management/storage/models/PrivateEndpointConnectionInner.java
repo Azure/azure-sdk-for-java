@@ -34,7 +34,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     /*
      * The provisioning state of the private endpoint connection resource.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProvisioningState provisioningState;
 
     /**
@@ -42,7 +42,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * 
      * @return the privateEndpoint value.
      */
-    public PrivateEndpoint getPrivateEndpoint() {
+    public PrivateEndpoint privateEndpoint() {
         return this.privateEndpoint;
     }
 
@@ -52,7 +52,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner setPrivateEndpoint(PrivateEndpoint privateEndpoint) {
+    public PrivateEndpointConnectionInner withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
     }
@@ -64,7 +64,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * 
      * @return the privateLinkServiceConnectionState value.
      */
-    public PrivateLinkServiceConnectionState getPrivateLinkServiceConnectionState() {
+    public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
         return this.privateLinkServiceConnectionState;
     }
 
@@ -77,7 +77,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner setPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
@@ -88,19 +88,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
-    public PrivateEndpointConnectionProvisioningState getProvisioningState() {
+    public PrivateEndpointConnectionProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState property: The provisioning state of the
-     * private endpoint connection resource.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the PrivateEndpointConnectionInner object itself.
-     */
-    public PrivateEndpointConnectionInner setProvisioningState(PrivateEndpointConnectionProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 }

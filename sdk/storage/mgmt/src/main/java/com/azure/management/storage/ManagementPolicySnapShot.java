@@ -23,7 +23,7 @@ public final class ManagementPolicySnapShot {
      * 
      * @return the delete value.
      */
-    public DateAfterCreation getDelete() {
+    public DateAfterCreation delete() {
         return this.delete;
     }
 
@@ -33,7 +33,7 @@ public final class ManagementPolicySnapShot {
      * @param delete the delete value to set.
      * @return the ManagementPolicySnapShot object itself.
      */
-    public ManagementPolicySnapShot setDelete(DateAfterCreation delete) {
+    public ManagementPolicySnapShot withDelete(DateAfterCreation delete) {
         this.delete = delete;
         return this;
     }

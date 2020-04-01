@@ -41,7 +41,7 @@ class ResourceGroupImpl extends
 
     @Override
     public String provisioningState() {
-        return this.inner().getProperties().getProvisioningState();
+        return this.inner().properties().provisioningState();
     }
 
     @Override
@@ -81,8 +81,8 @@ class ResourceGroupImpl extends
     @Override
     public Mono<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
         ExportTemplateRequest inner = new ExportTemplateRequest()
-                .setResources(Arrays.asList("*"))
-                .setOptions(options.toString());
+                .withResources(Arrays.asList("*"))
+                .withOptions(options.toString());
         return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner -> new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
     }
 

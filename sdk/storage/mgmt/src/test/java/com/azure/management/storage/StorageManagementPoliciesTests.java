@@ -57,13 +57,13 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         prefixesToFilterFor.add("container1/foo");
 
         //Assertions.assertEquals("management-test", managementPolicy.policy().);
-        Assertions.assertEquals("rule1", managementPolicy.policy().getRules().get(0).getName());
-        Assertions.assertEquals(blobTypesToFilterFor, managementPolicy.policy().getRules().get(0).getDefinition().getFilters().getBlobTypes());
-        Assertions.assertEquals(prefixesToFilterFor, managementPolicy.policy().getRules().get(0).getDefinition().getFilters().getPrefixMatch());
-        Assertions.assertEquals(30, managementPolicy.policy().getRules().get(0).getDefinition().getActions().getBaseBlob().getTierToCool().getDaysAfterModificationGreaterThan(), 0.001);
-        Assertions.assertEquals(90, managementPolicy.policy().getRules().get(0).getDefinition().getActions().getBaseBlob().getTierToArchive().getDaysAfterModificationGreaterThan(), 0.001);
-        Assertions.assertEquals(2555, managementPolicy.policy().getRules().get(0).getDefinition().getActions().getBaseBlob().getDelete().getDaysAfterModificationGreaterThan(), 0.001);
-        Assertions.assertEquals(90, managementPolicy.policy().getRules().get(0).getDefinition().getActions().getSnapshot().getDelete().getDaysAfterCreationGreaterThan(),0.001);
+        Assertions.assertEquals("rule1", managementPolicy.policy().rules().get(0).name());
+        Assertions.assertEquals(blobTypesToFilterFor, managementPolicy.policy().rules().get(0).definition().filters().blobTypes());
+        Assertions.assertEquals(prefixesToFilterFor, managementPolicy.policy().rules().get(0).definition().filters().prefixMatch());
+        Assertions.assertEquals(30, managementPolicy.policy().rules().get(0).definition().actions().baseBlob().tierToCool().daysAfterModificationGreaterThan(), 0.001);
+        Assertions.assertEquals(90, managementPolicy.policy().rules().get(0).definition().actions().baseBlob().tierToArchive().daysAfterModificationGreaterThan(), 0.001);
+        Assertions.assertEquals(2555, managementPolicy.policy().rules().get(0).definition().actions().baseBlob().delete().daysAfterModificationGreaterThan(), 0.001);
+        Assertions.assertEquals(90, managementPolicy.policy().rules().get(0).definition().actions().snapshot().delete().daysAfterCreationGreaterThan(),0.001);
     }
 
     @Test

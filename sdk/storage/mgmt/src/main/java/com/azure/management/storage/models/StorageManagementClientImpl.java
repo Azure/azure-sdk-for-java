@@ -36,7 +36,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
-    StorageManagementClientImpl setSubscriptionId(String subscriptionId) {
+    public StorageManagementClientImpl setSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -61,7 +61,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * @param host the host value.
      * @return the service client itself.
      */
-    StorageManagementClientImpl setHost(String host) {
+    public StorageManagementClientImpl setHost(String host) {
         this.host = host;
         return this;
     }
@@ -86,7 +86,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient {
      * @param apiVersion the apiVersion value.
      * @return the service client itself.
      */
-    StorageManagementClientImpl setApiVersion(String apiVersion) {
+    public StorageManagementClientImpl setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
     }

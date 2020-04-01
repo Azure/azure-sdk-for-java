@@ -49,7 +49,7 @@ public final class BlobRestoreStatusInner {
      * 
      * @return the status value.
      */
-    public BlobRestoreProgressStatus getStatus() {
+    public BlobRestoreProgressStatus status() {
         return this.status;
     }
 
@@ -59,7 +59,7 @@ public final class BlobRestoreStatusInner {
      * 
      * @return the failureReason value.
      */
-    public String getFailureReason() {
+    public String failureReason() {
         return this.failureReason;
     }
 
@@ -68,7 +68,7 @@ public final class BlobRestoreStatusInner {
      * 
      * @return the restoreId value.
      */
-    public String getRestoreId() {
+    public String restoreId() {
         return this.restoreId;
     }
 
@@ -77,7 +77,7 @@ public final class BlobRestoreStatusInner {
      * 
      * @return the parameters value.
      */
-    public BlobRestoreParameters getParameters() {
+    public BlobRestoreParameters parameters() {
         return this.parameters;
     }
 }

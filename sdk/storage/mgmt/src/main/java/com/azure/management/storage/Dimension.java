@@ -29,7 +29,7 @@ public final class Dimension {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -39,7 +39,7 @@ public final class Dimension {
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
-    public Dimension setName(String name) {
+    public Dimension withName(String name) {
         this.name = name;
         return this;
     }
@@ -49,7 +49,7 @@ public final class Dimension {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -59,7 +59,7 @@ public final class Dimension {
      * @param displayName the displayName value to set.
      * @return the Dimension object itself.
      */
-    public Dimension setDisplayName(String displayName) {
+    public Dimension withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }

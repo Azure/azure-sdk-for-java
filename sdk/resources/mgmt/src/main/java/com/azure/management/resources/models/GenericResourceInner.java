@@ -57,7 +57,7 @@ public class GenericResourceInner extends Resource {
      * 
      * @return the plan value.
      */
-    public Plan getPlan() {
+    public Plan plan() {
         return this.plan;
     }
 
@@ -67,7 +67,7 @@ public class GenericResourceInner extends Resource {
      * @param plan the plan value to set.
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setPlan(Plan plan) {
+    public GenericResourceInner withPlan(Plan plan) {
         this.plan = plan;
         return this;
     }
@@ -77,7 +77,7 @@ public class GenericResourceInner extends Resource {
      * 
      * @return the properties value.
      */
-    public Object getProperties() {
+    public Object properties() {
         return this.properties;
     }
 
@@ -87,7 +87,7 @@ public class GenericResourceInner extends Resource {
      * @param properties the properties value to set.
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setProperties(Object properties) {
+    public GenericResourceInner withProperties(Object properties) {
         this.properties = properties;
         return this;
     }
@@ -97,7 +97,7 @@ public class GenericResourceInner extends Resource {
      * 
      * @return the kind value.
      */
-    public String getKind() {
+    public String kind() {
         return this.kind;
     }
 
@@ -107,7 +107,7 @@ public class GenericResourceInner extends Resource {
      * @param kind the kind value to set.
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setKind(String kind) {
+    public GenericResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
     }
@@ -118,7 +118,7 @@ public class GenericResourceInner extends Resource {
      * 
      * @return the managedBy value.
      */
-    public String getManagedBy() {
+    public String managedBy() {
         return this.managedBy;
     }
 
@@ -129,7 +129,7 @@ public class GenericResourceInner extends Resource {
      * @param managedBy the managedBy value to set.
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setManagedBy(String managedBy) {
+    public GenericResourceInner withManagedBy(String managedBy) {
         this.managedBy = managedBy;
         return this;
     }
@@ -139,7 +139,7 @@ public class GenericResourceInner extends Resource {
      * 
      * @return the sku value.
      */
-    public Sku getSku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -149,7 +149,7 @@ public class GenericResourceInner extends Resource {
      * @param sku the sku value to set.
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setSku(Sku sku) {
+    public GenericResourceInner withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -159,7 +159,7 @@ public class GenericResourceInner extends Resource {
      * 
      * @return the identity value.
      */
-    public Identity getIdentity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -169,7 +169,7 @@ public class GenericResourceInner extends Resource {
      * @param identity the identity value to set.
      * @return the GenericResourceInner object itself.
      */
-    public GenericResourceInner setIdentity(Identity identity) {
+    public GenericResourceInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }

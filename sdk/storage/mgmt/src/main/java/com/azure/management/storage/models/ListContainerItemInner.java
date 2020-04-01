@@ -98,7 +98,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the publicAccess value.
      */
-    public PublicAccess getPublicAccess() {
+    public PublicAccess publicAccess() {
         return this.publicAccess;
     }
 
@@ -109,7 +109,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * @param publicAccess the publicAccess value to set.
      * @return the ListContainerItemInner object itself.
      */
-    public ListContainerItemInner setPublicAccess(PublicAccess publicAccess) {
+    public ListContainerItemInner withPublicAccess(PublicAccess publicAccess) {
         this.publicAccess = publicAccess;
         return this;
     }
@@ -120,7 +120,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the lastModifiedTime value.
      */
-    public OffsetDateTime getLastModifiedTime() {
+    public OffsetDateTime lastModifiedTime() {
         return this.lastModifiedTime;
     }
 
@@ -129,7 +129,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the leaseStatus value.
      */
-    public LeaseStatus getLeaseStatus() {
+    public LeaseStatus leaseStatus() {
         return this.leaseStatus;
     }
 
@@ -138,7 +138,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the leaseState value.
      */
-    public LeaseState getLeaseState() {
+    public LeaseState leaseState() {
         return this.leaseState;
     }
 
@@ -149,7 +149,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the leaseDuration value.
      */
-    public LeaseDuration getLeaseDuration() {
+    public LeaseDuration leaseDuration() {
         return this.leaseDuration;
     }
 
@@ -159,7 +159,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the metadata value.
      */
-    public Map<String, String> getMetadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -170,7 +170,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * @param metadata the metadata value to set.
      * @return the ListContainerItemInner object itself.
      */
-    public ListContainerItemInner setMetadata(Map<String, String> metadata) {
+    public ListContainerItemInner withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -181,7 +181,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the immutabilityPolicy value.
      */
-    public ImmutabilityPolicyProperties getImmutabilityPolicy() {
+    public ImmutabilityPolicyProperties immutabilityPolicy() {
         return this.immutabilityPolicy;
     }
 
@@ -190,7 +190,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the legalHold value.
      */
-    public LegalHoldProperties getLegalHold() {
+    public LegalHoldProperties legalHold() {
         return this.legalHold;
     }
 
@@ -203,7 +203,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the hasLegalHold value.
      */
-    public Boolean isHasLegalHold() {
+    public Boolean hasLegalHold() {
         return this.hasLegalHold;
     }
 
@@ -216,7 +216,7 @@ public class ListContainerItemInner extends AzureEntityResource {
      * 
      * @return the hasImmutabilityPolicy value.
      */
-    public Boolean isHasImmutabilityPolicy() {
+    public Boolean hasImmutabilityPolicy() {
         return this.hasImmutabilityPolicy;
     }
 }

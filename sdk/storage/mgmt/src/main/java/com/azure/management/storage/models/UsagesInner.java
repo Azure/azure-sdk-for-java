@@ -22,6 +22,8 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,7 +63,7 @@ public final class UsagesInner {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<UsageListResultInner>> listByLocation(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location);
+        Mono<SimpleResponse<UsageListResultInner>> listByLocation(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location, Context context);
     }
 
     /**
@@ -74,14 +76,15 @@ public final class UsagesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByLocationSinglePageAsync(String location) {
-        return service.listByLocation(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), location)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listByLocation(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), location, context))
+            .<PagedResponse<UsageInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
+                res.getValue().value(),
                 null,
-                null));
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

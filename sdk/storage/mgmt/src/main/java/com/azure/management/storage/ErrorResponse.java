@@ -32,7 +32,7 @@ public final class ErrorResponse {
      * 
      * @return the code value.
      */
-    public String getCode() {
+    public String code() {
         return this.code;
     }
 
@@ -43,7 +43,7 @@ public final class ErrorResponse {
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
-    public ErrorResponse setCode(String code) {
+    public ErrorResponse withCode(String code) {
         this.code = code;
         return this;
     }
@@ -54,7 +54,7 @@ public final class ErrorResponse {
      * 
      * @return the message value.
      */
-    public String getMessage() {
+    public String message() {
         return this.message;
     }
 
@@ -65,7 +65,7 @@ public final class ErrorResponse {
      * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */
-    public ErrorResponse setMessage(String message) {
+    public ErrorResponse withMessage(String message) {
         this.message = message;
         return this;
     }

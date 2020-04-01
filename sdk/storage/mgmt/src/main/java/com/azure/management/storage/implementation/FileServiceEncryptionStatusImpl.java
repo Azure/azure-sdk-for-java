@@ -28,7 +28,7 @@ class FileServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImpl
         if (super.encryptionServices == null) {
             return null;
         } else {
-            return super.encryptionServices.getFile();
+            return super.encryptionServices.file();
         }
     }
 }

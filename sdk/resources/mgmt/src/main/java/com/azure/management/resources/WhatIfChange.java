@@ -49,7 +49,7 @@ public final class WhatIfChange {
      * 
      * @return the resourceId value.
      */
-    public String getResourceId() {
+    public String resourceId() {
         return this.resourceId;
     }
 
@@ -59,7 +59,7 @@ public final class WhatIfChange {
      * @param resourceId the resourceId value to set.
      * @return the WhatIfChange object itself.
      */
-    public WhatIfChange setResourceId(String resourceId) {
+    public WhatIfChange withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -70,7 +70,7 @@ public final class WhatIfChange {
      * 
      * @return the changeType value.
      */
-    public ChangeType getChangeType() {
+    public ChangeType changeType() {
         return this.changeType;
     }
 
@@ -81,7 +81,7 @@ public final class WhatIfChange {
      * @param changeType the changeType value to set.
      * @return the WhatIfChange object itself.
      */
-    public WhatIfChange setChangeType(ChangeType changeType) {
+    public WhatIfChange withChangeType(ChangeType changeType) {
         this.changeType = changeType;
         return this;
     }
@@ -92,7 +92,7 @@ public final class WhatIfChange {
      * 
      * @return the before value.
      */
-    public Object getBefore() {
+    public Object before() {
         return this.before;
     }
 
@@ -103,7 +103,7 @@ public final class WhatIfChange {
      * @param before the before value to set.
      * @return the WhatIfChange object itself.
      */
-    public WhatIfChange setBefore(Object before) {
+    public WhatIfChange withBefore(Object before) {
         this.before = before;
         return this;
     }
@@ -114,7 +114,7 @@ public final class WhatIfChange {
      * 
      * @return the after value.
      */
-    public Object getAfter() {
+    public Object after() {
         return this.after;
     }
 
@@ -125,7 +125,7 @@ public final class WhatIfChange {
      * @param after the after value to set.
      * @return the WhatIfChange object itself.
      */
-    public WhatIfChange setAfter(Object after) {
+    public WhatIfChange withAfter(Object after) {
         this.after = after;
         return this;
     }
@@ -135,7 +135,7 @@ public final class WhatIfChange {
      * 
      * @return the delta value.
      */
-    public List<WhatIfPropertyChange> getDelta() {
+    public List<WhatIfPropertyChange> delta() {
         return this.delta;
     }
 
@@ -145,7 +145,7 @@ public final class WhatIfChange {
      * @param delta the delta value to set.
      * @return the WhatIfChange object itself.
      */
-    public WhatIfChange setDelta(List<WhatIfPropertyChange> delta) {
+    public WhatIfChange withDelta(List<WhatIfPropertyChange> delta) {
         this.delta = delta;
         return this;
     }

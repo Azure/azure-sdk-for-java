@@ -38,7 +38,7 @@ public final class VirtualNetworkRule {
      * 
      * @return the virtualNetworkResourceId value.
      */
-    public String getVirtualNetworkResourceId() {
+    public String virtualNetworkResourceId() {
         return this.virtualNetworkResourceId;
     }
 
@@ -51,7 +51,7 @@ public final class VirtualNetworkRule {
      * set.
      * @return the VirtualNetworkRule object itself.
      */
-    public VirtualNetworkRule setVirtualNetworkResourceId(String virtualNetworkResourceId) {
+    public VirtualNetworkRule withVirtualNetworkResourceId(String virtualNetworkResourceId) {
         this.virtualNetworkResourceId = virtualNetworkResourceId;
         return this;
     }
@@ -61,7 +61,7 @@ public final class VirtualNetworkRule {
      * 
      * @return the action value.
      */
-    public Action getAction() {
+    public Action action() {
         return this.action;
     }
 
@@ -71,7 +71,7 @@ public final class VirtualNetworkRule {
      * @param action the action value to set.
      * @return the VirtualNetworkRule object itself.
      */
-    public VirtualNetworkRule setAction(Action action) {
+    public VirtualNetworkRule withAction(Action action) {
         this.action = action;
         return this;
     }
@@ -81,7 +81,7 @@ public final class VirtualNetworkRule {
      * 
      * @return the state value.
      */
-    public State getState() {
+    public State state() {
         return this.state;
     }
 
@@ -91,7 +91,7 @@ public final class VirtualNetworkRule {
      * @param state the state value to set.
      * @return the VirtualNetworkRule object itself.
      */
-    public VirtualNetworkRule setState(State state) {
+    public VirtualNetworkRule withState(State state) {
         this.state = state;
         return this;
     }

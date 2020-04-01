@@ -59,7 +59,7 @@ public final class UpdateHistoryProperty {
      * 
      * @return the update value.
      */
-    public ImmutabilityPolicyUpdateType getUpdate() {
+    public ImmutabilityPolicyUpdateType update() {
         return this.update;
     }
 
@@ -70,7 +70,7 @@ public final class UpdateHistoryProperty {
      * 
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
-    public Integer getImmutabilityPeriodSinceCreationInDays() {
+    public Integer immutabilityPeriodSinceCreationInDays() {
         return this.immutabilityPeriodSinceCreationInDays;
     }
 
@@ -80,7 +80,7 @@ public final class UpdateHistoryProperty {
      * 
      * @return the timestamp value.
      */
-    public OffsetDateTime getTimestamp() {
+    public OffsetDateTime timestamp() {
         return this.timestamp;
     }
 
@@ -90,7 +90,7 @@ public final class UpdateHistoryProperty {
      * 
      * @return the objectIdentifier value.
      */
-    public String getObjectIdentifier() {
+    public String objectIdentifier() {
         return this.objectIdentifier;
     }
 
@@ -100,7 +100,7 @@ public final class UpdateHistoryProperty {
      * 
      * @return the tenantId value.
      */
-    public String getTenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -110,7 +110,7 @@ public final class UpdateHistoryProperty {
      * 
      * @return the upn value.
      */
-    public String getUpn() {
+    public String upn() {
         return this.upn;
     }
 }

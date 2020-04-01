@@ -39,7 +39,7 @@ public final class LegalHoldInner {
      * 
      * @return the hasLegalHold value.
      */
-    public Boolean isHasLegalHold() {
+    public Boolean hasLegalHold() {
         return this.hasLegalHold;
     }
 
@@ -49,7 +49,7 @@ public final class LegalHoldInner {
      * 
      * @return the tags value.
      */
-    public List<String> getTags() {
+    public List<String> tags() {
         return this.tags;
     }
 
@@ -60,7 +60,7 @@ public final class LegalHoldInner {
      * @param tags the tags value to set.
      * @return the LegalHoldInner object itself.
      */
-    public LegalHoldInner setTags(List<String> tags) {
+    public LegalHoldInner withTags(List<String> tags) {
         this.tags = tags;
         return this;
     }

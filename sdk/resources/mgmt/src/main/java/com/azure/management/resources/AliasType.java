@@ -30,7 +30,7 @@ public final class AliasType {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -40,7 +40,7 @@ public final class AliasType {
      * @param name the name value to set.
      * @return the AliasType object itself.
      */
-    public AliasType setName(String name) {
+    public AliasType withName(String name) {
         this.name = name;
         return this;
     }
@@ -50,7 +50,7 @@ public final class AliasType {
      * 
      * @return the paths value.
      */
-    public List<AliasPathType> getPaths() {
+    public List<AliasPathType> paths() {
         return this.paths;
     }
 
@@ -60,7 +60,7 @@ public final class AliasType {
      * @param paths the paths value to set.
      * @return the AliasType object itself.
      */
-    public AliasType setPaths(List<AliasPathType> paths) {
+    public AliasType withPaths(List<AliasPathType> paths) {
         this.paths = paths;
         return this;
     }

@@ -27,8 +27,8 @@ public abstract class StorageAccountEncryptionStatusImpl implements StorageAccou
         EncryptionService encryptionService = this.encryptionService();
         if (encryptionService == null) {
             return false;
-        } else if (encryptionService.isEnabled() != null) {
-            return encryptionService.isEnabled();
+        } else if (encryptionService.enabled() != null) {
+            return encryptionService.enabled();
         } else {
             return false;
         }
@@ -40,7 +40,7 @@ public abstract class StorageAccountEncryptionStatusImpl implements StorageAccou
         if (encryptionService == null) {
             return null;
         } else {
-            return encryptionService.getLastEnabledTime();
+            return encryptionService.lastEnabledTime();
         }
     }
 

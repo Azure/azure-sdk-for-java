@@ -37,7 +37,7 @@ public class ManagementPolicyInner extends ProxyResource {
      * 
      * @return the lastModifiedTime value.
      */
-    public OffsetDateTime getLastModifiedTime() {
+    public OffsetDateTime lastModifiedTime() {
         return this.lastModifiedTime;
     }
 
@@ -48,7 +48,7 @@ public class ManagementPolicyInner extends ProxyResource {
      * 
      * @return the policy value.
      */
-    public ManagementPolicySchema getPolicy() {
+    public ManagementPolicySchema policy() {
         return this.policy;
     }
 
@@ -60,7 +60,7 @@ public class ManagementPolicyInner extends ProxyResource {
      * @param policy the policy value to set.
      * @return the ManagementPolicyInner object itself.
      */
-    public ManagementPolicyInner setPolicy(ManagementPolicySchema policy) {
+    public ManagementPolicyInner withPolicy(ManagementPolicySchema policy) {
         this.policy = policy;
         return this;
     }

@@ -26,7 +26,7 @@ public final class PreAuthorizedApplicationExtension {
      * 
      * @return the conditions value.
      */
-    public List<String> getConditions() {
+    public List<String> conditions() {
         return this.conditions;
     }
 
@@ -36,7 +36,7 @@ public final class PreAuthorizedApplicationExtension {
      * @param conditions the conditions value to set.
      * @return the PreAuthorizedApplicationExtension object itself.
      */
-    public PreAuthorizedApplicationExtension setConditions(List<String> conditions) {
+    public PreAuthorizedApplicationExtension withConditions(List<String> conditions) {
         this.conditions = conditions;
         return this;
     }

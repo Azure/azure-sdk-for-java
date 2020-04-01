@@ -49,7 +49,7 @@ public final class TagProperty {
      * 
      * @return the tag value.
      */
-    public String getTag() {
+    public String tag() {
         return this.tag;
     }
 
@@ -58,7 +58,7 @@ public final class TagProperty {
      * 
      * @return the timestamp value.
      */
-    public OffsetDateTime getTimestamp() {
+    public OffsetDateTime timestamp() {
         return this.timestamp;
     }
 
@@ -68,7 +68,7 @@ public final class TagProperty {
      * 
      * @return the objectIdentifier value.
      */
-    public String getObjectIdentifier() {
+    public String objectIdentifier() {
         return this.objectIdentifier;
     }
 
@@ -78,7 +78,7 @@ public final class TagProperty {
      * 
      * @return the tenantId value.
      */
-    public String getTenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -88,7 +88,7 @@ public final class TagProperty {
      * 
      * @return the upn value.
      */
-    public String getUpn() {
+    public String upn() {
         return this.upn;
     }
 }

@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.6.0-beta.1 (Unreleased)
-
+- Added a constant for the directory metadata marker. 
 
 ## 12.5.0 (2020-03-11)
 - Added types that enabled buffered upload in datalake.

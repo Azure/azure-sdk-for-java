@@ -108,7 +108,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the sku value.
      */
-    public Sku getSku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -120,7 +120,7 @@ public class StorageAccountUpdateParameters {
      * @param sku the sku value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setSku(Sku sku) {
+    public StorageAccountUpdateParameters withSku(Sku sku) {
         this.sku = sku;
         return this;
     }
@@ -135,7 +135,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the tags value.
      */
-    public Map<String, String> getTags() {
+    public Map<String, String> tags() {
         return this.tags;
     }
 
@@ -150,7 +150,7 @@ public class StorageAccountUpdateParameters {
      * @param tags the tags value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setTags(Map<String, String> tags) {
+    public StorageAccountUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
@@ -160,7 +160,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the identity value.
      */
-    public Identity getIdentity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -170,7 +170,7 @@ public class StorageAccountUpdateParameters {
      * @param identity the identity value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setIdentity(Identity identity) {
+    public StorageAccountUpdateParameters withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -181,7 +181,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the kind value.
      */
-    public Kind getKind() {
+    public Kind kind() {
         return this.kind;
     }
 
@@ -192,7 +192,7 @@ public class StorageAccountUpdateParameters {
      * @param kind the kind value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setKind(Kind kind) {
+    public StorageAccountUpdateParameters withKind(Kind kind) {
         this.kind = kind;
         return this;
     }
@@ -205,7 +205,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the customDomain value.
      */
-    public CustomDomain getCustomDomain() {
+    public CustomDomain customDomain() {
         return this.customDomain;
     }
 
@@ -218,7 +218,7 @@ public class StorageAccountUpdateParameters {
      * @param customDomain the customDomain value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setCustomDomain(CustomDomain customDomain) {
+    public StorageAccountUpdateParameters withCustomDomain(CustomDomain customDomain) {
         this.customDomain = customDomain;
         return this;
     }
@@ -229,7 +229,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the encryption value.
      */
-    public Encryption getEncryption() {
+    public Encryption encryption() {
         return this.encryption;
     }
 
@@ -240,7 +240,7 @@ public class StorageAccountUpdateParameters {
      * @param encryption the encryption value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setEncryption(Encryption encryption) {
+    public StorageAccountUpdateParameters withEncryption(Encryption encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -251,7 +251,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the accessTier value.
      */
-    public AccessTier getAccessTier() {
+    public AccessTier accessTier() {
         return this.accessTier;
     }
 
@@ -262,7 +262,7 @@ public class StorageAccountUpdateParameters {
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setAccessTier(AccessTier accessTier) {
+    public StorageAccountUpdateParameters withAccessTier(AccessTier accessTier) {
         this.accessTier = accessTier;
         return this;
     }
@@ -273,7 +273,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
-    public AzureFilesIdentityBasedAuthentication getAzureFilesIdentityBasedAuthentication() {
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
         return this.azureFilesIdentityBasedAuthentication;
     }
 
@@ -285,7 +285,7 @@ public class StorageAccountUpdateParameters {
      * azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountUpdateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
@@ -296,7 +296,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the enableHttpsTrafficOnly value.
      */
-    public Boolean isEnableHttpsTrafficOnly() {
+    public Boolean enableHttpsTrafficOnly() {
         return this.enableHttpsTrafficOnly;
     }
 
@@ -307,7 +307,7 @@ public class StorageAccountUpdateParameters {
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
+    public StorageAccountUpdateParameters withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
         this.enableHttpsTrafficOnly = enableHttpsTrafficOnly;
         return this;
     }
@@ -317,7 +317,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the networkRuleSet value.
      */
-    public NetworkRuleSet getNetworkRuleSet() {
+    public NetworkRuleSet networkRuleSet() {
         return this.networkRuleSet;
     }
 
@@ -327,7 +327,7 @@ public class StorageAccountUpdateParameters {
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setNetworkRuleSet(NetworkRuleSet networkRuleSet) {
+    public StorageAccountUpdateParameters withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
         return this;
     }
@@ -338,7 +338,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the largeFileSharesState value.
      */
-    public LargeFileSharesState getLargeFileSharesState() {
+    public LargeFileSharesState largeFileSharesState() {
         return this.largeFileSharesState;
     }
 
@@ -349,7 +349,7 @@ public class StorageAccountUpdateParameters {
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+    public StorageAccountUpdateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
         return this;
     }
@@ -360,7 +360,7 @@ public class StorageAccountUpdateParameters {
      * 
      * @return the routingPreference value.
      */
-    public RoutingPreference getRoutingPreference() {
+    public RoutingPreference routingPreference() {
         return this.routingPreference;
     }
 
@@ -371,7 +371,7 @@ public class StorageAccountUpdateParameters {
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters setRoutingPreference(RoutingPreference routingPreference) {
+    public StorageAccountUpdateParameters withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
     }

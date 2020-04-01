@@ -62,11 +62,11 @@ final class StorageEncryptionHelper {
      * @return the encryption key source type
      */
     static StorageAccountEncryptionKeySource encryptionKeySource(StorageAccountInner inner) {
-        if (inner.getEncryption() == null
-                || inner.getEncryption().getKeySource() == null) {
+        if (inner.encryption() == null
+                || inner.encryption().keySource() == null) {
             return null;
         }
-        return StorageAccountEncryptionKeySource.fromString(inner.getEncryption().getKeySource().toString());
+        return StorageAccountEncryptionKeySource.fromString(inner.encryption().keySource().toString());
     }
 
     /**
@@ -78,8 +78,8 @@ final class StorageEncryptionHelper {
     static Map<StorageService, StorageAccountEncryptionStatus> encryptionStatuses(StorageAccountInner inner) {
         HashMap<StorageService, StorageAccountEncryptionStatus> statuses = new HashMap<>();
         EncryptionServices services = null;
-        if (inner.getEncryption() != null) {
-            services = inner.getEncryption().getServices();
+        if (inner.encryption() != null) {
+            services = inner.encryption().services();
         }
         statuses.put(StorageService.BLOB, new BlobServiceEncryptionStatusImpl(services));
         statuses.put(StorageService.FILE, new FileServiceEncryptionStatusImpl(services));
@@ -95,17 +95,17 @@ final class StorageEncryptionHelper {
      */
     StorageEncryptionHelper withBlobEncryption() {
         Encryption encryption = getEncryptionConfig(true);
-        if (encryption.getServices() == null) {
-            encryption.setServices(new EncryptionServices());
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
         }
         // Enable encryption for blob service
         //
-        if (encryption.getServices().getBlob() == null) {
-            encryption.getServices().setBlob(new EncryptionService());
+        if (encryption.services().blob() == null) {
+            encryption.services().withBlob(new EncryptionService());
         }
-        encryption.getServices().getBlob().setEnabled(true);
-        if (encryption.getKeySource() == null) {
-            encryption.setKeySource(KeySource.MICROSOFT_STORAGE);
+        encryption.services().blob().withEnabled(true);
+        if (encryption.keySource() == null) {
+            encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
         }
         return this;
     }
@@ -117,17 +117,17 @@ final class StorageEncryptionHelper {
      */
     StorageEncryptionHelper withFileEncryption() {
         Encryption encryption = getEncryptionConfig(true);
-        if (encryption.getServices() == null) {
-            encryption.setServices(new EncryptionServices());
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
         }
         // Enable encryption for file service
         //
-        if (encryption.getServices().getFile() == null) {
-            encryption.getServices().setFile(new EncryptionService());
+        if (encryption.services().file() == null) {
+            encryption.services().withFile(new EncryptionService());
         }
-        encryption.getServices().getFile().setEnabled(true);
-        if (encryption.getKeySource() == null) {
-            encryption.setKeySource(KeySource.MICROSOFT_STORAGE);
+        encryption.services().file().withEnabled(true);
+        if (encryption.keySource() == null) {
+            encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
         }
         return this;
     }
@@ -139,11 +139,11 @@ final class StorageEncryptionHelper {
      */
     StorageEncryptionHelper withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion) {
         Encryption encryption = getEncryptionConfig(true);
-        encryption.setKeySource(KeySource.MICROSOFT_KEYVAULT);
-        encryption.setKeyVaultProperties(new KeyVaultProperties()
-                .setKeyVaultUri(keyVaultUri)
-                .setKeyName(keyName)
-                .setKeyVersion(keyVersion));
+        encryption.withKeySource(KeySource.MICROSOFT_KEYVAULT);
+        encryption.withKeyVaultProperties(new KeyVaultProperties()
+                .withKeyVaultUri(keyVaultUri)
+                .withKeyName(keyName)
+                .withKeyVersion(keyVersion));
         return this;
     }
 
@@ -154,17 +154,17 @@ final class StorageEncryptionHelper {
      */
     StorageEncryptionHelper withoutBlobEncryption() {
         Encryption encryption = getEncryptionConfig(true);
-        if (encryption.getServices() == null) {
-            encryption.setServices(new EncryptionServices());
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
         }
         // Disable encryption for blob service
         //
-        if (encryption.getServices().getBlob() == null) {
-            encryption.getServices().setBlob(new EncryptionService());
+        if (encryption.services().blob() == null) {
+            encryption.services().withBlob(new EncryptionService());
         }
-        encryption.getServices().getBlob().setEnabled(false);
-        if (encryption.getKeySource() == null) {
-            encryption.setKeySource(KeySource.MICROSOFT_STORAGE);
+        encryption.services().blob().withEnabled(false);
+        if (encryption.keySource() == null) {
+            encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
         }
         return this;
     }
@@ -176,17 +176,17 @@ final class StorageEncryptionHelper {
      */
     StorageEncryptionHelper withoutFileEncryption() {
         Encryption encryption = getEncryptionConfig(true);
-        if (encryption.getServices() == null) {
-            encryption.setServices(new EncryptionServices());
+        if (encryption.services() == null) {
+            encryption.withServices(new EncryptionServices());
         }
         // Disable encryption for blob service
         //
-        if (encryption.getServices().getFile() == null) {
-            encryption.getServices().setFile(new EncryptionService());
+        if (encryption.services().file() == null) {
+            encryption.services().withFile(new EncryptionService());
         }
-        encryption.getServices().getFile().setEnabled(false);
-        if (encryption.getKeySource() == null) {
-            encryption.setKeySource(KeySource.MICROSOFT_STORAGE);
+        encryption.services().file().withEnabled(false);
+        if (encryption.keySource() == null) {
+            encryption.withKeySource(KeySource.MICROSOFT_STORAGE);
         }
         return this;
     }
@@ -199,19 +199,19 @@ final class StorageEncryptionHelper {
      */
     private Encryption getEncryptionConfig(boolean createIfNotExists) {
         if (isInCreateMode) {
-            if (this.createParameters.getEncryption() == null) {
+            if (this.createParameters.encryption() == null) {
                 if (createIfNotExists) {
-                    this.createParameters.setEncryption(new Encryption());
+                    this.createParameters.withEncryption(new Encryption());
                 } else {
                     return null;
                 }
             }
-            return this.createParameters.getEncryption();
+            return this.createParameters.encryption();
         } else {
-            if (this.updateParameters.getEncryption() == null) {
-                if (this.inner.getEncryption() == null) {
+            if (this.updateParameters.encryption() == null) {
+                if (this.inner.encryption() == null) {
                     if (createIfNotExists) {
-                        this.updateParameters.setEncryption(new Encryption());
+                        this.updateParameters.withEncryption(new Encryption());
                     } else {
                         return null;
                     }
@@ -219,40 +219,40 @@ final class StorageEncryptionHelper {
                     // Create clone of current encrption
                     //
                     Encryption clonedEncryption = new Encryption();
-                    clonedEncryption.setKeySource(this.inner.getEncryption().getKeySource());
-                    if (this.inner.getEncryption().getKeyVaultProperties() != null) {
-                        clonedEncryption.setKeyVaultProperties(new KeyVaultProperties());
-                        clonedEncryption.getKeyVaultProperties()
-                                .setKeyName(this.inner
-                                        .getEncryption()
-                                        .getKeyVaultProperties()
-                                        .getKeyName())
-                                .setKeyVaultUri(this.inner
-                                        .getEncryption()
-                                        .getKeyVaultProperties()
-                                        .getKeyVaultUri())
-                                .setKeyVersion(this.inner
-                                        .getEncryption()
-                                        .getKeyVaultProperties()
-                                        .getKeyVersion());
+                    clonedEncryption.withKeySource(this.inner.encryption().keySource());
+                    if (this.inner.encryption().keyVaultProperties() != null) {
+                        clonedEncryption.withKeyVaultProperties(new KeyVaultProperties());
+                        clonedEncryption.keyVaultProperties()
+                                .withKeyName(this.inner
+                                        .encryption()
+                                        .keyVaultProperties()
+                                        .keyName())
+                                .withKeyVaultUri(this.inner
+                                        .encryption()
+                                        .keyVaultProperties()
+                                        .keyVaultUri())
+                                .withKeyVersion(this.inner
+                                        .encryption()
+                                        .keyVaultProperties()
+                                        .keyVersion());
                     }
-                    if (this.inner.getEncryption().getServices() != null) {
-                        clonedEncryption.setServices(new EncryptionServices());
-                        if (this.inner.getEncryption().getServices().getBlob() != null) {
-                            clonedEncryption.getServices().setBlob(new EncryptionService());
-                            clonedEncryption.getServices().getBlob()
-                                    .setEnabled(this.inner.getEncryption().getServices().getBlob().isEnabled());
+                    if (this.inner.encryption().services() != null) {
+                        clonedEncryption.withServices(new EncryptionServices());
+                        if (this.inner.encryption().services().blob() != null) {
+                            clonedEncryption.services().withBlob(new EncryptionService());
+                            clonedEncryption.services().blob()
+                                    .withEnabled(this.inner.encryption().services().blob().enabled());
                         }
-                        if (this.inner.getEncryption().getServices().getFile() != null) {
-                            clonedEncryption.getServices().setFile(new EncryptionService());
-                            clonedEncryption.getServices().getFile()
-                                    .setEnabled(this.inner.getEncryption().getServices().getFile().isEnabled());
+                        if (this.inner.encryption().services().file() != null) {
+                            clonedEncryption.services().withFile(new EncryptionService());
+                            clonedEncryption.services().file()
+                                    .withEnabled(this.inner.encryption().services().file().enabled());
                         }
                     }
-                    this.updateParameters.setEncryption(clonedEncryption);
+                    this.updateParameters.withEncryption(clonedEncryption);
                 }
             }
-            return this.updateParameters.getEncryption();
+            return this.updateParameters.encryption();
         }
     }
 }

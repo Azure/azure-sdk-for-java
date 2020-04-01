@@ -46,7 +46,7 @@ public class OperationInner {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -57,7 +57,7 @@ public class OperationInner {
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setName(String name) {
+    public OperationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -68,7 +68,7 @@ public class OperationInner {
      * 
      * @return the display value.
      */
-    public OperationDisplay getDisplay() {
+    public OperationDisplay display() {
         return this.display;
     }
 
@@ -79,7 +79,7 @@ public class OperationInner {
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setDisplay(OperationDisplay display) {
+    public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
         return this;
     }
@@ -89,7 +89,7 @@ public class OperationInner {
      * 
      * @return the origin value.
      */
-    public String getOrigin() {
+    public String origin() {
         return this.origin;
     }
 
@@ -99,7 +99,7 @@ public class OperationInner {
      * @param origin the origin value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setOrigin(String origin) {
+    public OperationInner withOrigin(String origin) {
         this.origin = origin;
         return this;
     }
@@ -110,7 +110,7 @@ public class OperationInner {
      * 
      * @return the serviceSpecification value.
      */
-    public ServiceSpecification getServiceSpecification() {
+    public ServiceSpecification serviceSpecification() {
         return this.serviceSpecification;
     }
 
@@ -121,7 +121,7 @@ public class OperationInner {
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setServiceSpecification(ServiceSpecification serviceSpecification) {
+    public OperationInner withServiceSpecification(ServiceSpecification serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }

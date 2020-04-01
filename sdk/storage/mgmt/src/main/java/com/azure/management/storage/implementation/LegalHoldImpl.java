@@ -28,12 +28,12 @@ class LegalHoldImpl extends WrapperImpl<LegalHoldInner> implements LegalHold {
 
     @Override
     public Boolean hasLegalHold() {
-        return this.inner().isHasLegalHold();
+        return this.inner().hasLegalHold();
     }
 
     @Override
     public List<String> tags() {
-        return this.inner().getTags();
+        return this.inner().tags();
     }
 
 }

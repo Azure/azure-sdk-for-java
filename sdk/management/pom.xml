@@ -282,6 +282,11 @@
                         <environmentVariables>
                             <test.mode>${testMode}</test.mode>
                         </environmentVariables>
+                        <properties>
+                          <configurationParameters>
+                            junit.jupiter.execution.parallel.enabled=false
+                          </configurationParameters>
+                        </properties>
                     </configuration>
                 </plugin>
 

@@ -33,7 +33,7 @@ public final class SKUCapability {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -43,7 +43,7 @@ public final class SKUCapability {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 }

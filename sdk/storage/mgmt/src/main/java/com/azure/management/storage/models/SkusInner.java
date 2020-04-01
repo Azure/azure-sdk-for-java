@@ -22,6 +22,8 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,7 +62,7 @@ public final class SkusInner {
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Storage/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<StorageSkuListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<StorageSkuListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
     }
 
     /**
@@ -71,14 +73,15 @@ public final class SkusInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SkuInformationInner>> listSinglePageAsync() {
-        return service.list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<SkuInformationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
+                res.getValue().value(),
                 null,
-                null));
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

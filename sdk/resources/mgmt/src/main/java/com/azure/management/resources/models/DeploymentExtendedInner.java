@@ -31,7 +31,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -41,7 +41,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
      * @param location the location value to set.
      * @return the DeploymentExtendedInner object itself.
      */
-    public DeploymentExtendedInner setLocation(String location) {
+    public DeploymentExtendedInner withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -51,7 +51,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
      * 
      * @return the properties value.
      */
-    public DeploymentPropertiesExtended getProperties() {
+    public DeploymentPropertiesExtended properties() {
         return this.properties;
     }
 
@@ -61,7 +61,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
      * @param properties the properties value to set.
      * @return the DeploymentExtendedInner object itself.
      */
-    public DeploymentExtendedInner setProperties(DeploymentPropertiesExtended properties) {
+    public DeploymentExtendedInner withProperties(DeploymentPropertiesExtended properties) {
         this.properties = properties;
         return this;
     }

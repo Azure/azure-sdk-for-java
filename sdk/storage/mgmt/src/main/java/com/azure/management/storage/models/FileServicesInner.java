@@ -20,6 +20,8 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.storage.CorsRules;
 import com.azure.management.storage.DeleteRetentionPolicy;
 import reactor.core.publisher.Mono;
@@ -61,19 +63,19 @@ public final class FileServicesInner {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileServiceItemsInner>> list(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<FileServiceItemsInner>> list(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/{FileServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileServicePropertiesInner>> setServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("FileServicesName") String fileServicesName, @BodyParam("application/json") FileServicePropertiesInner parameters);
+        Mono<SimpleResponse<FileServicePropertiesInner>> setServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("FileServicesName") String fileServicesName, @BodyParam("application/json") FileServicePropertiesInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/fileServices/{FileServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<FileServicePropertiesInner>> getServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("FileServicesName") String fileServicesName);
+        Mono<SimpleResponse<FileServicePropertiesInner>> getServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("FileServicesName") String fileServicesName, Context context);
     }
 
     /**
@@ -87,7 +89,8 @@ public final class FileServicesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServiceItemsInner>> listWithResponseAsync(String resourceGroupName, String accountName) {
-        return service.list(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -140,9 +143,10 @@ public final class FileServicesInner {
     public Mono<SimpleResponse<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(String resourceGroupName, String accountName, CorsRules cors, DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         final String fileServicesName = "default";
         FileServicePropertiesInner parameters = new FileServicePropertiesInner();
-        parameters.setCors(cors);
-        parameters.setShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
-        return service.setServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileServicesName, parameters);
+        parameters.withCors(cors);
+        parameters.withShareDeleteRetentionPolicy(shareDeleteRetentionPolicy);
+        return FluxUtil.withContext(context -> service.setServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileServicesName, parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -196,7 +200,8 @@ public final class FileServicesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(String resourceGroupName, String accountName) {
         final String fileServicesName = "default";
-        return service.getServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileServicesName);
+        return FluxUtil.withContext(context -> service.getServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), fileServicesName, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

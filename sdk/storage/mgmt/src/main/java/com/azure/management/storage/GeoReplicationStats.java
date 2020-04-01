@@ -51,7 +51,7 @@ public final class GeoReplicationStats {
      * 
      * @return the status value.
      */
-    public GeoReplicationStatus getStatus() {
+    public GeoReplicationStatus status() {
         return this.status;
     }
 
@@ -65,7 +65,7 @@ public final class GeoReplicationStats {
      * 
      * @return the lastSyncTime value.
      */
-    public OffsetDateTime getLastSyncTime() {
+    public OffsetDateTime lastSyncTime() {
         return this.lastSyncTime;
     }
 
@@ -75,7 +75,7 @@ public final class GeoReplicationStats {
      * 
      * @return the canFailover value.
      */
-    public Boolean isCanFailover() {
+    public Boolean canFailover() {
         return this.canFailover;
     }
 }

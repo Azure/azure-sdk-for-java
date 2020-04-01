@@ -31,7 +31,7 @@ public final class DeploymentValidateResultInner {
      * 
      * @return the error value.
      */
-    public ErrorResponse getError() {
+    public ErrorResponse error() {
         return this.error;
     }
 
@@ -41,7 +41,7 @@ public final class DeploymentValidateResultInner {
      * @param error the error value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
-    public DeploymentValidateResultInner setError(ErrorResponse error) {
+    public DeploymentValidateResultInner withError(ErrorResponse error) {
         this.error = error;
         return this;
     }
@@ -51,7 +51,7 @@ public final class DeploymentValidateResultInner {
      * 
      * @return the properties value.
      */
-    public DeploymentPropertiesExtended getProperties() {
+    public DeploymentPropertiesExtended properties() {
         return this.properties;
     }
 
@@ -61,7 +61,7 @@ public final class DeploymentValidateResultInner {
      * @param properties the properties value to set.
      * @return the DeploymentValidateResultInner object itself.
      */
-    public DeploymentValidateResultInner setProperties(DeploymentPropertiesExtended properties) {
+    public DeploymentValidateResultInner withProperties(DeploymentPropertiesExtended properties) {
         this.properties = properties;
         return this;
     }

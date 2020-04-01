@@ -55,7 +55,7 @@ public final class ActiveDirectoryProperties {
      * 
      * @return the domainName value.
      */
-    public String getDomainName() {
+    public String domainName() {
         return this.domainName;
     }
 
@@ -66,7 +66,7 @@ public final class ActiveDirectoryProperties {
      * @param domainName the domainName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties setDomainName(String domainName) {
+    public ActiveDirectoryProperties withDomainName(String domainName) {
         this.domainName = domainName;
         return this;
     }
@@ -76,7 +76,7 @@ public final class ActiveDirectoryProperties {
      * 
      * @return the netBiosDomainName value.
      */
-    public String getNetBiosDomainName() {
+    public String netBiosDomainName() {
         return this.netBiosDomainName;
     }
 
@@ -86,7 +86,7 @@ public final class ActiveDirectoryProperties {
      * @param netBiosDomainName the netBiosDomainName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties setNetBiosDomainName(String netBiosDomainName) {
+    public ActiveDirectoryProperties withNetBiosDomainName(String netBiosDomainName) {
         this.netBiosDomainName = netBiosDomainName;
         return this;
     }
@@ -97,7 +97,7 @@ public final class ActiveDirectoryProperties {
      * 
      * @return the forestName value.
      */
-    public String getForestName() {
+    public String forestName() {
         return this.forestName;
     }
 
@@ -108,7 +108,7 @@ public final class ActiveDirectoryProperties {
      * @param forestName the forestName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties setForestName(String forestName) {
+    public ActiveDirectoryProperties withForestName(String forestName) {
         this.forestName = forestName;
         return this;
     }
@@ -118,7 +118,7 @@ public final class ActiveDirectoryProperties {
      * 
      * @return the domainGuid value.
      */
-    public String getDomainGuid() {
+    public String domainGuid() {
         return this.domainGuid;
     }
 
@@ -128,7 +128,7 @@ public final class ActiveDirectoryProperties {
      * @param domainGuid the domainGuid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties setDomainGuid(String domainGuid) {
+    public ActiveDirectoryProperties withDomainGuid(String domainGuid) {
         this.domainGuid = domainGuid;
         return this;
     }
@@ -138,7 +138,7 @@ public final class ActiveDirectoryProperties {
      * 
      * @return the domainSid value.
      */
-    public String getDomainSid() {
+    public String domainSid() {
         return this.domainSid;
     }
 
@@ -148,7 +148,7 @@ public final class ActiveDirectoryProperties {
      * @param domainSid the domainSid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties setDomainSid(String domainSid) {
+    public ActiveDirectoryProperties withDomainSid(String domainSid) {
         this.domainSid = domainSid;
         return this;
     }
@@ -159,7 +159,7 @@ public final class ActiveDirectoryProperties {
      * 
      * @return the azureStorageSid value.
      */
-    public String getAzureStorageSid() {
+    public String azureStorageSid() {
         return this.azureStorageSid;
     }
 
@@ -170,7 +170,7 @@ public final class ActiveDirectoryProperties {
      * @param azureStorageSid the azureStorageSid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
-    public ActiveDirectoryProperties setAzureStorageSid(String azureStorageSid) {
+    public ActiveDirectoryProperties withAzureStorageSid(String azureStorageSid) {
         this.azureStorageSid = azureStorageSid;
         return this;
     }

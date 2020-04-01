@@ -29,6 +29,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.ExportTemplateRequest;
 import com.azure.management.resources.ResourceGroupPatchable;
@@ -73,61 +75,61 @@ public final class ResourceGroupsInner {
         @Head("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistence(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Boolean>> checkExistence(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceGroupInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourceGroupInner parameters);
+        Mono<SimpleResponse<ResourceGroupInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourceGroupInner parameters, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceGroupInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ResourceGroupInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceGroupInner>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourceGroupPatchable parameters);
+        Mono<SimpleResponse<ResourceGroupInner>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourceGroupPatchable parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> exportTemplate(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExportTemplateRequest parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> exportTemplate(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExportTemplateRequest parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceGroupListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ResourceGroupListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/exportTemplate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceGroupExportResultInner>> beginExportTemplate(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExportTemplateRequest parameters);
+        Mono<SimpleResponse<ResourceGroupExportResultInner>> beginExportTemplate(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ExportTemplateRequest parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceGroupListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ResourceGroupListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -140,7 +142,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName) {
-        return service.checkExistence(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.checkExistence(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -187,7 +190,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ResourceGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName, ResourceGroupInner parameters) {
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -235,7 +239,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName) {
-        return service.delete(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -277,7 +282,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ResourceGroupInner>> getWithResponseAsync(String resourceGroupName) {
-        return service.get(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -324,7 +330,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ResourceGroupInner>> updateWithResponseAsync(String resourceGroupName, ResourceGroupPatchable parameters) {
-        return service.update(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil.withContext(context -> service.update(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -373,7 +380,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> exportTemplateWithResponseAsync(String resourceGroupName, ExportTemplateRequest parameters) {
-        return service.exportTemplate(this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.exportTemplate(this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -418,14 +426,15 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceGroupInner>> listSinglePageAsync(String filter, Integer top) {
-        return service.list(this.client.getHost(), filter, top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<ResourceGroupInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -454,6 +463,7 @@ public final class ResourceGroupsInner {
     public PagedFlux<ResourceGroupInner> listAsync() {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(filter, top),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -483,6 +493,7 @@ public final class ResourceGroupsInner {
     public PagedIterable<ResourceGroupInner> list() {
         final String filter = null;
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAsync(filter, top));
     }
 
@@ -496,7 +507,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName) {
-        return service.beginDelete(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -537,7 +549,8 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ResourceGroupExportResultInner>> beginExportTemplateWithResponseAsync(String resourceGroupName, ExportTemplateRequest parameters) {
-        return service.beginExportTemplate(this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters);
+        return FluxUtil.withContext(context -> service.beginExportTemplate(this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -585,13 +598,14 @@ public final class ResourceGroupsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ResourceGroupInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ResourceGroupInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

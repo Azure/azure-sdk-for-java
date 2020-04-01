@@ -25,12 +25,12 @@ public class WhatIfOperationResultImpl extends
 
     @Override
     public String status() {
-        return this.inner().getStatus();
+        return this.inner().status();
     }
 
 
     @Override
     public ErrorResponse error() {
-        return this.inner().getError();
+        return this.inner().error();
     }
 }

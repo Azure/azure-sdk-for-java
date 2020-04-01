@@ -23,7 +23,7 @@ public final class DeploymentExportResultInner {
      * 
      * @return the template value.
      */
-    public Object getTemplate() {
+    public Object template() {
         return this.template;
     }
 
@@ -33,7 +33,7 @@ public final class DeploymentExportResultInner {
      * @param template the template value to set.
      * @return the DeploymentExportResultInner object itself.
      */
-    public DeploymentExportResultInner setTemplate(Object template) {
+    public DeploymentExportResultInner withTemplate(Object template) {
         this.template = template;
         return this;
     }

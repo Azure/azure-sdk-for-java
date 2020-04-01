@@ -30,7 +30,7 @@ public final class ProviderListResultInner {
      * 
      * @return the value value.
      */
-    public List<ProviderInner> getValue() {
+    public List<ProviderInner> value() {
         return this.value;
     }
 
@@ -40,7 +40,7 @@ public final class ProviderListResultInner {
      * @param value the value value to set.
      * @return the ProviderListResultInner object itself.
      */
-    public ProviderListResultInner setValue(List<ProviderInner> value) {
+    public ProviderListResultInner withValue(List<ProviderInner> value) {
         this.value = value;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ProviderListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

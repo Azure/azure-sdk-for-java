@@ -31,7 +31,7 @@ public final class OperationInner {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -42,7 +42,7 @@ public final class OperationInner {
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setName(String name) {
+    public OperationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -52,7 +52,7 @@ public final class OperationInner {
      * 
      * @return the display value.
      */
-    public OperationDisplay getDisplay() {
+    public OperationDisplay display() {
         return this.display;
     }
 
@@ -62,7 +62,7 @@ public final class OperationInner {
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setDisplay(OperationDisplay display) {
+    public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
         return this;
     }

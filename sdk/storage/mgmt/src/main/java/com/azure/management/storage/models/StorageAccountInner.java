@@ -205,7 +205,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the sku value.
      */
-    public Sku getSku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -214,7 +214,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the kind value.
      */
-    public Kind getKind() {
+    public Kind kind() {
         return this.kind;
     }
 
@@ -223,7 +223,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the identity value.
      */
-    public Identity getIdentity() {
+    public Identity identity() {
         return this.identity;
     }
 
@@ -233,7 +233,7 @@ public class StorageAccountInner extends Resource {
      * @param identity the identity value to set.
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner setIdentity(Identity identity) {
+    public StorageAccountInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
     }
@@ -244,7 +244,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the provisioningState value.
      */
-    public ProvisioningState getProvisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -255,7 +255,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the primaryEndpoints value.
      */
-    public Endpoints getPrimaryEndpoints() {
+    public Endpoints primaryEndpoints() {
         return this.primaryEndpoints;
     }
 
@@ -265,7 +265,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the primaryLocation value.
      */
-    public String getPrimaryLocation() {
+    public String primaryLocation() {
         return this.primaryLocation;
     }
 
@@ -275,7 +275,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the statusOfPrimary value.
      */
-    public AccountStatus getStatusOfPrimary() {
+    public AccountStatus statusOfPrimary() {
         return this.statusOfPrimary;
     }
 
@@ -288,7 +288,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the lastGeoFailoverTime value.
      */
-    public OffsetDateTime getLastGeoFailoverTime() {
+    public OffsetDateTime lastGeoFailoverTime() {
         return this.lastGeoFailoverTime;
     }
 
@@ -299,7 +299,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the secondaryLocation value.
      */
-    public String getSecondaryLocation() {
+    public String secondaryLocation() {
         return this.secondaryLocation;
     }
 
@@ -311,7 +311,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the statusOfSecondary value.
      */
-    public AccountStatus getStatusOfSecondary() {
+    public AccountStatus statusOfSecondary() {
         return this.statusOfSecondary;
     }
 
@@ -321,7 +321,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the creationTime value.
      */
-    public OffsetDateTime getCreationTime() {
+    public OffsetDateTime creationTime() {
         return this.creationTime;
     }
 
@@ -331,7 +331,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the customDomain value.
      */
-    public CustomDomain getCustomDomain() {
+    public CustomDomain customDomain() {
         return this.customDomain;
     }
 
@@ -343,7 +343,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the secondaryEndpoints value.
      */
-    public Endpoints getSecondaryEndpoints() {
+    public Endpoints secondaryEndpoints() {
         return this.secondaryEndpoints;
     }
 
@@ -353,7 +353,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the encryption value.
      */
-    public Encryption getEncryption() {
+    public Encryption encryption() {
         return this.encryption;
     }
 
@@ -363,7 +363,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the accessTier value.
      */
-    public AccessTier getAccessTier() {
+    public AccessTier accessTier() {
         return this.accessTier;
     }
 
@@ -373,7 +373,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the azureFilesIdentityBasedAuthentication value.
      */
-    public AzureFilesIdentityBasedAuthentication getAzureFilesIdentityBasedAuthentication() {
+    public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
         return this.azureFilesIdentityBasedAuthentication;
     }
 
@@ -385,7 +385,7 @@ public class StorageAccountInner extends Resource {
      * azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner setAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountInner withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
@@ -396,7 +396,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the enableHttpsTrafficOnly value.
      */
-    public Boolean isEnableHttpsTrafficOnly() {
+    public Boolean enableHttpsTrafficOnly() {
         return this.enableHttpsTrafficOnly;
     }
 
@@ -407,7 +407,7 @@ public class StorageAccountInner extends Resource {
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner setEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
+    public StorageAccountInner withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
         this.enableHttpsTrafficOnly = enableHttpsTrafficOnly;
         return this;
     }
@@ -417,7 +417,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the networkRuleSet value.
      */
-    public NetworkRuleSet getNetworkRuleSet() {
+    public NetworkRuleSet networkRuleSet() {
         return this.networkRuleSet;
     }
 
@@ -438,7 +438,7 @@ public class StorageAccountInner extends Resource {
      * @param isHnsEnabled the isHnsEnabled value to set.
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner setIsHnsEnabled(Boolean isHnsEnabled) {
+    public StorageAccountInner withIsHnsEnabled(Boolean isHnsEnabled) {
         this.isHnsEnabled = isHnsEnabled;
         return this;
     }
@@ -448,7 +448,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the geoReplicationStats value.
      */
-    public GeoReplicationStats getGeoReplicationStats() {
+    public GeoReplicationStats geoReplicationStats() {
         return this.geoReplicationStats;
     }
 
@@ -458,7 +458,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the failoverInProgress value.
      */
-    public Boolean isFailoverInProgress() {
+    public Boolean failoverInProgress() {
         return this.failoverInProgress;
     }
 
@@ -468,7 +468,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the largeFileSharesState value.
      */
-    public LargeFileSharesState getLargeFileSharesState() {
+    public LargeFileSharesState largeFileSharesState() {
         return this.largeFileSharesState;
     }
 
@@ -479,7 +479,7 @@ public class StorageAccountInner extends Resource {
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner setLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+    public StorageAccountInner withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
         return this;
     }
@@ -490,7 +490,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the privateEndpointConnections value.
      */
-    public List<PrivateEndpointConnectionInner> getPrivateEndpointConnections() {
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
@@ -500,7 +500,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the routingPreference value.
      */
-    public RoutingPreference getRoutingPreference() {
+    public RoutingPreference routingPreference() {
         return this.routingPreference;
     }
 
@@ -511,7 +511,7 @@ public class StorageAccountInner extends Resource {
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountInner object itself.
      */
-    public StorageAccountInner setRoutingPreference(RoutingPreference routingPreference) {
+    public StorageAccountInner withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
     }
@@ -521,7 +521,7 @@ public class StorageAccountInner extends Resource {
      * 
      * @return the blobRestoreStatus value.
      */
-    public BlobRestoreStatusInner getBlobRestoreStatus() {
+    public BlobRestoreStatusInner blobRestoreStatus() {
         return this.blobRestoreStatus;
     }
 }

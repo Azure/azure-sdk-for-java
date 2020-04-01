@@ -55,7 +55,7 @@ public final class ProviderResourceType {
      * 
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
@@ -65,7 +65,7 @@ public final class ProviderResourceType {
      * @param resourceType the resourceType value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType setResourceType(String resourceType) {
+    public ProviderResourceType withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -76,7 +76,7 @@ public final class ProviderResourceType {
      * 
      * @return the locations value.
      */
-    public List<String> getLocations() {
+    public List<String> locations() {
         return this.locations;
     }
 
@@ -87,7 +87,7 @@ public final class ProviderResourceType {
      * @param locations the locations value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType setLocations(List<String> locations) {
+    public ProviderResourceType withLocations(List<String> locations) {
         this.locations = locations;
         return this;
     }
@@ -98,7 +98,7 @@ public final class ProviderResourceType {
      * 
      * @return the aliases value.
      */
-    public List<AliasType> getAliases() {
+    public List<AliasType> aliases() {
         return this.aliases;
     }
 
@@ -109,7 +109,7 @@ public final class ProviderResourceType {
      * @param aliases the aliases value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType setAliases(List<AliasType> aliases) {
+    public ProviderResourceType withAliases(List<AliasType> aliases) {
         this.aliases = aliases;
         return this;
     }
@@ -119,7 +119,7 @@ public final class ProviderResourceType {
      * 
      * @return the apiVersions value.
      */
-    public List<String> getApiVersions() {
+    public List<String> apiVersions() {
         return this.apiVersions;
     }
 
@@ -129,7 +129,7 @@ public final class ProviderResourceType {
      * @param apiVersions the apiVersions value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType setApiVersions(List<String> apiVersions) {
+    public ProviderResourceType withApiVersions(List<String> apiVersions) {
         this.apiVersions = apiVersions;
         return this;
     }
@@ -140,7 +140,7 @@ public final class ProviderResourceType {
      * 
      * @return the capabilities value.
      */
-    public String getCapabilities() {
+    public String capabilities() {
         return this.capabilities;
     }
 
@@ -151,7 +151,7 @@ public final class ProviderResourceType {
      * @param capabilities the capabilities value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType setCapabilities(String capabilities) {
+    public ProviderResourceType withCapabilities(String capabilities) {
         this.capabilities = capabilities;
         return this;
     }
@@ -161,7 +161,7 @@ public final class ProviderResourceType {
      * 
      * @return the properties value.
      */
-    public Map<String, String> getProperties() {
+    public Map<String, String> properties() {
         return this.properties;
     }
 
@@ -171,7 +171,7 @@ public final class ProviderResourceType {
      * @param properties the properties value to set.
      * @return the ProviderResourceType object itself.
      */
-    public ProviderResourceType setProperties(Map<String, String> properties) {
+    public ProviderResourceType withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
     }

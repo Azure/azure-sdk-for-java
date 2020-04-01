@@ -28,7 +28,7 @@ class TableServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImp
         if (super.encryptionServices == null) {
             return null;
         } else {
-            return  super.encryptionServices.getTable();
+            return  super.encryptionServices.table();
         }
     }
 }

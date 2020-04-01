@@ -10,6 +10,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.implementation.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -51,18 +53,23 @@ public abstract class AzureServiceClient {
      */
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s OS:%s MacAddressHash:%s Java:%s",
-                getClass().getPackage().getImplementationVersion(),
-                OS,
-                MAC_ADDRESS_HASH,
-                JAVA_VERSION);
+            getClass().getPackage().getImplementationVersion(),
+            OS,
+            MAC_ADDRESS_HASH,
+            JAVA_VERSION);
     }
 
     private static final String MAC_ADDRESS_HASH;
     private static final String OS;
+    private static final String OS_NAME;
+    private static final String OS_VERSION;
     private static final String JAVA_VERSION;
+    private static final String SDK_VERSION = "2.0.0";
 
     static {
-        OS = System.getProperty("os.name") + "/" + System.getProperty("os.version");
+        OS_NAME = System.getProperty("os.name");
+        OS_VERSION = System.getProperty("os.version");
+        OS = OS_NAME + "/" + OS_VERSION;
         String macAddress = "Unknown";
         try {
             Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
@@ -85,20 +92,62 @@ public abstract class AzureServiceClient {
 
     private SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
+    private String sdkName;
+
+    /**
+     * Gets serializer adapter for JSON serialization/de-serialization.
+     *
+     * @return the serializer adapter.
+     */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
+    /**
+     * Gets default client context.
+     *
+     * @return the default client context.
+     */
+    public Context getContext() {
+        Context context = new Context("java.version", JAVA_VERSION);
+        if (!CoreUtils.isNullOrEmpty(OS_NAME)) {
+            context = context.addData("os.name", OS_NAME);
+        }
+        if (!CoreUtils.isNullOrEmpty(OS_VERSION)) {
+            context = context.addData("os.version", OS_VERSION);
+        }
+        if (sdkName == null) {
+            String packageName = this.getClass().getPackage().getName();
+            if (packageName.endsWith(".models")) {
+                sdkName = packageName.substring(0, packageName.length() - ".models".length());
+            }
+        }
+        context = context.addData("Sdk-Name", sdkName);
+        context = context.addData("Sdk-Version", SDK_VERSION);
+        return context;
+    }
+
+    /**
+     * Gets long running operation result.
+     *
+     * @param lroInit the raw response of init operation.
+     * @param httpPipeline the http pipeline.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return poller flux for poll result and final result.
+     */
     public <T, U> PollerFlux<PollResult<T>, U> getLroResultAsync(Mono<SimpleResponse<Flux<ByteBuffer>>> lroInit,
                                                                  HttpPipeline httpPipeline,
                                                                  Type pollResultType, Type finalResultType) {
         return PollerFactory.create(
-                getSerializerAdapter(),
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                SdkContext.getLroRetryDuration(),
-                activationOperation(lroInit)
+            getSerializerAdapter(),
+            httpPipeline,
+            pollResultType,
+            finalResultType,
+            SdkContext.getLroRetryDuration(),
+            activationOperation(lroInit)
         );
     }
 
@@ -118,7 +167,8 @@ public abstract class AzureServiceClient {
         return "Unknown";
     }
 
-    static class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
+    // this should be moved to core-mgmt when stable.
+    private static class DateTimeDeserializer extends JsonDeserializer<OffsetDateTime> {
 
         public static SimpleModule getModule() {
             SimpleModule module = new SimpleModule();

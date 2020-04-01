@@ -75,17 +75,17 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
 
     @Override
     public CorsRules cors() {
-        return this.inner().getCors();
+        return this.inner().cors();
     }
 
     @Override
     public String defaultServiceVersion() {
-        return this.inner().getDefaultServiceVersion();
+        return this.inner().defaultServiceVersion();
     }
 
     @Override
     public DeleteRetentionPolicy deleteRetentionPolicy() {
-        return this.inner().getDeleteRetentionPolicy();
+        return this.inner().deleteRetentionPolicy();
     }
 
     @Override
@@ -112,46 +112,46 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
 
     @Override
     public BlobServicePropertiesImpl withCORSRules(List<CorsRule> corsRules) {
-        this.inner().setCors(new CorsRules().setCorsRules(corsRules));
+        this.inner().withCors(new CorsRules().withCorsRules(corsRules));
         return this;
     }
 
     @Override
     public BlobServicePropertiesImpl withCORSRule(CorsRule corsRule) {
-        CorsRules corsRules = this.inner().getCors();
+        CorsRules corsRules = this.inner().cors();
         if (corsRules == null) {
             List<CorsRule> firstCorsRule = new ArrayList<>();
             firstCorsRule.add(corsRule);
-            this.inner().setCors(new CorsRules().setCorsRules(firstCorsRule));
+            this.inner().withCors(new CorsRules().withCorsRules(firstCorsRule));
         } else {
-            List<CorsRule> currentCorsRules = corsRules.getCorsRules();
+            List<CorsRule> currentCorsRules = corsRules.corsRules();
             currentCorsRules.add(corsRule);
-            this.inner().setCors(corsRules.setCorsRules(currentCorsRules));
+            this.inner().withCors(corsRules.withCorsRules(currentCorsRules));
         }
         return this;
     }
 
     @Override
     public BlobServicePropertiesImpl withDefaultServiceVersion(String defaultServiceVersion) {
-        this.inner().setDefaultServiceVersion(defaultServiceVersion);
+        this.inner().withDefaultServiceVersion(defaultServiceVersion);
         return this;
     }
 
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
-        this.inner().setDeleteRetentionPolicy(deleteRetentionPolicy);
+        this.inner().withDeleteRetentionPolicy(deleteRetentionPolicy);
         return this;
     }
 
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicyEnabled(int numDaysEnabled) {
-        this.inner().setDeleteRetentionPolicy(new DeleteRetentionPolicy().setEnabled(true).setDays(numDaysEnabled));
+        this.inner().withDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(true).withDays(numDaysEnabled));
         return this;
     }
 
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicyDisabled() {
-        this.inner().setDeleteRetentionPolicy(new DeleteRetentionPolicy().setEnabled(false));
+        this.inner().withDeleteRetentionPolicy(new DeleteRetentionPolicy().withEnabled(false));
         return this;
     }
 }

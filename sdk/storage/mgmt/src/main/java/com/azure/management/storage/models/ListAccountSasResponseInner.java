@@ -24,7 +24,7 @@ public final class ListAccountSasResponseInner {
      * 
      * @return the accountSasToken value.
      */
-    public String getAccountSasToken() {
+    public String accountSasToken() {
         return this.accountSasToken;
     }
 }

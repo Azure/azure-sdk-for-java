@@ -25,7 +25,7 @@ public class DeletedVaultImpl extends WrapperImpl<DeletedVaultInner> implements 
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 
     @Override
@@ -35,22 +35,22 @@ public class DeletedVaultImpl extends WrapperImpl<DeletedVaultInner> implements 
 
     @Override
     public String location() {
-        return inner().getProperties().getLocation();
+        return inner().properties().location();
     }
 
     @Override
     public OffsetDateTime deletionDate() {
-        return inner().getProperties().getDeletionDate();
+        return inner().properties().deletionDate();
     }
 
     @Override
     public OffsetDateTime scheduledPurgeDate() {
-        return inner().getProperties().getScheduledPurgeDate();
+        return inner().properties().scheduledPurgeDate();
     }
 
     @Override
     public Map<String, String> tags() {
-        return inner().getProperties().getTags();
+        return inner().properties().tags();
     }
 
 }

@@ -24,7 +24,7 @@ public final class DateAfterModification {
      * 
      * @return the daysAfterModificationGreaterThan value.
      */
-    public float getDaysAfterModificationGreaterThan() {
+    public float daysAfterModificationGreaterThan() {
         return this.daysAfterModificationGreaterThan;
     }
 
@@ -36,7 +36,7 @@ public final class DateAfterModification {
      * daysAfterModificationGreaterThan value to set.
      * @return the DateAfterModification object itself.
      */
-    public DateAfterModification setDaysAfterModificationGreaterThan(float daysAfterModificationGreaterThan) {
+    public DateAfterModification withDaysAfterModificationGreaterThan(float daysAfterModificationGreaterThan) {
         this.daysAfterModificationGreaterThan = daysAfterModificationGreaterThan;
         return this;
     }

@@ -36,7 +36,7 @@ public final class ExportTemplateRequest {
      * 
      * @return the resources value.
      */
-    public List<String> getResources() {
+    public List<String> resources() {
         return this.resources;
     }
 
@@ -48,7 +48,7 @@ public final class ExportTemplateRequest {
      * @param resources the resources value to set.
      * @return the ExportTemplateRequest object itself.
      */
-    public ExportTemplateRequest setResources(List<String> resources) {
+    public ExportTemplateRequest withResources(List<String> resources) {
         this.resources = resources;
         return this;
     }
@@ -61,7 +61,7 @@ public final class ExportTemplateRequest {
      * 
      * @return the options value.
      */
-    public String getOptions() {
+    public String options() {
         return this.options;
     }
 
@@ -74,7 +74,7 @@ public final class ExportTemplateRequest {
      * @param options the options value to set.
      * @return the ExportTemplateRequest object itself.
      */
-    public ExportTemplateRequest setOptions(String options) {
+    public ExportTemplateRequest withOptions(String options) {
         this.options = options;
         return this;
     }

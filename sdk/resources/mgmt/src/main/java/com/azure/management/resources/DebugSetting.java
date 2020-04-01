@@ -36,7 +36,7 @@ public final class DebugSetting {
      * 
      * @return the detailLevel value.
      */
-    public String getDetailLevel() {
+    public String detailLevel() {
         return this.detailLevel;
     }
 
@@ -53,7 +53,7 @@ public final class DebugSetting {
      * @param detailLevel the detailLevel value to set.
      * @return the DebugSetting object itself.
      */
-    public DebugSetting setDetailLevel(String detailLevel) {
+    public DebugSetting withDetailLevel(String detailLevel) {
         this.detailLevel = detailLevel;
         return this;
     }

@@ -32,7 +32,7 @@ public final class ApplicationCreateParameters extends ApplicationBase {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -42,7 +42,7 @@ public final class ApplicationCreateParameters extends ApplicationBase {
      * @param displayName the displayName value to set.
      * @return the ApplicationCreateParameters object itself.
      */
-    public ApplicationCreateParameters setDisplayName(String displayName) {
+    public ApplicationCreateParameters withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -53,7 +53,7 @@ public final class ApplicationCreateParameters extends ApplicationBase {
      * 
      * @return the identifierUris value.
      */
-    public List<String> getIdentifierUris() {
+    public List<String> identifierUris() {
         return this.identifierUris;
     }
 
@@ -64,7 +64,7 @@ public final class ApplicationCreateParameters extends ApplicationBase {
      * @param identifierUris the identifierUris value to set.
      * @return the ApplicationCreateParameters object itself.
      */
-    public ApplicationCreateParameters setIdentifierUris(List<String> identifierUris) {
+    public ApplicationCreateParameters withIdentifierUris(List<String> identifierUris) {
         this.identifierUris = identifierUris;
         return this;
     }

@@ -43,7 +43,7 @@ public class FileShareItemInner extends AzureEntityResource {
      * 
      * @return the lastModifiedTime value.
      */
-    public OffsetDateTime getLastModifiedTime() {
+    public OffsetDateTime lastModifiedTime() {
         return this.lastModifiedTime;
     }
 
@@ -53,7 +53,7 @@ public class FileShareItemInner extends AzureEntityResource {
      * 
      * @return the metadata value.
      */
-    public Map<String, String> getMetadata() {
+    public Map<String, String> metadata() {
         return this.metadata;
     }
 
@@ -64,7 +64,7 @@ public class FileShareItemInner extends AzureEntityResource {
      * @param metadata the metadata value to set.
      * @return the FileShareItemInner object itself.
      */
-    public FileShareItemInner setMetadata(Map<String, String> metadata) {
+    public FileShareItemInner withMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -76,7 +76,7 @@ public class FileShareItemInner extends AzureEntityResource {
      * 
      * @return the shareQuota value.
      */
-    public Integer getShareQuota() {
+    public Integer shareQuota() {
         return this.shareQuota;
     }
 
@@ -88,7 +88,7 @@ public class FileShareItemInner extends AzureEntityResource {
      * @param shareQuota the shareQuota value to set.
      * @return the FileShareItemInner object itself.
      */
-    public FileShareItemInner setShareQuota(Integer shareQuota) {
+    public FileShareItemInner withShareQuota(Integer shareQuota) {
         this.shareQuota = shareQuota;
         return this;
     }

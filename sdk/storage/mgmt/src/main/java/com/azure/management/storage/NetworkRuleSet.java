@@ -48,7 +48,7 @@ public final class NetworkRuleSet {
      * 
      * @return the bypass value.
      */
-    public Bypass getBypass() {
+    public Bypass bypass() {
         return this.bypass;
     }
 
@@ -61,7 +61,7 @@ public final class NetworkRuleSet {
      * @param bypass the bypass value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet setBypass(Bypass bypass) {
+    public NetworkRuleSet withBypass(Bypass bypass) {
         this.bypass = bypass;
         return this;
     }
@@ -71,7 +71,7 @@ public final class NetworkRuleSet {
      * 
      * @return the virtualNetworkRules value.
      */
-    public List<VirtualNetworkRule> getVirtualNetworkRules() {
+    public List<VirtualNetworkRule> virtualNetworkRules() {
         return this.virtualNetworkRules;
     }
 
@@ -81,7 +81,7 @@ public final class NetworkRuleSet {
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet setVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
+    public NetworkRuleSet withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
         return this;
     }
@@ -91,7 +91,7 @@ public final class NetworkRuleSet {
      * 
      * @return the ipRules value.
      */
-    public List<IPRule> getIpRules() {
+    public List<IPRule> ipRules() {
         return this.ipRules;
     }
 
@@ -101,7 +101,7 @@ public final class NetworkRuleSet {
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet setIpRules(List<IPRule> ipRules) {
+    public NetworkRuleSet withIpRules(List<IPRule> ipRules) {
         this.ipRules = ipRules;
         return this;
     }
@@ -112,7 +112,7 @@ public final class NetworkRuleSet {
      * 
      * @return the defaultAction value.
      */
-    public DefaultAction getDefaultAction() {
+    public DefaultAction defaultAction() {
         return this.defaultAction;
     }
 
@@ -123,7 +123,7 @@ public final class NetworkRuleSet {
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet setDefaultAction(DefaultAction defaultAction) {
+    public NetworkRuleSet withDefaultAction(DefaultAction defaultAction) {
         this.defaultAction = defaultAction;
         return this;
     }

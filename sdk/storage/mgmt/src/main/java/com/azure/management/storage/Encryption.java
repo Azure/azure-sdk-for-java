@@ -36,7 +36,7 @@ public final class Encryption {
      * 
      * @return the services value.
      */
-    public EncryptionServices getServices() {
+    public EncryptionServices services() {
         return this.services;
     }
 
@@ -46,7 +46,7 @@ public final class Encryption {
      * @param services the services value to set.
      * @return the Encryption object itself.
      */
-    public Encryption setServices(EncryptionServices services) {
+    public Encryption withServices(EncryptionServices services) {
         this.services = services;
         return this;
     }
@@ -58,7 +58,7 @@ public final class Encryption {
      * 
      * @return the keySource value.
      */
-    public KeySource getKeySource() {
+    public KeySource keySource() {
         return this.keySource;
     }
 
@@ -70,7 +70,7 @@ public final class Encryption {
      * @param keySource the keySource value to set.
      * @return the Encryption object itself.
      */
-    public Encryption setKeySource(KeySource keySource) {
+    public Encryption withKeySource(KeySource keySource) {
         this.keySource = keySource;
         return this;
     }
@@ -80,7 +80,7 @@ public final class Encryption {
      * 
      * @return the keyVaultProperties value.
      */
-    public KeyVaultProperties getKeyVaultProperties() {
+    public KeyVaultProperties keyVaultProperties() {
         return this.keyVaultProperties;
     }
 
@@ -90,7 +90,7 @@ public final class Encryption {
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the Encryption object itself.
      */
-    public Encryption setKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
+    public Encryption withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
         return this;
     }

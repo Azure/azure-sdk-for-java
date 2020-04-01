@@ -156,8 +156,8 @@ final class GenericResourcesImpl
     @Override
     public Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) {
         ResourcesMoveInfo moveInfo = new ResourcesMoveInfo();
-        moveInfo.setTargetResourceGroup(targetResourceGroup.id());
-        moveInfo.setResources(resources);
+        moveInfo.withTargetResourceGroup(targetResourceGroup.id());
+        moveInfo.withResources(resources);
         return this.inner().moveResourcesAsync(sourceResourceGroupName, moveInfo);
     }
 

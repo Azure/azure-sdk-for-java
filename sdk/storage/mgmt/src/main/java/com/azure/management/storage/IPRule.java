@@ -31,7 +31,7 @@ public final class IPRule {
      * 
      * @return the iPAddressOrRange value.
      */
-    public String getIPAddressOrRange() {
+    public String iPAddressOrRange() {
         return this.iPAddressOrRange;
     }
 
@@ -42,7 +42,7 @@ public final class IPRule {
      * @param iPAddressOrRange the iPAddressOrRange value to set.
      * @return the IPRule object itself.
      */
-    public IPRule setIPAddressOrRange(String iPAddressOrRange) {
+    public IPRule withIPAddressOrRange(String iPAddressOrRange) {
         this.iPAddressOrRange = iPAddressOrRange;
         return this;
     }
@@ -52,7 +52,7 @@ public final class IPRule {
      * 
      * @return the action value.
      */
-    public Action getAction() {
+    public Action action() {
         return this.action;
     }
 
@@ -62,7 +62,7 @@ public final class IPRule {
      * @param action the action value to set.
      * @return the IPRule object itself.
      */
-    public IPRule setAction(Action action) {
+    public IPRule withAction(Action action) {
         this.action = action;
         return this;
     }

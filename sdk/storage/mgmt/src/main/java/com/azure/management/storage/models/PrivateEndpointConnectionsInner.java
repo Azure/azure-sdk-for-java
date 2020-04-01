@@ -21,7 +21,11 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.storage.ErrorResponseException;
+import com.azure.management.storage.PrivateEndpoint;
+import com.azure.management.storage.PrivateLinkServiceConnectionState;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,19 +65,19 @@ public final class PrivateEndpointConnectionsInner {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName);
+        Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> put(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName, @BodyParam("application/json") PrivateEndpointConnectionInner properties);
+        Mono<SimpleResponse<PrivateEndpointConnectionInner>> put(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName, @BodyParam("application/json") PrivateEndpointConnectionInner properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName);
+        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName, Context context);
     }
 
     /**
@@ -88,7 +92,8 @@ public final class PrivateEndpointConnectionsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return service.get(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName);
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -134,14 +139,19 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage Account.
-     * @param properties The Private Endpoint Connection resource.
+     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> putWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
-        return service.put(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, properties);
+    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> putWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpoint privateEndpoint, PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
+        properties.withPrivateEndpoint(privateEndpoint);
+        properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        return FluxUtil.withContext(context -> service.put(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, properties, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -150,14 +160,15 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage Account.
-     * @param properties The Private Endpoint Connection resource.
+     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> putAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
-        return putWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties)
+    public Mono<PrivateEndpointConnectionInner> putAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpoint privateEndpoint, PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        return putWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName, privateEndpoint, privateLinkServiceConnectionState)
             .flatMap((SimpleResponse<PrivateEndpointConnectionInner> res) -> {
                 if (res.getValue() != null) {
                     return Mono.just(res.getValue());
@@ -173,14 +184,15 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage Account.
-     * @param properties The Private Endpoint Connection resource.
+     * @param privateEndpoint The Private Endpoint resource.
+     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between service consumer and provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner put(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpointConnectionInner properties) {
-        return putAsync(resourceGroupName, accountName, privateEndpointConnectionName, properties).block();
+    public PrivateEndpointConnectionInner put(String resourceGroupName, String accountName, String privateEndpointConnectionName, PrivateEndpoint privateEndpoint, PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+        return putAsync(resourceGroupName, accountName, privateEndpointConnectionName, privateEndpoint, privateLinkServiceConnectionState).block();
     }
 
     /**
@@ -195,7 +207,8 @@ public final class PrivateEndpointConnectionsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return service.delete(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName);
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), privateEndpointConnectionName, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

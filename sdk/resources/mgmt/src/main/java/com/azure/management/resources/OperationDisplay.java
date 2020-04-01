@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class OperationDisplay {
     /*
-     * Service provider: Microsoft.Resources
+     * Service provider: Microsoft.Features
      */
     @JsonProperty(value = "provider")
     private String provider;
@@ -30,28 +30,22 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation")
     private String operation;
 
-    /*
-     * Description of the operation.
-     */
-    @JsonProperty(value = "description")
-    private String description;
-
     /**
-     * Get the provider property: Service provider: Microsoft.Resources.
+     * Get the provider property: Service provider: Microsoft.Features.
      * 
      * @return the provider value.
      */
-    public String getProvider() {
+    public String provider() {
         return this.provider;
     }
 
     /**
-     * Set the provider property: Service provider: Microsoft.Resources.
+     * Set the provider property: Service provider: Microsoft.Features.
      * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setProvider(String provider) {
+    public OperationDisplay withProvider(String provider) {
         this.provider = provider;
         return this;
     }
@@ -62,7 +56,7 @@ public final class OperationDisplay {
      * 
      * @return the resource value.
      */
-    public String getResource() {
+    public String resource() {
         return this.resource;
     }
 
@@ -73,7 +67,7 @@ public final class OperationDisplay {
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setResource(String resource) {
+    public OperationDisplay withResource(String resource) {
         this.resource = resource;
         return this;
     }
@@ -83,7 +77,7 @@ public final class OperationDisplay {
      * 
      * @return the operation value.
      */
-    public String getOperation() {
+    public String operation() {
         return this.operation;
     }
 
@@ -93,28 +87,8 @@ public final class OperationDisplay {
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setOperation(String operation) {
+    public OperationDisplay withOperation(String operation) {
         this.operation = operation;
-        return this;
-    }
-
-    /**
-     * Get the description property: Description of the operation.
-     * 
-     * @return the description value.
-     */
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of the operation.
-     * 
-     * @param description the description value to set.
-     * @return the OperationDisplay object itself.
-     */
-    public OperationDisplay setDescription(String description) {
-        this.description = description;
         return this;
     }
 }

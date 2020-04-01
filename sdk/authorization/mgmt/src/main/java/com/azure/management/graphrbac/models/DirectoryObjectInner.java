@@ -50,7 +50,7 @@ public class DirectoryObjectInner {
      * 
      * @return the objectId value.
      */
-    public String getObjectId() {
+    public String objectId() {
         return this.objectId;
     }
 
@@ -60,7 +60,7 @@ public class DirectoryObjectInner {
      * 
      * @return the deletionTimestamp value.
      */
-    public OffsetDateTime getDeletionTimestamp() {
+    public OffsetDateTime deletionTimestamp() {
         return this.deletionTimestamp;
     }
 
@@ -70,7 +70,7 @@ public class DirectoryObjectInner {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -81,7 +81,7 @@ public class DirectoryObjectInner {
      * @param additionalProperties the additionalProperties value to set.
      * @return the DirectoryObjectInner object itself.
      */
-    public DirectoryObjectInner setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public DirectoryObjectInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

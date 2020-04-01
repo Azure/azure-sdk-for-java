@@ -55,7 +55,7 @@ public final class CorsRule {
      * 
      * @return the allowedOrigins value.
      */
-    public List<String> getAllowedOrigins() {
+    public List<String> allowedOrigins() {
         return this.allowedOrigins;
     }
 
@@ -67,7 +67,7 @@ public final class CorsRule {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule setAllowedOrigins(List<String> allowedOrigins) {
+    public CorsRule withAllowedOrigins(List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
     }
@@ -79,7 +79,7 @@ public final class CorsRule {
      * 
      * @return the allowedMethods value.
      */
-    public List<CorsRuleAllowedMethodsItem> getAllowedMethods() {
+    public List<CorsRuleAllowedMethodsItem> allowedMethods() {
         return this.allowedMethods;
     }
 
@@ -91,7 +91,7 @@ public final class CorsRule {
      * @param allowedMethods the allowedMethods value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule setAllowedMethods(List<CorsRuleAllowedMethodsItem> allowedMethods) {
+    public CorsRule withAllowedMethods(List<CorsRuleAllowedMethodsItem> allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
     }
@@ -103,7 +103,7 @@ public final class CorsRule {
      * 
      * @return the maxAgeInSeconds value.
      */
-    public int getMaxAgeInSeconds() {
+    public int maxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
 
@@ -115,7 +115,7 @@ public final class CorsRule {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
+    public CorsRule withMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }
@@ -126,7 +126,7 @@ public final class CorsRule {
      * 
      * @return the exposedHeaders value.
      */
-    public List<String> getExposedHeaders() {
+    public List<String> exposedHeaders() {
         return this.exposedHeaders;
     }
 
@@ -137,7 +137,7 @@ public final class CorsRule {
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule setExposedHeaders(List<String> exposedHeaders) {
+    public CorsRule withExposedHeaders(List<String> exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
     }
@@ -149,7 +149,7 @@ public final class CorsRule {
      * 
      * @return the allowedHeaders value.
      */
-    public List<String> getAllowedHeaders() {
+    public List<String> allowedHeaders() {
         return this.allowedHeaders;
     }
 
@@ -161,7 +161,7 @@ public final class CorsRule {
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the CorsRule object itself.
      */
-    public CorsRule setAllowedHeaders(List<String> allowedHeaders) {
+    public CorsRule withAllowedHeaders(List<String> allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
     }

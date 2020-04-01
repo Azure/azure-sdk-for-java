@@ -43,7 +43,7 @@ public final class EncryptionService {
      * 
      * @return the enabled value.
      */
-    public Boolean isEnabled() {
+    public Boolean enabled() {
         return this.enabled;
     }
 
@@ -54,7 +54,7 @@ public final class EncryptionService {
      * @param enabled the enabled value to set.
      * @return the EncryptionService object itself.
      */
-    public EncryptionService setEnabled(Boolean enabled) {
+    public EncryptionService withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -67,7 +67,7 @@ public final class EncryptionService {
      * 
      * @return the lastEnabledTime value.
      */
-    public OffsetDateTime getLastEnabledTime() {
+    public OffsetDateTime lastEnabledTime() {
         return this.lastEnabledTime;
     }
 
@@ -79,7 +79,7 @@ public final class EncryptionService {
      * 
      * @return the keyType value.
      */
-    public KeyType getKeyType() {
+    public KeyType keyType() {
         return this.keyType;
     }
 
@@ -92,7 +92,7 @@ public final class EncryptionService {
      * @param keyType the keyType value to set.
      * @return the EncryptionService object itself.
      */
-    public EncryptionService setKeyType(KeyType keyType) {
+    public EncryptionService withKeyType(KeyType keyType) {
         this.keyType = keyType;
         return this;
     }

@@ -24,6 +24,8 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -63,19 +65,19 @@ public final class BlobServicesInner {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BlobServiceItemsInner>> list(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<BlobServiceItemsInner>> list(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BlobServicePropertiesInner>> setServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("BlobServicesName") String blobServicesName, @BodyParam("application/json") BlobServicePropertiesInner parameters);
+        Mono<SimpleResponse<BlobServicePropertiesInner>> setServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("BlobServicesName") String blobServicesName, @BodyParam("application/json") BlobServicePropertiesInner parameters, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BlobServicePropertiesInner>> getServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("BlobServicesName") String blobServicesName);
+        Mono<SimpleResponse<BlobServicePropertiesInner>> getServiceProperties(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("BlobServicesName") String blobServicesName, Context context);
     }
 
     /**
@@ -89,14 +91,15 @@ public final class BlobServicesInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BlobServicePropertiesInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
-        return service.list(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<BlobServicePropertiesInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
+                res.getValue().value(),
                 null,
-                null));
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -141,7 +144,8 @@ public final class BlobServicesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobServicePropertiesInner>> setServicePropertiesWithResponseAsync(String resourceGroupName, String accountName, BlobServicePropertiesInner parameters) {
         final String blobServicesName = "default";
-        return service.setServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), blobServicesName, parameters);
+        return FluxUtil.withContext(context -> service.setServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), blobServicesName, parameters, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -193,7 +197,8 @@ public final class BlobServicesInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BlobServicePropertiesInner>> getServicePropertiesWithResponseAsync(String resourceGroupName, String accountName) {
         final String blobServicesName = "default";
-        return service.getServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), blobServicesName);
+        return FluxUtil.withContext(context -> service.getServiceProperties(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), blobServicesName, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

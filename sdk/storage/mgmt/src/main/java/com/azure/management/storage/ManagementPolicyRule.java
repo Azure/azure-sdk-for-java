@@ -49,7 +49,7 @@ public final class ManagementPolicyRule {
      * 
      * @return the enabled value.
      */
-    public Boolean isEnabled() {
+    public Boolean enabled() {
         return this.enabled;
     }
 
@@ -59,7 +59,7 @@ public final class ManagementPolicyRule {
      * @param enabled the enabled value to set.
      * @return the ManagementPolicyRule object itself.
      */
-    public ManagementPolicyRule setEnabled(Boolean enabled) {
+    public ManagementPolicyRule withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
@@ -71,7 +71,7 @@ public final class ManagementPolicyRule {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -83,7 +83,7 @@ public final class ManagementPolicyRule {
      * @param name the name value to set.
      * @return the ManagementPolicyRule object itself.
      */
-    public ManagementPolicyRule setName(String name) {
+    public ManagementPolicyRule withName(String name) {
         this.name = name;
         return this;
     }
@@ -93,7 +93,7 @@ public final class ManagementPolicyRule {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -103,7 +103,7 @@ public final class ManagementPolicyRule {
      * @param type the type value to set.
      * @return the ManagementPolicyRule object itself.
      */
-    public ManagementPolicyRule setType(String type) {
+    public ManagementPolicyRule withType(String type) {
         this.type = type;
         return this;
     }
@@ -113,7 +113,7 @@ public final class ManagementPolicyRule {
      * 
      * @return the definition value.
      */
-    public ManagementPolicyDefinition getDefinition() {
+    public ManagementPolicyDefinition definition() {
         return this.definition;
     }
 
@@ -123,7 +123,7 @@ public final class ManagementPolicyRule {
      * @param definition the definition value to set.
      * @return the ManagementPolicyRule object itself.
      */
-    public ManagementPolicyRule setDefinition(ManagementPolicyDefinition definition) {
+    public ManagementPolicyRule withDefinition(ManagementPolicyDefinition definition) {
         this.definition = definition;
         return this;
     }

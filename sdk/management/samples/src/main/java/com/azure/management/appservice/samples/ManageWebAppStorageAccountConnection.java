@@ -68,7 +68,7 @@ public final class ManageWebAppStorageAccountConnection {
                     .withNewResourceGroup(rgName)
                     .create();
 
-            String accountKey = storageAccount.getKeys().get(0).getValue();
+            String accountKey = storageAccount.getKeys().get(0).value();
 
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
                     storageAccount.name(), accountKey);

@@ -177,7 +177,7 @@ class UnmanagedDataDiskImpl
                 //New empty and from image data disk requires Vhd Uri to be set
                 if (dataDisk.inner().vhd() == null) {
                     dataDisk.inner().withVhd(new VirtualHardDisk());
-                    dataDisk.inner().vhd().withUri(storageAccount.endPoints().primary().getBlob()
+                    dataDisk.inner().vhd().withUri(storageAccount.endPoints().primary().blob()
                             + "vhds/"
                             + namePrefix + "-data-disk-" + dataDisk.lun() + "-" + UUID.randomUUID().toString() + ".vhd");
                 }

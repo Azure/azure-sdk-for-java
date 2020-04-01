@@ -38,7 +38,7 @@ public final class RoutingPreference {
      * 
      * @return the routingChoice value.
      */
-    public RoutingChoice getRoutingChoice() {
+    public RoutingChoice routingChoice() {
         return this.routingChoice;
     }
 
@@ -49,7 +49,7 @@ public final class RoutingPreference {
      * @param routingChoice the routingChoice value to set.
      * @return the RoutingPreference object itself.
      */
-    public RoutingPreference setRoutingChoice(RoutingChoice routingChoice) {
+    public RoutingPreference withRoutingChoice(RoutingChoice routingChoice) {
         this.routingChoice = routingChoice;
         return this;
     }
@@ -61,7 +61,7 @@ public final class RoutingPreference {
      * 
      * @return the publishMicrosoftEndpoints value.
      */
-    public Boolean isPublishMicrosoftEndpoints() {
+    public Boolean publishMicrosoftEndpoints() {
         return this.publishMicrosoftEndpoints;
     }
 
@@ -74,7 +74,7 @@ public final class RoutingPreference {
      * set.
      * @return the RoutingPreference object itself.
      */
-    public RoutingPreference setPublishMicrosoftEndpoints(Boolean publishMicrosoftEndpoints) {
+    public RoutingPreference withPublishMicrosoftEndpoints(Boolean publishMicrosoftEndpoints) {
         this.publishMicrosoftEndpoints = publishMicrosoftEndpoints;
         return this;
     }
@@ -86,7 +86,7 @@ public final class RoutingPreference {
      * 
      * @return the publishInternetEndpoints value.
      */
-    public Boolean isPublishInternetEndpoints() {
+    public Boolean publishInternetEndpoints() {
         return this.publishInternetEndpoints;
     }
 
@@ -99,7 +99,7 @@ public final class RoutingPreference {
      * set.
      * @return the RoutingPreference object itself.
      */
-    public RoutingPreference setPublishInternetEndpoints(Boolean publishInternetEndpoints) {
+    public RoutingPreference withPublishInternetEndpoints(Boolean publishInternetEndpoints) {
         this.publishInternetEndpoints = publishInternetEndpoints;
         return this;
     }

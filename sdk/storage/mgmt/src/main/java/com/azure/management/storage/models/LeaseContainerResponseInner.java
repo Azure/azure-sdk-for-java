@@ -32,7 +32,7 @@ public final class LeaseContainerResponseInner {
      * 
      * @return the leaseId value.
      */
-    public String getLeaseId() {
+    public String leaseId() {
         return this.leaseId;
     }
 
@@ -44,7 +44,7 @@ public final class LeaseContainerResponseInner {
      * @param leaseId the leaseId value to set.
      * @return the LeaseContainerResponseInner object itself.
      */
-    public LeaseContainerResponseInner setLeaseId(String leaseId) {
+    public LeaseContainerResponseInner withLeaseId(String leaseId) {
         this.leaseId = leaseId;
         return this;
     }
@@ -55,7 +55,7 @@ public final class LeaseContainerResponseInner {
      * 
      * @return the leaseTimeSeconds value.
      */
-    public String getLeaseTimeSeconds() {
+    public String leaseTimeSeconds() {
         return this.leaseTimeSeconds;
     }
 
@@ -66,7 +66,7 @@ public final class LeaseContainerResponseInner {
      * @param leaseTimeSeconds the leaseTimeSeconds value to set.
      * @return the LeaseContainerResponseInner object itself.
      */
-    public LeaseContainerResponseInner setLeaseTimeSeconds(String leaseTimeSeconds) {
+    public LeaseContainerResponseInner withLeaseTimeSeconds(String leaseTimeSeconds) {
         this.leaseTimeSeconds = leaseTimeSeconds;
         return this;
     }

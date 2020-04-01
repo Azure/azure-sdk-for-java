@@ -15,7 +15,7 @@ import com.azure.core.management.AzureEnvironment;
 /**
  * A builder for creating a new instance of the StorageManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = StorageManagementClientImpl.class)
+@ServiceClientBuilder(serviceClients = {StorageManagementClientImpl.class})
 public final class StorageManagementClientBuilder {
     /*
      * The ID of the target subscription.

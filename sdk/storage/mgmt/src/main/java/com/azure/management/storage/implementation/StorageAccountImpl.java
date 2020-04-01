@@ -69,7 +69,7 @@ class StorageAccountImpl
     @Override
     public AccountStatuses accountStatuses() {
         if (accountStatuses == null) {
-            accountStatuses = new AccountStatuses(this.inner().getStatusOfPrimary(), this.inner().getStatusOfSecondary());
+            accountStatuses = new AccountStatuses(this.inner().statusOfPrimary(), this.inner().statusOfSecondary());
         }
         return accountStatuses;
     }
@@ -79,38 +79,38 @@ class StorageAccountImpl
         // We deprecated the sku() getter. When we remove it we wanted to rename this
         // 'beta' getter skuType() to sku().
         //
-        return StorageAccountSkuType.fromSkuName(this.inner().getSku().getName());
+        return StorageAccountSkuType.fromSkuName(this.inner().sku().name());
     }
 
     @Override
     public Kind kind() {
-        return inner().getKind();
+        return inner().kind();
     }
 
     @Override
     public OffsetDateTime creationTime() {
-        return this.inner().getCreationTime();
+        return this.inner().creationTime();
     }
 
     @Override
     public CustomDomain customDomain() {
-        return this.inner().getCustomDomain();
+        return this.inner().customDomain();
     }
 
     @Override
     public OffsetDateTime lastGeoFailoverTime() {
-        return this.inner().getLastGeoFailoverTime();
+        return this.inner().lastGeoFailoverTime();
     }
 
     @Override
     public ProvisioningState provisioningState() {
-        return this.inner().getProvisioningState();
+        return this.inner().provisioningState();
     }
 
     @Override
     public PublicEndpoints endPoints() {
         if (publicEndpoints == null) {
-            publicEndpoints = new PublicEndpoints(this.inner().getPrimaryEndpoints(), this.inner().getSecondaryEndpoints());
+            publicEndpoints = new PublicEndpoints(this.inner().primaryEndpoints(), this.inner().secondaryEndpoints());
         }
         return publicEndpoints;
     }
@@ -118,7 +118,7 @@ class StorageAccountImpl
     @Override
     @Deprecated
     public Encryption encryption() {
-        return inner().getEncryption();
+        return inner().encryption();
     }
 
     @Override
@@ -133,24 +133,24 @@ class StorageAccountImpl
 
     @Override
     public AccessTier accessTier() {
-        return inner().getAccessTier();
+        return inner().accessTier();
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityTenantId() {
-        if (this.inner().getIdentity() == null) {
+        if (this.inner().identity() == null) {
             return null;
         } else {
-            return this.inner().getIdentity().getTenantId();
+            return this.inner().identity().tenantId();
         }
     }
 
     @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
-        if (this.inner().getIdentity() == null) {
+        if (this.inner().identity() == null) {
             return null;
         } else {
-            return this.inner().getIdentity().getPrincipalId();
+            return this.inner().identity().principalId();
         }
     }
 
@@ -191,8 +191,8 @@ class StorageAccountImpl
 
     @Override
     public boolean isAzureFilesAadIntegrationEnabled() {
-        return this.inner().getAzureFilesIdentityBasedAuthentication() != null
-                && this.inner().getAzureFilesIdentityBasedAuthentication().getDirectoryServiceOptions() == DirectoryServiceOptions.AADDS;
+        return this.inner().azureFilesIdentityBasedAuthentication() != null
+                && this.inner().azureFilesIdentityBasedAuthentication().directoryServiceOptions() == DirectoryServiceOptions.AADDS;
     }
 
     @Override
@@ -202,7 +202,7 @@ class StorageAccountImpl
 
     @Override
     public boolean isLargeFileSharesEnabled() {
-        return this.inner().getLargeFileSharesState() == LargeFileSharesState.ENABLED;
+        return this.inner().largeFileSharesState() == LargeFileSharesState.ENABLED;
     }
 
     @Override
@@ -213,7 +213,7 @@ class StorageAccountImpl
     @Override
     public Mono<List<StorageAccountKey>> getKeysAsync() {
         return this.manager().inner().storageAccounts().listKeysAsync(this.resourceGroupName(), this.name())
-                .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.getKeys());
+                .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
 
 
@@ -225,7 +225,7 @@ class StorageAccountImpl
     @Override
     public Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
         return this.manager().inner().storageAccounts().regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
-                .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.getKeys());
+                .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
 
     @Override
@@ -251,40 +251,40 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withSku(StorageAccountSkuType sku) {
         if (isInCreateMode()) {
-            createParameters.setSku(new Sku().setName(sku.name()));
+            createParameters.withSku(new Sku().withName(sku.name()));
         } else {
-            updateParameters.setSku(new Sku().setName(sku.name()));
+            updateParameters.withSku(new Sku().withName(sku.name()));
         }
         return this;
     }
 
     @Override
     public StorageAccountImpl withBlobStorageAccountKind() {
-        createParameters.setKind(Kind.BLOB_STORAGE);
+        createParameters.withKind(Kind.BLOB_STORAGE);
         return this;
     }
 
     @Override
     public StorageAccountImpl withGeneralPurposeAccountKind() {
-        createParameters.setKind(Kind.STORAGE);
+        createParameters.withKind(Kind.STORAGE);
         return this;
     }
 
     @Override
     public StorageAccountImpl withGeneralPurposeAccountKindV2() {
-        createParameters.setKind(Kind.STORAGE_V2);
+        createParameters.withKind(Kind.STORAGE_V2);
         return this;
     }
 
     @Override
     public StorageAccountImpl withBlockBlobStorageAccountKind() {
-        createParameters.setKind(Kind.BLOCK_BLOB_STORAGE);
+        createParameters.withKind(Kind.BLOCK_BLOB_STORAGE);
         return this;
     }
 
     @Override
     public StorageAccountImpl withFileStorageAccountKind() {
-        createParameters.setKind(Kind.FILE_STORAGE);
+        createParameters.withKind(Kind.FILE_STORAGE);
         return this;
     }
 
@@ -347,43 +347,43 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withCustomDomain(CustomDomain customDomain) {
         if (isInCreateMode()) {
-            createParameters.setCustomDomain(customDomain);
+            createParameters.withCustomDomain(customDomain);
         } else {
-            updateParameters.setCustomDomain(customDomain);
+            updateParameters.withCustomDomain(customDomain);
         }
         return this;
     }
 
     @Override
     public StorageAccountImpl withCustomDomain(String name) {
-        return withCustomDomain(new CustomDomain().setName(name));
+        return withCustomDomain(new CustomDomain().withName(name));
     }
 
     @Override
     public StorageAccountImpl withCustomDomain(String name, boolean useSubDomain) {
-        return withCustomDomain(new CustomDomain().setName(name).setUseSubDomainName(useSubDomain));
+        return withCustomDomain(new CustomDomain().withName(name).withUseSubDomainName(useSubDomain));
     }
 
     @Override
     public StorageAccountImpl withAccessTier(AccessTier accessTier) {
         if (isInCreateMode()) {
-            createParameters.setAccessTier(accessTier);
+            createParameters.withAccessTier(accessTier);
         } else {
-            if (this.inner().getKind() != Kind.BLOB_STORAGE) {
+            if (this.inner().kind() != Kind.BLOB_STORAGE) {
                 throw new UnsupportedOperationException("Access tier can not be changed for general purpose storage accounts.");
             }
-            updateParameters.setAccessTier(accessTier);
+            updateParameters.withAccessTier(accessTier);
         }
         return this;
     }
 
     @Override
     public StorageAccountImpl withSystemAssignedManagedServiceIdentity() {
-        if (this.inner().getIdentity() == null) {
+        if (this.inner().identity() == null) {
             if (isInCreateMode()) {
-                createParameters.setIdentity(new Identity().setType("SystemAssigned"));
+                createParameters.withIdentity(new Identity().withType("SystemAssigned"));
             } else {
-                updateParameters.setIdentity(new Identity().setType("SystemAssigned"));
+                updateParameters.withIdentity(new Identity().withType("SystemAssigned"));
             }
         }
         return this;
@@ -392,16 +392,16 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withOnlyHttpsTraffic() {
         if (isInCreateMode()) {
-            createParameters.setEnableHttpsTrafficOnly(true);
+            createParameters.withEnableHttpsTrafficOnly(true);
         } else {
-            updateParameters.setEnableHttpsTrafficOnly(true);
+            updateParameters.withEnableHttpsTrafficOnly(true);
         }
         return this;
     }
 
     @Override
     public StorageAccountImpl withHttpAndHttpsTraffic() {
-        updateParameters.setEnableHttpsTrafficOnly(false);
+        updateParameters.withEnableHttpsTrafficOnly(false);
         return this;
     }
 
@@ -492,7 +492,7 @@ class StorageAccountImpl
 
     @Override
     public Update upgradeToGeneralPurposeAccountKindV2() {
-        updateParameters.setKind(Kind.STORAGE_V2);
+        updateParameters.withKind(Kind.STORAGE_V2);
         return this;
     }
 
@@ -500,8 +500,8 @@ class StorageAccountImpl
     @Override
     public Mono<StorageAccount> createResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
-        createParameters.setLocation(this.regionName());
-        createParameters.setTags(this.inner().getTags());
+        createParameters.withLocation(this.regionName());
+        createParameters.withTags(this.inner().getTags());
         final StorageAccountsInner client = this.manager().inner().storageAccounts();
         return this.manager().inner().storageAccounts().createAsync(
                 this.resourceGroupName(), this.name(), createParameters)
@@ -513,7 +513,7 @@ class StorageAccountImpl
     @Override
     public Mono<StorageAccount> updateResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
-        updateParameters.setTags(this.inner().getTags());
+        updateParameters.withTags(this.inner().getTags());
         return this.manager().inner().storageAccounts().updateAsync(
                 resourceGroupName(), this.name(), updateParameters)
                 .map(innerToFluentMap(this))
@@ -524,16 +524,16 @@ class StorageAccountImpl
     public StorageAccountImpl withAzureFilesAadIntegrationEnabled(boolean enabled) {
         if (isInCreateMode()) {
             if (enabled) {
-                this.createParameters.setAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication().setDirectoryServiceOptions(DirectoryServiceOptions.AADDS));
+                this.createParameters.withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.AADDS));
             }
         } else {
-            if (this.createParameters.getAzureFilesIdentityBasedAuthentication() == null) {
-                this.createParameters.setAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication());
+            if (this.createParameters.azureFilesIdentityBasedAuthentication() == null) {
+                this.createParameters.withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication());
             }
             if (enabled) {
-                this.updateParameters.getAzureFilesIdentityBasedAuthentication().setDirectoryServiceOptions(DirectoryServiceOptions.AADDS);
+                this.updateParameters.azureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.AADDS);
             } else {
-                this.updateParameters.getAzureFilesIdentityBasedAuthentication().setDirectoryServiceOptions(DirectoryServiceOptions.NONE);
+                this.updateParameters.azureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.NONE);
             }
         }
         return this;
@@ -543,9 +543,9 @@ class StorageAccountImpl
     public StorageAccountImpl withLargeFileShares(boolean enabled) {
         if (isInCreateMode()) {
             if (enabled) {
-                this.createParameters.setLargeFileSharesState(LargeFileSharesState.ENABLED);
+                this.createParameters.withLargeFileSharesState(LargeFileSharesState.ENABLED);
             } else {
-                this.createParameters.setLargeFileSharesState(LargeFileSharesState.DISABLED);
+                this.createParameters.withLargeFileSharesState(LargeFileSharesState.DISABLED);
             }
         }
         return this;
@@ -553,7 +553,7 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withHnsEnabled(boolean enabled) {
-        this.createParameters.setIsHnsEnabled(enabled);
+        this.createParameters.withIsHnsEnabled(enabled);
         return this;
     }
 }

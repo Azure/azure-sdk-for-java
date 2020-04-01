@@ -73,13 +73,13 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         return storageAccount.getKeysAsync()
             .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
             .flatMap(storageAccountKey -> {
-                self.inner.withStorageUri(String.format("%s%s/%s", storageAccount.endPoints().primary().getBlob(), containerName, fileName));
+                self.inner.withStorageUri(String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                 self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                self.inner.withStorageKey(storageAccountKey.getValue());
+                self.inner.withStorageKey(storageAccountKey.value());
                 try {
                     BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-                            .endpoint(storageAccount.endPoints().primary().getBlob())
-                            .sasToken(storageAccountKey.getValue())
+                            .endpoint(storageAccount.endPoints().primary().blob())
+                            .sasToken(storageAccountKey.value())
                             .buildClient();
                     blobServiceClient.createBlobContainer(containerName);
                 } catch (IndexOutOfBoundsException indexOutOfBoundsException) {

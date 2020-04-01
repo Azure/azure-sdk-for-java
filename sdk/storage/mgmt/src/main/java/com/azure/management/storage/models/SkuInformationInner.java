@@ -28,7 +28,7 @@ public final class SkuInformationInner {
     /*
      * The SKU tier. This is based on the SKU name.
      */
-    @JsonProperty(value = "tier")
+    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /*
@@ -72,7 +72,7 @@ public final class SkuInformationInner {
      * 
      * @return the name value.
      */
-    public SkuName getName() {
+    public SkuName name() {
         return this.name;
     }
 
@@ -84,7 +84,7 @@ public final class SkuInformationInner {
      * @param name the name value to set.
      * @return the SkuInformationInner object itself.
      */
-    public SkuInformationInner setName(SkuName name) {
+    public SkuInformationInner withName(SkuName name) {
         this.name = name;
         return this;
     }
@@ -94,19 +94,8 @@ public final class SkuInformationInner {
      * 
      * @return the tier value.
      */
-    public SkuTier getTier() {
+    public SkuTier tier() {
         return this.tier;
-    }
-
-    /**
-     * Set the tier property: The SKU tier. This is based on the SKU name.
-     * 
-     * @param tier the tier value to set.
-     * @return the SkuInformationInner object itself.
-     */
-    public SkuInformationInner setTier(SkuTier tier) {
-        this.tier = tier;
-        return this;
     }
 
     /**
@@ -115,7 +104,7 @@ public final class SkuInformationInner {
      * 
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
@@ -124,7 +113,7 @@ public final class SkuInformationInner {
      * 
      * @return the kind value.
      */
-    public Kind getKind() {
+    public Kind kind() {
         return this.kind;
     }
 
@@ -135,7 +124,7 @@ public final class SkuInformationInner {
      * 
      * @return the locations value.
      */
-    public List<String> getLocations() {
+    public List<String> locations() {
         return this.locations;
     }
 
@@ -146,7 +135,7 @@ public final class SkuInformationInner {
      * 
      * @return the capabilities value.
      */
-    public List<SKUCapability> getCapabilities() {
+    public List<SKUCapability> capabilities() {
         return this.capabilities;
     }
 
@@ -156,7 +145,7 @@ public final class SkuInformationInner {
      * 
      * @return the restrictions value.
      */
-    public List<Restriction> getRestrictions() {
+    public List<Restriction> restrictions() {
         return this.restrictions;
     }
 
@@ -167,7 +156,7 @@ public final class SkuInformationInner {
      * @param restrictions the restrictions value to set.
      * @return the SkuInformationInner object itself.
      */
-    public SkuInformationInner setRestrictions(List<Restriction> restrictions) {
+    public SkuInformationInner withRestrictions(List<Restriction> restrictions) {
         this.restrictions = restrictions;
         return this;
     }

@@ -39,7 +39,7 @@ public final class PreAuthorizedApplication {
      * 
      * @return the appId value.
      */
-    public String getAppId() {
+    public String appId() {
         return this.appId;
     }
 
@@ -49,7 +49,7 @@ public final class PreAuthorizedApplication {
      * @param appId the appId value to set.
      * @return the PreAuthorizedApplication object itself.
      */
-    public PreAuthorizedApplication setAppId(String appId) {
+    public PreAuthorizedApplication withAppId(String appId) {
         this.appId = appId;
         return this;
     }
@@ -60,7 +60,7 @@ public final class PreAuthorizedApplication {
      * 
      * @return the permissions value.
      */
-    public List<PreAuthorizedApplicationPermission> getPermissions() {
+    public List<PreAuthorizedApplicationPermission> permissions() {
         return this.permissions;
     }
 
@@ -71,7 +71,7 @@ public final class PreAuthorizedApplication {
      * @param permissions the permissions value to set.
      * @return the PreAuthorizedApplication object itself.
      */
-    public PreAuthorizedApplication setPermissions(List<PreAuthorizedApplicationPermission> permissions) {
+    public PreAuthorizedApplication withPermissions(List<PreAuthorizedApplicationPermission> permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -82,7 +82,7 @@ public final class PreAuthorizedApplication {
      * 
      * @return the extensions value.
      */
-    public List<PreAuthorizedApplicationExtension> getExtensions() {
+    public List<PreAuthorizedApplicationExtension> extensions() {
         return this.extensions;
     }
 
@@ -93,7 +93,7 @@ public final class PreAuthorizedApplication {
      * @param extensions the extensions value to set.
      * @return the PreAuthorizedApplication object itself.
      */
-    public PreAuthorizedApplication setExtensions(List<PreAuthorizedApplicationExtension> extensions) {
+    public PreAuthorizedApplication withExtensions(List<PreAuthorizedApplicationExtension> extensions) {
         this.extensions = extensions;
         return this;
     }

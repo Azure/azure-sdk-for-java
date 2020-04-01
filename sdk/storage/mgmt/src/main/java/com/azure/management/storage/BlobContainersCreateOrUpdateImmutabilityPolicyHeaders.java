@@ -23,7 +23,7 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicyHeaders {
      * 
      * @return the eTag value.
      */
-    public String getETag() {
+    public String eTag() {
         return this.eTag;
     }
 
@@ -34,7 +34,7 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicyHeaders {
      * @return the BlobContainersCreateOrUpdateImmutabilityPolicyHeaders object
      * itself.
      */
-    public BlobContainersCreateOrUpdateImmutabilityPolicyHeaders setETag(String eTag) {
+    public BlobContainersCreateOrUpdateImmutabilityPolicyHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

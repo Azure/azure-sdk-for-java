@@ -29,7 +29,7 @@ public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
      * 
      * @return the retryAfter value.
      */
-    public String getRetryAfter() {
+    public String retryAfter() {
         return this.retryAfter;
     }
 
@@ -40,7 +40,7 @@ public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
      * @return the DeploymentsBeginWhatIfAtSubscriptionScopeHeaders object
      * itself.
      */
-    public DeploymentsBeginWhatIfAtSubscriptionScopeHeaders setRetryAfter(String retryAfter) {
+    public DeploymentsBeginWhatIfAtSubscriptionScopeHeaders withRetryAfter(String retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -50,7 +50,7 @@ public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -61,7 +61,7 @@ public final class DeploymentsBeginWhatIfAtSubscriptionScopeHeaders {
      * @return the DeploymentsBeginWhatIfAtSubscriptionScopeHeaders object
      * itself.
      */
-    public DeploymentsBeginWhatIfAtSubscriptionScopeHeaders setLocation(String location) {
+    public DeploymentsBeginWhatIfAtSubscriptionScopeHeaders withLocation(String location) {
         this.location = location;
         return this;
     }

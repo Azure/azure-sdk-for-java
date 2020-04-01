@@ -38,7 +38,7 @@ public final class LegalHoldProperties {
      * 
      * @return the hasLegalHold value.
      */
-    public Boolean isHasLegalHold() {
+    public Boolean hasLegalHold() {
         return this.hasLegalHold;
     }
 
@@ -47,7 +47,7 @@ public final class LegalHoldProperties {
      * 
      * @return the tags value.
      */
-    public List<TagProperty> getTags() {
+    public List<TagProperty> tags() {
         return this.tags;
     }
 
@@ -57,7 +57,7 @@ public final class LegalHoldProperties {
      * @param tags the tags value to set.
      * @return the LegalHoldProperties object itself.
      */
-    public LegalHoldProperties setTags(List<TagProperty> tags) {
+    public LegalHoldProperties withTags(List<TagProperty> tags) {
         this.tags = tags;
         return this;
     }

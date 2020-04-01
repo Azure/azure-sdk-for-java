@@ -27,7 +27,7 @@ public final class ManagementPolicySchema {
      * 
      * @return the rules value.
      */
-    public List<ManagementPolicyRule> getRules() {
+    public List<ManagementPolicyRule> rules() {
         return this.rules;
     }
 
@@ -39,7 +39,7 @@ public final class ManagementPolicySchema {
      * @param rules the rules value to set.
      * @return the ManagementPolicySchema object itself.
      */
-    public ManagementPolicySchema setRules(List<ManagementPolicyRule> rules) {
+    public ManagementPolicySchema withRules(List<ManagementPolicyRule> rules) {
         this.rules = rules;
         return this;
     }

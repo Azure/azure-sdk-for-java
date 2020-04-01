@@ -24,19 +24,19 @@ final class FeatureImpl extends
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override
     public String state() {
-        if (inner().getProperties() == null) {
+        if (inner().properties() == null) {
             return null;
         }
-        return inner().getProperties().getState();
+        return inner().properties().state();
     }
 }

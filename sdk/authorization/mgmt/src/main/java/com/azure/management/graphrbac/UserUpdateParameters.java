@@ -27,7 +27,7 @@ public final class UserUpdateParameters extends UserBase {
     private String displayName;
 
     /*
-     * The password profile associated with a user.
+     * The password profile of the user.
      */
     @JsonProperty(value = "passwordProfile")
     private PasswordProfile passwordProfile;
@@ -50,7 +50,7 @@ public final class UserUpdateParameters extends UserBase {
      * 
      * @return the accountEnabled value.
      */
-    public Boolean isAccountEnabled() {
+    public Boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -60,7 +60,7 @@ public final class UserUpdateParameters extends UserBase {
      * @param accountEnabled the accountEnabled value to set.
      * @return the UserUpdateParameters object itself.
      */
-    public UserUpdateParameters setAccountEnabled(Boolean accountEnabled) {
+    public UserUpdateParameters withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
@@ -70,7 +70,7 @@ public final class UserUpdateParameters extends UserBase {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -80,29 +80,27 @@ public final class UserUpdateParameters extends UserBase {
      * @param displayName the displayName value to set.
      * @return the UserUpdateParameters object itself.
      */
-    public UserUpdateParameters setDisplayName(String displayName) {
+    public UserUpdateParameters withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
     /**
-     * Get the passwordProfile property: The password profile associated with a
-     * user.
+     * Get the passwordProfile property: The password profile of the user.
      * 
      * @return the passwordProfile value.
      */
-    public PasswordProfile getPasswordProfile() {
+    public PasswordProfile passwordProfile() {
         return this.passwordProfile;
     }
 
     /**
-     * Set the passwordProfile property: The password profile associated with a
-     * user.
+     * Set the passwordProfile property: The password profile of the user.
      * 
      * @param passwordProfile the passwordProfile value to set.
      * @return the UserUpdateParameters object itself.
      */
-    public UserUpdateParameters setPasswordProfile(PasswordProfile passwordProfile) {
+    public UserUpdateParameters withPasswordProfile(PasswordProfile passwordProfile) {
         this.passwordProfile = passwordProfile;
         return this;
     }
@@ -114,7 +112,7 @@ public final class UserUpdateParameters extends UserBase {
      * 
      * @return the userPrincipalName value.
      */
-    public String getUserPrincipalName() {
+    public String userPrincipalName() {
         return this.userPrincipalName;
     }
 
@@ -126,7 +124,7 @@ public final class UserUpdateParameters extends UserBase {
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the UserUpdateParameters object itself.
      */
-    public UserUpdateParameters setUserPrincipalName(String userPrincipalName) {
+    public UserUpdateParameters withUserPrincipalName(String userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
         return this;
     }
@@ -136,7 +134,7 @@ public final class UserUpdateParameters extends UserBase {
      * 
      * @return the mailNickname value.
      */
-    public String getMailNickname() {
+    public String mailNickname() {
         return this.mailNickname;
     }
 
@@ -146,7 +144,7 @@ public final class UserUpdateParameters extends UserBase {
      * @param mailNickname the mailNickname value to set.
      * @return the UserUpdateParameters object itself.
      */
-    public UserUpdateParameters setMailNickname(String mailNickname) {
+    public UserUpdateParameters withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
         return this;
     }

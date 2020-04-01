@@ -78,7 +78,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String etag() {
-        return this.inner().getEtag();
+        return this.inner().etag();
     }
 
     @Override
@@ -88,7 +88,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public int immutabilityPeriodSinceCreationInDays() {
-        return this.inner().getImmutabilityPeriodSinceCreationInDays();
+        return this.inner().immutabilityPeriodSinceCreationInDays();
     }
 
     @Override
@@ -98,7 +98,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public ImmutabilityPolicyState state() {
-        return this.inner().getState();
+        return this.inner().state();
     }
 
     @Override

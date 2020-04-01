@@ -44,7 +44,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * 
      * @return the sku value.
      */
-    public Sku getSku() {
+    public Sku sku() {
         return this.sku;
     }
 
@@ -56,7 +56,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * 
      * @return the cors value.
      */
-    public CorsRules getCors() {
+    public CorsRules cors() {
         return this.cors;
     }
 
@@ -69,7 +69,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * @param cors the cors value to set.
      * @return the FileServicePropertiesInner object itself.
      */
-    public FileServicePropertiesInner setCors(CorsRules cors) {
+    public FileServicePropertiesInner withCors(CorsRules cors) {
         this.cors = cors;
         return this;
     }
@@ -80,7 +80,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * 
      * @return the shareDeleteRetentionPolicy value.
      */
-    public DeleteRetentionPolicy getShareDeleteRetentionPolicy() {
+    public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
         return this.shareDeleteRetentionPolicy;
     }
 
@@ -92,7 +92,7 @@ public class FileServicePropertiesInner extends ProxyResource {
      * to set.
      * @return the FileServicePropertiesInner object itself.
      */
-    public FileServicePropertiesInner setShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+    public FileServicePropertiesInner withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         this.shareDeleteRetentionPolicy = shareDeleteRetentionPolicy;
         return this;
     }

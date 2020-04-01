@@ -22,7 +22,7 @@ public final class Sku {
     /*
      * The SKU tier. This is based on the SKU name.
      */
-    @JsonProperty(value = "tier")
+    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
     /**
@@ -32,7 +32,7 @@ public final class Sku {
      * 
      * @return the name value.
      */
-    public SkuName getName() {
+    public SkuName name() {
         return this.name;
     }
 
@@ -44,7 +44,7 @@ public final class Sku {
      * @param name the name value to set.
      * @return the Sku object itself.
      */
-    public Sku setName(SkuName name) {
+    public Sku withName(SkuName name) {
         this.name = name;
         return this;
     }
@@ -54,18 +54,7 @@ public final class Sku {
      * 
      * @return the tier value.
      */
-    public SkuTier getTier() {
+    public SkuTier tier() {
         return this.tier;
-    }
-
-    /**
-     * Set the tier property: The SKU tier. This is based on the SKU name.
-     * 
-     * @param tier the tier value to set.
-     * @return the Sku object itself.
-     */
-    public Sku setTier(SkuTier tier) {
-        this.tier = tier;
-        return this;
     }
 }

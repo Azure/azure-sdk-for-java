@@ -35,7 +35,7 @@ public final class StorageAccountKey {
      * 
      * @return the keyName value.
      */
-    public String getKeyName() {
+    public String keyName() {
         return this.keyName;
     }
 
@@ -44,7 +44,7 @@ public final class StorageAccountKey {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -54,7 +54,7 @@ public final class StorageAccountKey {
      * 
      * @return the permissions value.
      */
-    public KeyPermission getPermissions() {
+    public KeyPermission permissions() {
         return this.permissions;
     }
 }

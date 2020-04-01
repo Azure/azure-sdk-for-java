@@ -131,7 +131,7 @@ public final class ServiceSasParameters {
      * 
      * @return the canonicalizedResource value.
      */
-    public String getCanonicalizedResource() {
+    public String canonicalizedResource() {
         return this.canonicalizedResource;
     }
 
@@ -142,7 +142,7 @@ public final class ServiceSasParameters {
      * @param canonicalizedResource the canonicalizedResource value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setCanonicalizedResource(String canonicalizedResource) {
+    public ServiceSasParameters withCanonicalizedResource(String canonicalizedResource) {
         this.canonicalizedResource = canonicalizedResource;
         return this;
     }
@@ -154,7 +154,7 @@ public final class ServiceSasParameters {
      * 
      * @return the resource value.
      */
-    public SignedResource getResource() {
+    public SignedResource resource() {
         return this.resource;
     }
 
@@ -166,7 +166,7 @@ public final class ServiceSasParameters {
      * @param resource the resource value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setResource(SignedResource resource) {
+    public ServiceSasParameters withResource(SignedResource resource) {
         this.resource = resource;
         return this;
     }
@@ -178,7 +178,7 @@ public final class ServiceSasParameters {
      * 
      * @return the permissions value.
      */
-    public Permissions getPermissions() {
+    public Permissions permissions() {
         return this.permissions;
     }
 
@@ -190,7 +190,7 @@ public final class ServiceSasParameters {
      * @param permissions the permissions value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setPermissions(Permissions permissions) {
+    public ServiceSasParameters withPermissions(Permissions permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -201,7 +201,7 @@ public final class ServiceSasParameters {
      * 
      * @return the iPAddressOrRange value.
      */
-    public String getIPAddressOrRange() {
+    public String iPAddressOrRange() {
         return this.iPAddressOrRange;
     }
 
@@ -212,7 +212,7 @@ public final class ServiceSasParameters {
      * @param iPAddressOrRange the iPAddressOrRange value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setIPAddressOrRange(String iPAddressOrRange) {
+    public ServiceSasParameters withIPAddressOrRange(String iPAddressOrRange) {
         this.iPAddressOrRange = iPAddressOrRange;
         return this;
     }
@@ -223,7 +223,7 @@ public final class ServiceSasParameters {
      * 
      * @return the protocols value.
      */
-    public HttpProtocol getProtocols() {
+    public HttpProtocol protocols() {
         return this.protocols;
     }
 
@@ -234,7 +234,7 @@ public final class ServiceSasParameters {
      * @param protocols the protocols value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setProtocols(HttpProtocol protocols) {
+    public ServiceSasParameters withProtocols(HttpProtocol protocols) {
         this.protocols = protocols;
         return this;
     }
@@ -245,7 +245,7 @@ public final class ServiceSasParameters {
      * 
      * @return the sharedAccessStartTime value.
      */
-    public OffsetDateTime getSharedAccessStartTime() {
+    public OffsetDateTime sharedAccessStartTime() {
         return this.sharedAccessStartTime;
     }
 
@@ -256,7 +256,7 @@ public final class ServiceSasParameters {
      * @param sharedAccessStartTime the sharedAccessStartTime value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setSharedAccessStartTime(OffsetDateTime sharedAccessStartTime) {
+    public ServiceSasParameters withSharedAccessStartTime(OffsetDateTime sharedAccessStartTime) {
         this.sharedAccessStartTime = sharedAccessStartTime;
         return this;
     }
@@ -267,7 +267,7 @@ public final class ServiceSasParameters {
      * 
      * @return the sharedAccessExpiryTime value.
      */
-    public OffsetDateTime getSharedAccessExpiryTime() {
+    public OffsetDateTime sharedAccessExpiryTime() {
         return this.sharedAccessExpiryTime;
     }
 
@@ -278,7 +278,7 @@ public final class ServiceSasParameters {
      * @param sharedAccessExpiryTime the sharedAccessExpiryTime value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setSharedAccessExpiryTime(OffsetDateTime sharedAccessExpiryTime) {
+    public ServiceSasParameters withSharedAccessExpiryTime(OffsetDateTime sharedAccessExpiryTime) {
         this.sharedAccessExpiryTime = sharedAccessExpiryTime;
         return this;
     }
@@ -290,7 +290,7 @@ public final class ServiceSasParameters {
      * 
      * @return the identifier value.
      */
-    public String getIdentifier() {
+    public String identifier() {
         return this.identifier;
     }
 
@@ -302,7 +302,7 @@ public final class ServiceSasParameters {
      * @param identifier the identifier value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setIdentifier(String identifier) {
+    public ServiceSasParameters withIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
@@ -312,7 +312,7 @@ public final class ServiceSasParameters {
      * 
      * @return the partitionKeyStart value.
      */
-    public String getPartitionKeyStart() {
+    public String partitionKeyStart() {
         return this.partitionKeyStart;
     }
 
@@ -322,7 +322,7 @@ public final class ServiceSasParameters {
      * @param partitionKeyStart the partitionKeyStart value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setPartitionKeyStart(String partitionKeyStart) {
+    public ServiceSasParameters withPartitionKeyStart(String partitionKeyStart) {
         this.partitionKeyStart = partitionKeyStart;
         return this;
     }
@@ -332,7 +332,7 @@ public final class ServiceSasParameters {
      * 
      * @return the partitionKeyEnd value.
      */
-    public String getPartitionKeyEnd() {
+    public String partitionKeyEnd() {
         return this.partitionKeyEnd;
     }
 
@@ -342,7 +342,7 @@ public final class ServiceSasParameters {
      * @param partitionKeyEnd the partitionKeyEnd value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setPartitionKeyEnd(String partitionKeyEnd) {
+    public ServiceSasParameters withPartitionKeyEnd(String partitionKeyEnd) {
         this.partitionKeyEnd = partitionKeyEnd;
         return this;
     }
@@ -352,7 +352,7 @@ public final class ServiceSasParameters {
      * 
      * @return the rowKeyStart value.
      */
-    public String getRowKeyStart() {
+    public String rowKeyStart() {
         return this.rowKeyStart;
     }
 
@@ -362,7 +362,7 @@ public final class ServiceSasParameters {
      * @param rowKeyStart the rowKeyStart value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setRowKeyStart(String rowKeyStart) {
+    public ServiceSasParameters withRowKeyStart(String rowKeyStart) {
         this.rowKeyStart = rowKeyStart;
         return this;
     }
@@ -372,7 +372,7 @@ public final class ServiceSasParameters {
      * 
      * @return the rowKeyEnd value.
      */
-    public String getRowKeyEnd() {
+    public String rowKeyEnd() {
         return this.rowKeyEnd;
     }
 
@@ -382,7 +382,7 @@ public final class ServiceSasParameters {
      * @param rowKeyEnd the rowKeyEnd value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setRowKeyEnd(String rowKeyEnd) {
+    public ServiceSasParameters withRowKeyEnd(String rowKeyEnd) {
         this.rowKeyEnd = rowKeyEnd;
         return this;
     }
@@ -392,7 +392,7 @@ public final class ServiceSasParameters {
      * 
      * @return the keyToSign value.
      */
-    public String getKeyToSign() {
+    public String keyToSign() {
         return this.keyToSign;
     }
 
@@ -402,7 +402,7 @@ public final class ServiceSasParameters {
      * @param keyToSign the keyToSign value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setKeyToSign(String keyToSign) {
+    public ServiceSasParameters withKeyToSign(String keyToSign) {
         this.keyToSign = keyToSign;
         return this;
     }
@@ -413,7 +413,7 @@ public final class ServiceSasParameters {
      * 
      * @return the cacheControl value.
      */
-    public String getCacheControl() {
+    public String cacheControl() {
         return this.cacheControl;
     }
 
@@ -424,7 +424,7 @@ public final class ServiceSasParameters {
      * @param cacheControl the cacheControl value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setCacheControl(String cacheControl) {
+    public ServiceSasParameters withCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
@@ -435,7 +435,7 @@ public final class ServiceSasParameters {
      * 
      * @return the contentDisposition value.
      */
-    public String getContentDisposition() {
+    public String contentDisposition() {
         return this.contentDisposition;
     }
 
@@ -446,7 +446,7 @@ public final class ServiceSasParameters {
      * @param contentDisposition the contentDisposition value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setContentDisposition(String contentDisposition) {
+    public ServiceSasParameters withContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
     }
@@ -457,7 +457,7 @@ public final class ServiceSasParameters {
      * 
      * @return the contentEncoding value.
      */
-    public String getContentEncoding() {
+    public String contentEncoding() {
         return this.contentEncoding;
     }
 
@@ -468,7 +468,7 @@ public final class ServiceSasParameters {
      * @param contentEncoding the contentEncoding value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setContentEncoding(String contentEncoding) {
+    public ServiceSasParameters withContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
     }
@@ -479,7 +479,7 @@ public final class ServiceSasParameters {
      * 
      * @return the contentLanguage value.
      */
-    public String getContentLanguage() {
+    public String contentLanguage() {
         return this.contentLanguage;
     }
 
@@ -490,7 +490,7 @@ public final class ServiceSasParameters {
      * @param contentLanguage the contentLanguage value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setContentLanguage(String contentLanguage) {
+    public ServiceSasParameters withContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
     }
@@ -501,7 +501,7 @@ public final class ServiceSasParameters {
      * 
      * @return the contentType value.
      */
-    public String getContentType() {
+    public String contentType() {
         return this.contentType;
     }
 
@@ -512,7 +512,7 @@ public final class ServiceSasParameters {
      * @param contentType the contentType value to set.
      * @return the ServiceSasParameters object itself.
      */
-    public ServiceSasParameters setContentType(String contentType) {
+    public ServiceSasParameters withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }

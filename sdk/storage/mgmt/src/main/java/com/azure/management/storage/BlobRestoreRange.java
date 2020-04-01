@@ -30,7 +30,7 @@ public final class BlobRestoreRange {
      * 
      * @return the startRange value.
      */
-    public String getStartRange() {
+    public String startRange() {
         return this.startRange;
     }
 
@@ -41,7 +41,7 @@ public final class BlobRestoreRange {
      * @param startRange the startRange value to set.
      * @return the BlobRestoreRange object itself.
      */
-    public BlobRestoreRange setStartRange(String startRange) {
+    public BlobRestoreRange withStartRange(String startRange) {
         this.startRange = startRange;
         return this;
     }
@@ -51,7 +51,7 @@ public final class BlobRestoreRange {
      * 
      * @return the endRange value.
      */
-    public String getEndRange() {
+    public String endRange() {
         return this.endRange;
     }
 
@@ -61,7 +61,7 @@ public final class BlobRestoreRange {
      * @param endRange the endRange value to set.
      * @return the BlobRestoreRange object itself.
      */
-    public BlobRestoreRange setEndRange(String endRange) {
+    public BlobRestoreRange withEndRange(String endRange) {
         this.endRange = endRange;
         return this;
     }

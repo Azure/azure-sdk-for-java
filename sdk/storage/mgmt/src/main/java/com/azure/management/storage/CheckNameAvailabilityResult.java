@@ -30,7 +30,7 @@ public class CheckNameAvailabilityResult {
      * already been taken or invalid and cannot be used.
      */
     public boolean isAvailable() {
-        return inner.isNameAvailable();
+        return inner.nameAvailable();
     }
 
     /**
@@ -39,13 +39,13 @@ public class CheckNameAvailabilityResult {
      * values include: 'AccountNameInvalid', 'AlreadyExists'.
      */
     public Reason reason() {
-        return inner.getReason();
+        return inner.reason();
     }
 
     /**
      * @return an error message explaining the Reason value in more detail
      */
     public String message() {
-        return inner.getMessage();
+        return inner.message();
     }
 }

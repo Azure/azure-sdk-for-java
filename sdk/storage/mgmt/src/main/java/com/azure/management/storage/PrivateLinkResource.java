@@ -39,7 +39,7 @@ public class PrivateLinkResource extends ProxyResource {
      * 
      * @return the groupId value.
      */
-    public String getGroupId() {
+    public String groupId() {
         return this.groupId;
     }
 
@@ -49,7 +49,7 @@ public class PrivateLinkResource extends ProxyResource {
      * 
      * @return the requiredMembers value.
      */
-    public List<String> getRequiredMembers() {
+    public List<String> requiredMembers() {
         return this.requiredMembers;
     }
 
@@ -59,7 +59,7 @@ public class PrivateLinkResource extends ProxyResource {
      * 
      * @return the requiredZoneNames value.
      */
-    public List<String> getRequiredZoneNames() {
+    public List<String> requiredZoneNames() {
         return this.requiredZoneNames;
     }
 
@@ -70,7 +70,7 @@ public class PrivateLinkResource extends ProxyResource {
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
-    public PrivateLinkResource setRequiredZoneNames(List<String> requiredZoneNames) {
+    public PrivateLinkResource withRequiredZoneNames(List<String> requiredZoneNames) {
         this.requiredZoneNames = requiredZoneNames;
         return this;
     }

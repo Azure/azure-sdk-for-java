@@ -746,9 +746,9 @@ class SqlDatabaseImpl
                 return storageAccount.getKeysAsync()
                     .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
                     .flatMap(storageAccountKey -> {
-                        self.importRequestInner.withStorageUri(String.format("%s%s/%s", storageAccount.endPoints().primary().getBlob(), containerName, fileName));
+                        self.importRequestInner.withStorageUri(String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
                         self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                        self.importRequestInner.withStorageKey(storageAccountKey.getValue());
+                        self.importRequestInner.withStorageKey(storageAccountKey.value());
                         return context.voidMono();
                     });
             }

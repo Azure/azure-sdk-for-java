@@ -37,8 +37,8 @@ public class StorageBlobServicesTests extends StorageManagementTest {
                 .withDeleteRetentionPolicyEnabled(5)
                 .create();
 
-        Assertions.assertTrue(blobService.deleteRetentionPolicy().isEnabled());
-        Assertions.assertEquals(5, blobService.deleteRetentionPolicy().getDays().intValue());
+        Assertions.assertTrue(blobService.deleteRetentionPolicy().enabled());
+        Assertions.assertEquals(5, blobService.deleteRetentionPolicy().days().intValue());
 
     }
 
@@ -62,7 +62,7 @@ public class StorageBlobServicesTests extends StorageManagementTest {
                 .withDeleteRetentionPolicyDisabled()
                 .apply();
 
-        Assertions.assertFalse(blobService.deleteRetentionPolicy().isEnabled());
+        Assertions.assertFalse(blobService.deleteRetentionPolicy().enabled());
 
     }
 }

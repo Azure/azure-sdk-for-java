@@ -76,7 +76,7 @@ public final class AppRole {
      * @param id the id value to set.
      * @return the AppRole object itself.
      */
-    public AppRole setId(String id) {
+    public AppRole withId(String id) {
         this.id = id;
         return this;
     }
@@ -89,7 +89,7 @@ public final class AppRole {
      * 
      * @return the allowedMemberTypes value.
      */
-    public List<String> getAllowedMemberTypes() {
+    public List<String> allowedMemberTypes() {
         return this.allowedMemberTypes;
     }
 
@@ -102,7 +102,7 @@ public final class AppRole {
      * @param allowedMemberTypes the allowedMemberTypes value to set.
      * @return the AppRole object itself.
      */
-    public AppRole setAllowedMemberTypes(List<String> allowedMemberTypes) {
+    public AppRole withAllowedMemberTypes(List<String> allowedMemberTypes) {
         this.allowedMemberTypes = allowedMemberTypes;
         return this;
     }
@@ -113,7 +113,7 @@ public final class AppRole {
      * 
      * @return the description value.
      */
-    public String getDescription() {
+    public String description() {
         return this.description;
     }
 
@@ -124,7 +124,7 @@ public final class AppRole {
      * @param description the description value to set.
      * @return the AppRole object itself.
      */
-    public AppRole setDescription(String description) {
+    public AppRole withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -135,7 +135,7 @@ public final class AppRole {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -146,7 +146,7 @@ public final class AppRole {
      * @param displayName the displayName value to set.
      * @return the AppRole object itself.
      */
-    public AppRole setDisplayName(String displayName) {
+    public AppRole withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -172,7 +172,7 @@ public final class AppRole {
      * @param isEnabled the isEnabled value to set.
      * @return the AppRole object itself.
      */
-    public AppRole setIsEnabled(Boolean isEnabled) {
+    public AppRole withIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
     }
@@ -183,7 +183,7 @@ public final class AppRole {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -194,7 +194,7 @@ public final class AppRole {
      * @param value the value value to set.
      * @return the AppRole object itself.
      */
-    public AppRole setValue(String value) {
+    public AppRole withValue(String value) {
         this.value = value;
         return this;
     }

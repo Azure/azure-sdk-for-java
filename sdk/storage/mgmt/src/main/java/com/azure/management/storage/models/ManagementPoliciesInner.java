@@ -22,6 +22,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.storage.ManagementPolicySchema;
 import reactor.core.publisher.Mono;
@@ -63,19 +65,19 @@ public final class ManagementPoliciesInner implements InnerSupportsDelete<Void> 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagementPolicyInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("managementPolicyName") String managementPolicyName);
+        Mono<SimpleResponse<ManagementPolicyInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("managementPolicyName") String managementPolicyName, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("managementPolicyName") String managementPolicyName, @BodyParam("application/json") ManagementPolicyInner properties);
+        Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("managementPolicyName") String managementPolicyName, @BodyParam("application/json") ManagementPolicyInner properties, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/managementPolicies/{managementPolicyName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("managementPolicyName") String managementPolicyName);
+        Mono<Response<Void>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("managementPolicyName") String managementPolicyName, Context context);
     }
 
     /**
@@ -90,7 +92,8 @@ public final class ManagementPoliciesInner implements InnerSupportsDelete<Void> 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagementPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName) {
         final String managementPolicyName = "default";
-        return service.get(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName);
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -142,8 +145,9 @@ public final class ManagementPoliciesInner implements InnerSupportsDelete<Void> 
     public Mono<SimpleResponse<ManagementPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName, ManagementPolicySchema policy) {
         final String managementPolicyName = "default";
         ManagementPolicyInner properties = new ManagementPolicyInner();
-        properties.setPolicy(policy);
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, properties);
+        properties.withPolicy(policy);
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, properties, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -195,7 +199,8 @@ public final class ManagementPoliciesInner implements InnerSupportsDelete<Void> 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
         final String managementPolicyName = "default";
-        return service.delete(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName);
+        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, accountName, this.client.getApiVersion(), this.client.getSubscriptionId(), managementPolicyName, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**

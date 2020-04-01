@@ -22,7 +22,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.io.Closeable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,7 +62,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
  *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
-public final class ServiceBusSenderAsyncClient implements Closeable {
+public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
@@ -77,14 +76,16 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
+    private final Runnable onClientClose;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
 
     /**
-     * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to
+     * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, ServiceBusConnectionProcessor connectionProcessor,
-        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
+        Runnable onClientClose) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -94,6 +95,7 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
             "'connectionProcessor' cannot be null.");
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
+        this.onClientClose = onClientClose;
     }
 
     /**
@@ -302,8 +304,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         if (isDisposed.getAndSet(true)) {
             return;
         }
-        connectionProcessor.dispose();
 
+        onClientClose.run();
     }
 
     private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages) {
@@ -329,11 +331,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     private Mono<AmqpSendLink> getSendLink() {
-        final String entityPath = entityName;
-        final String linkName = entityName;
-
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
+            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions));
     }
 
     private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<ServiceBusMessageBatch>,

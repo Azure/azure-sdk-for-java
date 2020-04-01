@@ -163,7 +163,7 @@ public final class ManageNetworkWatcher {
                     .define(packetCaptureName)
                     .withTarget(vm.id())
                     .withStorageAccountId(storageAccount.id())
-                    .withStoragePath(storageAccount.endPoints().primary().getBlob() + packetCaptureStorageContainer)
+                    .withStoragePath(storageAccount.endPoints().primary().blob() + packetCaptureStorageContainer)
                     .withTimeLimitInSeconds(1500)
                     .definePacketCaptureFilter()
                     .withProtocol(PcProtocol.TCP)
@@ -255,7 +255,7 @@ public final class ManageNetworkWatcher {
             // TODO: Verify the below azure storage code based on Azure core.
             //============================================================
             // Download a packet capture
-            String accountKey = storageAccount.getKeys().get(0).getValue();
+            String accountKey = storageAccount.getKeys().get(0).value();
             String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
                     storageAccount.name(), accountKey);
 

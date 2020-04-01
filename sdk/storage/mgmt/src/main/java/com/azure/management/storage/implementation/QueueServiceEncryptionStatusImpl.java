@@ -28,7 +28,7 @@ class QueueServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImp
         if (super.encryptionServices == null) {
             return null;
         } else {
-            return  super.encryptionServices.getQueue();
+            return  super.encryptionServices.queue();
         }
     }
 }

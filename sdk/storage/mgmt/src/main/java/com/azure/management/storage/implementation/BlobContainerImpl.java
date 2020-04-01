@@ -86,17 +86,17 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public String etag() {
-        return this.inner().getEtag();
+        return this.inner().etag();
     }
 
     @Override
     public Boolean hasImmutabilityPolicy() {
-        return this.inner().isHasImmutabilityPolicy();
+        return this.inner().hasImmutabilityPolicy();
     }
 
     @Override
     public Boolean hasLegalHold() {
-        return this.inner().isHasLegalHold();
+        return this.inner().hasLegalHold();
     }
 
     @Override
@@ -106,37 +106,37 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public ImmutabilityPolicyProperties immutabilityPolicy() {
-        return this.inner().getImmutabilityPolicy();
+        return this.inner().immutabilityPolicy();
     }
 
     @Override
     public OffsetDateTime lastModifiedTime() {
-        return this.inner().getLastModifiedTime();
+        return this.inner().lastModifiedTime();
     }
 
     @Override
     public LeaseDuration leaseDuration() {
-        return this.inner().getLeaseDuration();
+        return this.inner().leaseDuration();
     }
 
     @Override
     public LeaseState leaseState() {
-        return this.inner().getLeaseState();
+        return this.inner().leaseState();
     }
 
     @Override
     public LeaseStatus leaseStatus() {
-        return this.inner().getLeaseStatus();
+        return this.inner().leaseStatus();
     }
 
     @Override
     public LegalHoldProperties legalHold() {
-        return this.inner().getLegalHold();
+        return this.inner().legalHold();
     }
 
     @Override
     public Map<String, String> metadata() {
-        return this.inner().getMetadata();
+        return this.inner().metadata();
     }
 
     @Override
@@ -146,7 +146,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public PublicAccess publicAccess() {
-        return this.inner().getPublicAccess();
+        return this.inner().publicAccess();
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.Lease;
@@ -27,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.Collections;
 
 /**
  * Provides flexible way to buildAsyncClient lease manager constructor parameters.
@@ -417,7 +417,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
         param.setValue(prefix);
         SqlQuerySpec querySpec = new SqlQuerySpec(
             "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            new SqlParameterList(param));
+            Collections.singletonList(param));
 
         Flux<FeedResponse<CosmosItemProperties>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),

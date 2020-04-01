@@ -45,7 +45,7 @@ public final class TagValueInner {
      * 
      * @return the tagValue value.
      */
-    public String getTagValue() {
+    public String tagValue() {
         return this.tagValue;
     }
 
@@ -55,7 +55,7 @@ public final class TagValueInner {
      * @param tagValue the tagValue value to set.
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setTagValue(String tagValue) {
+    public TagValueInner withTagValue(String tagValue) {
         this.tagValue = tagValue;
         return this;
     }
@@ -65,7 +65,7 @@ public final class TagValueInner {
      * 
      * @return the count value.
      */
-    public TagCount getCount() {
+    public TagCount count() {
         return this.count;
     }
 
@@ -75,7 +75,7 @@ public final class TagValueInner {
      * @param count the count value to set.
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setCount(TagCount count) {
+    public TagValueInner withCount(TagCount count) {
         this.count = count;
         return this;
     }

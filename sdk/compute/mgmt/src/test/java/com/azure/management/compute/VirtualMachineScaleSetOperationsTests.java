@@ -90,7 +90,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         List<StorageAccountKey> keys = storageAccount.getKeys();
         Assertions.assertNotNull(keys);
         Assertions.assertTrue(keys.size() > 0);
-        String storageAccountKey = keys.get(0).getValue();
+        String storageAccountKey = keys.get(0).value();
 
         final String storageConnectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
                 storageAccount.name(),

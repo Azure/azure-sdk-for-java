@@ -6,7 +6,6 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
 /**
  * The KeyVaultProperties model.
@@ -31,24 +30,12 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "keyvaulturi")
     private String keyVaultUri;
 
-    /*
-     * The object identifier of the current versioned Key Vault Key in use.
-     */
-    @JsonProperty(value = "currentVersionedKeyIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String currentVersionedKeyIdentifier;
-
-    /*
-     * Timestamp of last rotation of the Key Vault Key.
-     */
-    @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastKeyRotationTimestamp;
-
     /**
      * Get the keyName property: The name of KeyVault key.
      * 
      * @return the keyName value.
      */
-    public String getKeyName() {
+    public String keyName() {
         return this.keyName;
     }
 
@@ -58,7 +45,7 @@ public final class KeyVaultProperties {
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
-    public KeyVaultProperties setKeyName(String keyName) {
+    public KeyVaultProperties withKeyName(String keyName) {
         this.keyName = keyName;
         return this;
     }
@@ -68,7 +55,7 @@ public final class KeyVaultProperties {
      * 
      * @return the keyVersion value.
      */
-    public String getKeyVersion() {
+    public String keyVersion() {
         return this.keyVersion;
     }
 
@@ -78,7 +65,7 @@ public final class KeyVaultProperties {
      * @param keyVersion the keyVersion value to set.
      * @return the KeyVaultProperties object itself.
      */
-    public KeyVaultProperties setKeyVersion(String keyVersion) {
+    public KeyVaultProperties withKeyVersion(String keyVersion) {
         this.keyVersion = keyVersion;
         return this;
     }
@@ -88,7 +75,7 @@ public final class KeyVaultProperties {
      * 
      * @return the keyVaultUri value.
      */
-    public String getKeyVaultUri() {
+    public String keyVaultUri() {
         return this.keyVaultUri;
     }
 
@@ -98,28 +85,8 @@ public final class KeyVaultProperties {
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
-    public KeyVaultProperties setKeyVaultUri(String keyVaultUri) {
+    public KeyVaultProperties withKeyVaultUri(String keyVaultUri) {
         this.keyVaultUri = keyVaultUri;
         return this;
-    }
-
-    /**
-     * Get the currentVersionedKeyIdentifier property: The object identifier of
-     * the current versioned Key Vault Key in use.
-     * 
-     * @return the currentVersionedKeyIdentifier value.
-     */
-    public String getCurrentVersionedKeyIdentifier() {
-        return this.currentVersionedKeyIdentifier;
-    }
-
-    /**
-     * Get the lastKeyRotationTimestamp property: Timestamp of last rotation of
-     * the Key Vault Key.
-     * 
-     * @return the lastKeyRotationTimestamp value.
-     */
-    public OffsetDateTime getLastKeyRotationTimestamp() {
-        return this.lastKeyRotationTimestamp;
     }
 }

@@ -65,10 +65,10 @@ final class StorageNetworkRulesHelper {
      * @return true if access allowed from all networks, false otherwise
      */
     static boolean isAccessAllowedFromAllNetworks(final StorageAccountInner inner) {
-        if (inner.getNetworkRuleSet() == null || inner.getNetworkRuleSet().getDefaultAction() == null) {
+        if (inner.networkRuleSet() == null || inner.networkRuleSet().defaultAction() == null) {
             return true;
         }
-        return inner.getNetworkRuleSet().getDefaultAction().equals(DefaultAction.ALLOW);
+        return inner.networkRuleSet().defaultAction().equals(DefaultAction.ALLOW);
     }
 
     /**
@@ -79,11 +79,11 @@ final class StorageNetworkRulesHelper {
      */
     static List<String> networkSubnetsWithAccess(final StorageAccountInner inner) {
         List<String> subnetIds = new ArrayList<>();
-        if (inner.getNetworkRuleSet() != null
-                && inner.getNetworkRuleSet().getVirtualNetworkRules() != null) {
-            for (VirtualNetworkRule rule : inner.getNetworkRuleSet().getVirtualNetworkRules()) {
-                if (rule != null && rule.getVirtualNetworkResourceId() != null) {
-                    subnetIds.add(rule.getVirtualNetworkResourceId());
+        if (inner.networkRuleSet() != null
+                && inner.networkRuleSet().virtualNetworkRules() != null) {
+            for (VirtualNetworkRule rule : inner.networkRuleSet().virtualNetworkRules()) {
+                if (rule != null && rule.virtualNetworkResourceId() != null) {
+                    subnetIds.add(rule.virtualNetworkResourceId());
                 }
             }
         }
@@ -98,13 +98,13 @@ final class StorageNetworkRulesHelper {
      */
     static List<String> ipAddressesWithAccess(final StorageAccountInner inner) {
         List<String> ipAddresses = new ArrayList<>();
-        if (inner.getNetworkRuleSet() != null
-                && inner.getNetworkRuleSet().getIpRules() != null) {
-            for (IPRule rule : inner.getNetworkRuleSet().getIpRules()) {
+        if (inner.networkRuleSet() != null
+                && inner.networkRuleSet().ipRules() != null) {
+            for (IPRule rule : inner.networkRuleSet().ipRules()) {
                 if (rule != null
-                        && rule.getIPAddressOrRange() != null
-                        && !rule.getIPAddressOrRange().contains("/")) {
-                    ipAddresses.add(rule.getIPAddressOrRange());
+                        && rule.iPAddressOrRange() != null
+                        && !rule.iPAddressOrRange().contains("/")) {
+                    ipAddresses.add(rule.iPAddressOrRange());
                 }
             }
         }
@@ -119,13 +119,13 @@ final class StorageNetworkRulesHelper {
      */
     static List<String> ipAddressRangesWithAccess(final StorageAccountInner inner) {
         List<String> ipAddressRanges = new ArrayList<>();
-        if (inner.getNetworkRuleSet() != null
-                && inner.getNetworkRuleSet().getIpRules() != null) {
-            for (IPRule rule : inner.getNetworkRuleSet().getIpRules()) {
+        if (inner.networkRuleSet() != null
+                && inner.networkRuleSet().ipRules() != null) {
+            for (IPRule rule : inner.networkRuleSet().ipRules()) {
                 if (rule != null
-                        && rule.getIPAddressOrRange() != null
-                        && rule.getIPAddressOrRange().contains("/")) {
-                    ipAddressRanges.add(rule.getIPAddressOrRange());
+                        && rule.iPAddressOrRange() != null
+                        && rule.iPAddressOrRange().contains("/")) {
+                    ipAddressRanges.add(rule.iPAddressOrRange());
                 }
             }
         }
@@ -139,10 +139,10 @@ final class StorageNetworkRulesHelper {
      * @return true if storage log entries can be read from any network, false otherwise
      */
     static boolean canReadLogEntriesFromAnyNetwork(final StorageAccountInner inner) {
-        if (inner.getNetworkRuleSet() != null
-                && inner.getNetworkRuleSet().getDefaultAction() != null
-                && inner.getNetworkRuleSet().getDefaultAction().equals(DefaultAction.DENY)) {
-            Set<String> bypassSet = parseBypass(inner.getNetworkRuleSet().getBypass());
+        if (inner.networkRuleSet() != null
+                && inner.networkRuleSet().defaultAction() != null
+                && inner.networkRuleSet().defaultAction().equals(DefaultAction.DENY)) {
+            Set<String> bypassSet = parseBypass(inner.networkRuleSet().bypass());
             return bypassSet.contains(Bypass.LOGGING.toString().toLowerCase());
         }
         return true;
@@ -155,10 +155,10 @@ final class StorageNetworkRulesHelper {
      * @return true if storage metrics can be read from any network, false otherwise
      */
     static boolean canReadMetricsFromAnyNetwork(final StorageAccountInner inner) {
-        if (inner.getNetworkRuleSet() != null
-                && inner.getNetworkRuleSet().getDefaultAction() != null
-                && inner.getNetworkRuleSet().getDefaultAction().equals(DefaultAction.DENY)) {
-            Set<String> bypassSet = parseBypass(inner.getNetworkRuleSet().getBypass());
+        if (inner.networkRuleSet() != null
+                && inner.networkRuleSet().defaultAction() != null
+                && inner.networkRuleSet().defaultAction().equals(DefaultAction.DENY)) {
+            Set<String> bypassSet = parseBypass(inner.networkRuleSet().bypass());
             return bypassSet.contains(Bypass.METRICS.toString().toLowerCase());
         }
         return true;
@@ -171,10 +171,10 @@ final class StorageNetworkRulesHelper {
      * @return true if storage can be accessed from application running on azure, false otherwise
      */
     static boolean canAccessFromAzureServices(final StorageAccountInner inner) {
-        if (inner.getNetworkRuleSet() != null
-                && inner.getNetworkRuleSet().getDefaultAction() != null
-                && inner.getNetworkRuleSet().getDefaultAction().equals(DefaultAction.DENY)) {
-            Set<String> bypassSet = parseBypass(inner.getNetworkRuleSet().getBypass());
+        if (inner.networkRuleSet() != null
+                && inner.networkRuleSet().defaultAction() != null
+                && inner.networkRuleSet().defaultAction().equals(DefaultAction.DENY)) {
+            Set<String> bypassSet = parseBypass(inner.networkRuleSet().bypass());
             return bypassSet.contains(Bypass.AZURE_SERVICES.toString().toLowerCase());
         }
         return true;
@@ -187,7 +187,7 @@ final class StorageNetworkRulesHelper {
      */
     StorageNetworkRulesHelper withAccessFromAllNetworks() {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
-        networkRuleSet.setDefaultAction(DefaultAction.ALLOW);
+        networkRuleSet.withDefaultAction(DefaultAction.ALLOW);
         return this;
     }
 
@@ -198,7 +198,7 @@ final class StorageNetworkRulesHelper {
      */
     StorageNetworkRulesHelper withAccessFromSelectedNetworks() {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
-        networkRuleSet.setDefaultAction(DefaultAction.DENY);
+        networkRuleSet.withDefaultAction(DefaultAction.DENY);
         return this;
     }
 
@@ -210,20 +210,20 @@ final class StorageNetworkRulesHelper {
      */
     StorageNetworkRulesHelper withAccessFromNetworkSubnet(String subnetId) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
-        if (networkRuleSet.getVirtualNetworkRules() == null) {
-            networkRuleSet.setVirtualNetworkRules(new ArrayList<VirtualNetworkRule>());
+        if (networkRuleSet.virtualNetworkRules() == null) {
+            networkRuleSet.withVirtualNetworkRules(new ArrayList<VirtualNetworkRule>());
         }
         boolean found = false;
-        for (VirtualNetworkRule rule : networkRuleSet.getVirtualNetworkRules()) {
-            if (rule.getVirtualNetworkResourceId().equalsIgnoreCase(subnetId)) {
+        for (VirtualNetworkRule rule : networkRuleSet.virtualNetworkRules()) {
+            if (rule.virtualNetworkResourceId().equalsIgnoreCase(subnetId)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            networkRuleSet.getVirtualNetworkRules().add(new VirtualNetworkRule()
-                    .setVirtualNetworkResourceId(subnetId)
-                    .setAction(Action.ALLOW));
+            networkRuleSet.virtualNetworkRules().add(new VirtualNetworkRule()
+                    .withVirtualNetworkResourceId(subnetId)
+                    .withAction(Action.ALLOW));
         }
         return this;
     }
@@ -287,21 +287,21 @@ final class StorageNetworkRulesHelper {
     StorageNetworkRulesHelper withoutNetworkSubnetAccess(String subnetId) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(false);
         if (networkRuleSet == null
-                || networkRuleSet.getVirtualNetworkRules() == null
-                || networkRuleSet.getVirtualNetworkRules().size() == 0) {
+                || networkRuleSet.virtualNetworkRules() == null
+                || networkRuleSet.virtualNetworkRules().size() == 0) {
             return this;
         }
         int foundIndex = -1;
         int i = 0;
-        for (VirtualNetworkRule rule : networkRuleSet.getVirtualNetworkRules()) {
-            if (rule.getVirtualNetworkResourceId().equalsIgnoreCase(subnetId)) {
+        for (VirtualNetworkRule rule : networkRuleSet.virtualNetworkRules()) {
+            if (rule.virtualNetworkResourceId().equalsIgnoreCase(subnetId)) {
                 foundIndex = i;
                 break;
             }
             i++;
         }
         if (foundIndex != -1) {
-            networkRuleSet.getVirtualNetworkRules().remove(foundIndex);
+            networkRuleSet.virtualNetworkRules().remove(foundIndex);
         }
         return this;
     }
@@ -367,7 +367,7 @@ final class StorageNetworkRulesHelper {
     private void addToBypassList(Bypass bypass) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
         final String bypassStr = bypass.toString().toLowerCase();
-        Set<String> bypassSet = parseBypass(networkRuleSet.getBypass());
+        Set<String> bypassSet = parseBypass(networkRuleSet.bypass());
         if (bypassStr.equalsIgnoreCase(BYPASS_NONE_STR)) {
             bypassSet.clear();
             bypassSet.add(BYPASS_NONE_STR);
@@ -377,7 +377,7 @@ final class StorageNetworkRulesHelper {
             }
             bypassSet.add(bypassStr);
         }
-        networkRuleSet.setBypass(Bypass.fromString(String.join(", ", bypassSet)));
+        networkRuleSet.withBypass(Bypass.fromString(String.join(", ", bypassSet)));
     }
 
     /**
@@ -390,7 +390,7 @@ final class StorageNetworkRulesHelper {
         if (networkRuleSet == null) {
             return;
         } else {
-            Set<String> bypassSet = parseBypass(networkRuleSet.getBypass());
+            Set<String> bypassSet = parseBypass(networkRuleSet.bypass());
             String bypassStr = bypass.toString().toLowerCase();
             if (bypassSet.contains(bypassStr)) {
                 bypassSet.remove(bypassStr);
@@ -398,7 +398,7 @@ final class StorageNetworkRulesHelper {
             if (bypassSet.isEmpty() && !bypassStr.equalsIgnoreCase(BYPASS_NONE_STR)) {
                 bypassSet.add(BYPASS_NONE_STR);
             }
-            networkRuleSet.setBypass(Bypass.fromString(String.join(", ", bypassSet)));
+            networkRuleSet.withBypass(Bypass.fromString(String.join(", ", bypassSet)));
         }
     }
 
@@ -414,72 +414,72 @@ final class StorageNetworkRulesHelper {
      */
     void setDefaultActionIfRequired() {
         if (isInCreateMode) {
-            if (createParameters.getNetworkRuleSet() != null) {
+            if (createParameters.networkRuleSet() != null) {
                 boolean hasAtLeastOneRule = false;
 
-                if (createParameters.getNetworkRuleSet().getVirtualNetworkRules() != null
-                        && createParameters.getNetworkRuleSet().getVirtualNetworkRules().size() > 0) {
+                if (createParameters.networkRuleSet().virtualNetworkRules() != null
+                        && createParameters.networkRuleSet().virtualNetworkRules().size() > 0) {
                     hasAtLeastOneRule = true;
-                } else if (createParameters.getNetworkRuleSet().getIpRules() != null
-                        && createParameters.getNetworkRuleSet().getIpRules().size() > 0) {
+                } else if (createParameters.networkRuleSet().ipRules() != null
+                        && createParameters.networkRuleSet().ipRules().size() > 0) {
                     hasAtLeastOneRule = true;
                 }
-                boolean anyException = createParameters.getNetworkRuleSet().getBypass() != null;
-                if ((hasAtLeastOneRule || anyException) && createParameters.getNetworkRuleSet().getDefaultAction() == null) {
+                boolean anyException = createParameters.networkRuleSet().bypass() != null;
+                if ((hasAtLeastOneRule || anyException) && createParameters.networkRuleSet().defaultAction() == null) {
                     // If user specified at least one network rule or selected any exception
                     // and didn't choose the default access action then "DENY" access from
                     // unknown networks.
                     //
-                    createParameters.getNetworkRuleSet().setDefaultAction(DefaultAction.DENY);
+                    createParameters.networkRuleSet().withDefaultAction(DefaultAction.DENY);
                     if (!anyException) {
                         // If user didn't select any by-pass explicitly then disable "all bypass"
                         // if this is not specified then by default service allows access from
                         // "azure-services".
                         //
-                        createParameters.getNetworkRuleSet().setBypass(Bypass.NONE);
+                        createParameters.networkRuleSet().withBypass(Bypass.NONE);
                     }
                 }
             }
         } else {
-            NetworkRuleSet currentRuleSet = this.inner.getNetworkRuleSet();
+            NetworkRuleSet currentRuleSet = this.inner.networkRuleSet();
 
-            final boolean hasNoExistingException = currentRuleSet != null && currentRuleSet.getBypass() == null;
+            final boolean hasNoExistingException = currentRuleSet != null && currentRuleSet.bypass() == null;
             boolean hasExistingRules = false;
 
             if (currentRuleSet != null) {
-                if (currentRuleSet.getVirtualNetworkRules() != null
-                        && currentRuleSet.getVirtualNetworkRules().size() > 0) {
+                if (currentRuleSet.virtualNetworkRules() != null
+                        && currentRuleSet.virtualNetworkRules().size() > 0) {
                     hasExistingRules = true;
-                } else if (currentRuleSet.getIpRules() != null
-                        && currentRuleSet.getIpRules().size() > 0) {
+                } else if (currentRuleSet.ipRules() != null
+                        && currentRuleSet.ipRules().size() > 0) {
                     hasExistingRules = true;
                 }
             }
             if (!hasExistingRules) {
-                if (updateParameters.getNetworkRuleSet() != null) {
+                if (updateParameters.networkRuleSet() != null) {
                     boolean anyRulesAddedFirstTime = false;
 
-                    if (updateParameters.getNetworkRuleSet().getVirtualNetworkRules() != null
-                            && updateParameters.getNetworkRuleSet().getVirtualNetworkRules().size() > 0) {
+                    if (updateParameters.networkRuleSet().virtualNetworkRules() != null
+                            && updateParameters.networkRuleSet().virtualNetworkRules().size() > 0) {
                         anyRulesAddedFirstTime = true;
-                    } else if (updateParameters.getNetworkRuleSet().getIpRules() != null
-                            && updateParameters.getNetworkRuleSet().getIpRules().size() > 0) {
+                    } else if (updateParameters.networkRuleSet().ipRules() != null
+                            && updateParameters.networkRuleSet().ipRules().size() > 0) {
                         anyRulesAddedFirstTime = true;
                     }
-                    final boolean anyExceptionAddedFirstTime = !hasNoExistingException && updateParameters.getNetworkRuleSet().getBypass() != null;
+                    final boolean anyExceptionAddedFirstTime = !hasNoExistingException && updateParameters.networkRuleSet().bypass() != null;
                     if ((anyRulesAddedFirstTime || anyExceptionAddedFirstTime)
-                            && updateParameters.getNetworkRuleSet().getDefaultAction() == null) {
+                            && updateParameters.networkRuleSet().defaultAction() == null) {
                         // If there was no existing rules & exceptions and if user specified at least one
                         // network rule or exception and didn't choose the default access action for
                         // unknown networks then DENY access from unknown networks.
                         //
-                        updateParameters.getNetworkRuleSet().setDefaultAction(DefaultAction.DENY);
+                        updateParameters.networkRuleSet().withDefaultAction(DefaultAction.DENY);
                         if (!anyExceptionAddedFirstTime) {
                             // If user didn't select any by-pass explicitly then disable "all bypass"
                             // if this is not specified then by default service allows access from
                             // "azure-services".
                             //
-                            createParameters.getNetworkRuleSet().setBypass(Bypass.NONE);
+                            createParameters.networkRuleSet().withBypass(Bypass.NONE);
                         }
                     }
                 }
@@ -495,20 +495,20 @@ final class StorageNetworkRulesHelper {
      */
     private StorageNetworkRulesHelper withAccessAllowedFromIpAddressOrRange(String ipAddressOrRange) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(true);
-        if (networkRuleSet.getIpRules() == null) {
-            networkRuleSet.setIpRules(new ArrayList<IPRule>());
+        if (networkRuleSet.ipRules() == null) {
+            networkRuleSet.withIpRules(new ArrayList<IPRule>());
         }
         boolean found = false;
-        for (IPRule rule : networkRuleSet.getIpRules()) {
-            if (rule.getIPAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
+        for (IPRule rule : networkRuleSet.ipRules()) {
+            if (rule.iPAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            networkRuleSet.getIpRules().add(new IPRule()
-                    .setIPAddressOrRange(ipAddressOrRange)
-                    .setAction(Action.ALLOW));
+            networkRuleSet.ipRules().add(new IPRule()
+                    .withIPAddressOrRange(ipAddressOrRange)
+                    .withAction(Action.ALLOW));
         }
         return this;
     }
@@ -522,21 +522,21 @@ final class StorageNetworkRulesHelper {
     private StorageNetworkRulesHelper withoutIpAddressOrRangeAccess(String ipAddressOrRange) {
         NetworkRuleSet networkRuleSet = this.getNetworkRuleSetConfig(false);
         if (networkRuleSet == null
-                || networkRuleSet.getIpRules() == null
-                || networkRuleSet.getIpRules().size() == 0) {
+                || networkRuleSet.ipRules() == null
+                || networkRuleSet.ipRules().size() == 0) {
             return this;
         }
         int foundIndex = -1;
         int i = 0;
-        for (IPRule rule : networkRuleSet.getIpRules()) {
-            if (rule.getIPAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
+        for (IPRule rule : networkRuleSet.ipRules()) {
+            if (rule.iPAddressOrRange().equalsIgnoreCase(ipAddressOrRange)) {
                 foundIndex = i;
                 break;
             }
             i++;
         }
         if (foundIndex != -1) {
-            networkRuleSet.getIpRules().remove(foundIndex);
+            networkRuleSet.ipRules().remove(foundIndex);
         }
         return this;
     }
@@ -549,19 +549,19 @@ final class StorageNetworkRulesHelper {
      */
     private NetworkRuleSet getNetworkRuleSetConfig(boolean createIfNotExists) {
         if (this.isInCreateMode) {
-            if (this.createParameters.getNetworkRuleSet() == null) {
+            if (this.createParameters.networkRuleSet() == null) {
                 if (createIfNotExists) {
-                    this.createParameters.setNetworkRuleSet(new NetworkRuleSet());
+                    this.createParameters.withNetworkRuleSet(new NetworkRuleSet());
                 } else {
                     return null;
                 }
             }
-            return this.createParameters.getNetworkRuleSet();
+            return this.createParameters.networkRuleSet();
         } else {
-            if (this.updateParameters.getNetworkRuleSet() == null) {
-                if (this.inner.getNetworkRuleSet() == null) {
+            if (this.updateParameters.networkRuleSet() == null) {
+                if (this.inner.networkRuleSet() == null) {
                     if (createIfNotExists) {
-                        this.updateParameters.setNetworkRuleSet(new NetworkRuleSet());
+                        this.updateParameters.withNetworkRuleSet(new NetworkRuleSet());
                     } else {
                         return null;
                     }
@@ -569,30 +569,30 @@ final class StorageNetworkRulesHelper {
                     // Create clone of current ruleSet
                     //
                     NetworkRuleSet clonedNetworkRuleSet = new NetworkRuleSet();
-                    clonedNetworkRuleSet.setDefaultAction(this.inner.getNetworkRuleSet().getDefaultAction());
-                    clonedNetworkRuleSet.setBypass(this.inner.getNetworkRuleSet().getBypass());
-                    if (this.inner.getNetworkRuleSet().getVirtualNetworkRules() != null) {
-                        clonedNetworkRuleSet.setVirtualNetworkRules(new ArrayList<VirtualNetworkRule>());
-                        for (VirtualNetworkRule rule : this.inner.getNetworkRuleSet().getVirtualNetworkRules()) {
+                    clonedNetworkRuleSet.withDefaultAction(this.inner.networkRuleSet().defaultAction());
+                    clonedNetworkRuleSet.withBypass(this.inner.networkRuleSet().bypass());
+                    if (this.inner.networkRuleSet().virtualNetworkRules() != null) {
+                        clonedNetworkRuleSet.withVirtualNetworkRules(new ArrayList<VirtualNetworkRule>());
+                        for (VirtualNetworkRule rule : this.inner.networkRuleSet().virtualNetworkRules()) {
                             VirtualNetworkRule clonedRule = new VirtualNetworkRule()
-                                    .setAction(rule.getAction())
-                                    .setVirtualNetworkResourceId(rule.getVirtualNetworkResourceId());
-                            clonedNetworkRuleSet.getVirtualNetworkRules().add(clonedRule);
+                                    .withAction(rule.action())
+                                    .withVirtualNetworkResourceId(rule.virtualNetworkResourceId());
+                            clonedNetworkRuleSet.virtualNetworkRules().add(clonedRule);
                         }
                     }
-                    if (this.inner.getNetworkRuleSet().getIpRules() != null) {
-                        clonedNetworkRuleSet.setIpRules(new ArrayList<IPRule>());
-                        for (IPRule rule : this.inner.getNetworkRuleSet().getIpRules()) {
+                    if (this.inner.networkRuleSet().ipRules() != null) {
+                        clonedNetworkRuleSet.withIpRules(new ArrayList<IPRule>());
+                        for (IPRule rule : this.inner.networkRuleSet().ipRules()) {
                             IPRule clonedRule = new IPRule()
-                                    .setAction(rule.getAction())
-                                    .setIPAddressOrRange(rule.getIPAddressOrRange());
-                            clonedNetworkRuleSet.getIpRules().add(clonedRule);
+                                    .withAction(rule.action())
+                                    .withIPAddressOrRange(rule.iPAddressOrRange());
+                            clonedNetworkRuleSet.ipRules().add(clonedRule);
                         }
                     }
-                    this.updateParameters.setNetworkRuleSet(clonedNetworkRuleSet);
+                    this.updateParameters.withNetworkRuleSet(clonedNetworkRuleSet);
                 }
             }
-            return this.updateParameters.getNetworkRuleSet();
+            return this.updateParameters.networkRuleSet();
         }
     }
 

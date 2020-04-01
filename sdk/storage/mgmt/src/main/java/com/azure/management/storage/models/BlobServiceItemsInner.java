@@ -24,7 +24,7 @@ public final class BlobServiceItemsInner {
      * 
      * @return the value value.
      */
-    public List<BlobServicePropertiesInner> getValue() {
+    public List<BlobServicePropertiesInner> value() {
         return this.value;
     }
 }

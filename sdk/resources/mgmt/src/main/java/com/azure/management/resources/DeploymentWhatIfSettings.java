@@ -23,7 +23,7 @@ public final class DeploymentWhatIfSettings {
      * 
      * @return the resultFormat value.
      */
-    public WhatIfResultFormat getResultFormat() {
+    public WhatIfResultFormat resultFormat() {
         return this.resultFormat;
     }
 
@@ -33,7 +33,7 @@ public final class DeploymentWhatIfSettings {
      * @param resultFormat the resultFormat value to set.
      * @return the DeploymentWhatIfSettings object itself.
      */
-    public DeploymentWhatIfSettings setResultFormat(WhatIfResultFormat resultFormat) {
+    public DeploymentWhatIfSettings withResultFormat(WhatIfResultFormat resultFormat) {
         this.resultFormat = resultFormat;
         return this;
     }

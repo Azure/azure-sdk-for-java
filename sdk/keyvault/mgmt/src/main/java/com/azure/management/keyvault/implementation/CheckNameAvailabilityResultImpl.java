@@ -24,17 +24,17 @@ public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvaila
 
     @Override
     public Boolean nameAvailable() {
-        return inner().isNameAvailable();
+        return inner().nameAvailable();
     }
 
     @Override
     public Reason reason() {
-        return inner().getReason();
+        return inner().reason();
     }
 
     @Override
     public String message() {
-        return inner().getMessage();
+        return inner().message();
     }
 
 }

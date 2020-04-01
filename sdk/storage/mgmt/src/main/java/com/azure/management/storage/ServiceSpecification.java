@@ -25,7 +25,7 @@ public final class ServiceSpecification {
      * 
      * @return the metricSpecifications value.
      */
-    public List<MetricSpecification> getMetricSpecifications() {
+    public List<MetricSpecification> metricSpecifications() {
         return this.metricSpecifications;
     }
 
@@ -36,7 +36,7 @@ public final class ServiceSpecification {
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the ServiceSpecification object itself.
      */
-    public ServiceSpecification setMetricSpecifications(List<MetricSpecification> metricSpecifications) {
+    public ServiceSpecification withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }

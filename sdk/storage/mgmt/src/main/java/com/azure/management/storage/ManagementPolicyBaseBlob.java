@@ -38,7 +38,7 @@ public final class ManagementPolicyBaseBlob {
      * 
      * @return the tierToCool value.
      */
-    public DateAfterModification getTierToCool() {
+    public DateAfterModification tierToCool() {
         return this.tierToCool;
     }
 
@@ -49,7 +49,7 @@ public final class ManagementPolicyBaseBlob {
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
-    public ManagementPolicyBaseBlob setTierToCool(DateAfterModification tierToCool) {
+    public ManagementPolicyBaseBlob withTierToCool(DateAfterModification tierToCool) {
         this.tierToCool = tierToCool;
         return this;
     }
@@ -60,7 +60,7 @@ public final class ManagementPolicyBaseBlob {
      * 
      * @return the tierToArchive value.
      */
-    public DateAfterModification getTierToArchive() {
+    public DateAfterModification tierToArchive() {
         return this.tierToArchive;
     }
 
@@ -71,7 +71,7 @@ public final class ManagementPolicyBaseBlob {
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
-    public ManagementPolicyBaseBlob setTierToArchive(DateAfterModification tierToArchive) {
+    public ManagementPolicyBaseBlob withTierToArchive(DateAfterModification tierToArchive) {
         this.tierToArchive = tierToArchive;
         return this;
     }
@@ -81,7 +81,7 @@ public final class ManagementPolicyBaseBlob {
      * 
      * @return the delete value.
      */
-    public DateAfterModification getDelete() {
+    public DateAfterModification delete() {
         return this.delete;
     }
 
@@ -91,7 +91,7 @@ public final class ManagementPolicyBaseBlob {
      * @param delete the delete value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
-    public ManagementPolicyBaseBlob setDelete(DateAfterModification delete) {
+    public ManagementPolicyBaseBlob withDelete(DateAfterModification delete) {
         this.delete = delete;
         return this;
     }

@@ -11,7 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.trace.AttributeValue;
+import io.opentelemetry.common.AttributeValue;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Span.Builder;
 import io.opentelemetry.trace.SpanContext;
@@ -29,7 +29,7 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
+    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
     // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";

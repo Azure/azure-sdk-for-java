@@ -23,7 +23,7 @@ public final class ResourceGroupProperties {
      * 
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 }

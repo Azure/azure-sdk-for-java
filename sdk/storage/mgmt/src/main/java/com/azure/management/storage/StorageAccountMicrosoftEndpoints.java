@@ -53,7 +53,7 @@ public final class StorageAccountMicrosoftEndpoints {
      * 
      * @return the blob value.
      */
-    public String getBlob() {
+    public String blob() {
         return this.blob;
     }
 
@@ -62,7 +62,7 @@ public final class StorageAccountMicrosoftEndpoints {
      * 
      * @return the queue value.
      */
-    public String getQueue() {
+    public String queue() {
         return this.queue;
     }
 
@@ -71,7 +71,7 @@ public final class StorageAccountMicrosoftEndpoints {
      * 
      * @return the table value.
      */
-    public String getTable() {
+    public String table() {
         return this.table;
     }
 
@@ -80,7 +80,7 @@ public final class StorageAccountMicrosoftEndpoints {
      * 
      * @return the file value.
      */
-    public String getFile() {
+    public String file() {
         return this.file;
     }
 
@@ -89,7 +89,7 @@ public final class StorageAccountMicrosoftEndpoints {
      * 
      * @return the web value.
      */
-    public String getWeb() {
+    public String web() {
         return this.web;
     }
 
@@ -98,7 +98,7 @@ public final class StorageAccountMicrosoftEndpoints {
      * 
      * @return the dfs value.
      */
-    public String getDfs() {
+    public String dfs() {
         return this.dfs;
     }
 }
