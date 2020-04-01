@@ -3,30 +3,29 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import static com.azure.core.util.FluxUtil.monoError;
-
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
-import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.models.JsonWebKey;
 import reactor.core.publisher.Mono;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A key client which is used to asynchronously encrypt, or wrap, another key.
  */
-public final class KeyEncryptionKeyAsyncClient extends CryptographyAsyncClient implements AsyncKeyEncryptionKey {
+public final class LocalKeyEncryptionKeyAsyncClient extends LocalCryptographyAsyncClient
+    implements AsyncKeyEncryptionKey {
 
-    private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(LocalKeyEncryptionKeyAsyncClient.class);
 
     /**
-     * Creates a KeyEncryptionKeyAsyncClient that uses {@code pipeline} to service requests
+     * Creates a LocalKeyEncryptionKeyAsyncClient for local cryptography operations.
      *
-     * @param keyId The identifier of the key to use for cryptography operations.
-     * @param pipeline The HttpPipeline that the HTTP requests and responses flow through.
-     * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param key the json web key to use for cryptography operations.
      */
-    KeyEncryptionKeyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
-        super(keyId, pipeline, version);
+    LocalKeyEncryptionKeyAsyncClient(JsonWebKey key) {
+        super(key);
     }
 
 

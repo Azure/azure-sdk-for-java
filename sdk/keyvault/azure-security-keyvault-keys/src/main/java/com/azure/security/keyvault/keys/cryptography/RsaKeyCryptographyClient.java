@@ -132,16 +132,23 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context, JsonWebKey key) {
-
-        return serviceClient.sign(algorithm, digest, context);
+        if (serviceCryptoAvailable()) {
+            return serviceClient.sign(algorithm, digest, context);
+        } else {
+            return Mono.error(new UnsupportedOperationException("Sign operation on Local RSA key"
+                                                                    + " is not supported currently."));
+        }
     }
 
     @Override
     Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context,
                                    JsonWebKey key) {
-
-        return serviceClient.verify(algorithm, digest, signature, context);
-        // do a service call for now.
+        if (serviceCryptoAvailable()) {
+            return serviceClient.verify(algorithm, digest, signature, context);
+        } else {
+            return Mono.error(new UnsupportedOperationException("Verify operation on Local RSA key is not"
+                                                                    + " supported currently."));
+        }
     }
 
     @Override
