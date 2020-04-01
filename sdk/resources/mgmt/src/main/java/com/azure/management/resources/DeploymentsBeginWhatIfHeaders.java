@@ -29,7 +29,7 @@ public final class DeploymentsBeginWhatIfHeaders {
      * 
      * @return the retryAfter value.
      */
-    public String getRetryAfter() {
+    public String retryAfter() {
         return this.retryAfter;
     }
 
@@ -39,7 +39,7 @@ public final class DeploymentsBeginWhatIfHeaders {
      * @param retryAfter the retryAfter value to set.
      * @return the DeploymentsBeginWhatIfHeaders object itself.
      */
-    public DeploymentsBeginWhatIfHeaders setRetryAfter(String retryAfter) {
+    public DeploymentsBeginWhatIfHeaders withRetryAfter(String retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
@@ -49,7 +49,7 @@ public final class DeploymentsBeginWhatIfHeaders {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -59,7 +59,7 @@ public final class DeploymentsBeginWhatIfHeaders {
      * @param location the location value to set.
      * @return the DeploymentsBeginWhatIfHeaders object itself.
      */
-    public DeploymentsBeginWhatIfHeaders setLocation(String location) {
+    public DeploymentsBeginWhatIfHeaders withLocation(String location) {
         this.location = location;
         return this;
     }

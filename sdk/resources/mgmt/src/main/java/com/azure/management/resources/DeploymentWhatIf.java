@@ -29,7 +29,7 @@ public final class DeploymentWhatIf {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -39,7 +39,7 @@ public final class DeploymentWhatIf {
      * @param location the location value to set.
      * @return the DeploymentWhatIf object itself.
      */
-    public DeploymentWhatIf setLocation(String location) {
+    public DeploymentWhatIf withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -49,7 +49,7 @@ public final class DeploymentWhatIf {
      * 
      * @return the properties value.
      */
-    public DeploymentWhatIfProperties getProperties() {
+    public DeploymentWhatIfProperties properties() {
         return this.properties;
     }
 
@@ -59,7 +59,7 @@ public final class DeploymentWhatIf {
      * @param properties the properties value to set.
      * @return the DeploymentWhatIf object itself.
      */
-    public DeploymentWhatIf setProperties(DeploymentWhatIfProperties properties) {
+    public DeploymentWhatIf withProperties(DeploymentWhatIfProperties properties) {
         this.properties = properties;
         return this;
     }

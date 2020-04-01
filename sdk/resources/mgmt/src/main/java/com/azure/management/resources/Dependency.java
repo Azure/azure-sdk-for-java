@@ -42,7 +42,7 @@ public final class Dependency {
      * 
      * @return the dependsOn value.
      */
-    public List<BasicDependency> getDependsOn() {
+    public List<BasicDependency> dependsOn() {
         return this.dependsOn;
     }
 
@@ -52,7 +52,7 @@ public final class Dependency {
      * @param dependsOn the dependsOn value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setDependsOn(List<BasicDependency> dependsOn) {
+    public Dependency withDependsOn(List<BasicDependency> dependsOn) {
         this.dependsOn = dependsOn;
         return this;
     }
@@ -72,7 +72,7 @@ public final class Dependency {
      * @param id the id value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setId(String id) {
+    public Dependency withId(String id) {
         this.id = id;
         return this;
     }
@@ -82,7 +82,7 @@ public final class Dependency {
      * 
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
@@ -92,7 +92,7 @@ public final class Dependency {
      * @param resourceType the resourceType value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setResourceType(String resourceType) {
+    public Dependency withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -102,7 +102,7 @@ public final class Dependency {
      * 
      * @return the resourceName value.
      */
-    public String getResourceName() {
+    public String resourceName() {
         return this.resourceName;
     }
 
@@ -112,7 +112,7 @@ public final class Dependency {
      * @param resourceName the resourceName value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setResourceName(String resourceName) {
+    public Dependency withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }

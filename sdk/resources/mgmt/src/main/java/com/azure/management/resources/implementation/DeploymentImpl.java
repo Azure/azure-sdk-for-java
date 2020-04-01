@@ -73,43 +73,43 @@ public final class DeploymentImpl extends
 
     @Override
     public String provisioningState() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getProvisioningState();
+        return this.inner().properties().provisioningState();
     }
 
     @Override
     public String correlationId() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getCorrelationId();
+        return this.inner().properties().correlationId();
     }
 
     @Override
     public OffsetDateTime timestamp() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getTimestamp();
+        return this.inner().properties().timestamp();
     }
 
     @Override
     public Object outputs() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getOutputs();
+        return this.inner().properties().outputs();
     }
 
     @Override
     public List<Provider> providers() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
         List<Provider> providers = new ArrayList<>();
-        for (ProviderInner providerInner : this.inner().getProperties().getProviders()) {
+        for (ProviderInner providerInner : this.inner().properties().providers()) {
             providers.add(new ProviderImpl(providerInner));
         }
         return providers;
@@ -117,50 +117,50 @@ public final class DeploymentImpl extends
 
     @Override
     public List<Dependency> dependencies() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getDependencies();
+        return this.inner().properties().dependencies();
     }
 
     @Override
     public Object template() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getTemplate();
+        return this.inner().properties().template();
     }
 
     @Override
     public TemplateLink templateLink() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getTemplateLink();
+        return this.inner().properties().templateLink();
     }
 
     @Override
     public Object parameters() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getParameters();
+        return this.inner().properties().parameters();
     }
 
     @Override
     public ParametersLink parametersLink() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getParametersLink();
+        return this.inner().properties().parametersLink();
     }
 
     @Override
     public DeploymentMode mode() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return inner().getProperties().getMode();
+        return inner().properties().mode();
     }
 
     @Override
@@ -228,11 +228,11 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withTemplate(Object template) {
-        if (this.inner().getProperties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+        if (this.inner().properties() == null) {
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().getProperties().setTemplate(template);
-        this.inner().getProperties().setTemplateLink(null);
+        this.inner().properties().withTemplate(template);
+        this.inner().properties().withTemplateLink(null);
         return this;
     }
 
@@ -243,30 +243,30 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withTemplateLink(String uri, String contentVersion) {
-        if (this.inner().getProperties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+        if (this.inner().properties() == null) {
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().getProperties().setTemplateLink(new TemplateLink().setUri(uri).setContentVersion(contentVersion));
-        this.inner().getProperties().setTemplate(null);
+        this.inner().properties().withTemplateLink(new TemplateLink().withUri(uri).withContentVersion(contentVersion));
+        this.inner().properties().withTemplate(null);
         return this;
     }
 
     @Override
     public DeploymentImpl withMode(DeploymentMode mode) {
-        if (this.inner().getProperties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+        if (this.inner().properties() == null) {
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().getProperties().setMode(mode);
+        this.inner().properties().withMode(mode);
         return this;
     }
 
     @Override
     public DeploymentImpl withParameters(Object parameters) {
-        if (this.inner().getProperties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+        if (this.inner().properties() == null) {
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().getProperties().setParameters(parameters);
-        this.inner().getProperties().setParametersLink(null);
+        this.inner().properties().withParameters(parameters);
+        this.inner().properties().withParametersLink(null);
         return this;
     }
 
@@ -277,22 +277,22 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withParametersLink(String uri, String contentVersion) {
-        if (this.inner().getProperties() == null) {
-            this.inner().setProperties(new DeploymentPropertiesExtended());
+        if (this.inner().properties() == null) {
+            this.inner().withProperties(new DeploymentPropertiesExtended());
         }
-        this.inner().getProperties().setParametersLink(new ParametersLink().setUri(uri).setContentVersion(contentVersion));
-        this.inner().getProperties().setParameters(null);
+        this.inner().properties().withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
+        this.inner().properties().withParameters(null);
         return this;
     }
 
     private DeploymentInner createRequestFromInner() {
         DeploymentInner inner = new DeploymentInner()
-                .setProperties(new DeploymentProperties());
-        inner.getProperties().setMode(mode());
-        inner.getProperties().setTemplate(template());
-        inner.getProperties().setTemplateLink(templateLink());
-        inner.getProperties().setParameters(parameters());
-        inner.getProperties().setParametersLink(parametersLink());
+                .withProperties(new DeploymentProperties());
+        inner.properties().withMode(mode());
+        inner.properties().withTemplate(template());
+        inner.properties().withTemplateLink(templateLink());
+        inner.properties().withParameters(parameters());
+        inner.properties().withParametersLink(parametersLink());
         return inner;
     }
 
@@ -367,130 +367,130 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl withDetailedLevel(String detailedLevel) {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setDebugSetting(new DebugSetting().setDetailLevel(detailedLevel));
+        deploymentWhatIf.properties().withDebugSetting(new DebugSetting().withDetailLevel(detailedLevel));
         return this;
     }
 
     @Override
     public DeploymentImpl withDeploymentName(String deploymentName) {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        if (deploymentWhatIf.getProperties().getOnErrorDeployment() == null) {
-            deploymentWhatIf.getProperties().setOnErrorDeployment(new OnErrorDeployment());
+        if (deploymentWhatIf.properties().onErrorDeployment() == null) {
+            deploymentWhatIf.properties().withOnErrorDeployment(new OnErrorDeployment());
         }
-        deploymentWhatIf.getProperties().getOnErrorDeployment().setDeploymentName(deploymentName);
+        deploymentWhatIf.properties().onErrorDeployment().withDeploymentName(deploymentName);
         return this;
     }
 
     @Override
     public DeploymentImpl withLocation(String location) {
-        this.deploymentWhatIf.setLocation(location);
+        this.deploymentWhatIf.withLocation(location);
         return this;
     }
 
     @Override
     public DeploymentImpl withIncrementalMode() {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setMode(DeploymentMode.INCREMENTAL);
+        deploymentWhatIf.properties().withMode(DeploymentMode.INCREMENTAL);
         return this;
     }
 
     @Override
     public DeploymentImpl withCompleteMode() {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setMode(DeploymentMode.COMPLETE);
+        deploymentWhatIf.properties().withMode(DeploymentMode.COMPLETE);
         return this;
     }
 
     @Override
     public DeploymentImpl withFullResourcePayloadsResultFormat() {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        if (deploymentWhatIf.getProperties().getWhatIfSettings() == null) {
-            deploymentWhatIf.getProperties().setWhatIfSettings(new DeploymentWhatIfSettings());
+        if (deploymentWhatIf.properties().whatIfSettings() == null) {
+            deploymentWhatIf.properties().withWhatIfSettings(new DeploymentWhatIfSettings());
         }
-        deploymentWhatIf.getProperties().getWhatIfSettings().setResultFormat(WhatIfResultFormat.FULL_RESOURCE_PAYLOADS);
+        deploymentWhatIf.properties().whatIfSettings().withResultFormat(WhatIfResultFormat.FULL_RESOURCE_PAYLOADS);
         return this;
     }
 
     @Override
     public DeploymentImpl withResourceIdOnlyResultFormat() {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        if (deploymentWhatIf.getProperties().getWhatIfSettings() == null) {
-            deploymentWhatIf.getProperties().setWhatIfSettings(new DeploymentWhatIfSettings());
+        if (deploymentWhatIf.properties().whatIfSettings() == null) {
+            deploymentWhatIf.properties().withWhatIfSettings(new DeploymentWhatIfSettings());
         }
-        deploymentWhatIf.getProperties().getWhatIfSettings().setResultFormat(WhatIfResultFormat.RESOURCE_ID_ONLY);
+        deploymentWhatIf.properties().whatIfSettings().withResultFormat(WhatIfResultFormat.RESOURCE_ID_ONLY);
         return this;
     }
 
     @Override
     public DeploymentImpl withLastSuccessfulOnErrorDeployment() {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        if (deploymentWhatIf.getProperties().getOnErrorDeployment() == null) {
-            deploymentWhatIf.getProperties().setOnErrorDeployment(new OnErrorDeployment());
+        if (deploymentWhatIf.properties().onErrorDeployment() == null) {
+            deploymentWhatIf.properties().withOnErrorDeployment(new OnErrorDeployment());
         }
-        deploymentWhatIf.getProperties().getOnErrorDeployment().setType(OnErrorDeploymentType.LAST_SUCCESSFUL);
+        deploymentWhatIf.properties().onErrorDeployment().withType(OnErrorDeploymentType.LAST_SUCCESSFUL);
         return this;
     }
 
     @Override
     public DeploymentImpl withSpecialDeploymentOnErrorDeployment() {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        if (deploymentWhatIf.getProperties().getOnErrorDeployment() == null) {
-            deploymentWhatIf.getProperties().setOnErrorDeployment(new OnErrorDeployment());
+        if (deploymentWhatIf.properties().onErrorDeployment() == null) {
+            deploymentWhatIf.properties().withOnErrorDeployment(new OnErrorDeployment());
         }
-        deploymentWhatIf.getProperties().getOnErrorDeployment().setType(OnErrorDeploymentType.SPECIFIC_DEPLOYMENT);
+        deploymentWhatIf.properties().onErrorDeployment().withType(OnErrorDeploymentType.SPECIFIC_DEPLOYMENT);
         return this;
     }
 
     @Override
     public DeploymentImpl withWhatIfTemplate(Object template) {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setTemplate(template);
+        deploymentWhatIf.properties().withTemplate(template);
         return this;
     }
 
     @Override
     public DeploymentImpl withWhatIfTemplateLink(String uri, String contentVersion) {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setTemplateLink(new TemplateLink().setUri(uri).setContentVersion(contentVersion));
+        deploymentWhatIf.properties().withTemplateLink(new TemplateLink().withUri(uri).withContentVersion(contentVersion));
         return this;
     }
 
     @Override
     public DeploymentImpl withWhatIfParameters(Object parameters) {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setParameters(parameters);
+        deploymentWhatIf.properties().withParameters(parameters);
         return this;
     }
 
     @Override
     public DeploymentImpl withWhatIfParametersLink(String uri, String contentVersion) {
-        if (deploymentWhatIf.getProperties() == null) {
-            deploymentWhatIf.setProperties(new DeploymentWhatIfProperties());
+        if (deploymentWhatIf.properties() == null) {
+            deploymentWhatIf.withProperties(new DeploymentWhatIfProperties());
         }
-        deploymentWhatIf.getProperties().setParametersLink(new ParametersLink().setUri(uri).setContentVersion(contentVersion));
+        deploymentWhatIf.properties().withParametersLink(new ParametersLink().withUri(uri).withContentVersion(contentVersion));
         return this;
     }
 

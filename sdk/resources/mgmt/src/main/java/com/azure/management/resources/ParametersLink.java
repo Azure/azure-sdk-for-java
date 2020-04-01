@@ -29,7 +29,7 @@ public final class ParametersLink {
      * 
      * @return the uri value.
      */
-    public String getUri() {
+    public String uri() {
         return this.uri;
     }
 
@@ -39,7 +39,7 @@ public final class ParametersLink {
      * @param uri the uri value to set.
      * @return the ParametersLink object itself.
      */
-    public ParametersLink setUri(String uri) {
+    public ParametersLink withUri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -50,7 +50,7 @@ public final class ParametersLink {
      * 
      * @return the contentVersion value.
      */
-    public String getContentVersion() {
+    public String contentVersion() {
         return this.contentVersion;
     }
 
@@ -61,7 +61,7 @@ public final class ParametersLink {
      * @param contentVersion the contentVersion value to set.
      * @return the ParametersLink object itself.
      */
-    public ParametersLink setContentVersion(String contentVersion) {
+    public ParametersLink withContentVersion(String contentVersion) {
         this.contentVersion = contentVersion;
         return this;
     }

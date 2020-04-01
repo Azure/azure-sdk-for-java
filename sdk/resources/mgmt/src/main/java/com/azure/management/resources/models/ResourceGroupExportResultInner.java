@@ -30,7 +30,7 @@ public final class ResourceGroupExportResultInner {
      * 
      * @return the template value.
      */
-    public Object getTemplate() {
+    public Object template() {
         return this.template;
     }
 
@@ -40,7 +40,7 @@ public final class ResourceGroupExportResultInner {
      * @param template the template value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
-    public ResourceGroupExportResultInner setTemplate(Object template) {
+    public ResourceGroupExportResultInner withTemplate(Object template) {
         this.template = template;
         return this;
     }
@@ -50,7 +50,7 @@ public final class ResourceGroupExportResultInner {
      * 
      * @return the error value.
      */
-    public ErrorResponse getError() {
+    public ErrorResponse error() {
         return this.error;
     }
 
@@ -60,7 +60,7 @@ public final class ResourceGroupExportResultInner {
      * @param error the error value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
-    public ResourceGroupExportResultInner setError(ErrorResponse error) {
+    public ResourceGroupExportResultInner withError(ErrorResponse error) {
         this.error = error;
         return this;
     }

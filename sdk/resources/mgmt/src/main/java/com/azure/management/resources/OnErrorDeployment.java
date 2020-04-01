@@ -31,7 +31,7 @@ public final class OnErrorDeployment {
      * 
      * @return the type value.
      */
-    public OnErrorDeploymentType getType() {
+    public OnErrorDeploymentType type() {
         return this.type;
     }
 
@@ -42,7 +42,7 @@ public final class OnErrorDeployment {
      * @param type the type value to set.
      * @return the OnErrorDeployment object itself.
      */
-    public OnErrorDeployment setType(OnErrorDeploymentType type) {
+    public OnErrorDeployment withType(OnErrorDeploymentType type) {
         this.type = type;
         return this;
     }
@@ -53,7 +53,7 @@ public final class OnErrorDeployment {
      * 
      * @return the deploymentName value.
      */
-    public String getDeploymentName() {
+    public String deploymentName() {
         return this.deploymentName;
     }
 
@@ -64,7 +64,7 @@ public final class OnErrorDeployment {
      * @param deploymentName the deploymentName value to set.
      * @return the OnErrorDeployment object itself.
      */
-    public OnErrorDeployment setDeploymentName(String deploymentName) {
+    public OnErrorDeployment withDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
     }

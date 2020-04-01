@@ -29,7 +29,7 @@ public final class ErrorAdditionalInfo {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -38,7 +38,7 @@ public final class ErrorAdditionalInfo {
      * 
      * @return the info value.
      */
-    public Object getInfo() {
+    public Object info() {
         return this.info;
     }
 }

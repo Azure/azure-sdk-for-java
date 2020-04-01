@@ -23,7 +23,7 @@ public final class HttpMessage {
      * 
      * @return the content value.
      */
-    public Object getContent() {
+    public Object content() {
         return this.content;
     }
 
@@ -33,7 +33,7 @@ public final class HttpMessage {
      * @param content the content value to set.
      * @return the HttpMessage object itself.
      */
-    public HttpMessage setContent(Object content) {
+    public HttpMessage withContent(Object content) {
         this.content = content;
         return this;
     }

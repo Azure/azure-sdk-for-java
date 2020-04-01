@@ -23,7 +23,7 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
      * 
      * @return the whatIfSettings value.
      */
-    public DeploymentWhatIfSettings getWhatIfSettings() {
+    public DeploymentWhatIfSettings whatIfSettings() {
         return this.whatIfSettings;
     }
 
@@ -33,7 +33,7 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
      * @param whatIfSettings the whatIfSettings value to set.
      * @return the DeploymentWhatIfProperties object itself.
      */
-    public DeploymentWhatIfProperties setWhatIfSettings(DeploymentWhatIfSettings whatIfSettings) {
+    public DeploymentWhatIfProperties withWhatIfSettings(DeploymentWhatIfSettings whatIfSettings) {
         this.whatIfSettings = whatIfSettings;
         return this;
     }

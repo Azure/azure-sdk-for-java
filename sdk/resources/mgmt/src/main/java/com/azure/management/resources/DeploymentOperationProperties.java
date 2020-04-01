@@ -72,7 +72,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -81,7 +81,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the timestamp value.
      */
-    public OffsetDateTime getTimestamp() {
+    public OffsetDateTime timestamp() {
         return this.timestamp;
     }
 
@@ -90,7 +90,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the duration value.
      */
-    public String getDuration() {
+    public String duration() {
         return this.duration;
     }
 
@@ -100,7 +100,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the serviceRequestId value.
      */
-    public String getServiceRequestId() {
+    public String serviceRequestId() {
         return this.serviceRequestId;
     }
 
@@ -109,7 +109,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the statusCode value.
      */
-    public String getStatusCode() {
+    public String statusCode() {
         return this.statusCode;
     }
 
@@ -118,7 +118,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the statusMessage value.
      */
-    public Object getStatusMessage() {
+    public Object statusMessage() {
         return this.statusMessage;
     }
 
@@ -127,7 +127,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the targetResource value.
      */
-    public TargetResource getTargetResource() {
+    public TargetResource targetResource() {
         return this.targetResource;
     }
 
@@ -136,7 +136,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the request value.
      */
-    public HttpMessage getRequest() {
+    public HttpMessage request() {
         return this.request;
     }
 
@@ -145,7 +145,7 @@ public final class DeploymentOperationProperties {
      * 
      * @return the response value.
      */
-    public HttpMessage getResponse() {
+    public HttpMessage response() {
         return this.response;
     }
 }

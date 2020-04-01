@@ -30,7 +30,7 @@ public final class AliasPathType {
      * 
      * @return the path value.
      */
-    public String getPath() {
+    public String path() {
         return this.path;
     }
 
@@ -40,7 +40,7 @@ public final class AliasPathType {
      * @param path the path value to set.
      * @return the AliasPathType object itself.
      */
-    public AliasPathType setPath(String path) {
+    public AliasPathType withPath(String path) {
         this.path = path;
         return this;
     }
@@ -50,7 +50,7 @@ public final class AliasPathType {
      * 
      * @return the apiVersions value.
      */
-    public List<String> getApiVersions() {
+    public List<String> apiVersions() {
         return this.apiVersions;
     }
 
@@ -60,7 +60,7 @@ public final class AliasPathType {
      * @param apiVersions the apiVersions value to set.
      * @return the AliasPathType object itself.
      */
-    public AliasPathType setApiVersions(List<String> apiVersions) {
+    public AliasPathType withApiVersions(List<String> apiVersions) {
         this.apiVersions = apiVersions;
         return this;
     }
