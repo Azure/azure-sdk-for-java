@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
  * operations using the configured key.
  *
  * <p><strong>Samples to construct the sync client</strong></p>
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.localcryptographyclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.LocalCryptographyAsyncClient.instantiation}
  *
  * @see LocalCryptographyClientBuilder
  */

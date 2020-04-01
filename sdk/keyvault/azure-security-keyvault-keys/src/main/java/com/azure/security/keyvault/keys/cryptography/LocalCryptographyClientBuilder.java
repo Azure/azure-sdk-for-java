@@ -18,7 +18,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
  * build {@link LocalCryptographyAsyncClient} is ({@link JsonWebKey jsonWebKey}.
  * </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.localcryptographyasyncclient.instantiation}
+ * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.LocalCryptographyAsyncClient.instantiation}
  *
  * @see LocalCryptographyAsyncClient
  * @see LocalCryptographyClient
@@ -46,7 +46,7 @@ public final class LocalCryptographyClientBuilder {
      * Creates a {@link LocalCryptographyAsyncClient} based on options set in the builder. Every time
      * {@link #buildAsyncClient()} is called, a new instance of {@link LocalCryptographyAsyncClient} is created.
      *
-     * <p> The LocalCryptographyClientBuilder#key(JsonWebKey) jsonWebKey identifier} is required to build the {@link
+     * <p> The LocalCryptographyClientBuilder#key(JsonWebKey) jsonWebKey} is required to build the {@link
      * LocalCryptographyAsyncClient async client}.</p>
      *
      * @return A {@link LocalCryptographyAsyncClient} with the options set from the builder.
@@ -63,9 +63,6 @@ public final class LocalCryptographyClientBuilder {
 
     /**
      * Sets the jsonWebKey to be used for cryptography operations.
-     *
-     * <p>If {@code key} is provided then it takes precedence over key identifier and gets used for cryptography
-     * operations.</p>
      *
      * @param key The key to be used for cryptography operations.
      * @return the updated builder object.

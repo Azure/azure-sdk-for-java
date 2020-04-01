@@ -29,11 +29,11 @@ public final class LocalCryptographyAsyncClientJavaDocCodeSnippets {
      */
     public LocalCryptographyAsyncClient createAsyncClient() {
         JsonWebKey jsonWebKey = null;
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.localcryptographyclient.instantiation
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.async.LocalCryptographyAsyncClient.instantiation
         LocalCryptographyAsyncClient cryptographyAsyncClient = new LocalCryptographyClientBuilder()
             .key(jsonWebKey)
             .buildAsyncClient();
-        // END: com.azure.security.keyvault.keys.cryptography.async.localcryptographyclient.instantiation
+        // END: com.azure.security.keyvault.keys.cryptography.async.LocalCryptographyAsyncClient.instantiation
         return cryptographyAsyncClient;
     }
 
