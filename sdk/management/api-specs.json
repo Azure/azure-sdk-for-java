@@ -265,7 +265,7 @@
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.management.resources --tag=package-resources-2019-08",
-    "args": "--payload-flattening-threshold=1 --add-inner=Deployment"
+    "args": "--track1-naming=true --payload-flattening-threshold=1 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "../scheduler/mgmt",
@@ -325,7 +325,7 @@
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.management.resources --tag=package-subscriptions-2016-06",
-    "args": ""
+    "args": "--track1-naming=true"
   },
   "trafficmanager": {
     "dir": "../trafficmanager/mgmt",
