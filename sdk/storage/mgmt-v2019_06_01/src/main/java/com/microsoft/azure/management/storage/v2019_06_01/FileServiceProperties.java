@@ -18,7 +18,6 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.SkuInner;
 import com.microsoft.azure.management.storage.v2019_06_01.implementation.StorageManager;
-import java.util.List;
 
 /**
  * Type representing FileServiceProperties.

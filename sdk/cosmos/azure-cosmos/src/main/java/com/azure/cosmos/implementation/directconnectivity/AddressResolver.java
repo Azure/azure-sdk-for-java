@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -513,7 +514,7 @@ public class AddressResolver implements IAddressResolver {
                         Mono<RefreshState> newRefreshStateObs = newCollectionObs.flatMap(collectionValueHolder -> {
                             state.collection = collectionValueHolder.v;
 
-                            if (collectionValueHolder.v.getResourceId() != state.routingMap.getCollectionUniqueId()) {
+                            if (!StringUtils.equals(collectionValueHolder.v.getResourceId(), state.routingMap.getCollectionUniqueId())) {
                                 // Collection cache was stale. We resolved to new Rid. routing map cache is potentially stale
                                 // for this new collection rid. Mark it as such.
                                 state.collectionRoutingMapCacheIsUptoDate = false;

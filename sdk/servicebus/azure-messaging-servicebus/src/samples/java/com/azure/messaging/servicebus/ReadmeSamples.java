@@ -12,22 +12,26 @@ package com.azure.messaging.servicebus;
  */
 public class ReadmeSamples {
     /**
-     * Code sample for creating a synchronous Service Bus sender.
+     * Code sample for creating an asynchronous Service Bus sender.
      */
     public void createAsynchronousServiceBusSender() {
-        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncSenderClient();
+            .sender()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
     }
 
     /**
-     * Code sample for creating a synchronous Service Bus receiver.
+     * Code sample for creating an asynchronous Service Bus receiver.
      */
     public void createAsynchronousServiceBusReceiver() {
-        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncReceiverClient();
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
     }
 }

@@ -94,10 +94,10 @@ abstract class SyncBenchmark<T> {
         executorService = Executors.newFixedThreadPool(cfg.getConcurrency());
 
         cosmosClient = new CosmosClientBuilder()
-            .setEndpoint(cfg.getServiceEndpoint())
-            .setKey(cfg.getMasterKey())
-            .setConnectionPolicy(cfg.getConnectionPolicy())
-            .setConsistencyLevel(cfg.getConsistencyLevel())
+            .endpoint(cfg.getServiceEndpoint())
+            .key(cfg.getMasterKey())
+            .connectionPolicy(cfg.getConnectionPolicy())
+            .consistencyLevel(cfg.getConsistencyLevel())
             .buildClient();
 
         cosmosContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().getContainer();

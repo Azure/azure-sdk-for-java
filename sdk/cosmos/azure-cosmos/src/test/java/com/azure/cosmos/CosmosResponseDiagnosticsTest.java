@@ -39,14 +39,14 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
         assertThat(this.gatewayClient).isNull();
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .setEndpoint(TestConfigurations.HOST)
-            .setKey(TestConfigurations.MASTER_KEY);
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        gatewayClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        gatewayClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
         connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-        directClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        directClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
@@ -64,11 +64,11 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void gatewayDiagnostics() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = container.createItem(cosmosItemProperties);
-        String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
+        String diagnostics = createResponse.getResponseDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
         assertThat(diagnostics).contains("\"operationType\":\"Create\"");
-        assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        assertThat(createResponse.getResponseDiagnostics().getRequestLatency()).isNotNull();
         validateTransportRequestTimelineGateway(diagnostics);
     }
 
@@ -86,13 +86,13 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
-            String diagnostics = exception.getCosmosResponseDiagnostics().toString();
+            String diagnostics = exception.getResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
             assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
-            assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            assertThat(exception.getResponseDiagnostics().getRequestLatency()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
         }
     }
@@ -101,13 +101,13 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     public void systemDiagnosticsForSystemStateInformation() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
-        String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
+        String diagnostics = createResponse.getResponseDiagnostics().toString();
         assertThat(diagnostics).contains("systemInformation");
         assertThat(diagnostics).contains("usedMemory");
         assertThat(diagnostics).contains("availableMemory");
         assertThat(diagnostics).contains("processCpuLoad");
         assertThat(diagnostics).contains("systemCpuLoad");
-        assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        assertThat(createResponse.getResponseDiagnostics().getRequestLatency()).isNotNull();
     }
 
     @Test(groups = {"simple"})
@@ -115,12 +115,12 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = cosmosContainer.createItem(cosmosItemProperties);
-        String diagnostics = createResponse.getCosmosResponseDiagnostics().toString();
+        String diagnostics = createResponse.getResponseDiagnostics().toString();
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
         assertThat(diagnostics).contains("addressResolutionStatistics");
-        assertThat(createResponse.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+        assertThat(createResponse.getResponseDiagnostics().getRequestLatency()).isNotNull();
         validateTransportRequestTimelineDirect(diagnostics);
     }
 
@@ -139,10 +139,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
         } catch (CosmosClientException exception) {
-            String diagnostics = exception.getCosmosResponseDiagnostics().toString();
+            String diagnostics = exception.getResponseDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(exception.getCosmosResponseDiagnostics().getRequestLatency()).isNotNull();
+            assertThat(exception.getResponseDiagnostics().getRequestLatency()).isNotNull();
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
             // uncomment below if above issue is fixed
             //validateTransportRequestTimelineDirect(diagnostics);

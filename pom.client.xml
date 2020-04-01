@@ -954,6 +954,7 @@
 
                 <!-- JUnit5 and Mockito use reflection to create objects. -->
                 --add-opens com.azure.core/com.azure.core=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.logging=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.polling=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
@@ -967,6 +968,18 @@
                 --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
+
+                <!-- Cosmos module need this -->
+                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
 
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
@@ -1309,7 +1322,7 @@
           <plugin>
             <groupId>net.jonathangiles.tools</groupId>
             <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.3</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <version>1.0.4</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
             <inherited>false</inherited>
             <executions>
               <execution>
@@ -1351,7 +1364,7 @@
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
     <module>sdk/keyvault/azure-security-keyvault-secrets</module>
-    <module>sdk/search/azure-search</module>
+    <module>sdk/search/azure-search-documents</module>
     <module>sdk/servicebus/azure-messaging-servicebus</module>
     <module>sdk/storage/azure-storage-blob</module>
     <module>sdk/storage/azure-storage-blob-batch</module>

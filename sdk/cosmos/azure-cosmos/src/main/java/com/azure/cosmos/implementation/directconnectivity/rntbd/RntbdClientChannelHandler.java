@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class RntbdClientChannelHandler extends ChannelInitializer<Channel> implements ChannelPoolHandler {
 

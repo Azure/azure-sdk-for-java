@@ -14,7 +14,12 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
-      TimeoutInMinutes: 240
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
@@ -58,14 +63,12 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
-      MavenTestPomFile: sdk/cosmos/pom.xml
-
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -80,7 +83,12 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
-      TimeoutInMinutes: 240
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
@@ -126,14 +134,12 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Session"]'
 
-      MavenTestPomFile: sdk/cosmos/pom.xml
-
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -145,7 +151,12 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
-      TimeoutInMinutes: 240
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
@@ -199,14 +210,12 @@ jobs:
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
-      MavenTestPomFile: sdk/cosmos/pom.xml
-
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -219,7 +228,12 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
-      TimeoutInMinutes: 240
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
@@ -299,14 +313,12 @@ jobs:
           PROTOCOLS: '["Https"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
 
-      MavenTestPomFile: sdk/cosmos/pom.xml
-
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -319,7 +331,12 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
-      TimeoutInMinutes: 240
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
@@ -361,14 +378,12 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
-      MavenTestPomFile: sdk/cosmos/pom.xml
-
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
@@ -381,7 +396,12 @@ jobs:
         - name: azure-cosmos
           groupId: com.azure
           safeName: azurecosmos
-      TimeoutInMinutes: 240
+      AdditionalModules:
+        - name: azure-cosmos-benchmark
+          groupId: com.azure
+        - name: azure-cosmos-examples
+          groupId: com.azure
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)
@@ -417,13 +437,11 @@ jobs:
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pnon-emulator'
 
-      MavenTestPomFile: sdk/cosmos/pom.xml
-
       PreRunSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       TestStepMavenInputs:
           goals: verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs)'
+          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
 
       TestResultsFiles: '**/junitreports/TEST-*.xml'

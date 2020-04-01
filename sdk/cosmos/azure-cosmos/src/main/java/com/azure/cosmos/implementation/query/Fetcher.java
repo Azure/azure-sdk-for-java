@@ -7,7 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

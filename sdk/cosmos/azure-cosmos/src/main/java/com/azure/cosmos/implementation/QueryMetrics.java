@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.query.metrics.FetchExecutionRange;
 import com.azure.cosmos.implementation.query.metrics.QueryMetricsTextWriter;
 import com.azure.cosmos.implementation.query.metrics.SchedulingTimeSpan;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.time.Duration;
 import java.util.ArrayList;

@@ -11,10 +11,8 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
@@ -27,9 +25,8 @@ import com.azure.core.util.Context;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allowed by the client are, detect language, recognize entities, recognize
- * Personally Identifiable Information entities, recognize linked entities, and analyze sentiment for a document or
- * a list of documents.
+ * Operations allowed by the client are language detection, entities recognition, linked entities recognition,
+ * key phrases extraction, and sentiment analysis of a document or a list of documents.
  *
  * <p><strong>Instantiating a synchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.instantiation}
@@ -390,186 +387,6 @@ public final class TextAnalyticsClient {
         return new TextAnalyticsPagedIterable<>(
             client.recognizeEntityAsyncClient.recognizeEntitiesBatchWithContext(documents, options,
                 context));
-    }
-
-    // Personally Identifiable Information Entities
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a> PII.
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognize the Personally Identifiable Information entities in a document</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String}
-     *
-     * @param document The document to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link PiiEntity Personally Identifiable Information entities}.
-     *
-     * @throws NullPointerException if {@code document} is {@code null}.
-     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<PiiEntity> recognizePiiEntities(String document) {
-        return recognizePiiEntities(document, client.getDefaultLanguage());
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document with provided
-     * language code.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the Personally Identifiable Information entities in a document with a provided language
-     * representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-Context}
-     *
-     * @param document The document to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link PiiEntity Personally Identifiable Information entities}.
-     *
-     * @throws NullPointerException if {@code document} is {@code null}.
-     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<PiiEntity> recognizePiiEntities(String document, String language) {
-        return new TextAnalyticsPagedIterable<>(client.recognizePiiEntities(document, language));
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents.
-     * For the list of supported entity types, check https://aka.ms/tanerpii.
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the Personally Identifiable Information entities in a list of documents.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable}
-     *
-     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     *
-     * @return A {@link TextAnalyticsPagedIterable} of the
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<String> documents) {
-        return new TextAnalyticsPagedIterable<>(client.recognizePiiEntitiesBatch(documents));
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
-     * provided language code.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the Personally Identifiable Information entities in a list of documents with a provided language
-     * code.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String}
-     *
-     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link TextAnalyticsPagedIterable} of the
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language) {
-        return new TextAnalyticsPagedIterable<>(client.recognizePiiEntitiesBatch(documents, language));
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
-     * provided language code and request options.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the Personally Identifiable Information entities in a list of documents with a provided language
-     * representation.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
-     *
-     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
-     *
-     * @return A {@link TextAnalyticsPagedIterable} of the
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return new TextAnalyticsPagedIterable<>(client.recognizePiiEntitiesBatch(documents, language, options));
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of
-     * {@link TextDocumentInput documents} with request options.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * <p>Recognizes the Personally Identifiable Information entities with http response in a list of
-     * {@link TextDocumentInput}.</p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize
-     * Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A {@link TextAnalyticsPagedIterable} of the
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        return new TextAnalyticsPagedIterable<>(
-            client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
-            context));
     }
 
     // Linked Entities

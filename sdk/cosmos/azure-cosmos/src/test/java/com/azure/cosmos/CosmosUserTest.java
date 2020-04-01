@@ -8,6 +8,7 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -33,7 +34,7 @@ public class CosmosUserTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosUserTest() {
-        client = clientBuilder().buildClient();
+        client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 

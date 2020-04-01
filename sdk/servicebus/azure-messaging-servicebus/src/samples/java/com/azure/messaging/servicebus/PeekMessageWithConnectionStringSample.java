@@ -3,56 +3,49 @@
 
 package com.azure.messaging.servicebus;
 
-import reactor.core.Disposable;
-
 import java.time.Duration;
 
 /**
  * Sample example showing how peek would work.
  */
 public class PeekMessageWithConnectionStringSample {
-    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(20);
-
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service Bus
-     * Queue or Topic.
+     * Main method to invoke this demo on how to peek at a message within a Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Creating an Queue instance.
-        // 3. Creating a "Shared access policy" for your Queue instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        // 2. Go to "Shared access policies"
+        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
+        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
 
         // Create a receiver using connection string.
+        // "<<queue-name>>" will be the name of the Service Bus queue instance you created
+        // inside the Service Bus namespace.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncReceiverClient();
+            .receiver()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
 
-        Disposable disposable = receiver
-            .peek()
-            .doOnNext(message -> {
-                log(" Received Message Id :" + message.getMessageId());
-                log(" Received Message :" + new String(message.getBody()));
-            })
-            .subscribe();
+        receiver.peek().subscribe(
+            message -> {
+                System.out.println("Received Message Id: " + message.getMessageId());
+                System.out.println("Received Message: " + new String(message.getBody()));
+            },
+            error -> System.err.println("Error occurred while receiving message: " + error),
+            () -> System.out.println("Receiving complete."));
 
-        //wait for receiver to finish processing.
+        // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
+        // the peek operation.
         try {
-            Thread.sleep(OPERATION_TIMEOUT.toMillis());
+            Thread.sleep(Duration.ofSeconds(20).toMillis());
         } catch (InterruptedException ignored) {
-
         }
-        log("Closing the receiver.");
-        disposable.dispose();
-        log("End!! ");
-    }
 
-    private static void log(String message) {
-        System.out.println(message);
+        // Close the receiver.
+        receiver.close();
     }
 }

@@ -15,6 +15,8 @@ import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Mono;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
@@ -89,7 +91,7 @@ public class CosmosAsyncScripts {
      * properties or an error.
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .readStoredProcedures(container.getLink(), options)
@@ -134,7 +136,7 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .queryStoredProcedures(container.getLink(), querySpec, options)
@@ -192,7 +194,7 @@ public class CosmosAsyncScripts {
      * error.
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .readUserDefinedFunctions(container.getLink(), options)
@@ -239,7 +241,7 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .queryUserDefinedFunctions(container.getLink(), querySpec, options)
@@ -272,7 +274,7 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        Trigger trigger = new Trigger(properties.toJson());
+        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(properties));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
@@ -294,7 +296,7 @@ public class CosmosAsyncScripts {
      * an error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .readTriggers(container.getLink(), options)
@@ -335,7 +337,7 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosTriggerProperties> queryTriggers(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .queryTriggers(container.getLink(), querySpec, options)

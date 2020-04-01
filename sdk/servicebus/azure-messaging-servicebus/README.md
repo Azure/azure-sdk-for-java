@@ -1,14 +1,14 @@
 # Azure Service Bus client library for Java
 
-Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple 
-applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data 
-and state. Data is transferred between different applications and services using messages. If you would like to know 
+Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple
+applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data
+and state. Data is transferred between different applications and services using messages. If you would like to know
 more about Azure Service Bus, you may wish to review: [What is Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging)?
 
 The Azure Service Bus client library allows for sending and receiving of Azure Service Bus messages and may be used to:
 
 - Messaging: Transfer business data, such as sales or purchase orders, journals, or inventory movements.
-- Decouple applications: Improve reliability and scalability of applications and services. Client and service don't 
+- Decouple applications: Improve reliability and scalability of applications and services. Client and service don't
 have to be online at the same time.
 - Topics and subscriptions: Enable 1:n relationships between publishers and subscribers.
 - Message sessions. Implement work-flows that require message ordering or message deferral.
@@ -62,7 +62,7 @@ have to be online at the same time.
 
 ### Authenticate the client
 
-For the Service Bus client library to interact with an Service Bus, it will need to understand how to connect 
+For the Service Bus client library to interact with an Service Bus, it will need to understand how to connect
 and authorize with it.
 
 #### Create an Service Bus client using Microsoft identity platform (formerly Azure Active Directory)
@@ -107,31 +107,35 @@ namespace. If you aren't familiar with shared access policies in Azure, you may 
 Both the asynchronous and synchronous Service Bus sender and receiver clients can be created using
 `ServiceBusClientBuilder`.The examples are explained blow.
 
-The snippet below creates an asynchronous Service Bus Sender.
+The snippet below creates an asynchronous Service Bus sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L21 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L23 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildAsyncSenderClient();
+    .sender()
+    .queueName("<< QUEUE NAME >>")
+    .buildAsyncClient();
 ```
 
-The snippet below creates an asynchronous Service Bus Receiver.
+The snippet below creates an asynchronous Service Bus receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L28-L31 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-L35 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildAsyncReceiverClient();
+    .receiver()
+    .queueName("<< QUEUE NAME >>")
+    .buildAsyncClient();
 ```
 
 ### Send message to Queue or Topic
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
 a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
-or topic. 
+or topic.
 
 #### Create a Sender and send message to queue or topic
 Example of sending a message asynchronously is documented [here][sample-send-async-message].
@@ -139,7 +143,7 @@ Example of sending a message asynchronously is documented [here][sample-send-asy
 ### Receive message from Queue or Subscription
 You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or
 a synchronous [`ServiceBusReceiverClient`][ServiceBusReceiverClient]. Each receiver can receive message from either, a queue,
-or subscriber. 
+or subscriber.
 
 #### Create a Receiver and receive message from queue or subscriber
 Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
@@ -206,7 +210,7 @@ unexpected fashion. It is recommended to attempt to verify the current state and
 
 ### Handling transient AMQP exceptions
 
-If a transient AMQP exception occurs, the client library retries the operation as many times as the 
+If a transient AMQP exception occurs, the client library retries the operation as many times as the
 [AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
 user.
 

@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.Disposable;
 
 import java.time.Duration;
 import java.util.UUID;
@@ -19,8 +18,8 @@ public class SendMessageWithAzureIdentity {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**
-     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service bus
-     * Queue or Topic.
+     * Main method to invoke this demo on how to send an {@link ServiceBusMessage} to an Azure Service bus Queue or
+     * Topic.
      *
      * @param args Unused arguments to the program.
      */
@@ -45,31 +44,24 @@ public class SendMessageWithAzureIdentity {
         // "<<queue-or-topic-name>>" will be the name of the Service Bus queue or topic instance you created
         // inside the Service Bus namespace.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
-            .credential("<<fully-qualified-namespace>>",
-                "<<queue-or-topic-name>>",
-                credential)
-            .buildAsyncSenderClient();
+            .credential("<<fully-qualified-namespace>>", credential)
+            .sender()
+            .queueName("<<queue-or-topic-name>>")
+            .buildAsyncClient();
 
-        Disposable disposable = senderAsyncClient
-            .send(guestCheckInEvent)
-            .doOnSuccess(ignore -> {
-                log("Message is sent with Id:" + guestCheckInEvent.getMessageId());
-            })
-            .timeout(OPERATION_TIMEOUT)
-            .subscribe();
+        senderAsyncClient.send(guestCheckInEvent)
+            .subscribe(
+                unused -> System.out.println("Sent."),
+                error -> System.err.println("Error occurred while publishing message: " + error),
+                () -> System.out.printf("Message was sent with id: %s%n", guestCheckInEvent.getMessageId()));
 
-        // Wait for sender to finish
+        // .subscribe is not a blocking call. We sleep here so the program does not end before the send is complete.
         try {
-            Thread.sleep(OPERATION_TIMEOUT.toMillis());
-        } catch (InterruptedException ignored) {
-
+            Thread.sleep(5000);
+        } catch (Exception ignored) {
         }
-        log("Closing the sender.");
-        disposable.dispose();
-        log("Program End!! ");
-    }
 
-    private static void log(String message) {
-        System.out.println(message);
+        // Close the sender.
+        senderAsyncClient.close();
     }
 }

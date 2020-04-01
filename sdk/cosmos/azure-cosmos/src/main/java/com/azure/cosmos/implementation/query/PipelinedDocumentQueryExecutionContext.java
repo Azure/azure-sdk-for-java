@@ -83,15 +83,25 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
             createAggregateComponentFunction = createBaseComponentFunction;
         }
 
+        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createDistinctComponentFunction;
+        if (queryInfo.hasDistinct()) {
+            createDistinctComponentFunction = (continuationToken) -> {
+                return DistinctDocumentQueryExecutionContext.createAsync(createAggregateComponentFunction,
+                                                                         queryInfo.getDistinctQueryType(), continuationToken);
+            };
+        } else {
+            createDistinctComponentFunction = createAggregateComponentFunction;
+        }
+
         Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSkipComponentFunction;
         if (queryInfo.hasOffset()) {
             createSkipComponentFunction = (continuationToken) -> {
-                return SkipDocumentQueryExecutionContext.createAsync(createAggregateComponentFunction,
+                return SkipDocumentQueryExecutionContext.createAsync(createDistinctComponentFunction,
                                                                      queryInfo.getOffset(),
                                                                      continuationToken);
             };
         } else {
-            createSkipComponentFunction = createAggregateComponentFunction;
+            createSkipComponentFunction = createDistinctComponentFunction;
         }
 
         Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;
