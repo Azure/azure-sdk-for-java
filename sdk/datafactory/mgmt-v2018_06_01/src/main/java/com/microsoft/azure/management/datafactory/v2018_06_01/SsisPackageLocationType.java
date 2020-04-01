@@ -25,6 +25,9 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
     /** Static value InlinePackage for SsisPackageLocationType. */
     public static final SsisPackageLocationType INLINE_PACKAGE = fromString("InlinePackage");
 
+    /** Static value PackageStore for SsisPackageLocationType. */
+    public static final SsisPackageLocationType PACKAGE_STORE = fromString("PackageStore");
+
     /**
      * Creates or finds a SsisPackageLocationType from its string representation.
      * @param name a name to look for
