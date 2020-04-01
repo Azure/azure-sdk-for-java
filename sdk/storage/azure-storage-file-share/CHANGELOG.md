@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.4.0-beta.1 (Unreleased)
-- Fixed an issue where whitespace would cause NtfsFileAttributes.toAttributes to result in an error parsing the attributes.
+- Fixed an issue where whitespace would cause NtfsFileAttributes.toAttributes/fromAttributes to result in an error parsing the attributes.
 
 ## 12.3.0 (2020-03-11)
 - Added support for exists methods on Share, ShareDirectory and ShareFile clients.
