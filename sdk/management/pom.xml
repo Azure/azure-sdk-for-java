@@ -178,9 +178,9 @@
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-                    <suppressionsLocation>../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
-                    <headerLocation>../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                    <headerLocation>checkstyle/java.header</headerLocation>
                     <propertyExpansion>samedir=</propertyExpansion>
                     <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
