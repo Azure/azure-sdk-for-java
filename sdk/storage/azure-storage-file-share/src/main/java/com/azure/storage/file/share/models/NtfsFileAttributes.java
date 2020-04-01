@@ -80,8 +80,7 @@ public enum NtfsFileAttributes {
         final StringBuilder builder = new StringBuilder();
 
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "ReadOnly|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "ReadOnly|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "Hidden|");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "Hidden|");
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.SYSTEM, "System|");
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NORMAL, "None|");
         toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.DIRECTORY, "Directory|");
