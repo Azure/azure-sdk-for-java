@@ -8,7 +8,7 @@ import java.time.Duration;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to send a {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
+ * Sample demonstrates how to send {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
  */
 public class MessageSendAsyncSample {
 
