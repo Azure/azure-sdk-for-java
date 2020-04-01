@@ -24,7 +24,8 @@ public class ReceiveMessageAsyncSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+            + "SharedAccessKey={key}";
 
         // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
@@ -40,6 +41,7 @@ public class ReceiveMessageAsyncSample {
             .subscribe(message -> {
                 System.out.println("Received Message Id:" + message.getMessageId());
                 System.out.println("Received Message:" + new String(message.getBody()));
+                // Buy default, the message will be auto completed.
             }, error -> System.err.println("Error occurred while receiving message: " + error),
                 () -> System.out.println("Receiving complete."));
 

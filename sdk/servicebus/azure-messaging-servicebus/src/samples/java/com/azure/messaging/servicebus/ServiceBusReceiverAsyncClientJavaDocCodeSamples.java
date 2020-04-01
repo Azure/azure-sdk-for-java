@@ -29,7 +29,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key};EntityPath={eh-name}")
+                + "SharedAccessKey={key};EntityPath={entity-name}")
             .buildReceiverClientBuilder()
             .queueName("<QUEUE-NAME>")
             .buildAsyncClient();

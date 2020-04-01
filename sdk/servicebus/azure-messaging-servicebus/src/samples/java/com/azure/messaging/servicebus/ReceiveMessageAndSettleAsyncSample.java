@@ -5,17 +5,16 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
  * it. Settling of message include accept, defer and abandon the message as needed.
  */
-public class ReceiveMessageAndSettleSample {
-    private static final Duration TIME_OUT = Duration.ofSeconds(15);
+public class ReceiveMessageAndSettleAsyncSample {
+    private static final Duration TIMEOUT = Duration.ofSeconds(15);
 
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
@@ -29,7 +28,8 @@ public class ReceiveMessageAndSettleSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+            + "SharedAccessKey={key}";
 
         // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
@@ -46,7 +46,19 @@ public class ReceiveMessageAndSettleSample {
             .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
 
-        Disposable subscription = receiverAsyncClient.receive()
+        Disposable subscription = receiverAsyncClient.receive().flatMap(message -> {
+            // A sample of processing the message followed by a persisting the message logic.
+            return Mono.delay(Duration.ofSeconds(15)).thenReturn(message);
+        }).onErrorContinue((message, error) -> {
+            // Handle the message that caused the error while processing above. In this case, we'll abandon it and let someone else handle it.
+           // receiverAsyncClient.abandon(message).block();
+        }).flatMap(message -> {
+            // This is a message that was successfully processed. So we complete it.
+            return receiverAsyncClient.complete(message);
+        })
+            .subscribe();
+
+        /*Disposable subscription = receiverAsyncClient.receive()
             .subscribe(received -> {
                 Instant latest = Instant.MIN;
 
@@ -78,21 +90,21 @@ public class ReceiveMessageAndSettleSample {
                 switch (actionToTake) {
                     case "COMPLETE":
                         System.out.println("Completing message.");
-                        receiverAsyncClient.complete(received).block(TIME_OUT);
+                        receiverAsyncClient.complete(received).block(TIMEOUT);
                         break;
                     case "ABANDON":
                         System.out.println("Abandon message.");
-                        receiverAsyncClient.abandon(received).block(TIME_OUT);
+                        receiverAsyncClient.abandon(received).block(TIMEOUT);
                         break;
                     case "DEFER":
                         System.out.println("Defer message.");
-                        receiverAsyncClient.defer(received).block(TIME_OUT);
+                        receiverAsyncClient.defer(received).block(TIMEOUT);
                         break;
                     default:
                         System.out.println("Deadletter message.");
-                        receiverAsyncClient.deadLetter(received).block(TIME_OUT);
+                        receiverAsyncClient.deadLetter(received).block(TIMEOUT);
                 }
-            });
+            });*/
 
         // Receiving messages from the queue for a duration of 20 seconds.
         // Subscribe is not a blocking call so we sleep here so the program does not end.

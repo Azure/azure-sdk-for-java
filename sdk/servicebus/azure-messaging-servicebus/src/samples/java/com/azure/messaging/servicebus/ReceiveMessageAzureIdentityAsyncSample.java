@@ -13,7 +13,7 @@ import java.time.Duration;
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using
  * Azure Identity.
  */
-public class ReceiveMessageWithAzureIdentity {
+public class ReceiveMessageAzureIdentityAsyncSample {
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
      * Queue

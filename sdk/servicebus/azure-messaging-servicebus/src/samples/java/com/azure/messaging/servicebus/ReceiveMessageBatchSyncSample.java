@@ -8,10 +8,10 @@ import com.azure.core.util.IterableStream;
 import java.time.Duration;
 
 /**
- * Sample demonstrates how to receive a stream of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue
+ * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue
  * using sync client.
  */
-public class ReceiveMessageStreamSyncSample {
+public class ReceiveMessageBatchSyncSample {
     /**
      * Main method to invoke this demo on how to receive a stream of {@link ServiceBusMessage} from an
      * Azure Service Bus Queue.
@@ -24,7 +24,8 @@ public class ReceiveMessageStreamSyncSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+            + "SharedAccessKey={key}";
 
         // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"

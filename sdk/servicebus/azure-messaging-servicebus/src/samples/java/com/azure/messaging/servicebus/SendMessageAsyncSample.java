@@ -17,7 +17,8 @@ public class SendMessageAsyncSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+            + "SharedAccessKey={key}";
 
         // Create a Queue or Topic in that Service Bus namespace.
         String queueOrTopicName = "queueOrTopicName";
