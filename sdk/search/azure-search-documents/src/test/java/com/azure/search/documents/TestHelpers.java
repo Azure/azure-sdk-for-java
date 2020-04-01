@@ -128,16 +128,16 @@ public final class TestHelpers {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode expectedNode = mapper.valueToTree(expected);
         ObjectNode actualNode = mapper.valueToTree(actual);
-        assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults,ignoredFields);
+        assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults, ignoredFields);
     }
 
     private static void assertOnMapIterator(Iterator<Map.Entry<String, JsonNode>> expectedNode,
         ObjectNode actualNode, boolean ignoredDefaults, String[] ignoredFields) {
+        Set<String> ignoredFieldSet = new HashSet<>(Arrays.asList(ignoredFields));
         while (expectedNode.hasNext()) {
             assertTrue(actualNode.fields().hasNext());
             Map.Entry<String, JsonNode> expectedField = expectedNode.next();
             String fieldName = expectedField.getKey();
-            Set<String> ignoredFieldSet = new HashSet<>(Arrays.asList(ignoredFields));
             if (shouldSkipField(fieldName, expectedField.getValue(), ignoredDefaults, ignoredFieldSet)) {
                 continue;
             }
