@@ -146,6 +146,40 @@ the MIT License. See License.txt in the project root for license information. --
     <plugins>
 
       <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>stop-azure-keyvault</stopKey>
+          <stopWait>20</stopWait>
+          <waitForChild>false</waitForChild>
+          <jettyXml>../../../jetty.xml</jettyXml>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>run-forked</goal>
+            </goals>
+            <configuration>
+             <scanIntervalSeconds>0</scanIntervalSeconds>
+             <daemon>true</daemon>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.1.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
