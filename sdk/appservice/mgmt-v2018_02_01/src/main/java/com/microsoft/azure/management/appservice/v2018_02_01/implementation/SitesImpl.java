@@ -27,9 +27,9 @@ import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import rx.functions.Func1;
 
-class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, AppServiceManager> implements Sites, Sites.Definition, Sites.Update {
+class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, CertificateRegistrationManager> implements Sites, Sites.Definition, Sites.Update {
     private SitePatchResource updateParameter;
-    SitesImpl(String name, SiteInner inner, AppServiceManager manager) {
+    SitesImpl(String name, SiteInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new SitePatchResource();
     }

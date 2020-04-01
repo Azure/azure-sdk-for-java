@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PrivateAccessInner;
 import java.util.List;
 
 /**
  * Type representing PrivateAccess.
  */
-public interface PrivateAccess extends HasInner<PrivateAccessInner>, HasManager<AppServiceManager> {
+public interface PrivateAccess extends HasInner<PrivateAccessInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the enabled value.
      */

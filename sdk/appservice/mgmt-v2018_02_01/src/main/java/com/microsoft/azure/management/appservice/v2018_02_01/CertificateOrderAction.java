@@ -10,14 +10,14 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateOrderActionInner;
 import org.joda.time.DateTime;
 
 /**
  * Type representing CertificateOrderAction.
  */
-public interface CertificateOrderAction extends HasInner<CertificateOrderActionInner>, HasManager<AppServiceManager> {
+public interface CertificateOrderAction extends HasInner<CertificateOrderActionInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the actionType value.
      */
