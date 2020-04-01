@@ -19,7 +19,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/kristapratico/azure-rest-api-specs/form-recognizer-patch/specification/cognitiveservices/data-plane/FormRecognizer/preview/v2.0/FormRecognizer.json
+input-file: https://raw.githubusercontent.com/kristapratico/azure-rest-api-specs/fr-patch-codegen/specification/cognitiveservices/data-plane/FormRecognizer/preview/v2.0/FormRecognizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
@@ -29,5 +29,4 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
-custom-types-subpackage: models
 ```

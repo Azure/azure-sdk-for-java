@@ -20,7 +20,7 @@ public final class ModelsSummary {
     private int count;
 
     /*
-     * Max number of models that can be trained for this subscription.
+     * Max number of models that can be trained for this account.
      */
     @JsonProperty(value = "limit", required = true)
     private int limit;
@@ -53,7 +53,7 @@ public final class ModelsSummary {
 
     /**
      * Get the limit property: Max number of models that can be trained for
-     * this subscription.
+     * this account.
      * 
      * @return the limit value.
      */
@@ -63,7 +63,7 @@ public final class ModelsSummary {
 
     /**
      * Set the limit property: Max number of models that can be trained for
-     * this subscription.
+     * this account.
      * 
      * @param limit the limit value to set.
      * @return the ModelsSummary object itself.

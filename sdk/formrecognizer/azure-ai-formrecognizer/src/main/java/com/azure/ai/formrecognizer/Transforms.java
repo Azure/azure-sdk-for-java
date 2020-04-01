@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
 import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.DateValue;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.Element;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
@@ -24,6 +25,7 @@ import com.azure.ai.formrecognizer.models.ReceiptItemKey;
 import com.azure.ai.formrecognizer.models.ReceiptType;
 import com.azure.ai.formrecognizer.models.StringValue;
 import com.azure.ai.formrecognizer.models.TextLanguage;
+import com.azure.ai.formrecognizer.models.TimeValue;
 import com.azure.ai.formrecognizer.models.WordElement;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -141,10 +143,16 @@ final class Transforms {
         FieldValue<?> value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
+                value = toFieldValuePhoneNumber(fieldValue);
+                break;
             case STRING:
-            case TIME:
-            case DATE:
                 value = toFieldValueString(fieldValue);
+                break;
+            case TIME:
+                value = toFieldValueTime(fieldValue);
+                break;
+            case DATE:
+                value = toFieldValueDate(fieldValue);
                 break;
             case INTEGER:
                 value = toFieldValueInteger(fieldValue);
@@ -284,7 +292,7 @@ final class Transforms {
                 serviceIntegerValue.getValueInteger(), serviceIntegerValue.getPage());
         }
 
-        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), 0, serviceIntegerValue.getPage());
+        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), null, serviceIntegerValue.getPage());
     }
 
     /**
@@ -313,7 +321,59 @@ final class Transforms {
      */
     private static FloatValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                      serviceFloatValue) {
-        return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()),
-            serviceFloatValue.getValueNumber(), serviceFloatValue.getPage());
+        if (serviceFloatValue.getValueNumber() != null) {
+            // TODO: Do not need this check, service team bug
+            return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()),
+                serviceFloatValue.getValueNumber(), serviceFloatValue.getPage());
+        }
+
+        return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()), null, serviceFloatValue.getPage());
+    }
+
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValuePhoneNumber()}
+     * to a SDK level {@link StringValue}.
+     *
+     * @param serviceDateValue The string value returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValuePhoneNumber()}.
+     *
+     * @return The {@link StringValue}.
+     */
+    private static StringValue toFieldValuePhoneNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
+                                                  serviceDateValue) {
+        return new StringValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
+            serviceDateValue.getValuePhoneNumber(), serviceDateValue.getPage());
+    }
+
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueDate()}
+     * to a SDK level {@link DateValue}.
+     *
+     * @param serviceDateValue The string value returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueDate()}.
+     *
+     * @return The {@link StringValue}.
+     */
+    private static DateValue toFieldValueDate(com.azure.ai.formrecognizer.implementation.models.FieldValue
+                                                      serviceDateValue) {
+        return new DateValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
+            serviceDateValue.getValueDate(), serviceDateValue.getPage());
+    }
+
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueTime()}
+     * to a SDK level {@link TimeValue}.
+     *
+     * @param serviceDateValue The string value returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueTime()} .
+     *
+     * @return The {@link TimeValue}.
+     *
+     */
+    private static TimeValue toFieldValueTime(com.azure.ai.formrecognizer.implementation.models.FieldValue
+                                                  serviceDateValue) {
+        return new TimeValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
+            serviceDateValue.getValueTime(), serviceDateValue.getPage());
+        // TODO: currently returning a string, waiting on swagger update.
     }
 }

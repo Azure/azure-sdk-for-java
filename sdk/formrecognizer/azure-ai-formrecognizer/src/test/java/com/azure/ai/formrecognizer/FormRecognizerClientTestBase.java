@@ -99,7 +99,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static void validateFieldValue(FieldValue<?> actualFieldValue, FieldValue<?> expectedFieldValue, boolean includeTextDetails) {
         if (actualFieldValue != null) {
-            assertEquals(actualFieldValue.getValue(), actualFieldValue.getValue());
+            assertEquals(expectedFieldValue.getValue(), actualFieldValue.getValue());
+            assertEquals(expectedFieldValue.getType(), actualFieldValue.getType());
             if (includeTextDetails) {
                 assertEquals(expectedFieldValue.getElements().size(), actualFieldValue.getElements().size());
                 validateReferenceElements(expectedFieldValue.getElements(), actualFieldValue.getElements());

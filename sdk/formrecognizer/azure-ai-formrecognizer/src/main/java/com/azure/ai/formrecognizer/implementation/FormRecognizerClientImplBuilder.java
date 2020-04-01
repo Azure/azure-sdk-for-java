@@ -20,11 +20,16 @@ public final class FormRecognizerClientImplBuilder {
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
      */
     private String endpoint;
+    /*
+     * The HTTP pipeline to send requests through
+     */
+    private HttpPipeline pipeline;
 
     /**
      * Sets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
      *
      * @param endpoint the endpoint value.
+     *
      * @return the FormRecognizerClientImplBuilder.
      */
     public FormRecognizerClientImplBuilder endpoint(String endpoint) {
@@ -32,15 +37,11 @@ public final class FormRecognizerClientImplBuilder {
         return this;
     }
 
-    /*
-     * The HTTP pipeline to send requests through
-     */
-    private HttpPipeline pipeline;
-
     /**
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
+     *
      * @return the FormRecognizerClientImplBuilder.
      */
     public FormRecognizerClientImplBuilder pipeline(HttpPipeline pipeline) {

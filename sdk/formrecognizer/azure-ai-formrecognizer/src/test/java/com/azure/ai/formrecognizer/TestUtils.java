@@ -5,12 +5,12 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.BoundingBox;
+import com.azure.ai.formrecognizer.models.DateValue;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.Element;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FieldValue;
 import com.azure.ai.formrecognizer.models.FloatValue;
-import com.azure.ai.formrecognizer.models.IntegerValue;
 import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -144,7 +145,7 @@ final class TestUtils {
         BoundingBox merchantPhoneNumberElement1Box = new BoundingBox(merchantPhoneNumberElement1TL, merchantPhoneNumberElement1TR, merchantPhoneNumberElement1BR, merchantPhoneNumberElement1BL);
         Element merchantPhoneNumberElement1 = new WordElement("987-654-3210", merchantPhoneNumberElement1Box);
         List<Element> merchantPhoneNumberElementList = new ArrayList<>(Collections.singletonList(merchantPhoneNumberElement1));
-        FieldValue<?> merchantPhoneNumber = new StringValue("+19876543210", boundingBox2, "987-654-3210", pageNumber).setElements(merchantPhoneNumberElementList);
+        FieldValue<?> merchantPhoneNumber = new StringValue("987-654-3210", boundingBox2, "+19876543210", pageNumber).setElements(merchantPhoneNumberElementList);
 
         Point transactionDateTL = new Point(265.1f, 1228.4f);
         Point transactionDateTR = new Point(525f, 1247f);
@@ -160,7 +161,7 @@ final class TestUtils {
         Element transactionDateElement1 = new WordElement("6/10/2019", transactionDateElement1Box);
         List<Element> transactionDateElementList = new ArrayList<>(Collections.singletonList(transactionDateElement1));
 
-        FieldValue<?> transactionDate = new StringValue("6/10/2019", boundingBox3, "2019-06-10", pageNumber).setElements(transactionDateElementList);
+        FieldValue<?> transactionDate = new DateValue("6/10/2019", boundingBox3, LocalDate.of(2019, 06, 10), pageNumber).setElements(transactionDateElementList);
 
         Point transactionTimeTL = new Point(541f, 1248f);
         Point transactionTimeTR = new Point(677.3f, 1261.5f);
@@ -192,7 +193,7 @@ final class TestUtils {
         Element quantity1Element1 = new WordElement("1", quantity1Element1Box);
         List<Element> quantity1ElementList = new ArrayList<>(Collections.singletonList(quantity1Element1));
 
-        FieldValue<?> quantity1 = new IntegerValue("1", boundingBox5, 1, pageNumber).setElements(quantity1ElementList);
+        FieldValue<?> quantity1 = new FloatValue("1", boundingBox5, null, pageNumber).setElements(quantity1ElementList);
 
         Point name1TL = new Point(322f, 1586f);
         Point name1TR = new Point(654.2f, 1601.1f);
@@ -240,7 +241,7 @@ final class TestUtils {
         List<Element> quantity2ElementList = new ArrayList<>(Collections.singletonList(quantity2Element1));
 
         BoundingBox boundingBox8 = new BoundingBox(quantity2TL, quantity2TR, quantity2BL, quantity2BR);
-        FieldValue<?> quantity2 = new IntegerValue("1", boundingBox8, 1, pageNumber).setElements(quantity2ElementList);
+        FieldValue<?> quantity2 = new FloatValue("1", boundingBox8, null, pageNumber).setElements(quantity2ElementList);
 
         Point name2TL = new Point(232f, 1834f);
         Point name2TR = new Point(232f, 1834f);
@@ -285,7 +286,7 @@ final class TestUtils {
         BoundingBox total2Element1Box = new BoundingBox(total2Element1TL, total2Element1TR, total2Element1BR, total2Element1BL);
         Element total2Element1 = new WordElement("$9.5", total2Element1Box);
         List<Element> total2ElementList = new ArrayList<>(Collections.singletonList(total2Element1));
-        FieldValue<?> total2 = new FloatValue("$9.5", boundingBox10, 0f, pageNumber).setElements(total2ElementList);
+        FieldValue<?> total2 = new FloatValue("$9.5", boundingBox10, null, pageNumber).setElements(total2ElementList);
 
         List<ReceiptItem> receiptItemList = new ArrayList<>(Arrays.asList(
             new ReceiptItem().setName(name1).setQuantity(quantity1).setTotalPrice(total1),

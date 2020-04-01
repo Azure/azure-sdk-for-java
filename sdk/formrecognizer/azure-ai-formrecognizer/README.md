@@ -67,7 +67,7 @@ To use an [API key][api_key], provide the key as a string. This can be found in 
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
-```
+``` 
 Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L38-L41 -->
 ```java

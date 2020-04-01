@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,7 @@ public final class FieldValue {
      * Date value.
      */
     @JsonProperty(value = "valueDate")
-    private String valueDate;
+    private LocalDate valueDate;
 
     /*
      * Time value.
@@ -101,7 +102,7 @@ public final class FieldValue {
 
     /**
      * Get the type property: Type of field value.
-     * 
+     *
      * @return the type value.
      */
     public FieldValueType getType() {
@@ -110,7 +111,7 @@ public final class FieldValue {
 
     /**
      * Set the type property: Type of field value.
-     * 
+     *
      * @param type the type value to set.
      * @return the FieldValue object itself.
      */
@@ -121,7 +122,7 @@ public final class FieldValue {
 
     /**
      * Get the valueString property: String value.
-     * 
+     *
      * @return the valueString value.
      */
     public String getValueString() {
@@ -130,7 +131,7 @@ public final class FieldValue {
 
     /**
      * Set the valueString property: String value.
-     * 
+     *
      * @param valueString the valueString value to set.
      * @return the FieldValue object itself.
      */
@@ -141,27 +142,27 @@ public final class FieldValue {
 
     /**
      * Get the valueDate property: Date value.
-     * 
+     *
      * @return the valueDate value.
      */
-    public String getValueDate() {
+    public LocalDate getValueDate() {
         return this.valueDate;
     }
 
     /**
      * Set the valueDate property: Date value.
-     * 
+     *
      * @param valueDate the valueDate value to set.
      * @return the FieldValue object itself.
      */
-    public FieldValue setValueDate(String valueDate) {
+    public FieldValue setValueDate(LocalDate valueDate) {
         this.valueDate = valueDate;
         return this;
     }
 
     /**
      * Get the valueTime property: Time value.
-     * 
+     *
      * @return the valueTime value.
      */
     public String getValueTime() {
@@ -170,7 +171,7 @@ public final class FieldValue {
 
     /**
      * Set the valueTime property: Time value.
-     * 
+     *
      * @param valueTime the valueTime value to set.
      * @return the FieldValue object itself.
      */
@@ -181,7 +182,7 @@ public final class FieldValue {
 
     /**
      * Get the valuePhoneNumber property: Phone number value.
-     * 
+     *
      * @return the valuePhoneNumber value.
      */
     public String getValuePhoneNumber() {
@@ -190,7 +191,7 @@ public final class FieldValue {
 
     /**
      * Set the valuePhoneNumber property: Phone number value.
-     * 
+     *
      * @param valuePhoneNumber the valuePhoneNumber value to set.
      * @return the FieldValue object itself.
      */
@@ -201,7 +202,7 @@ public final class FieldValue {
 
     /**
      * Get the valueNumber property: Floating point value.
-     * 
+     *
      * @return the valueNumber value.
      */
     public Float getValueNumber() {
@@ -210,7 +211,7 @@ public final class FieldValue {
 
     /**
      * Set the valueNumber property: Floating point value.
-     * 
+     *
      * @param valueNumber the valueNumber value to set.
      * @return the FieldValue object itself.
      */
@@ -221,7 +222,7 @@ public final class FieldValue {
 
     /**
      * Get the valueInteger property: Integer value.
-     * 
+     *
      * @return the valueInteger value.
      */
     public Integer getValueInteger() {
@@ -230,7 +231,7 @@ public final class FieldValue {
 
     /**
      * Set the valueInteger property: Integer value.
-     * 
+     *
      * @param valueInteger the valueInteger value to set.
      * @return the FieldValue object itself.
      */
@@ -241,7 +242,7 @@ public final class FieldValue {
 
     /**
      * Get the valueArray property: Array of field values.
-     * 
+     *
      * @return the valueArray value.
      */
     public List<FieldValue> getValueArray() {
@@ -250,7 +251,7 @@ public final class FieldValue {
 
     /**
      * Set the valueArray property: Array of field values.
-     * 
+     *
      * @param valueArray the valueArray value to set.
      * @return the FieldValue object itself.
      */
@@ -261,7 +262,7 @@ public final class FieldValue {
 
     /**
      * Get the valueObject property: Dictionary of named field values.
-     * 
+     *
      * @return the valueObject value.
      */
     public Map<String, FieldValue> getValueObject() {
@@ -270,7 +271,7 @@ public final class FieldValue {
 
     /**
      * Set the valueObject property: Dictionary of named field values.
-     * 
+     *
      * @param valueObject the valueObject value to set.
      * @return the FieldValue object itself.
      */
@@ -281,7 +282,7 @@ public final class FieldValue {
 
     /**
      * Get the text property: Text content of the extracted field.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -290,7 +291,7 @@ public final class FieldValue {
 
     /**
      * Set the text property: Text content of the extracted field.
-     * 
+     *
      * @param text the text value to set.
      * @return the FieldValue object itself.
      */
@@ -302,7 +303,7 @@ public final class FieldValue {
     /**
      * Get the boundingBox property: Bounding box of the field value, if
      * appropriate.
-     * 
+     *
      * @return the boundingBox value.
      */
     public List<Float> getBoundingBox() {
@@ -312,7 +313,7 @@ public final class FieldValue {
     /**
      * Set the boundingBox property: Bounding box of the field value, if
      * appropriate.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @return the FieldValue object itself.
      */
@@ -323,7 +324,7 @@ public final class FieldValue {
 
     /**
      * Get the confidence property: Confidence score.
-     * 
+     *
      * @return the confidence value.
      */
     public Float getConfidence() {
@@ -332,7 +333,7 @@ public final class FieldValue {
 
     /**
      * Set the confidence property: Confidence score.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @return the FieldValue object itself.
      */
@@ -344,7 +345,7 @@ public final class FieldValue {
     /**
      * Get the elements property: When includeTextDetails is set to true, a
      * list of references to the text elements constituting this field.
-     * 
+     *
      * @return the elements value.
      */
     public List<String> getElements() {
@@ -354,7 +355,7 @@ public final class FieldValue {
     /**
      * Set the elements property: When includeTextDetails is set to true, a
      * list of references to the text elements constituting this field.
-     * 
+     *
      * @param elements the elements value to set.
      * @return the FieldValue object itself.
      */
@@ -365,7 +366,7 @@ public final class FieldValue {
 
     /**
      * Get the page property: The 1-based page number in the input document.
-     * 
+     *
      * @return the page value.
      */
     public Integer getPage() {
@@ -374,7 +375,7 @@ public final class FieldValue {
 
     /**
      * Set the page property: The 1-based page number in the input document.
-     * 
+     *
      * @param page the page value to set.
      * @return the FieldValue object itself.
      */
