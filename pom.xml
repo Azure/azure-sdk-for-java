@@ -26,5 +26,6 @@
     <module>sdk/servicebus</module>
     <module>sdk/storage</module>
     <module>sdk/textanalytics</module>
+    <module>sdk/management</module>
   </modules>
 </project>
