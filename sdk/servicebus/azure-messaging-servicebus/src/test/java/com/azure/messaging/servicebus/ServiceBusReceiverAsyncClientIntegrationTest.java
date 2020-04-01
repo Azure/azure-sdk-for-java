@@ -22,6 +22,7 @@ import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String CONTENTS = "Test-contents";
+    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiverManual;
@@ -148,12 +149,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Duration delayDuration = Duration.ofSeconds(3);
 
         final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block();
-        System.out.println("Scheduled the message, sequence number: " + sequenceNumber);
+        logger.verbose("Scheduled the message, sequence number {}.", sequenceNumber);
 
         Mono.delay(delayDuration)
             .then(sender.cancelScheduledMessage(sequenceNumber.longValue()))
             .block();
-        System.out.println("Cancelled the scheduled message, sequence number: " + sequenceNumber);
+        logger.verbose("Cancelled the scheduled message, sequence number {}.", sequenceNumber);
 
         // Assert & Act
         StepVerifier.create(receiver.receive().take(1))

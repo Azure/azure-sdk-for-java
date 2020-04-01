@@ -14,7 +14,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 public class MessageCancelScheduleAsyncSample {
     /**
-     * Main method to invoke this demo on how to cancle a scheduled  message to an Azure Service Bus.
+     * Main method to invoke this demo on how to cancel a scheduled message to an Azure Service Bus queue or topic.
      *
      * @param args Unused arguments to the program.
      */
@@ -32,28 +32,26 @@ public class MessageCancelScheduleAsyncSample {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
-        // Create an message to send.
-        ServiceBusMessage message = new ServiceBusMessage("Hello Track2!! 1 Min, should be cancelled.".getBytes(UTF_8));
+        // Create an message.
+        ServiceBusMessage message = new ServiceBusMessage("Hello World!!".getBytes(UTF_8));
 
-        // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // message has been delivered to the Service Bus. It completes with an error if an exception occurred while sending
-        // the message.
+        // Following call returns a Mono<Void>, which we subscribe to. It completes successfully when the
+        // message has been delivered to the Service Bus. It completes with an error if an exception occurred while
+        // sending the message.
 
         senderAsyncClient.scheduleMessage(message, Instant.now().plusSeconds(1 * 60L))
             .onErrorContinue((throwable, o) -> {
-                System.out.println("Message Scheduled message failed : " + throwable);
+                System.err.println("Message Scheduled message failed : " + throwable);
             })
             .subscribe(aLong -> {
-                System.out.println("Message Scheduled seq Number = " + aLong + " wait small time  .....");
                 try {
                     Thread.sleep(Duration.ofSeconds(10).toMillis());
                 } catch (InterruptedException ignored) {
                 }
 
-                System.out.println("Message Scheduled seq Number = " + aLong + " Now we will cancel it.");
                 senderAsyncClient.cancelScheduledMessage(aLong)
                     .doOnSuccess(aVoid -> {
-                        System.out.println("Message Scheduled and cancel schedule is done ");
+                        System.out.println("Message Scheduled and cancel schedule is complete.");
                     })
                     .subscribe();
             });

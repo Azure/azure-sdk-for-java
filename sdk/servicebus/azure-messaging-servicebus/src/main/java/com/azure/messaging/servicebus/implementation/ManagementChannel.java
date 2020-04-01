@@ -292,13 +292,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
             if (statusCode !=  AmqpResponseCode.OK.getValue()) {
+
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not renew the lock.",
                     getErrorContext()));
             }
-
-            return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
-        }))
-            .next();
+            return Mono.just(messageSerializer.deserializeList(responseMessage, Instant.class).get(0));
+            //return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Instant.class));
+        }));
+            //.next();
     }
 
     /**
@@ -325,11 +326,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return message;
     }
 
-    /***
+    /**
      * Create a Amqp key, value map to be used to create Amqp mesage for scheduling purpose.
      *
      * @param messageToSchedule The message which needs to be scheduled.
      * @param maxMessageSize The maximum size allowed on send link.
+     *
      * @return Map of key and value in Amqp format.
      * @throws AmqpException When payload exceeded maximum message allowed size.
      */
@@ -375,7 +377,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        return isAuthorized(CANCEL_SCHEDULED_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+        return isAuthorized(CANCEL_SCHEDULED_MESSAGE_OPERATION).then(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(CANCEL_SCHEDULED_MESSAGE_OPERATION,
                 channel.getReceiveLinkName());
@@ -400,7 +402,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<Long> schedule(ServiceBusMessage messageToSchedule, Instant scheduledEnqueueTime, int maxSendLinkSize) {
         messageToSchedule.setScheduledEnqueueTime(scheduledEnqueueTime);
-        return  isAuthorized(SCHEDULE_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+        return  isAuthorized(SCHEDULE_MESSAGE_OPERATION).then(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION, channel.getReceiveLinkName());
             Map<String, Object> requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule, maxSendLinkSize);
@@ -416,9 +418,10 @@ public class ManagementChannel implements ServiceBusManagementNode {
                         messageToSchedule.getMessageId()),
                     getErrorContext()));
             }
-            return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
-        }))
-            .next();
+            return Mono.just(messageSerializer.deserializeList(responseMessage, Long.class).get(0));
+            //return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
+        }));
+            //.next();
     }
 
     /**
