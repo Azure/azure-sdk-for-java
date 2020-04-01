@@ -68,22 +68,17 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      # - bash: |
-      #     git clone https://github.com/azure/azure-sdk-for-java
-      #     cd azure-sdk-for-java
-      #     git reset fb965b8465 --hard
-      #     cd eng/code-quality-reports
-      #     mvn install
-      #     cd ../../sdk/core
-      #     mvn -DskipTests -Dgpg.skip -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip -Dmaven.javadoc.skip -f pom.service.xml -pl azure-core,azure-core-management -am install
-      #     cd ../../..
-      #   displayName: 'install azure-core'
+      - bash: |
+          cd eng/code-quality-reports
+          mvn install
+          cd ../..
+        displayName: 'install sdk-build-tools'
 
       - task: Maven@3
         displayName: 'install'
         inputs:
-          mavenPomFile: pom.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-parent javadoc:aggregate -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory) -Dcheckstyle.skip -am -amd'
+          mavenPomFile: sdk/management/pom.xml
+          options: '$(DefaultOptions) $(ProfileFlag) -pl !samples javadoc:aggregate -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -94,8 +89,8 @@ jobs:
       # - task: Maven@3
       #   displayName: 'Run StyleCheck'
       #   inputs:
-      #     mavenPomFile: pom.xml
-      #     options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-parent -amd'
+      #     mavenPomFile: sdk/management/pom.xml
+      #     options: '$(DefaultOptions) $(ProfileFlag)'
       #     mavenOptions: '$(LoggingOptions)'
       #     javaHomeOption: 'JDKVersion'
       #     jdkVersionOption: $(JavaVersion)
@@ -106,7 +101,7 @@ jobs:
       - task: Maven@3
         displayName: 'Run Tests on Java 8'
         inputs:
-          mavenPomFile: pom.xml
+          mavenPomFile: sdk/management/pom.xml
           options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-parent -amd -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
