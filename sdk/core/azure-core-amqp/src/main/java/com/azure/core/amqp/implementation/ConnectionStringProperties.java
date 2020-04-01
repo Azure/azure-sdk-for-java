@@ -19,11 +19,13 @@ public class ConnectionStringProperties {
     private static final String SHARED_ACCESS_KEY_NAME = "SharedAccessKeyName";
     private static final String SHARED_ACCESS_KEY = "SharedAccessKey";
     private static final String ENTITY_PATH = "EntityPath";
+    private static final String CUSTOM_HOST_NAME = "CustomHostname";
     private static final String ERROR_MESSAGE_FORMAT = "Could not parse 'connectionString'. Expected format: "
         + "'Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}'. Actual: %s";
+        + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName};CustomHostname={customHostName}'. Actual: %s";
 
     private final URI endpoint;
+    private final String customHostName;
     private final String entityPath;
     private final String sharedAccessKeyName;
     private final String sharedAccessKey;
@@ -47,6 +49,7 @@ public class ConnectionStringProperties {
         String entityPath = null;
         String sharedAccessKeyName = null;
         String sharedAccessKeyValue = null;
+        String customHostName = null;
 
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
@@ -82,6 +85,8 @@ public class ConnectionStringProperties {
                 sharedAccessKeyValue = value;
             } else if (key.equalsIgnoreCase(ENTITY_PATH)) {
                 entityPath = value;
+            } else if (key.equalsIgnoreCase(CUSTOM_HOST_NAME)) {
+                customHostName = value;
             } else {
                 throw new IllegalArgumentException(
                     String.format(Locale.US, "Illegal connection string parameter name: %s", key));
@@ -96,6 +101,7 @@ public class ConnectionStringProperties {
         this.entityPath = entityPath;
         this.sharedAccessKeyName = sharedAccessKeyName;
         this.sharedAccessKey = sharedAccessKeyValue;
+        this.customHostName = customHostName;
     }
 
     /**
@@ -105,6 +111,15 @@ public class ConnectionStringProperties {
      */
     public URI getEndpoint() {
         return endpoint;
+    }
+
+    /**
+     * Gets the custom hostname endpoint to be used for connecting to the AMQP message broker.
+     *
+     * @return The endpoint address, including protocol, from the connection string.
+     */
+    public String getCustomHostName() {
+        return customHostName;
     }
 
     /**

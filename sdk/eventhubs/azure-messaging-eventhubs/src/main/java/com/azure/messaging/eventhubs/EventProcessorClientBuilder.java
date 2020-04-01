@@ -50,8 +50,8 @@ import java.util.function.Supplier;
  *  </li>
  *  <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event Hub
  *  name.</li>
- *  <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and a
- *  set of credentials authorized to use the Event Hub.
+ *  <li>{@link #credential(String, String, TokenCredential, String)} with the fully qualified namespace, Event Hub name,
+ *  and a set of credentials authorized to use the Event Hub.
  *  </li>
  *  </ul>
  *  </li>
@@ -161,8 +161,29 @@ public class EventProcessorClientBuilder {
      * null.
      */
     public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
-        TokenCredential credential) {
+                                                  TokenCredential credential) {
         eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential);
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     * similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The token credential to use for authorization. Access controls may be specified by the Event
+     * Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     * @param customHostName In case you want to connect to a private DNS entry for this Event Hub, you should
+     *     specify this hostname here.
+     * @return The updated {@link EventProcessorClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     * null.
+     */
+    public EventProcessorClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+        TokenCredential credential, String customHostName) {
+        eventHubClientBuilder.credential(fullyQualifiedNamespace, eventHubName, credential, customHostName);
         return this;
     }
 
@@ -331,8 +352,8 @@ public class EventProcessorClientBuilder {
      * @throws NullPointerException if {@code processEvent} or {@code processError} or {@code checkpointStore} or
      * {@code consumerGroup} is {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
-     * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     * #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}. Or, if a proxy is
+     * specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventProcessorClient buildEventProcessorClient() {
         Objects.requireNonNull(processEvent, "'processEvent' cannot be null");

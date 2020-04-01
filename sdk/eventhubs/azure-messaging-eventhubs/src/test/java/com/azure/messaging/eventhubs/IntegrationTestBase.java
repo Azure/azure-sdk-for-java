@@ -183,7 +183,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 .tenantId(System.getenv("AZURE_TENANT_ID"))
                 .build();
 
-            return builder.credential(fqdn, eventHubName, clientSecretCredential);
+            return builder.credential(fqdn, eventHubName, clientSecretCredential, null);
         } else {
             return builder.connectionString(getConnectionString());
         }

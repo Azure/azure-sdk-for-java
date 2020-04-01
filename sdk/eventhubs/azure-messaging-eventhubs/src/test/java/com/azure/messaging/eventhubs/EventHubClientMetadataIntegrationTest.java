@@ -108,7 +108,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final TokenCredential invalidTokenCredential = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), "invalid-sas-key-value", TIMEOUT);
         final EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential)
+            .credential(original.getEndpoint().getHost(), original.getEntityPath(), invalidTokenCredential, null)
             .buildAsyncClient();
 
         // Act & Assert
@@ -138,7 +138,7 @@ public class EventHubClientMetadataIntegrationTest extends IntegrationTestBase {
         final TokenCredential validCredentials = new EventHubSharedKeyCredential(
             original.getSharedAccessKeyName(), original.getSharedAccessKey(), TIMEOUT);
         final EventHubAsyncClient invalidClient = createBuilder()
-            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials)
+            .credential(original.getEndpoint().getHost(), "does-not-exist", validCredentials, null)
             .buildAsyncClient();
 
         // Act & Assert

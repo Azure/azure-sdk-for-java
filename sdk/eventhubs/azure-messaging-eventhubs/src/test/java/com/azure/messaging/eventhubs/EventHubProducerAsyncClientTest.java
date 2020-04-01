@@ -80,6 +80,7 @@ import static org.mockito.Mockito.when;
 
 class EventHubProducerAsyncClientTest {
     private static final String HOSTNAME = "my-host-name";
+    private static final String CUSTOM_HOSTNAME = "my-custom-host-name";
     private static final String EVENT_HUB_NAME = "my-event-hub-name";
     private static final String ENTITY_PATH = HOSTNAME + ".servicebus.windows.net";
 
@@ -137,7 +138,7 @@ class EventHubProducerAsyncClientTest {
         tracerProvider = new TracerProvider(Collections.emptyList());
         connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, testScheduler);
+            ProxyOptions.SYSTEM_DEFAULTS, testScheduler, CUSTOM_HOSTNAME);
 
         when(connection.getEndpointStates()).thenReturn(endpointProcessor);
         endpointSink.next(AmqpEndpointState.ACTIVE);

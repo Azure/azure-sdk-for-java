@@ -11,6 +11,7 @@ import com.azure.core.amqp.AmqpShutdownSignal;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -97,7 +98,10 @@ public class ReactorConnection implements AmqpConnection {
             "'tokenManagerProvider' cannot be null.");
         this.messageSerializer = messageSerializer;
         this.handler = handlerProvider.createConnectionHandler(connectionId,
-            connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
+            (!CoreUtils.isNullOrEmpty(connectionOptions.getCustomHostName())
+                ? connectionOptions.getCustomHostName()
+                : connectionOptions.getFullyQualifiedNamespace()),
+            connectionOptions.getTransportType(),
             connectionOptions.getProxyOptions(), product, clientVersion);
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
         this.senderSettleMode = senderSettleMode;
@@ -351,7 +355,9 @@ public class ReactorConnection implements AmqpConnection {
             reactorExceptionHandler = new ReactorExceptionHandler();
             executor = new ReactorExecutor(reactor, Schedulers.single(), connectionId,
                 reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(),
-                connectionOptions.getFullyQualifiedNamespace());
+                (!CoreUtils.isNullOrEmpty(connectionOptions.getCustomHostName())
+                    ? connectionOptions.getCustomHostName()
+                    : connectionOptions.getFullyQualifiedNamespace()));
 
             executor.start();
         }

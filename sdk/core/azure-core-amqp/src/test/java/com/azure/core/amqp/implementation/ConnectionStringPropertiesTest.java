@@ -16,6 +16,7 @@ public class ConnectionStringPropertiesTest {
     private static final String EVENT_HUB = "event-hub-instance";
     private static final String SAS_KEY = "test-sas-key";
     private static final String SAS_VALUE = "some-secret-value";
+    private static final String CUSTOM_HOST_NAME = "custom.baz.windows.net";
 
     @Test
     public void nullConnectionString() {
@@ -30,7 +31,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void invalidUri() {
         // Arrange
-        final String connectionString = getConnectionString("invalid-uri-^ick", EVENT_HUB, SAS_KEY, SAS_VALUE);
+        final String connectionString = getConnectionString("invalid-uri-^ick", EVENT_HUB, SAS_KEY, SAS_VALUE, CUSTOM_HOST_NAME);
 
         // Act
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
@@ -39,7 +40,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void invalidSasKeyName() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, null, SAS_VALUE);
+        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, null, SAS_VALUE, CUSTOM_HOST_NAME);
 
         // Act
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
@@ -48,7 +49,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void invalidSasKeyValue() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, null);
+        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, null, CUSTOM_HOST_NAME);
 
         // Act
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
@@ -57,7 +58,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void invalidEndpointScheme() {
         // Arrange
-        final String connectionString = getConnectionString("http://" + HOST, EVENT_HUB, SAS_KEY, null);
+        final String connectionString = getConnectionString("http://" + HOST, EVENT_HUB, SAS_KEY, null, CUSTOM_HOST_NAME);
 
         // Act
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
@@ -69,7 +70,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void extraneousComponent() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, null, SAS_KEY, SAS_VALUE)
+        final String connectionString = getConnectionString(HOSTNAME_URI, null, SAS_KEY, SAS_VALUE, CUSTOM_HOST_NAME)
             + "FakeKey=FakeValue";
 
         assertThrows(IllegalArgumentException.class, () -> new ConnectionStringProperties(connectionString));
@@ -81,7 +82,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void namespaceConnectionString() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, null, SAS_KEY, SAS_VALUE);
+        final String connectionString = getConnectionString(HOSTNAME_URI, null, SAS_KEY, SAS_VALUE, CUSTOM_HOST_NAME);
 
         // Act
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -90,6 +91,7 @@ public class ConnectionStringPropertiesTest {
         Assertions.assertEquals(HOST, properties.getEndpoint().getHost());
         Assertions.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
         Assertions.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
+        Assertions.assertEquals(CUSTOM_HOST_NAME, properties.getCustomHostName());
         Assertions.assertNull(properties.getEntityPath());
     }
 
@@ -99,7 +101,7 @@ public class ConnectionStringPropertiesTest {
     @Test
     public void parseConnectionString() {
         // Arrange
-        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, SAS_VALUE);
+        final String connectionString = getConnectionString(HOSTNAME_URI, EVENT_HUB, SAS_KEY, SAS_VALUE, CUSTOM_HOST_NAME);
 
         // Act
         final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
@@ -109,9 +111,10 @@ public class ConnectionStringPropertiesTest {
         Assertions.assertEquals(SAS_KEY, properties.getSharedAccessKeyName());
         Assertions.assertEquals(SAS_VALUE, properties.getSharedAccessKey());
         Assertions.assertEquals(EVENT_HUB, properties.getEntityPath());
+        Assertions.assertEquals(CUSTOM_HOST_NAME, properties.getCustomHostName());
     }
 
-    private static String getConnectionString(String hostname, String eventHubName, String sasKeyName, String sasKeyValue) {
+    private static String getConnectionString(String hostname, String eventHubName, String sasKeyName, String sasKeyValue, String customHostName) {
         final StringBuilder builder = new StringBuilder();
         if (hostname != null) {
             builder.append(String.format(Locale.US, "Endpoint=%s;", hostname));
@@ -124,6 +127,9 @@ public class ConnectionStringPropertiesTest {
         }
         if (sasKeyValue != null) {
             builder.append(String.format(Locale.US, "SharedAccessKey=%s;", sasKeyValue));
+        }
+        if (customHostName != null) {
+            builder.append(String.format(Locale.US, "CustomHostname=%s;", customHostName));
         }
 
         return builder.toString();

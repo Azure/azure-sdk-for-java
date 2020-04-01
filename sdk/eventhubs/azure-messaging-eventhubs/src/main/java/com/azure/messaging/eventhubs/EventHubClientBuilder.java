@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * </li>
  * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
  * connection string and the Event Hub name.</li>
- * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the
+ * <li>{@link #credential(String, String, TokenCredential, String) credential(String, String, TokenCredential)} with the
  * fully qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
  * </li>
  * </ul>
@@ -128,6 +128,7 @@ public class EventHubClientBuilder {
     private Scheduler scheduler;
     private AmqpTransportType transport;
     private String fullyQualifiedNamespace;
+    private String customHostName;
     private String eventHubName;
     private String consumerGroup;
     private EventHubConnectionProcessor eventHubConnectionProcessor;
@@ -176,7 +177,8 @@ public class EventHubClientBuilder {
         final TokenCredential tokenCredential = new EventHubSharedKeyCredential(properties.getSharedAccessKeyName(),
             properties.getSharedAccessKey(), ClientConstants.TOKEN_VALIDITY);
 
-        return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential);
+        return credential(properties.getEndpoint().getHost(), properties.getEntityPath(), tokenCredential,
+            properties.getCustomHostName());
     }
 
     /**
@@ -219,7 +221,8 @@ public class EventHubClientBuilder {
                 properties.getEntityPath(), eventHubName)));
         }
 
-        return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential);
+        return credential(properties.getEndpoint().getHost(), eventHubName, tokenCredential,
+            properties.getCustomHostName());
     }
 
     /**
@@ -256,6 +259,8 @@ public class EventHubClientBuilder {
      * @param eventHubName The name of the Event Hub to connect the client to.
      * @param credential The token credential to use for authorization. Access controls may be specified by the
      *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     * @param customHostName In case you want to connect to a private DNS entry for this Event Hub, you should
+     *     specify this hostname here.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
@@ -264,11 +269,44 @@ public class EventHubClientBuilder {
      *     null.
      */
     public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
-        TokenCredential credential) {
+        TokenCredential credential, String customHostName) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+        this.customHostName = customHostName;
+
+        if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
+        } else if (CoreUtils.isNullOrEmpty(eventHubName)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+        }
+
+        return this;
+    }
+
+    /**
+     * Sets the credential information for which Event Hub instance to connect to, and how to authorize against it.
+     *
+     * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
+     *     similar to <strong>{@literal "{your-namespace}.servicebus.windows.net}"</strong>.
+     * @param eventHubName The name of the Event Hub to connect the client to.
+     * @param credential The token credential to use for authorization. Access controls may be specified by the
+     *     Event Hubs namespace or the requested Event Hub, depending on Azure configuration.
+     *
+     * @return The updated {@link EventHubClientBuilder} object.
+     * @throws IllegalArgumentException if {@code fullyQualifiedNamespace} or {@code eventHubName} is an empty
+     *     string.
+     * @throws NullPointerException if {@code fullyQualifiedNamespace}, {@code eventHubName}, {@code credentials} is
+     *     null.
+     */
+    public EventHubClientBuilder credential(String fullyQualifiedNamespace, String eventHubName,
+                                            TokenCredential credential) {
+        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
+            "'fullyQualifiedNamespace' cannot be null.");
+        this.credentials = Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this.eventHubName = Objects.requireNonNull(eventHubName, "'eventHubName' cannot be null.");
+        this.customHostName = null;
 
         if (CoreUtils.isNullOrEmpty(fullyQualifiedNamespace)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'host' cannot be an empty string."));
@@ -376,9 +414,9 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubConsumerAsyncClient} with the configured options.
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
-     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
-     *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
-     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}.
+     *     Also, if {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type
+     *     is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerAsyncClient buildAsyncConsumerClient() {
         if (CoreUtils.isNullOrEmpty(consumerGroup)) {
@@ -395,9 +433,9 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubConsumerClient} with the configured options.
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
-     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Also, if
-     *     {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type is not
-     *     {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}.
+     *     Also, if {@link #consumerGroup(String)} have not been set. And if a proxy is specified but the transport type
+     *     is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubConsumerClient buildConsumerClient() {
         return buildClient().createConsumer(consumerGroup, prefetchCount);
@@ -409,8 +447,8 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubProducerAsyncClient} instance with all the configured options.
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
-     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
-     *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}. Or,
+     *     if a proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerAsyncClient buildAsyncProducerClient() {
         return buildAsyncClient().createProducer();
@@ -422,8 +460,8 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubProducerClient} instance with all the configured options.
      * @throws IllegalArgumentException If shared connection is not used and the credentials have not been set using
-     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a
-     *     proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
+     *     either {@link #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}. Or,
+     *     if a proxy is specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventHubProducerClient buildProducerClient() {
         return buildClient().createProducer();
@@ -450,7 +488,7 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubAsyncClient} instance with all the configured options.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     *     #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
+     *     #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}. Or, if a proxy is
      *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubAsyncClient buildAsyncClient() {
@@ -507,7 +545,7 @@ public class EventHubClientBuilder {
      *
      * @return A new {@link EventHubClient} instance with all the configured options.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
-     *     #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is
+     *     #connectionString(String)} or {@link #credential(String, String, TokenCredential, String)}. Or, if a proxy is
      *     specified but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     EventHubClient buildClient() {
@@ -609,7 +647,7 @@ public class EventHubClientBuilder {
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
-            proxyOptions, scheduler);
+            proxyOptions, scheduler, customHostName);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {

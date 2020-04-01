@@ -56,8 +56,9 @@ class ReactorConnectionTest {
     private static final Duration TEST_DURATION = Duration.ofSeconds(30);
     private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties("Endpoint=sb"
         + "://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;"
-        + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
+        + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1");
     private static final String HOSTNAME = CREDENTIAL_INFO.getEndpoint().getHost();
+    private static final String CUSTOM_HOSTNAME = CREDENTIAL_INFO.getCustomHostName();
     private static final Scheduler SCHEDULER = Schedulers.elastic();
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
@@ -119,7 +120,7 @@ class ReactorConnectionTest {
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CUSTOM_HOSTNAME);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
             tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
             ReceiverSettleMode.FIRST);
@@ -315,7 +316,7 @@ class ReactorConnectionTest {
             .setTryTimeout(timeout);
         ConnectionOptions parameters = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
+            ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CUSTOM_HOSTNAME);
 
         // Act and Assert
         ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
