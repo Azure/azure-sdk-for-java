@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -416,7 +417,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
             if (statusCode != AmqpResponseCode.OK.getValue()) {
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not schedule message.",
+                return FluxUtil.monoError(logger, new AmqpException(false,
+                    String.format("Could not schedule message with message id: '%s'.",
+                        messageToSchedule.getMessageId()),
                     getErrorContext()));
             }
             return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
