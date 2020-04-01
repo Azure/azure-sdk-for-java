@@ -35,7 +35,9 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to an append blob. It may only be instantiated through a
@@ -152,8 +154,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
         try {
-            return withStorageTelemetryContext(context -> createWithResponse(headers, metadata, requestConditions,
-                context));
+            return withContext(context -> createWithResponse(headers, metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -166,7 +167,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope, context)
+            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -224,7 +226,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<AppendBlobItem>> appendBlockWithResponse(Flux<ByteBuffer> data, long length, byte[] contentMd5,
         AppendBlobRequestConditions appendBlobRequestConditions) {
         try {
-            return withStorageTelemetryContext(context ->
+            return withContext(context ->
                 appendBlockWithResponse(data, length, contentMd5, appendBlobRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -241,7 +243,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope, context)
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -296,7 +299,7 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
         byte[] sourceContentMD5, AppendBlobRequestConditions destRequestConditions,
         BlobRequestConditions sourceRequestConditions) {
         try {
-            return withStorageTelemetryContext(context ->
+            return withContext(context ->
                 appendBlockFromUrlWithResponse(sourceUrl, sourceRange, sourceContentMD5,
                     destRequestConditions, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
@@ -327,7 +330,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             destRequestConditions.getIfMatch(), destRequestConditions.getIfNoneMatch(),
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope, context)
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 AppendBlobAppendBlockFromUrlHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

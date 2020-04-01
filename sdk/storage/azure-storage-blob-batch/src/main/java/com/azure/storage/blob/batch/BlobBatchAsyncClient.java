@@ -33,7 +33,9 @@ import java.util.function.BiFunction;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -84,8 +86,7 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> submitBatch(BlobBatch batch) {
         try {
-            return withStorageTelemetryContext(context -> submitBatchWithResponse(batch, true,
-                context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> submitBatchWithResponse(batch, true, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -112,7 +113,7 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
         try {
-            return withStorageTelemetryContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
+            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -123,7 +124,8 @@ public final class BlobBatchAsyncClient {
         return batch.prepareBlobBatchSubmission()
             .flatMap(batchOperationInfo -> client.services()
                 .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
-                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(), context)
+                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }
@@ -145,8 +147,7 @@ public final class BlobBatchAsyncClient {
     public PagedFlux<Response<Void>> deleteBlobs(List<String> blobUrls, DeleteSnapshotsOptionType deleteOptions) {
         try {
             return new PagedFlux<>(
-                () -> withStorageTelemetryContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions,
-                    context)));
+                () -> withContext(context -> submitDeleteBlobsBatch(blobUrls, deleteOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -179,8 +180,7 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<Response<Void>> setBlobsAccessTier(List<String> blobUrls, AccessTier accessTier) {
         try {
-            return new PagedFlux<>(() -> withStorageTelemetryContext(context -> submitSetTierBatch(blobUrls, accessTier,
-                context)));
+            return new PagedFlux<>(() -> withContext(context -> submitSetTierBatch(blobUrls, accessTier, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }

@@ -49,7 +49,9 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -195,9 +197,8 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withStorageTelemetryContext(
-                context -> createBlobContainerWithResponse(containerName, metadata, accessType,
-                    context));
+            return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -245,8 +246,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteBlobContainerWithResponse(String containerName) {
         try {
-            return withStorageTelemetryContext(context -> deleteBlobContainerWithResponse(containerName,
-                context));
+            return withContext(context -> deleteBlobContainerWithResponse(containerName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -360,7 +360,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobServiceProperties>> getPropertiesWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getPropertiesWithResponse(context));
+            return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -368,7 +368,8 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, context)
+        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -411,7 +412,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<Void>> setPropertiesWithResponse(BlobServiceProperties properties) {
         try {
-            return withStorageTelemetryContext(context -> setPropertiesWithResponse(properties, context));
+            return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -476,7 +477,8 @@ public final class BlobServiceAsyncClient {
 
         }
 
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null, context)
+        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -528,7 +530,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
-            return withStorageTelemetryContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context))
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -553,7 +555,7 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
-            return withStorageTelemetryContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
+            return withContext(context -> getUserDelegationKeyWithResponse(start, expiry, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -572,7 +574,8 @@ public final class BlobServiceAsyncClient {
                 new KeyInfo()
                     .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, context).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -610,7 +613,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getStatisticsWithResponse(context));
+            return withContext(this::getStatisticsWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -618,7 +621,8 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
+        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -652,7 +656,7 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getAccountInfoWithResponse(context));
+            return withContext(this::getAccountInfoWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

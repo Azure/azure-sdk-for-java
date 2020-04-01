@@ -54,7 +54,10 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a client that contains file operations for Azure Storage Data Lake. Operations provided by
@@ -170,8 +173,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<Void>> deleteWithResponse(DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
-            return withStorageTelemetryContext(context -> deleteWithResponse(null /* recursive */, requestConditions,
-                context));
+            return withContext(context -> deleteWithResponse(null /* recursive */, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -557,7 +559,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<Void>> appendWithResponse(Flux<ByteBuffer> data, long fileOffset, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withStorageTelemetryContext(context -> appendWithResponse(data, fileOffset, length, contentMd5,
+            return withContext(context -> appendWithResponse(data, fileOffset, length, contentMd5,
                 leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -653,7 +655,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     public Mono<Response<PathInfo>> flushWithResponse(long position, boolean retainUncommittedData, boolean close,
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
         try {
-            return withStorageTelemetryContext(context -> flushWithResponse(position, retainUncommittedData,
+            return withContext(context -> flushWithResponse(position, retainUncommittedData,
                 close, httpHeaders, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -674,7 +676,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         return this.dataLakeStorage.paths().flushDataWithRestResponseAsync(null, position, retainUncommittedData, close,
-            (long) 0, null, httpHeaders, lac, mac, context)
+            (long) 0, null, httpHeaders, lac, mac,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified())));
     }
@@ -863,7 +866,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         String destinationPath, DataLakeRequestConditions sourceRequestConditions,
         DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
+            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
                 sourceRequestConditions, destinationRequestConditions, context))
                 .map(response -> new SimpleResponse<>(response,
                     new DataLakeFileAsyncClient(response.getValue())));

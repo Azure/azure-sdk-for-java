@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.util.Context;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_PROPERTIES;
 import static com.azure.storage.common.Utility.urlDecode;
 
 /**
@@ -70,7 +67,7 @@ public class StorageImplUtils {
     }
 
     private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
-        Function<String, T> valueParser) {
+                                                             Function<String, T> valueParser) {
         TreeMap<String, T> pieces = new TreeMap<>();
 
         if (CoreUtils.isNullOrEmpty(queryString)) {
@@ -288,21 +285,5 @@ public class StorageImplUtils {
             nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
             count = source.read(retrievedBuff, 0, nextCopy);
         }
-    }
-
-    /**
-     * This method converts the incoming {@code subscriberContext} from
-     * {@link reactor.util.context.Context Reactor Context} to {@link Context Azure Context},
-     * adds the specified tracing attributes and calls the given lambda function with this context
-     * and returns a single entity of type {@code T}
-     *
-     * @param serviceCall serviceCall serviceCall The lambda function that makes the service call into which azure context
-     * will be passed.
-     * @param <T> The type of response returned from the service call.
-     *
-     * @return The response from service call.
-     */
-    public static <T> Mono<T> withStorageTelemetryContext(Function<Context, Mono<T>> serviceCall) {
-        return withContext(serviceCall, STORAGE_TRACING_PROPERTIES);
     }
 }

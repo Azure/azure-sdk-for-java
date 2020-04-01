@@ -22,7 +22,9 @@ import reactor.core.publisher.Mono;
 import java.net.URL;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all the leasing operations for {@link BlobContainerAsyncClient containers}
@@ -121,8 +123,7 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> acquireLeaseWithResponse(int duration, RequestConditions modifiedRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> acquireLeaseWithResponse(duration, modifiedRequestConditions,
-                context));
+            return withContext(context -> acquireLeaseWithResponse(duration, modifiedRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -135,7 +136,8 @@ public final class BlobLeaseAsyncClient {
         if (this.isBlob) {
             return this.client.blobs().acquireLeaseWithRestResponseAsync(null, null, null, duration, this.leaseId,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, context)
+                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
             return this.client.containers().acquireLeaseWithRestResponseAsync(null, null, duration, this.leaseId,
@@ -178,7 +180,7 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> renewLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> renewLeaseWithResponse(modifiedRequestConditions,
+            return withContext(context -> renewLeaseWithResponse(modifiedRequestConditions,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -191,7 +193,8 @@ public final class BlobLeaseAsyncClient {
         if (this.isBlob) {
             return this.client.blobs().renewLeaseWithRestResponseAsync(null, null, this.leaseId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, context)
+                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
             return this.client.containers().renewLeaseWithRestResponseAsync(null, this.leaseId, null,
@@ -234,7 +237,7 @@ public final class BlobLeaseAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseWithResponse(RequestConditions modifiedRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> releaseLeaseWithResponse(modifiedRequestConditions,
+            return withContext(context -> releaseLeaseWithResponse(modifiedRequestConditions,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -252,7 +255,7 @@ public final class BlobLeaseAsyncClient {
         } else {
             return this.client.containers().releaseLeaseWithRestResponseAsync(null, this.leaseId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                null, context)
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(response -> new SimpleResponse<>(response, null));
         }
     }
@@ -298,9 +301,8 @@ public final class BlobLeaseAsyncClient {
     public Mono<Response<Integer>> breakLeaseWithResponse(Integer breakPeriodInSeconds,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withStorageTelemetryContext(
-                context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions,
-                    context));
+            return withContext(context -> breakLeaseWithResponse(breakPeriodInSeconds, modifiedRequestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -313,7 +315,8 @@ public final class BlobLeaseAsyncClient {
         if (this.isBlob) {
             return this.client.blobs().breakLeaseWithRestResponseAsync(null, null, null, breakPeriodInSeconds,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, context)
+                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseTime()));
         } else {
             return this.client.containers().breakLeaseWithRestResponseAsync(null, null, breakPeriodInSeconds,
@@ -359,8 +362,7 @@ public final class BlobLeaseAsyncClient {
     public Mono<Response<String>> changeLeaseWithResponse(String proposedId,
         RequestConditions modifiedRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> changeLeaseWithResponse(proposedId, modifiedRequestConditions,
-                context));
+            return withContext(context -> changeLeaseWithResponse(proposedId, modifiedRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -373,7 +375,8 @@ public final class BlobLeaseAsyncClient {
         if (this.isBlob) {
             return this.client.blobs().changeLeaseWithRestResponseAsync(null, null, this.leaseId, proposedId, null,
                 modifiedRequestConditions.getIfModifiedSince(), modifiedRequestConditions.getIfUnmodifiedSince(),
-                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null, context)
+                modifiedRequestConditions.getIfMatch(), modifiedRequestConditions.getIfNoneMatch(), null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getLeaseId()));
         } else {
             return this.client.containers().changeLeaseWithRestResponseAsync(null, this.leaseId, proposedId, null,

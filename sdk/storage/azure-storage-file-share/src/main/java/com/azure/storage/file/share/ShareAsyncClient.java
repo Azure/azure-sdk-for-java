@@ -46,7 +46,9 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a share in Azure
@@ -178,7 +180,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> existsWithResponse(context));
+            return withContext(context -> existsWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -245,7 +247,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB) {
         try {
-            return withStorageTelemetryContext(context -> createWithResponse(metadata, quotaInGB, context));
+            return withContext(context -> createWithResponse(metadata, quotaInGB, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -253,7 +255,8 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareInfo>> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Context context) {
         return azureFileStorageClient.shares()
-            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB, context)
+            .createWithRestResponseAsync(shareName, null, metadata, quotaInGB,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -301,14 +304,15 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata) {
         try {
-            return withStorageTelemetryContext(context -> createSnapshotWithResponse(metadata, context));
+            return withContext(context -> createSnapshotWithResponse(metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<ShareSnapshotInfo>> createSnapshotWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(shareName, null, metadata, context)
+        return azureFileStorageClient.shares().createSnapshotWithRestResponseAsync(shareName, null, metadata,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapCreateSnapshotResponse);
     }
 
@@ -352,7 +356,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Void>> deleteWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> deleteWithResponse(context));
+            return withContext(context -> deleteWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -360,7 +364,8 @@ public class ShareAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, null, context)
+            .deleteWithRestResponseAsync(shareName, snapshot, null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -407,7 +412,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareProperties>> getPropertiesWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getPropertiesWithResponse(context));
+            return withContext(context -> getPropertiesWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -415,7 +420,8 @@ public class ShareAsyncClient {
 
     Mono<Response<ShareProperties>> getPropertiesWithResponse(Context context) {
         return azureFileStorageClient.shares()
-            .getPropertiesWithRestResponseAsync(shareName, snapshot, null, context)
+            .getPropertiesWithRestResponseAsync(shareName, snapshot, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetPropertiesResponse);
     }
 
@@ -462,14 +468,15 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB) {
         try {
-            return withStorageTelemetryContext(context -> setQuotaWithResponse(quotaInGB, context));
+            return withContext(context -> setQuotaWithResponse(quotaInGB, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<ShareInfo>> setQuotaWithResponse(int quotaInGB, Context context) {
-        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB, context)
+        return azureFileStorageClient.shares().setQuotaWithRestResponseAsync(shareName, null, quotaInGB,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -528,14 +535,15 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
-            return withStorageTelemetryContext(context -> setMetadataWithResponse(metadata, context));
+            return withContext(context -> setMetadataWithResponse(metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<ShareInfo>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
-        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata, context)
+        return azureFileStorageClient.shares().setMetadataWithRestResponseAsync(shareName, null, metadata,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -617,7 +625,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareInfo>> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions) {
         try {
-            return withStorageTelemetryContext(context -> setAccessPolicyWithResponse(permissions, context));
+            return withContext(context -> setAccessPolicyWithResponse(permissions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -644,7 +652,8 @@ public class ShareAsyncClient {
         }
 
         return azureFileStorageClient.shares()
-            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null, context)
+            .setAccessPolicyWithRestResponseAsync(shareName, permissions, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -687,15 +696,15 @@ public class ShareAsyncClient {
      */
     public Mono<Response<ShareStatistics>> getStatisticsWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getStatisticsWithResponse(context));
+            return withContext(context -> getStatisticsWithResponse(context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<ShareStatistics>> getStatisticsWithResponse(Context context) {
-        return azureFileStorageClient.shares()
-            .getStatisticsWithRestResponseAsync(shareName, context)
+        return azureFileStorageClient.shares().getStatisticsWithRestResponseAsync(shareName,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapGetStatisticsResponse);
     }
 
@@ -749,9 +758,8 @@ public class ShareAsyncClient {
     public Mono<Response<ShareDirectoryAsyncClient>> createDirectoryWithResponse(String directoryName,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata) {
         try {
-            return withStorageTelemetryContext(context ->
-                createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata,
-                    context));
+            return withContext(context ->
+                createDirectoryWithResponse(directoryName, smbProperties, filePermission, metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -869,7 +877,7 @@ public class ShareAsyncClient {
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, ShareRequestConditions requestConditions) {
         try {
-            return withStorageTelemetryContext(context ->
+            return withContext(context ->
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
                     requestConditions, context));
         } catch (RuntimeException ex) {
@@ -928,7 +936,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Void>> deleteDirectoryWithResponse(String directoryName) {
         try {
-            return withStorageTelemetryContext(context -> deleteDirectoryWithResponse(directoryName, context));
+            return withContext(context -> deleteDirectoryWithResponse(directoryName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1001,7 +1009,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions) {
         try {
-            return withStorageTelemetryContext(context -> deleteFileWithResponse(fileName, requestConditions,
+            return withContext(context -> deleteFileWithResponse(fileName, requestConditions,
                 context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1045,7 +1053,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<String>> createPermissionWithResponse(String filePermission) {
         try {
-            return withStorageTelemetryContext(context -> createPermissionWithResponse(filePermission, context));
+            return withContext(context -> createPermissionWithResponse(filePermission, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -1089,7 +1097,7 @@ public class ShareAsyncClient {
      */
     public Mono<Response<String>> getPermissionWithResponse(String filePermissionKey) {
         try {
-            return withStorageTelemetryContext(context -> getPermissionWithResponse(filePermissionKey, context));
+            return withContext(context -> getPermissionWithResponse(filePermissionKey, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

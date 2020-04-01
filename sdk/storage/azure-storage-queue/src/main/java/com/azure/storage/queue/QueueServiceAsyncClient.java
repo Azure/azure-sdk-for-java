@@ -36,7 +36,10 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -140,7 +143,7 @@ public final class QueueServiceAsyncClient {
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
-            return withStorageTelemetryContext(context -> createQueueWithResponse(queueName, metadata,  context));
+            return withContext(context -> createQueueWithResponse(queueName, metadata, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -190,7 +193,7 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
-            return withStorageTelemetryContext(context -> deleteQueueWithResponse(queueName, context));
+            return withContext(context -> deleteQueueWithResponse(queueName, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -329,14 +332,14 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<QueueServiceProperties>> getPropertiesWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getPropertiesWithResponse(context));
+            return withContext(this::getPropertiesWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<QueueServiceProperties>> getPropertiesWithResponse(Context context) {
-        return client.services().getPropertiesWithRestResponseAsync(context)
+        return client.services().getPropertiesWithRestResponseAsync(context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -424,14 +427,14 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties) {
         try {
-            return withStorageTelemetryContext(context -> setPropertiesWithResponse(properties, context));
+            return withContext(context -> setPropertiesWithResponse(properties, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties, Context context) {
-        return client.services().setPropertiesWithRestResponseAsync(properties, context)
+        return client.services().setPropertiesWithRestResponseAsync(properties, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -473,14 +476,14 @@ public final class QueueServiceAsyncClient {
      */
     public Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse() {
         try {
-            return withStorageTelemetryContext(context -> getStatisticsWithResponse(context));
+            return withContext(this::getStatisticsWithResponse);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse(Context context) {
-        return client.services().getStatisticsWithRestResponseAsync(context)
+        return client.services().getStatisticsWithRestResponseAsync(context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 

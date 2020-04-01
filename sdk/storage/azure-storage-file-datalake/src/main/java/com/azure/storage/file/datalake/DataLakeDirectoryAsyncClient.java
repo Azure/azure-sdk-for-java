@@ -23,8 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
-
+import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
@@ -137,8 +136,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public Mono<Response<Void>> deleteWithResponse(boolean recursive, DataLakeRequestConditions requestConditions) {
         // TODO (rickle-msft): Update for continuation token if we support HNS off
         try {
-            return withStorageTelemetryContext(context -> deleteWithResponse(recursive, requestConditions,
-                context));
+            return withContext(context -> deleteWithResponse(recursive, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -435,7 +433,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         String destinationPath, DataLakeRequestConditions sourceRequestConditions,
         DataLakeRequestConditions destinationRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
+            return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
                 sourceRequestConditions, destinationRequestConditions, context)).map(
                     response -> new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {

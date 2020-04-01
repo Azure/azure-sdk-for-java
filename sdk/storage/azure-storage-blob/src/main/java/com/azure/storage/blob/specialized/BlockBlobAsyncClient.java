@@ -35,7 +35,9 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.storage.common.implementation.StorageImplUtils.withStorageTelemetryContext;
+import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -191,8 +193,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<BlockBlobItem>> uploadWithResponse(Flux<ByteBuffer> data, long length, BlobHttpHeaders headers,
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions) {
         try {
-            return withStorageTelemetryContext(context ->
-                uploadWithResponse(data, length, headers, metadata, tier, contentMd5, requestConditions, context));
+            return withContext(context -> uploadWithResponse(data, length, headers, metadata, tier, contentMd5,
+                requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -207,7 +209,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             null, data, length, null, contentMd5, metadata, requestConditions.getLeaseId(), tier,
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            encryptionScope, context)
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -273,7 +275,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withStorageTelemetryContext(context -> stageBlockWithResponse(base64BlockId, data, length,
+            return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
                 contentMd5, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -284,7 +286,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         byte[] contentMd5, String leaseId, Context context) {
         return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
             base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context)
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -343,7 +345,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
-            return withStorageTelemetryContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
+            return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
                 sourceRange, sourceContentMd5, leaseId, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -367,7 +369,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope, context)
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -408,7 +411,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<BlockList>> listBlocksWithResponse(BlockListType listType, String leaseId) {
         try {
-            return withStorageTelemetryContext(context -> listBlocksWithResponse(listType, leaseId, context));
+            return withContext(context -> listBlocksWithResponse(listType, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -498,7 +501,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions) {
         try {
-            return withStorageTelemetryContext(context -> commitBlockListWithResponse(base64BlockIds, headers,
+            return withContext(context -> commitBlockListWithResponse(base64BlockIds, headers,
                 metadata, tier, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -514,7 +517,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),
             tier, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            encryptionScope, context)
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
