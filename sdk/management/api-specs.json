@@ -163,7 +163,8 @@
   "features": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.management.resources --tag=package-features-2015-12"
+    "package": "com.azure.management.resources --tag=package-features-2015-12",
+    "args": "--track1-naming=true"
   },
   "graphrbac": {
     "dir": "../authorization/mgmt",

@@ -149,7 +149,7 @@ final class GenericResourceImpl
                             id = inner().getId();
                         } else {
                             id = ResourceUtils.constructResourceId(
-                                    serviceClient.subscriptionId(),
+                                    serviceClient.getSubscriptionId(),
                                     resourceGroupName(),
                                     resourceProviderNamespace(),
                                     resourceType(),

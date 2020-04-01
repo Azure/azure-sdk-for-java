@@ -23,7 +23,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -32,7 +32,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
@@ -48,7 +48,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -57,7 +57,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the service client itself.
      */
@@ -73,7 +73,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -87,7 +87,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Gets the OperationsInner object to access its operations.
-     * 
+     *
      * @return the OperationsInner object.
      */
     public OperationsInner operations() {
@@ -101,7 +101,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Gets the SubscriptionsInner object to access its operations.
-     * 
+     *
      * @return the SubscriptionsInner object.
      */
     public SubscriptionsInner subscriptions() {
@@ -115,7 +115,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Gets the TenantsInner object to access its operations.
-     * 
+     *
      * @return the TenantsInner object.
      */
     public TenantsInner tenants() {
@@ -131,7 +131,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Initializes an instance of SubscriptionClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public SubscriptionClientImpl(HttpPipeline httpPipeline) {
@@ -140,14 +140,14 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
 
     /**
      * Initializes an instance of SubscriptionClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
     public SubscriptionClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        this.operations = new OperationsInner(this);
+        //this.operations = new OperationsInner(this);
         this.subscriptions = new SubscriptionsInner(this);
         this.tenants = new TenantsInner(this);
     }

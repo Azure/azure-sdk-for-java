@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class OperationListResultInner {
     /*
-     * List of Microsoft.Resources operations.
+     * List of Microsoft.Features operations.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
@@ -26,7 +26,7 @@ public final class OperationListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: List of Microsoft.Resources operations.
+     * Get the value property: List of Microsoft.Features operations.
      * 
      * @return the value value.
      */
@@ -35,7 +35,7 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the value property: List of Microsoft.Resources operations.
+     * Set the value property: List of Microsoft.Features operations.
      * 
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
