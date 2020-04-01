@@ -49,6 +49,9 @@ final class TestUtils {
     static final String RECEIPT_URL = "https://raw.githubusercontent.com/Azure-Samples/"
         + "cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg";
 
+    static final String INVALID_RECEIPT_URL = "https://badname.blob.core.windows.net/fr-training-test/" +
+        "contoso-allinone.jpg";
+
     private TestUtils() {
     }
 

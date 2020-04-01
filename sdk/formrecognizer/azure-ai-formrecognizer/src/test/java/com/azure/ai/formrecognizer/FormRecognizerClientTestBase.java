@@ -66,6 +66,38 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             validateReceipt(expectedReceiptList.get(i), actualReceiptList.get(i), includeTextDetails);
         }
     }
+    // Extract receipt
+    @Test
+    abstract void extractReceiptSourceUrl();
+
+    @Test
+    abstract void extractReceiptSourceUrlTextDetails();
+
+    @Test
+    abstract void extractReceiptData() throws IOException;
+
+    @Test
+    abstract void extractReceiptDataTextDetails();
+
+    void receiptSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.RECEIPT_URL);
+    }
+
+    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.RECEIPT_URL, true);
+    }
+
+    void receiptDataRunner(Consumer<InputStream> testRunner) {
+        testRunner.accept(getReceiptFileData());
+    }
+
+    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
+        testRunner.accept(getReceiptFileData(), true);
+    }
+
+    void receiptInvalidSourceUrlRunner(Consumer<String> testRunner) {
+        testRunner.accept(TestUtils.INVALID_RECEIPT_URL);
+    }
 
     private static void validateReceipt(ExtractedReceipt expectedReceipt, ExtractedReceipt actualExtractedReceipt,
                                         boolean includeTextDetails) {
@@ -220,34 +252,5 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_ENDPOINT");
-    }
-
-    // Extract receipt
-    @Test
-    abstract void extractReceiptSourceUrl();
-
-    @Test
-    abstract void extractReceiptSourceUrlTextDetails();
-
-    @Test
-    abstract void extractReceiptData() throws IOException;
-
-    @Test
-    abstract void extractReceiptDataTextDetails();
-
-    void receiptSourceUrlRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.RECEIPT_URL);
-    }
-
-    void receiptSourceUrlRunnerTextDetails(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.RECEIPT_URL, true);
-    }
-
-    void receiptDataRunner(Consumer<InputStream> testRunner) {
-        testRunner.accept(getReceiptFileData());
-    }
-
-    void receiptDataRunnerTextDetails(BiConsumer<InputStream, Boolean> testRunner) {
-        testRunner.accept(getReceiptFileData(), true);
     }
 }

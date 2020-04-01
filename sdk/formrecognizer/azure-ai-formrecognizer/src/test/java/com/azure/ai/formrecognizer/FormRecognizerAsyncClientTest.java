@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.AfterAll;
@@ -18,6 +19,7 @@ import java.time.Duration;
 import static com.azure.ai.formrecognizer.TestUtils.FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.getExtractedReceipts;
 import static com.azure.ai.formrecognizer.TestUtils.getReceiptFileBufferData;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase {
 
@@ -81,6 +83,13 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 FormContentType.IMAGE_JPEG, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
+        });
+    }
+
+    @Test
+    void extractReceiptInvalidSourceUrl() {
+        receiptInvalidSourceUrlRunner((sourceUrl) -> {
+            assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptFromUrl(sourceUrl).getSyncPoller());
         });
     }
 }
