@@ -60,11 +60,7 @@ public final class HttpResponseDecoder {
          */
         HttpDecodedResponse(final HttpResponse response, SerializerAdapter serializer,
                             HttpResponseDecodeData decodeData) {
-            if (HttpResponseBodyDecoder.isDecodable(response, decodeData)) {
-                this.response = response.buffer();
-            } else {
-                this.response = response;
-            }
+            this.response = response;
             this.serializer = serializer;
             this.decodeData = decodeData;
         }
@@ -81,11 +77,15 @@ public final class HttpResponseDecoder {
          * and emitted. {@code Mono.empty()} gets emitted if the content is not
          * decodable.
          *
+         * @param body the response body to decode, null for this parameter
+         *             indicate read body from source response and decode it.
+         *
          * @return publisher that emits decoded http content
          */
-        public Mono<Object> getDecodedBody() {
+        public Mono<Object> getDecodedBody(String body) {
             if (this.bodyCached == null) {
-                this.bodyCached = HttpResponseBodyDecoder.decode(this.response,
+                this.bodyCached = HttpResponseBodyDecoder.decode(body,
+                    this.response,
                     this.serializer,
                     this.decodeData).cache();
             }

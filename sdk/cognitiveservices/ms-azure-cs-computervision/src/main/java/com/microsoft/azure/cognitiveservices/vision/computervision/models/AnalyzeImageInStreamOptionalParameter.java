@@ -16,26 +16,31 @@ import java.util.List;
 public class AnalyzeImageInStreamOptionalParameter {
     /**
      * A string indicating what visual feature types to return. Multiple values
-     * should be comma-separated. Valid visual feature types include:Categories
-     * - categorizes image content according to a taxonomy defined in
-     * documentation. Tags - tags the image with a detailed list of words
+     * should be comma-separated. Valid visual feature types include:
+     * Categories - categorizes image content according to a taxonomy defined
+     * in documentation. Tags - tags the image with a detailed list of words
      * related to the image content. Description - describes the image content
      * with a complete English sentence. Faces - detects if faces are present.
      * If present, generate coordinates, gender and age. ImageType - detects if
      * image is clipart or a line drawing. Color - determines the accent color,
-     * dominant color, and whether an image is black&amp;white.Adult - detects
-     * if the image is pornographic in nature (depicts nudity or a sex act).
-     * Sexually suggestive content is also detected.
+     * dominant color, and whether an image is black&amp;white. Adult - detects
+     * if the image is pornographic in nature (depicts nudity or a sex act), or
+     * is gory (depicts extreme violence or blood). Sexually suggestive content
+     * (aka racy content) is also detected. Objects - detects various objects
+     * within an image, including the approximate location. The Objects
+     * argument is only available in English. Brands - detects various brands
+     * within an image, including the approximate location. The Brands argument
+     * is only available in English.
      */
     private List<VisualFeatureTypes> visualFeatures;
 
     /**
      * A string indicating which domain-specific details to return. Multiple
-     * values should be comma-separated. Valid visual feature types
-     * include:Celebrities - identifies celebrities if detected in the image.
-     * Possible values include: 'Celebrities', 'Landmarks'.
+     * values should be comma-separated. Valid visual feature types include:
+     * Celebrities - identifies celebrities if detected in the image, Landmarks
+     * - identifies notable landmarks in the image.
      */
-    private String details;
+    private List<Details> details;
 
     /**
      * The desired language for output generation. If this parameter is not
@@ -45,6 +50,11 @@ public class AnalyzeImageInStreamOptionalParameter {
      * 'es', 'ja', 'pt', 'zh'.
      */
     private String language;
+
+    /**
+     * Turn off specified domain models when generating the description.
+     */
+    private List<DescriptionExclude> descriptionExclude;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -76,7 +86,7 @@ public class AnalyzeImageInStreamOptionalParameter {
      *
      * @return the details value
      */
-    public String details() {
+    public List<Details> details() {
         return this.details;
     }
 
@@ -86,7 +96,7 @@ public class AnalyzeImageInStreamOptionalParameter {
      * @param details the details value to set
      * @return the AnalyzeImageInStreamOptionalParameter object itself.
      */
-    public AnalyzeImageInStreamOptionalParameter withDetails(String details) {
+    public AnalyzeImageInStreamOptionalParameter withDetails(List<Details> details) {
         this.details = details;
         return this;
     }
@@ -108,6 +118,26 @@ public class AnalyzeImageInStreamOptionalParameter {
      */
     public AnalyzeImageInStreamOptionalParameter withLanguage(String language) {
         this.language = language;
+        return this;
+    }
+
+    /**
+     * Get the descriptionExclude value.
+     *
+     * @return the descriptionExclude value
+     */
+    public List<DescriptionExclude> descriptionExclude() {
+        return this.descriptionExclude;
+    }
+
+    /**
+     * Set the descriptionExclude value.
+     *
+     * @param descriptionExclude the descriptionExclude value to set
+     * @return the AnalyzeImageInStreamOptionalParameter object itself.
+     */
+    public AnalyzeImageInStreamOptionalParameter withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
+        this.descriptionExclude = descriptionExclude;
         return this;
     }
 

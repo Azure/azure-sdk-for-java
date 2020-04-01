@@ -3,7 +3,6 @@
 
 package com.azure.messaging.eventhubs.checkpointstore.blob;
 
-import com.azure.messaging.eventhubs.Messages;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 

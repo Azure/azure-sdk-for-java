@@ -15,14 +15,8 @@
 
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
 
-    <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
-    <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
-
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-
-    <checkstyle.version>8.24</checkstyle.version>
-    <junit.version>4.12</junit.version>
   </properties>
 
   <distributionManagement>
@@ -40,20 +34,21 @@
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>${checkstyle.version}</version>
+      <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>com.puppycrawl.tools</groupId>
       <artifactId>checkstyle</artifactId>
-      <version>${checkstyle.version}</version>
+      <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
+      <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -63,12 +58,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>${maven-site-plugin.version}</version>
+        <version>3.7.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-site-plugin;external_dependency} -->
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>${maven-project-info-reports-plugin.version}</version>
+        <version>3.0.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-project-info-reports-plugin;external_dependency} -->
       </plugin>
     </plugins>
   </build>

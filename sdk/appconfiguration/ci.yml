@@ -40,9 +40,7 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: appconfiguration
-      SDKType: client
       Artifacts:
         - name: azure-data-appconfiguration
           groupId: com.azure
           safeName: azuredataappconfiguration
-          stagingProfileId: 88192f04117501

@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+
 import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
@@ -15,6 +16,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
@@ -37,6 +39,7 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.channels.NonWritableChannelException
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
@@ -54,6 +57,67 @@ class BlobAPITest extends APISpec {
         blobName = generateBlobName()
         bc = cc.getBlobClient(blobName)
         bc.getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+    }
+
+    def "Upload input stream overwrite fails"() {
+        when:
+        bc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Upload input stream overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        bc.upload(input, Constants.KB, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        bc.downloadWithResponse(stream, null, null, null, false, null, null)
+        stream.toByteArray() == randomData
+    }
+
+    @Requires( { liveMode() } )
+    def "Upload input stream large data"() {
+        setup:
+        def randomData = getRandomByteArray(20 * Constants.MB)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions(null, null, null, Constants.MB)
+
+        when:
+        // Uses blob output stream under the hood.
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+    }
+
+    @Unroll
+    def "Upload numBlocks"() {
+        setup:
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions((Integer) maxUploadSize, null, null, (Integer) maxUploadSize)
+
+        when:
+        bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
+
+        then:
+        def blocksUploaded = bc.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks()
+        blocksUploaded.size() == (int) numBlocks
+
+        where:
+        size            | maxUploadSize || numBlocks
+        0               | null          || 0
+        Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
+        Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
+        3 * Constants.MB| Constants.MB  || 3
     }
 
     def "Download all null"() {
@@ -387,6 +451,100 @@ class BlobAPITest extends APISpec {
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file sync buffer copy"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobServiceClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildClient()
+
+        def blobClient = blobServiceClient.createBlobContainer(containerName)
+            .getBlobClient(generateBlobName())
+
+
+        def file = getRandomFile(fileSize)
+        blobClient.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def properties = blobClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+
+        then:
+        compareFiles(file, outFile, 0, fileSize)
+        properties.getValue().getBlobType() == BlobType.BLOCK_BLOB
+
+        cleanup:
+        blobServiceClient.deleteBlobContainer(containerName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
+    /*
+     * Tests downloading a file using a default client that doesn't have a HttpClient passed to it.
+     */
+    @Requires({ liveMode() })
+    @Unroll
+    def "Download file async buffer copy"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobServiceAsyncClient = new BlobServiceClientBuilder()
+            .endpoint(String.format(defaultEndpointTemplate, primaryCredential.getAccountName()))
+            .credential(primaryCredential)
+            .buildAsyncClient()
+
+        def blobAsyncClient = blobServiceAsyncClient.createBlobContainer(containerName).block()
+            .getBlobAsyncClient(generateBlobName())
+
+        def file = getRandomFile(fileSize)
+        blobAsyncClient.uploadFromFile(file.toPath().toString(), true).block()
+        def outFile = new File(resourceNamer.randomName(testName, 60) + ".txt")
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        when:
+        def downloadMono = blobAsyncClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false)
+
+        then:
+        StepVerifier.create(downloadMono)
+            .assertNext({ it -> it.getValue().getBlobType() == BlobType.BLOCK_BLOB })
+            .verifyComplete()
+
+        compareFiles(file, outFile, 0, fileSize)
+
+        cleanup:
+        blobServiceAsyncClient.deleteBlobContainer(containerName)
+        outFile.delete()
+        file.delete()
+
+        where:
+        fileSize             | _
+        0                    | _ // empty file
+        20                   | _ // small file
+        16 * 1024 * 1024     | _ // medium file in several chunks
+        8 * 1026 * 1024 + 10 | _ // medium file not aligned to block
+        50 * Constants.MB    | _ // large file requiring multiple requests
+    }
+
     @Requires({ liveMode() })
     @Unroll
     def "Download file range"() {
@@ -629,8 +787,14 @@ class BlobAPITest extends APISpec {
             new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
 
         then:
-        // We should receive exactly one notification of the completed progress.
-        1 * mockReceiver.reportProgress(fileSize)
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockReceiver.reportProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockReceiver.reportProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
@@ -638,7 +802,7 @@ class BlobAPITest extends APISpec {
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
         (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred > prevCount)) {
+            if (!(bytesTransferred >= prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
                 prevCount = bytesTransferred

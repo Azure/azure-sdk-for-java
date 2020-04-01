@@ -1,0 +1,79 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk02150862856.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "69decf3f-f424-419e-b57d-8f830b131d3d",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:58:53 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B963F9389B97\"",
+      "elapsed-time" : "72",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "1000",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk02150862856.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963F9389B97\\\"\",\"name\":\"ocr-sentiment-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"pt\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SentimentSkill\",\"name\":\"mysentiment\",\"description\":\"Tested Sentiment skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"pt-PT\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"score\",\"targetName\":\"mySentiment\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk02150862856.search.windows.net/skillsets('ocr-sentiment-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk02150862856.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "adec02c5-5a5b-43b1-907a-fb380a75ee6c",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:58:53 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B963F9414FC0\"",
+      "elapsed-time" : "46",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "988",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk02150862856.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963F9414FC0\\\"\",\"name\":\"testskillset1\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"printed\",\"lineEnding\":null,\"defaultLanguageCode\":\"fi\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SentimentSkill\",\"name\":\"mysentiment\",\"description\":\"Tested Sentiment skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"fi\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"score\",\"targetName\":\"mySentiment\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk02150862856.search.windows.net/skillsets('testskillset1')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk02150862856.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "276ae707-4df0-448c-865d-fefca511c923",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:58:53 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B963F94A792B\"",
+      "elapsed-time" : "50",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "992",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk02150862856.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963F94A792B\\\"\",\"name\":\"testskillset2\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":\"handwritten\",\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":null,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.SentimentSkill\",\"name\":\"mysentiment\",\"description\":\"Tested Sentiment skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mytext\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"score\",\"targetName\":\"mySentiment\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk02150862856.search.windows.net/skillsets('testskillset2')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk02150862856" ]
+}

@@ -6,34 +6,30 @@ package com.azure.data.appconfiguration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingFields;
-import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
+import com.azure.data.appconfiguration.models.SettingSelector;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -57,15 +53,14 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
     serviceInterfaces = ConfigurationService.class)
 public final class ConfigurationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ConfigurationAsyncClient.class);
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String APP_CONFIG_TRACING_NAMESPACE_VALUE = "Microsoft.AppConfiguration";
 
     private static final String ETAG_ANY = "*";
-    private static final Supplier<Map<String, String>> APP_CONFIG_TRACING_PROPERTIES =
-        () -> Collections.unmodifiableMap(
-                new HashMap<String, String>() {{ put(AZ_TRACING_NAMESPACE_KEY, "Microsoft.AppConfiguration"); }});
-
     private final String serviceEndpoint;
     private final ConfigurationService service;
-    private final String apiVersion = ConfigurationServiceVersion.getLatest().getVersion();
+    private final String apiVersion;
 
     /**
      * Creates a ConfigurationAsyncClient that sends requests to the configuration service at {@code serviceEndpoint}.
@@ -75,8 +70,9 @@ public final class ConfigurationAsyncClient {
      * @param version {@link ConfigurationServiceVersion} of the service to be used when making requests.
      */
     ConfigurationAsyncClient(String serviceEndpoint, HttpPipeline pipeline, ConfigurationServiceVersion version) {
-        this.service = RestProxy.create(ConfigurationService.class, pipeline, APP_CONFIG_TRACING_PROPERTIES);
+        this.service = RestProxy.create(ConfigurationService.class, pipeline);
         this.serviceEndpoint = serviceEndpoint;
+        this.apiVersion = version.getVersion();
     }
 
     /**
@@ -143,7 +139,7 @@ public final class ConfigurationAsyncClient {
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, null,
-            getETagValue(ETAG_ANY), context)
+            getETagValue(ETAG_ANY), context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
@@ -243,7 +239,7 @@ public final class ConfigurationAsyncClient {
         // old value locally.
         // If no ETag value was passed in, then the value is always added or updated.
         return service.setKey(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, setting, ifMatchETag,
-            null, context)
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Setting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Set ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to set ConfigurationSetting - {}", setting, error));
@@ -346,7 +342,8 @@ public final class ConfigurationAsyncClient {
 
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
-            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag, context)
+            acceptDateTime == null ? null : acceptDateTime.toString(), null, ifNoneMatchETag,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .onErrorResume(HttpResponseException.class,
                 (Function<Throwable, Mono<Response<ConfigurationSetting>>>) throwable -> {
                     final HttpResponseException e = (HttpResponseException) throwable;
@@ -437,7 +434,7 @@ public final class ConfigurationAsyncClient {
         validateSetting(setting);
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
-            null, context)
+            null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Deleting ConfigurationSetting - {}", setting))
             .doOnSuccess(response -> logger.info("Deleted ConfigurationSetting - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to delete ConfigurationSetting - {}", setting, error));
@@ -517,7 +514,7 @@ public final class ConfigurationAsyncClient {
 
         if (isReadOnly) {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
-                null, context)
+                null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> logger.verbose("Setting read only ConfigurationSetting - {}", setting))
                 .doOnSuccess(response -> logger.info("Set read only ConfigurationSetting - {}", response.getValue()))
                 .doOnError(error -> logger.warning("Failed to set read only ConfigurationSetting - {}", setting,
@@ -568,7 +565,8 @@ public final class ConfigurationAsyncClient {
                 return Mono.empty();
             }
 
-            return service.listKeyValues(serviceEndpoint, continuationToken, context)
+            return service.listKeyValues(serviceEndpoint, continuationToken,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(
                     ignoredValue -> logger.info("Retrieving the next listing page - Page {}", continuationToken))
                 .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", continuationToken))
@@ -583,7 +581,8 @@ public final class ConfigurationAsyncClient {
     private Mono<PagedResponse<ConfigurationSetting>> listFirstPageSettings(SettingSelector selector, Context context) {
         try {
             if (selector == null) {
-                return service.listKeyValues(serviceEndpoint, null, null, apiVersion, null, null, context)
+                return service.listKeyValues(serviceEndpoint, null, null, apiVersion, null, null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                     .doOnRequest(ignoredValue -> logger.info("Listing all ConfigurationSettings"))
                     .doOnSuccess(response -> logger.info("Listed all ConfigurationSettings"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting", error));
@@ -642,14 +641,16 @@ public final class ConfigurationAsyncClient {
                 final String labelFilter = selector.getLabelFilter();
 
                 result = service.listKeyValueRevisions(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
-                    selector.getAcceptDateTime(), null, context)
+                    selector.getAcceptDateTime(), null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions - {}", selector))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions - {}", selector))
                     .doOnError(error ->
                         logger.warning("Failed to list ConfigurationSetting revisions - {}", selector, error));
             } else {
                 result = service.listKeyValueRevisions(
-                    serviceEndpoint, null, null, apiVersion, null, null, null, context)
+                    serviceEndpoint, null, null, apiVersion, null, null, null,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                     .doOnRequest(ignoredValue -> logger.info("Listing ConfigurationSetting revisions"))
                     .doOnSuccess(response -> logger.info("Listed ConfigurationSetting revisions"))
                     .doOnError(error -> logger.warning("Failed to list all ConfigurationSetting revisions", error));
@@ -664,7 +665,8 @@ public final class ConfigurationAsyncClient {
     Mono<PagedResponse<ConfigurationSetting>> listRevisionsNextPage(String nextPageLink, Context context) {
         try {
             Mono<PagedResponse<ConfigurationSetting>> result = service
-                .listKeyValues(serviceEndpoint, nextPageLink, context)
+                .listKeyValues(serviceEndpoint, nextPageLink,
+                    context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
                 .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
                 .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
@@ -683,7 +685,8 @@ public final class ConfigurationAsyncClient {
     }
 
     private Flux<ConfigurationSetting> listConfigurationSettings(String nextPageLink, Context context) {
-        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink, context)
+        Mono<PagedResponse<ConfigurationSetting>> result = service.listKeyValues(serviceEndpoint, nextPageLink,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,

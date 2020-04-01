@@ -1,0 +1,74 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk57258033359.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "e7a97043-7a53-42fb-9f96-d824f5b2ccc6",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 20:03:24 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B9649B34A301\"",
+      "elapsed-time" : "74",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "218",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk57258033359.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9649B34A301\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk57258033359.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk57258033359.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "8f505080-180b-4077-8f40-c7ff034b9ff7",
+      "StatusCode" : "200",
+      "Date" : "Mon, 24 Feb 2020 20:03:24 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B9649B395ECF\"",
+      "elapsed-time" : "43",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "224",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk57258033359.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9649B395ECF\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"newword1,newword2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk57258033359.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "da4321f2-f10d-4078-8ca9-675750297116",
+      "StatusCode" : "200",
+      "Date" : "Mon, 24 Feb 2020 20:03:24 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "18",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "228",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk57258033359.search.windows.net/$metadata#synonymmaps\",\"value\":[{\"@odata.etag\":\"\\\"0x8D7B9649B395ECF\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"newword1,newword2\",\"encryptionKey\":null}]}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk57258033359" ]
+}

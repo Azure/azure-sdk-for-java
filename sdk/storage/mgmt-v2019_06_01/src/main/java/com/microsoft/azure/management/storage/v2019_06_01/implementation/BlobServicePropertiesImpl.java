@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.storage.v2019_06_01.CorsRules;
 import com.microsoft.azure.management.storage.v2019_06_01.DeleteRetentionPolicy;
 import com.microsoft.azure.management.storage.v2019_06_01.ChangeFeed;
+import com.microsoft.azure.management.storage.v2019_06_01.RestorePolicyProperties;
 
 class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProperties, BlobServicePropertiesInner, BlobServicePropertiesImpl> implements BlobServiceProperties, BlobServiceProperties.Definition, BlobServiceProperties.Update {
     private final StorageManager manager;
@@ -81,6 +82,11 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
+        return this.inner().containerDeleteRetentionPolicy();
+    }
+
+    @Override
     public CorsRules cors() {
         return this.inner().cors();
     }
@@ -101,8 +107,18 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public Boolean isVersioningEnabled() {
+        return this.inner().isVersioningEnabled();
+    }
+
+    @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public RestorePolicyProperties restorePolicy() {
+        return this.inner().restorePolicy();
     }
 
     @Override
@@ -135,6 +151,12 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     }
 
     @Override
+    public BlobServicePropertiesImpl withContainerDeleteRetentionPolicy(DeleteRetentionPolicy containerDeleteRetentionPolicy) {
+        this.inner().withContainerDeleteRetentionPolicy(containerDeleteRetentionPolicy);
+        return this;
+    }
+
+    @Override
     public BlobServicePropertiesImpl withCors(CorsRules cors) {
         this.inner().withCors(cors);
         return this;
@@ -149,6 +171,18 @@ class BlobServicePropertiesImpl extends CreatableUpdatableImpl<BlobServiceProper
     @Override
     public BlobServicePropertiesImpl withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
         this.inner().withDeleteRetentionPolicy(deleteRetentionPolicy);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withIsVersioningEnabled(Boolean isVersioningEnabled) {
+        this.inner().withIsVersioningEnabled(isVersioningEnabled);
+        return this;
+    }
+
+    @Override
+    public BlobServicePropertiesImpl withRestorePolicy(RestorePolicyProperties restorePolicy) {
+        this.inner().withRestorePolicy(restorePolicy);
         return this;
     }
 

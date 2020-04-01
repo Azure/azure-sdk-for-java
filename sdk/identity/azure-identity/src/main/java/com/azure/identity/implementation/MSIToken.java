@@ -55,7 +55,7 @@ public final class MSIToken extends AccessToken {
         // This is the format for app service on Windows as of API version 2017-09-01.
         // The format is changed to Unix timestamp in 2019-08-01 but this API version
         // has not been deployed to Linux app services.
-        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy K:mm:ss a XXX");
+        DateTimeFormatter dtfWindows = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX");
         try {
             return Long.parseLong(dateTime);
         } catch (NumberFormatException e) {

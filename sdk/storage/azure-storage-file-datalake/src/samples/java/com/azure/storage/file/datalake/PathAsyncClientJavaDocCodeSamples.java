@@ -154,8 +154,8 @@ public class PathAsyncClientJavaDocCodeSamples {
     public void setAccessControlCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
-            .entityID("entityId")
-            .permissions(new RolePermissions().setReadPermission(true));
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
         String group = "group";
@@ -173,8 +173,8 @@ public class PathAsyncClientJavaDocCodeSamples {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
         PathAccessControlEntry pathAccessControlEntry = new PathAccessControlEntry()
-            .entityID("entityId")
-            .permissions(new RolePermissions().setReadPermission(true));
+            .setEntityId("entityId")
+            .setPermissions(new RolePermissions().setReadPermission(true));
         List<PathAccessControlEntry> pathAccessControlEntries = new ArrayList<>();
         pathAccessControlEntries.add(pathAccessControlEntry);
         String group = "group";

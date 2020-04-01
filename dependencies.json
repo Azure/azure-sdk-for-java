@@ -1,6 +1,0 @@
-[
-  {
-    "projectName": "azure-sdk-for-java",
-    "pomUrls": ["file:./pom.client.xml"]
-  }
-]

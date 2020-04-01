@@ -22,7 +22,6 @@ import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
-import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobProperties
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
@@ -35,6 +34,8 @@ import com.azure.storage.blob.specialized.BlobLeaseClient
 import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import spock.lang.Requires
@@ -45,7 +46,6 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
-import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
 import java.util.function.Supplier
@@ -118,11 +118,15 @@ class APISpec extends Specification {
     static def SECONDARY_STORAGE = "SECONDARY_STORAGE_"
     static def BLOB_STORAGE = "BLOB_STORAGE_"
     static def PREMIUM_STORAGE = "PREMIUM_STORAGE_"
+    /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
+     acquire so we do not run them in the nightly live run tests. */
+    static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
+    static StorageSharedKeyCredential managedDiskCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -130,6 +134,7 @@ class APISpec extends Specification {
     BlobServiceClient alternateBlobServiceClient
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
+    BlobServiceClient managedDiskServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -143,10 +148,12 @@ class APISpec extends Specification {
         alternateCredential = getCredential(SECONDARY_STORAGE)
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
+        managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
         System.setProperty("reactor.bufferSize.small", "100")
+        System.out.println(String.format("--------%s---------", testMode))
     }
 
     def setup() {
@@ -169,6 +176,7 @@ class APISpec extends Specification {
         alternateBlobServiceClient = setClient(alternateCredential)
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
+        managedDiskServiceClient = setClient(managedDiskCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)
@@ -177,9 +185,14 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
+        def cleanupClient = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
+            .buildClient()
+
         def options = new ListBlobContainersOptions().setPrefix(containerPrefix + testName)
-        for (BlobContainerItem container : primaryBlobServiceClient.listBlobContainers(options, Duration.ofSeconds(120))) {
-            BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
+        for (def container : cleanupClient.listBlobContainers(options, null)) {
+            def containerClient = primaryBlobServiceClient.getBlobContainerClient(container.getName())
 
             if (container.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(containerClient).breakLeaseWithResponse(0, null, null, null)

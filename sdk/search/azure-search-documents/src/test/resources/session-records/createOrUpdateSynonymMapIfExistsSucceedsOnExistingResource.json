@@ -1,0 +1,53 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk56740fd7c0b.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "5f9a3ea0-94c9-4c88-9b3e-faeb01d0b20b",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 20:44:08 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B96A4C007D95\"",
+      "elapsed-time" : "59",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "218",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk56740fd7c0b.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B96A4C007D95\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk56740fd7c0b.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://azs-sdk56740fd7c0b.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "364a47a8-8ffd-4e7c-b349-3b50c19580fa",
+      "StatusCode" : "200",
+      "Date" : "Mon, 24 Feb 2020 20:44:11 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B96A4D6B9AE3\"",
+      "elapsed-time" : "32",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "225",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk56740fd7c0b.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B96A4D6B9AE3\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"mutated1, mutated2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk434318008ff", "azs-sdk56740fd7c0b" ]
+}

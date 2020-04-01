@@ -36,18 +36,20 @@ public class EventHubClientBuilderTest {
 
     @Test
     public void missingConnectionString() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            final EventHubClientBuilder builder = new EventHubClientBuilder();
-            builder.buildAsyncClient();
-        });
+        final EventHubClientBuilder builder = new EventHubClientBuilder();
+
+        assertThrows(IllegalArgumentException.class, () -> builder.buildAsyncClient());
     }
 
     @Test
     public void defaultProxyConfigurationBuilder() {
         final EventHubClientBuilder builder = new EventHubClientBuilder();
         final EventHubAsyncClient client = builder.connectionString(CORRECT_CONNECTION_STRING).buildAsyncClient();
-
-        assertNotNull(client);
+        try {
+            assertNotNull(client);
+        } finally {
+            client.close();
+        }
     }
 
     @Test

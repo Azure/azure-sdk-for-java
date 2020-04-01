@@ -1,0 +1,67 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk384499a39f0.search.windows.net/synonymmaps?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "7d66e625-728f-433e-a18f-abed00c9af15",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 20:01:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B9645AF1A93F\"",
+      "elapsed-time" : "39",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "218",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk384499a39f0.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8D7B9645AF1A93F\\\"\",\"name\":\"test-synonym\",\"format\":\"solr\",\"synonyms\":\"word1,word2\",\"encryptionKey\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk384499a39f0.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://azs-sdk384499a39f0.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "17",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "e01194ed-9932-408a-8271-c44652001f68",
+      "StatusCode" : "204",
+      "Date" : "Mon, 24 Feb 2020 20:01:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk384499a39f0.search.windows.net/synonymmaps('test-synonym')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "2f18fb1a-f4cf-49a7-b001-6668aecdf0ba",
+      "StatusCode" : "404",
+      "Date" : "Mon, 24 Feb 2020 20:01:36 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "5",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "120",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'test-synonym' was found in service 'azs-sdk384499a39f0'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk384499a39f0" ]
+}

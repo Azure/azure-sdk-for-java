@@ -60,7 +60,7 @@ public class Usage {
     private QuotaUsageStatus status;
 
     /**
-     * Get the unit value.
+     * Get the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'.
      *
      * @return the unit value
      */
@@ -69,7 +69,7 @@ public class Usage {
     }
 
     /**
-     * Set the unit value.
+     * Set the unit of the metric. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountPerSecond', 'BytesPerSecond', 'Milliseconds'.
      *
      * @param unit the unit value to set
      * @return the Usage object itself.
@@ -80,7 +80,7 @@ public class Usage {
     }
 
     /**
-     * Get the name value.
+     * Get the name information for the metric.
      *
      * @return the name value
      */
@@ -89,7 +89,7 @@ public class Usage {
     }
 
     /**
-     * Get the quotaPeriod value.
+     * Get the quota period used to summarize the usage values.
      *
      * @return the quotaPeriod value
      */
@@ -98,7 +98,7 @@ public class Usage {
     }
 
     /**
-     * Get the limit value.
+     * Get maximum value for this metric.
      *
      * @return the limit value
      */
@@ -107,7 +107,7 @@ public class Usage {
     }
 
     /**
-     * Get the currentValue value.
+     * Get current value for this metric.
      *
      * @return the currentValue value
      */
@@ -116,7 +116,7 @@ public class Usage {
     }
 
     /**
-     * Get the nextResetTime value.
+     * Get next reset time for current quota.
      *
      * @return the nextResetTime value
      */
@@ -125,7 +125,7 @@ public class Usage {
     }
 
     /**
-     * Get the status value.
+     * Get cognitive Services account quota usage status. Possible values include: 'Included', 'Blocked', 'InOverage', 'Unknown'.
      *
      * @return the status value
      */
@@ -134,7 +134,7 @@ public class Usage {
     }
 
     /**
-     * Set the status value.
+     * Set cognitive Services account quota usage status. Possible values include: 'Included', 'Blocked', 'InOverage', 'Unknown'.
      *
      * @param status the status value to set
      * @return the Usage object itself.

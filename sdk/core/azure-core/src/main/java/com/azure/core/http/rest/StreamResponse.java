@@ -13,6 +13,8 @@ import java.nio.ByteBuffer;
  * REST response with a streaming content.
  */
 public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> implements Closeable {
+    private volatile boolean consumed;
+
     /**
      * Creates a {@link StreamResponse}.
      *
@@ -32,7 +34,7 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      */
     @Override
     public Flux<ByteBuffer> getValue() {
-        return super.getValue();
+        return super.getValue().doFinally(t -> this.consumed = true);
     }
 
     /**
@@ -40,10 +42,11 @@ public final class StreamResponse extends SimpleResponse<Flux<ByteBuffer>> imple
      */
     @Override
     public void close() {
-        final Flux<ByteBuffer> value = getValue();
-
-        if (value != null) {
-            value.subscribe().dispose();
+        if (this.consumed) {
+            return;
         }
+        this.consumed = true;
+        final Flux<ByteBuffer> value = getValue();
+        value.subscribe().dispose();
     }
 }

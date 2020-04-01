@@ -102,7 +102,12 @@ public final class BlobUrlParts {
      */
     public BlobUrlParts setHost(String host) {
         this.host = host;
-        this.isIpUrl = ModelHelper.IP_V4_URL_PATTERN.matcher(host).find();
+        try {
+            this.isIpUrl = ModelHelper.determineAuthorityIsIpStyle(host);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+                + host));
+        }
         return this;
     }
 
@@ -338,10 +343,15 @@ public final class BlobUrlParts {
     public static BlobUrlParts parse(URL url) {
         BlobUrlParts parts = new BlobUrlParts().setScheme(url.getProtocol());
 
-        if (ModelHelper.IP_V4_URL_PATTERN.matcher(url.getHost()).find()) {
-            parseIpUrl(url, parts);
-        } else {
-            parseNonIpUrl(url, parts);
+        try {
+            if (ModelHelper.determineAuthorityIsIpStyle(url.getAuthority())) {
+                parseIpUrl(url, parts);
+            } else {
+                parseNonIpUrl(url, parts);
+            }
+        } catch (MalformedURLException e) {
+            throw parts.logger.logExceptionAsError(new IllegalStateException("Authority is malformed. Host: "
+                + url.getAuthority()));
         }
 
         Map<String, String[]> queryParamsMap = parseQueryString(url.getQuery());

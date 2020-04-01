@@ -36,8 +36,6 @@ stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: spring
-      SDKType: client
       Artifacts:
         - name: azure-spring-something
           safeName: azurespringsomething
-          stagingProfileId: 88192f04117501

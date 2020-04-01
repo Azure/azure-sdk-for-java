@@ -101,12 +101,12 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                 if (TRACE_LOGGER.isInfoEnabled()) {
                     TRACE_LOGGER.info("Creating MessagingFactory to namespace '{}'", this.namespaceEndpointURI.toString());
                 }
-                factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(this.namespaceEndpointURI, this.clientSettings).thenAcceptAsync((f) -> {
+                factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsync(this.namespaceEndpointURI, this.clientSettings).thenAcceptAsync((f) -> {
                     this.messagingFactory = f;
                     if (TRACE_LOGGER.isInfoEnabled()) {
                         TRACE_LOGGER.info("Created MessagingFactory to namespace '{}'", this.namespaceEndpointURI.toString());
                     }
-                });
+                }, MessagingFactory.INTERNAL_THREAD_POOL);
             } else {
                 factoryFuture = CompletableFuture.completedFuture(null);
             }

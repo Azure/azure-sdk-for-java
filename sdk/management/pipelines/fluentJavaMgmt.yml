@@ -1,0 +1,124 @@
+# External variables Settable at queue time:
+# "pomFile" : "pom.xml".   This is the project object model file for Maven.
+
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - sdk/management/azure/
+      - sdk/management/samples/
+      - sdk/management/pom.xml
+      - sdk/resources/mgmt/
+      - sdk/storage/mgmt/
+      - sdk/keyvault/mgmt/
+      - sdk/managedserviceidentity/mgmt/
+      - sdk/authorization/mgmt/
+      - sdk/network/mgmt/
+      - sdk/compute/mgmt/
+      - sdk/containerregistry/mgmt/
+      - sdk/dns/mgmt/
+      - sdk/containerservice/mgmt/
+      - sdk/cosmos/mgmt/
+      - sdk/appservice/mgmt/
+      - sdk/monitor/mgmt/
+      - sdk/sql/mgmt/
+
+pr:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - sdk/management/azure/
+      - sdk/management/samples/
+      - sdk/management/pom.xml
+      - sdk/resources/mgmt/
+      - sdk/storage/mgmt/
+      - sdk/keyvault/mgmt/
+      - sdk/managedserviceidentity/mgmt/
+      - sdk/authorization/mgmt/
+      - sdk/network/mgmt/
+      - sdk/compute/mgmt/
+      - sdk/containerregistry/mgmt/
+      - sdk/dns/mgmt/
+      - sdk/containerservice/mgmt/
+      - sdk/cosmos/mgmt/
+      - sdk/appservice/mgmt/
+      - sdk/monitor/mgmt/
+      - sdk/sql/mgmt/
+
+variables:
+  DefaultOptions: '--settings eng/settings.xml -Dmaven.wagon.http.pool=false'
+  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+
+jobs:
+  - job: 'Build'
+
+    strategy:
+      matrix:
+
+        Windows - Java 8:
+          OSName: 'Windows'
+          OSVmImage: 'vs2017-win2016'
+          JavaVersion: '1.8'
+          ProfileFlag: ''
+
+    pool:
+      vmImage: $(OSVmImage)
+
+    steps:
+      # - bash: |
+      #     git clone https://github.com/azure/azure-sdk-for-java
+      #     cd azure-sdk-for-java
+      #     git reset fb965b8465 --hard
+      #     cd eng/code-quality-reports
+      #     mvn install
+      #     cd ../../sdk/core
+      #     mvn -DskipTests -Dgpg.skip -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip -Dmaven.javadoc.skip -f pom.service.xml -pl azure-core,azure-core-management -am install
+      #     cd ../../..
+      #   displayName: 'install azure-core'
+
+      - task: Maven@3
+        displayName: 'install'
+        inputs:
+          mavenPomFile: sdk/management/pom.xml
+          options: '--batch-mode $(DefaultOptions) $(ProfileFlag) -pl !samples javadoc:aggregate -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+
+      # - task: Maven@3
+      #   displayName: 'Run StyleCheck'
+      #   inputs:
+      #     mavenPomFile: sdk/management/pom.xml
+      #     options: '$(DefaultOptions) $(ProfileFlag)'
+      #     mavenOptions: '$(LoggingOptions)'
+      #     javaHomeOption: 'JDKVersion'
+      #     jdkVersionOption: $(JavaVersion)
+      #     jdkArchitectureOption: 'x64'
+      #     publishJUnitResults: false
+      #     goals: 'checkstyle:check'
+
+      - task: Maven@3
+        displayName: 'Run Tests on Java 8'
+        inputs:
+          mavenPomFile: sdk/management/pom.xml
+          options: '--batch-mode $(DefaultOptions) $(ProfileFlag) -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'test'
+
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          mergeTestResults: true
+          testRunTitle: 'On Java $(JavaVersion)'

@@ -11,15 +11,17 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ComputerVisionError model.
+ * Details about the API request error.
  */
 public class ComputerVisionError {
     /**
-     * The error code. Possible values include: 'InvalidImageUrl',
-     * 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature',
-     * 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage',
-     * 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError',
-     * 'Unspecified', 'StorageException'.
+     * The error code. Possible values include: 'InvalidImageFormat',
+     * 'UnsupportedMediaType', 'InvalidImageUrl', 'NotSupportedFeature',
+     * 'NotSupportedImage', 'Timeout', 'InternalServerError',
+     * 'InvalidImageSize', 'BadArgument', 'DetectFaceError',
+     * 'NotSupportedLanguage', 'InvalidThumbnailSize', 'InvalidDetails',
+     * 'InvalidModel', 'CancelledRequest', 'NotSupportedVisualFeature',
+     * 'FailedToProcess', 'Unspecified', 'StorageException'.
      */
     @JsonProperty(value = "code", required = true)
     private ComputerVisionErrorCodes code;

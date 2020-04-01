@@ -21,8 +21,8 @@ public class ImmutabilityPolicyProperties {
      * The immutability period for the blobs in the container since the policy
      * creation, in days.
      */
-    @JsonProperty(value = "properties.immutabilityPeriodSinceCreationInDays", required = true)
-    private int immutabilityPeriodSinceCreationInDays;
+    @JsonProperty(value = "properties.immutabilityPeriodSinceCreationInDays")
+    private Integer immutabilityPeriodSinceCreationInDays;
 
     /**
      * The ImmutabilityPolicy state of a blob container, possible values
@@ -31,6 +31,17 @@ public class ImmutabilityPolicyProperties {
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private ImmutabilityPolicyState state;
+
+    /**
+     * This property can only be changed for unlocked time-based retention
+     * policies. When enabled, new blocks can be written to an append blob
+     * while maintaining immutability protection and compliance. Only new
+     * blocks can be added and any existing blocks cannot be modified or
+     * deleted. This property cannot be changed with ExtendImmutabilityPolicy
+     * API.
+     */
+    @JsonProperty(value = "properties.allowProtectedAppendWrites")
+    private Boolean allowProtectedAppendWrites;
 
     /**
      * ImmutabilityPolicy Etag.
@@ -49,7 +60,7 @@ public class ImmutabilityPolicyProperties {
      *
      * @return the immutabilityPeriodSinceCreationInDays value
      */
-    public int immutabilityPeriodSinceCreationInDays() {
+    public Integer immutabilityPeriodSinceCreationInDays() {
         return this.immutabilityPeriodSinceCreationInDays;
     }
 
@@ -59,7 +70,7 @@ public class ImmutabilityPolicyProperties {
      * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set
      * @return the ImmutabilityPolicyProperties object itself.
      */
-    public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
         this.immutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         return this;
     }
@@ -71,6 +82,26 @@ public class ImmutabilityPolicyProperties {
      */
     public ImmutabilityPolicyState state() {
         return this.state;
+    }
+
+    /**
+     * Get this property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API.
+     *
+     * @return the allowProtectedAppendWrites value
+     */
+    public Boolean allowProtectedAppendWrites() {
+        return this.allowProtectedAppendWrites;
+    }
+
+    /**
+     * Set this property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API.
+     *
+     * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set
+     * @return the ImmutabilityPolicyProperties object itself.
+     */
+    public ImmutabilityPolicyProperties withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
+        this.allowProtectedAppendWrites = allowProtectedAppendWrites;
+        return this;
     }
 
     /**

@@ -9,19 +9,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import reactor.core.Disposable;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
+import java.util.stream.Collectors;
 
 /**
  * EventProcessorClient provides a convenient mechanism to consume events from all partitions of an Event Hub in the
@@ -47,8 +49,11 @@ public class EventProcessorClient {
     private final PartitionBasedLoadBalancer partitionBasedLoadBalancer;
     private final CheckpointStore checkpointStore;
 
-    private final AtomicReference<Disposable> runner = new AtomicReference<>();
-    private final AtomicReference<Scheduler> scheduler = new AtomicReference<>();
+    private final AtomicReference<ScheduledFuture<?>> runner = new AtomicReference<>();
+    private final AtomicReference<ScheduledExecutorService> scheduler = new AtomicReference<>();
+    private final String fullyQualifiedNamespace;
+    private final String eventHubName;
+    private final String consumerGroup;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -72,18 +77,22 @@ public class EventProcessorClient {
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
 
+        EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
+
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = UUID.randomUUID().toString();
+        this.fullyQualifiedNamespace = eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT);
+        this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
+        this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
+
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
             eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition);
-        EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
-                eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT),
-                eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT),
-                consumerGroup.toLowerCase(Locale.ROOT), identifier, TimeUnit.MINUTES.toSeconds(1),
-                partitionPumpManager, processError);
+                this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
+                TimeUnit.MINUTES.toSeconds(1), this.partitionPumpManager, processError);
+
     }
 
     /**
@@ -113,11 +122,14 @@ public class EventProcessorClient {
             return;
         }
         logger.info("Starting a new event processor instance with id {}", this.identifier);
-        scheduler.set(Schedulers.newElastic("EventProcessor"));
+
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        scheduler.set(executor);
+        // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
         Double jitterInMillis =
             ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
-        // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
-        runner.set(scheduler.get().schedulePeriodically(partitionBasedLoadBalancer::loadBalance,
+
+        runner.set(scheduler.get().scheduleWithFixedDelay(partitionBasedLoadBalancer::loadBalance,
             jitterInMillis.longValue(), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS), TimeUnit.MILLISECONDS));
     }
 
@@ -136,9 +148,9 @@ public class EventProcessorClient {
             logger.info("Event processor has already stopped");
             return;
         }
-        runner.get().dispose();
-        scheduler.get().dispose();
-        this.partitionPumpManager.stopAllPartitionPumps();
+        runner.get().cancel(true);
+        scheduler.get().shutdown();
+        stopProcessing();
     }
 
     /**
@@ -149,5 +161,17 @@ public class EventProcessorClient {
      */
     public synchronized boolean isRunning() {
         return isRunning.get();
+    }
+
+    private void stopProcessing() {
+        partitionPumpManager.stopAllPartitionPumps();
+
+        // finally, remove ownerid from checkpointstore as the processor is shutting down
+        checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
+            .filter(ownership -> identifier.equals(ownership.getOwnerId()))
+            .map(ownership -> ownership.setOwnerId(""))
+            .collect(Collectors.toList())
+            .flatMapMany(checkpointStore::claimOwnership)
+            .blockLast(Duration.ofSeconds(10)); // block until the checkpoint store is updated
     }
 }

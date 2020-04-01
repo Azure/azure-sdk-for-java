@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azsjavacanuseallregexflagsemptynameanalyzer4f7559028d45.search.windows.net/indexes?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "bf777993-33cd-4f1d-a791-174fe1b5b71c",
+      "StatusCode" : "400",
+      "Date" : "Wed, 25 Mar 2020 19:23:52 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "bf777993-33cd-4f1d-a791-174fe1b5b71c",
+      "elapsed-time" : "22",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "124",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"The request is invalid. Details: index.analyzers[0].name : The name field is required.\\r\\n\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azsjavacanuseallregexflagsemptynameanalyzer4f7559028d45" ]
+}

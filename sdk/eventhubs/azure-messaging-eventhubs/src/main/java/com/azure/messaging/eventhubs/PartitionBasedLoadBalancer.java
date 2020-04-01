@@ -8,8 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import java.util.function.Consumer;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple2;
 
@@ -21,6 +21,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -112,6 +114,12 @@ final class PartitionBasedLoadBalancer {
         final Mono<List<String>> partitionsMono = eventHubAsyncClient
             .getPartitionIds()
             .timeout(Duration.ofMinutes(1))
+            .onErrorResume(TimeoutException.class, error -> {
+                // In the subsequent step where it tries to balance the load, it'll propagate an error to the user.
+                // So it is okay to return an empty Flux.
+                logger.warning("Unable to get partitionIds from eventHubAsyncClient.");
+                return Flux.empty();
+            })
             .collectList();
 
         Mono.zip(partitionOwnershipMono, partitionsMono)
@@ -170,6 +178,7 @@ final class PartitionBasedLoadBalancer {
 
             // add the current event processor to the map if it doesn't exist
             ownerPartitionMap.putIfAbsent(this.ownerId, new ArrayList<>());
+            logger.verbose("Current partition distribution {}", format(ownerPartitionMap));
 
             if (CoreUtils.isNullOrEmpty(activePartitionOwnershipMap)) {
                 /*
@@ -255,6 +264,18 @@ final class PartitionBasedLoadBalancer {
 
             claimOwnership(partitionOwnershipMap, ownerPartitionMap, partitionToClaim);
         });
+    }
+
+    private String format(Map<String, List<PartitionOwnership>> ownerPartitionMap) {
+        return ownerPartitionMap.entrySet()
+            .stream()
+            .map(entry -> {
+                StringBuilder sb = new StringBuilder();
+                sb.append(entry.getKey()).append("=[");
+                sb.append(entry.getValue().stream().map(po -> po.getPartitionId()).collect(Collectors.joining(",")));
+                sb.append("]");
+                return sb.toString();
+            }).collect(Collectors.joining(";"));
     }
 
     /*
@@ -372,7 +393,8 @@ final class PartitionBasedLoadBalancer {
                 .warning(Messages.FAILED_TO_CLAIM_OWNERSHIP, ownershipRequest.getPartitionId(),
                     ex.getMessage(), ex))
             .collectList()
-            .zipWith(checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName, consumerGroupName)
+            .zipWhen(ownershipList -> checkpointStore.listCheckpoints(fullyQualifiedNamespace, eventHubName,
+                consumerGroupName)
                 .collectMap(checkpoint -> checkpoint.getPartitionId(), Function.identity()))
             .subscribe(ownedPartitionCheckpointsTuple -> {
                 ownedPartitionCheckpointsTuple.getT1()
@@ -381,7 +403,10 @@ final class PartitionBasedLoadBalancer {
                         ownedPartitionCheckpointsTuple.getT2().get(po.getPartitionId())));
             },
                 ex -> {
-                    throw logger.logExceptionAsError(new RuntimeException("Error while listing checkpoints", ex));
+                    logger.warning("Error while listing checkpoints", ex);
+                    ErrorContext errorContext = new ErrorContext(partitionAgnosticContext, ex);
+                    processError.accept(errorContext);
+                    throw logger.logExceptionAsError(new IllegalStateException("Error while listing checkpoints", ex));
                 });
     }
 

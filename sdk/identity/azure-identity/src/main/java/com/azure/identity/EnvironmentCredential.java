@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 /**
  * A credential provider that provides token credentials based on environment variables.  The environment variables
  * expected are:
- * <p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_SECRET AZURE_CLIENT_SECRET}</li>

@@ -130,7 +130,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
+          <version>3.2.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
         </plugin>
 
         <!-- This plugin lets you generate project files for eclipse -->
@@ -253,20 +253,6 @@
               </goals>
             </execution>
           </executions>
-        </plugin>
-
-        <!-- This plugin is used for rapid playback testing. -->
-        <plugin>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
-          <configuration>
-            <scanIntervalSeconds>0</scanIntervalSeconds>
-            <stopPort>11079</stopPort>
-            <stopKey>STOP</stopKey>
-            <waitForChild>false</waitForChild>
-            <jettyXml>./jetty.xml</jettyXml>
-          </configuration>
         </plugin>
 
         <!-- This plugin provides the capability to build jars. -->

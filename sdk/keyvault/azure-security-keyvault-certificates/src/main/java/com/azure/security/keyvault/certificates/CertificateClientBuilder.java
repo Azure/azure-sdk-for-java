@@ -102,18 +102,19 @@ public final class CertificateClientBuilder {
     }
 
     /**
-     * Creates a {@link CertificateAsyncClient} based on options set in the builder.
-     * Every time {@code buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
+     * Creates a {@link CertificateAsyncClient} based on options set in the builder. Every time
+     * {@link #buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
      *
      * <p>If {@link CertificateClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the
-     * {@link CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set,
-     * then {@link CertificateClientBuilder#credential(TokenCredential) key vault credential and
-     * {@link CertificateClientBuilder#vaultUrl(String)} key vault url are required to build the {@link CertificateAsyncClient client}.}</p>
+     * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the {@link
+     * CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set, then
+     * {@link CertificateClientBuilder#credential(TokenCredential) key vault credential and {@link
+     * CertificateClientBuilder#vaultUrl(String)} key vault url are required to build the {@link CertificateAsyncClient
+     * client}.}</p>
      *
      * @return A {@link CertificateAsyncClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or
-     * {@link CertificateClientBuilder#vaultUrl(String)} have not been set.
+     * @throws IllegalStateException If {@link CertificateClientBuilder#credential(TokenCredential)} or {@link
+     * CertificateClientBuilder#vaultUrl(String)} have not been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = (configuration != null) ? configuration

@@ -139,7 +139,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkpremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob4e546565c8c29?include=&restype=container&comp=list",
+    "Uri" : "https://azstoragesdkpremium.blob.core.windows.net/jtcsettierpageblob2blobapitestsettierpageblob4e546565c8c29?restype=container&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-02-02",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.0.0-preview.5 1.8.0_221; Mac OS X 10.14.6",

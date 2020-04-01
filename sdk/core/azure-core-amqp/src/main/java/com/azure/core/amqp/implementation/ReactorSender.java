@@ -394,7 +394,7 @@ class ReactorSender implements AmqpSendLink {
         final DeliveryState outcome = delivery.getRemoteState();
         final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
-        logger.verbose("entityPath[{}], clinkName[{}], deliveryTag[{}]: process delivered message",
+        logger.verbose("entityPath[{}], linkName[{}], deliveryTag[{}]: process delivered message",
             entityPath, getLinkName(), deliveryTag);
 
         final RetriableWorkItem workItem = pendingSendsMap.remove(deliveryTag);
@@ -417,6 +417,9 @@ class ReactorSender implements AmqpSendLink {
             final org.apache.qpid.proton.amqp.transport.ErrorCondition error = rejected.getError();
             final Exception exception = ExceptionUtil.toException(error.getCondition().toString(),
                 error.getDescription(), handler.getErrorContext(sender));
+
+            logger.warning("entityPath[{}], linkName[{}], deliveryTag[{}]: Delivery rejected. [{}]",
+                entityPath, getLinkName(), deliveryTag, rejected);
 
             final int retryAttempt;
             if (isGeneralSendError(error.getCondition())) {

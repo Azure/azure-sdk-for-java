@@ -60,6 +60,8 @@ public class JacksonDeserializer implements JsonApi {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         df.setTimeZone(TimeZone.getDefault());
         objectMapper.setDateFormat(df);
+
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})

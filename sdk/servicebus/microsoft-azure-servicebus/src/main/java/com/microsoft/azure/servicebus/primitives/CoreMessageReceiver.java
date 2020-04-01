@@ -561,11 +561,10 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             this.lastKnownLinkError = null;
 
             this.underlyingFactory.getRetryPolicy().resetRetryCount(this.underlyingFactory.getClientId());
-
-            this.sendFlow(this.prefetchCount - this.currentPrefetechedMessagesCount.get());
-
-            TRACE_LOGGER.debug("receiverPath:{}, linkname:{}, updated-link-credit:{}, sentCredits:{}",
-                    this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), this.prefetchCount);
+            
+            this.creditToFlow.set(0);
+            int creditsToSend = this.prefetchCount - this.currentPrefetechedMessagesCount.get() + this.creditNeededtoServePendingReceives.get();
+            this.sendFlow(creditsToSend);
         } else {
             this.cancelSASTokenRenewTimer();
             
@@ -695,7 +694,9 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         if (this.getIsClosingOrClosed()) {
             TRACE_LOGGER.info("Receive link to '{}', sessionId '{}' closed", this.receivePath, this.sessionId);
             AsyncUtil.completeFuture(this.linkClose, null);
-            this.clearAllPendingWorkItems(exception);
+            // close is called on the receiver. Just complete pending receives with null
+            this.completeAllPendingReceiveWorkItems(null);
+            this.completeAllPendingUpdateStateWorkItems(exception);
         } else {
             this.underlyingFactory.deregisterForConnectionError(this.receiveLink);
             TRACE_LOGGER.info("Receive link '{}' to '{}', sessionId '{}' closed with error.", this.receiveLink.getName(), this.receivePath, this.sessionId, exception);
@@ -704,20 +705,28 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                 || (this.receiveLinkReopenFuture != null && !receiveLinkReopenFuture.isDone())) {
                 this.onOpenComplete(exception);
             }
-
-            if (exception != null
-                && (!(exception instanceof ServiceBusException) || !((ServiceBusException) exception).getIsTransient())) {
-                this.clearAllPendingWorkItems(exception);
-                
-                if (this.isSessionReceiver && (exception instanceof SessionLockLostException || exception instanceof SessionCannotBeLockedException)) {
+            
+            // Once link is closed, these can never be finished
+            this.completeAllPendingUpdateStateWorkItems(exception);
+            
+            boolean shouldReOpenLink = true;
+            if (exception != null)
+            {
+            	if (this.isSessionReceiver && (exception instanceof SessionLockLostException || exception instanceof SessionCannotBeLockedException)) {
                     // No point in retrying to establish a link.. SessionLock is lost
                     TRACE_LOGGER.info("SessionId '{}' lock lost. Closing receiver.", this.sessionId);
                     this.isSessionLockLost = true;
                     this.closeAsync();
-                }
-            } else {
-                // TODO: Why recreating link needs to wait for retry interval of pending receive?
-                ReceiveWorkItem workItem = this.pendingReceives.peek();
+                    shouldReOpenLink = false;
+                } else {
+                	if (!((exception instanceof ServiceBusException) && ((ServiceBusException) exception).getIsTransient())) {
+                		shouldReOpenLink = false;
+                	}
+                }            	
+            }
+            
+            if (shouldReOpenLink) {
+            	ReceiveWorkItem workItem = this.pendingReceives.peek();
                 if (workItem != null && workItem.getTimeoutTracker() != null) {
                     Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy()
                             .getNextRetryInterval(this.getClientId(), exception, workItem.getTimeoutTracker().remaining());
@@ -726,6 +735,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                         Timer.schedule(() -> CoreMessageReceiver.this.ensureLinkIsOpen(), nextRetryInterval, TimerType.OneTimeRun);
                     }
                 }
+            } else {
+            	this.completeAllPendingReceiveWorkItems(exception);
             }
         }
     }
@@ -1038,7 +1049,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                         Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sendTokenEx);
                         TRACE_LOGGER.info("Sending SAS Token to '{}' failed.", this.receivePath, cause);
                         this.receiveLinkReopenFuture.completeExceptionally(sendTokenEx);
-                        this.clearAllPendingWorkItems(sendTokenEx);
+                        this.completeAllPendingReceiveWorkItems(sendTokenEx);
+                        this.completeAllPendingUpdateStateWorkItems(sendTokenEx);
                     } else {
                         try {
                             this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
@@ -1128,6 +1140,36 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         for (Map.Entry<String, UpdateStateWorkItem> pendingUpdate : this.pendingUpdateStateRequests.entrySet()) {
             pendingUpdateStateRequests.remove(pendingUpdate.getKey());
             ExceptionUtil.completeExceptionally(pendingUpdate.getValue().getWork(), exception, this, true);
+        }
+    }
+    
+    private void completeAllPendingReceiveWorkItems(Throwable exception) {
+    	TRACE_LOGGER.info("Completeing all receive operations on the receiver to '{}'", this.receivePath);
+    	Iterator<ReceiveWorkItem> pendingRecivesIterator = this.pendingReceives.iterator();
+    	while (pendingRecivesIterator.hasNext()) {
+            ReceiveWorkItem workItem = pendingRecivesIterator.next();
+            pendingRecivesIterator.remove();
+
+            CompletableFuture<Collection<MessageWithDeliveryTag>> future = workItem.getWork();
+            workItem.cancelTimeoutTask(false);
+            this.reduceCreditForCompletedReceiveRequest(workItem.getMaxMessageCount());
+            if (exception == null) {
+            	AsyncUtil.completeFuture(future, null);
+            } else {
+            	ExceptionUtil.completeExceptionally(future, exception, this, true);
+            }
+        }
+    }
+    
+    private void completeAllPendingUpdateStateWorkItems(Throwable exception) {
+    	TRACE_LOGGER.info("Completeing all updateState operations on the receiver to '{}'", this.receivePath);
+    	for (Map.Entry<String, UpdateStateWorkItem> pendingUpdate : this.pendingUpdateStateRequests.entrySet()) {
+            pendingUpdateStateRequests.remove(pendingUpdate.getKey());            
+            if (exception == null) {
+            	AsyncUtil.completeFuture(pendingUpdate.getValue().getWork(), null);
+            } else {
+            	ExceptionUtil.completeExceptionally(pendingUpdate.getValue().getWork(), exception, this, true);
+            }
         }
     }
 

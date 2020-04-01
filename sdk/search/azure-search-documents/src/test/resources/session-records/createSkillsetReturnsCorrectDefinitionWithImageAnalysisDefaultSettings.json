@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk612846cd129.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "c92ecaff-7f4f-4fce-a292-3d5bba6cba5d",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:57:48 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B963D2E57BB1\"",
+      "elapsed-time" : "78",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "702",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk612846cd129.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B963D2E57BB1\\\"\",\"name\":\"image-analysis-skillset\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":null,\"visualFeatures\":[],\"details\":[],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk612846cd129.search.windows.net/skillsets('image-analysis-skillset')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk612846cd129" ]
+}

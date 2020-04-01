@@ -1,25 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestsgetaccesspolicyerror19877c93324375a7?comp=acl",
+    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestsgetaccesspolicyerror55067b652d2956b9?comp=acl",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "4534bdbc-7dc9-40dc-ad7c-913753d5192e"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e09579b3-ed3a-4c8a-afec-e00fa6fb020d"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "QueueNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "2f7e8052-f003-0082-408d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:2f7e8052-f003-0082-408d-839126000000\nTime:2019-10-15T19:19:37.7837310Z</Message></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT",
+      "x-ms-request-id" : "d25b8228-f003-0012-0371-e0e9eb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:d25b8228-f003-0012-0371-e0e9eb000000\nTime:2020-02-11T00:24:36.7603041Z</Message></Error>",
+      "Date" : "Tue, 11 Feb 2020 00:24:35 GMT",
+      "x-ms-client-request-id" : "e09579b3-ed3a-4c8a-afec-e00fa6fb020d",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestsgetaccesspolicyerror19877c93324375a7" ]
+  "variables" : [ "queueapitestsgetaccesspolicyerror55067b652d2956b9" ]
 }

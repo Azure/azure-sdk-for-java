@@ -43,7 +43,7 @@ public class ChainedTokenCredential implements TokenCredential {
                 }
                 cause.set(t);
                 return Mono.empty();
-            }))
+            }), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException("Tried "
                 + credentials.stream().map(c -> c.getClass().getSimpleName()).collect(Collectors.joining(", "))

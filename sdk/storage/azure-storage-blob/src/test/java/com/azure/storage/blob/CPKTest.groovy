@@ -220,7 +220,7 @@ class CPKTest extends APISpec {
         then:
         response.getStatusCode() == 201
         //TODO uncomment when swagger is fixed so AppendBlobAppendBLockFromURLHeaders contains isrequestserverencrypted
-        //response.getValue().isServerEncrypted()
+        response.getValue().isServerEncrypted()
         response.getValue().getEncryptionKeySha256() == key.getKeySha256()
     }
 

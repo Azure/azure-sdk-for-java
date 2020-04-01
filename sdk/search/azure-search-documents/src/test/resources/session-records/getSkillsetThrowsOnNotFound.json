@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://azs-sdk41576fde09a.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06",
+    "Headers" : { },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "acc4a312-f4e7-42db-9e31-87d0a639d48d",
+      "StatusCode" : "404",
+      "Date" : "Mon, 24 Feb 2020 19:55:22 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "elapsed-time" : "35",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "158",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No skillset with the name 'thisdoesnotexist' was found in service 'Microsoft.WindowsAzure.Search.Core.Models.SearchService'.\"}}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Language" : "en",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk41576fde09a" ]
+}
