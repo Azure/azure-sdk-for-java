@@ -164,6 +164,13 @@ public final class TextAnalyticsClientBuilder {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+                buildConfiguration));
+            policies.add(new RequestIdPolicy());
+            policies.add(new AddHeadersPolicy(headers));
+
+            HttpPolicyProviders.addBeforeRetryPolicies(policies);
+            policies.add(new AddDatePolicy());
             // Authentications
             if (tokenCredential != null) {
                 // User token based policy
@@ -175,14 +182,6 @@ public final class TextAnalyticsClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
-
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
-            policies.add(new AddDatePolicy());
-
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
