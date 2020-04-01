@@ -311,6 +311,9 @@ public class ServiceBusSenderAsyncClientTest {
     void scheduleMessage() {
         // Arrange
         long sequenceNumberReturned = 10;
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class)))
+            .thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
 
         when(managementNode.schedule(eq(message), any(Instant.class), any(Integer.class)))
             .thenReturn(just(sequenceNumberReturned));
@@ -325,13 +328,14 @@ public class ServiceBusSenderAsyncClientTest {
     void cancelScheduleMessage() {
         // Arrange
         long sequenceNumberReturned = 10;
-
         when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned)))
             .thenReturn(Mono.empty());
 
         // Act & Assert
         StepVerifier.create(sender.cancelScheduledMessage(sequenceNumberReturned))
             .verifyComplete();
+
+        verify(managementNode).cancelScheduledMessage(sequenceNumberReturned);
     }
 
     /**

@@ -119,7 +119,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
-        Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+
         sender.scheduleMessage(message, scheduledEnqueueTime)
             .delaySubscription(Duration.ofSeconds(3))
             .block();
@@ -143,13 +144,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
-        Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
-        Duration delayDuration = Duration.ofSeconds(3);
-        Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block();
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        final Duration delayDuration = Duration.ofSeconds(3);
 
-        sender.cancelScheduledMessage(sequenceNumber.longValue())
-            .delaySubscription(delayDuration)
+        final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block();
+        System.out.println("Scheduled the message, sequence number: " + sequenceNumber);
+
+        Mono.delay(delayDuration)
+            .then(sender.cancelScheduledMessage(sequenceNumber.longValue()))
             .block();
+        System.out.println("Cancelled the scheduled message, sequence number: " + sequenceNumber);
 
         // Assert & Act
         StepVerifier.create(receiver.receive().take(1))

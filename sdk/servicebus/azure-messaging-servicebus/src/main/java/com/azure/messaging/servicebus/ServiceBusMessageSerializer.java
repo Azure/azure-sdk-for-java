@@ -203,7 +203,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private List<Long> deserializeListOfLong(Message amqpMessage) {
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
-            if (amqpValue.getValue() instanceof  Map) {
+            if (amqpValue.getValue() instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
                 Object expirationListObj = responseBody.get(SEQUENCE_NUMBERS);

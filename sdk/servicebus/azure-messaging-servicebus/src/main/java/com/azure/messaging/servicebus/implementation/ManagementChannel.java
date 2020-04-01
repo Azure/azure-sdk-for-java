@@ -110,15 +110,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize) {
-        return scheduleMessage(message, scheduledEnqueueTime, maxSendLinkSize)
-            .next();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber) {
         return peek(fromSequenceNumber, 1, null)
             .last();
@@ -403,8 +394,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
         })).then();
     }
 
-    private Flux<Long> scheduleMessage(ServiceBusMessage messageToSchedule, Instant scheduledEnqueueTime,
-                       int maxSendLinkSize) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Long> schedule(ServiceBusMessage messageToSchedule, Instant scheduledEnqueueTime, int maxSendLinkSize) {
         messageToSchedule.setScheduledEnqueueTime(scheduledEnqueueTime);
         return  isAuthorized(SCHEDULE_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
@@ -423,7 +417,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     getErrorContext()));
             }
             return Flux.fromIterable(messageSerializer.deserializeList(responseMessage, Long.class));
-        }));
+        }))
+            .next();
     }
 
     /**

@@ -4,13 +4,14 @@
 package com.azure.messaging.servicebus;
 
 import java.time.Duration;
+import java.time.Instant;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to send a {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
+ * Sample demonstrates how to schedule {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
  */
-public class MessageSendAsyncSample {
+public class MessageScheduleAsyncSample {
 
     /**
      * Main method to invoke this demo on how to send a message to an Azure Service Bus.
@@ -32,13 +33,16 @@ public class MessageSendAsyncSample {
             .buildAsyncClient();
 
         // Create an message to send.
-        ServiceBusMessage message = new ServiceBusMessage("Hello world!".getBytes(UTF_8));
+        ServiceBusMessage message = new ServiceBusMessage("Hello World!!".getBytes(UTF_8));
 
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // message has been delivered to the Service Bus. It completes with an error if an exception occurred while
-        // sending the message.
+        // message has been delivered to the Service Bus. It completes with an error if an exception occurred while sending
+        // the message.
 
-        senderAsyncClient.send(message).subscribe();
+        senderAsyncClient.scheduleMessage(message, Instant.now().plusSeconds(1 * 60L))
+            .subscribe(aLong -> {
+                System.out.println("!! After schedule message  sequence : " + aLong);
+            });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
         // the operation.
