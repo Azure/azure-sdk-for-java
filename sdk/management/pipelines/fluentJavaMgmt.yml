@@ -8,7 +8,7 @@ trigger:
       - master
   paths:
     include:
-      - sdk/managment/azure/
+      - sdk/management/azure/
       - sdk/management/samples/
       - sdk/management/pom.xml
       - sdk/resources/mgmt/
@@ -32,7 +32,7 @@ pr:
       - master
   paths:
     include:
-      - sdk/managment/azure/
+      - sdk/management/azure/
       - sdk/management/samples/
       - sdk/management/pom.xml
       - sdk/resources/mgmt/
