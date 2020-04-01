@@ -94,7 +94,7 @@ public class TestCommons {
         receivedMessage = receiver.receive(SHORT_WAIT_TIME);
         Assert.assertNull("Message received again", receivedMessage);
     }
-
+    
     private static void testBasicReceiveAndCompleteWithBinaryData(IMessageSender sender, String sessionId, IMessageReceiver receiver, int messageSize) throws InterruptedException, ServiceBusException, ExecutionException {
         String messageId = UUID.randomUUID().toString();
         byte[] binaryData = new byte[messageSize];
@@ -662,12 +662,12 @@ public class TestCommons {
             session.closeAsync();
         }
     }
-
+    
     public static void testLongPollReceiveOnLinkAbort(IMessageSender sender, IMessageReceiver receiver, ManagementClientAsync mgmtClientAsync, boolean isQueue) throws InterruptedException, ServiceBusException, ExecutionException {
     	CompletableFuture<IMessage> receiveFuture = receiver.receiveAsync(Duration.ofMinutes(15));
     	// Delay a second so credit is sent to the entity
     	Thread.sleep(1000);
-
+    	
     	// Force reload entity
     	boolean isEntityPartitioned = false;
     	if (isQueue) {
@@ -681,13 +681,13 @@ public class TestCommons {
     		topicDesc.setEnableBatchedOperations(!topicDesc.isEnableBatchedOperations());
     		mgmtClientAsync.updateTopicAsync(topicDesc).get();
     	}
-
+    	
     	// Delay a second so send link is closed
     	Thread.sleep(1000);
-
+    	
     	Message message = new Message("AMQP test message");
         sender.send(message);
-
+        
         // Receive should receive that message. Partitioned entity gateway cache may take a maximum of 2 minutes to retry.
         int maxReceiveWaitTimeInSeconds = isEntityPartitioned ? 150 : 30;
         IMessage rcvdMessage = null;
@@ -696,7 +696,7 @@ public class TestCommons {
         } catch (java.util.concurrent.TimeoutException te) {
         	Assert.fail("Long poll receive didn't receive a message after entity reload");
         }
-
+        
         Assert.assertNotNull("Long poll receive didn't receive a message after entity reload", rcvdMessage);
     }
 
