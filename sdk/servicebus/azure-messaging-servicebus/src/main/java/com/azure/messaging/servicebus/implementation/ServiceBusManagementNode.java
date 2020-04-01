@@ -52,7 +52,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return The sequence number representing the pending send, which returns the sequence number of
       * the scheduled message. This sequence number can be used to cancel the scheduling of the message.
      */
-    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime);
+    Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime,  int maxSendLinkSize);
 
     /**
      * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
@@ -60,7 +60,7 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @param sequenceNumber The sequence number of the scheduled message.
      * @return {@link Void} The successful completion represents the pending cancellation.
      */
-    Mono<Void> cancelSchedule(long sequenceNumber);
+    Mono<Void> cancelScheduledMessage(long sequenceNumber);
 
     /**
      * Reads the next batch of active messages without changing the state of the receiver or the message source.

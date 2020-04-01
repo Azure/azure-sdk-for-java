@@ -312,7 +312,7 @@ public class ServiceBusSenderAsyncClientTest {
         // Arrange
         long sequenceNumberReturned = 10;
 
-        when(managementNode.schedule(eq(message), any(Instant.class)))
+        when(managementNode.schedule(eq(message), any(Instant.class), any(Integer.class)))
             .thenReturn(just(sequenceNumberReturned));
 
         // Act & Assert
@@ -326,7 +326,7 @@ public class ServiceBusSenderAsyncClientTest {
         // Arrange
         long sequenceNumberReturned = 10;
 
-        when(managementNode.cancelSchedule(eq(sequenceNumberReturned)))
+        when(managementNode.cancelScheduledMessage(eq(sequenceNumberReturned)))
             .thenReturn(Mono.empty());
 
         // Act & Assert

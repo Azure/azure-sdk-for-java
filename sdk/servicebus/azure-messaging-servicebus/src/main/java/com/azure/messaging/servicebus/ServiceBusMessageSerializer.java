@@ -201,7 +201,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     }
 
     private List<Long> deserializeListOfLong(Message amqpMessage) {
-
         if (amqpMessage.getBody() instanceof AmqpValue) {
             AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
             if (amqpValue.getValue() instanceof  Map) {
@@ -218,7 +217,6 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
         return Collections.emptyList();
     }
-
 
     private List<Instant> deserializeListOfInstant(Message amqpMessage) {
 

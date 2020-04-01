@@ -283,9 +283,16 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime));
+        return getSendLink()
+            .flatMap(link -> link.getLinkSize().flatMap(size -> {
+                int maxSize =  size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize));
+            }));
     }
 
     /**
@@ -298,7 +305,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityName, entityType))
-            .flatMap(managementNode -> managementNode.cancelSchedule(sequenceNumber));
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber));
     }
 
     /**

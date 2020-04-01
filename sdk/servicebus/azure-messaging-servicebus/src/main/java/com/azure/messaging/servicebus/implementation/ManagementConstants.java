@@ -41,8 +41,5 @@ class ManagementConstants {
     static final String MESSAGE = "message";
     static final String MESSAGE_ID = "message-id";
 
-
-    // TODO(Hemant) :This value should be read from Receive Link (Currently using track 1 default value)
-    static final int MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES = 1024 * 1024;
     static final int MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES = 512;
 }

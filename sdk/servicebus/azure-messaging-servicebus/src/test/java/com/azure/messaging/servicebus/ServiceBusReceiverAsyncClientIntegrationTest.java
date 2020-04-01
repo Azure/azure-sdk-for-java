@@ -119,11 +119,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
-        int enqueDelayInSec = 2;
+        Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+        sender.scheduleMessage(message, scheduledEnqueueTime)
+            .delaySubscription(Duration.ofSeconds(3))
+            .block();
+
         // Assert & Act
-        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(enqueDelayInSec))
-            .delaySubscription(Duration.ofSeconds(enqueDelayInSec + 1))
-            .thenMany(receiver.receive().take(1)))
+        StepVerifier.create(receiver.receive().take(1))
             .assertNext(receivedMessage -> {
                 Assertions.assertArrayEquals(contents.getBytes(), receivedMessage.getBody());
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
@@ -141,12 +143,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
-        int enqueDelayInSec = 3;
+        Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        Duration delayDuration = Duration.ofSeconds(3);
+        Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block();
+
+        sender.cancelScheduledMessage(sequenceNumber.longValue())
+            .delaySubscription(delayDuration)
+            .block();
+
         // Assert & Act
-        StepVerifier.create(sender.scheduleMessage(message, Instant.now().plusSeconds(enqueDelayInSec))
-            .doOnSuccess(seqNumber -> sender.cancelScheduledMessage(seqNumber))
-            .delaySubscription(Duration.ofSeconds(enqueDelayInSec + 1))
-            .thenMany(receiver.receive().take(1)))
+        StepVerifier.create(receiver.receive().take(1))
             .expectNoEvent(Duration.ofSeconds(5))
             .verifyComplete();
     }

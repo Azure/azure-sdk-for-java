@@ -29,7 +29,6 @@ import reactor.core.publisher.Mono;
 import java.nio.BufferOverflowException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,24 +42,23 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.ASSOCIATED_LINK_NAME_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.CANCEL_SCHEDULED_MESSAGE_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.FROM_SEQUENCE_NUMBER;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.LOCK_TOKENS_KEY;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MANAGEMENT_OPERATION_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGES;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_COUNT_KEY;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_ID;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.PEEK_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVER_SETTLE_MODE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RECEIVE_BY_SEQUENCE_NUMBER_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.RENEW_LOCK_OPERATION;
+import static com.azure.messaging.servicebus.implementation.ManagementConstants.SCHEDULE_MESSAGE_OPERATION;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SEQUENCE_NUMBERS;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.SERVER_TIMEOUT;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.UPDATE_DISPOSITION_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.CANCEL_SCHEDULED_MESSAGE_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.SCHEDULE_MESSAGE_OPERATION;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGES;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.MESSAGE_ID;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -120,16 +118,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> cancelSchedule(long sequenceNumber) {
-        return cancelSchedule(new Long[]{sequenceNumber});
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime) {
-        return scheduleMessage(message, scheduledEnqueueTime)
+    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime, int maxSendLinkSize) {
+        return scheduleMessage(message, scheduledEnqueueTime, maxSendLinkSize)
             .next();
     }
 
@@ -352,41 +342,40 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * Create a Amqp key, value map to be used to create Amqp mesage for scheduling purpose.
      *
      * @param messageToSchedule The message which needs to be scheduled.
+     * @param maxMessageSize The maximum size allowed on send link.
      * @return Map of key and value in Amqp format.
      * @throws AmqpException When payload exceeded maximum message allowed size.
      */
-    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule) {
-        int maxMessageSize = MAX_MESSAGE_LENGTH_SENDER_LINK_BYTES;
-        Map<String, Object> requestBodyMap = new HashMap<>();
-        List<Message> messagesToSchedule = new ArrayList<>();
-        messagesToSchedule.add(messageSerializer.serialize(messageToSchedule));
-        Collection<HashMap<String, Object>> messageList = new LinkedList<>();
-        for (Message message : messagesToSchedule) {
-            final int payloadSize = messageSerializer.getSize(message);
-            final int allocationSize =
-                Math.min(payloadSize + MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
-            final byte[] bytes = new byte[allocationSize];
+    private Map<String, Object> createScheduleMessgeAmqpValue(ServiceBusMessage messageToSchedule, int maxMessageSize) {
 
-            int encodedSize;
-            try {
-                encodedSize = message.encode(bytes, 0, allocationSize);
-            } catch (BufferOverflowException exception) {
-                final String errorMessage =
-                    String.format(Locale.US,
-                        "Error sending. Size of the payload exceeded maximum message size: %s kb",
-                        maxMessageSize / 1024);
-                throw logger.logExceptionAsWarning(new AmqpException(false,
-                    AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, getErrorContext()));
-            }
+        Message message = messageSerializer.serialize(messageToSchedule);
 
-            HashMap<String, Object> messageEntry = new HashMap<>();
+        // The maxsize allowed logic is from ReactorSender, this logic should be kept in sync.
+        final int payloadSize = messageSerializer.getSize(message);
+        final int allocationSize =
+            Math.min(payloadSize + MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxMessageSize);
+        final byte[] bytes = new byte[allocationSize];
 
-            messageEntry.put(MESSAGE, new Binary(bytes, 0, encodedSize));
-            messageEntry.put(MESSAGE_ID, message.getMessageId());
-            messageList.add(messageEntry);
+        int encodedSize;
+        try {
+            encodedSize = message.encode(bytes, 0, allocationSize);
+        } catch (BufferOverflowException exception) {
+            final String errorMessage =
+                String.format(Locale.US,
+                    "Error sending. Size of the payload exceeded maximum message size: %s kb",
+                    maxMessageSize / 1024);
+            throw logger.logExceptionAsWarning(new AmqpException(false,
+                AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, getErrorContext()));
         }
-        requestBodyMap.put(MESSAGES, messageList);
+        HashMap<String, Object> messageEntry = new HashMap<>();
+        messageEntry.put(MESSAGE, new Binary(bytes, 0, encodedSize));
+        messageEntry.put(MESSAGE_ID, message.getMessageId());
 
+        Collection<HashMap<String, Object>> messageList = new LinkedList<>();
+        messageList.add(messageEntry);
+
+        Map<String, Object> requestBodyMap = new HashMap<>();
+        requestBodyMap.put(MESSAGES, messageList);
         return requestBodyMap;
     }
 
@@ -394,42 +383,44 @@ public class ManagementChannel implements ServiceBusManagementNode {
         return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
     }
 
-    private Mono<Void> cancelSchedule(Long[] cancelScheduleNumbers) {
-        return  isAuthorized(CANCEL_SCHEDULED_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
+        return isAuthorized(CANCEL_SCHEDULED_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(CANCEL_SCHEDULED_MESSAGE_OPERATION,
                 channel.getReceiveLinkName());
 
-            requestMessage.setBody(new AmqpValue(Collections.singletonMap(SEQUENCE_NUMBERS, cancelScheduleNumbers)));
+            requestMessage.setBody(new AmqpValue(Collections.singletonMap(SEQUENCE_NUMBERS,
+                new Long[]{sequenceNumber})));
             return channel.sendWithAck(requestMessage);
         }).map(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
-            if (statusCode ==  AmqpResponseCode.OK.getValue()) {
+            if (statusCode == AmqpResponseCode.OK.getValue()) {
                 return Mono.empty();
             }
-            return Mono.error(new AmqpException(false, "Could not cancel schedule message with sequence "
-                + Arrays.toString(cancelScheduleNumbers), getErrorContext()));
-
+            return Mono.error(new AmqpException(false, "Could not cancel scheduled message with sequence number "
+                + sequenceNumber, getErrorContext()));
         })).then();
     }
 
-    private Flux<Long> scheduleMessage(ServiceBusMessage messageToSchedule, Instant scheduledEnqueueTime) {
-
+    private Flux<Long> scheduleMessage(ServiceBusMessage messageToSchedule, Instant scheduledEnqueueTime,
+                       int maxSendLinkSize) {
         messageToSchedule.setScheduledEnqueueTime(scheduledEnqueueTime);
-
         return  isAuthorized(SCHEDULE_MESSAGE_OPERATION).thenMany(createRequestResponse.flatMap(channel -> {
 
             Message requestMessage = createManagementMessage(SCHEDULE_MESSAGE_OPERATION, channel.getReceiveLinkName());
-            Map<String, Object> requestBodyMap;
-            requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule);
+            Map<String, Object> requestBodyMap = createScheduleMessgeAmqpValue(messageToSchedule, maxSendLinkSize);
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
             return channel.sendWithAck(requestMessage);
         }).flatMapMany(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
-            if (statusCode !=  AmqpResponseCode.OK.getValue()) {
+            if (statusCode != AmqpResponseCode.OK.getValue()) {
                 return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not schedule message.",
                     getErrorContext()));
             }

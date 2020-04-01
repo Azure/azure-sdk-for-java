@@ -64,7 +64,7 @@ public class MessageSendAsyncSample {
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sender()
-            .queueName("<queue-name")
+            .queueName("<<queue-name>>")
             .buildAsyncClient();
 
         // Create an message to send.
