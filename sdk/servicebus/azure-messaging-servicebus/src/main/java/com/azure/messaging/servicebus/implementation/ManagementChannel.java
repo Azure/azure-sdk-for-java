@@ -289,7 +289,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(Collections.singletonMap(LOCK_TOKENS_KEY, new UUID[]{lockToken})));
             return channel.sendWithAck(requestMessage);
-        }).flatMap(responseMessage -> {
+        }).map(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
             if (statusCode !=  AmqpResponseCode.OK.getValue()) {
 
@@ -304,7 +304,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     getErrorContext())));
             }
             return Mono.just(renewTimeList.get(0));
-        }));
+        })).cast(Instant.class);
     }
 
     /**
@@ -414,7 +414,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             requestMessage.setBody(new AmqpValue(requestBodyMap));
             return channel.sendWithAck(requestMessage);
-        }).flatMap(responseMessage -> {
+        }).map(responseMessage -> {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
             if (statusCode != AmqpResponseCode.OK.getValue()) {
@@ -430,7 +430,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                         messageToSchedule.getMessageId()), getErrorContext())));
             }
             return Mono.just(sequenceNumberList.get(0));
-        }));
+        })
+        );
     }
 
     /**
