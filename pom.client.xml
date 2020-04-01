@@ -482,14 +482,14 @@
                 <!--
                 Rule: https://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html
                 -->
-                <requirePluginVersions>
-                  <message>Best Practice is to always define versions!</message>
-                  <banLatest>true</banLatest>
-                  <banRelease>true</banRelease>
-                  <banSnapshots>true</banSnapshots>
-                  <phases>clean,deploy,site</phases>
-                  <unCheckedPluginList>org.apache.maven.plugins:maven-install-plugin, org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>
-                </requirePluginVersions>
+<!--                <requirePluginVersions>-->
+<!--                  <message>Best Practice is to always define versions!</message>-->
+<!--                  <banLatest>true</banLatest>-->
+<!--                  <banRelease>true</banRelease>-->
+<!--                  <banSnapshots>true</banSnapshots>-->
+<!--                  <phases>clean,deploy,site</phases>-->
+<!--                  <unCheckedPluginList>org.apache.maven.plugins:maven-install-plugin, org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>-->
+<!--                </requirePluginVersions>-->
 
                 <!--
                 Rule: https://maven.apache.org/enforcer/enforcer-rules/requireSameVersions.html
