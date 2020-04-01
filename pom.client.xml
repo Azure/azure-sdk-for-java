@@ -408,6 +408,105 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html
+                This fails for now
+                -->
+<!--                <dependencyConvergence/>-->
+
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/bannedDependencies.html
+                We have a list of blessed dependencies here: https://azure.github.io/azure-sdk/java_implementation.html#dependencies
+                Format of includes / excludes is the following: 'groupId[:artifactId][:version][:type][:scope][:classifier]'.
+                Wildcards can be used.
+                -->
+                <bannedDependencies>
+                  <searchTransitive>false</searchTransitive>
+                  <excludes>
+                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                    dependencies when they are used for test scope or otherwise) -->
+                    <exclude>*:*:*:*:runtime</exclude>
+                    <exclude>*:*:*:*:compile</exclude>
+                    <exclude>*:*:*:*:provided</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.azure:*</include>
+                    <include>io.projectreactor</include>
+                    <include>io.projectreactor.netty</include>
+                    <include>io.netty</include>
+                    <include>com.squareup.okhttp3</include>
+                    <include>org.slf4j</include>
+                    <include>com.fasterxml.jackson.*</include>
+                    <include>io.opentelemetry</include>
+                    <include>net.java.dev.jna</include>
+
+                    <!-- azure-core-amqp requires the following: -->
+                    <include>org.apache.qpid:proton-j</include>
+                    <include>com.microsoft.azure:qpid-proton-j-extensions</include>
+
+                    <!-- FIXME temporary support for cosmos dependencies -->
+                    <include>io.micrometer:micrometer-core</include>
+                    <include>io.dropwizard.metrics:metrics-core</include>
+                    <include>com.fasterxml.uuid:java-uuid-generator</include>
+
+                    <!-- azure-identity requires the following: -->
+                    <include>com.nimbusds:oauth2-oidc-sdk</include>
+                    <include>com.microsoft.azure:msal4j</include>
+                    <include>org.nanohttpd:nanohttpd</include>
+
+                    <!-- Used by many libraries to bring in annotations used by Reactor -->
+                    <include>com.google.code.findbugs:jsr305</include>
+                  </includes>
+                </bannedDependencies>
+
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html
+                -->
+                <requireReleaseDeps>
+                  <message>No Snapshots Allowed!</message>
+                </requireReleaseDeps>
+
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/requirePluginVersions.html
+                -->
+                <requirePluginVersions>
+                  <message>Best Practice is to always define versions!</message>
+                  <banLatest>true</banLatest>
+                  <banRelease>true</banRelease>
+                  <banSnapshots>true</banSnapshots>
+                  <phases>clean,deploy,site</phases>
+                  <unCheckedPluginList>org.apache.maven.plugins:maven-install-plugin, org.apache.maven.plugins:maven-deploy-plugin</unCheckedPluginList>
+                </requirePluginVersions>
+
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/requireSameVersions.html
+                This rule is used to enforce that all modules depend on the same version of particular dependencies or
+                plugins.
+                -->
+                <requireSameVersions>
+                  <dependencies>
+                    <dependency>com.azure.*</dependency>
+                  </dependencies>
+                </requireSameVersions>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
 
     <pluginManagement>
