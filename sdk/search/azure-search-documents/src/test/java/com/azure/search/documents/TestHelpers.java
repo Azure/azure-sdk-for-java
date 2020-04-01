@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -97,6 +99,12 @@ public final class TestHelpers {
         return new MatchConditions().setIfMatch(eTag);
     }
 
+    /**
+     * Assert whether two objects are equal.
+     *
+     * @param expected The expected object.
+     * @param actual The actual object.
+     */
     public static void assertObjectEquals(Object expected, Object actual) {
         JacksonAdapter jacksonAdapter = new JacksonAdapter();
         try {
@@ -107,21 +115,30 @@ public final class TestHelpers {
         }
     }
 
-    public static void assertObjectEquals(Object expected, Object actual, boolean ignoreDefaults,
-        String ... ignoreFields) {
+    /**
+     * Assert whether two objects are equal.
+     *
+     * @param expected The expected object.
+     * @param actual The actual object.
+     * @param ignoredDefaults Set to true if it needs to ignore default value of expected object.
+     * @param ignoredFields Varargs of ignored fields.
+     */
+    public static void assertObjectEquals(Object expected, Object actual, boolean ignoredDefaults,
+        String... ignoredFields) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode expectedNode = mapper.valueToTree(expected);
         ObjectNode actualNode = mapper.valueToTree(actual);
-        assertOnMapIterator(expectedNode.fields(), actualNode, ignoreDefaults, ignoreFields);
+        assertOnMapIterator(expectedNode.fields(), actualNode, ignoredDefaults,ignoredFields);
     }
 
     private static void assertOnMapIterator(Iterator<Map.Entry<String, JsonNode>> expectedNode,
-        ObjectNode actualNode, boolean ignoreDefaults, String[] ignoreFields) {
+        ObjectNode actualNode, boolean ignoredDefaults, String[] ignoredFields) {
         while (expectedNode.hasNext()) {
             assertTrue(actualNode.fields().hasNext());
             Map.Entry<String, JsonNode> expectedField = expectedNode.next();
             String fieldName = expectedField.getKey();
-            if (!doesFieldNeedCheck(fieldName, expectedField.getValue(), ignoreDefaults, ignoreFields)) {
+            Set<String> ignoredFieldSet = new HashSet<>(Arrays.asList(ignoredFields));
+            if (shouldSkipField(fieldName, expectedField.getValue(), ignoredDefaults, ignoredFieldSet)) {
                 continue;
             }
             if (expectedField.getValue().isValueNode()) {
@@ -129,7 +146,7 @@ public final class TestHelpers {
             } else if (expectedField.getValue().isArray()) {
                 Iterator<JsonNode> expectedArray = expectedField.getValue().elements();
                 Iterator<JsonNode> actualArray = actualNode.get(expectedField.getKey()).elements();
-                while (expectedArray.hasNext() ) {
+                while (expectedArray.hasNext()) {
                     assertTrue(actualArray.hasNext());
                     Iterator<JsonNode> expectedElements = expectedArray.next().elements();
                     Iterator<JsonNode> actualElements = actualArray.next().elements();
@@ -137,36 +154,37 @@ public final class TestHelpers {
                         assertTrue(actualElements.hasNext());
                         JsonNode a = expectedElements.next();
                         JsonNode b = actualElements.next();
-                        if (Arrays.asList(ignoreFields).contains(fieldName)) {
+                        if (ignoredFieldSet.contains(fieldName)) {
                             continue;
                         }
-                        if (!doesFieldNeedCheck(null, a, true)) {
+                        if (shouldSkipField(null, a, true, null)) {
                             continue;
                         }
                         assertEquals(a.asText(), b.asText());
                     }
                 }
             } else {
-                assertObjectEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()), ignoreDefaults, ignoreFields);
+                assertObjectEquals(expectedField.getValue(), actualNode.get(expectedField.getKey()), ignoredDefaults,
+                    ignoredFields);
             }
         }
     }
 
-    private static boolean doesFieldNeedCheck(String fieldName, JsonNode fieldValue,
-        boolean ignoreDefaults, String... ignoreFields) {
-        if (Arrays.asList(ignoreFields).contains(fieldName)) {
-            return false;
+    private static boolean shouldSkipField(String fieldName, JsonNode fieldValue,
+        boolean ignoredDefaults, Set<String> ignoredFields) {
+        if (ignoredFields != null && ignoredFields.contains(fieldName)) {
+            return true;
         }
 
-        if (ignoreDefaults) {
+        if (ignoredDefaults) {
             if (fieldValue.isNull()) {
-                return false;
+                return true;
             }
             if (fieldValue.isBoolean() && !fieldValue.asBoolean()) {
-                return false;
+                return true;
             }
-            return !fieldValue.isNumber() || fieldValue.asDouble() != 0.0D;
+            return fieldValue.isNumber() && fieldValue.asDouble() == 0.0D;
         }
-        return true;
+        return false;
     }
 }
