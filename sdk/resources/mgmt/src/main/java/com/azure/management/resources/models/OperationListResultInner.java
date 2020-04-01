@@ -30,7 +30,7 @@ public final class OperationListResultInner {
      * 
      * @return the value value.
      */
-    public List<OperationInner> getValue() {
+    public List<OperationInner> value() {
         return this.value;
     }
 
@@ -40,7 +40,7 @@ public final class OperationListResultInner {
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
-    public OperationListResultInner setValue(List<OperationInner> value) {
+    public OperationListResultInner withValue(List<OperationInner> value) {
         this.value = value;
         return this;
     }
@@ -51,7 +51,7 @@ public final class OperationListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 
@@ -62,7 +62,7 @@ public final class OperationListResultInner {
      * @param nextLink the nextLink value to set.
      * @return the OperationListResultInner object itself.
      */
-    public OperationListResultInner setNextLink(String nextLink) {
+    public OperationListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

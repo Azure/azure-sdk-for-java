@@ -48,7 +48,7 @@ public final class ErrorResponse {
      * 
      * @return the code value.
      */
-    public String getCode() {
+    public String code() {
         return this.code;
     }
 
@@ -57,7 +57,7 @@ public final class ErrorResponse {
      * 
      * @return the message value.
      */
-    public String getMessage() {
+    public String message() {
         return this.message;
     }
 
@@ -66,7 +66,7 @@ public final class ErrorResponse {
      * 
      * @return the target value.
      */
-    public String getTarget() {
+    public String target() {
         return this.target;
     }
 
@@ -75,7 +75,7 @@ public final class ErrorResponse {
      * 
      * @return the details value.
      */
-    public List<ErrorResponse> getDetails() {
+    public List<ErrorResponse> details() {
         return this.details;
     }
 
@@ -84,7 +84,7 @@ public final class ErrorResponse {
      * 
      * @return the additionalInfo value.
      */
-    public List<ErrorAdditionalInfo> getAdditionalInfo() {
+    public List<ErrorAdditionalInfo> additionalInfo() {
         return this.additionalInfo;
     }
 }

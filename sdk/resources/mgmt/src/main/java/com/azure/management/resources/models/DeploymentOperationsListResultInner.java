@@ -30,7 +30,7 @@ public final class DeploymentOperationsListResultInner {
      * 
      * @return the value value.
      */
-    public List<DeploymentOperationInner> getValue() {
+    public List<DeploymentOperationInner> value() {
         return this.value;
     }
 
@@ -40,7 +40,7 @@ public final class DeploymentOperationsListResultInner {
      * @param value the value value to set.
      * @return the DeploymentOperationsListResultInner object itself.
      */
-    public DeploymentOperationsListResultInner setValue(List<DeploymentOperationInner> value) {
+    public DeploymentOperationsListResultInner withValue(List<DeploymentOperationInner> value) {
         this.value = value;
         return this;
     }
@@ -51,7 +51,7 @@ public final class DeploymentOperationsListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

@@ -42,7 +42,7 @@ public final class ResourceGroupPatchable {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -52,7 +52,7 @@ public final class ResourceGroupPatchable {
      * @param name the name value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setName(String name) {
+    public ResourceGroupPatchable withName(String name) {
         this.name = name;
         return this;
     }
@@ -62,7 +62,7 @@ public final class ResourceGroupPatchable {
      * 
      * @return the properties value.
      */
-    public ResourceGroupProperties getProperties() {
+    public ResourceGroupProperties properties() {
         return this.properties;
     }
 
@@ -72,7 +72,7 @@ public final class ResourceGroupPatchable {
      * @param properties the properties value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setProperties(ResourceGroupProperties properties) {
+    public ResourceGroupPatchable withProperties(ResourceGroupProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -83,7 +83,7 @@ public final class ResourceGroupPatchable {
      * 
      * @return the managedBy value.
      */
-    public String getManagedBy() {
+    public String managedBy() {
         return this.managedBy;
     }
 
@@ -94,7 +94,7 @@ public final class ResourceGroupPatchable {
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setManagedBy(String managedBy) {
+    public ResourceGroupPatchable withManagedBy(String managedBy) {
         this.managedBy = managedBy;
         return this;
     }
@@ -104,7 +104,7 @@ public final class ResourceGroupPatchable {
      * 
      * @return the tags value.
      */
-    public Map<String, String> getTags() {
+    public Map<String, String> tags() {
         return this.tags;
     }
 
@@ -114,7 +114,7 @@ public final class ResourceGroupPatchable {
      * @param tags the tags value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setTags(Map<String, String> tags) {
+    public ResourceGroupPatchable withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

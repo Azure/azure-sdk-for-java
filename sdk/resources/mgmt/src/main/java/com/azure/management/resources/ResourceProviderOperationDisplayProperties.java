@@ -47,7 +47,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * 
      * @return the publisher value.
      */
-    public String getPublisher() {
+    public String publisher() {
         return this.publisher;
     }
 
@@ -57,7 +57,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * @param publisher the publisher value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setPublisher(String publisher) {
+    public ResourceProviderOperationDisplayProperties withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -67,7 +67,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * 
      * @return the provider value.
      */
-    public String getProvider() {
+    public String provider() {
         return this.provider;
     }
 
@@ -77,7 +77,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * @param provider the provider value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setProvider(String provider) {
+    public ResourceProviderOperationDisplayProperties withProvider(String provider) {
         this.provider = provider;
         return this;
     }
@@ -87,7 +87,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * 
      * @return the resource value.
      */
-    public String getResource() {
+    public String resource() {
         return this.resource;
     }
 
@@ -97,7 +97,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * @param resource the resource value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setResource(String resource) {
+    public ResourceProviderOperationDisplayProperties withResource(String resource) {
         this.resource = resource;
         return this;
     }
@@ -107,7 +107,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * 
      * @return the operation value.
      */
-    public String getOperation() {
+    public String operation() {
         return this.operation;
     }
 
@@ -117,7 +117,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * @param operation the operation value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setOperation(String operation) {
+    public ResourceProviderOperationDisplayProperties withOperation(String operation) {
         this.operation = operation;
         return this;
     }
@@ -127,7 +127,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * 
      * @return the description value.
      */
-    public String getDescription() {
+    public String description() {
         return this.description;
     }
 
@@ -137,7 +137,7 @@ public final class ResourceProviderOperationDisplayProperties {
      * @param description the description value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setDescription(String description) {
+    public ResourceProviderOperationDisplayProperties withDescription(String description) {
         this.description = description;
         return this;
     }

@@ -44,7 +44,7 @@ public final class Identity {
      * 
      * @return the principalId value.
      */
-    public String getPrincipalId() {
+    public String principalId() {
         return this.principalId;
     }
 
@@ -53,7 +53,7 @@ public final class Identity {
      * 
      * @return the tenantId value.
      */
-    public String getTenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
@@ -62,7 +62,7 @@ public final class Identity {
      * 
      * @return the type value.
      */
-    public ResourceIdentityType getType() {
+    public ResourceIdentityType type() {
         return this.type;
     }
 
@@ -72,7 +72,7 @@ public final class Identity {
      * @param type the type value to set.
      * @return the Identity object itself.
      */
-    public Identity setType(ResourceIdentityType type) {
+    public Identity withType(ResourceIdentityType type) {
         this.type = type;
         return this;
     }
@@ -85,7 +85,7 @@ public final class Identity {
      * 
      * @return the userAssignedIdentities value.
      */
-    public Map<String, IdentityUserAssignedIdentities> getUserAssignedIdentities() {
+    public Map<String, IdentityUserAssignedIdentities> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -98,7 +98,7 @@ public final class Identity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.
      */
-    public Identity setUserAssignedIdentities(Map<String, IdentityUserAssignedIdentities> userAssignedIdentities) {
+    public Identity withUserAssignedIdentities(Map<String, IdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

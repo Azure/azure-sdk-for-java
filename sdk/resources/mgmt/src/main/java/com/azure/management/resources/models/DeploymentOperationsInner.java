@@ -22,6 +22,8 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,91 +63,91 @@ public final class DeploymentOperationsInner {
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentOperationInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -160,7 +162,8 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentOperationInner>> getAtScopeWithResponseAsync(String scope, String deploymentName, String operationId) {
-        return service.getAtScope(this.client.getHost(), scope, deploymentName, operationId, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtScope(this.client.getHost(), scope, deploymentName, operationId, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -212,14 +215,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(String scope, String deploymentName, Integer top) {
-        return service.listAtScope(this.client.getHost(), scope, deploymentName, top, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtScope(this.client.getHost(), scope, deploymentName, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -251,6 +255,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtScopeSinglePageAsync(scope, deploymentName, top),
             nextLink -> listAtScopeNextSinglePageAsync(nextLink));
@@ -283,6 +288,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtScopeAsync(scope, deploymentName, top));
     }
 
@@ -297,7 +303,8 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(String deploymentName, String operationId) {
-        return service.getAtTenantScope(this.client.getHost(), deploymentName, operationId, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtTenantScope(this.client.getHost(), deploymentName, operationId, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -346,14 +353,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(String deploymentName, Integer top) {
-        return service.listAtTenantScope(this.client.getHost(), deploymentName, top, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtTenantScope(this.client.getHost(), deploymentName, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -383,6 +391,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(deploymentName, top),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
@@ -413,6 +422,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtTenantScopeAsync(deploymentName, top));
     }
 
@@ -428,7 +438,8 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, String operationId) {
-        return service.getAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, operationId, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, operationId, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -480,14 +491,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(String groupId, String deploymentName, Integer top) {
-        return service.listAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, top, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -519,6 +531,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
@@ -551,6 +564,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, deploymentName, top));
     }
 
@@ -565,7 +579,8 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(String deploymentName, String operationId) {
-        return service.getAtSubscriptionScope(this.client.getHost(), deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.getAtSubscriptionScope(this.client.getHost(), deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -614,14 +629,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(String deploymentName, Integer top) {
-        return service.listAtSubscriptionScope(this.client.getHost(), deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtSubscriptionScope(this.client.getHost(), deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -651,6 +667,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtSubscriptionScopeSinglePageAsync(deploymentName, top),
             nextLink -> listAtSubscriptionScopeNextSinglePageAsync(nextLink));
@@ -681,6 +698,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAtSubscriptionScopeAsync(deploymentName, top));
     }
 
@@ -696,7 +714,8 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DeploymentOperationInner>> getWithResponseAsync(String resourceGroupName, String deploymentName, String operationId) {
-        return service.get(this.client.getHost(), resourceGroupName, deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -748,14 +767,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String deploymentName, Integer top) {
-        return service.listByResourceGroup(this.client.getHost(), resourceGroupName, deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), resourceGroupName, deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -787,6 +807,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -819,6 +840,7 @@ public final class DeploymentOperationsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
     }
 
@@ -832,14 +854,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -852,14 +875,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtTenantScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtTenantScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -872,14 +896,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtManagementGroupScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtManagementGroupScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -892,14 +917,15 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtSubscriptionScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtSubscriptionScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -912,13 +938,14 @@ public final class DeploymentOperationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

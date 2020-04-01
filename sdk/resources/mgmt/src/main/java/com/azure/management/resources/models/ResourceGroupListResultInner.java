@@ -30,7 +30,7 @@ public final class ResourceGroupListResultInner {
      * 
      * @return the value value.
      */
-    public List<ResourceGroupInner> getValue() {
+    public List<ResourceGroupInner> value() {
         return this.value;
     }
 
@@ -40,7 +40,7 @@ public final class ResourceGroupListResultInner {
      * @param value the value value to set.
      * @return the ResourceGroupListResultInner object itself.
      */
-    public ResourceGroupListResultInner setValue(List<ResourceGroupInner> value) {
+    public ResourceGroupListResultInner withValue(List<ResourceGroupInner> value) {
         this.value = value;
         return this;
     }
@@ -51,7 +51,7 @@ public final class ResourceGroupListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

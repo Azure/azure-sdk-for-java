@@ -23,7 +23,7 @@ public final class DeploymentExtendedFilter {
      * 
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -33,7 +33,7 @@ public final class DeploymentExtendedFilter {
      * @param provisioningState the provisioningState value to set.
      * @return the DeploymentExtendedFilter object itself.
      */
-    public DeploymentExtendedFilter setProvisioningState(String provisioningState) {
+    public DeploymentExtendedFilter withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }

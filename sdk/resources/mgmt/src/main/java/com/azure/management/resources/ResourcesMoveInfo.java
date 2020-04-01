@@ -30,7 +30,7 @@ public final class ResourcesMoveInfo {
      * 
      * @return the resources value.
      */
-    public List<String> getResources() {
+    public List<String> resources() {
         return this.resources;
     }
 
@@ -40,7 +40,7 @@ public final class ResourcesMoveInfo {
      * @param resources the resources value to set.
      * @return the ResourcesMoveInfo object itself.
      */
-    public ResourcesMoveInfo setResources(List<String> resources) {
+    public ResourcesMoveInfo withResources(List<String> resources) {
         this.resources = resources;
         return this;
     }
@@ -50,7 +50,7 @@ public final class ResourcesMoveInfo {
      * 
      * @return the targetResourceGroup value.
      */
-    public String getTargetResourceGroup() {
+    public String targetResourceGroup() {
         return this.targetResourceGroup;
     }
 
@@ -60,7 +60,7 @@ public final class ResourcesMoveInfo {
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the ResourcesMoveInfo object itself.
      */
-    public ResourcesMoveInfo setTargetResourceGroup(String targetResourceGroup) {
+    public ResourcesMoveInfo withTargetResourceGroup(String targetResourceGroup) {
         this.targetResourceGroup = targetResourceGroup;
         return this;
     }

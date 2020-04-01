@@ -37,7 +37,7 @@ public final class OnErrorDeploymentExtended {
      * 
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
@@ -47,7 +47,7 @@ public final class OnErrorDeploymentExtended {
      * 
      * @return the type value.
      */
-    public OnErrorDeploymentType getType() {
+    public OnErrorDeploymentType type() {
         return this.type;
     }
 
@@ -58,7 +58,7 @@ public final class OnErrorDeploymentExtended {
      * @param type the type value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
-    public OnErrorDeploymentExtended setType(OnErrorDeploymentType type) {
+    public OnErrorDeploymentExtended withType(OnErrorDeploymentType type) {
         this.type = type;
         return this;
     }
@@ -69,7 +69,7 @@ public final class OnErrorDeploymentExtended {
      * 
      * @return the deploymentName value.
      */
-    public String getDeploymentName() {
+    public String deploymentName() {
         return this.deploymentName;
     }
 
@@ -80,7 +80,7 @@ public final class OnErrorDeploymentExtended {
      * @param deploymentName the deploymentName value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
-    public OnErrorDeploymentExtended setDeploymentName(String deploymentName) {
+    public OnErrorDeploymentExtended withDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
     }

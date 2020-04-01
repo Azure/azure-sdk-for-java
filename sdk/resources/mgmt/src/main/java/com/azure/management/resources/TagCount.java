@@ -29,7 +29,7 @@ public final class TagCount {
      * 
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
@@ -39,7 +39,7 @@ public final class TagCount {
      * @param type the type value to set.
      * @return the TagCount object itself.
      */
-    public TagCount setType(String type) {
+    public TagCount withType(String type) {
         this.type = type;
         return this;
     }
@@ -49,7 +49,7 @@ public final class TagCount {
      * 
      * @return the value value.
      */
-    public Integer getValue() {
+    public Integer value() {
         return this.value;
     }
 
@@ -59,7 +59,7 @@ public final class TagCount {
      * @param value the value value to set.
      * @return the TagCount object itself.
      */
-    public TagCount setValue(Integer value) {
+    public TagCount withValue(Integer value) {
         this.value = value;
         return this;
     }

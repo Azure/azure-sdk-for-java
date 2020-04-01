@@ -35,7 +35,7 @@ public final class GenericResourceFilter {
      * 
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
@@ -45,7 +45,7 @@ public final class GenericResourceFilter {
      * @param resourceType the resourceType value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter setResourceType(String resourceType) {
+    public GenericResourceFilter withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
@@ -55,7 +55,7 @@ public final class GenericResourceFilter {
      * 
      * @return the tagname value.
      */
-    public String getTagname() {
+    public String tagname() {
         return this.tagname;
     }
 
@@ -65,7 +65,7 @@ public final class GenericResourceFilter {
      * @param tagname the tagname value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter setTagname(String tagname) {
+    public GenericResourceFilter withTagname(String tagname) {
         this.tagname = tagname;
         return this;
     }
@@ -75,7 +75,7 @@ public final class GenericResourceFilter {
      * 
      * @return the tagvalue value.
      */
-    public String getTagvalue() {
+    public String tagvalue() {
         return this.tagvalue;
     }
 
@@ -85,7 +85,7 @@ public final class GenericResourceFilter {
      * @param tagvalue the tagvalue value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter setTagvalue(String tagvalue) {
+    public GenericResourceFilter withTagvalue(String tagvalue) {
         this.tagvalue = tagvalue;
         return this;
     }

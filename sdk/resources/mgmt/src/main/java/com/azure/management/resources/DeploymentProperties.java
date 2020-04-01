@@ -79,7 +79,7 @@ public class DeploymentProperties {
      * 
      * @return the template value.
      */
-    public Object getTemplate() {
+    public Object template() {
         return this.template;
     }
 
@@ -93,7 +93,7 @@ public class DeploymentProperties {
      * @param template the template value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setTemplate(Object template) {
+    public DeploymentProperties withTemplate(Object template) {
         this.template = template;
         return this;
     }
@@ -104,7 +104,7 @@ public class DeploymentProperties {
      * 
      * @return the templateLink value.
      */
-    public TemplateLink getTemplateLink() {
+    public TemplateLink templateLink() {
         return this.templateLink;
     }
 
@@ -115,7 +115,7 @@ public class DeploymentProperties {
      * @param templateLink the templateLink value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setTemplateLink(TemplateLink templateLink) {
+    public DeploymentProperties withTemplateLink(TemplateLink templateLink) {
         this.templateLink = templateLink;
         return this;
     }
@@ -130,7 +130,7 @@ public class DeploymentProperties {
      * 
      * @return the parameters value.
      */
-    public Object getParameters() {
+    public Object parameters() {
         return this.parameters;
     }
 
@@ -145,7 +145,7 @@ public class DeploymentProperties {
      * @param parameters the parameters value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setParameters(Object parameters) {
+    public DeploymentProperties withParameters(Object parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -157,7 +157,7 @@ public class DeploymentProperties {
      * 
      * @return the parametersLink value.
      */
-    public ParametersLink getParametersLink() {
+    public ParametersLink parametersLink() {
         return this.parametersLink;
     }
 
@@ -169,7 +169,7 @@ public class DeploymentProperties {
      * @param parametersLink the parametersLink value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setParametersLink(ParametersLink parametersLink) {
+    public DeploymentProperties withParametersLink(ParametersLink parametersLink) {
         this.parametersLink = parametersLink;
         return this;
     }
@@ -185,7 +185,7 @@ public class DeploymentProperties {
      * 
      * @return the mode value.
      */
-    public DeploymentMode getMode() {
+    public DeploymentMode mode() {
         return this.mode;
     }
 
@@ -201,7 +201,7 @@ public class DeploymentProperties {
      * @param mode the mode value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setMode(DeploymentMode mode) {
+    public DeploymentProperties withMode(DeploymentMode mode) {
         this.mode = mode;
         return this;
     }
@@ -211,7 +211,7 @@ public class DeploymentProperties {
      * 
      * @return the debugSetting value.
      */
-    public DebugSetting getDebugSetting() {
+    public DebugSetting debugSetting() {
         return this.debugSetting;
     }
 
@@ -221,7 +221,7 @@ public class DeploymentProperties {
      * @param debugSetting the debugSetting value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setDebugSetting(DebugSetting debugSetting) {
+    public DeploymentProperties withDebugSetting(DebugSetting debugSetting) {
         this.debugSetting = debugSetting;
         return this;
     }
@@ -231,7 +231,7 @@ public class DeploymentProperties {
      * 
      * @return the onErrorDeployment value.
      */
-    public OnErrorDeployment getOnErrorDeployment() {
+    public OnErrorDeployment onErrorDeployment() {
         return this.onErrorDeployment;
     }
 
@@ -241,7 +241,7 @@ public class DeploymentProperties {
      * @param onErrorDeployment the onErrorDeployment value to set.
      * @return the DeploymentProperties object itself.
      */
-    public DeploymentProperties setOnErrorDeployment(OnErrorDeployment onErrorDeployment) {
+    public DeploymentProperties withOnErrorDeployment(OnErrorDeployment onErrorDeployment) {
         this.onErrorDeployment = onErrorDeployment;
         return this;
     }
