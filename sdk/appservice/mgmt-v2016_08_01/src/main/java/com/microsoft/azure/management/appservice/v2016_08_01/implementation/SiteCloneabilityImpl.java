@@ -15,14 +15,14 @@ import com.microsoft.azure.management.appservice.v2016_08_01.SiteCloneabilityCri
 import com.microsoft.azure.management.appservice.v2016_08_01.CloneAbilityResult;
 
 class SiteCloneabilityImpl extends WrapperImpl<SiteCloneabilityInner> implements SiteCloneability {
-    private final AppServiceManager manager;
-    SiteCloneabilityImpl(SiteCloneabilityInner inner, AppServiceManager manager) {
+    private final WebManager manager;
+    SiteCloneabilityImpl(SiteCloneabilityInner inner, WebManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

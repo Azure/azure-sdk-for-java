@@ -13,14 +13,14 @@ import com.microsoft.azure.management.appservice.v2016_08_01.implementation.Back
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import org.joda.time.DateTime;
 import java.util.List;
 
 /**
  * Type representing BackupItem.
  */
-public interface BackupItem extends HasInner<BackupItemInner>, Indexable, Refreshable<BackupItem>, HasManager<AppServiceManager> {
+public interface BackupItem extends HasInner<BackupItemInner>, Indexable, Refreshable<BackupItem>, HasManager<WebManager> {
     /**
      * @return the backupId value.
      */
