@@ -5,7 +5,7 @@ com.fasterxml.jackson.core:jackson-core;2.10.1
 com.fasterxml.jackson.core:jackson-databind;2.10.1
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
-com.fasterxml.uuid:java-uuid-generator;3.2.0
+com.fasterxml.uuid:java-uuid-generator;4.0.1
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5
@@ -180,7 +180,6 @@ cosmos_io.netty:netty-handler;4.1.45.Final
 cosmos_io.netty:netty-handler-proxy;4.1.45.Final
 cosmos_io.netty:netty-tcnative;2.0.27.Final
 cosmos_io.netty:netty-transport-native-epoll;4.1.45.Final
-cosmos_log4j:log4j;1.2.17
 cosmos_org.mockito:mockito-core;1.10.19
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
