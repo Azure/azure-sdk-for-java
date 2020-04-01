@@ -77,15 +77,17 @@ public final class Block {
      * Get the size property: The size property.
      *
      * @return the size value.
+     * @deprecated Use {@link #getSizeLong()}
      */
     @Deprecated  public int getSize() {
-        return (int)this.sizeLong;
+        return (int) this.sizeLong;
     }
 
     /**
      * Set the size property: The size property.
      *
      * @param size the size value to set.
+     * @deprecated Use {@link #setSizeLong(long)}
      * @return the Block object itself.
      */
     @Deprecated public Block setSize(int size) {

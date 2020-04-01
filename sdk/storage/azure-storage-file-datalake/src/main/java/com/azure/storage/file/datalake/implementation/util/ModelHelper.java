@@ -37,17 +37,17 @@ public class ModelHelper {
      * @return An object with defaults filled in for null values in the original.
      */
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
-        other = other == null ? new ParallelTransferOptions((Long)null, null, null, null) : other;
+        other = other == null ? new ParallelTransferOptions((Long) null, null, null, null) : other;
 
         // For now these two checks are useful for when we transition to
-        if (other.getBlockSizeLong() != null) { // TODO Jumbo blob
+        if (other.getBlockSizeLong() != null) {
             StorageImplUtils.assertInBounds("ParallelTransferOptions.blockSize", other.getBlockSizeLong(), 1,
-                MAX_APPEND_FILE_BYTES); // TODO Jumbo blob
+                MAX_APPEND_FILE_BYTES);
         }
 
         if (other.getMaxSingleUploadSizeLong() != null) {
             StorageImplUtils.assertInBounds("ParallelTransferOptions.maxSingleUploadSize",
-                other.getMaxSingleUploadSizeLong(), 1, MAX_APPEND_FILE_BYTES); // TODO Jumbo blob
+                other.getMaxSingleUploadSizeLong(), 1, MAX_APPEND_FILE_BYTES);
         }
 
         return new ParallelTransferOptions(
