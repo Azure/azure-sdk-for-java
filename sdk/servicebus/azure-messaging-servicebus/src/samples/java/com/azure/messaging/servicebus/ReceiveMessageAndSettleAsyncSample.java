@@ -46,17 +46,19 @@ public class ReceiveMessageAndSettleAsyncSample {
             .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
 
-        Disposable subscription = receiverAsyncClient.receive().flatMap(message -> {
+        Disposable subscription = receiverAsyncClient.receive()
+            .map(message -> {
             // A sample of processing the message followed by a persisting the message logic.
-            return Mono.delay(Duration.ofSeconds(15)).thenReturn(message);
+            if (failed) {
+                return receiverAsyncClient.abandon(message).then();
+            }
+                return receiverAsyncClient.complete(message).then();
+
+            return Mono.empty();
         }).onErrorContinue((message, error) -> {
             // Handle the message that caused the error while processing above. In this case, we'll abandon it and let someone else handle it.
-           // receiverAsyncClient.abandon(message).block();
-        }).flatMap(message -> {
-            // This is a message that was successfully processed. So we complete it.
-            return receiverAsyncClient.complete(message);
-        })
-            .subscribe();
+
+        }).subscribe();
 
         /*Disposable subscription = receiverAsyncClient.receive()
             .subscribe(received -> {
