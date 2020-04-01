@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -296,13 +297,13 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     getErrorContext()));
             }
             List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
-            if (renewTimeList ==  null || renewTimeList.size() == 0) {
+            if (CoreUtils.isNullOrEmpty(renewTimeList)) {
                 return Mono.error(logger.logExceptionAsError(new AmqpException(false,
                     String.format("Service bus response empty. "
                         + "Could not renew message with lock token: '%s'.", lockToken.toString()),
                     getErrorContext())));
             }
-            return Mono.just(messageSerializer.deserializeList(responseMessage, Instant.class).get(0));
+            return Mono.just(renewTimeList.get(0));
         }));
     }
 
@@ -423,7 +424,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
 
             List<Long> sequenceNumberList = messageSerializer.deserializeList(responseMessage, Long.class);
-            if (sequenceNumberList ==  null || sequenceNumberList.size() == 0) {
+            if (CoreUtils.isNullOrEmpty(sequenceNumberList)) {
                 return Mono.error(logger.logExceptionAsError(new AmqpException(false,
                     String.format("Service bus response empty. Could not schedule message with message id: '%s'.",
                         messageToSchedule.getMessageId()), getErrorContext())));

@@ -323,7 +323,7 @@ public class ServiceBusSenderAsyncClientTest {
         StepVerifier.create(sender.scheduleMessage(message, instant))
             .expectNext(sequenceNumberReturned)
             .verifyComplete();
-        
+
         verify(managementNode).schedule(message, instant, MAX_MESSAGE_LENGTH_BYTES);
     }
 
