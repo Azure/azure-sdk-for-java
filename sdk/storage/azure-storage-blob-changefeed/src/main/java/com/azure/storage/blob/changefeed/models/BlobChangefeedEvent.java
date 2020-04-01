@@ -48,4 +48,36 @@ public class BlobChangefeedEvent {
             dataVersion == null ? null : (Long) dataVersion,
             metadataVersion== null ? null : metadataVersion.toString());
     }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public BlobChangefeedEventType getEventType() {
+        return eventType;
+    }
+
+    public OffsetDateTime getEventTime() {
+        return eventTime;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public BlobChangefeedEventData getData() {
+        return data;
+    }
+
+    public Long getDataVersion() {
+        return dataVersion;
+    }
+
+    public String getMetadataVersion() {
+        return metadataVersion;
+    }
 }

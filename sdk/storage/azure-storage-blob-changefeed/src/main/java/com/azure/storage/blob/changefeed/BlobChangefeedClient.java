@@ -4,9 +4,8 @@
 package com.azure.storage.blob.changefeed;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 
-import java.time.Duration;
+import java.time.OffsetDateTime;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob changefeed.
@@ -22,7 +21,16 @@ public class BlobChangefeedClient {
         this.client = client;
     }
 
-    public Iterable<BlobChangefeedEvent> getEvents(Duration timeout) {
-        return this.client.getEventsWithOptionalTimeout(null, null, null, timeout).toIterable();
+    public BlobChangefeedPagedIterable getEvents() {
+        return getEvents(null, null);
     }
+
+    public BlobChangefeedPagedIterable getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
+        return new BlobChangefeedPagedIterable(client.getEvents(startTime, endTime));
+    }
+
+    public BlobChangefeedPagedIterable getEvents(String cursor) {
+        return new BlobChangefeedPagedIterable(client.getEvents(cursor));
+    }
+
 }

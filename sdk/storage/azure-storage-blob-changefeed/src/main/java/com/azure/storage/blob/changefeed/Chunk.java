@@ -3,6 +3,8 @@ package com.azure.storage.blob.changefeed;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import org.apache.avro.file.DataFileStream;
 import org.apache.avro.generic.GenericDatumReader;
@@ -24,16 +26,26 @@ class Chunk {
     private final BlobContainerAsyncClient client;
 
     /* Chunk event data location. */
-    private final String path;
+    private final String chunkPath;
 
-    Chunk(BlobContainerAsyncClient client, String path) {
+    private final BlobChangefeedCursor shardCursor;
+
+    private long eventNumber;
+
+    private final BlobChangefeedCursor userCursor;
+
+    Chunk(BlobContainerAsyncClient client, String chunkPath, BlobChangefeedCursor shardCursor,
+        BlobChangefeedCursor userCursor) {
         this.client = client;
-        this.path = path;
+        this.chunkPath = chunkPath;
+        this.shardCursor = shardCursor;
+        this.eventNumber = 0;
+        this.userCursor = userCursor;
     }
 
-    Flux<BlobChangefeedEvent> getEvents() {
+    Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download Avro data file. */
-        return client.getBlobAsyncClient(path)
+        return client.getBlobAsyncClient(chunkPath)
             .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
                 try {
                     os.write(FluxUtil.byteBufferToArray(buffer));
@@ -51,10 +63,29 @@ class Chunk {
                 } catch (IOException e) {
                     throw logger.logExceptionAsError(new UncheckedIOException(e));
                 }
-                ArrayList<BlobChangefeedEvent> events = new ArrayList<>();
-                while(parsedStream.hasNext()) {
+                ArrayList<BlobChangefeedEventWrapper> events = new ArrayList<>();
+                while (parsedStream.hasNext()) {
+                    BlobChangefeedCursor eventCursor = shardCursor.toEventCursor(eventNumber);
                     GenericRecord r = parsedStream.next();
-                    events.add(BlobChangefeedEvent.fromRecord(r));
+                    boolean collectEvents = false;
+                    if (userCursor == null) {
+                        collectEvents = true;
+                    } else {
+                        if (userCursor.isEventToBeProcessed() == null || !userCursor.isEventToBeProcessed()) {
+                            if (userCursor.equals(eventCursor)) {
+                                userCursor.setEventToBeProcessed(true);
+                            }
+                        } else {
+                            collectEvents = true;
+                        }
+                    }
+                    if (collectEvents) {
+                        BlobChangefeedEventWrapper wrapper
+                            = new BlobChangefeedEventWrapper(BlobChangefeedEvent.fromRecord(r),
+                            eventCursor);
+                        events.add(wrapper);
+                    }
+                    eventNumber++;
                 }
                 return Flux.fromIterable(events);
             });

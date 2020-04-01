@@ -16,6 +16,7 @@ import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
@@ -206,6 +207,7 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
+        .serviceVersion(BlobServiceVersion.V2019_02_02)
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)

@@ -20,7 +20,7 @@ public class BlobChangefeedEventData {
     private final String sequencer;
 
     public BlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
-        String contentType, long contentLength, BlobType blobType, Long contentOffset, String destinationUrl,
+        String contentType, Long contentLength, BlobType blobType, Long contentOffset, String destinationUrl,
         String sourceUrl, String blobUrl, Boolean recursive, String sequencer) {
         this.api = api;
         this.clientRequestId = clientRequestId;
@@ -65,5 +65,57 @@ public class BlobChangefeedEventData {
             blobUrl == null ? null : blobUrl.toString(),
             recursive == null ? null : (Boolean) recursive,
             sequencer == null ? null : sequencer.toString());
+    }
+
+    public String getApi() {
+        return api;
+    }
+
+    public String getClientRequestId() {
+        return clientRequestId;
+    }
+
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public String geteTag() {
+        return eTag;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public Long getContentLength() {
+        return contentLength;
+    }
+
+    public BlobType getBlobType() {
+        return blobType;
+    }
+
+    public Long getContentOffset() {
+        return contentOffset;
+    }
+
+    public String getDestinationUrl() {
+        return destinationUrl;
+    }
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public String getBlobUrl() {
+        return blobUrl;
+    }
+
+    public Boolean getRecursive() {
+        return recursive;
+    }
+
+    public String getSequencer() {
+        return sequencer;
     }
 }

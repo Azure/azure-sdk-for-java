@@ -3,7 +3,8 @@ package com.azure.storage.blob.changefeed;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
+import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedEventWrapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
@@ -23,16 +24,19 @@ class Segment {
     /* Segment manifest location. */
     private final String path;
 
-    /* List of shards associated with this segment. */
-    private List<Flux<BlobChangefeedEvent>> shards;
+    private final BlobChangefeedCursor cfCursor;
 
-    Segment(BlobContainerAsyncClient client, String path) {
+    private final BlobChangefeedCursor userCursor;
+
+    Segment(BlobContainerAsyncClient client, String path, BlobChangefeedCursor cfCursor,
+        BlobChangefeedCursor userCursor) {
         this.client = client;
         this.path = path;
-        shards = new ArrayList<>();
+        this.cfCursor = cfCursor;
+        this.userCursor = userCursor;
     }
 
-    Flux<BlobChangefeedEvent> getEvents() {
+    Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download JSON manifest file. */
         return client.getBlobAsyncClient(path)
             .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
@@ -53,13 +57,19 @@ class Segment {
                 } catch (IOException e) {
                     throw logger.logExceptionAsError(new UncheckedIOException(e));
                 }
+                List<Flux<BlobChangefeedEventWrapper>> shards = new ArrayList<>();
                 for (JsonNode shard : jsonNode.withArray("chunkFilePaths")) {
-                    String shardPath = shard.asText().substring("$blobchangefeed/".length());
-                    shards.add(new Shard(client, shardPath).getEvents());
+                    String shardPath =
+                        shard.asText().substring(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME.length() + 1);
+                    shards.add(new Shard(client, shardPath, cfCursor.toShardCursor(shardPath), userCursor).getEvents());
                 }
-                return json;
+                return shards;
             })
             /* Round robin among shards in this segment. */
-            .thenMany(Flux.merge(shards));
+            .flatMapMany(this::roundRobinAmongShards);
+    }
+
+    private Flux<BlobChangefeedEventWrapper> roundRobinAmongShards(List<Flux<BlobChangefeedEventWrapper>> shards) {
+        return Flux.merge(shards);
     }
 }

@@ -9,13 +9,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
-import reactor.core.publisher.Flux;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
-
-import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob changefeed.
@@ -26,8 +21,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 public class BlobChangefeedAsyncClient {
     private final ClientLogger logger = new ClientLogger(BlobChangefeedAsyncClient.class);
 
-    private static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
-    private static final String SEGMENT_PREFIX = "idx/segments/";
+    static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
     private final BlobContainerAsyncClient client;
 
@@ -40,32 +34,51 @@ public class BlobChangefeedAsyncClient {
             .buildAsyncClient();
     }
 
-    public Flux<BlobChangefeedEvent> getEvents() {
-        return getEvents(new ChangefeedBlobsOptions());
+    public BlobChangefeedPagedFlux getEvents() {
+        return getEvents(null, null);
     }
 
-    public Flux<BlobChangefeedEvent> getEvents(ChangefeedBlobsOptions options) {
-        try {
-            return getEventsWithOptionalTimeout( options, null, null,null);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+    public BlobChangefeedPagedFlux getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
+        return new BlobChangefeedPagedFlux(client, startTime, endTime);
     }
 
-    public Flux<BlobChangefeedEvent> getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
-        try {
-            return getEventsWithOptionalTimeout(null, startTime, endTime, null);
-        } catch (RuntimeException ex) {
-            return pagedFluxError(logger, ex);
-        }
+    public BlobChangefeedPagedFlux getEvents(String cursor) {
+        return new BlobChangefeedPagedFlux(client, cursor);
     }
 
-    Flux<BlobChangefeedEvent> getEventsWithOptionalTimeout(ChangefeedBlobsOptions options, OffsetDateTime startTime,
-        OffsetDateTime endTime, Duration timeout) {
-        options = options == null ? new ChangefeedBlobsOptions() : options;
-        startTime = startTime == null ? OffsetDateTime.MIN : startTime;
-        endTime = endTime == null ? OffsetDateTime.MAX : endTime;
+//    private Flux<BlobChangefeedPagedResponse> getEventsInternal(OffsetDateTime startTime, OffsetDateTime endTime,
+//        String cursor, Integer pageSize) {
+//        pageSize = pageSize == null || pageSize > 5000 ? 5000 : pageSize;
+//        startTime = startTime == null ? OffsetDateTime.MIN : startTime;
+//        endTime = endTime == null ? OffsetDateTime.MAX : endTime;
+//
+//        /* Initialize Changefeed. */
+//        Changefeed changefeed = null;
+//        /* If a cursor is provided, use that to initialize the Changefeed. */
+//        if (cursor != null) {
+//            changefeed = new Changefeed(this.client, cursor);
+//        } else {
+//            changefeed = new Changefeed(this.client, startTime, endTime);
+//        }
+//
+//        /* Get events from the changefeed. */
+//        return changefeed.getEvents()
+//            /* Window the events to the page size. */
+//            .window(pageSize)
+//            /* Convert the BlobChangefeedEventWrappers into BlobChangefeedEvents along with the end cursor. */
+//            .flatMap(eventWrappers -> {
+//                Flux<BlobChangefeedEventWrapper> c1 = eventWrappers.cache();
+//                Mono<BlobChangefeedCursor> c = c1.last()
+//                    .map(BlobChangefeedEventWrapper::getCursor);
+//                Mono<List<BlobChangefeedEvent>> e = c1
+//                    .map(BlobChangefeedEventWrapper::getEvent)
+//                    .collectList();
+//                return Mono.zip(e, c);
+//            })
+//            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
+//    }
 
-        return new Changefeed(this.client, startTime, endTime).getEvents();
-    }
+
+
+
 }

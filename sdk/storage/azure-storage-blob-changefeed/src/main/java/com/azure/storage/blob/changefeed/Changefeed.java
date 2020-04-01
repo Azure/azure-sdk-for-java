@@ -3,92 +3,152 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedCursor;
+import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
-import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
 class Changefeed {
 
+//    public const string InitalizationManifestPath = "/0000/";
+//    public const string InitalizationSegment = "1601";
+//    public const long ChunkBlockDownloadSize = MB;
+
     private static ClientLogger logger = new ClientLogger(Changefeed.class);
 
     private static final String SEGMENT_PREFIX = "idx/segments/";
+    private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
 
     /* Changefeed container */
     private final BlobContainerAsyncClient client;
 
+    /* User provided start and end times. */
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
 
+    /* Last consumable time. */
+    private OffsetDateTime lastConsumable; /* TODO (gapra) : DO something with last consumable. */
+
+    /* Cursor associated with changefeed. */
+    private final BlobChangefeedCursor cfCursor;
+
+    /* User provided cursor. */
+    private BlobChangefeedCursor userCursor;
 
     Changefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.client = client;
         this.startTime = startTime;
         this.endTime = endTime;
+        cfCursor = new BlobChangefeedCursor(endTime);
     }
 
-    private Mono<Boolean> checkExistence() {
+    Changefeed(BlobContainerAsyncClient client, String userCursor) {
+        this.client = client;
+        this.userCursor = BlobChangefeedCursor.deserialize(userCursor);
+        this.startTime = OffsetDateTime.parse(this.userCursor.getSegmentTime());
+        this.endTime = OffsetDateTime.parse(this.userCursor.getEndTime());
+        this.cfCursor = new BlobChangefeedCursor(endTime);
+    }
+
+    /**
+     * Get all the events for the Changefeed.
+     * @return A reactive stream of {@link BlobChangefeedEventWrapper}
+     */
+    Flux<BlobChangefeedEventWrapper> getEvents() {
+        return validateChangefeed()
+            .then(populateLastConsumable())
+            .thenMany(listYears()
+                .concatMap(this::listSegmentsForYear)
+                .concatMap(this::getEventsForSegment));
+    }
+
+    /**
+     * Validates that changefeed has been enabled for the account.
+     */
+    private Mono<Void> validateChangefeed() {
         return this.client.exists()
-            .map(exists -> {
+            .flatMap(exists -> {
                 if (exists == null || !exists) {
                     throw logger.logExceptionAsError(new RuntimeException("ChangeFeed has not been enabled for this "
                         + "account."));
                 }
-                return exists;
-            });
-    }
-
-    Flux<BlobChangefeedEvent> getEvents() {
-        /* TODO : First check existence. */
-        return client.listBlobsByHierarchy(SEGMENT_PREFIX) /* Get all years. */
-            .concatMap(year -> { /* Get segments for each year. */
-                String yearPath = year.getName();
-                if (validYear(yearPath)) {
-                    return client.listBlobs(new ListBlobsOptions().setPrefix(yearPath));
-                } else {
-                    return Flux.empty();
-                }
-            }).concatMap(segment -> { /* Get events for each segment. */
-                String segmentPath = segment.getName();
-                if (validSegment(segmentPath)) {
-                    return new Segment(client, segment.getName()).getEvents();
-                } else {
-                    return Flux.empty();
-                }
+                return Mono.empty();
             });
     }
 
     /**
-     * Validates that the year lies within the start and end times.
+     * Populates the last consumable property from changefeed metadata.
      */
-    private boolean validYear(String currentYearPath) {
-        OffsetDateTime currentYear = TimeUtils.convertPathToTime(currentYearPath, logger);
-        OffsetDateTime startYear = TimeUtils.roundDownToNearestYear(startTime);
-        OffsetDateTime endYear = TimeUtils.roundDownToNearestYear(endTime);
-        return validTimes(currentYear, startYear, endYear);
+    private Mono<Void> populateLastConsumable() {
+        return this.client.getBlobAsyncClient(METADATA_SEGMENT_PATH)
+            .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
+                try {
+                    os.write(FluxUtil.byteBufferToArray(buffer));
+                } catch (IOException e) {
+                    throw logger.logExceptionAsError(new UncheckedIOException(e));
+                }
+                return os;
+            })
+            /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
+            .map(ByteArrayOutputStream::toString)
+            /* Parse JSON for last consumable. */
+            .flatMap(json -> {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode jsonNode = null;
+                try {
+                    jsonNode = objectMapper.readTree(json);
+                } catch (IOException e) {
+                    throw logger.logExceptionAsError(new UncheckedIOException(e));
+                }
+                this.lastConsumable = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
+                return Mono.empty();
+            });
     }
 
     /**
-     * Validates that the segment lies within the start and end times.
+     * List years for which changefeed data exists.
      */
-    private boolean validSegment(String currentSegmentPath) {
-        OffsetDateTime hour = TimeUtils.convertPathToTime(currentSegmentPath, logger);
-        OffsetDateTime startHour = TimeUtils.roundDownToNearestHour(startTime);
-        OffsetDateTime endHour = TimeUtils.roundUpToNearestHour(endTime);
-        return validTimes(hour, startHour, endHour);
+    private Flux<BlobItem> listYears() {
+        return this.client.listBlobsByHierarchy(SEGMENT_PREFIX);
     }
 
     /**
-     * Validates that start <= current <= end.
+     * List segments for years of interest.
      */
-    private static boolean validTimes(OffsetDateTime current, OffsetDateTime start, OffsetDateTime end) {
-        return ((current.isEqual(start) || current.isAfter(start))
-            && (current.isEqual(end) || current.isBefore(end)));
+    private Flux<BlobItem> listSegmentsForYear(BlobItem year) {
+        String yearPath = year.getName();
+        if (TimeUtils.validYear(yearPath, startTime, endTime)) {
+            return client.listBlobs(new ListBlobsOptions().setPrefix(yearPath));
+        } else {
+            return Flux.empty();
+        }
+    }
+
+    /**
+     * Get events for segments of interest.
+     */
+    private Flux<BlobChangefeedEventWrapper> getEventsForSegment(BlobItem segment) {
+        String segmentPath = segment.getName();
+        OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segmentPath);
+        if (TimeUtils.validSegment(segmentPath, startTime, endTime)) {
+            return new Segment(client, segmentPath, cfCursor.toSegmentCursor(segmentTime), userCursor)
+                .getEvents();
+        } else {
+            return Flux.empty();
+        }
     }
 
 }

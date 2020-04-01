@@ -1,7 +1,5 @@
 package com.azure.storage.blob.changefeed.implementation.util;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
@@ -20,21 +18,18 @@ public class TimeUtils {
      * @param path The path to convert.
      * @return The time associated with the path.
      */
-    public static OffsetDateTime convertPathToTime(String path, ClientLogger logger) {
+    public static OffsetDateTime convertPathToTime(String path) {
         if (path == null) {
             return null;
         }
         String[] splitPath = path.split("/");
-        boolean yearPath = splitPath.length == 3;
-        if (splitPath.length != 3 && splitPath.length != 7) {
-            throw logger.logExceptionAsError(new RuntimeException("Error converting segment path to OffsetDateTime"));
-        }
+
         return OffsetDateTime.of(
             Integer.parseInt(splitPath[2]), /* year */
-            yearPath ? 1 : Integer.parseInt(splitPath[3]), /* month */
-            yearPath ? 1 : Integer.parseInt(splitPath[4]), /* day */
-            yearPath ? 0 : Integer.parseInt(splitPath[5]) / 100, /* hour */
-            yearPath ? 0 : Integer.parseInt(splitPath[5]) % 100, /* minute */
+            splitPath.length < 4 ? 1 : Integer.parseInt(splitPath[3]), /* month */
+            splitPath.length < 5 ? 1 : Integer.parseInt(splitPath[4]), /* day */
+            splitPath.length < 6 ? 0 : Integer.parseInt(splitPath[5]) / 100, /* hour */
+            0, /* minute */
             0, /* second */
             0, /* nano second */
             ZoneOffset.UTC /* zone offset */
@@ -42,12 +37,46 @@ public class TimeUtils {
     }
 
     /**
-     * Rounds a time up to the nearest hour.
-     *
-     * @param time The time to round.
-     * @return The time rounded up to the nearest hour.
+     * Validates that the year lies within the start and end times.
+     * @param year The year.
+     * @param start The start time.
+     * @param end The end time.
+     * @return Whether or not the year lies within the start and end times.
      */
-    public static OffsetDateTime roundUpToNearestHour(OffsetDateTime time) {
+    public static boolean validYear(String year, OffsetDateTime start, OffsetDateTime end) {
+        if (year == null || start == null || end == null) {
+            return false;
+        }
+        OffsetDateTime currentYear = convertPathToTime(year);
+        OffsetDateTime startYear = roundDownToNearestYear(start);
+        OffsetDateTime endYear = roundDownToNearestYear(end);
+        return validTimes(currentYear, startYear, endYear);
+    }
+
+    /**
+     * Validates that the segment lies within the start and end times.
+     * @param segment The segment.
+     * @param start The start time.
+     * @param end The end time.
+     * @return Whether or not the segment lies within the start and end times.
+     */
+    public static boolean validSegment(String segment, OffsetDateTime start, OffsetDateTime end) {
+        if (segment == null || start == null || end == null) {
+            return false;
+        }
+        OffsetDateTime hour = convertPathToTime(segment);
+        OffsetDateTime startHour = roundDownToNearestHour(start);
+        OffsetDateTime endHour = roundUpToNearestHour(end);
+        return validTimes(hour, startHour, endHour);
+    }
+
+    /**
+     * Rounds a time up to the nearest hour.
+     */
+    private static OffsetDateTime roundUpToNearestHour(OffsetDateTime time) {
+        if (time == null) {
+            return null;
+        }
         if (time.equals(OffsetDateTime.MIN) || time.equals(OffsetDateTime.MAX)) {
             return time;
         }
@@ -56,11 +85,11 @@ public class TimeUtils {
 
     /**
      * Rounds a time down to the nearest hour.
-     *
-     * @param time The time to round.
-     * @return The time rounded down to the nearest hour.
      */
-    public static OffsetDateTime roundDownToNearestHour(OffsetDateTime time) {
+    private static OffsetDateTime roundDownToNearestHour(OffsetDateTime time) {
+        if (time == null) {
+            return null;
+        }
         if (time.equals(OffsetDateTime.MIN) || time.equals(OffsetDateTime.MAX)) {
             return time;
         }
@@ -69,11 +98,22 @@ public class TimeUtils {
 
     /**
      * Rounds a time down to the nearest year.
-     *
-     * @param time The time to round.
-     * @return The time rounded down to the nearest year.
      */
-    public static OffsetDateTime roundDownToNearestYear(OffsetDateTime time) {
+    private static OffsetDateTime roundDownToNearestYear(OffsetDateTime time) {
+        if (time == null) {
+            return null;
+        }
         return OffsetDateTime.of(time.getYear(), 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+    }
+
+    /**
+     * Validates that start <= current <= end.
+     */
+    private static boolean validTimes(OffsetDateTime current, OffsetDateTime start, OffsetDateTime end) {
+        if (current == null || start == null || end == null) {
+            return false;
+        }
+        return ((current.isEqual(start) || current.isAfter(start))
+            && (current.isEqual(end) || current.isBefore(end)));
     }
 }
