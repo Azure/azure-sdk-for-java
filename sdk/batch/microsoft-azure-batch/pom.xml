@@ -100,16 +100,17 @@
         <configuration>
           <scanIntervalSeconds>0</scanIntervalSeconds>
           <stopPort>11079</stopPort>
-          <stopKey>STOP</stopKey>
-          <waitForChild>true</waitForChild>
-          <jettyXml>./jetty.xml</jettyXml>
+          <stopKey>stop-azure-batch</stopKey>
+          <stopWait>20</stopWait>
+          <waitForChild>false</waitForChild>
+          <jettyXml>../../../jetty.xml</jettyXml>
         </configuration>
         <executions>
           <execution>
             <id>start-jetty</id>
             <phase>process-test-classes</phase>
             <goals>
-              <goal>start</goal>
+              <goal>run-forked</goal>
             </goals>
             <configuration>
              <scanIntervalSeconds>0</scanIntervalSeconds>
