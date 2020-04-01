@@ -16,13 +16,13 @@ import java.util.Map;
 import rx.functions.Func1;
 
 class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOnInner, PremierAddOnImpl> implements PremierAddOn, PremierAddOn.Definition, PremierAddOn.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String premierAddOnName;
     private PremierAddOnPatchResource updateParameter;
 
-    PremierAddOnImpl(String name, AppServiceManager manager) {
+    PremierAddOnImpl(String name, CertificateRegistrationManager manager) {
         super(name, new PremierAddOnInner());
         this.manager = manager;
         // Set resource name
@@ -31,7 +31,7 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
         this.updateParameter = new PremierAddOnPatchResource();
     }
 
-    PremierAddOnImpl(PremierAddOnInner inner, AppServiceManager manager) {
+    PremierAddOnImpl(PremierAddOnInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -45,7 +45,7 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
