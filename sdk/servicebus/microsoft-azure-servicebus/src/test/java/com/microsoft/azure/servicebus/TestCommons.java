@@ -664,37 +664,37 @@ public class TestCommons {
     }
 
     public static void testLongPollReceiveOnLinkAbort(IMessageSender sender, IMessageReceiver receiver, ManagementClientAsync mgmtClientAsync, boolean isQueue) throws InterruptedException, ServiceBusException, ExecutionException {
-    	CompletableFuture<IMessage> receiveFuture = receiver.receiveAsync(Duration.ofMinutes(15));
-    	// Delay a second so credit is sent to the entity
-    	Thread.sleep(1000);
+        CompletableFuture<IMessage> receiveFuture = receiver.receiveAsync(Duration.ofMinutes(15));
+        // Delay a second so credit is sent to the entity
+        Thread.sleep(1000);
 
-    	// Force reload entity
-    	boolean isEntityPartitioned = false;
-    	if (isQueue) {
-    		QueueDescription queueDesc = mgmtClientAsync.getQueueAsync(sender.getEntityPath()).get();
-    		isEntityPartitioned = queueDesc.isEnablePartitioning();
-    		queueDesc.setEnableBatchedOperations(!queueDesc.isEnableBatchedOperations());
-    		mgmtClientAsync.updateQueueAsync(queueDesc).get();
-    	} else {
-    		TopicDescription topicDesc = mgmtClientAsync.getTopicAsync(sender.getEntityPath()).get();
-    		isEntityPartitioned = topicDesc.isEnablePartitioning();
-    		topicDesc.setEnableBatchedOperations(!topicDesc.isEnableBatchedOperations());
-    		mgmtClientAsync.updateTopicAsync(topicDesc).get();
-    	}
+        // Force reload entity
+        boolean isEntityPartitioned = false;
+        if (isQueue) {
+            QueueDescription queueDesc = mgmtClientAsync.getQueueAsync(sender.getEntityPath()).get();
+            isEntityPartitioned = queueDesc.isEnablePartitioning();
+            queueDesc.setEnableBatchedOperations(!queueDesc.isEnableBatchedOperations());
+            mgmtClientAsync.updateQueueAsync(queueDesc).get();
+        } else {
+            TopicDescription topicDesc = mgmtClientAsync.getTopicAsync(sender.getEntityPath()).get();
+            isEntityPartitioned = topicDesc.isEnablePartitioning();
+            topicDesc.setEnableBatchedOperations(!topicDesc.isEnableBatchedOperations());
+            mgmtClientAsync.updateTopicAsync(topicDesc).get();
+        }
 
-    	// Delay a second so send link is closed
-    	Thread.sleep(1000);
+        // Delay a second so send link is closed
+        Thread.sleep(1000);
 
-    	Message message = new Message("AMQP test message");
+        Message message = new Message("AMQP test message");
         sender.send(message);
 
         // Receive should receive that message. Partitioned entity gateway cache may take a maximum of 2 minutes to retry.
         int maxReceiveWaitTimeInSeconds = isEntityPartitioned ? 150 : 30;
         IMessage rcvdMessage = null;
         try {
-        	rcvdMessage = receiveFuture.get(maxReceiveWaitTimeInSeconds, TimeUnit.SECONDS);
+            rcvdMessage = receiveFuture.get(maxReceiveWaitTimeInSeconds, TimeUnit.SECONDS);
         } catch (java.util.concurrent.TimeoutException te) {
-        	Assert.fail("Long poll receive didn't receive a message after entity reload");
+            Assert.fail("Long poll receive didn't receive a message after entity reload");
         }
 
         Assert.assertNotNull("Long poll receive didn't receive a message after entity reload", rcvdMessage);
@@ -756,14 +756,14 @@ public class TestCommons {
                 CompletableFuture<Void> drainFuture = ClientFactory.acceptSessionFromEntityPathAsync(
                     TestUtils.getNamespaceEndpointURI(), receivePath, browsableSession.getSessionId(),
                     TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE).thenAcceptAsync((session) -> {
-                        try {
-                            TestCommons.drainAllMessagesFromReceiver(session, false);
-                            session.setState(null);
-                            session.close();
-                        } catch (InterruptedException | ServiceBusException e) {
-                            e.printStackTrace();
-                        }
-                    });
+                    try {
+                        TestCommons.drainAllMessagesFromReceiver(session, false);
+                        session.setState(null);
+                        session.close();
+                    } catch (InterruptedException | ServiceBusException e) {
+                        e.printStackTrace();
+                    }
+                });
 
                 drainFutures[drainFutureIndex++] = drainFuture;
                 if (drainFutureIndex == numParallelSessionDrains) {
