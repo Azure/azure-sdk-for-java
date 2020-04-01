@@ -199,8 +199,9 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             // Need to wait until the uploadTask completes
             lock.lock();
-            sink.complete(); /* Allow upload task to try to complete. */
             try {
+                sink.complete(); /* Allow upload task to try to complete. */
+            
                 while (!complete) {
                     transferComplete.await();
                 }
