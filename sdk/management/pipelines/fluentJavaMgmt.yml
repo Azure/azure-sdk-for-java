@@ -93,17 +93,17 @@ jobs:
           publishJUnitResults: false
           goals: 'install'
 
-      # - task: Maven@3
-      #   displayName: 'Run StyleCheck'
-      #   inputs:
-      #     mavenPomFile: sdk/management/pom.xml
-      #     options: '$(DefaultOptions) $(ProfileFlag)'
-      #     mavenOptions: '$(LoggingOptions)'
-      #     javaHomeOption: 'JDKVersion'
-      #     jdkVersionOption: $(JavaVersion)
-      #     jdkArchitectureOption: 'x64'
-      #     publishJUnitResults: false
-      #     goals: 'checkstyle:check'
+      - task: Maven@3
+        displayName: 'Run StyleCheck'
+        inputs:
+          mavenPomFile: sdk/management/pom.xml
+          options: '$(DefaultOptions) $(ProfileFlag)'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'checkstyle:check'
 
       - task: Maven@3
         displayName: 'Run Tests on Java 8'
