@@ -55,8 +55,14 @@ public final class BlockBlobClient extends BlobClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
+     * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}.
      */
+    @Deprecated
     public static final int MAX_UPLOAD_BLOB_BYTES = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES;
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to upload.
+     */
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG;
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}

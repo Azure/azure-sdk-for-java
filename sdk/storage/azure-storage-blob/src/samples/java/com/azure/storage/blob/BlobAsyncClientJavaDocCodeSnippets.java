@@ -38,7 +38,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
-    private int blockSize = 50;
+    private long blockSize = 50;
     private int numBuffers = 2;
     private String filePath = "filePath";
     private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
@@ -501,7 +501,7 @@ public class BlobAsyncClientJavaDocCodeSnippets {
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
 
         client.uploadFromFile(filePath,
-            new ParallelTransferOptions(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE, null, null),
+            new ParallelTransferOptions(BlobAsyncClient.BLOB_MAX_UPLOAD_BLOCK_SIZE_LONG, null, null),
             headers, metadata, AccessTier.HOT, requestConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
             .subscribe(completion -> System.out.println("Upload from file succeeded"));

@@ -71,7 +71,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
+    private static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
     private final ClientLogger logger = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**

@@ -159,7 +159,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
-            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES); // TODO Jumbo blob
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
 

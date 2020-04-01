@@ -33,7 +33,7 @@ public class ModelHelper {
             other.getNumBuffers() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
                 : other.getNumBuffers(),
             other.getProgressReceiver(),
-            other.getMaxSingleUploadSize() == null ? Integer.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES)
-                : other.getMaxSingleUploadSize());
+            other.getMaxSingleUploadSizeLong() == null ? Long.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG)
+                : other.getMaxSingleUploadSizeLong());
     }
 }

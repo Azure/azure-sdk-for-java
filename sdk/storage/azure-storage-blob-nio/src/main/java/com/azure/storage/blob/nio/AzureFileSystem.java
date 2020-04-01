@@ -92,7 +92,7 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
 
     /**
-     * Expected type: Integer
+     * Expected type: Long
      */
     public static final String AZURE_STORAGE_UPLOAD_BLOCK_SIZE = "AzureStorageUploadBlockSize";
 
@@ -124,7 +124,7 @@ public final class AzureFileSystem extends FileSystem {
 
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
-    private final Integer blockSize;
+    private final Long blockSize;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;

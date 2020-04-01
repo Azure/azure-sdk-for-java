@@ -174,7 +174,7 @@ public class DataLakeFileClientJavaDocSamples {
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
-        Integer blockSize = 100 * 1024 * 1024; // 100 MB;
+        Long blockSize = 100L * 1024L * 1024L; // 100 MB;
         ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null, null);
 
         try {

@@ -17,12 +17,12 @@ public class ModelHelper {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    private static final int MAX_APPEND_FILE_BYTES = 100 * Constants.MB;
+    private static final long MAX_APPEND_FILE_BYTES = 4000L * Constants.MB;
 
     /**
      * The block size to use if none is specified in parallel operations.
      */
-    private static final int FILE_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
+    private static final long FILE_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     /**
      * The number of buffers to use if none is specified on the buffered upload method.
@@ -37,26 +37,26 @@ public class ModelHelper {
      * @return An object with defaults filled in for null values in the original.
      */
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
-        other = other == null ? new ParallelTransferOptions(null, null, null, null) : other;
+        other = other == null ? new ParallelTransferOptions((Long)null, null, null, null) : other;
 
         // For now these two checks are useful for when we transition to
-        if (other.getBlockSize() != null) {
-            StorageImplUtils.assertInBounds("ParallelTransferOptions.blockSize", other.getBlockSize(), 1,
-                MAX_APPEND_FILE_BYTES);
+        if (other.getBlockSizeLong() != null) { // TODO Jumbo blob
+            StorageImplUtils.assertInBounds("ParallelTransferOptions.blockSize", other.getBlockSizeLong(), 1,
+                MAX_APPEND_FILE_BYTES); // TODO Jumbo blob
         }
 
-        if (other.getMaxSingleUploadSize() != null) {
+        if (other.getMaxSingleUploadSizeLong() != null) {
             StorageImplUtils.assertInBounds("ParallelTransferOptions.maxSingleUploadSize",
-                other.getMaxSingleUploadSize(), 1, MAX_APPEND_FILE_BYTES);
+                other.getMaxSingleUploadSizeLong(), 1, MAX_APPEND_FILE_BYTES); // TODO Jumbo blob
         }
 
         return new ParallelTransferOptions(
-            other.getBlockSize() == null ? Integer.valueOf(FILE_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : other.getBlockSize(),
+            other.getBlockSizeLong() == null ? Long.valueOf(FILE_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : other.getBlockSizeLong(),
             other.getNumBuffers() == null ? Integer.valueOf(FILE_DEFAULT_NUMBER_OF_BUFFERS)
                 : other.getNumBuffers(),
             other.getProgressReceiver(),
-            other.getMaxSingleUploadSize() == null ? Integer.valueOf(MAX_APPEND_FILE_BYTES)
-                : other.getMaxSingleUploadSize());
+            other.getMaxSingleUploadSizeLong() == null ? Long.valueOf(MAX_APPEND_FILE_BYTES)
+                : other.getMaxSingleUploadSizeLong());
     }
 }

@@ -35,7 +35,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
     private URL sourceURL = JavaDocCodeSnippetsHelpers.generateURL("https://example.com");
     private long offset = 1024L;
     private long count = length;
-    private int blockSize = 50;
+    private long blockSize = 50;
     private int numBuffers = 2;
 
     /**

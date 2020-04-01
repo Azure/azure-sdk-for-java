@@ -18,7 +18,7 @@ public final class ParallelTransferOptions {
     private final Long blockSize;
     private final Integer numBuffers;
     private final ProgressReceiver progressReceiver;
-    private final Integer maxSingleUploadSize;
+    private final Long maxSingleUploadSize;
 
     /**
      * Creates a new {@link ParallelTransferOptions} with default parameters applied.
@@ -86,7 +86,8 @@ public final class ParallelTransferOptions {
     @Deprecated
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
         Integer maxSingleUploadSize) {
-        this(blockSize == null ? null : Long.valueOf(blockSize), numBuffers, progressReceiver, maxSingleUploadSize);
+        this(blockSize == null ? null : Long.valueOf(blockSize), numBuffers, progressReceiver,
+            maxSingleUploadSize == null ? null : Long.valueOf(maxSingleUploadSize));
     }
 
     /**
@@ -112,7 +113,7 @@ public final class ParallelTransferOptions {
      * {@link BlockBlobAsyncClient#MAX_UPLOAD_BLOB_BYTES}.
      */
     public ParallelTransferOptions(Long blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
-                                   Integer maxSingleUploadSize) {
+                                   Long maxSingleUploadSize) {
         if (blockSize != null) {
             StorageImplUtils.assertInBounds("blockSize", blockSize, 1, BlockBlobAsyncClient.MAX_STAGE_BLOCK_BYTES_LONG);
         }
@@ -168,8 +169,18 @@ public final class ParallelTransferOptions {
     /**
      * Gets the value above which the upload will be broken into blocks and parallelized.
      * @return The threshold value.
+     * @deprecated Use {@link #getMaxSingleUploadSizeLong()}
      */
-    public Integer getMaxSingleUploadSize() {
+    @Deprecated
+    public Integer getMaxSingleUploadSize() { // TODO jumbo blob
+        return this.maxSingleUploadSize == null ? null : Math.toIntExact(this.maxSingleUploadSize);
+    }
+
+    /**
+     * Gets the value above which the upload will be broken into blocks and parallelized.
+     * @return The threshold value.
+     */
+    public Long getMaxSingleUploadSizeLong() {
         return this.maxSingleUploadSize;
     }
 }

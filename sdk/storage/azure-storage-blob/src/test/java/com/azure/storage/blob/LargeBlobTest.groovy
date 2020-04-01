@@ -8,11 +8,13 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.util.Context
+import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import spock.lang.Ignore
 import spock.lang.Requires
 
 import java.nio.ByteBuffer
@@ -47,6 +49,22 @@ class LargeBlobTest extends APISpec {
             // Regenerate auth header after body got substituted
             new StorageSharedKeyCredentialPolicy(primaryCredential)
         )
+    }
+
+    @Requires({ liveMode() })
+    def "Stage Real Large Blob"() {
+        given:
+        def stream = createLargeInputStream(maxBlockSize)
+        def blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8))
+        def client = cc.getBlobClient(blobName)
+
+        when:
+        client.getBlockBlobClient().stageBlock(blockId, stream, maxBlockSize)
+        client.getBlockBlobClient().commitBlockList([blockId])
+        def blockList = client.getBlockBlobClient().listBlocks(BlockListType.COMMITTED)
+
+        then:
+        blockList.committedBlocks.size() == 1
     }
 
     @Requires({ liveMode() })
@@ -118,6 +136,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("Takes really long time")
     def "Upload Largest Input Sync"() {
         given:
         collectSize = false

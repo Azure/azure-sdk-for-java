@@ -34,11 +34,9 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -88,7 +86,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * value will be used.
      */
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
+    @Deprecated
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
+    static final long BLOB_MAX_UPLOAD_BLOCK_SIZE_LONG = 4000L * Constants.MB;
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
     /**
@@ -374,6 +374,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool
         buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
         preserve the ordering of the buffers, but we don't really care if one is split before another.
+        Skipped if block size exceeds integer (max single buffer size).
          */
         Flux<ByteBuffer> chunkedSource = data;
         if (blockSize <= Integer.MAX_VALUE) {
@@ -429,7 +430,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
         final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
 
-        PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSize());
+        PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
 
         return data
             .filter(ByteBuffer::hasRemaining)
@@ -487,7 +488,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath, BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS))
                         : Mono.empty());
@@ -539,7 +540,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
                         // If the file is larger than 256MB chunk it and stage it as blocks.
                         if (UploadUtils.shouldUploadInChunks(filePath,
-                            finalParallelTransferOptions.getMaxSingleUploadSize(), logger)) {
+                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
                             return uploadFileChunks(fileSize, finalParallelTransferOptions, originalBlockSize, headers,
                                 metadata, tier, requestConditions, channel, blockBlobAsyncClient);
                         } else {
