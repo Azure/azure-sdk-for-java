@@ -184,28 +184,32 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 })
                 .doOnTerminate(() -> {
                     lock.lock();
-                    complete = true;
-                    transferComplete.signal();
-                    lock.unlock();
+                    try {
+                        complete = true;
+                        transferComplete.signal();
+                    } finally {
+                        lock.unlock();
+                    }
                 })
                 .subscribe();
         }
 
         @Override
         void commit() {
-            sink.complete();
 
             // Need to wait until the uploadTask completes
             lock.lock();
-            while (!complete) {
-                try {
+            sink.complete(); /* Allow upload task to try to complete. */
+            try {
+                while (!complete) {
                     transferComplete.await();
-                } catch (InterruptedException e) {
-                    this.lastError = new IOException(e.getMessage());
-                    lock.unlock();
                 }
+            } catch (InterruptedException e) {
+                this.lastError = new IOException(e.getMessage());
+            } finally {
+                lock.unlock();
             }
-            lock.unlock();
+
 
         }
 
