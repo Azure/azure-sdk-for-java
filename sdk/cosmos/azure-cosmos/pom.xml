@@ -157,12 +157,6 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
-      <groupId>com.fasterxml.uuid</groupId>
-      <artifactId>java-uuid-generator</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;com.fasterxml.uuid:java-uuid-generator;external_dependency} -->
-    </dependency>
-
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
