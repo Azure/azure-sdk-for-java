@@ -10,13 +10,13 @@ package com.microsoft.azure.management.appservice.v2016_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_03_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_03_01.implementation.ResourceHealthMetadataInner;
 
 /**
  * Type representing ResourceHealthMetadata.
  */
-public interface ResourceHealthMetadata extends HasInner<ResourceHealthMetadataInner>, HasManager<AppServiceManager> {
+public interface ResourceHealthMetadata extends HasInner<ResourceHealthMetadataInner>, HasManager<WebManager> {
     /**
      * @return the category value.
      */
