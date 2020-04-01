@@ -91,7 +91,7 @@ class BlobAPITest extends APISpec {
 
         when:
         // Uses blob output stream under the hood.
-        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)
@@ -106,7 +106,7 @@ class BlobAPITest extends APISpec {
         def pto = new ParallelTransferOptions((Integer) maxUploadSize, null, null, (Integer) maxUploadSize)
 
         when:
-        bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
+        bc.uploadWithResponse(input, size, pto, null, null, null, null, null)
 
         then:
         def blocksUploaded = bc.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks()
@@ -118,6 +118,19 @@ class BlobAPITest extends APISpec {
         Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
         Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
         3 * Constants.MB| Constants.MB  || 3
+    }
+
+    def "Upload timeout"() {
+        setup:
+        def size = 1024
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        bc.uploadWithResponse(input, size, null, null, null, null, null, Duration.ofNanos(5L))
+
+        then:
+        thrown(IllegalStateException)
     }
 
     def "Download all null"() {
