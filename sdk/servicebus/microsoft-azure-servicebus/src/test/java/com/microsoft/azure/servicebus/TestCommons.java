@@ -25,6 +25,7 @@ import com.microsoft.azure.servicebus.management.TopicDescription;
 import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
+import com.microsoft.azure.servicebus.primitives.TimeoutException;
 
 public class TestCommons {
 
