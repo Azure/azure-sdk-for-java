@@ -29,7 +29,7 @@ final class FeaturesImpl
 
     @Override
     public PagedIterable<Feature> list() {
-        return wrapList(client.list());
+        return wrapList(client.listAll());
     }
 
     @Override
@@ -52,6 +52,6 @@ final class FeaturesImpl
 
     @Override
     public PagedFlux<Feature> listAsync() {
-        return wrapPageAsync(client.listAsync());
+        return wrapPageAsync(client.listAllAsync());
     }
 }
