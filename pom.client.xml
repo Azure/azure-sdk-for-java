@@ -1013,9 +1013,6 @@
           </plugin>
         </plugins>
       </build>
-      <modules>
-        <module>./sdk/core/azure-core-http-jdk11-httpclient</module>
-      </modules>
     </profile>
 
     <profile>
