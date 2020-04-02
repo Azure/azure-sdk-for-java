@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * StorageBlobDeadLetterDestination is the only class that derives from this
  * class.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = DeadLetterDestination.class)
 @JsonTypeName("DeadLetterDestination")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StorageBlob", value = StorageBlobDeadLetterDestination.class)
