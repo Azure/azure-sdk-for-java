@@ -23,7 +23,6 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -245,7 +244,6 @@ public class LROPollerTests {
     }
 
     @Test
-
     public void lroTimeout() {
         final Duration timeoutDuration = Duration.ofMillis(1000);   // use a large timeout for manual verification
 
