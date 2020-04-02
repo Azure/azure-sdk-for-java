@@ -153,17 +153,15 @@ public abstract class TestBase implements BeforeEachCallback {
      * @param serviceVersionEnv Indicates whether the service version parameters need to rolling.
      * @return Stream of arguments for parameterized test framework.
      */
-    public static Stream<Arguments> getArgumentsFromServiceVersion(
-        List<ServiceVersion> serviceVersionList,
-        //List<ServiceVersion> serviceVersionList,
-        //boolean rollingServiceVersion
+    public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList,
         String serviceVersionEnv) {
         List<Arguments> argumentsList = new ArrayList<>();
         int serviceVersionCount = serviceVersionList.size();
         List<HttpClient> httpClientList = getHttpClients();
         int httpClientCount = httpClientList.size();
         boolean rollingHttpClient = HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
-        boolean rollingServiceVersion = serviceVersionEnv.equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
+        boolean rollingServiceVersion = serviceVersionEnv!= null &&
+            serviceVersionEnv.equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
         for (ServiceVersion s: serviceVersionList) {
             for (HttpClient h: httpClientList) {
                 argumentsList.add(Arguments.of(h, s));
