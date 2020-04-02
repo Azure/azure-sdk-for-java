@@ -48,7 +48,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptSourceUrl() {
         receiptSourceUrlRunner((sourceUrl) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceiptFromUrl(sourceUrl).getSyncPoller();
+                client.beginExtractReceiptsFromUrl(sourceUrl).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
         });
@@ -58,7 +58,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptSourceUrlTextDetails() {
         receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextDetails) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceiptFromUrl(sourceUrl, includeTextDetails, null).getSyncPoller();
+                client.beginExtractReceiptsFromUrl(sourceUrl, includeTextDetails, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(true, getExtractedReceipts(), syncPoller.getFinalResult());
         });
@@ -68,7 +68,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptData() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceipt(getReceiptFileBufferData(), FILE_LENGTH, false,
+                client.beginExtractReceipts(getReceiptFileBufferData(), FILE_LENGTH, false,
                     FormContentType.IMAGE_JPEG, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
@@ -79,7 +79,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptDataTextDetails() {
         receiptDataRunnerTextDetails((data, includeTextDetails) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller
-                = client.beginExtractReceipt(getReceiptFileBufferData(), FILE_LENGTH, includeTextDetails,
+                = client.beginExtractReceipts(getReceiptFileBufferData(), FILE_LENGTH, includeTextDetails,
                 FormContentType.IMAGE_JPEG, null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
@@ -89,7 +89,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @Test
     void extractReceiptInvalidSourceUrl() {
         receiptInvalidSourceUrlRunner((sourceUrl) -> {
-            assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptFromUrl(sourceUrl).getSyncPoller());
+            assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptsFromUrl(sourceUrl).getSyncPoller());
         });
     }
 }

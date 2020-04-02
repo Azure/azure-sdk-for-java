@@ -7,6 +7,7 @@
 Fork and clone https://github.com/Azure/autorest.java 
 git checkout v4
 git submodule update --init --recursive
+mvn package -Dlocal
 npm install
 npm install -g autorest
 ```
@@ -29,4 +30,5 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
+context-client-method-parameter: true
 ```

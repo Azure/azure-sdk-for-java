@@ -10,21 +10,25 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-
 /**
  * Sample for extracting receipt information using file source URL.
  */
 public class ExtractPrebuiltReceiptAsync {
+    /**
+     * Sample for extracting receipt information using input stream.
+     *
+     * @param args Unused. Arguments to the program.
+     */
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
-        final FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
+        FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceiptFromUrl(receiptUrl);
+            client.beginExtractReceiptsFromUrl(receiptUrl);
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller
             .last()

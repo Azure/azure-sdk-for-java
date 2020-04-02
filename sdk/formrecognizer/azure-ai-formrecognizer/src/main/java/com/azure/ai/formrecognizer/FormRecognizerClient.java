@@ -47,8 +47,8 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceiptFromUrl(String sourceUrl) {
-        return beginExtractReceiptFromUrl(sourceUrl, false, null);
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceiptsFromUrl(String sourceUrl) {
+        return beginExtractReceiptsFromUrl(sourceUrl, false, null);
     }
 
     /**
@@ -66,12 +66,12 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
-        beginExtractReceiptFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
-        return client.beginExtractReceiptFromUrl(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
+        beginExtractReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
+        return client.beginExtractReceiptsFromUrl(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
     }
 
     /**
-     * Detects and extracts data from the provided document data using optical character recognition (OCR) 
+     * Detects and extracts data from the provided document data using optical character recognition (OCR)
      * and a prebuilt trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
@@ -84,12 +84,12 @@ public final class FormRecognizerClient {
      * been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
-        beginExtractReceipt(InputStream data, long length, FormContentType formContentType) {
-        return beginExtractReceipt(data, length, formContentType, false, null);
+        beginExtractReceipts(InputStream data, long length, FormContentType formContentType) {
+        return beginExtractReceipts(data, length, formContentType, false, null);
     }
 
     /**
-     * Detects and extracts data from the providedd document data using optical character recognition (OCR) 
+     * Detects and extracts data from the providedd document data using optical character recognition (OCR)
      * and a prebuilt trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
@@ -105,11 +105,11 @@ public final class FormRecognizerClient {
      * been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
-        beginExtractReceipt(InputStream data, long length, FormContentType formContentType, boolean includeTextDetails,
-                        Duration pollInterval) {
+        beginExtractReceipts(InputStream data, long length, FormContentType formContentType, boolean includeTextDetails,
+                         Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
-        return client.beginExtractReceipt(buffer, length, includeTextDetails, formContentType, pollInterval)
+        return client.beginExtractReceipts(buffer, length, includeTextDetails, formContentType, pollInterval)
             .getSyncPoller();
     }
 }

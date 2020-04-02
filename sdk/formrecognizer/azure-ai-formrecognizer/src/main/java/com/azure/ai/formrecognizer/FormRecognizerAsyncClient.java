@@ -77,8 +77,8 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceiptFromUrl(String sourceUrl) {
-        return beginExtractReceiptFromUrl(sourceUrl, false, null);
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceiptsFromUrl(String sourceUrl) {
+        return beginExtractReceiptsFromUrl(sourceUrl, false, null);
     }
 
     /**
@@ -96,14 +96,15 @@ public final class FormRecognizerAsyncClient {
      * been cancelled.
      */
     public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>
-        beginExtractReceiptFromUrl(String sourceUrl, boolean includeTextDetails,
-                               Duration pollInterval) {
+        beginExtractReceiptsFromUrl(String sourceUrl, boolean includeTextDetails,
+                                Duration pollInterval) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
         return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
             receiptAnalyzeActivationOperation(sourceUrl, includeTextDetails),
             extractReceiptPollOperation(),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (activationResponse, context) -> monoError(logger,
+                new RuntimeException("Cancellation is not supported")),
             fetchExtractReceiptResult(includeTextDetails));
     }
 
@@ -120,9 +121,9 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        return beginExtractReceipt(data, length, false, formContentType, null);
+        return beginExtractReceipts(data, length, false, formContentType, null);
     }
 
     /**
@@ -141,17 +142,19 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipts(
         Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
         Duration pollInterval) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(length, "'length' is required and cannot be null.");
+        Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
         return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
             receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
             extractReceiptPollOperation(),
-            (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
+            (activationResponse, context) -> monoError(logger,
+                new RuntimeException("Cancellation is not supported")),
             fetchExtractReceiptResult(includeTextDetails));
     }
 

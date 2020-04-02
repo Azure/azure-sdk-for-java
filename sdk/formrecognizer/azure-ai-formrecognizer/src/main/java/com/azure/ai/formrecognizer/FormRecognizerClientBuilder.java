@@ -45,6 +45,7 @@ import java.util.Objects;
  * {@link #apiKey(AzureKeyCredential)} gives
  * the builder access credential.
  * </p>
+ *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
@@ -159,6 +160,8 @@ public final class FormRecognizerClientBuilder {
 
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
+            policies.add(new AddDatePolicy());
+
             // Authentications
             if (credential != null) {
                 policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
@@ -172,7 +175,6 @@ public final class FormRecognizerClientBuilder {
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-            policies.add(new AddDatePolicy());
             policies.add(new HttpLoggingPolicy(httpLogOptions));
 
             pipeline = new HttpPipelineBuilder()

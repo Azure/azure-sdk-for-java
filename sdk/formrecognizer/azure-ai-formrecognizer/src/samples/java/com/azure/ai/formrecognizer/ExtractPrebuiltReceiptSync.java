@@ -31,7 +31,7 @@ public class ExtractPrebuiltReceiptSync {
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
 
-        final FormRecognizerClient client = new FormRecognizerClientBuilder()
+        FormRecognizerClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
@@ -41,7 +41,7 @@ public class ExtractPrebuiltReceiptSync {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceipt(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
+            client.beginExtractReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
                 Duration.ofSeconds(5));
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();

@@ -14,8 +14,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 /**
  * A builder for creating a new instance of the FormRecognizerClient type.
  */
-@ServiceClientBuilder(serviceClients = FormRecognizerClientImpl.class)
+@ServiceClientBuilder(serviceClients = {FormRecognizerClientImpl.class})
 public final class FormRecognizerClientImplBuilder {
+
     /*
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
      */
