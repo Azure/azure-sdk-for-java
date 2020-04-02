@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.concurrent.Callable;
 
 /**
  * The type Cosmos async database response.

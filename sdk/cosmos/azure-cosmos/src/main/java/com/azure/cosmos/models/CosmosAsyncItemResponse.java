@@ -14,7 +14,6 @@ import java.time.Duration;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 /**
  * The type Cosmos async item response. This contains the item and response methods
