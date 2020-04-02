@@ -1,4 +1,4 @@
-# Azure Core JDK HttpClient library for Java
+# Azure Core JDK HTTP client library for Java
 
 This is an azure-core HTTP client that makes use of the asynchronous HttpClient that was made generally available as 
 part of JDK 11. 
@@ -32,11 +32,11 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create an HttpClient using a connection timeout of 60 seconds and a read timeout of 120 seconds.
+Create an HttpClient using a connection timeout of 60 seconds.
 
 <!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L23-L23 -->
 ```java
-HttpClient client = new JdkAsyncHttpClientBuilder().build();
+HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
