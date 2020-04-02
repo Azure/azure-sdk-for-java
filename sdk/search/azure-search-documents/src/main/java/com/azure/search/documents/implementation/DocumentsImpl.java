@@ -35,6 +35,7 @@ import com.azure.search.documents.models.IndexBatchBase;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SearchOptions;
@@ -242,7 +243,7 @@ public final class DocumentsImpl {
         if (searchOptions != null) {
             queryType = searchOptions.getQueryType();
         }
-        List<String> scoringParameters = null;
+        List<ScoringParameter> scoringParameters = null;
         if (searchOptions != null) {
             scoringParameters = searchOptions.getScoringParameters();
         }
@@ -405,7 +406,7 @@ public final class DocumentsImpl {
         }
         Boolean useFuzzyMatching = null;
         if (suggestOptions != null) {
-            useFuzzyMatching = suggestOptions.isUseFuzzyMatching();
+            useFuzzyMatching = suggestOptions.useFuzzyMatching();
         }
         String highlightPostTag = null;
         if (suggestOptions != null) {
@@ -571,7 +572,7 @@ public final class DocumentsImpl {
         }
         Boolean useFuzzyMatching = null;
         if (autocompleteOptions != null) {
-            useFuzzyMatching = autocompleteOptions.isUseFuzzyMatching();
+            useFuzzyMatching = autocompleteOptions.useFuzzyMatching();
         }
         String highlightPostTag = null;
         if (autocompleteOptions != null) {

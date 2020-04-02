@@ -34,7 +34,7 @@ public class ReceiveMessageBatchSyncSample {
 
         ServiceBusReceiverClient receiverClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName("<<queue-name>>")
             .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildClient();

@@ -20,14 +20,14 @@ public class SendMessageAsyncSample {
         String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
             + "SharedAccessKey={key}";
 
-        // Create a Queue or Topic in that Service Bus namespace.
-        String queueOrTopicName = "queueOrTopicName";
+        // Create a Queue in that Service Bus namespace.
+        String queueName = "queueName";
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildSenderClientBuilder()
-            .entityName(queueOrTopicName)
+            .sender()
+            .queueName(queueName)
             .buildAsyncClient();
 
         // Create a message to send.

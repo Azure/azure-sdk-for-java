@@ -29,8 +29,8 @@
 /sdk/e2e/                                           @jianghaolu @g2vinay
 
 # Management Plane
-/**/resource-manager/                               @yaohaizh
-/sdk/**/azure-mgmt-*/                               @yaohaizh
+/sdk/management/                                    @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########
 # Eng Sys

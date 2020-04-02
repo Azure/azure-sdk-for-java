@@ -568,6 +568,7 @@ class FileAPITest extends APISpec {
         !properties.getMetadata() // new file does not have default metadata associated
         !properties.getAccessTierChangeTime()
         !properties.getEncryptionKeySha256()
+        !properties.isDirectory()
 
     }
 

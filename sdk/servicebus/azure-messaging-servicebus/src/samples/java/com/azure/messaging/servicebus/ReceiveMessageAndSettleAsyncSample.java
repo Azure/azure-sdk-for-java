@@ -5,7 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -14,7 +13,6 @@ import java.time.Duration;
  * it. Settling of message include accept, defer and abandon the message as needed.
  */
 public class ReceiveMessageAndSettleAsyncSample {
-    private static final Duration TIMEOUT = Duration.ofSeconds(15);
 
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
@@ -38,7 +36,7 @@ public class ReceiveMessageAndSettleAsyncSample {
 
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildReceiverClientBuilder()
+            .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .isLockAutoRenewed(true)
             .queueName("<<queue-name>>")
@@ -48,67 +46,20 @@ public class ReceiveMessageAndSettleAsyncSample {
 
         Disposable subscription = receiverAsyncClient.receive()
             .map(message -> {
-            // A sample of processing the message followed by a persisting the message logic.
-            if (failed) {
-                return receiverAsyncClient.abandon(message).then();
-            }
-                return receiverAsyncClient.complete(message).then();
+                boolean messageProcessed =  false;
+                // Process the message here.
+                // Change the `messageProcessed` according to you business logic and if you are able to process the
+                // message successfully.
 
-            return Mono.empty();
-        }).onErrorContinue((message, error) -> {
-            // Handle the message that caused the error while processing above. In this case, we'll abandon it and let someone else handle it.
-
-        }).subscribe();
-
-        /*Disposable subscription = receiverAsyncClient.receive()
-            .subscribe(received -> {
-                Instant latest = Instant.MIN;
-
-                // Simulate some sort of long processing. Sleep should not be used in production system.
-                for (int i = 0; i < 2; i++) {
-                    try {
-                        TimeUnit.SECONDS.sleep(5);
-                    } catch (InterruptedException error) {
-                        System.out.println("Error occurred while sleeping: " + error);
-                    }
-                    latest = received.getLockedUntil();
-                    System.out.println("Message Locked Until " + latest);
+                if (messageProcessed) {
+                    System.out.println("Completing message ...");
+                    return receiverAsyncClient.complete(message).then();
+                } else {
+                    System.out.println("Abandoning message ...");
+                    return receiverAsyncClient.abandon(message).then();
                 }
+            }).subscribe();
 
-                // This is application business logic to take action based on some application logic.
-                // For demo purpose we are using a property for application logic.
-                String actionToTake = null;
-
-                String payload = new String(received.getBody());
-
-                if (payload.contains("complete")) {
-                    actionToTake = "COMPLETE";
-                } else if (payload.contains("abandon")) {
-                    actionToTake = "ABANDON";
-                } else if (payload.contains("defer")) {
-                    actionToTake = "DEFER";
-                }
-
-                switch (actionToTake) {
-                    case "COMPLETE":
-                        System.out.println("Completing message.");
-                        receiverAsyncClient.complete(received).block(TIMEOUT);
-                        break;
-                    case "ABANDON":
-                        System.out.println("Abandon message.");
-                        receiverAsyncClient.abandon(received).block(TIMEOUT);
-                        break;
-                    case "DEFER":
-                        System.out.println("Defer message.");
-                        receiverAsyncClient.defer(received).block(TIMEOUT);
-                        break;
-                    default:
-                        System.out.println("Deadletter message.");
-                        receiverAsyncClient.deadLetter(received).block(TIMEOUT);
-                }
-            });*/
-
-        // Receiving messages from the queue for a duration of 20 seconds.
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         try {
             Thread.sleep(Duration.ofSeconds(60).toMillis());

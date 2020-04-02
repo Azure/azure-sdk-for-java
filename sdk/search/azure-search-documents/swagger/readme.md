@@ -366,4 +366,66 @@ directive:
         return $
         .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternAnalyzerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternAnalyzerDeserializer\.class)")
         .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
+
+    # Changed scoringParamters type from String to ScoringParamters
+    - from:
+      - SearchOptions.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
+        .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
+        .replace(/(public SearchOptions setScoringParameters\(String\.\.\. scoringParameters\) \{)/g, "public SearchOptions setScoringParameters(ScoringParameter... scoringParameters) {")
+
+    # Changed scoringParamters type from String to ScoringParamters in DocumentsImpl
+    - from:
+      - DocumentsImpl.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(import com\.azure\.search\.documents\.models\.RequestOptions\;)/g, "$1\nimport com.azure.search.documents.models.ScoringParameter;")
+        .replace(/(List\<String\> scoringParameters \= null\;)/g, "List<ScoringParameter> scoringParameters = null;")
+        .replace()
+
+    # Changed scoringParamters type from String to ScoringParamters in SearchRequest
+    - from:
+      - SearchRequest.java
+      where: $
+      transform: >-
+        return $
+         .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
+         .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
+         .replace(/(public SearchRequest setScoringParameters\(List\<String\> scoringParameters\) \{)/g, "public SearchRequest setScoringParameters(List<ScoringParameter> scoringParameters) {")
+
+    # Changed the boolean field name
+    - from:
+      - MagnitudeScoringParameters.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isShouldBoostBeyondRangeByConstant\(\) \{/g, "public Boolean shouldBoostBeyondRangeByConstant() {")
+
+    - from:
+      - SuggestOptions.java
+      - AutocompleteOptions.java
+      - AutocompleteRequest.java
+      - SuggestRequest.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isUseFuzzyMatching\(\) \{/g, "public Boolean useFuzzyMatching() {")
+ 
+    - from:
+      - WordDelimiterTokenFilter.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isGenerate(.*)\(\) \{/g, "public Boolean generate$1() {")
+
+    - from:
+      - OcrSkill.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isShouldDetectOrientation\(\) \{/g, "public Boolean shouldDetectOrientation() {")
 ```

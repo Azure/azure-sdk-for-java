@@ -10,7 +10,7 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.models.SqlParameterList;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
@@ -26,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -215,7 +216,7 @@ implements IDocumentQueryExecutionContext<T> {
 
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
-            SqlParameterList params = querySpec.getParameters();
+            List<SqlParameter> params = querySpec.getParameters();
             // SqlQuerySpec::getParameters is guaranteed to return non-null SqlParameterList list
             // hence no null check for params is necessary.
             Utils.checkStateOrThrow(params.size() > 0, "query.parameters",

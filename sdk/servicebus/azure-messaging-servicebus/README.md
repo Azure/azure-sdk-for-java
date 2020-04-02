@@ -86,14 +86,17 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L59-L71 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L60-L70 -->
 ```java
-DefaultAzureCredential credential = new DefaultAzureCredentialBuilder()
+ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    .clientId("<< APPLICATION (CLIENT) ID >>")
+    .clientSecret("<< APPLICATION SECRET >>")
+    .tenantId("<< TENANT ID >>")
     .build();
 
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .credential("<<fully-qualified-namespace>>", credential)
-    .buildReceiverClientBuilder()
+    .receiver()
     .queueName("<<queue-name>>")
     .buildAsyncClient();
 ```
@@ -123,37 +126,37 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ca
 
 The snippet below creates an asynchronous Service Bus sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L22-L27 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L23-L28 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildSenderClientBuilder()
-    .entityName("<< QUEUE OR TOPIC NAME >>")
+    .sender()
+    .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
 ```
 
 The snippet below creates an asynchronous Service Bus receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L34-L39 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L35-L40 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString(connectionString)
-    .buildReceiverClientBuilder()
+    .receiver()
     .queueName("<< QUEUE NAME >>")
     .buildAsyncClient();
 ```
 
 The snippet below creates an asynchronous Service Bus receiver with default token credential.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L46-L52 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L47-L53 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .credential("<<fully-qualified-namespace>>", credential)
-    .buildReceiverClientBuilder()
+    .receiver()
     .queueName("<<queue-name>>")
     .buildAsyncClient();
 ```

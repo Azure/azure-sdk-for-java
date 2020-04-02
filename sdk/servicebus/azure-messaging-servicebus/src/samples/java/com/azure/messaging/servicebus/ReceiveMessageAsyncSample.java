@@ -33,7 +33,7 @@ public class ReceiveMessageAsyncSample {
         // inside the Service Bus namespace.
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 

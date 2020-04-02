@@ -336,6 +336,11 @@
             <configuration>
               <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
           <execution>
@@ -361,6 +366,11 @@
                   </limits>
                 </rule>
               </rules>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
@@ -969,6 +979,18 @@
                 --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.cryptography=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys=ALL-UNNAMED
 
+                <!-- Cosmos module need this -->
+                --add-opens com.azure.cosmos/com.azure.cosmos=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.caches=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.directconnectivity=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.query=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.models=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
+                --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+
                 <!-- AMQP tests fail without this. ArgumentCaptor requires reflection. -->
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation=ALL-UNNAMED
                 --add-opens com.azure.core.amqp/com.azure.core.amqp.implementation.handler=ALL-UNNAMED
@@ -1266,7 +1288,7 @@
           <plugin>
             <groupId>net.jonathangiles.tools</groupId>
             <artifactId>dependencyChecker-maven-plugin</artifactId>
-            <version>1.0.3</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
+            <version>1.0.4</version> <!-- {x-version-update;net.jonathangiles.tools:dependencyChecker-maven-plugin;external_dependency} -->
             <inherited>false</inherited>
             <executions>
               <execution>

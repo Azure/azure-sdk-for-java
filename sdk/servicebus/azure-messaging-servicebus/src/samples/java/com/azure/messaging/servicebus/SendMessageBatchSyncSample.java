@@ -32,13 +32,13 @@ public class SendMessageBatchSyncSample {
             + "SharedAccessKey={key}";
 
         // Create a Queue or Topic in that Service Bus namespace.
-        String queueOrTopicName = "queueOrTopicName";
+        String queueName = "queueName";
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderClient senderClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildSenderClientBuilder()
-            .entityName(queueOrTopicName)
+            .sender()
+            .queueName(queueName)
             .buildClient();
 
         // Creates an ServiceBusMessageBatch where the ServiceBus.

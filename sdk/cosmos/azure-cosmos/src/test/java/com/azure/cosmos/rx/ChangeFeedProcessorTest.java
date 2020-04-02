@@ -15,7 +15,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Utils;
@@ -38,6 +37,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -264,8 +264,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     param.setName("@PartitionLeasePrefix");
                     param.setValue(leasePrefix);
                     SqlQuerySpec querySpec = new SqlQuerySpec(
-                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-                        new SqlParameterList(param));
+                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
                     FeedOptions feedOptions = new FeedOptions();
 
