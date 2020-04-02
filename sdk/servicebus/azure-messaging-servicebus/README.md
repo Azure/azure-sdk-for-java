@@ -13,7 +13,6 @@ have to be online at the same time.
 - Topics and subscriptions: Enable 1:n relationships between publishers and subscribers.
 - Message sessions. Implement work-flows that require message ordering or message deferral.
 
-
 [Source code][source_code] | [API reference documentation][api_documentation]  | [Samples][sample_examples]
 
 ## Table of contents
@@ -86,24 +85,27 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L60-L70 -->
-```java
-ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-    .clientId("<< APPLICATION (CLIENT) ID >>")
-    .clientSecret("<< APPLICATION SECRET >>")
-    .tenantId("<< TENANT ID >>")
-    .build();
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
+Use the returned token credential to authenticate the client:
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L47-L53 -->
+```java
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .build();
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .credential("<<fully-qualified-namespace>>", credential)
     .receiver()
     .queueName("<<queue-name>>")
     .buildAsyncClient();
 ```
+##### Service Bus Roles
 
 When using Azure Active Directory, your principal must be assigned a role which allows access to Service Bus, such
-as the `Azure Service Bus Data Owner` role. For more information about using Azure Active Directory authorization
-with Service Bus, please refer to [the associated documentation][aad_authorization].
+as the `Azure Service Bus Data Owner`, `Azure Service Bus Data Sender` and `Azure Service Bus Data Receiver` 
+[role][servicebus_roles]. 
+For more information about using Azure Active Directory authorization with Service Bus, please refer to 
+[the associated documentation][aad_authorization].
 
 ## Key concepts
 
@@ -149,17 +151,8 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 ```
 
 The snippet below creates an asynchronous Service Bus receiver with default token credential.
+??
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L47-L53 -->
-```java
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .credential("<<fully-qualified-namespace>>", credential)
-    .receiver()
-    .queueName("<<queue-name>>")
-    .buildAsyncClient();
-```
 ### Send Message Examples
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
@@ -270,6 +263,7 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[servicebus_roles]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [samples_readme]: ./src/samples/README.md
 [sample_examples]: ./src/samples/java/com/azure/messaging/servicebus/
 [source_code]: ./
