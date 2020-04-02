@@ -159,9 +159,8 @@ public final class FormRecognizerClientBuilder {
             policies.add(new AddHeadersPolicy(headers));
 
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
+            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
             policies.add(new AddDatePolicy());
-
             // Authentications
             if (credential != null) {
                 policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
@@ -170,8 +169,6 @@ public final class FormRecognizerClientBuilder {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
-
-            policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
 
