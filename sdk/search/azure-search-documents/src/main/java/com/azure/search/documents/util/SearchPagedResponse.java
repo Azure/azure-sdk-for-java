@@ -163,7 +163,8 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
 
     @Override
     public String getContinuationToken() {
-        String decodedToken = new String(Base64.getDecoder().decode(super.getContinuationToken()));
+        String decodedToken = new String(Base64.getDecoder().decode(super.getContinuationToken()),
+            StandardCharsets.UTF_8);
         Map<String, String> fieldMap = new HashMap<>();
         try {
             fieldMap = new JacksonAdapter().deserialize(decodedToken, Map.class, SerializerEncoding.JSON);
