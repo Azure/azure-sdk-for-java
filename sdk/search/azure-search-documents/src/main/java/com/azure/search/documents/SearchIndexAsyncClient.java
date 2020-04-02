@@ -41,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.function.Function;
 
@@ -653,8 +654,7 @@ public final class SearchIndexAsyncClient {
         try {
             return new JacksonAdapter().deserialize(continuationToken, SearchRequest.class, SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize the token to search request"
-                + continuationToken));
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
