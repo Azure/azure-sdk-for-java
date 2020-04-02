@@ -41,7 +41,7 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
     private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ALL = "ALL";
     private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING = "rolling";
-    private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "NettyAsyncHttpClient";
+    private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "netty";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING = "rolling";
     public static final int PLATFORM_COUNT = 6;
@@ -150,16 +150,20 @@ public abstract class TestBase implements BeforeEachCallback {
      * Get test arguments need to run for the test framework based on the service version.
      *
      * @param serviceVersionList The service version argument for the parameterized tests.
-     * @param rollingServiceVersion Indicates whether the service version parameters need to rolling.
+     * @param serviceVersionEnv Indicates whether the service version parameters need to rolling.
      * @return Stream of arguments for parameterized test framework.
      */
-    public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList,
-        boolean rollingServiceVersion) {
+    public static Stream<Arguments> getArgumentsFromServiceVersion(
+        List<ServiceVersion> serviceVersionList,
+        //List<ServiceVersion> serviceVersionList,
+        //boolean rollingServiceVersion
+        String serviceVersionEnv) {
         List<Arguments> argumentsList = new ArrayList<>();
         int serviceVersionCount = serviceVersionList.size();
         List<HttpClient> httpClientList = getHttpClients();
         int httpClientCount = httpClientList.size();
         boolean rollingHttpClient = HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING);
+        boolean rollingServiceVersion = serviceVersionEnv.equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
         for (ServiceVersion s: serviceVersionList) {
             for (HttpClient h: httpClientList) {
                 argumentsList.add(Arguments.of(h, s));
@@ -215,7 +219,8 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     private static boolean shouldClientBeTested(HttpClient client) {
         if (HTTP_CLIENT_FROM_ENV.trim().toLowerCase(Locale.ROOT).contains("netty")) {
-            return client.getClass().getSimpleName().equals(AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY);
+            return client.getClass().getSimpleName().toLowerCase(Locale.ROOT).contains(
+                AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY.toLowerCase(Locale.ROOT));
         }
         if (HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ALL)
             || HTTP_CLIENT_FROM_ENV.equalsIgnoreCase(AZURE_TEST_HTTP_CLIENTS_VALUE_ROLLING)) {

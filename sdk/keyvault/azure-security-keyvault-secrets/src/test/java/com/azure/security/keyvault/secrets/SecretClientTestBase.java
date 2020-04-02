@@ -20,9 +20,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
+
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -443,13 +446,10 @@ public abstract class SecretClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        SecretServiceVersion[] filteredKeyServiceVersion =
-            Arrays.stream(SecretServiceVersion.values())
-                .filter(SecretClientTestBase::shouldServiceVersionBeTested)
-                .toArray(SecretServiceVersion[]::new);
-        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV != null && SERVICE_VERSION_FROM_ENV
-            .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
-        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
+        List<ServiceVersion> serviceVersions = Arrays.stream(SecretServiceVersion.values())
+            .filter(SecretClientTestBase::shouldServiceVersionBeTested).collect(Collectors.toList());
+
+        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
     }
 
     /**

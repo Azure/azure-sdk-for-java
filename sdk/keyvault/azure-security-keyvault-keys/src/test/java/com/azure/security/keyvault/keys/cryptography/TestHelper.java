@@ -7,8 +7,13 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.azure.core.util.ServiceVersion;
+import com.azure.security.keyvault.keys.KeyClientTestBase;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
@@ -32,12 +37,10 @@ public class TestHelper {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        CryptographyServiceVersion[] filteredKeyServiceVersion =
-            Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                .toArray(CryptographyServiceVersion[]::new);
-        boolean rollingServiceVersion = SERVICE_VERSION_FROM_ENV != null && SERVICE_VERSION_FROM_ENV
-            .equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
-        return getArgumentsFromServiceVersion(Arrays.asList(filteredKeyServiceVersion), rollingServiceVersion);
+        List<ServiceVersion> serviceVersions = Arrays.stream(CryptographyServiceVersion.values())
+            .filter(TestHelper::shouldServiceVersionBeTested).collect(Collectors.toList());
+
+        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
     }
 
     /**
