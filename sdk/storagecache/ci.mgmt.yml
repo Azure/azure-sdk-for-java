@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/storagecache/
-    exclude:
-      - sdk/storagecache/azure
-      - sdk/storagecache/microsoft-azure
-      - sdk/storagecache/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/storagecache/
-    exclude:
-      - sdk/storagecache/azure
-      - sdk/storagecache/microsoft-azure
-      - sdk/storagecache/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
