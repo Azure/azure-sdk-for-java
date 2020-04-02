@@ -29,6 +29,7 @@ public final class JdkHttpClientProxySelector extends ProxySelector {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Proxy> select(URI uri) {
         /*
          * If the host of the URI matches the nonProxyHostsPattern return no options for proxying, otherwise return the
@@ -36,7 +37,8 @@ public final class JdkHttpClientProxySelector extends ProxySelector {
          */
         return (nonProxyHostsPattern == null || !nonProxyHostsPattern.matcher(uri.getHost()).matches())
             ? Collections.singletonList(new Proxy(proxyType, proxyAddress))
-            : null;
+            // It is required to return empty list, null will result in NPE.
+            : Collections.EMPTY_LIST;
     }
 
     @Override

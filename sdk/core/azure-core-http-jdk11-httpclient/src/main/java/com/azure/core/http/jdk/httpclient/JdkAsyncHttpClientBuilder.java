@@ -7,11 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.Proxy;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -21,8 +19,6 @@ import java.util.concurrent.Executor;
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
  */
 public class JdkAsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClientBuilder.class);
-
     private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
 
     private java.net.http.HttpClient.Builder httpClientBuilder;
@@ -41,6 +37,7 @@ public class JdkAsyncHttpClientBuilder {
      * Creates JdkAsyncHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
      *
      * @param httpClientBuilder the HttpClient builder to use
+     * @throws NullPointerException if {@code httpClientBuilder} is null
      */
     public JdkAsyncHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
         this.httpClientBuilder = Objects.requireNonNull(httpClientBuilder, "'httpClientBuilder' cannot be null.");
@@ -53,7 +50,8 @@ public class JdkAsyncHttpClientBuilder {
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
-     * @return the updated Jdk11AsyncHttpClientBuilder object
+     * @return the updated JdkAsyncHttpClientBuilder object
+     * @throws NullPointerException if {@code executor} is null
      */
     public JdkAsyncHttpClientBuilder executor(Executor executor) {
         this.executor = Objects.requireNonNull(executor, "executor can not be null");
@@ -140,7 +138,8 @@ public class JdkAsyncHttpClientBuilder {
                 httpClientBuilder.authenticator(new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(proxyOptions.getUsername(), proxyOptions.getPassword().toCharArray());
+                        return new PasswordAuthentication(buildProxyOptions.getUsername(),
+                            buildProxyOptions.getPassword().toCharArray());
                     }
                 });
             }

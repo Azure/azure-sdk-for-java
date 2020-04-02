@@ -7,6 +7,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder;
 
+/**
+ * A {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
+ */
 public class JdkHttpClientProvider implements HttpClientProvider {
 
     @Override
