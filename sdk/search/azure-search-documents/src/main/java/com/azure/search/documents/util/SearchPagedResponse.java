@@ -16,7 +16,6 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.models.SearchResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -24,7 +23,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +42,7 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
-    private SearchRequest nextParameters;
+    private final String nextParameters;
 
     /**
      * Constructor
@@ -69,6 +67,7 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
         this.facets = documentsResult.getFacets();
         this.count = documentsResult.getCount();
         this.coverage = documentsResult.getCoverage();
+        this.nextParameters = getNextPageParameters(documentsResult);
     }
 
     private static String setContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
@@ -77,30 +76,26 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
         if (documentsResult == null) {
             return null;
         }
-        String nextParameters;
-        this.nextParameters = getNextPageParameters(documentsResult);
-        try {
-            nextParameters = new JacksonAdapter().serialize(this.nextParameters,
-                SerializerEncoding.JSON);
-        } catch (IOException ex) {
-            throw new RuntimeException("Failed to serialize the search request.");
-        }
+
         ObjectNode tokenJson = new ObjectMapper().createObjectNode();
         tokenJson.put("apiVersion", serviceVersion.getVersion());
         tokenJson.put("nextLink", documentsResult.getNextLink());
-        tokenJson.put("nextPageParameters", nextParameters);
+        tokenJson.put("nextPageParameters", getNextPageParameters(documentsResult));
 
         return Base64.getEncoder().encodeToString(tokenJson.toString().getBytes(StandardCharsets.UTF_8));
     }
 
-    private static SearchRequest getNextPageParameters(SearchDocumentsResult result) {
+    private static String getNextPageParameters(SearchDocumentsResult result) {
         if (CoreUtils.isNullOrEmpty(result.getNextLink())
             || result.getNextPageParameters() == null
             || result.getNextPageParameters().getSkip() == null) {
             return null;
         }
-
-        return result.getNextPageParameters();
+        try {
+            return new JacksonAdapter().serialize(result.getNextPageParameters(), SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to serialize the search request.");
+        }
     }
 
     /**
@@ -165,6 +160,6 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
 
     @Override
     public String getContinuationToken() {
-        return this.nextParameters;
+        return nextParameters;
     }
 }
