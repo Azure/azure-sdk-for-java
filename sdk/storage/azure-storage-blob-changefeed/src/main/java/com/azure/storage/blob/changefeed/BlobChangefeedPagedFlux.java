@@ -75,16 +75,25 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
         preferredPageSize = Integer.min(preferredPageSize, defaultPageSize);
 
         return changefeed.getEvents()
-            /* Window the events to the page size. */
+            /* Window the events to the page size. This takes the Flux<BlobChangefeedEventWrapper> and
+               transforms it into a Flux<Flux<BlobChangefeedEventWrapper>>, where the internal Fluxes can have at most
+               preferredPageSize elements. */
             .window(preferredPageSize)
-            /* Convert the BlobChangefeedEventWrappers into BlobChangefeedEvents along with the end cursor. */
+            /* Convert the BlobChangefeedEventWrappers into BlobChangefeedEvents, and bundle them up with the last
+               element's cursor. */
             .flatMap(eventWrappers -> {
-                Flux<BlobChangefeedEventWrapper> c1 = eventWrappers.cache();
-                Mono<BlobChangefeedCursor> c = c1.last()
+                /* 1. cache the Flux to turn it into a HotFlux so we can subscribe to it multiple times. */
+                Flux<BlobChangefeedEventWrapper> cachedEventWrappers = eventWrappers.cache();
+                /* 2. Get the last element in the flux and grab it's cursor. This will be the continuationToken
+                      returned to the user if they want to get the next page. */
+                Mono<BlobChangefeedCursor> c = cachedEventWrappers.last()
                     .map(BlobChangefeedEventWrapper::getCursor);
-                Mono<List<BlobChangefeedEvent>> e = c1
+                /* 3. Map all the BlobChangefeedEventWrapper to just the BlobChangefeedEvents, and turn them into
+                      a list. */
+                Mono<List<BlobChangefeedEvent>> e = cachedEventWrappers
                     .map(BlobChangefeedEventWrapper::getEvent)
                     .collectList();
+                /* Zip them together into a tuple to construct a BlobChangefeedPagedResponse. */
                 return Mono.zip(e, c);
             })
             .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
