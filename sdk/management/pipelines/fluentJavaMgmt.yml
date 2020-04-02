@@ -68,10 +68,16 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - bash: |
-          cd eng/code-quality-reports
-          mvn install
-          cd ../..
+      - task: Maven@3
+        inputs:
+          mavenPomFile: eng/code-quality-reports/pom.xml
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
         displayName: 'install sdk-build-tools'
 
       - task: Maven@3
