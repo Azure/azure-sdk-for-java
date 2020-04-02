@@ -48,6 +48,7 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final List<String> PLATFORM_LIST = buildPlatformList();
     private static final String HTTP_CLIENT_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
+    private static final List<Arguments> ARGUMENTS_LIST = new ArrayList<>();
 
     private static TestMode testMode;
 
@@ -155,7 +156,9 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList,
         String serviceVersionEnv) {
-        List<Arguments> argumentsList = new ArrayList<>();
+        if (!ARGUMENTS_LIST.isEmpty()) {
+            return ARGUMENTS_LIST.stream();
+        }
         int serviceVersionCount = serviceVersionList.size();
         List<HttpClient> httpClientList = getHttpClients();
         int httpClientCount = httpClientList.size();
@@ -164,24 +167,24 @@ public abstract class TestBase implements BeforeEachCallback {
             && serviceVersionEnv.equalsIgnoreCase(AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING);
         for (ServiceVersion s: serviceVersionList) {
             for (HttpClient h: httpClientList) {
-                argumentsList.add(Arguments.of(h, s));
+                ARGUMENTS_LIST.add(Arguments.of(h, s));
             }
         }
         int offset = getOffset();
         if (rollingServiceVersion && rollingHttpClient) {
-            return IntStream.range(0, argumentsList.size())
-                .filter(n -> n % PLATFORM_COUNT == offset % argumentsList.size())
-                .mapToObj(argumentsList::get);
+            return IntStream.range(0, ARGUMENTS_LIST.size())
+                .filter(n -> n % PLATFORM_COUNT == offset % ARGUMENTS_LIST.size())
+                .mapToObj(ARGUMENTS_LIST::get);
         } else if (rollingServiceVersion) {
-            return IntStream.range(0, argumentsList.size())
+            return IntStream.range(0, ARGUMENTS_LIST.size())
                 .filter(n -> (n / httpClientCount) % PLATFORM_COUNT == offset % serviceVersionCount)
-                .mapToObj(argumentsList::get);
+                .mapToObj(ARGUMENTS_LIST::get);
         } else if (rollingHttpClient) {
-            return IntStream.range(0, argumentsList.size())
+            return IntStream.range(0, ARGUMENTS_LIST.size())
                 .filter(n -> n % httpClientCount % PLATFORM_COUNT  == offset % httpClientCount)
-                .mapToObj(argumentsList::get);
+                .mapToObj(ARGUMENTS_LIST::get);
         }
-        return argumentsList.stream();
+        return ARGUMENTS_LIST.stream();
     }
 
     /**

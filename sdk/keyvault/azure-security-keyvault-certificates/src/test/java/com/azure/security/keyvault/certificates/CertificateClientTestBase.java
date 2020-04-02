@@ -63,6 +63,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     private static final String SERVICE_VERSION_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_CERTIFICATE_SERVICE_VERSIONS);
     private static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
+    private static Stream<Arguments> ARGUMENTS_STREAM;
 
     @Override
     protected String getTestName() {
@@ -615,10 +616,13 @@ public abstract class CertificateClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+        if (ARGUMENTS_STREAM != null) {
+            return ARGUMENTS_STREAM;
+        }
         List<ServiceVersion> serviceVersions = Arrays.stream(CertificateServiceVersion.values())
             .filter(CertificateClientTestBase::shouldServiceVersionBeTested).collect(Collectors.toList());
-
-        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
+        ARGUMENTS_STREAM = getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
+        return ARGUMENTS_STREAM;
     }
 
     /**
