@@ -4,41 +4,38 @@
 
 This repository is for active development of the Azure SDK for Java. For consumers of the SDK we recommend visiting our [public developer docs](https://docs.microsoft.com/en-us/java/azure/) or our versioned [developer docs](https://azure.github.io/azure-sdk-for-java).
 
-### Important
-
-The Azure SDK team is pleased to make available the January 2020 client library General Availability (GA) release. We strongly recommend using the GA libraries in all production environments as these libraries are well tested and officially supported by Microsoft. More details, including installation instructions can be found here [here](https://azure.github.io/azure-sdk/releases/2020-01/java.html).
-
 ## Getting started
 
-To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk` directory.
+To get started with a specific service library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk` directory. For a list of all the services we support access our [list of all existing libraries](https://azure.github.io/azure-sdk/releases/latest/all/java.html). 
 
 For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
 
 ### Prerequisites
 
-Java 8 or later is required to use the January 2020 client libraries, otherwise Java 7 or later is required.
+Java 8 or later is required to use the new client libraries, otherwise Java 7 or later is required.
 
 ## Latest Release
 
 Each service might have a number of libraries available from each of the following categories:
 
 - [Client: New Releases](#Client-New-Releases)
-- [Client - Previous Versions](#Client-Previous-Versions)
+- [Client: Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
+
 
 ### Client: New Releases
 
-New wave of packages that were released in January 2020 client library as General Availability (GA) and several others that were released in **beta**. These libraries follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/azure-core_1.2.0/sdk/core/azure-core/README.md).
+New wave of packages that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md).
 
-These libraries can be easily identified by sdk/ folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
+These libraries can be easily identified by folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java-packages)
+You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java-packages). This list includes the most recent releases: both GA and preview.
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
 ### Client: Previous Versions
 
-Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the preview libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Stable library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the GA releases. They do however offer wider coverage of services.
+Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the GA releases. They do however offer wider coverage of services.
 
 ### Management
 
@@ -55,7 +52,7 @@ Libraries which enable you to provision specific resources. They are responsible
 ## Navigating the repository
 
 ### Master branch
-The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-GA-January-2020-Releases) for latest **GA** release.<br/>
+The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-New-Releases) for latest **GA** release.<br/>
 
 ### Release branches (Release tagging)
 
