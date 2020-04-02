@@ -82,7 +82,7 @@ class ServiceBusReceiverAsyncClientTest {
 
     private ServiceBusConnectionProcessor connectionProcessor;
     private ServiceBusReceiverAsyncClient consumer;
-    private ReceiveMessageOptions receiveOptions;
+    private ReceiverOptions receiveOptions;
     private MessageLockContainer messageContainer;
 
     @Mock
@@ -141,7 +141,7 @@ class ServiceBusReceiverAsyncClientTest {
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getRetry()));
 
-        receiveOptions = new ReceiveMessageOptions(false, ReceiveMode.PEEK_LOCK, PREFETCH, false,
+        receiveOptions = new ReceiverOptions(false, ReceiveMode.PEEK_LOCK, PREFETCH, false,
             Duration.ofSeconds(10));
 
         messageContainer = new MessageLockContainer();
@@ -226,7 +226,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompletes() {
         // Arrange
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(true, ReceiveMode.PEEK_LOCK,
+        final ReceiverOptions options = new ReceiverOptions(true, ReceiveMode.PEEK_LOCK,
             PREFETCH, false, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
@@ -280,7 +280,7 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receivesAndAutoCompleteWithoutLockToken() {
         // Arrange
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(true, ReceiveMode.PEEK_LOCK,
+        final ReceiverOptions options = new ReceiverOptions(true, ReceiveMode.PEEK_LOCK,
             PREFETCH, false, null);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
             NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
@@ -348,7 +348,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void completeInReceiveAndDeleteMode() {
-        final ReceiveMessageOptions options = new ReceiveMessageOptions(false,
+        final ReceiverOptions options = new ReceiverOptions(false,
             ReceiveMode.RECEIVE_AND_DELETE, PREFETCH, false, null);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
