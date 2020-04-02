@@ -42,7 +42,7 @@ public class ImageStorageProfile {
     private Boolean zoneResilient;
 
     /**
-     * Get the osDisk value.
+     * Get specifies information about the operating system disk used by the virtual machine. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
      *
      * @return the osDisk value
      */
@@ -51,7 +51,7 @@ public class ImageStorageProfile {
     }
 
     /**
-     * Set the osDisk value.
+     * Set specifies information about the operating system disk used by the virtual machine. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
      *
      * @param osDisk the osDisk value to set
      * @return the ImageStorageProfile object itself.
@@ -62,7 +62,7 @@ public class ImageStorageProfile {
     }
 
     /**
-     * Get the dataDisks value.
+     * Get specifies the parameters that are used to add a data disk to a virtual machine. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
      *
      * @return the dataDisks value
      */
@@ -71,7 +71,7 @@ public class ImageStorageProfile {
     }
 
     /**
-     * Set the dataDisks value.
+     * Set specifies the parameters that are used to add a data disk to a virtual machine. &lt;br&gt;&lt;br&gt; For more information about disks, see [About disks and VHDs for Azure virtual machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
      *
      * @param dataDisks the dataDisks value to set
      * @return the ImageStorageProfile object itself.
@@ -82,7 +82,7 @@ public class ImageStorageProfile {
     }
 
     /**
-     * Get the zoneResilient value.
+     * Get specifies whether an image is zone resilient or not. Default is false. Zone resilient images can be created only in regions that provide Zone Redundant Storage (ZRS).
      *
      * @return the zoneResilient value
      */
@@ -91,7 +91,7 @@ public class ImageStorageProfile {
     }
 
     /**
-     * Set the zoneResilient value.
+     * Set specifies whether an image is zone resilient or not. Default is false. Zone resilient images can be created only in regions that provide Zone Redundant Storage (ZRS).
      *
      * @param zoneResilient the zoneResilient value to set
      * @return the ImageStorageProfile object itself.

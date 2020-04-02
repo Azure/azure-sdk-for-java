@@ -62,7 +62,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     private VirtualMachineScaleSetIdentity identity;
 
     /**
-     * Get the sku value.
+     * Get the virtual machine scale set sku.
      *
      * @return the sku value
      */
@@ -71,7 +71,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the sku value.
+     * Set the virtual machine scale set sku.
      *
      * @param sku the sku value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
@@ -82,7 +82,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the plan value.
+     * Get the purchase plan when deploying a virtual machine scale set from VM Marketplace images.
      *
      * @return the plan value
      */
@@ -91,7 +91,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the plan value.
+     * Set the purchase plan when deploying a virtual machine scale set from VM Marketplace images.
      *
      * @param plan the plan value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
@@ -102,7 +102,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the upgradePolicy value.
+     * Get the upgrade policy.
      *
      * @return the upgradePolicy value
      */
@@ -111,7 +111,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the upgradePolicy value.
+     * Set the upgrade policy.
      *
      * @param upgradePolicy the upgradePolicy value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
@@ -122,7 +122,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the virtualMachineProfile value.
+     * Get the virtual machine profile.
      *
      * @return the virtualMachineProfile value
      */
@@ -131,7 +131,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the virtualMachineProfile value.
+     * Set the virtual machine profile.
      *
      * @param virtualMachineProfile the virtualMachineProfile value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
@@ -142,7 +142,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the overprovision value.
+     * Get specifies whether the Virtual Machine Scale Set should be overprovisioned.
      *
      * @return the overprovision value
      */
@@ -151,7 +151,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the overprovision value.
+     * Set specifies whether the Virtual Machine Scale Set should be overprovisioned.
      *
      * @param overprovision the overprovision value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
@@ -162,7 +162,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the singlePlacementGroup value.
+     * Get when true this limits the scale set to a single placement group, of max size 100 virtual machines.
      *
      * @return the singlePlacementGroup value
      */
@@ -171,7 +171,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the singlePlacementGroup value.
+     * Set when true this limits the scale set to a single placement group, of max size 100 virtual machines.
      *
      * @param singlePlacementGroup the singlePlacementGroup value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
@@ -182,7 +182,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Get the identity value.
+     * Get the identity of the virtual machine scale set, if configured.
      *
      * @return the identity value
      */
@@ -191,7 +191,7 @@ public class VirtualMachineScaleSetUpdate extends UpdateResource {
     }
 
     /**
-     * Set the identity value.
+     * Set the identity of the virtual machine scale set, if configured.
      *
      * @param identity the identity value to set
      * @return the VirtualMachineScaleSetUpdate object itself.
