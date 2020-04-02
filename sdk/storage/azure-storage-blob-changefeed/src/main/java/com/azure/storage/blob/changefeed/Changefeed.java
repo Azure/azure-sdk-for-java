@@ -91,7 +91,7 @@ class Changefeed {
         return this.client.exists()
             .flatMap(exists -> {
                 if (exists == null || !exists) {
-                    throw logger.logExceptionAsError(new RuntimeException("ChangeFeed has not been enabled for this "
+                    return Mono.error(new RuntimeException("ChangeFeed has not been enabled for this "
                         + "account."));
                 }
                 return Mono.empty();
@@ -102,7 +102,6 @@ class Changefeed {
      * Populates the last consumable property from changefeed metadata.
      */
     private Mono<Void> populateLastConsumable() {
-        /* TODO (gapra): Reduce duplicate download code. */
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
         return DownloadUtils.downloadToString(this.client, METADATA_SEGMENT_PATH)
             /* Parse JSON for last consumable. */

@@ -207,7 +207,6 @@ class APISpec extends Specification {
         BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(getHttpClient())
-        .serviceVersion(BlobServiceVersion.V2019_02_02)
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy)

@@ -15,9 +15,6 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
     BlobChangefeedPagedResponse(List<BlobChangefeedEvent> events, BlobChangefeedCursor cursor) {
         this.events = events;
         this.cursor = cursor;
-        System.out.println(events.get(0).getId());
-        System.out.println(getContinuationToken());
-        System.out.println(events.get(events.size() - 1).getId());
     }
 
     @Override
