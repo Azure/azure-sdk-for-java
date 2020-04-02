@@ -23,6 +23,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.Usages;
 import com.microsoft.azure.management.storage.v2019_06_01.ManagementPolicies;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnections;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateLinkResources;
+import com.microsoft.azure.management.storage.v2019_06_01.EncryptionScopes;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobServices;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainers;
 import com.microsoft.azure.management.storage.v2019_06_01.FileServices;
@@ -41,6 +42,7 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     private ManagementPolicies managementPolicies;
     private PrivateEndpointConnections privateEndpointConnections;
     private PrivateLinkResources privateLinkResources;
+    private EncryptionScopes encryptionScopes;
     private BlobServices blobServices;
     private BlobContainers blobContainers;
     private FileServices fileServices;
@@ -160,6 +162,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
             this.privateLinkResources = new PrivateLinkResourcesImpl(this);
         }
         return this.privateLinkResources;
+    }
+
+    /**
+     * @return Entry point to manage EncryptionScopes.
+     */
+    public EncryptionScopes encryptionScopes() {
+        if (this.encryptionScopes == null) {
+            this.encryptionScopes = new EncryptionScopesImpl(this);
+        }
+        return this.encryptionScopes;
     }
 
     /**

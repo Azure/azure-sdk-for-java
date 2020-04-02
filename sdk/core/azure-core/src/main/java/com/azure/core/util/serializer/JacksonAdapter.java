@@ -6,8 +6,9 @@ package com.azure.core.util.serializer;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.implementation.serializer.MalformedValueException;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.serializer.MalformedValueException;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,6 +27,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -63,6 +66,7 @@ public class JacksonAdapter implements SerializerAdapter {
      * BOM header from some response bodies. To be removed in deserialization.
      */
     private static final String BOM = "\uFEFF";
+    private static final String BOM_STRING = new String(BOM.getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -73,14 +77,14 @@ public class JacksonAdapter implements SerializerAdapter {
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         xmlMapper.setDefaultUseWrapper(false);
         ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
-                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
         mapper = initializeObjectMapper(new ObjectMapper())
-                // Order matters: must register in reverse order of hierarchy
-                .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
-                .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
-                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+            // Order matters: must register in reverse order of hierarchy
+            .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
+            .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
+            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
         headerMapper = simpleMapper
             .copy()
             .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
@@ -158,12 +162,15 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (value == null || value.isEmpty() || value.equals(BOM)) {
+        if (CoreUtils.isNullOrEmpty(value) || value.equals(BOM) || value.equals(BOM_STRING)) {
             return null;
         }
-        // Remove BOM
+
+        // Remove any leading BOM from the XML.
         if (value.startsWith(BOM)) {
             value = value.replaceFirst(BOM, "");
+        } else if (value.startsWith(BOM_STRING)) {
+            value = value.replaceFirst(BOM_STRING, "");
         }
 
         final JavaType javaType = createJavaType(type);
@@ -240,8 +247,7 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     /**
-     * Initializes an instance of JacksonMapperAdapter with default configurations
-     * applied to the object mapper.
+     * Initializes an instance of JacksonMapperAdapter with default configurations applied to the object mapper.
      *
      * @param mapper the object mapper to use.
      */

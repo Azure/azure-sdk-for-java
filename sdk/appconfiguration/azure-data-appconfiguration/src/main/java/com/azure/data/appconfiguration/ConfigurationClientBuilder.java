@@ -182,6 +182,8 @@ public final class ConfigurationClientBuilder {
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(new AddHeadersPolicy(headers));
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new AddDatePolicy());
 
         if (tokenCredential != null) {
@@ -196,9 +198,7 @@ public final class ConfigurationClientBuilder {
             logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-
+        
         policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
 
         policies.addAll(this.policies);

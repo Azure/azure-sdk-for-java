@@ -16,6 +16,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -83,8 +84,68 @@ public class ManagedIdentityCredentialTest {
         // test
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         StepVerifier.create(credential.getToken(request))
-            .expectNextMatches(token -> token1.equals(token.getToken())
-                && expiresOn.getSecond() == token.getExpiresAt().getSecond())
-            .verifyComplete();
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                        && expiresOn.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+    }
+
+    @Test
+    public void testMSIEndpointWithTokenRefreshOffset() throws Exception {
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        try {
+            // setup
+            String endpoint = "http://localhost";
+            String secret = "secret";
+            String token1 = "token1";
+            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+            OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+            configuration.put("MSI_ENDPOINT", endpoint);
+            configuration.put("MSI_SECRET", secret);
+            Duration offset = Duration.ofMinutes(10);
+
+            // mock
+            IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+            when(identityClient.authenticateToManagedIdentityEndpoint(endpoint, secret, request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt, offset));
+            PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+            // test
+            ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+                    .clientId(clientId)
+                    .tokenRefreshOffset(offset)
+                    .build();
+            StepVerifier.create(credential.getToken(request1))
+                    .expectNextMatches(token -> token1.equals(token.getToken())
+                            && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                    .verifyComplete();
+        } finally {
+            // clean up
+            configuration.remove("MSI_ENDPOINT");
+            configuration.remove("MSI_SECRET");
+        }
+    }
+
+    @Test
+    public void testIMDSWithTokenRefreshOffset() throws Exception {
+        // setup
+        String token1 = "token1";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Duration offset = Duration.ofMinutes(10);
+
+        // mock
+        IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
+        when(identityClient.authenticateToIMDSEndpoint(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn, offset));
+        PowerMockito.whenNew(IdentityClient.class).withAnyArguments().thenReturn(identityClient);
+
+        // test
+        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
+                .clientId(clientId)
+                .tokenRefreshOffset(offset)
+                .build();
+        StepVerifier.create(credential.getToken(request))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                        && expiresOn.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
     }
 }

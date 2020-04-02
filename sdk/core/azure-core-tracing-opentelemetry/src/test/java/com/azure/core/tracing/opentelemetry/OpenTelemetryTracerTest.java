@@ -6,24 +6,29 @@ package com.azure.core.tracing.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
 import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.common.AttributeValue;
 import io.opentelemetry.sdk.trace.ReadableSpan;
-import io.opentelemetry.sdk.trace.SpanData;
-import io.opentelemetry.trace.AttributeValue;
+import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.trace.Link;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.SpanId;
+import io.opentelemetry.trace.TraceFlags;
+import io.opentelemetry.trace.TraceId;
+import io.opentelemetry.trace.TraceState;
 import io.opentelemetry.trace.Tracer;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.COMPONENT;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
+import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
@@ -33,6 +38,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,8 +53,9 @@ public class OpenTelemetryTracerTest {
     private static final String METHOD_NAME = "EventHubs.send";
     private static final String HOSTNAME_VALUE = "testEventDataNameSpace.servicebus.windows.net";
     private static final String ENTITY_PATH_VALUE = "test";
-    private static final String COMPONENT_VALUE = "EventHubs";
     private static final String AZ_NAMESPACE_VALUE = "Microsoft.Eventhub";
+    private static final Long MESSAGE_ENQUEUED_VALUE = Instant.ofEpochSecond(561639205).getEpochSecond();
+
     private OpenTelemetryTracer openTelemetryTracer;
     private Tracer tracer;
     private Context tracingContext;
@@ -59,7 +66,7 @@ public class OpenTelemetryTracerTest {
         System.out.println("Running: setUp");
         openTelemetryTracer = new OpenTelemetryTracer();
         // Get the global singleton Tracer object.
-        tracer = OpenTelemetry.getTracerFactory().get("TracerSdkTest");
+        tracer = OpenTelemetry.getTracerProvider().get("TracerSdkTest");
         // Start user parent span.
         parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
         tracer.withSpan(parentSpan);
@@ -98,7 +105,8 @@ public class OpenTelemetryTracerTest {
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        assertEquals(attributeMap.get(AZ_NAMESPACE_KEY), AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
+        assertEquals(attributeMap.get(AZ_NAMESPACE_KEY),
+            AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
     }
 
     @Test
@@ -126,8 +134,11 @@ public class OpenTelemetryTracerTest {
         // Start user parent span.
         final Span.Builder spanBuilder = tracer.spanBuilder(METHOD_NAME);
         // Add additional metadata to spans for SEND
-        final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
-            .addData(HOST_NAME_KEY, HOSTNAME_VALUE).addData(SPAN_BUILDER_KEY, spanBuilder);
+        final Context traceContext = tracingContext
+            .addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
+            .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .addData(SPAN_BUILDER_KEY, spanBuilder)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
 
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.SEND);
@@ -137,11 +148,18 @@ public class OpenTelemetryTracerTest {
         assertSpanWithExplicitParent(updatedContext, parentSpanId);
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.PRODUCER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CLIENT, recordEventsSpan.toSpanData().getKind());
 
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        verifySpanAttributes(attributeMap);
+        HashMap<String, AttributeValue> expectedAttributeMap = new HashMap<String, AttributeValue>() {
+            {
+                put(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
+                put(PEER_ENDPOINT, AttributeValue.stringAttributeValue(HOSTNAME_VALUE));
+                put(AZ_NAMESPACE_KEY, AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
+            }
+        };
+        verifySpanAttributes(attributeMap, expectedAttributeMap);
     }
 
     @Test
@@ -158,19 +176,33 @@ public class OpenTelemetryTracerTest {
         // verify no kind set on Span for message
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.INTERNAL, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.PRODUCER, recordEventsSpan.toSpanData().getKind());
         // verify diagnostic id and span context returned
         assertNotNull(updatedContext.getData(SPAN_CONTEXT_KEY).get());
         assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
+
+        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        HashMap<String, AttributeValue> expectedAttributeMap = new HashMap<String, AttributeValue>() {
+            {
+                put(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
+                put(PEER_ENDPOINT, AttributeValue.stringAttributeValue(HOSTNAME_VALUE));
+                put(AZ_NAMESPACE_KEY, AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
+            }
+        };
+        verifySpanAttributes(attributeMap, expectedAttributeMap);
     }
 
     @Test
     public void startSpanProcessKindProcess() {
         // Arrange
         final SpanId parentSpanId = parentSpan.getContext().getSpanId();
-        // Add additional metadata to spans for SEND
-        final Context traceContext = tracingContext.addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
-            .addData(HOST_NAME_KEY, HOSTNAME_VALUE);
+        // Add additional metadata to spans for PROCESS
+        final Context traceContext = tracingContext
+            .addData(ENTITY_PATH_KEY, ENTITY_PATH_VALUE)
+            .addData(HOST_NAME_KEY, HOSTNAME_VALUE)
+            .addData(AZ_TRACING_NAMESPACE_KEY, AZ_NAMESPACE_VALUE)
+            .addData(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE); // only in PROCESS
+
         // Act
         final Context updatedContext = openTelemetryTracer.start(METHOD_NAME, traceContext, ProcessKind.PROCESS);
 
@@ -183,10 +215,19 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(SCOPE_KEY).get());
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
-        assertEquals(Span.Kind.SERVER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
+
         // verify span attributes
         final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        verifySpanAttributes(attributeMap);
+        HashMap<String, AttributeValue> expectedAttributeMap = new HashMap<String, AttributeValue>() {
+            {
+                put(MESSAGE_BUS_DESTINATION, AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
+                put(PEER_ENDPOINT, AttributeValue.stringAttributeValue(HOSTNAME_VALUE));
+                put(MESSAGE_ENQUEUED_TIME, AttributeValue.longAttributeValue(MESSAGE_ENQUEUED_VALUE));
+                put(AZ_NAMESPACE_KEY, AttributeValue.stringAttributeValue(AZ_NAMESPACE_VALUE));
+            }
+        };
+        verifySpanAttributes(attributeMap, expectedAttributeMap);
     }
 
     @Test
@@ -206,7 +247,7 @@ public class OpenTelemetryTracerTest {
             testSpan.getContext().getTraceId(),
             testSpan.getContext().getSpanId(),
             testSpan.getContext().getTraceFlags(),
-            testSpan.getContext().getTracestate());
+            testSpan.getContext().getTraceState());
         final Context traceContext = tracingContext.addData(SPAN_CONTEXT_KEY, spanContext);
 
         // Act
@@ -243,9 +284,37 @@ public class OpenTelemetryTracerTest {
         //Assert
         // verify parent span has the expected Link
         Link createdLink = span1.toSpanData().getLinks().get(0);
-        Assertions.assertEquals(1, span1.toSpanData().getLinks().size());
-        Assertions.assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
-        Assertions.assertEquals(expectedLink.getContext().getSpanId(), createdLink.getContext().getSpanId());
+        assertEquals(1, span1.toSpanData().getLinks().size());
+        assertEquals(expectedLink.getContext().getTraceId(), createdLink.getContext().getTraceId());
+        assertEquals(expectedLink.getContext().getSpanId(), createdLink.getContext().getSpanId());
+    }
+
+    @Test
+    public void addLinkNoSpanContextTest() {
+        // Arrange
+        Span.Builder span = tracer.spanBuilder("parent-span");
+
+        // Act
+        openTelemetryTracer.addLink(new Context(SPAN_BUILDER_KEY, span));
+        ReadableSpan span1 = (ReadableSpan) span.startSpan();
+
+        //Assert
+        // verify no links were added
+        assertEquals(span1.toSpanData().getLinks().size(), 0);
+    }
+
+    @Test
+    public void addLinkNoSpanToLinkTest() {
+        // Arrange
+        Span.Builder span = tracer.spanBuilder("parent-span");
+
+        // Act
+        openTelemetryTracer.addLink(Context.NONE);
+        ReadableSpan span1 = (ReadableSpan) span.startSpan();
+
+        //Assert
+        // verify no links were added
+        assertEquals(span1.toSpanData().getLinks().size(), 0);
     }
 
     @Test
@@ -292,6 +361,92 @@ public class OpenTelemetryTracerTest {
 
     }
 
+    @Test
+    public void setAttributeTest() {
+        // Arrange
+        final String firstKey = "first-key";
+        final String firstKeyValue = "first-value";
+        Context spanContext = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        final ReadableSpan recordEventsSpan = (ReadableSpan) spanContext.getData(PARENT_SPAN_KEY).get();
+
+        // Act
+        openTelemetryTracer.setAttribute(firstKey, firstKeyValue, spanContext);
+
+        // Assert
+        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        assertEquals(attributeMap.get(firstKey), AttributeValue.stringAttributeValue(firstKeyValue));
+    }
+
+    @Test
+    public void setAttributeNoSpanTest() {
+        // Arrange
+        final String firstKey = "first-key";
+        final String firstKeyValue = "first-value";
+        Context spanContext = openTelemetryTracer.start(METHOD_NAME, tracingContext);
+        final ReadableSpan recordEventsSpan = (ReadableSpan) spanContext.getData(PARENT_SPAN_KEY).get();
+
+        // Act
+        openTelemetryTracer.setAttribute(firstKey, firstKeyValue, Context.NONE);
+
+        // Assert
+        final Map<String, AttributeValue> attributeMap = recordEventsSpan.toSpanData().getAttributes();
+        assertEquals(attributeMap.size(), 0);
+    }
+
+    @Test
+    public void setSpanNameTest() {
+        // Arrange
+        Context initialContext = Context.NONE;
+        final String spanName = "child-span";
+
+        // Act
+        Context updatedContext = openTelemetryTracer.setSpanName(spanName, initialContext);
+
+        // Assert
+        assertEquals(updatedContext.getData(USER_SPAN_NAME_KEY).get(), spanName);
+    }
+
+    @Test
+    public void extractContextValidDiagnosticId() {
+        // Arrange
+        String diagnosticId = "00-bc7293302f5dc6de8a2372491092df95-dfd6fee494751d3f-01";
+        SpanContext validSpanContext = SpanContext.create(
+            TraceId.fromLowerBase16(diagnosticId, 3),
+            SpanId.fromLowerBase16(diagnosticId, 36),
+            TraceFlags.fromLowerBase16(diagnosticId, 53),
+            TraceState.builder().build());
+
+        // Act
+        Context updatedContext = openTelemetryTracer.extractContext(diagnosticId, Context.NONE);
+
+        // Assert
+        Optional<Object> spanContextOptional = updatedContext.getData(SPAN_CONTEXT_KEY);
+        assertNotNull(spanContextOptional);
+        SpanContext spanContext = (SpanContext) spanContextOptional.get();
+        assertEquals(spanContext, validSpanContext);
+    }
+
+    @Test
+    public void extractContextInvalidDiagnosticId() {
+        // Arrange
+        String diagnosticId = "00000000000000000000000000000000";
+        SpanContext invalidSpanContext = SpanContext.create(
+            TraceId.getInvalid(),
+            SpanId.getInvalid(),
+            TraceFlags.getDefault(),
+            TraceState.getDefault()
+        );
+
+        // Act
+        Context updatedContext = openTelemetryTracer.extractContext(diagnosticId, Context.NONE);
+
+        // Assert
+        Optional<Object> spanContextOptional = updatedContext.getData(SPAN_CONTEXT_KEY);
+        assertNotNull(spanContextOptional);
+        SpanContext spanContext = (SpanContext) spanContextOptional.get();
+        assertEquals(spanContext, invalidSpanContext);
+    }
+
     private static void assertSpanWithExplicitParent(Context updatedContext, SpanId parentSpanId) {
         assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
 
@@ -311,24 +466,23 @@ public class OpenTelemetryTracerTest {
     private static void assertSpanWithRemoteParent(Context updatedContext, SpanId parentSpanId) {
         assertNotNull(updatedContext.getData(PARENT_SPAN_KEY).get());
 
-        // verify instance created of opentelemetry-sdk (test impl), span implementation
+        // verify instance created of openTelemetry-sdk (test impl), span implementation
         assertTrue(updatedContext.getData(PARENT_SPAN_KEY).get() instanceof ReadableSpan);
 
         // verify span created with provided name and kind server
         final ReadableSpan recordEventsSpan =
             (ReadableSpan) updatedContext.getData(PARENT_SPAN_KEY).get();
         assertEquals(METHOD_NAME, recordEventsSpan.getName());
-        assertEquals(Span.Kind.SERVER, recordEventsSpan.toSpanData().getKind());
+        assertEquals(Span.Kind.CONSUMER, recordEventsSpan.toSpanData().getKind());
 
         // verify span started with remote parent
         assertTrue(recordEventsSpan.toSpanData().getHasRemoteParent());
         assertEquals(parentSpanId, recordEventsSpan.toSpanData().getParentSpanId());
     }
 
-    private static void verifySpanAttributes(Map<String, AttributeValue> attributeMap) {
-        assertEquals(attributeMap.get(COMPONENT), AttributeValue.stringAttributeValue(COMPONENT_VALUE));
-        assertEquals(attributeMap.get(MESSAGE_BUS_DESTINATION),
-            AttributeValue.stringAttributeValue(ENTITY_PATH_VALUE));
-        assertEquals(attributeMap.get(PEER_ENDPOINT), AttributeValue.stringAttributeValue(HOSTNAME_VALUE));
+    private static void verifySpanAttributes(Map<String, AttributeValue> actualAttributeMap,
+        Map<String, AttributeValue> expectedMapValue) {
+        actualAttributeMap.forEach((attributeKey, attributeValue) ->
+            assertEquals(expectedMapValue.get(attributeKey), attributeValue));
     }
 }

@@ -40,7 +40,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
      * @throws IllegalArgumentException if an event is too large for an empty batch.
      */
     public void batchAutomaticRouting() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch
         // The required parameter is a way to authenticate with Event Hubs using credentials.
         // The connectionString provides a way to authenticate with Event Hub.
         EventHubProducerClient producer = new EventHubClientBuilder()
@@ -63,7 +63,7 @@ public class EventHubProducerClientJavaDocCodeSamples {
                 throw new IllegalArgumentException("Event is too large for an empty batch.");
             }
         }
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch
 
         producer.close();
     }

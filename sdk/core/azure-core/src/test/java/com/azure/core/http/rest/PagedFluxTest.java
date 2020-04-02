@@ -3,9 +3,17 @@
 
 package com.azure.core.http.rest;
 
+import static com.azure.core.util.FluxUtil.withContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -17,6 +25,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import reactor.util.context.Context;
+
 /**
  * Unit tests for {@link PagedFlux}
  */
@@ -159,6 +169,56 @@ public class PagedFluxTest {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
         StepVerifier.create(pagedFlux.byPage(null).log())
             .verifyComplete();
+    }
+
+    @Test
+    public void testPagedFluxWithContext() throws Exception {
+
+        CountDownLatch singlePageLatch = new CountDownLatch(1);
+        PagedFlux<Integer> pagedFlux = new PagedFlux<>(() -> withContext(context -> {
+            assertNotNull(context);
+            assertEquals(1, context.getValues().size());
+            assertEquals("context", context.getData("hello").get().toString());
+            singlePageLatch.countDown();
+            return Mono.empty();
+        }));
+
+
+        CountDownLatch multiPageLatch = new CountDownLatch(2);
+        pagedFlux
+            .byPage()
+            .subscriberContext(Context.of("hello", "context"))
+            .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
+
+        boolean completed = singlePageLatch.await(1, TimeUnit.SECONDS);
+        assertTrue(completed);
+
+        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
+            .put("header2", "value2");
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+        pagedFlux = new PagedFlux<>(() -> withContext(context -> {
+            assertNotNull(context);
+            assertEquals(1, context.getValues().size());
+            assertEquals("context", context.getData("hello").get().toString());
+            multiPageLatch.countDown();
+            PagedResponse<Integer> response = new PagedResponseBase<>(httpRequest, 200, httpHeaders,
+                Collections.emptyList(),
+                "0", null);
+            return Mono.just(response);
+        }), continuationToken -> withContext(context -> {
+            assertNotNull(context);
+            assertEquals(1, context.getValues().size());
+            assertEquals("context", context.getData("hello").get().toString());
+            multiPageLatch.countDown();
+            return Mono.empty();
+        }));
+
+        pagedFlux
+            .byPage()
+            .subscriberContext(Context.of("hello", "context"))
+            .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
+        completed = multiPageLatch.await(1, TimeUnit.SECONDS);
+        assertTrue(completed);
     }
 
     private PagedFlux<Integer> getIntegerPagedFlux(int noOfPages) throws MalformedURLException {

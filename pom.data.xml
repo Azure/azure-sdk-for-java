@@ -80,7 +80,7 @@
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
             <artifactId>checkstyle</artifactId>
-            <version>8.24</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+            <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -559,10 +559,10 @@
       <activation>
         <property>
           <name>generate-overview</name>
-        </property>      
-      </activation>      
+        </property>
+      </activation>
       <build>
-        <plugins>  
+        <plugins>
           <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>exec-maven-plugin</artifactId>
@@ -585,7 +585,7 @@
                       <argument>${project.basedir}/README.md</argument>
                       <argument>--v</argument>
                       <argument>${project.version}</argument>
-                </arguments>    
+                </arguments>
               </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
@@ -599,13 +599,10 @@
           </plugin>
          </plugins>
       </build>
-    </profile> 
+    </profile>
   </profiles>
-
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
-    <module>./sdk/applicationinsights/microsoft-azure-applicationinsights-query</module>
-    <module>./sdk/cosmos</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>

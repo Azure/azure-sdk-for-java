@@ -1,0 +1,40 @@
+resources:
+  repositories:
+    - repository: azure-sdk-build-tools
+      type: git
+      name: internal/azure-sdk-build-tools
+
+trigger:
+  branches:
+    include:
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databox/
+    exclude:
+      - sdk/databox/azure
+      - sdk/databox/microsoft-azure
+      - sdk/databox/ms-azure
+
+pr:
+  branches:
+    include:
+      - master
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/databox/
+    exclude:
+      - sdk/databox/azure
+      - sdk/databox/microsoft-azure
+      - sdk/databox/ms-azure
+
+stages:
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
+    parameters:
+      ServiceDirectory: databox

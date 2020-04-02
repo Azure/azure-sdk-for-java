@@ -12,6 +12,8 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Session;
@@ -24,6 +26,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.util.Map;
@@ -57,6 +60,8 @@ public class ReactorConnection implements AmqpConnection {
     private final ReactorProvider reactorProvider;
     private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
+    private final SenderSettleMode senderSettleMode;
+    private final ReceiverSettleMode receiverSettleMode;
 
     private ReactorExecutor executor;
     //TODO (conniey): handle failures and recreating the Reactor. Resubscribing the handlers, etc.
@@ -76,10 +81,13 @@ public class ReactorConnection implements AmqpConnection {
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
      * @param product The name of the product this connection is created for.
      * @param clientVersion The version of the client library creating the connection.
+     * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
+     * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, TokenManagerProvider tokenManagerProvider,
-        MessageSerializer messageSerializer, String product, String clientVersion) {
+        MessageSerializer messageSerializer, String product, String clientVersion,
+        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -92,6 +100,8 @@ public class ReactorConnection implements AmqpConnection {
             connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getTransportType(),
             connectionOptions.getProxyOptions(), product, clientVersion);
         this.retryPolicy = RetryUtil.getRetryPolicy(connectionOptions.getRetry());
+        this.senderSettleMode = senderSettleMode;
+        this.receiverSettleMode = receiverSettleMode;
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .doOnSubscribe(c -> hasConnection.set(true));
@@ -99,7 +109,7 @@ public class ReactorConnection implements AmqpConnection {
         this.subscriptions = Disposables.composite(
             this.handler.getEndpointStates().subscribe(
                 state -> {
-                    logger.verbose("Connection state: {}", state);
+                    logger.verbose("connectionId[{}]: Connection state: {}", connectionId, state);
                     endpointStatesSink.next(AmqpEndpointStateUtil.getConnectionState(state));
                 }, error -> {
                     logger.error("connectionId[{}] Error occurred in connection endpoint.", connectionId, error);
@@ -134,8 +144,8 @@ public class ReactorConnection implements AmqpConnection {
     @Override
     public Mono<ClaimsBasedSecurityNode> getClaimsBasedSecurityNode() {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(
-                "Connection is disposed. Cannot get CBS node.")));
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "connectionId[%s]: Connection is disposed. Cannot get CBS node.", connectionId))));
         }
 
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = RetryUtil.withRetry(
@@ -203,11 +213,12 @@ public class ReactorConnection implements AmqpConnection {
                 final Disposable subscription = amqpSession.getEndpointStates()
                     .subscribe(state -> {
                     }, error -> {
-                            logger.info("sessionName[{}]: Error occurred. Removing and disposing session.",
-                                sessionName, error);
+                            logger.info("connectionId[{}] sessionName[{}]: Error occurred. Removing and disposing"
+                                    + " session.", connectionId, sessionName, error);
                             removeSession(key);
                         }, () -> {
-                            logger.info("sessionName[{}]: Complete. Removing and disposing session.", sessionName);
+                            logger.info("connectionId[{}] sessionName[{}]: Complete. Removing and disposing session.",
+                                connectionId, sessionName);
                             removeSession(key);
                         });
 
@@ -265,11 +276,13 @@ public class ReactorConnection implements AmqpConnection {
             return;
         }
 
+        logger.info("connectionId[{}]: Disposing of ReactorConnection.", connectionId);
         subscriptions.dispose();
         endpointStatesSink.complete();
 
         final String[] keys = sessionMap.keySet().toArray(new String[0]);
         for (String key : keys) {
+            logger.info("connectionId[{}]: Removing session '{}'", connectionId, key);
             removeSession(key);
         }
 
@@ -298,15 +311,20 @@ public class ReactorConnection implements AmqpConnection {
      */
     protected Mono<RequestResponseChannel> createRequestResponseChannel(String sessionName, String linkName,
         String entityPath) {
-        final Flux<RequestResponseChannel> createChannel = createSession(sessionName)
-            .cast(ReactorSession.class)
+
+        final Flux<RequestResponseChannel> createChannel = createSession(sessionName).cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer)).repeat();
+                messageSerializer, senderSettleMode, receiverSettleMode))
+            .doOnNext(e -> {
+                logger.info("Emitting new response channel. connectionId: {}. entityPath: {}. linkName: {}.",
+                    getId(), entityPath, linkName);
+            })
+            .repeat();
 
         return createChannel.subscribeWith(new AmqpChannelProcessor<>(connectionId, entityPath,
             channel -> channel.getEndpointStates(), retryPolicy,
-            new ClientLogger(RequestResponseChannel.class + "<" + sessionName + ">")));
+            new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, sessionName))));
     }
 
     private synchronized ClaimsBasedSecurityNode getOrCreateCBSNode() {
@@ -324,13 +342,14 @@ public class ReactorConnection implements AmqpConnection {
 
     private synchronized Connection getOrCreateConnection() throws IOException {
         if (connection == null) {
-            logger.info("Creating and starting connection to {}:{}", handler.getHostname(), handler.getProtocolPort());
+            logger.info("connectionId[{}]: Creating and starting connection to {}:{}", connectionId,
+                handler.getHostname(), handler.getProtocolPort());
 
             final Reactor reactor = reactorProvider.createReactor(connectionId, handler.getMaxFrameSize());
             connection = reactor.connectionToHost(handler.getHostname(), handler.getProtocolPort(), handler);
 
             reactorExceptionHandler = new ReactorExceptionHandler();
-            executor = new ReactorExecutor(reactor, connectionOptions.getScheduler(), connectionId,
+            executor = new ReactorExecutor(reactor, Schedulers.single(), connectionId,
                 reactorExceptionHandler, connectionOptions.getRetry().getTryTimeout(),
                 connectionOptions.getFullyQualifiedNamespace());
 

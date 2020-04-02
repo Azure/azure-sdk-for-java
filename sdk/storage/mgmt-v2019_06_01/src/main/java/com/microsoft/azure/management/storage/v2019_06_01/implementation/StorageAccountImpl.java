@@ -15,6 +15,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.StorageAccountUpdatePa
 import com.microsoft.azure.management.storage.v2019_06_01.StorageAccountCreateParameters;
 import com.microsoft.azure.management.storage.v2019_06_01.AccessTier;
 import com.microsoft.azure.management.storage.v2019_06_01.AzureFilesIdentityBasedAuthentication;
+import com.microsoft.azure.management.storage.v2019_06_01.BlobRestoreStatus;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.storage.v2019_06_01.CustomDomain;
 import com.microsoft.azure.management.storage.v2019_06_01.Encryption;
@@ -95,6 +96,16 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
         return this.inner().azureFilesIdentityBasedAuthentication();
+    }
+
+    @Override
+    public BlobRestoreStatus blobRestoreStatus() {
+        BlobRestoreStatusInner inner = this.inner().blobRestoreStatus();
+        if (inner != null) {
+            return  new BlobRestoreStatusImpl(inner, manager());
+        } else {
+            return null;
+        }
     }
 
     @Override

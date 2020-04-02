@@ -4,11 +4,10 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
- * The LinkedEntity model.
+ * The {@link LinkedEntity} model.
  */
 @Immutable
 public final class LinkedEntity {
@@ -20,7 +19,7 @@ public final class LinkedEntity {
     /*
      * List of instances this entity appears in the text.
      */
-    private final List<LinkedEntityMatch> linkedEntityMatches;
+    private final IterableStream<LinkedEntityMatch> linkedEntityMatches;
 
     /*
      * Language used in the data source.
@@ -30,7 +29,7 @@ public final class LinkedEntity {
     /*
      * Unique identifier of the recognized entity from the data source.
      */
-    private final String id;
+    private final String dataSourceEntityId;
 
     /*
      * URL for the entity's page from the data source.
@@ -43,21 +42,21 @@ public final class LinkedEntity {
     private final String dataSource;
 
     /**
-     * Creates a {@code LinkedEntity} model that describes linked entity.
+     * Creates a {@link LinkedEntity} model that describes linked entity.
      *
-     * @param name entity Linking formal name
-     * @param linkedEntityMatches list of instances this entity appears in the text
-     * @param language language used in the data source
-     * @param id unique identifier of the recognized entity from the data source
-     * @param url URL for the entity's page from the data source
-     * @param dataSource data source used to extract entity linking, such as Wiki/Bing etc
+     * @param name The entity Linking formal name.
+     * @param linkedEntityMatches A list of instances this entity appears in the text.
+     * @param language The language used in the data source.
+     * @param dataSourceEntityId Unique identifier of the recognized entity from the data source.
+     * @param url URL for the entity's page from the data source.
+     * @param dataSource The data source used to extract entity linking, such as Wiki/Bing etc.
      */
-    public LinkedEntity(String name, List<LinkedEntityMatch> linkedEntityMatches, String language, String id,
-        String url, String dataSource) {
+    public LinkedEntity(String name, IterableStream<LinkedEntityMatch> linkedEntityMatches, String language,
+        String dataSourceEntityId, String url, String dataSource) {
         this.name = name;
         this.linkedEntityMatches = linkedEntityMatches;
         this.language = language;
-        this.id = id;
+        this.dataSourceEntityId = dataSourceEntityId;
         this.url = url;
         this.dataSource = dataSource;
     }
@@ -65,55 +64,52 @@ public final class LinkedEntity {
     /**
      * Get the name property: Entity Linking formal name.
      *
-     * @return the name value.
+     * @return The name value.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-     * Get the linkedEntityMatches property: List of instances this entity appears in the
-     * text.
+     * Get the linkedEntityMatches property: List of instances this entity appears in the text.
      *
-     * @return the linkedEntityMatches value.
+     * @return The linkedEntityMatches value.
      */
-    public List<LinkedEntityMatch> getLinkedEntityMatches() {
+    public IterableStream<LinkedEntityMatch> getLinkedEntityMatches() {
         return this.linkedEntityMatches;
     }
 
     /**
      * Get the language property: Language used in the data source.
      *
-     * @return the language value.
+     * @return The language value.
      */
     public String getLanguage() {
         return this.language;
     }
 
     /**
-     * Get the id property: Unique identifier of the recognized entity from the
-     * data source.
+     * Get the id property: Unique identifier of the recognized entity from the data source.
      *
-     * @return the id value.
+     * @return The id value.
      */
-    public String getId() {
-        return this.id;
+    public String getDataSourceEntityId() {
+        return this.dataSourceEntityId;
     }
 
     /**
      * Get the url property: URL for the entity's page from the data source.
      *
-     * @return the url value.
+     * @return The URL value.
      */
     public String getUrl() {
         return this.url;
     }
 
     /**
-     * Get the dataSource property: Data source used to extract entity linking,
-     * such as Wiki/Bing etc.
+     * Get the dataSource property: Data source used to extract entity linking, such as Wiki/Bing etc.
      *
-     * @return the dataSource value.
+     * @return The dataSource value.
      */
     public String getDataSource() {
         return this.dataSource;

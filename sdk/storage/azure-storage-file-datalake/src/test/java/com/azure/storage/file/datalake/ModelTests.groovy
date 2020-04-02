@@ -60,25 +60,23 @@ class ModelTests extends APISpec{
         permissions.getOwner() == owner
         permissions.getGroup() == group
         permissions.getOther() == other
-        permissions.hasStickyBit()
-        permissions.hasExtendedInfoInAcl()
+        permissions.isStickyBitSet()
+        permissions.isExtendedInfoInAcl()
     }
 
     def "PathPermissions create"() {
         when:
         def permissions = PathPermissions.parseSymbolic("r---w---t+")
-        def otherPermission = new PathPermissions(permissions)
         def owner = RolePermissions.parseOctal(4)
         def group = RolePermissions.parseOctal(2)
         def other = RolePermissions.parseOctal(1)
 
         then:
-        otherPermission.getOwner() == owner
-        otherPermission.getGroup() == group
-        otherPermission.getOther() == other
-        otherPermission.hasStickyBit()
-        otherPermission.hasExtendedInfoInAcl()
-        permissions.equals(otherPermission)
+        permissions.getOwner() == owner
+        permissions.getGroup() == group
+        permissions.getOther() == other
+        permissions.isStickyBitSet()
+        permissions.isExtendedInfoInAcl()
     }
 
     @Unroll
@@ -90,8 +88,8 @@ class ModelTests extends APISpec{
         permissions.getOther().hasExecutePermission() == execute
         permissions.getOther().hasReadPermission() == read
         permissions.getOther().hasWritePermission() == write
-        permissions.hasStickyBit() == stickyBit
-        permissions.hasExtendedInfoInAcl() == extendedInfoInAcl
+        permissions.isStickyBitSet() == stickyBit
+        permissions.isExtendedInfoInAcl() == extendedInfoInAcl
 
         where:
         // These test the value of other
@@ -110,7 +108,7 @@ class ModelTests extends APISpec{
         owner == null ? true : permissions.getOwner() == owner
         group == null ? true : permissions.getGroup() == group
         other == null ? true : permissions.getOther() == other
-        permissions.hasStickyBit() == stickyBit
+        permissions.isStickyBitSet() == stickyBit
 
         where:
         octal   || owner                         | group                         | other                         | stickyBit
@@ -120,19 +118,27 @@ class ModelTests extends APISpec{
 
     def "PathAccessControlEntry"() {
         when:
-        def entry = new PathAccessControlEntry(true, AccessControlType.GROUP, "a", RolePermissions.parseOctal(0))
+        def entry = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.GROUP)
+            .setPermissions(RolePermissions.parseOctal(0))
+            .setDefaultScope(true)
+            .setEntityId("a")
         def fromStr = PathAccessControlEntry.parse("default:group:a:---")
 
         then:
-        entry.defaultScope()
-        entry.accessControlType() == AccessControlType.GROUP
-        entry.entityID() == "a"
-        entry.permissions() == RolePermissions.parseOctal(0)
+        entry.isInDefaultScope()
+        entry.getAccessControlType() == AccessControlType.GROUP
+        entry.getEntityId() == "a"
+        entry.getPermissions() == RolePermissions.parseOctal(0)
         entry.toString() == "default:group:a:---"
         entry.equals(fromStr)
 
         when:
-        entry = new PathAccessControlEntry(false, AccessControlType.MASK, null, RolePermissions.parseOctal(4))
+        entry = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.MASK)
+            .setPermissions(RolePermissions.parseOctal(4))
+            .setDefaultScope(false)
+            .setEntityId(null)
         fromStr = PathAccessControlEntry.parse("mask::r--")
 
         then:
@@ -140,7 +146,11 @@ class ModelTests extends APISpec{
         entry.equals(fromStr)
 
         when:
-        entry = new PathAccessControlEntry(false, AccessControlType.USER, "b", RolePermissions.parseOctal(2))
+        entry = new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.USER)
+            .setPermissions(RolePermissions.parseOctal(2))
+            .setDefaultScope(false)
+            .setEntityId("b")
 
         then:
         entry.toString() == "user:b:-w-"
@@ -149,8 +159,17 @@ class ModelTests extends APISpec{
     def "PathAccessControlEntry List"() {
         when:
         List<PathAccessControlEntry> acl = new ArrayList<>()
-        acl.add(new PathAccessControlEntry(true, AccessControlType.USER, "c", RolePermissions.parseOctal(1)))
-        acl.add(new PathAccessControlEntry(false, AccessControlType.OTHER, null, RolePermissions.parseOctal(7)))
+
+        acl.add(new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.USER)
+            .setPermissions(RolePermissions.parseOctal(1))
+            .setDefaultScope(true)
+            .setEntityId("c"))
+        acl.add(new PathAccessControlEntry()
+            .setAccessControlType(AccessControlType.OTHER)
+            .setPermissions(RolePermissions.parseOctal(7))
+            .setDefaultScope(false)
+            .setEntityId(null))
         def listFromStr = PathAccessControlEntry.parseList("default:user:c:--x,other::rwx")
 
         then:

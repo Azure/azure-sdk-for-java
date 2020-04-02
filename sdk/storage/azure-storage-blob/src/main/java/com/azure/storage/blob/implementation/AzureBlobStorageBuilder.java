@@ -88,12 +88,7 @@ public final class AzureBlobStorageBuilder {
      */
     public AzureBlobStorageImpl build() {
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder()
-                       .policies(
-                           new UserAgentPolicy(),
-                           new RetryPolicy(),
-                           new CookiePolicy())
-                       .build();
+            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
         }
         AzureBlobStorageImpl client = new AzureBlobStorageImpl(pipeline);
         if (this.url != null) {
@@ -102,7 +97,7 @@ public final class AzureBlobStorageBuilder {
         if (this.version != null) {
             client.setVersion(this.version);
         } else {
-            client.setVersion("2019-02-02");
+            client.setVersion("2019-07-07");
         }
         if (this.pathRenameMode != null) {
             client.setPathRenameMode(this.pathRenameMode);

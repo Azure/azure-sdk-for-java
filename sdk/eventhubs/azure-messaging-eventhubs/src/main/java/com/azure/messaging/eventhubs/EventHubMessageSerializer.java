@@ -22,8 +22,10 @@ import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -132,6 +134,11 @@ class EventHubMessageSerializer implements MessageSerializer {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports EventData, PartitionProperties, or EventHubProperties."));
         }
+    }
+
+    @Override
+    public <T> List<T> deserializeList(Message message, Class<T> clazz) {
+        return Collections.singletonList(deserialize(message, clazz));
     }
 
     @SuppressWarnings("unchecked")
@@ -421,6 +428,10 @@ class EventHubMessageSerializer implements MessageSerializer {
 
         if (obj instanceof Double) {
             return Double.BYTES;
+        }
+
+        if (obj instanceof Date) {
+            return 32;
         }
 
         throw new IllegalArgumentException(String.format(Messages.ENCODING_TYPE_NOT_SUPPORTED,

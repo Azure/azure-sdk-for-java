@@ -5,16 +5,17 @@ package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
@@ -25,13 +26,15 @@ import com.azure.storage.file.share.implementation.models.DirectorysSetMetadataR
 import com.azure.storage.file.share.implementation.models.DirectorysSetPropertiesResponse;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
-import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
@@ -51,6 +54,9 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File
@@ -134,6 +140,10 @@ public class ShareDirectoryAsyncClient {
      */
     public ShareFileAsyncClient getFileClient(String fileName) {
         String filePath = directoryPath + "/" + fileName;
+        // Support for root directory
+        if (directoryPath.isEmpty()) {
+            filePath = fileName;
+        }
         return new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName,
             serviceVersion);
     }
@@ -151,6 +161,54 @@ public class ShareDirectoryAsyncClient {
         String directoryPath = this.directoryPath + "/" + subdirectoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName,
             serviceVersion);
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.exists}
+     *
+     * @return Flag indicating existence of the directory.
+     */
+    public Mono<Boolean> exists() {
+        return existsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.existsWithResponse}
+     *
+     * @return Flag indicating existence of the directory.
+     */
+    public Mono<Response<Boolean>> existsWithResponse() {
+        try {
+            return withContext(this::existsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> existsWithResponse(Context context) {
+        return this.getPropertiesWithResponse(context)
+            .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
+            .onErrorResume(this::checkDoesNotExistStatusCode,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
+    }
+
+    private boolean checkDoesNotExistStatusCode(Throwable t) {
+        return t instanceof ShareStorageException
+            && ((ShareStorageException) t).getStatusCode() == 404
+            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+            || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     /**
@@ -220,10 +278,12 @@ public class ShareDirectoryAsyncClient {
         String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
         String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        context = context == null ? Context.NONE : context;
 
         return azureFileStorageClient.directorys()
             .createWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime, fileLastWriteTime,
-                null, metadata, filePermission, filePermissionKey, context)
+                null, metadata, filePermission, filePermissionKey,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::createWithRestResponse);
     }
 
@@ -274,7 +334,9 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return azureFileStorageClient.directorys().deleteWithRestResponseAsync(shareName, directoryPath, context)
+        context = context == null ? Context.NONE : context;
+        return azureFileStorageClient.directorys().deleteWithRestResponseAsync(shareName, directoryPath,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -325,8 +387,10 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<ShareDirectoryProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys()
-            .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null, context)
+            .getPropertiesWithRestResponseAsync(shareName, directoryPath, snapshot, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getPropertiesResponse);
     }
 
@@ -373,7 +437,7 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties,
                                                                         String filePermission) {
         try {
-            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, Context.NONE));
+            return withContext(context -> setPropertiesWithResponse(smbProperties, filePermission, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -395,9 +459,11 @@ public class ShareDirectoryAsyncClient {
         String fileCreationTime = properties.setFileCreationTime(FileConstants.PRESERVE);
         String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.PRESERVE);
 
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys()
             .setPropertiesWithRestResponseAsync(shareName, directoryPath, fileAttributes, fileCreationTime,
-                fileLastWriteTime, null, filePermission, filePermissionKey, context)
+                fileLastWriteTime, null, filePermission, filePermissionKey,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::setPropertiesResponse);
     }
 
@@ -465,8 +531,10 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareDirectorySetMetadataInfo>> setMetadataWithResponse(Map<String, String> metadata,
         Context context) {
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.directorys()
-            .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata, context)
+            .setMetadataWithRestResponseAsync(shareName, directoryPath, null, metadata,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::setMetadataResponse);
     }
 
@@ -595,7 +663,8 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<CloseHandlesInfo> forceCloseHandle(String handleId) {
         try {
-            return withContext(context -> forceCloseHandleWithResponse(handleId, context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> forceCloseHandleWithResponse(handleId,
+                context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -629,7 +698,8 @@ public class ShareDirectoryAsyncClient {
         return this.azureFileStorageClient.directorys().forceCloseHandlesWithRestResponseAsync(shareName, directoryPath,
             handleId, null, null, snapshot, false, context)
             .map(response -> new SimpleResponse<>(response,
-                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())));
+                new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
+                    response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())));
     }
 
     /**
@@ -650,9 +720,10 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<CloseHandlesInfo> forceCloseAllHandles(boolean recursive) {
         try {
-            return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null, context)
-                .reduce(new CloseHandlesInfo(0),
-                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles())));
+            return withContext(context -> forceCloseAllHandlesWithTimeout(recursive, null,
+                context).reduce(new CloseHandlesInfo(0, 0),
+                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                        accu.getFailedHandles() + next.getFailedHandles())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -667,7 +738,8 @@ public class ShareDirectoryAsyncClient {
                     response.getStatusCode(),
                     response.getHeaders(),
                     Collections.singletonList(
-                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed())),
+                        new CloseHandlesInfo(response.getDeserializedHeaders().getNumberOfHandlesClosed(),
+                             response.getDeserializedHeaders().getNumberOfHandlesFailedToClose())),
                     response.getDeserializedHeaders().getMarker(),
                     response.getDeserializedHeaders()));
 
@@ -784,7 +856,8 @@ public class ShareDirectoryAsyncClient {
      */
     public Mono<Response<Void>> deleteSubdirectoryWithResponse(String subdirectoryName) {
         try {
-            return withContext(context -> deleteSubdirectoryWithResponse(subdirectoryName, context));
+            return withContext(context -> deleteSubdirectoryWithResponse(subdirectoryName,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -831,7 +904,7 @@ public class ShareDirectoryAsyncClient {
      *
      * <p>Create the file named "myFile"</p>
      *
-     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map}
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map}
      *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
@@ -849,10 +922,41 @@ public class ShareDirectoryAsyncClient {
     public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata) {
+        return this.createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
+            null);
+    }
+
+    /**
+     * Creates a file in this directory with specific name and returns a response of ShareDirectoryInfo to
+     * interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the file named "myFile"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.createFileWithResponse#String-long-ShareFileHttpHeaders-FileSmbProperties-String-Map-ShareRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-file">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param maxSize Max size of the file
+     * @param httpHeaders The user settable file http headers.
+     * @param smbProperties The user settable file smb properties.
+     * @param filePermission The file permission of the file.
+     * @param metadata Optional name-value pairs associated with the file as metadata.
+     * @param requestConditions {@link ShareRequestConditions}
+     * @return A response containing the directory info and the status of creating the directory.
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
+     * name is an invalid resource name.
+     */
+    public Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
+        ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
+        Map<String, String> metadata, ShareRequestConditions requestConditions) {
         try {
             return withContext(context ->
                 createFileWithResponse(fileName, maxSize, httpHeaders, smbProperties, filePermission, metadata,
-                    context));
+                    requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -860,11 +964,11 @@ public class ShareDirectoryAsyncClient {
 
     Mono<Response<ShareFileAsyncClient>> createFileWithResponse(String fileName, long maxSize,
         ShareFileHttpHeaders httpHeaders, FileSmbProperties smbProperties, String filePermission,
-        Map<String, String> metadata, Context context) {
+        Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
         return shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, context)
-            .map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
+            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+                context).map(response -> new SimpleResponse<>(response, shareFileAsyncClient));
     }
 
     /**
@@ -910,16 +1014,40 @@ public class ShareDirectoryAsyncClient {
      * resource name.
      */
     public Mono<Response<Void>> deleteFileWithResponse(String fileName) {
+        return this.deleteFileWithResponse(fileName, null);
+    }
+
+    /**
+     * Deletes the file with specific name in this directory.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.deleteFileWithResponse#string-ShareRequestConditions}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param requestConditions {@link ShareRequestConditions}
+     * @return A response that only contains headers and response status code
+     * @throws ShareStorageException If the directory doesn't exist or the file doesn't exist or file name is an invalid
+     * resource name.
+     */
+    public Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions) {
         try {
-            return withContext(context -> deleteFileWithResponse(fileName, context));
+            return withContext(context -> deleteFileWithResponse(fileName, requestConditions,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
-    Mono<Response<Void>> deleteFileWithResponse(String fileName, Context context) {
+    Mono<Response<Void>> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Context context) {
         ShareFileAsyncClient shareFileAsyncClient = getFileClient(fileName);
-        return shareFileAsyncClient.deleteWithResponse(context);
+        return shareFileAsyncClient.deleteWithResponse(requestConditions, context);
     }
 
     /**

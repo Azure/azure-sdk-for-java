@@ -4,37 +4,49 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.models.DocumentStatistics;
+import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.ErrorCodeValue;
+import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Helper class to convert service level models to SDK exposes models.
  */
-class Transforms {
+final class Transforms {
+    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
+
+    private Transforms() {
+    }
 
     /**
-     * Given a list of inputs will apply the indexing function to it and return the updated list.
+     * Given a list of documents will apply the indexing function to it and return the updated list.
      *
-     * @param textInputs the inputs to apply the mapping function to.
+     * @param documents the inputs to apply the mapping function to.
      * @param mappingFunction the function which applies the index to the incoming input value.
      * @param <T> the type of items being returned in the list.
      * @return The list holding all the generic items combined.
      */
-    static <T> List<T> mapByIndex(List<String> textInputs, BiFunction<String, String, T> mappingFunction) {
-        return IntStream.range(0, textInputs.size())
-            .mapToObj(index -> mappingFunction.apply(String.valueOf(index), textInputs.get(index)))
-            .collect(Collectors.toList());
+    static <T> List<T> mapByIndex(Iterable<String> documents, BiFunction<String, String, T> mappingFunction) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        AtomicInteger i = new AtomicInteger(0);
+        List<T> result = new ArrayList<>();
+        documents.forEach(document ->
+            result.add(mappingFunction.apply(String.valueOf(i.getAndIncrement()), document))
+        );
+        return result;
     }
 
     /**
@@ -60,27 +72,35 @@ class Transforms {
 
     /**
      * Convert {@link TextAnalyticsError} to {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * This function maps the service returned {@link TextAnalyticsError inner error} to the top level
+     * {@link com.azure.ai.textanalytics.models.TextAnalyticsError error}, if inner error present.
      *
      * @param textAnalyticsError the {@link TextAnalyticsError} returned by the service.
      * @return the {@link com.azure.ai.textanalytics.models.TextAnalyticsError} returned by the SDK.
      */
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
+        if (textAnalyticsError.getInnerError() == null) {
+            return new com.azure.ai.textanalytics.models.TextAnalyticsError(
+                TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
+                textAnalyticsError.getMessage(),
+                textAnalyticsError.getTarget());
+        }
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            ErrorCodeValue.fromString(textAnalyticsError.getCode().toString()), textAnalyticsError.getMessage(),
-            textAnalyticsError.getTarget(), textAnalyticsError.getDetails() == null ? null
-            : setErrors(textAnalyticsError.getDetails()));
+            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnerError().getCode().toString()),
+            textAnalyticsError.getInnerError().getMessage(),
+            textAnalyticsError.getInnerError().getTarget());
     }
 
     /**
      * Convert the incoming input {@link TextDocumentInput} to the service expected {@link MultiLanguageInput}.
      *
-     * @param textInputs the user provided input in {@link TextDocumentInput}
+     * @param documents the user provided input in {@link TextDocumentInput}
      * @return the service required input {@link MultiLanguageInput}
      */
-    static List<MultiLanguageInput> toMultiLanguageInput(List<TextDocumentInput> textInputs) {
+    static List<MultiLanguageInput> toMultiLanguageInput(Iterable<TextDocumentInput> documents) {
         List<MultiLanguageInput> multiLanguageInputs = new ArrayList<>();
-        for (TextDocumentInput textDocumentInput : textInputs) {
+        for (TextDocumentInput textDocumentInput : documents) {
             multiLanguageInputs.add(new MultiLanguageInput().setId(textDocumentInput.getId())
                 .setText(textDocumentInput.getText()).setLanguage(textDocumentInput.getLanguage()));
         }
@@ -88,20 +108,30 @@ class Transforms {
     }
 
     /**
-     * Helper method to set error details on {@link TextAnalyticsError}.
+     * Convert the incoming input {@link com.azure.ai.textanalytics.models.TextAnalyticsError}
+     * to a {@link TextAnalyticsException}.
      *
-     * @param details about specific errors that led to this reported error.
-     * @return the {@link TextAnalyticsError} returned by the SDK.
+     * @param error the {@link com.azure.ai.textanalytics.models.TextAnalyticsError}.
+     * @return the {@link TextAnalyticsException} to be thrown.
      */
-    private static List<com.azure.ai.textanalytics.models.TextAnalyticsError> setErrors(
-        List<TextAnalyticsError> details) {
-        List<com.azure.ai.textanalytics.models.TextAnalyticsError> detailsList = new ArrayList<>();
-        for (TextAnalyticsError error : details) {
-            detailsList.add(new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                ErrorCodeValue.fromString(error.getCode().toString()),
-                error.getMessage(),
-                error.getTarget(), error.getDetails() == null ? null : setErrors(error.getDetails())));
-        }
-        return detailsList;
+    static TextAnalyticsException toTextAnalyticsException(
+        com.azure.ai.textanalytics.models.TextAnalyticsError error) {
+        return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
+    }
+
+    /**
+     * Convert to a list of {@link LanguageInput} from {@link DetectLanguageInput}.
+     *
+     * @param documents The list of documents to detect languages for.
+     *
+     * @return a list of {@link LanguageInput}.
+     */
+    static List<LanguageInput> toLanguageInput(Iterable<DetectLanguageInput> documents) {
+        final List<LanguageInput> multiLanguageInputs = new ArrayList<>();
+        documents.forEach(textDocumentInput -> multiLanguageInputs.add(new LanguageInput()
+            .setId(textDocumentInput.getId())
+            .setText(textDocumentInput.getText())
+            .setCountryHint(textDocumentInput.getCountryHint())));
+        return multiLanguageInputs;
     }
 }

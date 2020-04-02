@@ -20,7 +20,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -42,20 +41,25 @@ final class HttpResponseBodyDecoder {
      * The content reading and decoding happens when caller subscribe to the returned {@code Mono<Object>},
      * if the response body is not decodable then {@code Mono.empty()} will be returned.
      *
+     * @param body the response body to decode, null for this parameter
+     *             indicate read body from {@code httpResponse} parameter and decode it.
      * @param httpResponse the response containing the body to be decoded
      * @param serializer the adapter to use for decoding
      * @param decodeData the necessary data required to decode a Http response
      * @return publisher that emits decoded response body upon subscription if body is decodable,
      *     no emission if the body is not-decodable
      */
-    static Mono<Object> decode(HttpResponse httpResponse, SerializerAdapter serializer,
+    static Mono<Object> decode(String body, HttpResponse httpResponse, SerializerAdapter serializer,
                                HttpResponseDecodeData decodeData) {
         ensureRequestSet(httpResponse);
         final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         //
         return Mono.defer(() -> {
             if (isErrorStatus(httpResponse, decodeData)) {
-                return httpResponse.getBodyAsString()
+                Mono<String> bodyMono = body == null
+                    ? httpResponse.getBodyAsString()
+                    : Mono.just(body);
+                return bodyMono
                     .flatMap(bodyString -> {
                         try {
                             final Object decodedErrorEntity = deserializeBody(bodyString,
@@ -75,7 +79,10 @@ final class HttpResponseBodyDecoder {
             } else if (!isReturnTypeDecodable(decodeData)) {
                 return Mono.empty();
             } else {
-                return httpResponse.getBodyAsString()
+                Mono<String> bodyMono = body == null
+                    ? httpResponse.getBodyAsString()
+                    : Mono.just(body);
+                return bodyMono
                     .flatMap(bodyString -> {
                         try {
                             final Object decodedSuccessEntity = deserializeBody(bodyString,
@@ -375,37 +382,12 @@ final class HttpResponseBodyDecoder {
      */
     private static Type extractEntityTypeFromReturnType(HttpResponseDecodeData decodeData) {
         Type token = decodeData.getReturnType();
-        final ClientLogger logger = new ClientLogger(HttpResponseBodyDecoder.class);
         if (token != null) {
             if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
                 token = TypeUtil.getTypeArgument(token);
-            } else if (TypeUtil.isTypeOrSubTypeOf(token, Flux.class)) {
-                Type t = TypeUtil.getTypeArgument(token);
-                try {
-                    // TODO: anuchan - unwrap OperationStatus a different way
-                    // Check for OperationStatus<?>
-                    if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName(
-                        "com.azure.core.management.implementation.OperationStatus"))) {
-                        token = t;
-                    }
-                } catch (ClassNotFoundException ignored) {
-                    logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
-                }
             }
-
             if (TypeUtil.isTypeOrSubTypeOf(token, Response.class)) {
                 token = TypeUtil.getRestResponseBodyType(token);
-            }
-
-            try {
-                // TODO: anuchan - unwrap OperationStatus a different way
-                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName(
-                    "com.azure.core.management.implementation.OperationStatus"))) {
-                    // Get Type of 'T' from OperationStatus<T>
-                    token = TypeUtil.getTypeArgument(token);
-                }
-            } catch (ClassNotFoundException ignored) {
-                logger.warning("Failed to find class 'com.azure.core.management.implementation.OperationStatus'.");
             }
         }
         return token;

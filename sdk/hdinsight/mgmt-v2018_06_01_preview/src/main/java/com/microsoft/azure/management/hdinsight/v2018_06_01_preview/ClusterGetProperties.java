@@ -103,6 +103,12 @@ public class ClusterGetProperties {
     private DiskEncryptionProperties diskEncryptionProperties;
 
     /**
+     * The minimal supported tls version.
+     */
+    @JsonProperty(value = "minSupportedTlsVersion")
+    private String minSupportedTlsVersion;
+
+    /**
      * Get the version of the cluster.
      *
      * @return the clusterVersion value
@@ -379,6 +385,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withDiskEncryptionProperties(DiskEncryptionProperties diskEncryptionProperties) {
         this.diskEncryptionProperties = diskEncryptionProperties;
+        return this;
+    }
+
+    /**
+     * Get the minimal supported tls version.
+     *
+     * @return the minSupportedTlsVersion value
+     */
+    public String minSupportedTlsVersion() {
+        return this.minSupportedTlsVersion;
+    }
+
+    /**
+     * Set the minimal supported tls version.
+     *
+     * @param minSupportedTlsVersion the minSupportedTlsVersion value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withMinSupportedTlsVersion(String minSupportedTlsVersion) {
+        this.minSupportedTlsVersion = minSupportedTlsVersion;
         return this;
     }
 

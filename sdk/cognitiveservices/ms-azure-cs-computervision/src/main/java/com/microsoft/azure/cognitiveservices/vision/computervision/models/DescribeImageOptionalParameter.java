@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import java.util.List;
 
 /**
  * The DescribeImageOptionalParameter model.
@@ -17,7 +18,7 @@ public class DescribeImageOptionalParameter {
      * Maximum number of candidate descriptions to be returned.  The default is
      * 1.
      */
-    private String maxCandidates;
+    private Integer maxCandidates;
 
     /**
      * The desired language for output generation. If this parameter is not
@@ -29,6 +30,11 @@ public class DescribeImageOptionalParameter {
     private String language;
 
     /**
+     * Turn off specified domain models when generating the description.
+     */
+    private List<DescriptionExclude> descriptionExclude;
+
+    /**
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
@@ -38,7 +44,7 @@ public class DescribeImageOptionalParameter {
      *
      * @return the maxCandidates value
      */
-    public String maxCandidates() {
+    public Integer maxCandidates() {
         return this.maxCandidates;
     }
 
@@ -48,7 +54,7 @@ public class DescribeImageOptionalParameter {
      * @param maxCandidates the maxCandidates value to set
      * @return the DescribeImageOptionalParameter object itself.
      */
-    public DescribeImageOptionalParameter withMaxCandidates(String maxCandidates) {
+    public DescribeImageOptionalParameter withMaxCandidates(Integer maxCandidates) {
         this.maxCandidates = maxCandidates;
         return this;
     }
@@ -70,6 +76,26 @@ public class DescribeImageOptionalParameter {
      */
     public DescribeImageOptionalParameter withLanguage(String language) {
         this.language = language;
+        return this;
+    }
+
+    /**
+     * Get the descriptionExclude value.
+     *
+     * @return the descriptionExclude value
+     */
+    public List<DescriptionExclude> descriptionExclude() {
+        return this.descriptionExclude;
+    }
+
+    /**
+     * Set the descriptionExclude value.
+     *
+     * @param descriptionExclude the descriptionExclude value to set
+     * @return the DescribeImageOptionalParameter object itself.
+     */
+    public DescribeImageOptionalParameter withDescriptionExclude(List<DescriptionExclude> descriptionExclude) {
+        this.descriptionExclude = descriptionExclude;
         return this;
     }
 

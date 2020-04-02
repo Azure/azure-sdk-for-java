@@ -144,6 +144,15 @@ public class BlobClientBase {
     }
 
     /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    String getEncryptionScope() {
+        return client.getEncryptionScope();
+    }
+
+    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.
@@ -196,20 +205,20 @@ public class BlobClientBase {
     }
 
     /**
-     * Gets if the container this client represents exists in the cloud.
+     * Gets if the blob this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.exists}
      *
-     * @return true if the container exists, false if it doesn't
+     * @return true if the blob exists, false if it doesn't
      */
     public Boolean exists() {
         return existsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
-     * Gets if the container this client represents exists in the cloud.
+     * Gets if the blob this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -217,7 +226,7 @@ public class BlobClientBase {
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return true if the container exists, false if it doesn't
+     * @return true if the blob exists, false if it doesn't
      */
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
         Mono<Response<Boolean>> response = client.existsWithResponse(context);
@@ -486,9 +495,6 @@ public class BlobClientBase {
      * <p>The file will be created and must not exist, if the file already exists a {@link FileAlreadyExistsException}
      * will be thrown.</p>
      *
-     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call, provide the {@link BlobRange} parameter.</p>
-     *
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context}
@@ -521,9 +527,6 @@ public class BlobClientBase {
      * <p>By default the file will be created and must not exist, if the file already exists a
      * {@link FileAlreadyExistsException} will be thrown. To override this behavior, provide appropriate
      * {@link OpenOption OpenOptions} </p>
-     *
-     * <p>This method makes an extra HTTP call to get the length of the blob in the beginning. To avoid this extra
-     * call, provide the {@link BlobRange} parameter.</p>
      *
      * <p><strong>Code Samples</strong></p>
      *

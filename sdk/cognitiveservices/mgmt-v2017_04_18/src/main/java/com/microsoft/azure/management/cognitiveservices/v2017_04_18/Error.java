@@ -21,7 +21,7 @@ public class Error {
     private ErrorBody error;
 
     /**
-     * Get the error value.
+     * Get the error body.
      *
      * @return the error value
      */
@@ -30,7 +30,7 @@ public class Error {
     }
 
     /**
-     * Set the error value.
+     * Set the error body.
      *
      * @param error the error value to set
      * @return the Error object itself.

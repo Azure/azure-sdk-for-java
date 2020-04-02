@@ -19,6 +19,8 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Session;
 import reactor.core.publisher.Mono;
 
@@ -77,13 +79,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         Objects.requireNonNull(eventPosition, "'eventPosition' cannot be null.");
         Objects.requireNonNull(options, "'options' cannot be null.");
 
-        //TODO (conniey): support creating a filter when we've already received some events. I believe this in
-        // the cause of recreating a failing link.
-        // final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider
-        // .getFilter(MessageReceiver.this.lastReceivedMessage);
-        // if (filterMap != null) {
-        //    source.setFilter(filterMap);
-        // }
         final String eventPositionExpression = getExpression(eventPosition);
         final Map<Symbol, UnknownDescribedType> filter = new HashMap<>();
         filter.put(AmqpConstants.STRING_FILTER, new UnknownDescribedType(AmqpConstants.STRING_FILTER,
@@ -98,7 +93,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             ? new Symbol[]{ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
             : null;
 
-        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities);
+        // Use explicit settlement via dispositions (not pre-settled)
+        return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities,
+            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND);
     }
 
     private String getExpression(EventPosition eventPosition) {

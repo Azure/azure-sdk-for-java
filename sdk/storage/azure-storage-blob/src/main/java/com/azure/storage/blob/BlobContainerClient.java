@@ -158,6 +158,15 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Gets the {@code encryption scope} used to encrypt this blob's content on the server.
+     *
+     * @return the encryption scope used for encryption.
+     */
+    public String getEncryptionScope() {
+        return client.getEncryptionScope();
+    }
+
+    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>

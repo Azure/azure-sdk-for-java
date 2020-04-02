@@ -1,6 +1,12 @@
 # Release History
 
-## 5.0.1 (2020-01-07)
+## 5.0.3 (2020-03-10)
+- Fix bug where producers and consumers would be unable to get partition information after a reconnect.
+
+## 5.0.2 (2020-02-13)
+- Fix bug where producers and consumers would not be able to block in their consuming code.
+
+## 5.0.1 (2020-02-11)
 - Add support for different error handling cases in EventProcessor.
 - Recreate connection in client on transient errors.
 - Add tracing links when sending a batch of events.

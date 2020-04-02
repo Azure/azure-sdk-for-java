@@ -25,6 +25,11 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementa
  */
 public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, GroupableResourceCore<HanaOnAzureManager, SapMonitorInner>, HasResourceGroup, Refreshable<SapMonitor>, Updatable<SapMonitor.Update>, HasManager<HanaOnAzureManager> {
     /**
+     * @return the enableCustomerAnalytics value.
+     */
+    Boolean enableCustomerAnalytics();
+
+    /**
      * @return the hanaDbCredentialsMsiId value.
      */
     String hanaDbCredentialsMsiId();
@@ -75,6 +80,16 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
     String logAnalyticsWorkspaceArmId();
 
     /**
+     * @return the logAnalyticsWorkspaceId value.
+     */
+    String logAnalyticsWorkspaceId();
+
+    /**
+     * @return the logAnalyticsWorkspaceSharedKey value.
+     */
+    String logAnalyticsWorkspaceSharedKey();
+
+    /**
      * @return the managedResourceGroupName value.
      */
     String managedResourceGroupName();
@@ -104,6 +119,18 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
          * The stage of the SapMonitor definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the sapmonitor definition allowing to specify EnableCustomerAnalytics.
+         */
+        interface WithEnableCustomerAnalytics {
+            /**
+             * Specifies enableCustomerAnalytics.
+             * @param enableCustomerAnalytics The value indicating whether to send analytics to Microsoft
+             * @return the next definition stage
+             */
+            WithCreate withEnableCustomerAnalytics(Boolean enableCustomerAnalytics);
         }
 
         /**
@@ -215,23 +242,71 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
         }
 
         /**
+         * The stage of the sapmonitor definition allowing to specify LogAnalyticsWorkspaceArmId.
+         */
+        interface WithLogAnalyticsWorkspaceArmId {
+            /**
+             * Specifies logAnalyticsWorkspaceArmId.
+             * @param logAnalyticsWorkspaceArmId The ARM ID of the Log Analytics Workspace that is used for monitoring
+             * @return the next definition stage
+             */
+            WithCreate withLogAnalyticsWorkspaceArmId(String logAnalyticsWorkspaceArmId);
+        }
+
+        /**
+         * The stage of the sapmonitor definition allowing to specify LogAnalyticsWorkspaceId.
+         */
+        interface WithLogAnalyticsWorkspaceId {
+            /**
+             * Specifies logAnalyticsWorkspaceId.
+             * @param logAnalyticsWorkspaceId The workspace ID of the log analytics workspace to be used for monitoring
+             * @return the next definition stage
+             */
+            WithCreate withLogAnalyticsWorkspaceId(String logAnalyticsWorkspaceId);
+        }
+
+        /**
+         * The stage of the sapmonitor definition allowing to specify LogAnalyticsWorkspaceSharedKey.
+         */
+        interface WithLogAnalyticsWorkspaceSharedKey {
+            /**
+             * Specifies logAnalyticsWorkspaceSharedKey.
+             * @param logAnalyticsWorkspaceSharedKey The shared key of the log analytics workspace that is used for monitoring
+             * @return the next definition stage
+             */
+            WithCreate withLogAnalyticsWorkspaceSharedKey(String logAnalyticsWorkspaceSharedKey);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SapMonitor>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithHanaDbCredentialsMsiId, DefinitionStages.WithHanaDbName, DefinitionStages.WithHanaDbPassword, DefinitionStages.WithHanaDbPasswordKeyVaultUrl, DefinitionStages.WithHanaDbSqlPort, DefinitionStages.WithHanaDbUsername, DefinitionStages.WithHanaHostname, DefinitionStages.WithHanaSubnet, DefinitionStages.WithKeyVaultId {
+        interface WithCreate extends Creatable<SapMonitor>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithEnableCustomerAnalytics, DefinitionStages.WithHanaDbCredentialsMsiId, DefinitionStages.WithHanaDbName, DefinitionStages.WithHanaDbPassword, DefinitionStages.WithHanaDbPasswordKeyVaultUrl, DefinitionStages.WithHanaDbSqlPort, DefinitionStages.WithHanaDbUsername, DefinitionStages.WithHanaHostname, DefinitionStages.WithHanaSubnet, DefinitionStages.WithKeyVaultId, DefinitionStages.WithLogAnalyticsWorkspaceArmId, DefinitionStages.WithLogAnalyticsWorkspaceId, DefinitionStages.WithLogAnalyticsWorkspaceSharedKey {
         }
     }
     /**
      * The template for a SapMonitor update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SapMonitor>, Resource.UpdateWithTags<Update>, UpdateStages.WithHanaDbCredentialsMsiId, UpdateStages.WithHanaDbName, UpdateStages.WithHanaDbPassword, UpdateStages.WithHanaDbPasswordKeyVaultUrl, UpdateStages.WithHanaDbSqlPort, UpdateStages.WithHanaDbUsername, UpdateStages.WithHanaHostname, UpdateStages.WithHanaSubnet, UpdateStages.WithKeyVaultId {
+    interface Update extends Appliable<SapMonitor>, Resource.UpdateWithTags<Update>, UpdateStages.WithEnableCustomerAnalytics, UpdateStages.WithHanaDbCredentialsMsiId, UpdateStages.WithHanaDbName, UpdateStages.WithHanaDbPassword, UpdateStages.WithHanaDbPasswordKeyVaultUrl, UpdateStages.WithHanaDbSqlPort, UpdateStages.WithHanaDbUsername, UpdateStages.WithHanaHostname, UpdateStages.WithHanaSubnet, UpdateStages.WithKeyVaultId, UpdateStages.WithLogAnalyticsWorkspaceArmId, UpdateStages.WithLogAnalyticsWorkspaceId, UpdateStages.WithLogAnalyticsWorkspaceSharedKey {
     }
 
     /**
      * Grouping of SapMonitor update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the sapmonitor update allowing to specify EnableCustomerAnalytics.
+         */
+        interface WithEnableCustomerAnalytics {
+            /**
+             * Specifies enableCustomerAnalytics.
+             * @param enableCustomerAnalytics The value indicating whether to send analytics to Microsoft
+             * @return the next update stage
+             */
+            Update withEnableCustomerAnalytics(Boolean enableCustomerAnalytics);
+        }
+
         /**
          * The stage of the sapmonitor update allowing to specify HanaDbCredentialsMsiId.
          */
@@ -338,6 +413,42 @@ public interface SapMonitor extends HasInner<SapMonitorInner>, Resource, Groupab
              * @return the next update stage
              */
             Update withKeyVaultId(String keyVaultId);
+        }
+
+        /**
+         * The stage of the sapmonitor update allowing to specify LogAnalyticsWorkspaceArmId.
+         */
+        interface WithLogAnalyticsWorkspaceArmId {
+            /**
+             * Specifies logAnalyticsWorkspaceArmId.
+             * @param logAnalyticsWorkspaceArmId The ARM ID of the Log Analytics Workspace that is used for monitoring
+             * @return the next update stage
+             */
+            Update withLogAnalyticsWorkspaceArmId(String logAnalyticsWorkspaceArmId);
+        }
+
+        /**
+         * The stage of the sapmonitor update allowing to specify LogAnalyticsWorkspaceId.
+         */
+        interface WithLogAnalyticsWorkspaceId {
+            /**
+             * Specifies logAnalyticsWorkspaceId.
+             * @param logAnalyticsWorkspaceId The workspace ID of the log analytics workspace to be used for monitoring
+             * @return the next update stage
+             */
+            Update withLogAnalyticsWorkspaceId(String logAnalyticsWorkspaceId);
+        }
+
+        /**
+         * The stage of the sapmonitor update allowing to specify LogAnalyticsWorkspaceSharedKey.
+         */
+        interface WithLogAnalyticsWorkspaceSharedKey {
+            /**
+             * Specifies logAnalyticsWorkspaceSharedKey.
+             * @param logAnalyticsWorkspaceSharedKey The shared key of the log analytics workspace that is used for monitoring
+             * @return the next update stage
+             */
+            Update withLogAnalyticsWorkspaceSharedKey(String logAnalyticsWorkspaceSharedKey);
         }
 
     }

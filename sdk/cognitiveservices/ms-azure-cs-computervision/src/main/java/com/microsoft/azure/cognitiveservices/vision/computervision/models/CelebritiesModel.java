@@ -21,13 +21,14 @@ public class CelebritiesModel {
     private String name;
 
     /**
-     * Level of confidence ranging from 0 to 1.
+     * Confidence level for the celebrity recognition as a value ranging from 0
+     * to 1.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
 
     /**
-     * The faceRectangle property.
+     * Location of the identified face in the image.
      */
     @JsonProperty(value = "faceRectangle")
     private FaceRectangle faceRectangle;

@@ -15,12 +15,17 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.servicebus.management.ManagementClientAsync;
+import com.microsoft.azure.servicebus.management.QueueDescription;
+import com.microsoft.azure.servicebus.management.TopicDescription;
 import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
+import com.microsoft.azure.servicebus.primitives.TimeoutException;
 
 public class TestCommons {
 
@@ -656,6 +661,43 @@ public class TestCommons {
         for (IMessageSession session : sessions) {
             session.closeAsync();
         }
+    }
+    
+    public static void testLongPollReceiveOnLinkAbort(IMessageSender sender, IMessageReceiver receiver, ManagementClientAsync mgmtClientAsync, boolean isQueue) throws InterruptedException, ServiceBusException, ExecutionException {
+    	CompletableFuture<IMessage> receiveFuture = receiver.receiveAsync(Duration.ofMinutes(15));
+    	// Delay a second so credit is sent to the entity
+    	Thread.sleep(1000);
+    	
+    	// Force reload entity
+    	boolean isEntityPartitioned = false;
+    	if (isQueue) {
+    		QueueDescription queueDesc = mgmtClientAsync.getQueueAsync(sender.getEntityPath()).get();
+    		isEntityPartitioned = queueDesc.isEnablePartitioning();
+    		queueDesc.setEnableBatchedOperations(!queueDesc.isEnableBatchedOperations());
+    		mgmtClientAsync.updateQueueAsync(queueDesc).get();
+    	} else {
+    		TopicDescription topicDesc = mgmtClientAsync.getTopicAsync(sender.getEntityPath()).get();
+    		isEntityPartitioned = topicDesc.isEnablePartitioning();
+    		topicDesc.setEnableBatchedOperations(!topicDesc.isEnableBatchedOperations());
+    		mgmtClientAsync.updateTopicAsync(topicDesc).get();
+    	}
+    	
+    	// Delay a second so send link is closed
+    	Thread.sleep(1000);
+    	
+    	Message message = new Message("AMQP test message");
+        sender.send(message);
+        
+        // Receive should receive that message. Partitioned entity gateway cache may take a maximum of 2 minutes to retry.
+        int maxReceiveWaitTimeInSeconds = isEntityPartitioned ? 150 : 30;
+        IMessage rcvdMessage = null;
+        try {
+        	rcvdMessage = receiveFuture.get(maxReceiveWaitTimeInSeconds, TimeUnit.SECONDS);
+        } catch (java.util.concurrent.TimeoutException te) {
+        	Assert.fail("Long poll receive didn't receive a message after entity reload");
+        }
+        
+        Assert.assertNotNull("Long poll receive didn't receive a message after entity reload", rcvdMessage);
     }
 
     public static void drainAllMessagesFromReceiver(IMessageReceiver receiver) throws InterruptedException, ServiceBusException {

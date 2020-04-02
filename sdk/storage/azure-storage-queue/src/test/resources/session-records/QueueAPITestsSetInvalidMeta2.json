@@ -1,43 +1,45 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta2947234692e3af43644",
+    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetinvalidmeta2226897119013581be4",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "4d07e3df-7d37-4ba9-8361-bb9430e10147"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b3a95db9-eb3e-4b2a-99b3-786410ee45a6"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "2f7e7fd8-f003-0082-4b8d-839126000000",
-      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT"
+      "x-ms-request-id" : "d25b8220-f003-0012-7f71-e0e9eb000000",
+      "Date" : "Tue, 11 Feb 2020 00:24:35 GMT",
+      "x-ms-client-request-id" : "b3a95db9-eb3e-4b2a-99b3-786410ee45a6"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://azstoragesdkaccount.queue.core.windows.net/queueapitestssetinvalidmeta2947234692e3af43644?comp=metadata",
+    "Uri" : "https://gapradev.queue.core.windows.net/queueapitestssetinvalidmeta2226897119013581be4?comp=metadata",
     "Headers" : {
-      "x-ms-version" : "2018-03-28",
-      "User-Agent" : "azsdk-java-azure-storage-queue/12.0.0-preview.5 11.0.4; Windows 10 10.0",
-      "x-ms-client-request-id" : "24d9c4c5-4861-4e94-b579-95c3943ceb32"
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "aef50a35-9ed5-45d7-b920-28c870b45e29"
     },
     "Response" : {
-      "x-ms-version" : "2018-03-28",
+      "x-ms-version" : "2019-07-07",
       "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "EmptyMetadataKey",
       "retry-after" : "0",
       "Content-Length" : "278",
       "StatusCode" : "400",
-      "x-ms-request-id" : "2f7e7feb-f003-0082-5d8d-839126000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:2f7e7feb-f003-0082-5d8d-839126000000\nTime:2019-10-15T19:19:37.5034579Z</Message><MetadataValue>value</MetadataValue></Error>",
-      "Date" : "Tue, 15 Oct 2019 19:19:36 GMT",
+      "x-ms-request-id" : "d25b8223-f003-0012-8071-e0e9eb000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:d25b8223-f003-0012-8071-e0e9eb000000\nTime:2020-02-11T00:24:36.1773066Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "Date" : "Tue, 11 Feb 2020 00:24:35 GMT",
+      "x-ms-client-request-id" : "aef50a35-9ed5-45d7-b920-28c870b45e29",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "queueapitestssetinvalidmeta2947234692e3af43644" ]
+  "variables" : [ "queueapitestssetinvalidmeta2226897119013581be4" ]
 }

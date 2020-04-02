@@ -43,7 +43,7 @@ public class ChainedTokenCredential implements TokenCredential {
                 }
                 errorMsg.append(" ").append(t.getMessage());
                 return Mono.empty();
-        }), 1)
+            }), 1)
             .next()
             .switchIfEmpty(Mono.defer(() -> Mono.error(new RuntimeException(FailedError+errorMsg.toString()+" )"))));
     }

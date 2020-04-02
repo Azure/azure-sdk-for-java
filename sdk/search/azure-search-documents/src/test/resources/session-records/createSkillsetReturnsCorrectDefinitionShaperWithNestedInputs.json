@@ -1,0 +1,29 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://azs-sdk837987bf691.search.windows.net/skillsets?api-version=2019-05-06",
+    "Headers" : {
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "47eb10e9-f0c5-4cad-847d-f1bd0a324c20",
+      "StatusCode" : "201",
+      "Date" : "Mon, 24 Feb 2020 19:55:52 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "ETag" : "W/\"0x8D7B9638DA5246F\"",
+      "elapsed-time" : "79",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Content-Length" : "680",
+      "Body" : "{\"@odata.context\":\"https://azs-sdk837987bf691.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7B9638DA5246F\\\"\",\"name\":\"nested-skillset-with-sharperskill\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null}",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal",
+      "Location" : "https://azs-sdk837987bf691.search.windows.net/skillsets('nested-skillset-with-sharperskill')?api-version=2019-05-06"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "azs-sdk837987bf691" ]
+}

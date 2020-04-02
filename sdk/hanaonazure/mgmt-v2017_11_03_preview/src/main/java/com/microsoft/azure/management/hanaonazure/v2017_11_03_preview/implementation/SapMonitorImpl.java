@@ -45,6 +45,11 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
 
 
     @Override
+    public Boolean enableCustomerAnalytics() {
+        return this.inner().enableCustomerAnalytics();
+    }
+
+    @Override
     public String hanaDbCredentialsMsiId() {
         return this.inner().hanaDbCredentialsMsiId();
     }
@@ -95,6 +100,16 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     }
 
     @Override
+    public String logAnalyticsWorkspaceId() {
+        return this.inner().logAnalyticsWorkspaceId();
+    }
+
+    @Override
+    public String logAnalyticsWorkspaceSharedKey() {
+        return this.inner().logAnalyticsWorkspaceSharedKey();
+    }
+
+    @Override
     public String managedResourceGroupName() {
         return this.inner().managedResourceGroupName();
     }
@@ -102,6 +117,12 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public HanaProvisioningStatesEnum provisioningState() {
         return this.inner().provisioningState();
+    }
+
+    @Override
+    public SapMonitorImpl withEnableCustomerAnalytics(Boolean enableCustomerAnalytics) {
+        this.inner().withEnableCustomerAnalytics(enableCustomerAnalytics);
+        return this;
     }
 
     @Override
@@ -155,6 +176,24 @@ class SapMonitorImpl extends GroupableResourceCoreImpl<SapMonitor, SapMonitorInn
     @Override
     public SapMonitorImpl withKeyVaultId(String keyVaultId) {
         this.inner().withKeyVaultId(keyVaultId);
+        return this;
+    }
+
+    @Override
+    public SapMonitorImpl withLogAnalyticsWorkspaceArmId(String logAnalyticsWorkspaceArmId) {
+        this.inner().withLogAnalyticsWorkspaceArmId(logAnalyticsWorkspaceArmId);
+        return this;
+    }
+
+    @Override
+    public SapMonitorImpl withLogAnalyticsWorkspaceId(String logAnalyticsWorkspaceId) {
+        this.inner().withLogAnalyticsWorkspaceId(logAnalyticsWorkspaceId);
+        return this;
+    }
+
+    @Override
+    public SapMonitorImpl withLogAnalyticsWorkspaceSharedKey(String logAnalyticsWorkspaceSharedKey) {
+        this.inner().withLogAnalyticsWorkspaceSharedKey(logAnalyticsWorkspaceSharedKey);
         return this;
     }
 

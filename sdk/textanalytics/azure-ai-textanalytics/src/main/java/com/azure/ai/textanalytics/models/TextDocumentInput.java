@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.Locale;
+
 /**
  * Contains an input document to be analyzed by the service.
  */
@@ -17,7 +19,7 @@ public final class TextDocumentInput {
     private final String id;
 
     /*
-     * The input text to process.
+     * The document to process.
      */
     private final String text;
 
@@ -29,21 +31,21 @@ public final class TextDocumentInput {
     private final String language;
 
     /**
-     * Creates a {@code TextDocumentInput} model that describes the text inputs.
+     * Creates a {@code TextDocumentInput} model that describes the documents.
      *
-     * @param id a unique, non-empty document identifier
-     * @param text the input text to process
+     * @param id A unique, non-empty document identifier.
+     * @param text The document to process.
      */
     public TextDocumentInput(String id, String text) {
         this(id, text, null);
     }
 
     /**
-     * Creates a {@code TextDocumentInput} model that describes the text inputs.
+     * Creates a {@link TextDocumentInput} model that describes the documents.
      *
-     * @param id a unique, non-empty document identifier
-     * @param text the input text to process
-     * @param language Optional. This is the 2 letter ISO 639-1 representation of a language
+     * @param id A unique, non-empty document identifier.
+     * @param text The document to process.
+     * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
      */
     public TextDocumentInput(String id, String text, String language) {
         this.id = id;
@@ -54,16 +56,16 @@ public final class TextDocumentInput {
     /**
      * Get the id property: A unique, non-empty document identifier.
      *
-     * @return the id value.
+     * @return The id value.
      */
     public String getId() {
         return this.id;
     }
 
     /**
-     * Get the text property: The input text to process.
+     * Get the text property: The document to process.
      *
-     * @return the text value.
+     * @return The text value.
      */
     public String getText() {
         return this.text;
@@ -74,7 +76,7 @@ public final class TextDocumentInput {
      * representation of a language. For example, use "en" for English; "es"
      * for Spanish etc. If not set, use "en" for English as default.
      *
-     * @return the language value.
+     * @return The language value.
      */
     public String getLanguage() {
         return this.language;
@@ -82,7 +84,7 @@ public final class TextDocumentInput {
 
     @Override
     public String toString() {
-        return String.format("Text = %s, Id = %s, Language = %s",
+        return String.format(Locale.ROOT, "Text = %s, Id = %s, Language = %s",
             this.getText(), this.getId(), this.getLanguage());
     }
 }

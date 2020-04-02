@@ -19,7 +19,7 @@ import java.util.Locale;
  * </p>
  *
  * @see ShareServiceSasSignatureValues
- * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-file>
+ * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-service-sas#permissions-for-a-file">
  *     Permissions for a file</a>
  */
 public final class ShareFileSasPermission {

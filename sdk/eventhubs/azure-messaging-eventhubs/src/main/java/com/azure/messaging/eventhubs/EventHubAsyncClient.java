@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubManagementNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.io.Closeable;
 import java.util.Objects;
@@ -27,15 +28,20 @@ class EventHubAsyncClient implements Closeable {
     private final ClientLogger logger = new ClientLogger(EventHubAsyncClient.class);
     private final MessageSerializer messageSerializer;
     private final EventHubConnectionProcessor connectionProcessor;
+    private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, boolean isSharedConnection) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
+        this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null");
+        this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
+
         this.isSharedConnection = isSharedConnection;
     }
 
@@ -98,8 +104,8 @@ class EventHubAsyncClient implements Closeable {
      */
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer,
-            isSharedConnection);
+            connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
+            isSharedConnection, onClientClose);
     }
 
     /**
@@ -123,7 +129,8 @@ class EventHubAsyncClient implements Closeable {
         }
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, isSharedConnection);
+            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection,
+            onClientClose);
     }
 
     /**

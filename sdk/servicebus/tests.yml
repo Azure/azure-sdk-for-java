@@ -4,6 +4,11 @@ jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
     parameters:
       ServiceDirectory: servicebus
+      Artifacts:
+        - name: azure-messaging-servicebus
+          groupId: com.azure
+          safeName: azuremessagingservicebus
       EnvVars:
         AZURE_TEST_MODE: RECORD
         AZURE_SERVICEBUS_CONNECTION_STRING: $(java-servicebus-test-connection-string)
+        AZURE_SERVICEBUS_QUEUE_NAME: $(java-servicebus-test-queue-name)

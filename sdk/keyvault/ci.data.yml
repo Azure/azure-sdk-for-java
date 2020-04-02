@@ -40,28 +40,22 @@ pr:
       - sdk/keyvault/mgmt-
 
 stages:
-  - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
     parameters:
       ServiceDirectory: keyvault
-      SDKType: data
       Artifacts:
         - name: azure-keyvault
           groupId: com.microsoft.azure
           safeName: azurekeyvault
-          stagingProfileId: 534d15ee3800f4
         - name: azure-keyvault-core
           groupId: com.microsoft.azure
           safeName: azurekeyvaultcore
-          stagingProfileId: 534d15ee3800f4
         - name: azure-keyvault-cryptography
           groupId: com.microsoft.azure
           safeName: azurekeyvaultcryptography
-          stagingProfileId: 534d15ee3800f4
         - name: azure-keyvault-extensions
           groupId: com.microsoft.azure
           safeName: azurekeyvaultextensions
-          stagingProfileId: 534d15ee3800f4
         - name: azure-keyvault-webkey
           groupId: com.microsoft.azure
           safeName: azurekeyvaultwebkey
-          stagingProfileId: 534d15ee3800f4

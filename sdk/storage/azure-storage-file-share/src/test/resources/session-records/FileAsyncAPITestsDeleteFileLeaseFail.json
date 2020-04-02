@@ -1,0 +1,98 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://gaprastg71.file.core.windows.net/fileasyncapitestsdeletefileleasefail283501a0b69bc1?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "64c4770e-5538-4555-97c9-6cc7727d287b"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7833F5BD19592",
+      "Last-Modified" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ddd98457-101a-0047-6328-b5f960000000",
+      "Date" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "x-ms-client-request-id" : "64c4770e-5538-4555-97c9-6cc7727d287b"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gaprastg71.file.core.windows.net/fileasyncapitestsdeletefileleasefail283501a0b69bc1/fileasyncapitestsdeletefileleasefail31762316e6e30b",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "ecfe45a1-2600-4932-ab3a-15609ed61908"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "x-ms-file-permission-key" : "15729343842853002337*8280205063999649007",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2019-12-17T22:20:44.5890190Z",
+      "Last-Modified" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "ETag" : "0x8D7833F5BFFE68E",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2019-12-17T22:20:44.5890190Z",
+      "x-ms-file-parent-id" : "0",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "ddd98474-101a-0047-7d28-b5f960000000",
+      "x-ms-client-request-id" : "ecfe45a1-2600-4932-ab3a-15609ed61908",
+      "x-ms-file-last-write-time" : "2019-12-17T22:20:44.5890190Z"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://gaprastg71.file.core.windows.net/fileasyncapitestsdeletefileleasefail283501a0b69bc1/fileasyncapitestsdeletefileleasefail31762316e6e30b?comp=lease",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "8ee69635-4881-4246-9596-642cb940c218"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7833F5BFFE68E",
+      "x-ms-lease-id" : "3be8f084-50ed-44f5-b5ec-3238ac54560b",
+      "Last-Modified" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ddd9847d-101a-0047-0628-b5f960000000",
+      "Date" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "x-ms-client-request-id" : "8ee69635-4881-4246-9596-642cb940c218"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://gaprastg71.file.core.windows.net/fileasyncapitestsdeletefileleasefail283501a0b69bc1/fileasyncapitestsdeletefileleasefail31762316e6e30b",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e64c2cf8-7700-470d-b521-64c1e7718b7d"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseIdMismatchWithFileOperation",
+      "retry-after" : "0",
+      "Content-Length" : "264",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "ddd98482-101a-0047-0b28-b5f960000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseIdMismatchWithFileOperation</Code><Message>The lease ID specified did not match the lease ID for the file.\nRequestId:ddd98482-101a-0047-0b28-b5f960000000\nTime:2019-12-17T22:20:44.8424795Z</Message></Error>",
+      "Date" : "Tue, 17 Dec 2019 22:20:44 GMT",
+      "x-ms-client-request-id" : "e64c2cf8-7700-470d-b521-64c1e7718b7d",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestsdeletefileleasefail283501a0b69bc1", "fileasyncapitestsdeletefileleasefail31762316e6e30b", "9c1c023a-9ed5-401d-a2bb-b31818673331" ]
+}

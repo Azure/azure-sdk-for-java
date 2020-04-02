@@ -1,6 +1,13 @@
 package com.azure.storage.file.datalake
 
-import com.azure.core.http.*
+
+import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpLogDetailLevel
 import com.azure.core.http.policy.HttpLogOptions
@@ -14,7 +21,13 @@ import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.datalake.models.*
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
+import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.file.datalake.models.LeaseStateType
+import com.azure.storage.file.datalake.models.ListFileSystemsOptions
+import com.azure.storage.file.datalake.models.PathAccessControlEntry
+import com.azure.storage.file.datalake.models.PathProperties
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClient
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseClientBuilder
@@ -27,7 +40,6 @@ import spock.lang.Specification
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
-import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.function.Supplier
 
@@ -61,7 +73,8 @@ class APISpec extends Specification {
 
     static int defaultDataSize = defaultData.remaining()
 
-    static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
+    @Shared
+    public static final Flux<ByteBuffer> defaultFlux = Flux.just(defaultData).map { buffer -> buffer.duplicate() }
 
     // Prefixes for blobs and containers
     String fileSystemPrefix = "jtfs" // java test file system
@@ -110,7 +123,7 @@ class APISpec extends Specification {
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
-    private TestResourceNamer resourceNamer
+    public TestResourceNamer resourceNamer
     protected String testName
     def fileSystemName
 
@@ -147,9 +160,14 @@ class APISpec extends Specification {
     }
 
     def cleanup() {
+        def cleanupClient = getServiceClientBuilder(primaryCredential,
+            String.format(defaultEndpointTemplate, primaryCredential.getAccountName()), null)
+            .retryOptions(new RequestRetryOptions(RetryPolicyType.FIXED, 3, 60, 1000, 1000, null))
+            .buildClient()
+
         def options = new ListFileSystemsOptions().setPrefix(fileSystemPrefix + testName)
-        for (FileSystemItem fileSystem : primaryDataLakeServiceClient.listFileSystems(options, Duration.ofSeconds(120))) {
-            DataLakeFileSystemClient fileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(fileSystem.getName())
+        for (def fileSystem : cleanupClient.listFileSystems(options, null)) {
+            def fileSystemClient = cleanupClient.getFileSystemClient(fileSystem.getName())
 
             if (fileSystem.getProperties().getLeaseState() == LeaseStateType.LEASED) {
                 createLeaseClient(fileSystemClient).breakLeaseWithResponse(0, null, null, null)
@@ -524,7 +542,11 @@ class APISpec extends Specification {
     def setupPathLeaseCondition(DataLakePathClient pc, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
-            responseLeaseId = createLeaseClient(pc).acquireLease(-1)
+            if (pc instanceof DataLakeFileClient) {
+                responseLeaseId = createLeaseClient((DataLakeFileClient) pc).acquireLease(-1)
+            } else {
+                responseLeaseId = createLeaseClient((DataLakeDirectoryClient) pc).acquireLease(-1)
+            }
         }
         if (leaseID == receivedLeaseID) {
             return responseLeaseId
@@ -533,11 +555,27 @@ class APISpec extends Specification {
         }
     }
 
-    def setupPathLeaseCondition(DataLakePathAsyncClient pac, String leaseID) {
+    def setupPathLeaseCondition(DataLakeFileAsyncClient fac, String leaseID) {
         String responseLeaseId = null
         if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
             responseLeaseId = new DataLakeLeaseClientBuilder()
-                .pathAsyncClient(pac)
+                .fileAsyncClient(fac)
+                .buildAsyncClient()
+                .acquireLease(-1)
+                .block()
+        }
+        if (leaseID == receivedLeaseID) {
+            return responseLeaseId
+        } else {
+            return leaseID
+        }
+    }
+
+    def setupPathLeaseCondition(DataLakeDirectoryAsyncClient dac, String leaseID) {
+        String responseLeaseId = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            responseLeaseId = new DataLakeLeaseClientBuilder()
+                .directoryAsyncClient(dac)
                 .buildAsyncClient()
                 .acquireLease(-1)
                 .block()
@@ -638,11 +676,11 @@ class APISpec extends Specification {
 
     def entryIsInAcl(PathAccessControlEntry entry, List<PathAccessControlEntry> acl) {
         for (PathAccessControlEntry e : acl) {
-            if (e.defaultScope() == entry.defaultScope() &&
-                e.accessControlType().equals(entry.accessControlType()) &&
-                (e.entityID() == null && entry.entityID() == null ||
-                    e.entityID().equals(entry.entityID())) &&
-                e.permissions().equals(entry.permissions())) {
+            if (e.isInDefaultScope() == entry.isInDefaultScope() &&
+                e.getAccessControlType().equals(entry.getAccessControlType()) &&
+                (e.getEntityId() == null && entry.getEntityId() == null ||
+                    e.getEntityId().equals(entry.getEntityId())) &&
+                e.getPermissions().equals(entry.getPermissions())) {
                 return true
             }
         }
@@ -654,6 +692,111 @@ class APISpec extends Specification {
             return
         }
         sleep(milliseconds)
+    }
+
+    /*
+    We only allow int because anything larger than 2GB (which would require a long) is left to stress/perf.
+     */
+    File getRandomFile(int size) {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
+
+        if (size > Constants.MB) {
+            for (def i = 0; i < size / Constants.MB; i++) {
+                def dataSize = Math.min(Constants.MB, size - i * Constants.MB)
+                fos.write(getRandomByteArray(dataSize))
+            }
+        } else {
+            fos.write(getRandomByteArray(size))
+        }
+
+        fos.close()
+        return file
+    }
+
+    /**
+     * Compares two files for having equivalent content.
+     *
+     * @param file1 File used to upload data to the service
+     * @param file2 File used to download data from the service
+     * @param offset Write offset from the upload file
+     * @param count Size of the download from the service
+     * @return Whether the files have equivalent content based on offset and read count
+     */
+    def compareFiles(File file1, File file2, long offset, long count) {
+        def pos = 0L
+        def readBuffer = 8 * Constants.KB
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
+
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
+
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
+
+                assert readCount1 == readCount2 && buffer1 == buffer2
+
+                pos += bufferSize
+            }
+
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
+        }
+    }
+
+    /*
+    This is for stubbing responses that will actually go through the pipeline and autorest code. Autorest does not seem
+    to play too nicely with mocked objects and the complex reflection stuff on both ends made it more difficult to work
+    with than was worth it.
+     */
+
+    def getStubResponse(int code, HttpRequest request) {
+        return new HttpResponse(request) {
+
+            @Override
+            int getStatusCode() {
+                return code
+            }
+
+            @Override
+            String getHeaderValue(String s) {
+                return null
+            }
+
+            @Override
+            HttpHeaders getHeaders() {
+                return new HttpHeaders()
+            }
+
+            @Override
+            Flux<ByteBuffer> getBody() {
+                return Flux.empty()
+            }
+
+            @Override
+            Mono<byte[]> getBodyAsByteArray() {
+                return Mono.just(new byte[0])
+            }
+
+            @Override
+            Mono<String> getBodyAsString() {
+                return Mono.just("")
+            }
+
+            @Override
+            Mono<String> getBodyAsString(Charset charset) {
+                return Mono.just("")
+            }
+        }
     }
 
 }

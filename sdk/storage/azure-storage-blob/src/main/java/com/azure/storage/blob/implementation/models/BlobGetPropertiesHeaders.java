@@ -6,8 +6,8 @@ package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobType;
 import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.LeaseDurationType;
@@ -272,6 +272,14 @@ public final class BlobGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-key-sha256")
     private String encryptionKeySha256;
+
+    /*
+     * Returns the name of the encryption scope used to encrypt the blob
+     * contents and application metadata.  Note that the absence of this header
+     * implies use of the default account encryption scope.
+     */
+    @JsonProperty(value = "x-ms-encryption-scope")
+    private String encryptionScope;
 
     /*
      * The tier of page blob on a premium storage account or tier of block blob
@@ -1118,6 +1126,32 @@ public final class BlobGetPropertiesHeaders {
      */
     public BlobGetPropertiesHeaders setEncryptionKeySha256(String encryptionKeySha256) {
         this.encryptionKeySha256 = encryptionKeySha256;
+        return this;
+    }
+
+    /**
+     * Get the encryptionScope property: Returns the name of the encryption
+     * scope used to encrypt the blob contents and application metadata.  Note
+     * that the absence of this header implies use of the default account
+     * encryption scope.
+     *
+     * @return the encryptionScope value.
+     */
+    public String getEncryptionScope() {
+        return this.encryptionScope;
+    }
+
+    /**
+     * Set the encryptionScope property: Returns the name of the encryption
+     * scope used to encrypt the blob contents and application metadata.  Note
+     * that the absence of this header implies use of the default account
+     * encryption scope.
+     *
+     * @param encryptionScope the encryptionScope value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
         return this;
     }
 
