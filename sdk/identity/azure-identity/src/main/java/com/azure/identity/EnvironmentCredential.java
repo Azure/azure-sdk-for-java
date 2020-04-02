@@ -22,14 +22,12 @@ import reactor.core.publisher.Mono;
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  * or:
- * <p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH AZURE_CLIENT_CERTIFICATE_PATH}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  * or:
- * <p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>
@@ -54,13 +52,13 @@ public class EnvironmentCredential implements TokenCredential {
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
-        String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-        String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
-        String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
-        String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
         return Mono.fromSupplier(() -> {
+            String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+            String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
+            String clientSecret = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+            String certPath = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+            String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
+            String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
             if (verifyNotNull(clientId)) {
                 if (verifyNotNull(tenantId, clientSecret)) {
                     // TODO: support other clouds
