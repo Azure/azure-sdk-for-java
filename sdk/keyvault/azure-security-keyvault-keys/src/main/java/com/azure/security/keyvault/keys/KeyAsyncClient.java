@@ -204,6 +204,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
         Objects.requireNonNull(createKeyOptions, "The key create options parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
@@ -282,6 +283,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
         Objects.requireNonNull(createRsaKeyOptions, "The Rsa key options parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createRsaKeyOptions.getKeyType())
             .setKeySize(createRsaKeyOptions.getKeySize())
@@ -367,6 +369,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
         Objects.requireNonNull(createEcKeyOptions, "The Ec key options cannot be null.");
+        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurveName())
@@ -480,6 +483,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
         Objects.requireNonNull(importKeyOptions, "The key import configuration parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
@@ -547,6 +551,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<KeyVaultKey>> getKeyWithResponse(String name, String version, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.getKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving key - {}", name))
@@ -643,6 +648,7 @@ public final class KeyAsyncClient {
 
     Mono<Response<KeyVaultKey>> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context, KeyOperation... keyOperations) {
         Objects.requireNonNull(keyProperties, "The key properties input parameter cannot be null.");
+        context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
             .setKeyAttributes(new KeyRequestAttributes(keyProperties));
@@ -769,6 +775,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<DeletedKey>> getDeletedKeyWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.getDeletedKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving deleted key - {}", name))
@@ -827,6 +834,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<Void>> purgeDeletedKeyWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.purgeDeletedKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Purging deleted key - {}", name))
@@ -960,6 +968,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<byte[]>> backupKeyWithResponse(String name, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.backupKey(vaultUrl, name, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Backing up key - {}", name))
@@ -1033,6 +1042,7 @@ public final class KeyAsyncClient {
     }
 
     Mono<Response<KeyVaultKey>> restoreKeyBackupWithResponse(byte[] backup, Context context) {
+        context = context == null ? Context.NONE : context;
         KeyRestoreRequestParameters parameters = new KeyRestoreRequestParameters().setKeyBackup(backup);
         return service.restoreKey(vaultUrl, apiVersion, parameters, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
