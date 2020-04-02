@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-module azure.core.serializer.json.jackson {
+module com.azure.core.serializer.json.jackson {
     requires transitive com.azure.core;
 }
