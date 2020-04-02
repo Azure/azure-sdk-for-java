@@ -293,18 +293,19 @@ public class ManagementChannel implements ServiceBusManagementNode {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
             if (statusCode !=  AmqpResponseCode.OK.getValue()) {
 
-                return Mono.error(ExceptionUtil.amqpResponseCodeToException(statusCode, "Could not renew the lock.",
+                throw logger.logExceptionAsError(new AmqpException(false,
+                    String.format("Could not renew the lock for lock token: '%s'.", lockToken.toString()),
                     getErrorContext()));
             }
             List<Instant> renewTimeList = messageSerializer.deserializeList(responseMessage, Instant.class);
             if (CoreUtils.isNullOrEmpty(renewTimeList)) {
-                return Mono.error(logger.logExceptionAsError(new AmqpException(false,
+                throw logger.logExceptionAsError(new AmqpException(false,
                     String.format("Service bus response empty. "
                         + "Could not renew message with lock token: '%s'.", lockToken.toString()),
-                    getErrorContext())));
+                    getErrorContext()));
             }
-            return Mono.just(renewTimeList.get(0));
-        })).cast(Instant.class);
+            return renewTimeList.get(0);
+        }));
     }
 
     /**
@@ -418,9 +419,6 @@ public class ManagementChannel implements ServiceBusManagementNode {
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
 
             if (statusCode != AmqpResponseCode.OK.getValue()) {
-                /*return Mono.error(logger.logExceptionAsError(new AmqpException(false,
-                    String.format("Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()), getErrorContext())));*/
                 throw logger.logExceptionAsError(new AmqpException(false,
                     String.format("Could not schedule message with message id: '%s'.",
                         messageToSchedule.getMessageId()), getErrorContext()));
@@ -428,13 +426,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             List<Long> sequenceNumberList = messageSerializer.deserializeList(responseMessage, Long.class);
             if (CoreUtils.isNullOrEmpty(sequenceNumberList)) {
-                throw new AmqpException(false,
+                throw logger.logExceptionAsError(new AmqpException(false,
                     String.format("Service bus response empty. Could not schedule message with message id: '%s'.",
-                        messageToSchedule.getMessageId()), getErrorContext());
+                        messageToSchedule.getMessageId()), getErrorContext()));
             }
             return sequenceNumberList.get(0);
-        })
-        );
+        }));
     }
 
     /**
