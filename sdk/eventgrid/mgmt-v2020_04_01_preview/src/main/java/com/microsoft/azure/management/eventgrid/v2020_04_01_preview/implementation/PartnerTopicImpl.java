@@ -16,7 +16,6 @@ import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopic
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopicProvisioningState;
 
 class PartnerTopicImpl extends GroupableResourceCoreImpl<PartnerTopic, PartnerTopicInner, PartnerTopicImpl, EventGridManager> implements PartnerTopic, PartnerTopic.Update {
-    private Map<String, String> utags;
     PartnerTopicImpl(String name, PartnerTopicInner inner, EventGridManager manager) {
         super(name, inner, manager);
     }
@@ -30,7 +29,7 @@ class PartnerTopicImpl extends GroupableResourceCoreImpl<PartnerTopic, PartnerTo
     @Override
     public Observable<PartnerTopic> updateResourceAsync() {
         PartnerTopicsInner client = this.manager().inner().partnerTopics();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.utags)
+        return client.updateAsync(this.resourceGroupName(), this.name(), this.inner().getTags())
             .map(innerToFluentMap(this));
     }
 
@@ -60,5 +59,4 @@ class PartnerTopicImpl extends GroupableResourceCoreImpl<PartnerTopic, PartnerTo
     public String source() {
         return this.inner().source();
     }
-
 }

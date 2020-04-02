@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 class Configuration {
 
+    final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
     private MeterRegistry graphiteMeterRegistry;
@@ -78,9 +79,6 @@ class Configuration {
 
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
-
-    @Parameter(names = "-deleteCollections", description = "Delete collections on all client with collectionId mentioned in the tool")
-    private boolean deleteCollections = false;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
@@ -296,10 +294,6 @@ class Configuration {
 
     public boolean isEnableJvmStats() {
         return enableJvmStats;
-    }
-
-    boolean isDeleteCollections() {
-        return deleteCollections;
     }
 
     public MeterRegistry getAzureMonitorMeterRegistry() {

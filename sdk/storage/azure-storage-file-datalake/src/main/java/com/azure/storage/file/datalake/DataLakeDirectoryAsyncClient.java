@@ -25,7 +25,6 @@ import java.util.Objects;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-
 /**
  * This class provides a client that contains directory operations for Azure Storage Data Lake. Operations provided by
  * this client include creating a directory, deleting a directory, renaming a directory, setting metadata and
@@ -435,8 +434,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         DataLakeRequestConditions destinationRequestConditions) {
         try {
             return withContext(context -> renameWithResponse(destinationFileSystem, destinationPath,
-                sourceRequestConditions, destinationRequestConditions, context)).map(response ->
-                new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
+                sourceRequestConditions, destinationRequestConditions, context)).map(
+                    response -> new SimpleResponse<>(response, new DataLakeDirectoryAsyncClient(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

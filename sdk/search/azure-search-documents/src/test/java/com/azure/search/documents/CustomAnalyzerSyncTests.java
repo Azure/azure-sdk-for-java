@@ -82,8 +82,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.unitils.reflectionassert.ReflectionAssert;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -170,7 +170,8 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         Index index = prepareIndexWithAllAnalyzerNames();
 
         Index res = searchServiceClient.createIndex(index);
-        TestHelpers.assertIndexesEqual(index, res);
+
+        assertObjectEquals(index, res, true, "etag");
 
         // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
         try {
@@ -644,9 +645,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
-
-                ReflectionAssert.assertLenientEquals(
-                    expected.get(i).setName("none"), actual.get(i).setName("none"));
+                assertObjectEquals(expected.get(i).setName("none"), actual.get(i).setName("none"), true);
             }
         }
     }
@@ -655,8 +654,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
-                ReflectionAssert.assertLenientEquals(
-                    expected.get(i).setName("none"), actual.get(i).setName("none"));
+                assertObjectEquals(expected.get(i).setName("none"), actual.get(i).setName("none"), true);
             }
         }
     }
@@ -665,8 +663,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         if (expected != null && actual != null) {
             assertEquals(expected.size(), actual.size());
             for (int i = 0; i < expected.size(); i++) {
-                ReflectionAssert.assertLenientEquals(
-                    expected.get(i).setName("none"), actual.get(i).setName("none"));
+                assertObjectEquals(expected.get(i).setName("none"), actual.get(i).setName("none"), true);
             }
         }
     }

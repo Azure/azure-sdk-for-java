@@ -152,7 +152,7 @@ public interface Topic extends HasInner<TopicInner>, Resource, GroupableResource
         interface WithPrivateEndpointConnections {
             /**
              * Specifies privateEndpointConnections.
-             * @param privateEndpointConnections List of private endpoint connections
+             * @param privateEndpointConnections the privateEndpointConnections parameter value
              * @return the next definition stage
              */
             WithCreate withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections);

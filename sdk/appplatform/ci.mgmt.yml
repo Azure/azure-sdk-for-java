@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/appplatform/
-    exclude:
-      - sdk/appplatform/azure
-      - sdk/appplatform/microsoft-azure
-      - sdk/appplatform/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/appplatform/
-    exclude:
-      - sdk/appplatform/azure
-      - sdk/appplatform/microsoft-azure
-      - sdk/appplatform/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
