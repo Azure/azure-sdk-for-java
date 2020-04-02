@@ -29,13 +29,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.unitils.reflectionassert.ReflectionComparatorMode;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 /**
  * Abstract base class for all Search API tests
@@ -45,10 +44,6 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
     static final String HOTELS_INDEX_NAME = "hotels";
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
-    private static final String SEARCH_SCORE_FIELD = "@search.score";
-    private static final String FACET_FROM = "from";
-    private static final String FACET_TO = "to";
-    private static final String FACET_VALUE = "value";
 
     protected List<Map<String, Object>> hotels;
 
@@ -80,15 +75,15 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             Map<String, Object> result = searchIterator.next();
             Map<String, Object> hotel = hotelsIterator.next();
 
-            hotel.entrySet().forEach(e -> checkEquals(e, result));
+            hotel.entrySet().forEach(e -> checkEquals(result, e));
         }
 
         return true;
     }
 
-    private void checkEquals(Map.Entry<String, Object> hotel, Map<String, Object> result) {
+    private void checkEquals(Map<String, Object> result, Map.Entry<String, Object> hotel) {
         if (hotel.getValue() != null && result.get(hotel.getKey()) != null) {
-            assertReflectionEquals(hotel.getValue(), result.get(hotel.getKey()), ReflectionComparatorMode.IGNORE_DEFAULTS);
+            assertObjectEquals(result.get(hotel.getKey()), hotel.getValue());
         }
     }
 

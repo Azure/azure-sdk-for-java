@@ -29,7 +29,7 @@ public final class TemplateHashResultInner {
      * 
      * @return the minifiedTemplate value.
      */
-    public String getMinifiedTemplate() {
+    public String minifiedTemplate() {
         return this.minifiedTemplate;
     }
 
@@ -39,7 +39,7 @@ public final class TemplateHashResultInner {
      * @param minifiedTemplate the minifiedTemplate value to set.
      * @return the TemplateHashResultInner object itself.
      */
-    public TemplateHashResultInner setMinifiedTemplate(String minifiedTemplate) {
+    public TemplateHashResultInner withMinifiedTemplate(String minifiedTemplate) {
         this.minifiedTemplate = minifiedTemplate;
         return this;
     }
@@ -49,7 +49,7 @@ public final class TemplateHashResultInner {
      * 
      * @return the templateHash value.
      */
-    public String getTemplateHash() {
+    public String templateHash() {
         return this.templateHash;
     }
 
@@ -59,7 +59,7 @@ public final class TemplateHashResultInner {
      * @param templateHash the templateHash value to set.
      * @return the TemplateHashResultInner object itself.
      */
-    public TemplateHashResultInner setTemplateHash(String templateHash) {
+    public TemplateHashResultInner withTemplateHash(String templateHash) {
         this.templateHash = templateHash;
         return this;
     }

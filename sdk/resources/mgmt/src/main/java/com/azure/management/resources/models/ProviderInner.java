@@ -58,7 +58,7 @@ public final class ProviderInner {
      * 
      * @return the namespace value.
      */
-    public String getNamespace() {
+    public String namespace() {
         return this.namespace;
     }
 
@@ -68,7 +68,7 @@ public final class ProviderInner {
      * @param namespace the namespace value to set.
      * @return the ProviderInner object itself.
      */
-    public ProviderInner setNamespace(String namespace) {
+    public ProviderInner withNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -79,7 +79,7 @@ public final class ProviderInner {
      * 
      * @return the registrationState value.
      */
-    public String getRegistrationState() {
+    public String registrationState() {
         return this.registrationState;
     }
 
@@ -89,7 +89,7 @@ public final class ProviderInner {
      * 
      * @return the registrationPolicy value.
      */
-    public String getRegistrationPolicy() {
+    public String registrationPolicy() {
         return this.registrationPolicy;
     }
 
@@ -99,7 +99,7 @@ public final class ProviderInner {
      * 
      * @return the resourceTypes value.
      */
-    public List<ProviderResourceType> getResourceTypes() {
+    public List<ProviderResourceType> resourceTypes() {
         return this.resourceTypes;
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
+import com.azure.identity.KnownAuthorityHosts;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -18,7 +19,6 @@ import java.util.function.Function;
  * Options to configure the IdentityClient.
  */
 public final class IdentityClientOptions {
-    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
 
     private String authorityHost;
@@ -35,7 +35,7 @@ public final class IdentityClientOptions {
      */
     public IdentityClientOptions() {
         Configuration configuration = Configuration.getGlobalConfiguration();
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, DEFAULT_AUTHORITY_HOST);
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }

@@ -29,7 +29,7 @@ public final class ScopedDeployment {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -39,7 +39,7 @@ public final class ScopedDeployment {
      * @param location the location value to set.
      * @return the ScopedDeployment object itself.
      */
-    public ScopedDeployment setLocation(String location) {
+    public ScopedDeployment withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -49,7 +49,7 @@ public final class ScopedDeployment {
      * 
      * @return the properties value.
      */
-    public DeploymentProperties getProperties() {
+    public DeploymentProperties properties() {
         return this.properties;
     }
 
@@ -59,7 +59,7 @@ public final class ScopedDeployment {
      * @param properties the properties value to set.
      * @return the ScopedDeployment object itself.
      */
-    public ScopedDeployment setProperties(DeploymentProperties properties) {
+    public ScopedDeployment withProperties(DeploymentProperties properties) {
         this.properties = properties;
         return this;
     }

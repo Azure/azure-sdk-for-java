@@ -23,6 +23,8 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -62,49 +64,49 @@ public final class ProvidersInner {
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderInner>> unregister(@HostParam("$host") String host, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ProviderInner>> unregister(@HostParam("$host") String host, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderInner>> register(@HostParam("$host") String host, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ProviderInner>> register(@HostParam("$host") String host, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderListResultInner>> list(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ProviderListResultInner>> list(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderListResultInner>> listAtTenantScope(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ProviderListResultInner>> listAtTenantScope(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderInner>> get(@HostParam("$host") String host, @QueryParam("$expand") String expand, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ProviderInner>> get(@HostParam("$host") String host, @QueryParam("$expand") String expand, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/{resourceProviderNamespace}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderInner>> getAtTenantScope(@HostParam("$host") String host, @QueryParam("$expand") String expand, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ProviderInner>> getAtTenantScope(@HostParam("$host") String host, @QueryParam("$expand") String expand, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ProviderListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ProviderListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ProviderListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -117,7 +119,8 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ProviderInner>> unregisterWithResponseAsync(String resourceProviderNamespace) {
-        return service.unregister(this.client.getHost(), resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.unregister(this.client.getHost(), resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -163,7 +166,8 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ProviderInner>> registerWithResponseAsync(String resourceProviderNamespace) {
-        return service.register(this.client.getHost(), resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.register(this.client.getHost(), resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -210,14 +214,15 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderInner>> listSinglePageAsync(Integer top, String expand) {
-        return service.list(this.client.getHost(), top, expand, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), top, expand, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .<PagedResponse<ProviderInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -246,6 +251,7 @@ public final class ProvidersInner {
     public PagedFlux<ProviderInner> listAsync() {
         final Integer top = null;
         final String expand = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(top, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -275,6 +281,7 @@ public final class ProvidersInner {
     public PagedIterable<ProviderInner> list() {
         final Integer top = null;
         final String expand = null;
+        final Context context = null;
         return new PagedIterable<>(listAsync(top, expand));
     }
 
@@ -289,14 +296,15 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderInner>> listAtTenantScopeSinglePageAsync(Integer top, String expand) {
-        return service.listAtTenantScope(this.client.getHost(), top, expand, this.client.getApiVersion())
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtTenantScope(this.client.getHost(), top, expand, this.client.getApiVersion(), context))
+            .<PagedResponse<ProviderInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -325,6 +333,7 @@ public final class ProvidersInner {
     public PagedFlux<ProviderInner> listAtTenantScopeAsync() {
         final Integer top = null;
         final String expand = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listAtTenantScopeSinglePageAsync(top, expand),
             nextLink -> listAtTenantScopeNextSinglePageAsync(nextLink));
@@ -354,6 +363,7 @@ public final class ProvidersInner {
     public PagedIterable<ProviderInner> listAtTenantScope() {
         final Integer top = null;
         final String expand = null;
+        final Context context = null;
         return new PagedIterable<>(listAtTenantScopeAsync(top, expand));
     }
 
@@ -368,7 +378,8 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ProviderInner>> getWithResponseAsync(String resourceProviderNamespace, String expand) {
-        return service.get(this.client.getHost(), expand, resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), expand, resourceProviderNamespace, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -403,6 +414,7 @@ public final class ProvidersInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAsync(String resourceProviderNamespace) {
         final String expand = null;
+        final Context context = null;
         return getWithResponseAsync(resourceProviderNamespace, expand)
             .flatMap((SimpleResponse<ProviderInner> res) -> {
                 if (res.getValue() != null) {
@@ -438,6 +450,7 @@ public final class ProvidersInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInner get(String resourceProviderNamespace) {
         final String expand = null;
+        final Context context = null;
         return getAsync(resourceProviderNamespace, expand).block();
     }
 
@@ -452,7 +465,8 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ProviderInner>> getAtTenantScopeWithResponseAsync(String resourceProviderNamespace, String expand) {
-        return service.getAtTenantScope(this.client.getHost(), expand, resourceProviderNamespace, this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.getAtTenantScope(this.client.getHost(), expand, resourceProviderNamespace, this.client.getApiVersion(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -487,6 +501,7 @@ public final class ProvidersInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderInner> getAtTenantScopeAsync(String resourceProviderNamespace) {
         final String expand = null;
+        final Context context = null;
         return getAtTenantScopeWithResponseAsync(resourceProviderNamespace, expand)
             .flatMap((SimpleResponse<ProviderInner> res) -> {
                 if (res.getValue() != null) {
@@ -522,6 +537,7 @@ public final class ProvidersInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderInner getAtTenantScope(String resourceProviderNamespace) {
         final String expand = null;
+        final Context context = null;
         return getAtTenantScopeAsync(resourceProviderNamespace, expand).block();
     }
 
@@ -535,14 +551,15 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ProviderInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
@@ -555,13 +572,14 @@ public final class ProvidersInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
-        return service.listAtTenantScopeNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
+        return FluxUtil.withContext(context -> service.listAtTenantScopeNext(nextLink, context))
+            .<PagedResponse<ProviderInner>>map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
                 res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null));
+                res.getValue().value(),
+                res.getValue().nextLink(),
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

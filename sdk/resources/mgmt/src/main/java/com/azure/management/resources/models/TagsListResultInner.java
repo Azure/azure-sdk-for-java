@@ -30,7 +30,7 @@ public final class TagsListResultInner {
      * 
      * @return the value value.
      */
-    public List<TagDetailsInner> getValue() {
+    public List<TagDetailsInner> value() {
         return this.value;
     }
 
@@ -40,7 +40,7 @@ public final class TagsListResultInner {
      * @param value the value value to set.
      * @return the TagsListResultInner object itself.
      */
-    public TagsListResultInner setValue(List<TagDetailsInner> value) {
+    public TagsListResultInner withValue(List<TagDetailsInner> value) {
         this.value = value;
         return this;
     }
@@ -51,7 +51,7 @@ public final class TagsListResultInner {
      * 
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

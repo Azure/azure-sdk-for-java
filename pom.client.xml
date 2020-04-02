@@ -336,6 +336,11 @@
             <configuration>
               <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
           <execution>
@@ -361,6 +366,11 @@
                   </limits>
                 </rule>
               </rules>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
@@ -473,6 +483,10 @@
               <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Form Recognizer</title>
+                <packages>com.azure.ai.formrecognizer*</packages>
               </group>
               <group>
                 <title>Azure Identity</title>
@@ -700,6 +714,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
@@ -962,6 +977,7 @@
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
@@ -1080,6 +1096,50 @@
             <configuration combine.children="append">
               <overview>${project.basedir}/readme_overview.html</overview>
               <quiet>true</quiet>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Skip codesnippet injection unless -Dinject-codesnippets is passed as an argument.
+      This is specifically done to prevent requiring python as a pre-requisite since
+      this is only needed by the build system. This is also necessary due to limitations in consumption
+      from docs side. 
+       -->
+    <profile>
+      <id>replace-codesnippet-references</id>
+      <activation>
+        <property>
+          <name>inject-codesnippets</name>
+        </property>
+        <file>
+          <exists>../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>replace-codesnippet-references</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <executable>python</executable>
+              <workingDirectory>${project.basedir}</workingDirectory>
+              <arguments>
+                <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                <argument>--project-dir</argument>
+                <argument>${project.basedir}</argument>
+              </arguments>
             </configuration>
           </plugin>
         </plugins>
@@ -1316,6 +1376,7 @@
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
+    <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
     <module>sdk/identity/azure-identity</module>
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>

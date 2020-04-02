@@ -29,7 +29,7 @@ public final class ResourceGroupFilter {
      * 
      * @return the tagName value.
      */
-    public String getTagName() {
+    public String tagName() {
         return this.tagName;
     }
 
@@ -39,7 +39,7 @@ public final class ResourceGroupFilter {
      * @param tagName the tagName value to set.
      * @return the ResourceGroupFilter object itself.
      */
-    public ResourceGroupFilter setTagName(String tagName) {
+    public ResourceGroupFilter withTagName(String tagName) {
         this.tagName = tagName;
         return this;
     }
@@ -49,7 +49,7 @@ public final class ResourceGroupFilter {
      * 
      * @return the tagValue value.
      */
-    public String getTagValue() {
+    public String tagValue() {
         return this.tagValue;
     }
 
@@ -59,7 +59,7 @@ public final class ResourceGroupFilter {
      * @param tagValue the tagValue value to set.
      * @return the ResourceGroupFilter object itself.
      */
-    public ResourceGroupFilter setTagValue(String tagValue) {
+    public ResourceGroupFilter withTagValue(String tagValue) {
         this.tagValue = tagValue;
         return this;
     }

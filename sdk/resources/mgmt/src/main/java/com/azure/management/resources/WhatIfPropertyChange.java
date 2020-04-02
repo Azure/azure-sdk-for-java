@@ -48,7 +48,7 @@ public final class WhatIfPropertyChange {
      * 
      * @return the path value.
      */
-    public String getPath() {
+    public String path() {
         return this.path;
     }
 
@@ -58,7 +58,7 @@ public final class WhatIfPropertyChange {
      * @param path the path value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setPath(String path) {
+    public WhatIfPropertyChange withPath(String path) {
         this.path = path;
         return this;
     }
@@ -68,7 +68,7 @@ public final class WhatIfPropertyChange {
      * 
      * @return the propertyChangeType value.
      */
-    public PropertyChangeType getPropertyChangeType() {
+    public PropertyChangeType propertyChangeType() {
         return this.propertyChangeType;
     }
 
@@ -78,7 +78,7 @@ public final class WhatIfPropertyChange {
      * @param propertyChangeType the propertyChangeType value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setPropertyChangeType(PropertyChangeType propertyChangeType) {
+    public WhatIfPropertyChange withPropertyChangeType(PropertyChangeType propertyChangeType) {
         this.propertyChangeType = propertyChangeType;
         return this;
     }
@@ -89,7 +89,7 @@ public final class WhatIfPropertyChange {
      * 
      * @return the before value.
      */
-    public Object getBefore() {
+    public Object before() {
         return this.before;
     }
 
@@ -100,7 +100,7 @@ public final class WhatIfPropertyChange {
      * @param before the before value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setBefore(Object before) {
+    public WhatIfPropertyChange withBefore(Object before) {
         this.before = before;
         return this;
     }
@@ -111,7 +111,7 @@ public final class WhatIfPropertyChange {
      * 
      * @return the after value.
      */
-    public Object getAfter() {
+    public Object after() {
         return this.after;
     }
 
@@ -122,7 +122,7 @@ public final class WhatIfPropertyChange {
      * @param after the after value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setAfter(Object after) {
+    public WhatIfPropertyChange withAfter(Object after) {
         this.after = after;
         return this;
     }
@@ -132,7 +132,7 @@ public final class WhatIfPropertyChange {
      * 
      * @return the children value.
      */
-    public List<WhatIfPropertyChange> getChildren() {
+    public List<WhatIfPropertyChange> children() {
         return this.children;
     }
 
@@ -142,7 +142,7 @@ public final class WhatIfPropertyChange {
      * @param children the children value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setChildren(List<WhatIfPropertyChange> children) {
+    public WhatIfPropertyChange withChildren(List<WhatIfPropertyChange> children) {
         this.children = children;
         return this;
     }

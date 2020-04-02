@@ -40,7 +40,7 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      * 
      * @return the createdTime value.
      */
-    public OffsetDateTime getCreatedTime() {
+    public OffsetDateTime createdTime() {
         return this.createdTime;
     }
 
@@ -50,7 +50,7 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      * 
      * @return the changedTime value.
      */
-    public OffsetDateTime getChangedTime() {
+    public OffsetDateTime changedTime() {
         return this.changedTime;
     }
 
@@ -61,7 +61,7 @@ public final class GenericResourceExpandedInner extends GenericResourceInner {
      * 
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 }

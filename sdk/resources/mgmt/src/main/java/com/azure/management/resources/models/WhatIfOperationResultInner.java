@@ -40,7 +40,7 @@ public class WhatIfOperationResultInner {
      * 
      * @return the status value.
      */
-    public String getStatus() {
+    public String status() {
         return this.status;
     }
 
@@ -50,7 +50,7 @@ public class WhatIfOperationResultInner {
      * @param status the status value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner setStatus(String status) {
+    public WhatIfOperationResultInner withStatus(String status) {
         this.status = status;
         return this;
     }
@@ -60,7 +60,7 @@ public class WhatIfOperationResultInner {
      * 
      * @return the error value.
      */
-    public ErrorResponse getError() {
+    public ErrorResponse error() {
         return this.error;
     }
 
@@ -70,7 +70,7 @@ public class WhatIfOperationResultInner {
      * @param error the error value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner setError(ErrorResponse error) {
+    public WhatIfOperationResultInner withError(ErrorResponse error) {
         this.error = error;
         return this;
     }
@@ -81,7 +81,7 @@ public class WhatIfOperationResultInner {
      * 
      * @return the changes value.
      */
-    public List<WhatIfChange> getChanges() {
+    public List<WhatIfChange> changes() {
         return this.changes;
     }
 
@@ -92,7 +92,7 @@ public class WhatIfOperationResultInner {
      * @param changes the changes value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner setChanges(List<WhatIfChange> changes) {
+    public WhatIfOperationResultInner withChanges(List<WhatIfChange> changes) {
         this.changes = changes;
         return this;
     }

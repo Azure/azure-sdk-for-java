@@ -443,7 +443,7 @@ public class DataLakeFileSystemClient {
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     public DataLakeDirectoryClient createDirectory(String directoryName) {
-        return createDirectoryWithResponse(directoryName, null, null, null, null, null, null, null).getValue();
+        return createDirectoryWithResponse(directoryName, null, null, null, null, null, null, Context.NONE).getValue();
     }
 
     /**

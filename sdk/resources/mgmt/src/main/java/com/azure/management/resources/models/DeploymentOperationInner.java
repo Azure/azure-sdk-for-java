@@ -45,7 +45,7 @@ public final class DeploymentOperationInner {
      * 
      * @return the operationId value.
      */
-    public String getOperationId() {
+    public String operationId() {
         return this.operationId;
     }
 
@@ -54,7 +54,7 @@ public final class DeploymentOperationInner {
      * 
      * @return the properties value.
      */
-    public DeploymentOperationProperties getProperties() {
+    public DeploymentOperationProperties properties() {
         return this.properties;
     }
 
@@ -64,7 +64,7 @@ public final class DeploymentOperationInner {
      * @param properties the properties value to set.
      * @return the DeploymentOperationInner object itself.
      */
-    public DeploymentOperationInner setProperties(DeploymentOperationProperties properties) {
+    public DeploymentOperationInner withProperties(DeploymentOperationProperties properties) {
         this.properties = properties;
         return this;
     }

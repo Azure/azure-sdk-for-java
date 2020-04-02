@@ -30,7 +30,7 @@ public final class DeploymentInner {
      * 
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
@@ -40,7 +40,7 @@ public final class DeploymentInner {
      * @param location the location value to set.
      * @return the DeploymentInner object itself.
      */
-    public DeploymentInner setLocation(String location) {
+    public DeploymentInner withLocation(String location) {
         this.location = location;
         return this;
     }
@@ -50,7 +50,7 @@ public final class DeploymentInner {
      * 
      * @return the properties value.
      */
-    public DeploymentProperties getProperties() {
+    public DeploymentProperties properties() {
         return this.properties;
     }
 
@@ -60,7 +60,7 @@ public final class DeploymentInner {
      * @param properties the properties value to set.
      * @return the DeploymentInner object itself.
      */
-    public DeploymentInner setProperties(DeploymentProperties properties) {
+    public DeploymentInner withProperties(DeploymentProperties properties) {
         this.properties = properties;
         return this;
     }

@@ -47,7 +47,7 @@ public final class Plan {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -57,7 +57,7 @@ public final class Plan {
      * @param name the name value to set.
      * @return the Plan object itself.
      */
-    public Plan setName(String name) {
+    public Plan withName(String name) {
         this.name = name;
         return this;
     }
@@ -67,7 +67,7 @@ public final class Plan {
      * 
      * @return the publisher value.
      */
-    public String getPublisher() {
+    public String publisher() {
         return this.publisher;
     }
 
@@ -77,7 +77,7 @@ public final class Plan {
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
-    public Plan setPublisher(String publisher) {
+    public Plan withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
@@ -87,7 +87,7 @@ public final class Plan {
      * 
      * @return the product value.
      */
-    public String getProduct() {
+    public String product() {
         return this.product;
     }
 
@@ -97,7 +97,7 @@ public final class Plan {
      * @param product the product value to set.
      * @return the Plan object itself.
      */
-    public Plan setProduct(String product) {
+    public Plan withProduct(String product) {
         this.product = product;
         return this;
     }
@@ -107,7 +107,7 @@ public final class Plan {
      * 
      * @return the promotionCode value.
      */
-    public String getPromotionCode() {
+    public String promotionCode() {
         return this.promotionCode;
     }
 
@@ -117,7 +117,7 @@ public final class Plan {
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
-    public Plan setPromotionCode(String promotionCode) {
+    public Plan withPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
         return this;
     }
@@ -127,7 +127,7 @@ public final class Plan {
      * 
      * @return the version value.
      */
-    public String getVersion() {
+    public String version() {
         return this.version;
     }
 
@@ -137,7 +137,7 @@ public final class Plan {
      * @param version the version value to set.
      * @return the Plan object itself.
      */
-    public Plan setVersion(String version) {
+    public Plan withVersion(String version) {
         this.version = version;
         return this;
     }

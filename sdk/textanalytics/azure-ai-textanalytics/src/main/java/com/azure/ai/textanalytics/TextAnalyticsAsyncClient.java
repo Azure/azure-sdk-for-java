@@ -161,7 +161,6 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String document, String countryHint) {
-        // TODO: follow the sample pattern as other endpoint.
         return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
             .map(detectLanguageResult -> {
                 if (detectLanguageResult.isError()) {

@@ -53,7 +53,7 @@ public final class TagDetailsInner {
      * 
      * @return the tagName value.
      */
-    public String getTagName() {
+    public String tagName() {
         return this.tagName;
     }
 
@@ -63,7 +63,7 @@ public final class TagDetailsInner {
      * @param tagName the tagName value to set.
      * @return the TagDetailsInner object itself.
      */
-    public TagDetailsInner setTagName(String tagName) {
+    public TagDetailsInner withTagName(String tagName) {
         this.tagName = tagName;
         return this;
     }
@@ -75,7 +75,7 @@ public final class TagDetailsInner {
      * 
      * @return the count value.
      */
-    public TagCount getCount() {
+    public TagCount count() {
         return this.count;
     }
 
@@ -87,7 +87,7 @@ public final class TagDetailsInner {
      * @param count the count value to set.
      * @return the TagDetailsInner object itself.
      */
-    public TagDetailsInner setCount(TagCount count) {
+    public TagDetailsInner withCount(TagCount count) {
         this.count = count;
         return this;
     }
@@ -97,7 +97,7 @@ public final class TagDetailsInner {
      * 
      * @return the values value.
      */
-    public List<TagValueInner> getValues() {
+    public List<TagValueInner> values() {
         return this.values;
     }
 
@@ -107,7 +107,7 @@ public final class TagDetailsInner {
      * @param values the values value to set.
      * @return the TagDetailsInner object itself.
      */
-    public TagDetailsInner setValues(List<TagValueInner> values) {
+    public TagDetailsInner withValues(List<TagValueInner> values) {
         this.values = values;
         return this;
     }
