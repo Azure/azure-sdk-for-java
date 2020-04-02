@@ -8,13 +8,11 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
-import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.Objects;
  * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
 
     private final okhttp3.OkHttpClient okHttpClient;
 
