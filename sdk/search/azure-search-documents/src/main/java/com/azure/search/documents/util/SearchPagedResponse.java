@@ -40,7 +40,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
-    private final String nextParameters;
 
     /**
      * Constructor
@@ -62,7 +61,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         this.facets = documentsResult.getFacets();
         this.count = documentsResult.getCount();
         this.coverage = documentsResult.getCoverage();
-        this.nextParameters = getNextPageParameters(documentsResult);
     }
 
     private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
