@@ -23,7 +23,7 @@ public class SqlFirewallRulesAsExternalChildResourcesImpl
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlFirewallRulesAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {

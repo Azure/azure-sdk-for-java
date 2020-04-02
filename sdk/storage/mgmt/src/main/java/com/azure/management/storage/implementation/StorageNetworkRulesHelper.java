@@ -45,7 +45,7 @@ final class StorageNetworkRulesHelper {
      * Creates StorageNetworkRulesHelper.
      *
      * @param updateParameters the model representing payload for storage account update
-     * @param inner            the current state of storage account
+     * @param inner the current state of storage account
      */
     StorageNetworkRulesHelper(StorageAccountUpdateParameters updateParameters, final StorageAccountInner inner) {
         this.isInCreateMode = false;

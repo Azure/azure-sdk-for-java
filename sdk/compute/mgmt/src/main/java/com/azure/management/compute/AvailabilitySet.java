@@ -134,7 +134,7 @@ public interface AvailabilitySet extends
             /**
              * Set information about the proximity placement group that the availability set should
              * be assigned to.
-             * @param promixityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */
@@ -189,7 +189,7 @@ public interface AvailabilitySet extends
             /**
              * Set information about the proximity placement group that the availability set should
              * be assigned to.
-             * @param promixityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */

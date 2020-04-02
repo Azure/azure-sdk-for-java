@@ -55,8 +55,8 @@ public class WebhookImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param containerRegistryManager reference to the container registry manager that accesses web hook operations
      */
@@ -76,7 +76,7 @@ public class WebhookImpl
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param containerRegistryManager reference to the container registry manager that accesses web hook operations
      */

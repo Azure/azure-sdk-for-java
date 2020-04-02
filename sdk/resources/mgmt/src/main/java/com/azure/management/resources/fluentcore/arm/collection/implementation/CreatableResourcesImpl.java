@@ -23,8 +23,8 @@ import java.util.Map;
  * type and are creatable.
  * (Internal use only)
  *
- * @param <T>      the individual resource type returned
- * @param <ImplT>  the individual resource implementation
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
 public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends T, InnerT>
