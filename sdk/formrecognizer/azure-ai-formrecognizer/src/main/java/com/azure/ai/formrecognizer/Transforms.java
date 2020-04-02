@@ -21,10 +21,9 @@ import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
-import com.azure.ai.formrecognizer.models.ReceiptItemKey;
+import com.azure.ai.formrecognizer.models.ReceiptItemType;
 import com.azure.ai.formrecognizer.models.ReceiptType;
 import com.azure.ai.formrecognizer.models.StringValue;
-import com.azure.ai.formrecognizer.models.TextLanguage;
 import com.azure.ai.formrecognizer.models.TimeValue;
 import com.azure.ai.formrecognizer.models.WordElement;
 import com.azure.core.util.IterableStream;
@@ -36,10 +35,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.azure.ai.formrecognizer.models.ReceiptItemKey.NAME;
-import static com.azure.ai.formrecognizer.models.ReceiptItemKey.PRICE;
-import static com.azure.ai.formrecognizer.models.ReceiptItemKey.QUANTITY;
-import static com.azure.ai.formrecognizer.models.ReceiptItemKey.TOTAL_PRICE;
+import static com.azure.ai.formrecognizer.models.ReceiptItemType.NAME;
+import static com.azure.ai.formrecognizer.models.ReceiptItemType.PRICE;
+import static com.azure.ai.formrecognizer.models.ReceiptItemType.QUANTITY;
+import static com.azure.ai.formrecognizer.models.ReceiptItemType.TOTAL_PRICE;
 
 /**
  * Helper class to convert service level models to SDK exposed models.
@@ -180,8 +179,7 @@ final class Transforms {
      * @return The {@link PageMetadata} for the receipt page.
      */
     private static PageMetadata getPageInfo(ReadResult readResultItem) {
-        return new PageMetadata(TextLanguage.fromString(readResultItem.getLanguage().toString()),
-            readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
+        return new PageMetadata(readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
             readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()));
     }
 
@@ -258,7 +256,7 @@ final class Transforms {
         for (com.azure.ai.formrecognizer.implementation.models.FieldValue eachFieldValue : fieldValueItems) {
             ReceiptItem receiptItem = new ReceiptItem();
 
-            for (ReceiptItemKey key : ReceiptItemKey.values()) {
+            for (ReceiptItemType key : ReceiptItemType.values()) {
                 com.azure.ai.formrecognizer.implementation.models.FieldValue item = eachFieldValue.getValueObject().get(key.toString());
                 if (QUANTITY.equals(key) && item != null) {
                     receiptItem.setQuantity(setFieldValue(item, readResults, includeTextDetails));

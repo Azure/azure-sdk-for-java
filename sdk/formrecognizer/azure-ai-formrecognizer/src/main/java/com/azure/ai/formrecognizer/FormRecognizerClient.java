@@ -18,8 +18,7 @@ import java.time.Duration;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are, detect language, recognize entities, recognize PII entities,
- * recognize linked entities, and analyze sentiment for a text input or a list of text inputs.
+ * Operations allowed by the client are, to extract receipt data fields from receipt documents.
  *
  * @see FormRecognizerClientBuilder
  */
@@ -28,7 +27,7 @@ public final class FormRecognizerClient {
     private final FormRecognizerAsyncClient client;
 
     /**
-     * Create a {@code FormRecognizerClient client} that sends requests to the Form Recognizer service's endpoint.
+     * Create a {@link FormRecognizerClient client} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
      *
      * @param client The {@link FormRecognizerClient} that the client routes its request through.
@@ -41,7 +40,7 @@ public final class FormRecognizerClient {
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support</p>
+     * error message indicating absence of cancellation support</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
@@ -56,7 +55,7 @@ public final class FormRecognizerClient {
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support</p>
+     * error message indicating absence of cancellation support</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
@@ -72,10 +71,28 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Detects and extracts data from receipt data using optical character recognition (OCR) and a prebuilt
-     * trained receipt model.
+     * Detects and extracts data from the provided document data using optical character recognition (OCR) 
+     * and a prebuilt trained receipt model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support</p>
+     * error message indicating absence of cancellation support</p>
+     *
+     * @param data The data of the document to be extract receipt information from.
+     * @param length The exact length of the data. Size of the file must be less than 20 MB.
+     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     *
+     * @return A {@link SyncPoller} that polls the extract receipt operation until it has completed, has failed, or has
+     * been cancelled.
+     */
+    public SyncPoller<OperationResult, IterableStream<ExtractedReceipt>>
+        beginExtractReceipt(InputStream data, long length, FormContentType formContentType) {
+        return beginExtractReceipt(data, length, formContentType, false, null);
+    }
+
+    /**
+     * Detects and extracts data from the providedd document data using optical character recognition (OCR) 
+     * and a prebuilt trained receipt model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support</p>
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.

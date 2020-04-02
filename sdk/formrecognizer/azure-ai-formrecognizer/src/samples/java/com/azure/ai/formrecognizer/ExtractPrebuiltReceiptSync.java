@@ -42,7 +42,7 @@ public class ExtractPrebuiltReceiptSync {
 
         SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
             client.beginExtractReceipt(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
-                Duration.ofSeconds(4));
+                Duration.ofSeconds(5));
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 

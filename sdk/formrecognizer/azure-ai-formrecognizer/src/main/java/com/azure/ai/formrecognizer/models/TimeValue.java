@@ -19,7 +19,7 @@ public class TimeValue extends FieldValue<String> {
     /*
      * Time value.
      */
-    private String valueTime;
+    private final String valueTime;
 
     /**
      * Constructs a Time Value.
@@ -40,16 +40,32 @@ public class TimeValue extends FieldValue<String> {
      * {@inheritDoc}
      */
     @Override
-    public String getValue() {
-        return this.valueTime;
+    public int getPageNumber() {
+        return super.getPageNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setValue(String value) {
-        this.valueTime = value;
+    public BoundingBox getBoundingBox() {
+        return super.getBoundingBox();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return super.getText();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getValue() {
+        return this.valueTime;
     }
 
     /**

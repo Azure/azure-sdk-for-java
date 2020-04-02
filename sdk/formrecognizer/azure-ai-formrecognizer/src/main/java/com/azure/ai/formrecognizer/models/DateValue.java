@@ -8,14 +8,14 @@ import java.time.LocalDate;
 
 /**
  * Class to represent the Date value for
- * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}
+ * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueDate()}
  */
 public class DateValue extends FieldValue<LocalDate> {
 
     /*
      * Date value.
      */
-    private LocalDate valueDate;
+    private final LocalDate valueDate;
 
     /*
      * Type of the FieldValue.
@@ -40,16 +40,32 @@ public class DateValue extends FieldValue<LocalDate> {
      * {@inheritDoc}
      */
     @Override
-    public LocalDate getValue() {
-        return this.valueDate;
+    public int getPageNumber() {
+        return super.getPageNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setValue(LocalDate value) {
-        this.valueDate = value;
+    public BoundingBox getBoundingBox() {
+        return super.getBoundingBox();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return super.getText();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocalDate getValue() {
+        return this.valueDate;
     }
 
     /**

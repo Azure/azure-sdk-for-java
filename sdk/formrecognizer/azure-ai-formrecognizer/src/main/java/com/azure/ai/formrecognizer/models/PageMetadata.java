@@ -10,10 +10,6 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class PageMetadata {
-    /*
-     * The detected language on the page overall.
-     */
-    private final TextLanguage language;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
@@ -45,31 +41,20 @@ public final class PageMetadata {
     /**
      * Constructs a PageMetadata model.
      *
-     * @param language The detected language on the page overall.
      * @param pageHeight The height of the image/PDF in pixels/inches, respectively.
      * @param pageNumber The 1-based page number in the input document.
      * @param pageWidth The width of the image/PDF in pixels/inches, respectively.
      * @param textAngle The orientation of the text in clockwise direction, measured in degrees between (-180, 180].
      * @param unit The unit used by the width, height and boundingBox properties.
      */
-    public PageMetadata(final TextLanguage language, final double pageHeight, final int pageNumber,
+    public PageMetadata(final double pageHeight, final int pageNumber,
                         final double pageWidth, final double textAngle,
                         final DimensionUnit unit) {
-        this.language = language;
         this.pageHeight = pageHeight;
         this.pageNumber = pageNumber;
         this.pageWidth = pageWidth;
         this.textAngle = textAngle;
         this.unit = unit;
-    }
-
-    /**
-     * Get the language property: The detected language on the page overall.
-     *
-     * @return the language value.
-     */
-    public TextLanguage getLanguage() {
-        return language;
     }
 
     /**

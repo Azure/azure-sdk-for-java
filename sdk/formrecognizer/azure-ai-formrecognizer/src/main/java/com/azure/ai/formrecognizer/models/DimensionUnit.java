@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -28,7 +27,6 @@ public final class DimensionUnit extends ExpandableStringEnum<DimensionUnit> {
      * @param value the serialized value to parse.
      * @return the parsed DimensionUnit object, or null if unable to parse.
      */
-    @JsonCreator
     public static DimensionUnit fromString(String value) {
         return fromString(value, DimensionUnit.class);
     }

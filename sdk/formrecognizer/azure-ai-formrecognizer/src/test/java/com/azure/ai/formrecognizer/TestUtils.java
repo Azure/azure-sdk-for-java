@@ -17,7 +17,6 @@ import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.ReceiptItem;
 import com.azure.ai.formrecognizer.models.ReceiptType;
 import com.azure.ai.formrecognizer.models.StringValue;
-import com.azure.ai.formrecognizer.models.TextLanguage;
 import com.azure.ai.formrecognizer.models.WordElement;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
@@ -49,15 +48,14 @@ final class TestUtils {
     static final String RECEIPT_URL = "https://raw.githubusercontent.com/Azure-Samples/"
         + "cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg";
 
-    static final String INVALID_RECEIPT_URL = "https://badname.blob.core.windows.net/fr-training-test/" +
-        "contoso-allinone.jpg";
+    static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
 
     private TestUtils() {
     }
 
     static IterableStream<ExtractedReceipt> getExtractedReceipts() {
         final int pageNumber = 1;
-        PageMetadata pageMetadata = new PageMetadata(TextLanguage.EN, 3000,
+        PageMetadata pageMetadata = new PageMetadata(3000,
             1, 1688, 0.689300000667572, DimensionUnit.PIXEL);
         ReceiptType receiptType = new ReceiptType("Itemized", 0.692f);
 

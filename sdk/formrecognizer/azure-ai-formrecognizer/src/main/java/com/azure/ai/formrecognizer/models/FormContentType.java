@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * Define values for FormContentType.
@@ -35,9 +34,9 @@ public final class FormContentType extends ExpandableStringEnum<FormContentType>
      * Creates or finds a ElementType from its string representation.
      *
      * @param value a value to look for.
+     *
      * @return the corresponding ElementType.
      */
-    @JsonCreator
     public static FormContentType fromString(String value) {
         return fromString(value, FormContentType.class);
     }

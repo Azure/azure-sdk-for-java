@@ -43,7 +43,6 @@ public final class LineElement extends Element {
         return super.getBoundingBox();
     }
 
-
     /**
      * {@inheritDoc}
      */

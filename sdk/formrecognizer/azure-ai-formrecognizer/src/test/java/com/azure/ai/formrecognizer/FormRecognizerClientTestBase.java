@@ -162,7 +162,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
     private static void validatePageMetadata(PageMetadata expectedPageInfo, PageMetadata actualPageInfo) {
         assertEquals(expectedPageInfo.getPageNumber(), actualPageInfo.getPageNumber());
-        assertEquals(expectedPageInfo.getLanguage(), actualPageInfo.getLanguage());
         assertEquals(expectedPageInfo.getPageHeight(), actualPageInfo.getPageHeight());
         assertEquals(expectedPageInfo.getPageWidth(), actualPageInfo.getPageWidth());
         assertEquals(expectedPageInfo.getUnit(), actualPageInfo.getUnit());

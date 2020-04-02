@@ -14,7 +14,7 @@ public class FloatValue extends FieldValue<Float> {
     /*
      * Floating point value.
      */
-    private Float valueNumber;
+    private final Float valueNumber;
 
     /*
      * Type of the FieldValue.
@@ -39,16 +39,32 @@ public class FloatValue extends FieldValue<Float> {
      * {@inheritDoc}
      */
     @Override
-    public Float getValue() {
-        return this.valueNumber;
+    public int getPageNumber() {
+        return super.getPageNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setValue(Float value) {
-        this.valueNumber = value;
+    public BoundingBox getBoundingBox() {
+        return super.getBoundingBox();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return super.getText();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Float getValue() {
+        return this.valueNumber;
     }
 
     /**

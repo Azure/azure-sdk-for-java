@@ -35,8 +35,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are language detection, sentiment analysis, and recognition entities, PII entities,
- * and linked entities of a text input or list of test inputs.
+ * Operations allowed by the client are, to extract receipt data fields from receipt documents.
  *
  * @see FormRecognizerClientBuilder
  */
@@ -71,7 +70,7 @@ public final class FormRecognizerAsyncClient {
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support.</p>
+     * error message indicating absence of cancellation support.</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      *
@@ -86,7 +85,7 @@ public final class FormRecognizerAsyncClient {
      * Detects and extracts data from receipts using optical character recognition (OCR) and a prebuilt receipt trained
      * model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support.</p>
+     * error message indicating absence of cancellation support.</p>
      *
      * @param sourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
@@ -112,7 +111,25 @@ public final class FormRecognizerAsyncClient {
      * Detects and extracts data from receipts data using optical character recognition (OCR) and a prebuilt receipt
      * trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
-     * with an error message indicating absence of cancellation support.</p>
+     * error message indicating absence of cancellation support.</p>
+     *
+     * @param data The data of the document to be extract receipt information from.
+     * @param length The exact length of the data. Size of the file must be less than 20 MB.
+     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
+     *
+     * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
+     * been cancelled.
+     */
+    public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipt(
+        Flux<ByteBuffer> data, long length, FormContentType formContentType) {
+        return beginExtractReceipt(data, length, false, formContentType, null);
+    }
+
+    /**
+     * Detects and extracts data from receipts data using optical character recognition (OCR) and a prebuilt receipt
+     * trained model.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
      *
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
@@ -128,6 +145,7 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
         Duration pollInterval) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
+        Objects.requireNonNull(length, "'length' is required and cannot be null.");
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
         return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,

@@ -48,13 +48,6 @@ public abstract class FieldValue<T> extends RawItem {
     public abstract T getValue();
 
     /**
-     * Sets the field value.
-     *
-     * @param value The value T.
-     */
-    public abstract void setValue(T value);
-
-    /**
      * Get the 1-based page number in the input document.
      *
      * @return the page number value.

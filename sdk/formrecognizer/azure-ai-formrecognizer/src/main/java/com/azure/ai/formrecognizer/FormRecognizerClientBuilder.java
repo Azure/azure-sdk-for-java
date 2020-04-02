@@ -152,6 +152,13 @@ public final class FormRecognizerClientBuilder {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
+            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+                buildConfiguration));
+            policies.add(new RequestIdPolicy());
+            policies.add(new AddHeadersPolicy(headers));
+
+            HttpPolicyProviders.addBeforeRetryPolicies(policies);
+
             // Authentications
             if (credential != null) {
                 policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
@@ -161,12 +168,6 @@ public final class FormRecognizerClientBuilder {
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
 
-            policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-                buildConfiguration));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AddHeadersPolicy(headers));
-
-            HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -247,7 +248,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @param policy The retry policy for service requests.
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public FormRecognizerClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -259,7 +260,7 @@ public final class FormRecognizerClientBuilder {
      * Sets the HTTP client to use for sending and receiving requests to and from the service.
      *
      * @param client The HTTP client to use for requests.
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
@@ -279,7 +280,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
@@ -298,7 +299,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @param configuration The configuration store used to
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -313,7 +314,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -329,7 +330,7 @@ public final class FormRecognizerClientBuilder {
      *
      * @param version {@link FormRecognizerServiceVersion} of the service to be used when making requests.
      *
-     * @return The updated FormRecognizerClientImplBuilder object.
+     * @return The updated FormRecognizerClientBuilder object.
      */
     public FormRecognizerClientBuilder serviceVersion(FormRecognizerServiceVersion version) {
         this.version = version;

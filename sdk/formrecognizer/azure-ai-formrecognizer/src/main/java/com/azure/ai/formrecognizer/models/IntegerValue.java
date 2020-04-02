@@ -14,7 +14,7 @@ public class IntegerValue extends FieldValue<Integer> {
     /*
      * Integer value.
      */
-    private Integer valueInteger;
+    private final Integer valueInteger;
 
     /*
      * Type of the FieldValue.
@@ -35,6 +35,29 @@ public class IntegerValue extends FieldValue<Integer> {
         this.fieldValueType = FieldValueType.INTEGER;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getPageNumber() {
+        return super.getPageNumber();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BoundingBox getBoundingBox() {
+        return super.getBoundingBox();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return super.getText();
+    }
 
     /**
      * {@inheritDoc}
@@ -42,14 +65,6 @@ public class IntegerValue extends FieldValue<Integer> {
     @Override
     public Integer getValue() {
         return this.valueInteger;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setValue(Integer value) {
-        this.valueInteger = value;
     }
 
     /**

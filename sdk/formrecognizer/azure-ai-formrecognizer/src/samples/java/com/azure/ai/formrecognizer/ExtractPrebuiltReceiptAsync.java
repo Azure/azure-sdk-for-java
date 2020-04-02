@@ -10,7 +10,6 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 
 /**
  * Sample for extracting receipt information using file source URL.
@@ -25,7 +24,7 @@ public class ExtractPrebuiltReceiptAsync {
 
         String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceiptFromUrl(receiptUrl, true, Duration.ofSeconds(1));
+            client.beginExtractReceiptFromUrl(receiptUrl);
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller
             .last()

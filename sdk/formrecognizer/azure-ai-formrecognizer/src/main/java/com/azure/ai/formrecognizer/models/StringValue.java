@@ -14,7 +14,7 @@ public class StringValue extends FieldValue<String> {
     /*
      * String value.
      */
-    private String valueString;
+    private final String valueString;
 
     /*
      * Type of the FieldValue.
@@ -39,16 +39,32 @@ public class StringValue extends FieldValue<String> {
      * {@inheritDoc}
      */
     @Override
-    public String getValue() {
-        return this.valueString;
+    public int getPageNumber() {
+        return super.getPageNumber();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setValue(String value) {
-        this.valueString = value;
+    public BoundingBox getBoundingBox() {
+        return super.getBoundingBox();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getText() {
+        return super.getText();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getValue() {
+        return this.valueString;
     }
 
     /**
