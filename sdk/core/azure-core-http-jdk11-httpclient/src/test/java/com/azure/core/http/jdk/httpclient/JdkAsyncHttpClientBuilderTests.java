@@ -195,9 +195,9 @@ public class JdkAsyncHttpClientBuilderTests {
         server.start();
         final String defaultUrl = "http://localhost:" + server.port() + defaultPath;
         try {
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
+            StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
+                .assertNext(response -> assertEquals(200, response.getStatusCode()))
+                .verifyComplete();
         } finally {
             if (server.isRunning()) {
                 server.shutdown();

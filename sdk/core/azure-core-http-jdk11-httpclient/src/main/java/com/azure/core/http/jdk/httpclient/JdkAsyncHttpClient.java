@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -85,7 +86,7 @@ class JdkAsyncHttpClient implements HttpClient {
             try {
                 builder.uri(request.getUrl().toURI());
             } catch (URISyntaxException e) {
-                throw Exceptions.propagate(e);
+                throw logger.logExceptionAsError(Exceptions.propagate(e));
             }
             final HttpHeaders headers = request.getHeaders();
             if (headers != null) {
@@ -96,9 +97,10 @@ class JdkAsyncHttpClient implements HttpClient {
                         builder.setHeader(headerName, headerValue);
                     } else {
                         logger.logExceptionAsError(
-                            new IllegalArgumentException("The header " +
-                                "'" + headerName + "' is restricted by default in JDK HttpClient 12 and above." +
-                                "(unless it is whitelisted in JAVA_HOME/conf/net.properties)"));
+                            new IllegalArgumentException("The header "
+                                + "'" + headerName
+                                + "' is restricted by default in JDK HttpClient 12 and above."
+                                + "(unless it is whitelisted in JAVA_HOME/conf/net.properties)"));
                     }
                 }
             }
@@ -148,7 +150,7 @@ class JdkAsyncHttpClient implements HttpClient {
         if (CoreUtils.isNullOrEmpty(version)) {
             throw logger.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
         }
-        if(version.startsWith("1.")) {
+        if (version.startsWith("1.")) {
             if (version.length() < 3) {
                 throw logger.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
             }
@@ -215,7 +217,7 @@ class JdkAsyncHttpClient implements HttpClient {
         @Override
         public Mono<String> getBodyAsString() {
             return getBodyAsByteArray()
-                .map(bytes -> new String(bytes));
+                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
         }
 
         @Override

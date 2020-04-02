@@ -135,15 +135,26 @@ public class JdkAsyncHttpClientBuilder {
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                httpClientBuilder.authenticator(new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(buildProxyOptions.getUsername(),
-                            buildProxyOptions.getPassword().toCharArray());
-                    }
-                });
+                httpClientBuilder
+                    .authenticator(new ProxyAuthenticator(buildProxyOptions.getUsername(),
+                        buildProxyOptions.getPassword()));
             }
         }
         return new JdkAsyncHttpClient(httpClientBuilder.build());
+    }
+
+    private static class ProxyAuthenticator extends Authenticator {
+        private final String userName;
+        private final String password;
+
+        ProxyAuthenticator(String userName, String password) {
+            this.userName = userName;
+            this.password = password;
+        }
+
+        @Override
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(this.userName, password.toCharArray());
+        }
     }
 }

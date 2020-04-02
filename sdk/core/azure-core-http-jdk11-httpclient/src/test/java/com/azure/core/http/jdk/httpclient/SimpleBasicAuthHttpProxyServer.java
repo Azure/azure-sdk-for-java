@@ -23,7 +23,7 @@ import java.util.Base64;
 final class SimpleBasicAuthHttpProxyServer {
     private final String userName;
     private final String password;
-    private final String [] serviceEndpoints;
+    private final String[] serviceEndpoints;
     private WireMockServer proxyService;
 
     /**
@@ -33,7 +33,7 @@ final class SimpleBasicAuthHttpProxyServer {
      * @param password the proxy password for basic authentication
      * @param serviceEndpoints the whitelisted mock endpoints targeting the service behind proxy
      */
-    SimpleBasicAuthHttpProxyServer(String userName, String password, String [] serviceEndpoints) {
+    SimpleBasicAuthHttpProxyServer(String userName, String password, String[] serviceEndpoints) {
         this.userName = userName;
         this.password = password;
         this.serviceEndpoints = serviceEndpoints;
