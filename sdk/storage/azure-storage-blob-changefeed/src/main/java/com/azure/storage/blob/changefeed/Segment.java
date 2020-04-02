@@ -1,15 +1,14 @@
 package com.azure.storage.blob.changefeed;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
@@ -50,17 +49,8 @@ class Segment {
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download JSON manifest file. */
-        return client.getBlobAsyncClient(path)
-            .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
-                try {
-                    os.write(FluxUtil.byteBufferToArray(buffer));
-                } catch (IOException e) {
-                    throw logger.logExceptionAsError(new UncheckedIOException(e));
-                }
-                return os;
-            })
-            /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
-            .map(ByteArrayOutputStream::toString)
+        /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
+        return DownloadUtils.downloadToString(client, path)
             /* Parse the JSON for shards. */
             .map(json -> {
                 ObjectMapper objectMapper = new ObjectMapper();

@@ -3,11 +3,11 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.util.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
@@ -104,17 +103,8 @@ class Changefeed {
      */
     private Mono<Void> populateLastConsumable() {
         /* TODO (gapra): Reduce duplicate download code. */
-        return this.client.getBlobAsyncClient(METADATA_SEGMENT_PATH)
-            .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
-                try {
-                    os.write(FluxUtil.byteBufferToArray(buffer));
-                } catch (IOException e) {
-                    throw logger.logExceptionAsError(new UncheckedIOException(e));
-                }
-                return os;
-            })
-            /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
-            .map(ByteArrayOutputStream::toString)
+        /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
+        return DownloadUtils.downloadToString(this.client, METADATA_SEGMENT_PATH)
             /* Parse JSON for last consumable. */
             .flatMap(json -> {
                 ObjectMapper objectMapper = new ObjectMapper();
