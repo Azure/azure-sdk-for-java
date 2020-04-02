@@ -360,11 +360,8 @@ public class BindingsInner {
             throw new IllegalArgumentException("Parameter bindingName is required and cannot be null.");
         }
         Validator.validate(properties);
-        BindingResourceInner bindingResource = null;
-        if (properties != null) {
-            bindingResource = new BindingResourceInner();
-            bindingResource.withProperties(properties);
-        }
+        BindingResourceInner bindingResource = new BindingResourceInner();
+        bindingResource.withProperties(properties);
         return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serviceName, appName, bindingName, this.client.apiVersion(), this.client.acceptLanguage(), bindingResource, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BindingResourceInner>>>() {
                 @Override
@@ -657,11 +654,8 @@ public class BindingsInner {
             throw new IllegalArgumentException("Parameter bindingName is required and cannot be null.");
         }
         Validator.validate(properties);
-        BindingResourceInner bindingResource = null;
-        if (properties != null) {
-            bindingResource = new BindingResourceInner();
-            bindingResource.withProperties(properties);
-        }
+        BindingResourceInner bindingResource = new BindingResourceInner();
+        bindingResource.withProperties(properties);
         return service.update(this.client.subscriptionId(), resourceGroupName, serviceName, appName, bindingName, this.client.apiVersion(), this.client.acceptLanguage(), bindingResource, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BindingResourceInner>>>() {
                 @Override
