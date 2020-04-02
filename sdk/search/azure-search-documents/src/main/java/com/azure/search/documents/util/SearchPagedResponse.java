@@ -44,6 +44,7 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
+    private SearchRequest nextParameters;
 
     /**
      * Constructor
@@ -77,8 +78,9 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
             return null;
         }
         String nextParameters;
+        this.nextParameters = getNextPageParameters(documentsResult);
         try {
-            nextParameters = new JacksonAdapter().serialize(getNextPageParameters(documentsResult),
+            nextParameters = new JacksonAdapter().serialize(this.nextParameters,
                 SerializerEncoding.JSON);
         } catch (IOException ex) {
             throw new RuntimeException("Failed to serialize the search request.");
@@ -163,15 +165,6 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
 
     @Override
     public String getContinuationToken() {
-        String decodedToken = new String(Base64.getDecoder().decode(super.getContinuationToken()),
-            StandardCharsets.UTF_8);
-        Map<String, String> fieldMap = new HashMap<>();
-        try {
-            fieldMap = new JacksonAdapter().deserialize(decodedToken, Map.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return fieldMap.get("nextPageParameters");
+        return this.nextParameters;
     }
 }
