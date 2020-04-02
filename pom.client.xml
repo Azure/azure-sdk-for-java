@@ -523,6 +523,10 @@
                 <packages>com.azure.storage.file.datalake*</packages>
               </group>
               <group>
+                <title>Azure Storage Internal Avro</title>
+                <packages>com.azure.storage.internal.avro*</packages>
+              </group>
+              <group>
                 <title>Azure Storage - Queues</title>
                 <packages>com.azure.storage.queue*</packages>
               </group>
@@ -1277,6 +1281,7 @@
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
+    <module>sdk/storage/azure-storage-internal-avro</module>
     <module>sdk/storage/azure-storage-queue</module>
     <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
