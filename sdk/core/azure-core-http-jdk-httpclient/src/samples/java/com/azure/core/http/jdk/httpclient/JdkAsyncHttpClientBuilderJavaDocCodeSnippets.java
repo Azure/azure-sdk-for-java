@@ -57,11 +57,11 @@ public class JdkAsyncHttpClientBuilderJavaDocCodeSnippets {
 
     public void connectionTimeoutSample() {
 
-        // BEGIN: com.azure.core.http.jdk11.httpclient.JdkAsyncHttpClientBuilder#connectionTimeout
+        // BEGIN: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder#connectionTimeout
         HttpClient client = new JdkAsyncHttpClientBuilder()
                 .connectionTimeout(Duration.ofSeconds(250)) // connection timeout of 250 seconds
                 .build();
-        // END: com.azure.core.http.jdk11.httpclient.JdkAsyncHttpClientBuilder#connectionTimeout
+        // END: com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder#connectionTimeout
 
     }
 }

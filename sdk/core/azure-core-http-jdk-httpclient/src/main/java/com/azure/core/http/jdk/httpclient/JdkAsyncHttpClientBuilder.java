@@ -61,6 +61,10 @@ public class JdkAsyncHttpClientBuilder {
     /**
      * Sets the connection timeout.
      *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder#connectionTimeout}
+     *
      * The default connection timeout is 60 seconds.
      *
      * @param connectionTimeout the connection timeout
