@@ -2,6 +2,7 @@
 
 ## 1.3.0-beta.1 (Unreleased)
 
+- Fixed issue where the body stream would be prematurely closed.
 
 ## 1.2.0 (2020-03-06)
 

@@ -2,7 +2,14 @@
 
 ## 1.4.0-beta.1 (Unreleased)
 
-- Added `AzureKeyCredential` to support generic key based authorizations.
+- Added `AzureKeyCredential` and `AzureKeyCredentialPolicy` to support generic key based authorizations.
+- Fixed a deserialization issue when a JSON property contained a `.` and the containing class was annotated with `JsonFlatten`.
+- Updated `reactor-core` dependency to `3.3.3.RELEASE`.
+- Added APIs to `ClientLogger` to log checked exceptions that will be thrown.
+- Added simplified APIs to `ClientLogger` where only a message will be logged.
+- Fixed URL encoded form request issue where the URL would be encoded improperly.
+- Added property to `HttpLogOptions` to enable pretty printing when logging a request or response body.
+- Added another `withContext` overload in `FluxUtil`.
 
 ## 1.3.0 (2020-03-06)
 
