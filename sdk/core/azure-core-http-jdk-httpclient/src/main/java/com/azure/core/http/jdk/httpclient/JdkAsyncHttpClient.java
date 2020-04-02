@@ -245,8 +245,13 @@ class JdkAsyncHttpClient implements HttpClient {
         private static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
             final HttpHeaders httpHeaders = new HttpHeaders();
             for (final String key : headers.map().keySet()) {
-                for (final String value : headers.allValues(key)) {
-                    httpHeaders.put(key, value);
+                final List<String> values = headers.allValues(key);
+                if (values == null || values.size() == 0) {
+                    continue;
+                } else if (values.size() == 1) {
+                    httpHeaders.put(key, values.get(0));
+                } else {
+                    httpHeaders.put(key, String.join(",", values));
                 }
             }
             return httpHeaders;
