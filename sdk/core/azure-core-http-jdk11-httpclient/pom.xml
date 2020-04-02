@@ -117,4 +117,57 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <testRelease>11</testRelease>
+          <compilerArgs>
+            <!-- Turn off annotation processing -->
+            <arg>-proc:none</arg>
+            <!-- https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#xlintwarnings -->
+            <arg>-Xlint:cast</arg>
+            <arg>-Xlint:classfile</arg>
+            <!-- <arg>-Xlint:deprecation</arg> --> <!-- FIXME: We should enable this ASAP -->
+            <arg>-Xlint:dep-ann</arg>
+            <arg>-Xlint:divzero</arg>
+            <arg>-Xlint:empty</arg>
+            <arg>-Xlint:fallthrough</arg>
+            <arg>-Xlint:finally</arg>
+            <arg>-Xlint:options</arg>
+            <arg>-Xlint:overrides</arg>
+            <arg>-Xlint:path</arg>
+            <!-- <arg>-Xlint:processing</arg> -->
+            <arg>-Xlint:rawtypes</arg>
+            <!-- <arg>-Xlint:serial</arg> -->
+            <arg>-Xlint:static</arg>
+            <arg>-Xlint:try</arg>
+            <arg>-Xlint:unchecked</arg>
+            <arg>-Xlint:varargs</arg>
+            <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+            <arg>-Xlint:-requires-transitive-automatic
+            </arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+          </compilerArgs>
+        </configuration>
+        <executions>
+          <execution>
+            <!-- Here the 'base-compile' execution section of Java11 profile defined in
+            parent pom.client.xml is overridden. In parent pom, this execution entry
+            enforces java8 release comparability. The new http APIs are not available
+            in Java8, hence here in this pom we override that release compact to 11.
+            -->
+            <id>base-compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration combine.self="override">
+              <release>11</release>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
