@@ -46,39 +46,4 @@ public class BlobChangefeedAsyncClient {
         return new BlobChangefeedPagedFlux(client, cursor);
     }
 
-//    private Flux<BlobChangefeedPagedResponse> getEventsInternal(OffsetDateTime startTime, OffsetDateTime endTime,
-//        String cursor, Integer pageSize) {
-//        pageSize = pageSize == null || pageSize > 5000 ? 5000 : pageSize;
-//        startTime = startTime == null ? OffsetDateTime.MIN : startTime;
-//        endTime = endTime == null ? OffsetDateTime.MAX : endTime;
-//
-//        /* Initialize Changefeed. */
-//        Changefeed changefeed = null;
-//        /* If a cursor is provided, use that to initialize the Changefeed. */
-//        if (cursor != null) {
-//            changefeed = new Changefeed(this.client, cursor);
-//        } else {
-//            changefeed = new Changefeed(this.client, startTime, endTime);
-//        }
-//
-//        /* Get events from the changefeed. */
-//        return changefeed.getEvents()
-//            /* Window the events to the page size. */
-//            .window(pageSize)
-//            /* Convert the BlobChangefeedEventWrappers into BlobChangefeedEvents along with the end cursor. */
-//            .flatMap(eventWrappers -> {
-//                Flux<BlobChangefeedEventWrapper> c1 = eventWrappers.cache();
-//                Mono<BlobChangefeedCursor> c = c1.last()
-//                    .map(BlobChangefeedEventWrapper::getCursor);
-//                Mono<List<BlobChangefeedEvent>> e = c1
-//                    .map(BlobChangefeedEventWrapper::getEvent)
-//                    .collectList();
-//                return Mono.zip(e, c);
-//            })
-//            .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()));
-//    }
-
-
-
-
 }

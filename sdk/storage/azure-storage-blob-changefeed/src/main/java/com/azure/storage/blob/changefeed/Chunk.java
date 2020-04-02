@@ -17,7 +17,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
 
-
+/**
+ * Gets events for a chunk.
+ * A chunk is an avro formatted append blob that contains change feed events.
+ */
 class Chunk {
 
     private static ClientLogger logger = new ClientLogger(Chunk.class);
@@ -28,11 +31,13 @@ class Chunk {
     /* Chunk event data location. */
     private final String chunkPath;
 
+    /* Cursor associated with parent shard. */
     private final BlobChangefeedCursor shardCursor;
 
     private long eventNumber;
 
     private final BlobChangefeedCursor userCursor;
+
 
     Chunk(BlobContainerAsyncClient client, String chunkPath, BlobChangefeedCursor shardCursor,
         BlobChangefeedCursor userCursor) {
@@ -45,6 +50,7 @@ class Chunk {
 
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download Avro data file. */
+        /* TODO (gapra): Lazy download. */
         return client.getBlobAsyncClient(chunkPath)
             .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
                 try {

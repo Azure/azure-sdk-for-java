@@ -15,6 +15,9 @@ import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gets events for a segment (represents approximately an hour of the changefeed).
+ */
 class Segment {
     private static ClientLogger logger = new ClientLogger(Segment.class);
 
@@ -24,18 +27,27 @@ class Segment {
     /* Segment manifest location. */
     private final String path;
 
+    /* Cursor associated with parent changefeed. */
     private final BlobChangefeedCursor cfCursor;
 
+    /* User provided cursor. */
     private final BlobChangefeedCursor userCursor;
 
-    Segment(BlobContainerAsyncClient client, String path, BlobChangefeedCursor cfCursor,
+    /**
+     * Creates a segment with the associated path and cursors.
+     */
+    Segment(BlobContainerAsyncClient client, String segmentPath, BlobChangefeedCursor cfCursor,
         BlobChangefeedCursor userCursor) {
         this.client = client;
-        this.path = path;
+        this.path = segmentPath;
         this.cfCursor = cfCursor;
         this.userCursor = userCursor;
     }
 
+    /**
+     * Get all the events for the Segment.
+     * @return A reactive stream of {@link BlobChangefeedEventWrapper}
+     */
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download JSON manifest file. */
         return client.getBlobAsyncClient(path)
@@ -47,6 +59,7 @@ class Segment {
                 }
                 return os;
             })
+            /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
             .map(ByteArrayOutputStream::toString)
             /* Parse the JSON for shards. */
             .map(json -> {
@@ -69,6 +82,9 @@ class Segment {
             .flatMapMany(this::roundRobinAmongShards);
     }
 
+    /**
+     * Round robins among shard events.
+     */
     private Flux<BlobChangefeedEventWrapper> roundRobinAmongShards(List<Flux<BlobChangefeedEventWrapper>> shards) {
         return Flux.merge(shards);
     }

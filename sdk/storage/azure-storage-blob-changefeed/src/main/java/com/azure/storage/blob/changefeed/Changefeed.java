@@ -21,11 +21,10 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 
+/**
+ * Gets events for the changefeed as defined by the user.
+ */
 class Changefeed {
-
-//    public const string InitalizationManifestPath = "/0000/";
-//    public const string InitalizationSegment = "1601";
-//    public const long ChunkBlockDownloadSize = MB;
 
     private static ClientLogger logger = new ClientLogger(Changefeed.class);
 
@@ -39,15 +38,22 @@ class Changefeed {
     private final OffsetDateTime startTime;
     private final OffsetDateTime endTime;
 
-    /* Last consumable time. */
-    private OffsetDateTime lastConsumable; /* TODO (gapra) : DO something with last consumable. */
+    /* User provided cursor. */
+    private BlobChangefeedCursor userCursor;
+
+    /* Last consumable time. The latest time the changefeed can safely be read from.*/
+    private OffsetDateTime lastConsumable; /* TODO (gapra) : Do something with last consumable. */
+
+    /* Soonest time between lastConsumable and endTime. TODO (gapra) : Figure out if I even need this extra param
+                                                         (maybe I can overwrite endTime?)*/
+    private OffsetDateTime safeEndTime;
 
     /* Cursor associated with changefeed. */
     private final BlobChangefeedCursor cfCursor;
 
-    /* User provided cursor. */
-    private BlobChangefeedCursor userCursor;
-
+    /**
+     * Creates a new Changefeed from a start and end time.
+     */
     Changefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime) {
         this.client = client;
         this.startTime = startTime;
@@ -55,11 +61,15 @@ class Changefeed {
         cfCursor = new BlobChangefeedCursor(endTime);
     }
 
+    /**
+     * Creates a new Changefeed from a cursor.
+     */
     Changefeed(BlobContainerAsyncClient client, String userCursor) {
         this.client = client;
         this.userCursor = BlobChangefeedCursor.deserialize(userCursor);
         this.startTime = OffsetDateTime.parse(this.userCursor.getSegmentTime());
         this.endTime = OffsetDateTime.parse(this.userCursor.getEndTime());
+        this.safeEndTime = this.endTime;
         this.cfCursor = new BlobChangefeedCursor(endTime);
     }
 
@@ -93,6 +103,7 @@ class Changefeed {
      * Populates the last consumable property from changefeed metadata.
      */
     private Mono<Void> populateLastConsumable() {
+        /* TODO (gapra): Reduce duplicate download code. */
         return this.client.getBlobAsyncClient(METADATA_SEGMENT_PATH)
             .download().reduce(new ByteArrayOutputStream(), (os, buffer) -> {
                 try {
@@ -114,6 +125,9 @@ class Changefeed {
                     throw logger.logExceptionAsError(new UncheckedIOException(e));
                 }
                 this.lastConsumable = OffsetDateTime.parse(jsonNode.get("lastConsumable").asText());
+                if (this.lastConsumable.isBefore(endTime)) {
+                    this.safeEndTime = this.lastConsumable;
+                }
                 return Mono.empty();
             });
     }
@@ -130,7 +144,7 @@ class Changefeed {
      */
     private Flux<BlobItem> listSegmentsForYear(BlobItem year) {
         String yearPath = year.getName();
-        if (TimeUtils.validYear(yearPath, startTime, endTime)) {
+        if (TimeUtils.validYear(yearPath, startTime, safeEndTime)) {
             return client.listBlobs(new ListBlobsOptions().setPrefix(yearPath));
         } else {
             return Flux.empty();
@@ -143,7 +157,7 @@ class Changefeed {
     private Flux<BlobChangefeedEventWrapper> getEventsForSegment(BlobItem segment) {
         String segmentPath = segment.getName();
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segmentPath);
-        if (TimeUtils.validSegment(segmentPath, startTime, endTime)) {
+        if (TimeUtils.validSegment(segmentPath, startTime, safeEndTime)) {
             return new Segment(client, segmentPath, cfCursor.toSegmentCursor(segmentTime), userCursor)
                 .getEvents();
         } else {
