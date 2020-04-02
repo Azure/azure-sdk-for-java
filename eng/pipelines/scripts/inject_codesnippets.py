@@ -66,10 +66,6 @@ def re_space_snippet(snippet_list):
     # now figure out the shortest one
     white_space_for_replacement = min(white_space, key=len)
 
-    print("I'm seeing the following")
-    print(white_space_for_replacement)
-    print("end")
-
     # return the list, replacing leading whitespace with the specified amount
     return [line.replace(white_space_for_replacement, "", 1) for line in snippet_list]
 
