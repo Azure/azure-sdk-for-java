@@ -33,10 +33,7 @@ import java.util.Map;
  * to true coverage - coverage value.
  */
 @Immutable
-public final class SearchPagedResponse extends PagedResponseBase<SearchResult, SearchResult> {
-    private final int statusCode;
-    private final HttpHeaders headers;
-    private final HttpRequest request;
+public final class SearchPagedResponse extends PagedResponseBase<Void, SearchResult> {
     private final List<SearchResult> value;
 
     private final Map<String, List<FacetResult>> facets;
@@ -56,11 +53,8 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
             documentSearchResponse.getStatusCode(),
             documentSearchResponse.getHeaders(),
             documentSearchResponse.getValue().getResults(),
-            setContinuationToken(documentSearchResponse, serviceVersion),
+            createContinuationToken(documentSearchResponse, serviceVersion),
             null);
-        this.statusCode = documentSearchResponse.getStatusCode();
-        this.headers = documentSearchResponse.getHeaders();
-        this.request = documentSearchResponse.getRequest();
 
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
         this.value = documentsResult.getResults();
@@ -70,7 +64,7 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
         this.nextParameters = getNextPageParameters(documentsResult);
     }
 
-    private static String setContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+    private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
         if (documentsResult == null) {
@@ -134,28 +128,8 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
     }
 
     @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    @Override
-    public HttpHeaders getHeaders() {
-        return headers;
-    }
-
-    @Override
-    public HttpRequest getRequest() {
-        return request;
-    }
-
-    @Override
     public List<SearchResult> getValue() {
         return value;
-    }
-
-    @Override
-    public IterableStream<SearchResult> getElements() {
-        return new IterableStream<>(value);
     }
 
     @Override
