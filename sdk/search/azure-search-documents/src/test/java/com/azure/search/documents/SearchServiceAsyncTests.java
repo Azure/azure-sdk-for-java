@@ -3,10 +3,10 @@
 package com.azure.search.documents;
 
 import org.junit.jupiter.api.Test;
-import org.unitils.reflectionassert.ReflectionAssert;
 import reactor.test.StepVerifier;
 
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+
 
 public class SearchServiceAsyncTests extends SearchServiceTestBase {
 
@@ -15,7 +15,7 @@ public class SearchServiceAsyncTests extends SearchServiceTestBase {
         SearchServiceAsyncClient serviceClient = getSearchServiceClientBuilder().buildAsyncClient();
 
         StepVerifier.create(serviceClient.getServiceStatistics())
-            .assertNext(serviceStatistics -> ReflectionAssert.assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS))
+            .assertNext(serviceStatistics -> assertObjectEquals(serviceStatistics, getExpectedServiceStatistics(), true))
             .verifyComplete();
     }
 
@@ -24,8 +24,8 @@ public class SearchServiceAsyncTests extends SearchServiceTestBase {
         SearchServiceAsyncClient serviceClient = getSearchServiceClientBuilder().buildAsyncClient();
 
         StepVerifier.create(serviceClient.getServiceStatisticsWithResponse(generateRequestOptions()))
-            .assertNext(serviceStatistics -> ReflectionAssert.assertReflectionEquals(serviceStatistics.getValue(),
-                getExpectedServiceStatistics(), IGNORE_DEFAULTS))
+            .assertNext(serviceStatistics -> assertObjectEquals(serviceStatistics.getValue(),
+                getExpectedServiceStatistics(), true))
             .verifyComplete();
     }
 }

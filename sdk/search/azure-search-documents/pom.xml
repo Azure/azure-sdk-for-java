@@ -91,36 +91,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Remove these 3 dependencies when we resolve: https://github.com/Azure/azure-sdk-for-java/issues/8874 -->
-    <dependency>
-      <groupId>org.unitils</groupId>
-      <artifactId>unitils-core</artifactId>
-      <version>3.4.6</version> <!-- {x-version-update;org.unitils:unitils-core;external_dependency} -->
-      <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>commons-collections</groupId>
-          <artifactId>commons-collections</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>ognl</groupId>
-          <artifactId>ognl</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>commons-collections</groupId>
-      <artifactId>commons-collections</artifactId>
-      <version>3.2.2</version> <!-- {x-version-update;commons-collections:commons-collections;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>ognl</groupId>
-      <artifactId>ognl</artifactId>
-      <version>3.0.12</version> <!-- {x-version-update;ognl:ognl;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-
     <!-- Test dependencies for creating search resources -->
     <dependency>
       <groupId>com.microsoft.azure</groupId>
