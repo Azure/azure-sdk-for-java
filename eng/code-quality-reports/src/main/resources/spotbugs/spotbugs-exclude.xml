@@ -1937,6 +1937,21 @@
     UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR,
     UWF_UNWRITTEN_FIELD"/>
     </Match>
+
+    <!-- Exclude vendor-ed com.fasterxml.uuid:java-uuid-generator types from spotbug -->
+  <Match>
+    <Class name="~com\.azure\.cosmos\.implementation\.uuid(.+)"/>
+    <Bug pattern="CN_IDIOM_NO_SUPER_CALL,
+    MS_PKGPROTECT,
+    DM_CONVERT_CASE,
+    MS_MUTABLE_COLLECTION_PKGPROTECT,
+    RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
+    SF_SWITCH_NO_DEFAULT,
+    UCF_USELESS_CONTROL_FLOW,
+    SE_COMPARATOR_SHOULD_BE_SERIALIZABLE,
+    CI_CONFUSED_INHERITANCE,
+    MS_SHOULD_BE_FINAL"/>
+    </Match>
     
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
