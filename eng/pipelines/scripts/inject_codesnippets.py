@@ -145,7 +145,7 @@ if __name__ == "__main__":
                 if snippet_ref:
                     id_ending = snippet_ref.groupdict()["snippetid"].strip()
                     lead_space = snippet_ref.groupdict()["leadingspace"] + " "
-                    if id_ending in snippets and id_ending == "com.azure.data.applicationconfig.configurationclient.pipeline.instantiation":
+                    if id_ending in snippets:
                         result_array = [
                             lead_space + "<pre>\n",
                             escape(
