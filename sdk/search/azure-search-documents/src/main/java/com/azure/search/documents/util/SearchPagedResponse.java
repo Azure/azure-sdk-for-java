@@ -4,13 +4,10 @@
 package com.azure.search.documents.util;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchServiceVersion;
@@ -25,6 +22,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+
+import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.API_VERSION;
+import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.NEXT_LINK;
+import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.NEXT_PAGE_PARAMETERS;
 
 /**
  * Represents an HTTP response from the search API request that contains a list of items deserialized into a {@link
@@ -72,9 +73,9 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         }
 
         ObjectNode tokenJson = new ObjectMapper().createObjectNode();
-        tokenJson.put("apiVersion", serviceVersion.getVersion());
-        tokenJson.put("nextLink", documentsResult.getNextLink());
-        tokenJson.put("nextPageParameters", getNextPageParameters(documentsResult));
+        tokenJson.put(API_VERSION, serviceVersion.getVersion());
+        tokenJson.put(NEXT_LINK, documentsResult.getNextLink());
+        tokenJson.put(NEXT_PAGE_PARAMETERS, getNextPageParameters(documentsResult));
 
         return Base64.getEncoder().encodeToString(tokenJson.toString().getBytes(StandardCharsets.UTF_8));
     }
@@ -130,10 +131,5 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     @Override
     public List<SearchResult> getValue() {
         return value;
-    }
-
-    @Override
-    public String getContinuationToken() {
-        return nextParameters;
     }
 }

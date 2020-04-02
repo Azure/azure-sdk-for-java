@@ -42,18 +42,22 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.API_VERSION;
+import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.NEXT_PAGE_PARAMETERS;
 
 /**
  * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
-
     /*
      * Representation of the Multi-Status HTTP response code.
      */
@@ -650,9 +654,17 @@ public final class SearchIndexAsyncClient {
      * @param continuationToken The token used to deserialize the SearchRequest.
      * @return The SearchRequest for next page.
      */
+    @SuppressWarnings("unchecked")
     private SearchRequest buildRequestFromToken(String continuationToken) {
         try {
-            return new JacksonAdapter().deserialize(continuationToken, SearchRequest.class, SerializerEncoding.JSON);
+            String decodedToken = new String(Base64.getDecoder().decode(continuationToken), StandardCharsets.UTF_8);
+            Map<String, String> tokenFields = new ObjectMapper().readValue(decodedToken, Map.class);
+            if (!serviceVersion.getVersion().equals(tokenFields.get(API_VERSION))) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("Continuation token uses "
+                    + "invalid apiVersion" + serviceVersion.getVersion()));
+            }
+            return new JacksonAdapter().deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS),
+                SearchRequest.class, SerializerEncoding.JSON);
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
