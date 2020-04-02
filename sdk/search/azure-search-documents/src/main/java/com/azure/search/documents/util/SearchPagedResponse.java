@@ -11,7 +11,6 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchServiceVersion;
@@ -19,16 +18,13 @@ import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.models.SearchResult;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -52,7 +48,8 @@ public final class SearchPagedResponse extends PagedResponseBase<SearchResult, S
     /**
      * Constructor
      *
-     * @param documentSearchResponse an http response with the results
+     * @param documentSearchResponse An http response with the results.
+     * @param serviceVersion The api version to build into continuation token.
      */
     public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
