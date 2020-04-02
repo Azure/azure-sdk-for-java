@@ -11,6 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
@@ -39,8 +40,10 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -392,27 +395,26 @@ public final class SearchIndexAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-
-        return new SearchPagedFlux(() -> (continuationToken, pageSize) -> withContext(context ->
-            search(request, requestOptions, continuationToken, context)).flux());
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
+            search(request, requestOptions, continuationToken, context));
+        return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-
-        return new SearchPagedFlux(() -> (continuationToken, pageSize) ->
-            search(request, requestOptions, continuationToken, context).flux());
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
+            search(request, requestOptions, continuationToken, context);
+        return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
-        SearchRequest nextPageRequest, Context context) {
-        SearchRequest requestToUse = (nextPageRequest == null) ? request : nextPageRequest;
+        String continuationToken, Context context) {
+        SearchRequest requestToUse = (continuationToken == null) ? request : buildRequestFromToken(continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
-            .map(SearchPagedResponse::new);
+            .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
     }
-
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      * <p>
@@ -472,8 +474,7 @@ public final class SearchIndexAsyncClient {
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
-    public SuggestPagedFlux suggest(String searchText,
-        String suggesterName) {
+    public SuggestPagedFlux suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null);
     }
 
@@ -641,6 +642,21 @@ public final class SearchIndexAsyncClient {
         }
 
         return searchRequest;
+    }
+
+    /**
+     * Build request from continuation token.
+     *
+     * @param continuationToken The token used to deserialize the SearchRequest.
+     * @return The SearchRequest for next page.
+     */
+    private SearchRequest buildRequestFromToken(String continuationToken) {
+        try {
+            return new JacksonAdapter().deserialize(continuationToken, SearchRequest.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize the token to search request"
+                + continuationToken));
+        }
     }
 
     /**

@@ -7,16 +7,28 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Page;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePage;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.models.SearchResult;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,14 +39,12 @@ import java.util.Map;
  * to true coverage - coverage value.
  */
 @Immutable
-public final class SearchPagedResponse implements ContinuablePage<SearchRequest, SearchResult>,
-    Response<List<SearchResult>> {
+public final class SearchPagedResponse extends PagedResponseBase<SearchResult, SearchResult> {
     private final int statusCode;
     private final HttpHeaders headers;
     private final HttpRequest request;
     private final List<SearchResult> value;
 
-    private final SearchRequest nextPageParameters;
     private final Map<String, List<FacetResult>> facets;
     private final Long count;
     private final Double coverage;
@@ -44,7 +54,14 @@ public final class SearchPagedResponse implements ContinuablePage<SearchRequest,
      *
      * @param documentSearchResponse an http response with the results
      */
-    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse) {
+    public SearchPagedResponse(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+        SearchServiceVersion serviceVersion) {
+        super(documentSearchResponse.getRequest(),
+            documentSearchResponse.getStatusCode(),
+            documentSearchResponse.getHeaders(),
+            documentSearchResponse.getValue().getResults(),
+            setContinuationToken(documentSearchResponse, serviceVersion),
+            null);
         this.statusCode = documentSearchResponse.getStatusCode();
         this.headers = documentSearchResponse.getHeaders();
         this.request = documentSearchResponse.getRequest();
@@ -54,8 +71,27 @@ public final class SearchPagedResponse implements ContinuablePage<SearchRequest,
         this.facets = documentsResult.getFacets();
         this.count = documentsResult.getCount();
         this.coverage = documentsResult.getCoverage();
+    }
 
-        this.nextPageParameters = getNextPageParameters(documentsResult);
+    private static String setContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
+        SearchServiceVersion serviceVersion) {
+        SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
+        if (documentsResult == null) {
+            return null;
+        }
+        String nextParameters;
+        try {
+            nextParameters = new JacksonAdapter().serialize(getNextPageParameters(documentsResult),
+                SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw new RuntimeException("Failed to serialize the search request.");
+        }
+        ObjectNode tokenJson = new ObjectMapper().createObjectNode();
+        tokenJson.put("apiVersion", serviceVersion.getVersion());
+        tokenJson.put("nextLink", documentsResult.getNextLink());
+        tokenJson.put("nextPageParameters", nextParameters);
+
+        return Base64.getEncoder().encodeToString(tokenJson.toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private static SearchRequest getNextPageParameters(SearchDocumentsResult result) {
@@ -129,7 +165,15 @@ public final class SearchPagedResponse implements ContinuablePage<SearchRequest,
     }
 
     @Override
-    public SearchRequest getContinuationToken() {
-        return nextPageParameters;
+    public String getContinuationToken() {
+        String decodedToken = new String(Base64.getDecoder().decode(super.getContinuationToken()));
+        Map<String, String> fieldMap = new HashMap<>();
+        try {
+            fieldMap = new JacksonAdapter().deserialize(decodedToken, Map.class, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fieldMap.get("nextPageParameters");
     }
 }
