@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
@@ -30,21 +31,21 @@ public class ReadmeSamples {
     public void createSearchClient() {
         SearchServiceClient client = new SearchServiceClientBuilder()
             .endpoint(endpoint)
-            .credential(new SearchApiKeyCredential(adminKey))
+            .credential(new AzureKeyCredential(adminKey))
             .buildClient();
     }
 
     public void createAsyncSearchClient() {
         SearchServiceAsyncClient client = new SearchServiceClientBuilder()
             .endpoint(endpoint)
-            .credential(new SearchApiKeyCredential(adminKey))
+            .credential(new AzureKeyCredential(adminKey))
             .buildAsyncClient();
     }
 
     public void createIndexClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(endpoint)
-            .credential(new SearchApiKeyCredential(apiKey))
+            .credential(new AzureKeyCredential(apiKey))
             .indexName(indexName)
             .buildClient();
     }
@@ -52,7 +53,7 @@ public class ReadmeSamples {
     public void createAsyncIndexClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
             .endpoint(endpoint)
-            .credential(new SearchApiKeyCredential(apiKey))
+            .credential(new AzureKeyCredential(apiKey))
             .indexName(indexName)
             .buildAsyncClient();
     }

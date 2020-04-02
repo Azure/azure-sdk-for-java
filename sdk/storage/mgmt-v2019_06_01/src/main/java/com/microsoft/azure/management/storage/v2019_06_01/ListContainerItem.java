@@ -20,6 +20,16 @@ import java.util.Map;
  */
 public interface ListContainerItem extends HasInner<ListContainerItemInner>, HasManager<StorageManager> {
     /**
+     * @return the defaultEncryptionScope value.
+     */
+    String defaultEncryptionScope();
+
+    /**
+     * @return the denyEncryptionScopeOverride value.
+     */
+    Boolean denyEncryptionScopeOverride();
+
+    /**
      * @return the etag value.
      */
     String etag();

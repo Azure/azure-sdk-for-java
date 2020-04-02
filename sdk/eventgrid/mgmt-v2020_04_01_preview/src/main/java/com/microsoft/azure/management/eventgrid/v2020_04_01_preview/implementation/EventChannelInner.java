@@ -11,6 +11,7 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview.implementat
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelSource;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelDestination;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelProvisioningState;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelFilter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -39,6 +40,12 @@ public class EventChannelInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private EventChannelProvisioningState provisioningState;
+
+    /**
+     * Information about the filter for the event channel.
+     */
+    @JsonProperty(value = "properties.filter")
+    private EventChannelFilter filter;
 
     /**
      * Get source of the event channel. This represents a unique resource in the partner's resource model.
@@ -87,6 +94,26 @@ public class EventChannelInner extends ProxyResource {
      */
     public EventChannelProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get information about the filter for the event channel.
+     *
+     * @return the filter value
+     */
+    public EventChannelFilter filter() {
+        return this.filter;
+    }
+
+    /**
+     * Set information about the filter for the event channel.
+     *
+     * @param filter the filter value to set
+     * @return the EventChannelInner object itself.
+     */
+    public EventChannelInner withFilter(EventChannelFilter filter) {
+        this.filter = filter;
+        return this;
     }
 
 }

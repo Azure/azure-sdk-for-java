@@ -23,6 +23,7 @@ public final class QueryInfo extends JsonSerializable {
     private String rewrittenQuery;
     private Integer offset;
     private Integer limit;
+    private DistinctQueryType distinctQueryType;
 
     public QueryInfo() { }
 
@@ -101,6 +102,31 @@ public final class QueryInfo extends JsonSerializable {
 
     public Integer getOffset() {
         return this.offset != null ? this.offset : (this.offset = super.getInt("offset"));
+    }
+
+    public boolean hasDistinct() {
+        return this.getDistinctQueryType() != DistinctQueryType.NONE;
+    }
+
+    public DistinctQueryType getDistinctQueryType() {
+        if (distinctQueryType != null) {
+            return distinctQueryType;
+        } else {
+            final String distinctType = super.getString("distinctType");
+            switch (distinctType) {
+                case "Ordered":
+                    distinctQueryType = DistinctQueryType.ORDERED;
+                    break;
+                case "Unordered":
+                    distinctQueryType = DistinctQueryType.UNORDERED;
+                    break;
+                default:
+                    distinctQueryType = DistinctQueryType.NONE;
+                    break;
+            }
+            return distinctQueryType;
+        }
+
     }
 }
 

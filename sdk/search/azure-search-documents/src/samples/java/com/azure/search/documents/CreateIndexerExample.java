@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
@@ -35,7 +36,7 @@ public class CreateIndexerExample {
     public static void main(String[] args) {
         SearchServiceAsyncClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(ADMIN_KEY))
+            .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildAsyncClient();
 
         createOrUpdateIndexer(searchServiceClient);

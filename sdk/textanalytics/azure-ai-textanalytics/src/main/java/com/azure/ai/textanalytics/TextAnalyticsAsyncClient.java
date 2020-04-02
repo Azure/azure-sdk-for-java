@@ -12,10 +12,8 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -35,8 +33,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Text Analytics.
- * Operations allowed by the client are language detection, sentiment analysis, and recognition entities,
- * Personally Identifiable Information entities, and linked entities of a document or a list of documents.
+ * Operations allowed by the client are language detection, entities recognition, linked entities recognition,
+ * key phrases extraction, and sentiment analysis of a document or a list of documents.
  *
  * <p><strong>Instantiating an asynchronous Text Analytics Client</strong></p>
  * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation}
@@ -52,11 +50,14 @@ public final class TextAnalyticsAsyncClient {
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
+
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     final DetectLanguageAsyncClient detectLanguageAsyncClient;
     final AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient;
     final ExtractKeyPhraseAsyncClient extractKeyPhraseAsyncClient;
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
-    final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
 
     /**
@@ -78,7 +79,6 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeSentimentAsyncClient = new AnalyzeSentimentAsyncClient(service);
         this.extractKeyPhraseAsyncClient = new ExtractKeyPhraseAsyncClient(service);
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
-        this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
     }
 
@@ -161,7 +161,6 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String document, String countryHint) {
-        // TODO: follow the sample pattern as other endpoint.
         return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
             .map(detectLanguageResult -> {
                 if (detectLanguageResult.isError()) {
@@ -458,196 +457,6 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
-    }
-
-    // Personally Identifiable Information Entity
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/tanerpii"></a>.
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a document. Subscribes to the call asynchronously
-     * and prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string}
-     *
-     * @param document The text to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     *
-     * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link PiiEntity Personally Identifiable Information entities}.
-     *
-     * @throws NullPointerException if {@code document} is {@code null}.
-     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document) {
-        return recognizePiiEntities(document, defaultLanguage);
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the document with provided
-     * language code.
-     *
-     * For the list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a document with provided language code. Subscribes
-     * to the call asynchronously and prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string}
-     *
-     * @param document The document to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link PiiEntity Personally Identifiable Information entities}.
-     *
-     * @throws NullPointerException if {@code document} is {@code null}.
-     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<PiiEntity> recognizePiiEntities(String document, String language) {
-        return recognizePiiEntityAsyncClient.recognizePiiEntities(document, language);
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents.
-     *
-     * For the list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of documents. Subscribes to the call
-     * asynchronously and prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable}
-     *
-     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     *
-     * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<String> documents) {
-        return recognizePiiEntitiesBatch(documents, defaultLanguage, null);
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
-     * provided language code.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of documents with provided language code.
-     * Subscribes to the call asynchronously and prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String}
-     *
-     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language) {
-        return recognizePiiEntitiesBatch(documents, language, null);
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the list of documents with
-     * provided language code and request options.
-     *
-     * For the list of supported entity types, check <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of documents with provided language code and
-     * request options. Subscribes to the call asynchronously and prints out the entity details when a response is
-     * received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
-     *
-     * @param documents A list of documents to recognize Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
-     *
-     * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        return recognizePiiEntitiesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
-    }
-
-    /**
-     * Returns a list of personal information entities ("SSN", "Bank Account", etc) in the batch of
-     * {@link TextDocumentInput document} with provided request options.
-     *
-     * For the list of supported entity types,check: <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize Personally Identifiable Information entities in a list of {@link TextDocumentInput document} with
-     * provided request options. Subscribes to the call asynchronously and prints out the entity details when a
-     * response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions}
-     *
-     * @param documents A list of {@link TextDocumentInput documents} to recognize
-     * Personally Identifiable Information entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
-     *
-     * @return A {@link TextAnalyticsPagedFlux} contains a list of
-     * {@link RecognizePiiEntitiesResult recognized Personally Identifiable Information entities document result}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<RecognizePiiEntitiesResult> recognizePiiEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
-        return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(documents, options);
     }
 
     // Linked Entity

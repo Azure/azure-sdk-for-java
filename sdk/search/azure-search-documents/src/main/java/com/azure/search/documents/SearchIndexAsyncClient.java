@@ -14,6 +14,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
+import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -658,7 +659,7 @@ public final class SearchIndexAsyncClient {
 
         if (suggestOptions != null) {
             suggestRequest.setFilter(suggestOptions.getFilter())
-                .setUseFuzzyMatching(suggestOptions.isUseFuzzyMatching())
+                .setUseFuzzyMatching(suggestOptions.useFuzzyMatching())
                 .setHighlightPostTag(suggestOptions.getHighlightPostTag())
                 .setHighlightPreTag(suggestOptions.getHighlightPreTag())
                 .setMinimumCoverage(suggestOptions.getMinimumCoverage())
@@ -699,7 +700,7 @@ public final class SearchIndexAsyncClient {
 
         if (autocompleteOptions != null) {
             autoCompleteRequest.setFilter(autocompleteOptions.getFilter())
-                .setUseFuzzyMatching(autocompleteOptions.isUseFuzzyMatching())
+                .setUseFuzzyMatching(autocompleteOptions.useFuzzyMatching())
                 .setHighlightPostTag(autocompleteOptions.getHighlightPostTag())
                 .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
                 .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())

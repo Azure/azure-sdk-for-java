@@ -22,6 +22,7 @@ import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String CONTENTS = "Test-contents";
+    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiverManual;
@@ -36,15 +37,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String queueName = getQueueName();
         Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-        sender = createBuilder().buildSenderClientBuilder().entityName(queueName).buildAsyncClient();
+        sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
         receiver = createBuilder()
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName(queueName)
             .isAutoComplete(true)
             .buildAsyncClient();
 
         receiverManual = createBuilder()
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName(queueName)
             .isAutoComplete(false)
             .buildAsyncClient();
@@ -111,6 +112,57 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can schedule and peek a message.
+     */
+    @Test
+    void scheduleMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+
+        sender.scheduleMessage(message, scheduledEnqueueTime)
+            .delaySubscription(Duration.ofSeconds(3))
+            .block();
+
+        // Assert & Act
+        StepVerifier.create(receiver.receive().take(1))
+            .assertNext(receivedMessage -> {
+                Assertions.assertArrayEquals(contents.getBytes(), receivedMessage.getBody());
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                Assertions.assertEquals(messageId, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
+            })
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can cancel a scheduled message.
+     */
+    @Test
+    void cancelScheduleMessage() {
+        // Arrange
+        final String messageId = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        final Duration delayDuration = Duration.ofSeconds(3);
+
+        final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block();
+        logger.verbose("Scheduled the message, sequence number {}.", sequenceNumber);
+
+        Mono.delay(delayDuration)
+            .then(sender.cancelScheduledMessage(sequenceNumber.longValue()))
+            .block();
+        logger.verbose("Cancelled the scheduled message, sequence number {}.", sequenceNumber);
+
+        // Assert & Act
+        StepVerifier.create(receiver.receive().take(1))
+            .expectNoEvent(Duration.ofSeconds(5))
+            .verifyComplete();
+    }
+
+    /**
      * Verifies that we can send and peek a message.
      */
     @Test
@@ -121,7 +173,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).then(receiver.peek(fromSequenceNumber)))
+        StepVerifier.create(sender.send(message).then(receiver.peekAt(fromSequenceNumber)))
             .assertNext(receivedMessage -> {
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
@@ -158,7 +210,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
-            .thenMany(receiver.peekBatch(maxMessages, fromSequenceNumber)))
+            .thenMany(receiver.peekBatchAt(maxMessages, fromSequenceNumber)))
             .expectNextCount(maxMessages)
             .verifyComplete();
     }
@@ -230,7 +282,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
-            .buildReceiverClientBuilder()
+            .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .isLockAutoRenewed(true)
             .queueName(getQueueName())

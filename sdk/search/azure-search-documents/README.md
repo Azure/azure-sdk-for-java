@@ -61,7 +61,7 @@ and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-ap
 ```Java
 SearchServiceClient client = new SearchServiceClientBuilder()
     .endpoint(endpoint)
-    .credential(new SearchApiKeyCredential(adminKey))
+    .credential(new AzureKeyCredential(adminKey))
     .buildClient();
 ```
 
@@ -71,7 +71,7 @@ or
 ```Java
 SearchServiceAsyncClient client = new SearchServiceClientBuilder()
     .endpoint(endpoint)
-    .credential(new SearchApiKeyCredential(adminKey))
+    .credential(new AzureKeyCredential(adminKey))
     .buildAsyncClient();
 ```
 
@@ -86,7 +86,7 @@ Note that you will need an admin key to index documents (query keys only work fo
 ```Java
 SearchIndexClient client = new SearchIndexClientBuilder()
     .endpoint(endpoint)
-    .credential(new SearchApiKeyCredential(apiKey))
+    .credential(new AzureKeyCredential(apiKey))
     .indexName(indexName)
     .buildClient();
 ```
@@ -97,7 +97,7 @@ or
 ```Java
 SearchIndexAsyncClient client = new SearchIndexClientBuilder()
     .endpoint(endpoint)
-    .credential(new SearchApiKeyCredential(apiKey))
+    .credential(new AzureKeyCredential(apiKey))
     .indexName(indexName)
     .buildAsyncClient();
 ```

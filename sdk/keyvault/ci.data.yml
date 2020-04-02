@@ -22,8 +22,12 @@ trigger:
     include:
       - sdk/keyvault/
     exclude:
-      - sdk/keyvault/azure-keyvault
-      - sdk/keyvault/mgmt-
+      - sdk/keyvault/mgmt
+      - sdk/keyvault/mgmt-v2015_06_01
+      - sdk/keyvault/mgmt-v2016_10_01
+      - sdk/keyvault/azure-security-keyvault-certificates
+      - sdk/keyvault/azure-security-keyvault-keys
+      - sdk/keyvault/azure-security-keyvault-secrets
 
 pr:
   branches:
@@ -36,8 +40,12 @@ pr:
     include:
       - sdk/keyvault/
     exclude:
-      - sdk/keyvault/azure-keyvault
-      - sdk/keyvault/mgmt-
+      - sdk/keyvault/mgmt
+      - sdk/keyvault/mgmt-v2015_06_01
+      - sdk/keyvault/mgmt-v2016_10_01
+      - sdk/keyvault/azure-security-keyvault-certificates
+      - sdk/keyvault/azure-security-keyvault-keys
+      - sdk/keyvault/azure-security-keyvault-secrets
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

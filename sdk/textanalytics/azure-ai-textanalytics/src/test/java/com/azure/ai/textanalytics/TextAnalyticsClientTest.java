@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
@@ -24,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,7 +30,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEn
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -249,64 +246,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
-    // Recognize PII entity
-
-    @Test
-    public void recognizePiiEntitiesForTextInput() {
-        final PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
-        final PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.0);
-        final TextAnalyticsPagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
-        Iterator<PiiEntity> iterator = entities.iterator();
-        validatePiiEntity(piiEntity0, iterator.next());
-        validatePiiEntity(piiEntity, iterator.next());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizePiiEntities("").iterator().hasNext());
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForFaultyText() {
-        assertFalse(client.recognizePiiEntities("!@#%%").iterator().hasNext());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInput() {
-        recognizeBatchPiiRunner((inputs) ->
-            client.recognizePiiEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInputShowStatistics() {
-        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizePiiEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchStringInput() {
-        recognizePiiStringInputRunner((inputs) ->
-            client.recognizePiiEntitiesBatch(inputs).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListLanguageHint() {
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            client.recognizePiiEntitiesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListStringWithOptions() {
-        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizePiiEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
     // Recognize linked entity
 
     @Test
@@ -365,7 +304,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeLinkedEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
                 validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
-
 
     // Extract key phrase
 

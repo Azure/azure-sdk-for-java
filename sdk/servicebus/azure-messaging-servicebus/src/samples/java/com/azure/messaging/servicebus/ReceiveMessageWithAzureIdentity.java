@@ -40,7 +40,7 @@ public class ReceiveMessageWithAzureIdentity {
         // inside the Service Bus namespace.
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>", credential)
-            .buildReceiverClientBuilder()
+            .receiver()
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 

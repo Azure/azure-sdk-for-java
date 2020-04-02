@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.RequestOptions;
@@ -34,7 +35,7 @@ public class SearchOptionsExample {
     public static void main(String[] args) {
         SearchIndexClient searchClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 

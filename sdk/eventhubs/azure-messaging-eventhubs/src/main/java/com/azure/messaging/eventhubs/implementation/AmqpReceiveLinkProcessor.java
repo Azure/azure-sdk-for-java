@@ -39,7 +39,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean hasDownstream = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final AtomicBoolean isRequested = new AtomicBoolean();
     private final AtomicInteger linkCreditRequest = new AtomicInteger(1);
     private final Deque<Message> messageQueue = new ConcurrentLinkedDeque<>();
 
@@ -128,12 +127,15 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(next, "'next' cannot be null.");
 
         if (isTerminated()) {
-            logger.warning("Got another link when we have already terminated processor. Link: {}",
-                next.getEntityPath());
+            logger.warning("linkName[{}] entityPath[{}]. Got another link when we have already terminated processor.",
+                next.getLinkName(), next.getEntityPath());
             return;
         }
 
-        logger.info("Setting next AMQP receive link.");
+        final String linkName = next.getLinkName();
+        final String entityPath = next.getEntityPath();
+
+        logger.info("linkName[{}] entityPath[{}]. Setting next AMQP receive link.", linkName, entityPath);
 
         final AmqpReceiveLink oldChannel;
         final Disposable oldSubscription;
@@ -148,7 +150,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                 if (hasDownstream.get()) {
                     return linkCreditRequest.get();
                 } else {
-                    logger.verbose("Emitter has no downstream subscribers. Not adding credits.");
+                    logger.verbose("linkName[{}] entityPath[{}]. Emitter has no downstream subscribers."
+                        + " Not adding credits.", linkName, entityPath);
+
                     return 0;
                 }
             });
@@ -163,15 +167,19 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     },
                     error -> {
                         currentLink = null;
+                        logger.warning("linkName[{}] entityPath[{}]. Error occurred in in link.", linkName, entityPath);
                         onError(error);
                     },
                     () -> {
                         if (parentConnection.isDisposed()) {
-                            logger.info("Parent connection is disposed.");
+                            logger.info("linkName[{}] entityPath[{}]. Parent connection is disposed.",
+                                linkName, entityPath);
                         } else if (isTerminated()) {
-                            logger.info("Processor is disposed.");
+                            logger.info("linkName[{}] entityPath[{}]. Processor is disposed.", linkName, entityPath);
                         } else {
-                            logger.info("Receive link endpoint states are closed.");
+                            logger.info("linkName[{}] entityPath[{}]. Receive link endpoint states are closed.",
+                                linkName, entityPath);
+
                             final AmqpReceiveLink existing = currentLink;
                             currentLink = null;
 
@@ -195,8 +203,6 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         if (oldSubscription != null) {
             oldSubscription.dispose();
         }
-
-        isRequested.set(false);
     }
 
     /**
@@ -211,7 +217,14 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         Objects.requireNonNull(actual, "'actual' cannot be null.");
 
         if (isTerminated()) {
-            logger.info("AmqpReceiveLink is already terminated.");
+            final String linkName;
+            final String entityPath;
+            synchronized (lock) {
+                linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
+                entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
+            }
+
+            logger.info("linkName[{}] entityPath[{}]. AmqpReceiveLink is already terminated.", linkName, entityPath);
 
             actual.onSubscribe(Operators.emptySubscription());
 
@@ -255,9 +268,16 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
         final int attempt = retryAttempts.incrementAndGet();
         final Duration retryInterval = retryPolicy.calculateRetryDelay(throwable, attempt);
 
+        final String linkName;
+        final String entityPath;
+        synchronized (lock) {
+            linkName = currentLink != null ? currentLink.getLinkName() : "n/a";
+            entityPath = currentLink != null ? currentLink.getEntityPath() : "n/a";
+        }
+
         if (retryInterval != null && !parentConnection.isDisposed()) {
-            logger.warning("Transient error occurred. Attempt: {}. Retrying after {} ms.",
-                attempt, retryInterval.toMillis(), throwable);
+            logger.warning("linkName[{}] entityPath[{}]. Transient error occurred. Attempt: {}. Retrying after {} ms.",
+                linkName, entityPath, attempt, retryInterval.toMillis(), throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> requestUpstream());
 
@@ -268,7 +288,9 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             logger.info("Parent connection is disposed. Not reopening on error.");
         }
 
-        logger.warning("Non-retryable error occurred in AMQP receive link.", throwable);
+        logger.warning("linkName[{}] entityPath[{}] Non-retryable error occurred in AMQP receive link.",
+            linkName, entityPath, throwable);
+
         lastError = throwable;
 
         isTerminated.set(true);
@@ -359,13 +381,8 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
             }
         }
 
-        // subscribe(CoreSubscriber) may have requested a subscriber already.
-        if (!isRequested.getAndSet(true)) {
-            logger.info("AmqpReceiveLink not requested, yet. Requesting one.");
-            upstream.request(1);
-        } else {
-            logger.info("AmqpRecieveLink already requested.");
-        }
+        logger.info("Requesting for a new AmqpReceiveLink from upstream.");
+        upstream.request(1);
     }
 
     private void onDispose() {

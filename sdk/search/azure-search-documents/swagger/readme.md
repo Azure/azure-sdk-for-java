@@ -177,7 +177,7 @@ directive:
           .replace(/(class IndexAction)/g, "$1<T>")
           .replace(/(Unmatched properties from the message are deserialized this collection)/g, "The document on which the action will be performed.")
           .replace(/(@JsonProperty\(value = ""\))/g, "@JsonUnwrapped")
-          .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    @JsonAnyGetter\n    private Map<String, Object> getParamMap() {\n        return properties;\n    }")
+          .replace(/(private Map<String, Object> additionalProperties);/g, "private T document;\n\n    @JsonIgnore\n    private Map<String, Object> properties;\n\n    @JsonAnyGetter\n    public Map<String, Object> getParamMap() {\n        return properties;\n    }")
           .replace(/(Get the additionalProperties property: Unmatched properties from the\n\s+\* message are deserialized this collection.)/g, "Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.")
           .replace(/(@return the additionalProperties value.)/g, "@return the document value.")
           .replace(/(public Map<String, Object> getAdditionalProperties\(\) {\s+return this.additionalProperties;\s+})/g, "public T getDocument() {\n        return this.document;\n    }")
@@ -327,4 +327,105 @@ directive:
       where: $
       transform: >-
         return $.replace(/public class (.*) \{/, "public abstract class $1 {")
+
+    # Changed RegexFlags to List of RegexFlags in PatternAnalyzer and PatterTokenizer
+    - from: swagger-document
+      where: $.definitions.PatternAnalyzer.properties.flags
+      transform: >
+        if ($['$ref']) {
+            delete $['$ref'];
+            $.type = 'array'
+            $.items = {
+                "$ref" : "#/definitions/RegexFlags"
+            }
+        }
+    - from: swagger-document
+      where: $.definitions.PatternTokenizer.properties.flags
+      transform: >
+        if ($['$ref']) {
+            delete $['$ref'];
+            $.type = 'array'
+            $.items = {
+                "$ref" : "#/definitions/RegexFlags"
+            }
+        }
+    
+    # Added custom serializer and deserializer for PatternAnalyzer and PatternTokenizer
+    - from: 
+      - PatternTokenizer.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternTokenizerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternTokenizerDeserializer\.class)")
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternTokenizerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternTokenizerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
+    
+    - from: 
+      - PatternAnalyzer.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(\@Fluent)/g, "$1\n\@JsonSerialize(using = CustomPatternAnalyzerSerializer\.class)\n\@JsonDeserialize(using = CustomPatternAnalyzerDeserializer\.class)")
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;\nimport com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;\nimport com.fasterxml.jackson.databind.annotation.JsonSerialize;")
+
+    # Changed scoringParamters type from String to ScoringParamters
+    - from:
+      - SearchOptions.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
+        .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
+        .replace(/(public SearchOptions setScoringParameters\(String\.\.\. scoringParameters\) \{)/g, "public SearchOptions setScoringParameters(ScoringParameter... scoringParameters) {")
+
+    # Changed scoringParamters type from String to ScoringParamters in DocumentsImpl
+    - from:
+      - DocumentsImpl.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(import com\.azure\.search\.documents\.models\.RequestOptions\;)/g, "$1\nimport com.azure.search.documents.models.ScoringParameter;")
+        .replace(/(List\<String\> scoringParameters \= null\;)/g, "List<ScoringParameter> scoringParameters = null;")
+        .replace()
+
+    # Changed scoringParamters type from String to ScoringParamters in SearchRequest
+    - from:
+      - SearchRequest.java
+      where: $
+      transform: >-
+        return $
+         .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
+         .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
+         .replace(/(public SearchRequest setScoringParameters\(List\<String\> scoringParameters\) \{)/g, "public SearchRequest setScoringParameters(List<ScoringParameter> scoringParameters) {")
+
+    # Changed the boolean field name
+    - from:
+      - MagnitudeScoringParameters.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isShouldBoostBeyondRangeByConstant\(\) \{/g, "public Boolean shouldBoostBeyondRangeByConstant() {")
+
+    - from:
+      - SuggestOptions.java
+      - AutocompleteOptions.java
+      - AutocompleteRequest.java
+      - SuggestRequest.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isUseFuzzyMatching\(\) \{/g, "public Boolean useFuzzyMatching() {")
+ 
+    - from:
+      - WordDelimiterTokenFilter.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isGenerate(.*)\(\) \{/g, "public Boolean generate$1() {")
+
+    - from:
+      - OcrSkill.java
+      where: $
+      transform: >-
+        return $
+        .replace(/public Boolean isShouldDetectOrientation\(\) \{/g, "public Boolean shouldDetectOrientation() {")
 ```

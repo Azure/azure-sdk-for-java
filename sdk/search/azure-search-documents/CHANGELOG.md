@@ -2,6 +2,7 @@
 
 ## 11.0.0-beta.2 (Unreleased)
 
+- Replaced `SearchApiKeyCredential` with `AzureKeyCredential`.
 
 ## 11.0.0-beta.1 (2020-03-10)
 

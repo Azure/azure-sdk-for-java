@@ -22,7 +22,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -48,7 +47,7 @@ public class Utils {
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
 
     private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
-    private static final TimeBasedGenerator TimeUUIDGegerator =
+    private static final TimeBasedGenerator TIME_BASED_GENERATOR =
             Generators.timeBasedGenerator(EthernetAddress.constructMulticastAddress());
 
     // NOTE DateTimeFormatter.RFC_1123_DATE_TIME cannot be used.
@@ -396,7 +395,7 @@ public class Utils {
     }
 
     public static UUID randomUUID() {
-        return TimeUUIDGegerator.generate();
+        return TIME_BASED_GENERATOR.generate();
     }
 
     public static String zonedDateTimeAsUTCRFC1123(OffsetDateTime offsetDateTime){

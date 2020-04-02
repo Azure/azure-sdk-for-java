@@ -21,7 +21,6 @@ import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -1526,7 +1525,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private SqlQuerySpec createReadManyQuerySpecPartitionKeyIdSame(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
         StringBuilder queryStringBuilder = new StringBuilder();
-        SqlParameterList parameters = new SqlParameterList();
+        List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE c.id IN ( ");
         for (int i = 0; i < idPartitionKeyPairList.size(); i++) {
@@ -1557,7 +1556,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private SqlQuerySpec createReadManyQuerySpec(List<Pair<String, PartitionKey>> idPartitionKeyPairList, String partitionKeySelector) {
         StringBuilder queryStringBuilder = new StringBuilder();
-        SqlParameterList parameters = new SqlParameterList();
+        List<SqlParameter> parameters = new ArrayList<>();
 
         queryStringBuilder.append("SELECT * FROM c WHERE ( ");
         for (int i = 0; i < idPartitionKeyPairList.size(); i++) {

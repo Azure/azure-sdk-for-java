@@ -49,8 +49,8 @@ public class SendLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Sender) {
-            logger.verbose("onLinkLocalOpen senderName[{}], linkName[{}], localTarget[{}]",
-                senderName, link.getName(), link.getTarget());
+            logger.verbose("onLinkLocalOpen connectionId[{}], linkName[{}], localTarget[{}]",
+                getConnectionId(), link.getName(), link.getTarget());
         }
     }
 
@@ -59,16 +59,16 @@ public class SendLinkHandler extends LinkHandler {
         final Link link = event.getLink();
         if (link instanceof Sender) {
             if (link.getRemoteTarget() != null) {
-                logger.info("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[{}]",
-                    senderName, link.getName(), link.getRemoteTarget());
+                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[{}]",
+                    getConnectionId(), link.getName(), link.getRemoteTarget());
 
                 if (isFirstFlow.getAndSet(false)) {
                     onNext(EndpointState.ACTIVE);
                 }
             } else {
-                logger.info("onLinkRemoteOpen senderName[{}], linkName[{}], remoteTarget[null], remoteSource[null], "
+                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[null], remoteSource[null], "
                         + "action[waitingForError]",
-                    senderName, link.getName());
+                    getConnectionId(), link.getName());
             }
         }
     }
@@ -82,8 +82,8 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         creditSink.next(sender.getRemoteCredit());
 
-        logger.verbose("onLinkFlow senderName[{}], linkName[{}], unsettled[{}], credit[{}]",
-            senderName, sender.getName(), sender.getUnsettled(), sender.getCredit());
+        logger.verbose("onLinkFlow connectionId[{}], linkName[{}], unsettled[{}], credit[{}]",
+            getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getCredit());
     }
 
     @Override
@@ -93,9 +93,9 @@ public class SendLinkHandler extends LinkHandler {
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
 
-            logger.verbose("onDelivery senderName[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], "
+            logger.verbose("onDelivery connectionId[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], "
                     + "delivery.isBuffered[{}], delivery.id[{}]",
-                senderName, sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
+                getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
                 delivery.getRemoteState(), delivery.isBuffered(), new String(delivery.getTag(),
                     StandardCharsets.UTF_8));
 

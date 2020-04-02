@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/signalr/
-    exclude:
-      - sdk/signalr/azure
-      - sdk/signalr/microsoft-azure
-      - sdk/signalr/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/signalr/
-    exclude:
-      - sdk/signalr/azure
-      - sdk/signalr/microsoft-azure
-      - sdk/signalr/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

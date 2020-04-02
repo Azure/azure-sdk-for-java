@@ -8,6 +8,8 @@ import com.beust.jcommander.ParameterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
+
 public class Main {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -28,7 +30,11 @@ public class Main {
             if (cfg.isSync()) {
                 syncBenchmark(cfg);
             } else {
-                asyncBenchmark(cfg);
+                if(cfg.getOperationType().equals(ReadThroughputWithMultipleClients)) {
+                    asyncMultiClientBenchmark(cfg);
+                } else {
+                    asyncBenchmark(cfg);
+                }
             }
         } catch (ParameterException e) {
             // if any error in parsing the cmd-line options print out the usage help
@@ -103,6 +109,20 @@ public class Main {
                     throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }
 
+            LOGGER.info("Starting {}", cfg.getOperationType());
+            benchmark.run();
+        } finally {
+            if (benchmark != null) {
+                benchmark.shutdown();
+            }
+        }
+    }
+
+    private static void asyncMultiClientBenchmark(Configuration cfg) throws Exception {
+        LOGGER.info("Async multi client benchmark ...");
+        AsynReadWithMultipleClients benchmark = null;
+        try {
+            benchmark = new AsynReadWithMultipleClients(cfg);
             LOGGER.info("Starting {}", cfg.getOperationType());
             benchmark.run();
         } finally {
