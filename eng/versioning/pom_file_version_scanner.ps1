@@ -449,7 +449,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             {
                 $script:FoundError = $true
                 # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
-                Write-Error-With-Color "Error: plugin is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
+                Write-Error-With-Color "Error: plugin is missing version element and/or artifactId and groupId elements pluginNode=$($pluginNode.OuterXml)"
             }
             continue
         } 
