@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/privatedns/
-    exclude:
-      - sdk/privatedns/azure
-      - sdk/privatedns/microsoft-azure
-      - sdk/privatedns/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/privatedns/
-    exclude:
-      - sdk/privatedns/azure
-      - sdk/privatedns/microsoft-azure
-      - sdk/privatedns/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
