@@ -100,7 +100,12 @@ final class FlatteningDeserializer extends StdDeserializer<Object> implements Re
                                 break;
                             }
                         }
-                        ((ObjectNode) root).put(value, node);
+                        // If additional properties have a conflicting key, escape the additional property's key
+                        if (root.has(value)) {
+                            String escapedValue = value.replace(".", "\\.");
+                            ((ObjectNode) root).set(escapedValue, root.get(value));
+                        }
+                        ((ObjectNode) root).set(value, node);
                     }
                 }
             }
