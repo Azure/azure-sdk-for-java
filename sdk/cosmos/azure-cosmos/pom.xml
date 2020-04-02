@@ -159,14 +159,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.fasterxml.uuid</groupId>
       <artifactId>java-uuid-generator</artifactId>
-      <version>3.2.0</version> <!-- {x-version-update;com.fasterxml.uuid:java-uuid-generator;external_dependency} -->
-    </dependency>
-
-    <dependency> <!-- log4j is needed by uuid module -->
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version> <!-- {x-version-update;cosmos_log4j:log4j;external_dependency} -->
-      <scope>test</scope>
+      <version>4.0.1</version> <!-- {x-version-update;com.fasterxml.uuid:java-uuid-generator;external_dependency} -->
     </dependency>
 
     <dependency>

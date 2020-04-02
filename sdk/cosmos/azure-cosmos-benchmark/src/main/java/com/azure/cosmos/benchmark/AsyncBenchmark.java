@@ -6,7 +6,10 @@ package com.azure.cosmos.benchmark;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -43,10 +46,13 @@ abstract class AsyncBenchmark<T> {
 
     private Meter successMeter;
     private Meter failureMeter;
+    private boolean databaseCreated;
+    private boolean collectionCreated;
 
     final Logger logger;
     final CosmosAsyncClient cosmosClient;
-    final CosmosAsyncContainer cosmosAsyncContainer;
+    CosmosAsyncContainer cosmosAsyncContainer;
+    CosmosAsyncDatabase cosmosAsyncDatabase;
 
     final String partitionKey;
     final Configuration configuration;
@@ -61,15 +67,38 @@ abstract class AsyncBenchmark<T> {
             .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
             .buildAsyncClient();
-
-        cosmosAsyncContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
-
+        configuration = cfg;
         logger = LoggerFactory.getLogger(this.getClass());
+
+        try {
+            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
+        } catch (CosmosClientException e) {
+            if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                cosmosAsyncDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).block().getDatabase();
+                logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
+                databaseCreated = true;
+            } else {
+                throw e;
+            }
+        }
+
+        try {
+            cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
+        } catch (CosmosClientException e) {
+            if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                cosmosAsyncContainer =
+                    cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).block().getContainer();
+                logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
+                collectionCreated = true;
+            } else {
+                throw e;
+            }
+        }
+
         partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
             .getPaths().iterator().next().split("/")[1];
 
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
-        configuration = cfg;
 
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
@@ -130,6 +159,14 @@ abstract class AsyncBenchmark<T> {
     }
 
     void shutdown() {
+        if (this.databaseCreated) {
+            cosmosAsyncDatabase.delete().block();
+            logger.info("Deleted temporary database {} created for this test", this.configuration.getDatabaseId());
+        } else if (this.collectionCreated) {
+            cosmosAsyncContainer.delete().block();
+            logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
+        }
+
         cosmosClient.close();
     }
 

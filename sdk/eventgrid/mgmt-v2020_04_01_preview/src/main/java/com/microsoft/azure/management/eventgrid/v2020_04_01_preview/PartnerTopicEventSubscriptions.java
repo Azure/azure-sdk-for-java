@@ -51,7 +51,7 @@ public interface PartnerTopicEventSubscriptions extends SupportsCreating<Partner
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PartnerTopicEventSubscription> listByPartnerTopicAsync(String resourceGroupName, String partnerTopicName);
+    Observable<PartnerTopicEventSubscription> listByPartnerTopicAsync(final String resourceGroupName, final String partnerTopicName);
 
     /**
      * Delete an event subscription of a partner topic.

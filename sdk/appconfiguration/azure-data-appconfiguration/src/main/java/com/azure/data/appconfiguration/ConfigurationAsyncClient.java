@@ -134,6 +134,7 @@ public final class ConfigurationAsyncClient {
     Mono<Response<ConfigurationSetting>> addConfigurationSetting(ConfigurationSetting setting, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = context == null ? Context.NONE : context;
 
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
@@ -229,6 +230,7 @@ public final class ConfigurationAsyncClient {
         Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = context == null ? Context.NONE : context;
 
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         // This service method call is similar to addConfigurationSetting except it will create or update a
@@ -339,6 +341,7 @@ public final class ConfigurationAsyncClient {
         OffsetDateTime acceptDateTime, boolean onlyIfChanged, Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = context == null ? Context.NONE : context;
 
         final String ifNoneMatchETag = onlyIfChanged ? getETagValue(setting.getETag()) : null;
         return service.getKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
@@ -432,6 +435,8 @@ public final class ConfigurationAsyncClient {
         Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = context == null ? Context.NONE : context;
+
         final String ifMatchETag = ifUnchanged ? getETagValue(setting.getETag()) : null;
         return service.delete(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, ifMatchETag,
             null, context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
@@ -511,6 +516,7 @@ public final class ConfigurationAsyncClient {
         Context context) {
         // Validate that setting and key is not null. The key is used in the service URL so it cannot be null.
         validateSetting(setting);
+        context = context == null ? Context.NONE : context;
 
         if (isReadOnly) {
             return service.lockKeyValue(serviceEndpoint, setting.getKey(), setting.getLabel(), apiVersion, null,
@@ -593,7 +599,8 @@ public final class ConfigurationAsyncClient {
             final String labelFilter = selector.getLabelFilter();
 
             return service.listKeyValues(serviceEndpoint, keyFilter, labelFilter, apiVersion, fields,
-                selector.getAcceptDateTime(), context)
+                selector.getAcceptDateTime(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, APP_CONFIG_TRACING_NAMESPACE_VALUE))
                 .doOnSubscribe(ignoredValue -> logger.info("Listing ConfigurationSettings - {}", selector))
                 .doOnSuccess(response -> logger.info("Listed ConfigurationSettings - {}", selector))
                 .doOnError(error -> logger.warning("Failed to list ConfigurationSetting - {}", selector, error));

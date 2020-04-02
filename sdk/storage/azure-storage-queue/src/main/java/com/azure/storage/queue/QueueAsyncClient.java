@@ -6,11 +6,11 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -45,6 +45,9 @@ import java.util.stream.StreamSupport;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -160,7 +163,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
-        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null, context)
+        context = context == null ? Context.NONE : context;
+        return client.queues().createWithRestResponseAsync(queueName, null, metadata, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -211,7 +216,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
-        return client.queues().deleteWithRestResponseAsync(queueName, context)
+        context = context == null ? Context.NONE : context;
+        return client.queues().deleteWithRestResponseAsync(queueName,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -264,7 +271,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
-        return client.queues().getPropertiesWithRestResponseAsync(queueName, context)
+        context = context == null ? Context.NONE : context;
+        return client.queues().getPropertiesWithRestResponseAsync(queueName,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getQueuePropertiesResponse);
     }
 
@@ -329,8 +338,10 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata, Context context) {
+        context = context == null ? Context.NONE : context;
         return client.queues()
-            .setMetadataWithRestResponseAsync(queueName, null, metadata, null, context)
+            .setMetadataWithRestResponseAsync(queueName, null, metadata, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -418,6 +429,7 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> setAccessPolicyWithResponse(Iterable<QueueSignedIdentifier> permissions, Context context) {
+        context = context == null ? Context.NONE : context;
         /*
         We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
         OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -441,7 +453,8 @@ public final class QueueAsyncClient {
             .collect(Collectors.toList());
 
         return client.queues()
-            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null, context)
+            .setAccessPolicyWithRestResponseAsync(queueName, permissionsList, null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -492,7 +505,9 @@ public final class QueueAsyncClient {
     }
 
     Mono<Response<Void>> clearMessagesWithResponse(Context context) {
-        return client.messages().clearWithRestResponseAsync(queueName, context)
+        context = context == null ? Context.NONE : context;
+        return client.messages().clearWithRestResponseAsync(queueName,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -553,8 +568,7 @@ public final class QueueAsyncClient {
     public Mono<Response<SendMessageResult>> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
                                                                    Duration timeToLive) {
         try {
-            return withContext(
-                context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
+            return withContext(context -> sendMessageWithResponse(messageText, visibilityTimeout, timeToLive, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -565,10 +579,12 @@ public final class QueueAsyncClient {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
         QueueMessage message = new QueueMessage().setMessageText(messageText);
+        context = context == null ? Context.NONE : context;
 
         return client.messages()
             .enqueueWithRestResponseAsync(queueName, message, visibilityTimeoutInSeconds, timeToLiveInSeconds,
-                null, null, context)
+                null, null,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
     }
 
@@ -807,8 +823,8 @@ public final class QueueAsyncClient {
     public Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
             String messageText, Duration visibilityTimeout) {
         try {
-            return withContext(context ->
-                updateMessageWithResponse(messageId, popReceipt, messageText, visibilityTimeout, context));
+            return withContext(context -> updateMessageWithResponse(messageId, popReceipt, messageText,
+                visibilityTimeout, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -817,8 +833,10 @@ public final class QueueAsyncClient {
     Mono<Response<UpdateMessageResult>> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout, Context context) {
         QueueMessage message = new QueueMessage().setMessageText(messageText);
+        context = context == null ? Context.NONE : context;
         return client.messageIds().updateWithRestResponseAsync(queueName, messageId, message, popReceipt,
-                (int) visibilityTimeout.getSeconds(), context)
+                (int) visibilityTimeout.getSeconds(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::getUpdatedMessageResponse);
     }
 
@@ -868,14 +886,17 @@ public final class QueueAsyncClient {
      */
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
-            return withContext(context -> deleteMessageWithResponse(messageId, popReceipt, context));
+            return withContext(context -> deleteMessageWithResponse(messageId, popReceipt,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt, Context context) {
-        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt, context)
+        context = context == null ? Context.NONE : context;
+        return client.messageIds().deleteWithRestResponseAsync(queueName, messageId, popReceipt,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 

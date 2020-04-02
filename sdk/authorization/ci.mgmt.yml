@@ -15,9 +15,7 @@ trigger:
     include:
       - sdk/authorization/
     exclude:
-      - sdk/authorization/azure
-      - sdk/authorization/microsoft-azure
-      - sdk/authorization/ms-azure
+      - sdk/authorization/microsoft-azure-authentication-msi-token-provider
 
 pr:
   branches:
@@ -30,9 +28,7 @@ pr:
     include:
       - sdk/authorization/
     exclude:
-      - sdk/authorization/azure
-      - sdk/authorization/microsoft-azure
-      - sdk/authorization/ms-azure
+      - sdk/authorization/microsoft-azure-authentication-msi-token-provider
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

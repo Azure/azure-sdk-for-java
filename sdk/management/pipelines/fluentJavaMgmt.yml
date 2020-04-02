@@ -1,7 +1,6 @@
 # External variables Settable at queue time:
 # "pomFile" : "pom.xml".   This is the project object model file for Maven.
 
-
 trigger:
   branches:
     include:
@@ -50,12 +49,11 @@ pr:
       - sdk/monitor/mgmt/
       - sdk/sql/mgmt/
 
-variables:
-  DefaultOptions: '--settings eng/settings.xml -Dmaven.wagon.http.pool=false'
-  LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-
 jobs:
   - job: 'Build'
+
+    variables:
+      - template: ../../../eng/pipelines/templates/variables/globals.yml
 
     strategy:
       matrix:
@@ -70,22 +68,23 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      # - bash: |
-      #     git clone https://github.com/azure/azure-sdk-for-java
-      #     cd azure-sdk-for-java
-      #     git reset fb965b8465 --hard
-      #     cd eng/code-quality-reports
-      #     mvn install
-      #     cd ../../sdk/core
-      #     mvn -DskipTests -Dgpg.skip -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip -Dmaven.javadoc.skip -f pom.service.xml -pl azure-core,azure-core-management -am install
-      #     cd ../../..
-      #   displayName: 'install azure-core'
+      - task: Maven@3
+        inputs:
+          mavenPomFile: eng/code-quality-reports/pom.xml
+          options: '$(DefaultOptions) $(ProfileFlag) -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'install'
+        displayName: 'install sdk-build-tools'
 
       - task: Maven@3
         displayName: 'install'
         inputs:
           mavenPomFile: sdk/management/pom.xml
-          options: '--batch-mode $(DefaultOptions) $(ProfileFlag) -pl !samples javadoc:aggregate -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+          options: '$(DefaultOptions) $(ProfileFlag) -pl !samples javadoc:aggregate -DskipTests=true -Dcheckstyle.skip=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -109,7 +108,7 @@ jobs:
         displayName: 'Run Tests on Java 8'
         inputs:
           mavenPomFile: sdk/management/pom.xml
-          options: '--batch-mode $(DefaultOptions) $(ProfileFlag) -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
+          options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-parent -amd -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)

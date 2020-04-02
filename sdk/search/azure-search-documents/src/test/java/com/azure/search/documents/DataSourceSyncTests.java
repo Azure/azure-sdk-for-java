@@ -163,7 +163,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         DataSource updatedActual = client.createOrUpdateDataSource(updatedExpected);
 
         updatedExpected.getCredentials().setConnectionString(null); // Create doesn't return connection strings.
-        TestHelpers.assertDataSourcesEqual(updatedExpected, updatedActual);
+        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
     }
 
     @Test
@@ -251,7 +251,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         DataSource actualDataSource = client.createOrUpdateDataSource(expectedDataSource);
 
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null));
-        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
+        TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
         // we delete the data source because otherwise we will hit the quota limits during the tests
         client.deleteDataSource(actualDataSource.getName());
 
@@ -273,11 +273,11 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         expectedDataSource.setCredentials(new DataSourceCredentials().setConnectionString(null)); // Get doesn't return connection strings.
 
         DataSource actualDataSource = client.getDataSource(dataSourceName);
-        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
+        TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
 
         actualDataSource = client.getDataSourceWithResponse(dataSourceName, generateRequestOptions(), Context.NONE)
             .getValue();
-        TestHelpers.assertDataSourcesEqual(expectedDataSource, actualDataSource);
+        TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
 
         client.deleteDataSource(dataSourceName);
     }

@@ -21,7 +21,13 @@ trigger:
     include:
       - sdk/eventgrid/
     exclude:
-      - sdk/eventgrid/mgmt-
+      - sdk/eventgrid/mgmt-v2018_01_01
+      - sdk/eventgrid/mgmt-v2018_05_01_preview
+      - sdk/eventgrid/mgmt-v2018_09_15_preview
+      - sdk/eventgrid/mgmt-v2019_01_01
+      - sdk/eventgrid/mgmt-v2019_06_01
+      - sdk/eventgrid/mgmt-v2020_01_01_preview
+      - sdk/eventgrid/mgmt-v2020_04_01_preview
 
 pr:
   branches:
@@ -34,7 +40,13 @@ pr:
     include:
       - sdk/eventgrid/
     exclude:
-      - sdk/eventgrid/mgmt-
+      - sdk/eventgrid/mgmt-v2018_01_01
+      - sdk/eventgrid/mgmt-v2018_05_01_preview
+      - sdk/eventgrid/mgmt-v2018_09_15_preview
+      - sdk/eventgrid/mgmt-v2019_01_01
+      - sdk/eventgrid/mgmt-v2019_06_01
+      - sdk/eventgrid/mgmt-v2020_01_01_preview
+      - sdk/eventgrid/mgmt-v2020_04_01_preview
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

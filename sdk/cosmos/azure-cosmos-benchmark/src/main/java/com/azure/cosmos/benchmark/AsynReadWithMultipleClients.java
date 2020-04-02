@@ -47,7 +47,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class AsynReadWithMultipleClients<T> {
-    private final static String PARTITION_KEY = "/pk";
     private final static String ACCOUNT_ENDPOINT_TAG = "AccountEndpoint=";
     private final static String ACCOUNT_KEY_TAG = "AccountKey=";
     private final Semaphore concurrencyControlSemaphore;
@@ -59,6 +58,8 @@ public class AsynReadWithMultipleClients<T> {
     private Meter failureMeter;
     private Timer latency;
     private Map<CosmosAsyncClient, List<PojoizedJson>> clientDocsMap = new HashMap<>();
+    private List<CosmosAsyncDatabase> databaseListToClear = new ArrayList<>();
+    private List<CosmosAsyncContainer> collectionListToClear = new ArrayList<>();
 
     AsynReadWithMultipleClients(Configuration cfg) {
         logger = LoggerFactory.getLogger(this.getClass());
@@ -77,22 +78,6 @@ public class AsynReadWithMultipleClients<T> {
                 .convertDurationsTo(TimeUnit.MILLISECONDS).build();
         }
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
-    }
-
-    void deleteCollection() {
-        try {
-            for (CosmosAsyncClient cosmosAsyncClient : clientDocsMap.keySet()) {
-                cosmosAsyncClient.getDatabase(configuration.getDatabaseId()).getContainer(configuration.getCollectionId()).delete().block();
-            }
-        } catch (CosmosClientException e) {
-            if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                // It can happen if container does not exist, normal scenario
-            } else {
-                throw e;
-            }
-        } finally {
-            logger.info("Container on all client have been deleted successfully");
-        }
     }
 
     void run() throws Exception {
@@ -165,6 +150,22 @@ public class AsynReadWithMultipleClients<T> {
     }
 
     void shutdown() {
+        for (CosmosAsyncDatabase database : databaseListToClear) {
+            database.delete().block();
+        }
+
+        if (databaseListToClear.size() > 0) {
+            logger.info("Deleted database {} created on accounts for this test", this.configuration.getDatabaseId());
+        }
+
+        for (CosmosAsyncContainer container : collectionListToClear) {
+            container.delete().block();
+        }
+
+        if (collectionListToClear.size() > 0) {
+            logger.info("Deleted collection {} created on accounts for this test", this.configuration.getCollectionId());
+        }
+
         for (CosmosAsyncClient asyncClient : clientDocsMap.keySet()) {
             asyncClient.close();
         }
@@ -227,33 +228,57 @@ public class AsynReadWithMultipleClients<T> {
                         .connectionReuseAcrossClientsEnabled(true)
                         .buildAsyncClient();
                     List<PojoizedJson> docsToRead = new ArrayList<>();
-                    if (!configuration.isDeleteCollections()) {
-                        CosmosAsyncDatabase cosmosAsyncDatabase = asyncClient.createDatabaseIfNotExists(this.configuration.getDatabaseId()).block().getDatabase();
-                        CosmosAsyncContainer cosmosAsyncContainer =
-                            cosmosAsyncDatabase.createContainerIfNotExists(configuration.getCollectionId(), PARTITION_KEY, configuration.getThroughput()).block().getContainer();
-                        String partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
-                            .getPaths().iterator().next().split("/")[1];
-                        String dataFieldValue = RandomStringUtils.randomAlphabetic(this.configuration.getDocumentDataFieldSize());
-                        ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
-
-                        for (int i = 0; i < this.configuration.getNumberOfPreCreatedDocuments(); i++) {
-                            String uuid = UUID.randomUUID().toString();
-                            com.azure.cosmos.benchmark.PojoizedJson newDoc = generateDocument(uuid, dataFieldValue, partitionKey);
-
-                            Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
-                                    com.azure.cosmos.benchmark.PojoizedJson x =
-                                        resp.getItem();
-                                    return x;
-                                }
-                            ).flux();
-                            createDocumentObservables.add(obs);
+                    CosmosAsyncDatabase cosmosAsyncDatabase = null;
+                    CosmosAsyncContainer cosmosAsyncContainer = null;
+                    boolean databaseCreated = false;
+                    try {
+                        cosmosAsyncDatabase = asyncClient.getDatabase(this.configuration.getDatabaseId()).read().block().getDatabase();
+                    } catch (CosmosClientException e) {
+                        if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                            cosmosAsyncDatabase = asyncClient.createDatabase(this.configuration.getDatabaseId()).block().getDatabase();
+                            logger.info("Database {} is created for this test on host {}", this.configuration.getDatabaseId(), endpoint);
+                            databaseCreated = true;
+                            databaseListToClear.add(cosmosAsyncDatabase);
+                        } else {
+                            throw e;
                         }
-                        docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
-
-                        logger.info("Client have been initialized with data created for host {}", hostAndKey[0]);
-                    } else {
-                        logger.info("Client have been initialized with host {}", hostAndKey[0]);
                     }
+
+                    try {
+                        cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(this.configuration.getCollectionId()).read().block().getContainer();
+                    } catch (CosmosClientException e) {
+                        if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                            cosmosAsyncContainer =
+                                cosmosAsyncDatabase.createContainer(this.configuration.getCollectionId(), Configuration.DEFAULT_PARTITION_KEY_PATH, this.configuration.getThroughput()).block().getContainer();
+                            logger.info("Collection {} is created for this test on host {}", this.configuration.getCollectionId(), endpoint);
+                            if(!databaseCreated) {
+                                collectionListToClear.add(cosmosAsyncContainer);
+                            }
+                        } else {
+                            throw e;
+                        }
+                    }
+
+                    String partitionKey = cosmosAsyncContainer.read().block().getProperties().getPartitionKeyDefinition()
+                        .getPaths().iterator().next().split("/")[1];
+                    String dataFieldValue = RandomStringUtils.randomAlphabetic(this.configuration.getDocumentDataFieldSize());
+                    ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
+
+                    for (int i = 0; i < this.configuration.getNumberOfPreCreatedDocuments(); i++) {
+                        String uuid = UUID.randomUUID().toString();
+                        com.azure.cosmos.benchmark.PojoizedJson newDoc = generateDocument(uuid, dataFieldValue, partitionKey);
+
+                        Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
+                                com.azure.cosmos.benchmark.PojoizedJson x =
+                                    resp.getItem();
+                                return x;
+                            }
+                        ).flux();
+                        createDocumentObservables.add(obs);
+                    }
+                    docsToRead = Flux.merge(Flux.fromIterable(createDocumentObservables), 100).collectList().block();
+
+                    logger.info("Client have been initialized with data created for host {}", hostAndKey[0]);
                     clientDocsMap.put(asyncClient, docsToRead);
                 }
             }
