@@ -68,7 +68,9 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
-        if (documentsResult == null) {
+        if (documentsResult == null || CoreUtils.isNullOrEmpty(documentsResult.getNextLink())
+            || documentsResult.getNextPageParameters() == null
+            || documentsResult.getNextPageParameters().getSkip() == null) {
             return null;
         }
 
@@ -81,11 +83,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     }
 
     private static String getNextPageParameters(SearchDocumentsResult result) {
-        if (CoreUtils.isNullOrEmpty(result.getNextLink())
-            || result.getNextPageParameters() == null
-            || result.getNextPageParameters().getSkip() == null) {
-            return null;
-        }
         try {
             return new JacksonAdapter().serialize(result.getNextPageParameters(), SerializerEncoding.JSON);
         } catch (IOException ex) {
