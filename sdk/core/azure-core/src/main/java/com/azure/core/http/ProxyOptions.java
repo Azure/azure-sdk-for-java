@@ -274,6 +274,11 @@ public class ProxyOptions {
             this.proxyType = proxyType;
         }
 
+        /**
+         * Get the {@link Proxy.Type} equivalent of this type.
+         *
+         * @return the proxy type
+         */
         public Proxy.Type toProxyType() {
             return proxyType;
         }
