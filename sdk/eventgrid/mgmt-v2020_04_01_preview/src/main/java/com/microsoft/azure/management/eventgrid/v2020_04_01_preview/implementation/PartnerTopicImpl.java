@@ -60,11 +60,4 @@ class PartnerTopicImpl extends GroupableResourceCoreImpl<PartnerTopic, PartnerTo
     public String source() {
         return this.inner().source();
     }
-
-    @Override
-    public PartnerTopicImpl withTags(Map<String, String> tags) {
-        this.utags = tags;
-        return this;
-    }
-
 }
