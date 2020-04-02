@@ -61,10 +61,14 @@ class SnippetDict:
 
 def re_space_snippet(snippet_list):
     # find identation (or whitespace characters) on the left side
-    white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
+    white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list if line.strip()]
 
     # now figure out the shortest one
     white_space_for_replacement = min(white_space, key=len)
+
+    print("I'm seeing the following")
+    print(white_space_for_replacement)
+    print("end")
 
     # return the list, replacing leading whitespace with the specified amount
     return [line.replace(white_space_for_replacement, "", 1) for line in snippet_list]
@@ -141,7 +145,7 @@ if __name__ == "__main__":
                 if snippet_ref:
                     id_ending = snippet_ref.groupdict()["snippetid"].strip()
                     lead_space = snippet_ref.groupdict()["leadingspace"] + " "
-                    if id_ending in snippets:
+                    if id_ending in snippets and id_ending == "com.azure.data.applicationconfig.configurationclient.pipeline.instantiation":
                         result_array = [
                             lead_space + "<pre>\n",
                             escape(
