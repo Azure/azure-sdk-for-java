@@ -485,6 +485,10 @@
                 <packages>com.azure.messaging.eventhubs*</packages>
               </group>
               <group>
+                <title>Azure Form Recognizer</title>
+                <packages>com.azure.ai.formrecognizer*</packages>
+              </group>
+              <group>
                 <title>Azure Identity</title>
                 <packages>com.azure.identity*</packages>
               </group>
@@ -710,6 +714,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
@@ -972,6 +977,7 @@
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
@@ -1370,6 +1376,7 @@
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
+    <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
     <module>sdk/identity/azure-identity</module>
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
