@@ -5,11 +5,11 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosTriggerProperties;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.TriggerOperation;
-import com.azure.cosmos.TriggerType;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -38,11 +38,11 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     public void readTriggers() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
-        CosmosContinuablePagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
+        CosmosPagedFlux<CosmosTriggerProperties> feedObservable = createdCollection.getScripts().readAllTriggers(options);
         int maxItemCount = 2;
-        int expectedPageSize = (createdTriggers.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdTriggers.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(createdTriggers.size())
@@ -57,7 +57,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedTriggersTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -65,7 +65,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
             this.createdTriggers.add(this.createTriggers(createdCollection));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

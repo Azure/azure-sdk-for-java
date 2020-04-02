@@ -51,12 +51,17 @@ public class KeyVaultSecrets {
          * AZURE_CLIENT_ID
          * AZURE_CLIENT_SECRET
          * AZURE_TENANT_ID
+         *
+         * AZURE_AUTHORITY_HOST -- this is supplied to the credential builder
+         * for use in other clouds
          */
         secretClient = new SecretClientBuilder()
             .vaultUrl(System.getenv("AZURE_PROJECT_URL"))
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
-
+            .credential(
+                new DefaultAzureCredentialBuilder()
+                    .authorityHost(System.getenv("AZURE_AUTHORITY_HOST"))
+                    .build()
+            ).buildClient();
         try {
             setSecret();
             getSecret();

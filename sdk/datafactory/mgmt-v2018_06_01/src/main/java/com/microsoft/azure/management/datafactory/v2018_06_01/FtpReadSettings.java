@@ -40,6 +40,14 @@ public class FtpReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /**
+     * Point to a text file that lists each file (relative path to the path
+     * configured in the dataset) that you want to copy. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "fileListPath")
+    private Object fileListPath;
+
+    /**
      * Specify whether to use binary transfer mode for FTP stores.
      */
     @JsonProperty(value = "useBinaryTransfer")
@@ -102,6 +110,26 @@ public class FtpReadSettings extends StoreReadSettings {
      */
     public FtpReadSettings withWildcardFileName(Object wildcardFileName) {
         this.wildcardFileName = wildcardFileName;
+        return this;
+    }
+
+    /**
+     * Get point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @return the fileListPath value
+     */
+    public Object fileListPath() {
+        return this.fileListPath;
+    }
+
+    /**
+     * Set point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @param fileListPath the fileListPath value to set
+     * @return the FtpReadSettings object itself.
+     */
+    public FtpReadSettings withFileListPath(Object fileListPath) {
+        this.fileListPath = fileListPath;
         return this;
     }
 

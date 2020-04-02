@@ -6,8 +6,14 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -31,7 +37,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosDatabaseTest() {
-        client = clientBuilder().buildClient();
+        client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
@@ -155,11 +161,11 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     public void readAllDatabases() throws Exception {
         FeedOptions options = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosDatabaseProperties> readIterator = client.readAllDatabases(options);
+        CosmosPagedIterable<CosmosDatabaseProperties> readIterator = client.readAllDatabases(options);
         // Basic validation
         assertThat(readIterator.iterableByPage(2).iterator().hasNext()).isTrue();
 
-        CosmosContinuablePagedIterable<CosmosDatabaseProperties> readIterator1 = client.readAllDatabases();
+        CosmosPagedIterable<CosmosDatabaseProperties> readIterator1 = client.readAllDatabases();
         // Basic validation
         assertThat(readIterator1.iterableByPage(2).iterator().hasNext()).isTrue();
     }
@@ -170,12 +176,12 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
+        CosmosPagedIterable<CosmosDatabaseProperties> queryIterator = client.queryDatabases(query, options);
         // Basic validation
         assertThat(queryIterator.iterableByPage(2).iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosDatabaseProperties> queryIterator1 = client.queryDatabases(querySpec, options);
+        CosmosPagedIterable<CosmosDatabaseProperties> queryIterator1 = client.queryDatabases(querySpec, options);
         // Basic validation
         assertThat(queryIterator1.iterableByPage(2).iterator().hasNext()).isTrue();
     }

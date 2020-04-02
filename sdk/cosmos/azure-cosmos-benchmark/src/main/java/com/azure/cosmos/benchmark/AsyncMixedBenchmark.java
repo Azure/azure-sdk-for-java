@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.RequestOptions;
 import org.apache.commons.lang3.RandomStringUtils;
 import reactor.core.publisher.BaseSubscriber;

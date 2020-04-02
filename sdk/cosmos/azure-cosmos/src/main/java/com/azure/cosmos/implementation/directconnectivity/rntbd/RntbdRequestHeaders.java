@@ -3,8 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.IndexingDirective;
+import com.azure.cosmos.implementation.apachecommons.lang.EnumUtils;
+import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.implementation.ContentSerializationFormat;
 import com.azure.cosmos.implementation.EnumerationDirection;
 import com.azure.cosmos.implementation.FanoutOperationState;
@@ -15,11 +17,11 @@ import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.RemoteStorageType;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.models.IndexingDirective;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.apache.commons.lang3.EnumUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.Base64;
 import java.util.Locale;
@@ -38,7 +40,7 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdReadFeedKeyType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRemoteStorageType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonFilter("RntbdToken")
 final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
@@ -59,7 +61,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         checkNotNull(frame, "frame");
 
         final RxDocumentServiceRequest request = args.serviceRequest();
-        final byte[] content = request.getContent();
+        final byte[] content = request.getContentAsByteArray();
 
         this.getPayloadPresent().setValue(content != null && content.length > 0);
         this.getReplicaPath().setValue(args.replicaPath());
@@ -614,7 +616,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
 
-            final ConsistencyLevel level = ConsistencyLevel.fromServiceSerializedFormat(value);
+            final ConsistencyLevel level = BridgeInternal.fromServiceSerializedFormat(value);
 
             if (level == null) {
                 final String reason = String.format(Locale.ROOT, RMResources.InvalidRequestHeaderValue,

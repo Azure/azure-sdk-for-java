@@ -10,16 +10,16 @@ import com.azure.cosmos.implementation.changefeed.exceptions.ObserverException;
  * DEFAULT implementation for {@link ChangeFeedObserverFactory}.
  */
 public class ChangeFeedObserverFactoryImpl implements ChangeFeedObserverFactory {
-    private final Class observerType;
+    private final Class<? extends ChangeFeedObserver> observerType;
 
-    public ChangeFeedObserverFactoryImpl(Class observerType) {
+    public ChangeFeedObserverFactoryImpl(Class<? extends ChangeFeedObserver> observerType) {
         this.observerType = observerType;
     }
 
     @Override
     public ChangeFeedObserver createObserver() {
         try {
-            return (ChangeFeedObserver) observerType.newInstance();
+            return observerType.newInstance();
         } catch (IllegalAccessException | InstantiationException ex) {
             throw new ObserverException(ex);
         }

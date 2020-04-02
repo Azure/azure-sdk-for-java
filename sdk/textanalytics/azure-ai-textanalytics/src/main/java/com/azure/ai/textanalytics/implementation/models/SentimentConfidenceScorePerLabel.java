@@ -44,7 +44,7 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the positive property: The positive property.
      *
      * @param positive the positive value to set.
-     * @return the SentimentConfidenceScorePerLabel object itself.
+     * @return the SentimentConfidenceScores object itself.
      */
     public SentimentConfidenceScorePerLabel setPositive(double positive) {
         this.positive = positive;
@@ -64,7 +64,7 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the neutral property: The neutral property.
      *
      * @param neutral the neutral value to set.
-     * @return the SentimentConfidenceScorePerLabel object itself.
+     * @return the SentimentConfidenceScores object itself.
      */
     public SentimentConfidenceScorePerLabel setNeutral(double neutral) {
         this.neutral = neutral;
@@ -84,7 +84,7 @@ public final class SentimentConfidenceScorePerLabel {
      * Set the negative property: The negative property.
      *
      * @param negative the negative value to set.
-     * @return the SentimentConfidenceScorePerLabel object itself.
+     * @return the SentimentConfidenceScores object itself.
      */
     public SentimentConfidenceScorePerLabel setNegative(double negative) {
         this.negative = negative;

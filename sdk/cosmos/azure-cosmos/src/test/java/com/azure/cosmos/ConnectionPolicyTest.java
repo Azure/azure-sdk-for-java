@@ -38,8 +38,8 @@ public class ConnectionPolicyTest {
     @Test(groups = { "unit" })
     public void usingMultipleWriteLocations() {
         ConnectionPolicy policy = new ConnectionPolicy();
-        assertThat(policy.getUsingMultipleWriteLocations()).isEqualTo(true);
+        assertThat(policy.isUsingMultipleWriteLocations()).isEqualTo(true);
         policy.setUsingMultipleWriteLocations(false);
-        assertThat(policy.getUsingMultipleWriteLocations()).isEqualTo(false);
+        assertThat(policy.isUsingMultipleWriteLocations()).isEqualTo(false);
     }
 }

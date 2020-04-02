@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Strings;
@@ -170,6 +170,21 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         return this.compareTo(pki) == 0;
     }
 
+    @Override
+    public int hashCode() {
+//        TODO: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
+//        Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
+//        if (this.components == null || this.components.size() == 0) {
+//            return 0;
+//        }
+//        int [] ordinals = new int[this.components.size()];
+//        for (int i = 0; i < this.components.size(); i++) {
+//            ordinals[i] = this.components.get(i).GetTypeOrdinal();
+//        }
+//        return Arrays.hashCode(ordinals);
+        return super.hashCode();
+    }
+
     public int compareTo(PartitionKeyInternal other) {
         if (other == null) {
             throw new IllegalArgumentException("other");
@@ -180,13 +195,13 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         }
 
         for (int i = 0; i < Math.min(this.components.size(), other.components.size()); i++) {
-            int leftOrdinal = this.components.get(i).GetTypeOrdinal();
-            int rightOrdinal = other.components.get(i).GetTypeOrdinal();
+            int leftOrdinal = this.components.get(i).getTypeOrdinal();
+            int rightOrdinal = other.components.get(i).getTypeOrdinal();
             if (leftOrdinal != rightOrdinal) {
                 return (int) Math.signum(leftOrdinal - rightOrdinal);
             }
 
-            int result = this.components.get(i).CompareTo(other.components.get(i));
+            int result = this.components.get(i).compareTo(other.components.get(i));
             if (result != 0) {
                 return (int) Math.signum(result);
             }
@@ -209,7 +224,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         }
 
         for (int i = 0; i < this.components.size(); i++) {
-            if (this.components.get(i).CompareTo(nestedPartitionKey.components.get(i)) != 0) {
+            if (this.components.get(i).compareTo(nestedPartitionKey.components.get(i)) != 0) {
                 return false;
             }
         }
@@ -228,6 +243,8 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
     @SuppressWarnings("serial")
     static final class PartitionKeyInternalJsonSerializer extends StdSerializer<PartitionKeyInternal> {
 
+        private static final long serialVersionUID = 2258093043805843865L;
+
         protected PartitionKeyInternalJsonSerializer() { this(null); }
 
         protected PartitionKeyInternalJsonSerializer(Class<PartitionKeyInternal> t) {
@@ -244,7 +261,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
                 writer.writeStartArray();
                 for (IPartitionKeyComponent componentValue : partitionKey.getComponents()) {
-                    componentValue.JsonEncode(writer);
+                    componentValue.jsonEncode(writer);
                 }
                 writer.writeEndArray();
             } catch (IOException e) {
@@ -282,6 +299,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     @SuppressWarnings("serial")
     static final class PartitionKeyInternalJsonDeserializer extends StdDeserializer<PartitionKeyInternal> {
+        private static final long serialVersionUID = -6531933186096854710L;
 
         protected PartitionKeyInternalJsonDeserializer() { this(null); }
 
@@ -320,7 +338,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
                     } else if (node.isArray() && node.size() == 0
                             || node.isObject()
                                 && (node.fields() == null || !node.fields().hasNext())) {
-                        objects.add(Undefined.Value());
+                        objects.add(Undefined.value());
                     } else {
                         objects.add(node);
                     }

@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -20,11 +20,12 @@ import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.LinkedListMultimap;
+import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Iterables;
+import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.RandomUtils;
 import org.assertj.core.api.Assertions;
@@ -34,10 +35,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -63,7 +64,7 @@ import static org.mockito.Mockito.times;
 
 public class DocumentProducerTest {
     private final static Logger logger = LoggerFactory.getLogger(DocumentProducerTest.class);
-    private static final long TIMEOUT = 20000;
+    private static final long TIMEOUT = 30000;
     private final static String OrderByPayloadFieldName = "payload";
     private final static String OrderByItemsFieldName = "orderByItems";
 
@@ -304,7 +305,7 @@ public class DocumentProducerTest {
                                                                              targetRange, collectionLink,
                                                                              () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(), Document.class, null, initialPageSize, initialContinuationToken, top);
 
-        TestSubscriber<DocumentProducer.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
         documentProducer.produceAsync().subscribe(subscriber);
         subscriber.awaitTerminalEvent();
@@ -338,7 +339,7 @@ public class DocumentProducerTest {
         RequestCreator requestCreator = RequestCreator.simpleMock();
 
         List<FeedResponse<Document>> responsesBeforeThrottle = mockFeedResponses(partitionKeyRangeId, 2, 1, false);
-        Exception throttlingException = mockThrottlingException(10);
+        Exception throttlingException = mockThrottlingException(Duration.ofMillis(10));
         List<FeedResponse<Document>> responsesAfterThrottle = mockFeedResponses(partitionKeyRangeId, 5, 1, true);
 
         RequestExecutor.PartitionAnswer behaviourBeforeException =
@@ -362,7 +363,7 @@ public class DocumentProducerTest {
                                                                              targetRange, collectionLink,
                                                                              () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(), Document.class, null, initialPageSize, initialContinuationToken, top);
 
-        TestSubscriber<DocumentProducer.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
         documentProducer.produceAsync().subscribe(subscriber);
         subscriber.awaitTerminalEvent();
@@ -407,7 +408,7 @@ public class DocumentProducerTest {
         RequestCreator requestCreator = RequestCreator.simpleMock();
 
         List<FeedResponse<Document>> responsesBeforeThrottle = mockFeedResponses(partitionKeyRangeId, 1, 1, false);
-        Exception throttlingException = mockThrottlingException(10);
+        Exception throttlingException = mockThrottlingException(Duration.ofMillis(10));
 
         RequestExecutor.PartitionAnswer behaviourBeforeException =
                 RequestExecutor.PartitionAnswer.just(partitionKeyRangeId, responsesBeforeThrottle);
@@ -427,7 +428,7 @@ public class DocumentProducerTest {
                                                                              targetRange, collectionRid,
                                                                              () -> mockDocumentClientIRetryPolicyFactory().getRequestPolicy(), Document.class, null, initialPageSize, initialContinuationToken, top);
 
-        TestSubscriber<DocumentProducer.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
+        TestSubscriber<DocumentProducer<Document>.DocumentProducerFeedResponse> subscriber = new TestSubscriber<>();
 
         documentProducer.produceAsync().subscribe(subscriber);
         subscriber.awaitTerminalEvent();
@@ -436,10 +437,11 @@ public class DocumentProducerTest {
         subscriber.assertValueCount(responsesBeforeThrottle.size());
     }
 
-    private CosmosClientException mockThrottlingException(long retriesAfter) {
+    private CosmosClientException mockThrottlingException(Duration retriesAfterDuration) {
         CosmosClientException throttleException = mock(CosmosClientException.class);
         doReturn(429).when(throttleException).getStatusCode();
-        doReturn(retriesAfter).when(throttleException).getRetryAfterInMilliseconds();
+        doReturn(new StackTraceElement[0]).when(throttleException).getStackTrace();
+        doReturn(retriesAfterDuration).when(throttleException).getRetryAfterDuration();
         return throttleException;
     }
 
@@ -475,7 +477,7 @@ public class DocumentProducerTest {
                     BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
                     BridgeInternal.setProperty(d, DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
-                    QueryItem qi = new QueryItem("{ \"item\": " + Integer.toString(d.getInt(OrderByIntFieldName)) +
+                    QueryItem qi = new QueryItem("{ \"item\": " + d.getInt(OrderByIntFieldName) +
                                                          " }");
                     String json =
                             "{\"" + OrderByPayloadFieldName + "\" : " + d.toJson() + ", \"" + OrderByItemsFieldName + "\" : [ " + qi.toJson() + " ] }";
@@ -493,7 +495,7 @@ public class DocumentProducerTest {
                 rfb.withContinuationToken("cp:" + uuid + ":" + i);
             }
 
-            FeedResponse resp = rfb.build();
+            FeedResponse<Document> resp = rfb.build();
             responses.add(resp);
         }
         return responses;
@@ -516,12 +518,13 @@ public class DocumentProducerTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private IDocumentQueryClient mockQueryClient(List<PartitionKeyRange> replacementRanges) {
         IDocumentQueryClient client = Mockito.mock(IDocumentQueryClient.class);
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges))).when(cache).
-                tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean(), Matchers.anyMap());
+                tryGetOverlappingRangesAsync(anyString(), any(Range.class), anyBoolean(), Matchers.anyMapOf(String.class, Object.class));
         return client;
     }
 
@@ -700,7 +703,7 @@ public class DocumentProducerTest {
         class CapturedInvocation {
             long time = System.nanoTime();
             RxDocumentServiceRequest request;
-            FeedResponse invocationResult;
+            FeedResponse<?> invocationResult;
             Exception failureResult;
 
             public CapturedInvocation(RxDocumentServiceRequest request, Exception ex) {
@@ -763,7 +766,7 @@ public class DocumentProducerTest {
                 FeedResponse<Document> invocationResult;
                 Exception failureResult;
 
-                public Response(FeedResponse invocationResult) {
+                public Response(FeedResponse<Document> invocationResult) {
                     this.invocationResult = invocationResult;
                 }
 

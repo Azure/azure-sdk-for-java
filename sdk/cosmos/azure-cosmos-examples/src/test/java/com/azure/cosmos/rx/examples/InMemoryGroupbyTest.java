@@ -10,11 +10,11 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.implementation.TestConfigurations;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -105,12 +106,12 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
-                                new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
+                            Collections.singletonList(new SqlParameter("@site_id", "ABC"))),
                         options)
                 .flatMap(page -> Flux.fromIterable(page.getResults()));
 
@@ -136,12 +137,12 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
 
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
-                                new SqlParameterList(new SqlParameter("@site_id", "ABC"))),
+                                Collections.singletonList(new SqlParameter("@site_id", "ABC"))),
                         options)
                 .flatMap(page -> Flux.fromIterable(page.getResults()));
 

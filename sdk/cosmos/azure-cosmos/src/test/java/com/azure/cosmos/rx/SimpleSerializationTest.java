@@ -62,7 +62,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
             createdCollection.createItem(testObject).block();
             Assert.fail();
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage()).contains("Can't serialize the object into the json string");
+            assertThat(e.getMessage()).contains("Failed to serialize the object into json");
             assertThat(e.getCause()).isInstanceOf(JsonMappingException.class);
             assertThat(e.getCause().getMessage()).contains("bad");
         }
@@ -70,7 +70,7 @@ public class SimpleSerializationTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_SimpleSerializationTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

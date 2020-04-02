@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;

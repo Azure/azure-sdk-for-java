@@ -76,10 +76,6 @@ public class DataLakeFileSystemAsyncClient {
 
     private static final String ROOT_DIRECTORY_NAME = "";
 
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME = "$web";
-
-//    public static final String LOG_FILESYSTEM_NAME = "$logs";
-
     private final ClientLogger logger = new ClientLogger(DataLakeFileSystemAsyncClient.class);
     private final DataLakeStorageClientImpl azureDataLakeStorage;
     private final BlobContainerAsyncClient blobContainerAsyncClient;
@@ -173,7 +169,7 @@ public class DataLakeFileSystemAsyncClient {
      * @return A new {@link DataLakeDirectoryAsyncClient} object which references the root directory
      * in this file system.
      */
-    public DataLakeDirectoryAsyncClient getRootDirectoryAsyncClient() {
+    DataLakeDirectoryAsyncClient getRootDirectoryAsyncClient() {
         return getDirectoryAsyncClient(DataLakeFileSystemAsyncClient.ROOT_DIRECTORY_NAME);
     }
 

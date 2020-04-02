@@ -3,14 +3,12 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.codahale.metrics.Timer;
-import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -85,22 +83,22 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
 
             int index = r.nextInt(1000);
             String pk = docsToRead.get(index).getProperty(partitionKey);
-            options.partitionKey(new PartitionKey(pk));
+            options.setPartitionKey(new PartitionKey(pk));
             String sqlQuery = "Select * from c where c." + partitionKey + " = \"" + pk + "\"";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
 
-            options.maxItemCount(10);
+            options.setMaxItemCount(10);
             String sqlQuery = "Select * from c";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
 
-            options.maxItemCount(10);
+            options.setMaxItemCount(10);
             String sqlQuery = "Select * from c order by c._ts";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
 
-            options.maxItemCount(10);
+            options.setMaxItemCount(10);
             String sqlQuery = "Select value max(c._ts) from c";
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {

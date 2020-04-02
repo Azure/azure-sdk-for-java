@@ -5,10 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.RequestVerb;
-import com.azure.cosmos.ServiceUnavailableException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
@@ -36,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.ArrayDeque;
@@ -561,6 +560,7 @@ public class StoreReaderDotNetTest {
      * StoreClient uses ReplicatedResourceClient uses ConsistencyReader uses QuorumReader uses StoreReader uses TransportClient uses RntbdConnection
      */
     @Test(groups = "unit", enabled = false)
+    @SuppressWarnings("unchecked")
     public void storeClient() throws URISyntaxException {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
@@ -648,6 +648,7 @@ public class StoreReaderDotNetTest {
      * test consistency writer for global strong
      */
     @Test(groups = "unit")
+    @SuppressWarnings("unchecked")
     public void globalStrongConsistentWrite() {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document);
@@ -734,6 +735,7 @@ public class StoreReaderDotNetTest {
      * Mocking Consistency
      */
     @Test(groups = "unit", priority = 1)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void globalStrongConsistency() {
         // create a real document service request (with auth token level = god)
         RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);

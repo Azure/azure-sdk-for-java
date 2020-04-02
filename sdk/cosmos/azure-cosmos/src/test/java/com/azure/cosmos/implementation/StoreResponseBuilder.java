@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.Utils.getUTF8BytesOrNull;
+
 public class StoreResponseBuilder {
     private int status;
     private List<Map.Entry<String, String>> headerEntries;
@@ -26,12 +28,12 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withHeader(String key, String value) {
-        headerEntries.add(new AbstractMap.SimpleEntry(key, value));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(key, value));
         return this;
     }
 
     public StoreResponseBuilder withLSN(long lsn) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.LSN, Long.toString(lsn)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.LSN, Long.toString(lsn)));
         return this;
     }
 
@@ -41,42 +43,42 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponseBuilder withRequestCharge(double requestCharge) {
-        headerEntries.add(new AbstractMap.SimpleEntry(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge)));
         return this;
     }
 
     public StoreResponseBuilder withLocalLSN(long localLsn) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(localLsn)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.LOCAL_LSN, Long.toString(localLsn)));
         return this;
     }
 
     public StoreResponseBuilder withPartitionKeyRangeId(String partitionKeyRangeId) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID, partitionKeyRangeId));
         return this;
     }
 
     public StoreResponseBuilder withItemLocalLSN(long itemLocalLsn) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.ITEM_LOCAL_LSN, Long.toString(itemLocalLsn)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.ITEM_LOCAL_LSN, Long.toString(itemLocalLsn)));
         return this;
     }
 
     public StoreResponseBuilder withQuorumAckecdLsn(long quorumAckecdLsn) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.QUORUM_ACKED_LSN, Long.toString(quorumAckecdLsn)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.QUORUM_ACKED_LSN, Long.toString(quorumAckecdLsn)));
         return this;
     }
 
     public StoreResponseBuilder withQuorumAckecdLocalLsn(long quorumAckecdLocalLsn) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long.toString(quorumAckecdLocalLsn)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long.toString(quorumAckecdLocalLsn)));
         return this;
     }
 
     public StoreResponseBuilder withGlobalCommittedLsn(long globalCommittedLsn) {
-        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn)));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn)));
         return this;
     }
 
     public StoreResponseBuilder withSessionToken(String sessionToken) {
-        headerEntries.add(new AbstractMap.SimpleEntry(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken));
+        headerEntries.add(new AbstractMap.SimpleEntry<>(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken));
         return this;
     }
 
@@ -91,6 +93,6 @@ public class StoreResponseBuilder {
     }
 
     public StoreResponse build() {
-        return new StoreResponse(status, headerEntries, content);
+        return new StoreResponse(status, headerEntries, getUTF8BytesOrNull(content));
     }
 }

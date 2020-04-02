@@ -47,6 +47,14 @@ public class AmazonS3ReadSettings extends StoreReadSettings {
     private Object prefix;
 
     /**
+     * Point to a text file that lists each file (relative path to the path
+     * configured in the dataset) that you want to copy. Type: string (or
+     * Expression with resultType string).
+     */
+    @JsonProperty(value = "fileListPath")
+    private Object fileListPath;
+
+    /**
      * Indicates whether to enable partition discovery.
      */
     @JsonProperty(value = "enablePartitionDiscovery")
@@ -143,6 +151,26 @@ public class AmazonS3ReadSettings extends StoreReadSettings {
      */
     public AmazonS3ReadSettings withPrefix(Object prefix) {
         this.prefix = prefix;
+        return this;
+    }
+
+    /**
+     * Get point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @return the fileListPath value
+     */
+    public Object fileListPath() {
+        return this.fileListPath;
+    }
+
+    /**
+     * Set point to a text file that lists each file (relative path to the path configured in the dataset) that you want to copy. Type: string (or Expression with resultType string).
+     *
+     * @param fileListPath the fileListPath value to set
+     * @return the AmazonS3ReadSettings object itself.
+     */
+    public AmazonS3ReadSettings withFileListPath(Object fileListPath) {
+        this.fileListPath = fileListPath;
         return this;
     }
 

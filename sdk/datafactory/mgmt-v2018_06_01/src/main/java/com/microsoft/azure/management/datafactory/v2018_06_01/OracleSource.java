@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -45,6 +46,13 @@ public class OracleSource extends CopySource {
      */
     @JsonProperty(value = "partitionSettings")
     private OraclePartitionSettings partitionSettings;
+
+    /**
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
 
     /**
      * Get oracle reader query. Type: string (or Expression with resultType string).
@@ -123,6 +131,26 @@ public class OracleSource extends CopySource {
      */
     public OracleSource withPartitionSettings(OraclePartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
+        return this;
+    }
+
+    /**
+     * Get specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value
+     */
+    public List<AdditionalColumns> additionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set
+     * @return the OracleSource object itself.
+     */
+    public OracleSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 

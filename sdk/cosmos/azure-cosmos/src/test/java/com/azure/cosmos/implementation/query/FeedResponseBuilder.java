@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 
@@ -45,8 +45,12 @@ public class FeedResponseBuilder<T extends Resource> {
         return this;
     }
 
-    public FeedResponseBuilder<T> withResults(T... results) {
-        this.results = Arrays.asList(results);
+
+    // https://stackoverflow.com/a/47949197
+    @SafeVarargs
+    @SuppressWarnings("varargs")
+    public final FeedResponseBuilder<T> withResults(T... results) {
+        this.results = Arrays.<T>asList(results);
         return this;
     }
 

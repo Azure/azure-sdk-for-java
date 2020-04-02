@@ -3,25 +3,25 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BadRequestException;
-import com.azure.cosmos.ConflictException;
-import com.azure.cosmos.ForbiddenException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.LockedException;
-import com.azure.cosmos.MethodNotAllowedException;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.PreconditionFailedException;
-import com.azure.cosmos.RequestEntityTooLargeException;
-import com.azure.cosmos.RequestRateTooLargeException;
-import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.RetryWithException;
-import com.azure.cosmos.ServiceUnavailableException;
-import com.azure.cosmos.UnauthorizedException;
+import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.ForbiddenException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LockedException;
+import com.azure.cosmos.implementation.MethodNotAllowedException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.implementation.RequestEntityTooLargeException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -40,8 +40,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.net.UnknownHostException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -102,16 +102,16 @@ public class HttpTransportClientTest {
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + "dbs");
     }
 
-    public static HttpTransportClient getHttpTransportClientUnderTest(int requestTimeout,
+    public static HttpTransportClient getHttpTransportClientUnderTest(Duration requestTimeout,
                                                                       UserAgentContainer userAgent,
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
-            public HttpTransportClientUnderTest(int requestTimeout, UserAgentContainer userAgent) {
+            public HttpTransportClientUnderTest(Duration requestTimeout, UserAgentContainer userAgent) {
                 super(configs, requestTimeout, userAgent);
             }
 
             @Override
-            HttpClient createHttpClient(int requestTimeout) {
+            HttpClient createHttpClient(Duration requestTimeout) {
                 return httpClient;
             }
         }
@@ -130,7 +130,7 @@ public class HttpTransportClientTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix("i am suffix");
 
-        HttpTransportClient transportClient = getHttpTransportClientUnderTest(100,
+        HttpTransportClient transportClient = getHttpTransportClientUnderTest(Duration.ofSeconds(100),
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
@@ -448,7 +448,7 @@ public class HttpTransportClientTest {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                100,
+                Duration.ofSeconds(100),
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
@@ -559,7 +559,7 @@ public class HttpTransportClientTest {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                100,
+                Duration.ofSeconds(100),
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 

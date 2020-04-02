@@ -3,16 +3,16 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CommonsBridgeInternal;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.PartitionKind;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -44,7 +44,7 @@ public class PartitionKeyInternalTest {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.fromJsonString(json);
         assertThat(partitionKey).isEqualTo(
                 PartitionKeyInternal.fromObjectArray(
-                        Lists.newArrayList(new Object[]{"aa", null, true, false, Undefined.Value(), 5, 5.5}), true));
+                        Lists.newArrayList(new Object[]{"aa", null, true, false, Undefined.value(), 5, 5.5}), true));
 
         assertThat(partitionKey.toJson()).isEqualTo("[\"aa\",null,true,false,{},5.0,5.5]");
     }
@@ -272,7 +272,7 @@ public class PartitionKeyInternalTest {
 
     @Test(groups="unit")
     public void invalidPartitionKeyValueNonStrict() {
-        assertThat(PartitionKeyInternal.fromObjectArray(new Object[]{2, true, Undefined.Value()}, true))
+        assertThat(PartitionKeyInternal.fromObjectArray(new Object[]{2, true, Undefined.value()}, true))
                 .isEqualTo(
                         PartitionKeyInternal.fromObjectArray(new Object[]{2, true, new StringBuilder()}, false));
     }
@@ -294,7 +294,7 @@ public class PartitionKeyInternalTest {
         partitionKeyDefinition.setPaths(Lists.newArrayList("/A", "/B", "/C", "/E", "/F", "/G"));
 
         PartitionKeyInternal partitionKey = PartitionKeyInternal.fromObjectArray(
-                new Object[]{2, true, false, null, Undefined.Value(), "Привет!"}, true);
+                new Object[]{2, true, false, null, Undefined.value(), "Привет!"}, true);
         String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
         assertThat(effectivePartitionKey).isEqualTo("05C1D19581B37C05C0000302010008D1A0D281D1B9D1B3D1B6D2832200");
@@ -420,7 +420,7 @@ public class PartitionKeyInternalTest {
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.setKind(PartitionKind.HASH);
-        CommonsBridgeInternal.setV2(partitionKeyDefinition);
+        partitionKeyDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         ArrayList<String> paths = new ArrayList<String>();
         for (int i = 0; i < partitionKey.getComponents().size(); i++) {
             paths.add("/path" + i);
@@ -443,7 +443,7 @@ public class PartitionKeyInternalTest {
         PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
         pkDefinition.setPaths(ImmutableList.of("/field1"));
         if (v2) {
-            CommonsBridgeInternal.setV2(pkDefinition);
+            pkDefinition.setVersion(PartitionKeyDefinitionVersion.V2);
         }
 
         PartitionKeyInternal pk = PartitionKeyInternalUtils.createPartitionKeyInternal(buffer.substring(0, length));

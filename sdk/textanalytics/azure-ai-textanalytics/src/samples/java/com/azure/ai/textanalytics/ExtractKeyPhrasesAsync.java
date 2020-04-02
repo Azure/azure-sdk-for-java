@@ -3,31 +3,31 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously extract the key phrases of an input text.
+ * Sample demonstrates how to asynchronously extract the key phrases of document.
  */
 public class ExtractKeyPhrasesAsync {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of an input text.
+     * Main method to invoke this demo about how to extract the key phrases of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "My cat might need to see a veterinarian.";
+        // The document that needs be analyzed.
+        String document = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
-        client.extractKeyPhrases(text).subscribe(
+        client.extractKeyPhrases(document).subscribe(
             keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));

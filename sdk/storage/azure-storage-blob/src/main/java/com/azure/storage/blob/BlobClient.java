@@ -10,6 +10,7 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -167,20 +168,20 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
-        BlockBlobClient blockBlobClient = this.getBlockBlobClient();
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        if (length < validatedParallelTransferOptions.getMaxSingleUploadSize()) {
-            blockBlobClient.uploadWithResponse(data, length, headers, metadata, tier, null, requestConditions,
-                timeout, context);
-        } else {
-            BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-                validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
-            try {
-                StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
-                blobOutputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+        // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
+        BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
+            validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
+        try {
+            StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
+            blobOutputStream.close();
+        } catch (IOException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof BlobStorageException) {
+                throw logger.logExceptionAsError((BlobStorageException) cause);
+            } else {
+                throw logger.logExceptionAsError(new UncheckedIOException(e));
             }
         }
     }

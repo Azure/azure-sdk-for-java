@@ -4,13 +4,26 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.Constants;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Used internally to represent a physical address in the Azure Cosmos DB database service.
  */
 public class Address extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Address(ObjectNode objectNode) {
+        super(objectNode);
+    }
+
     /**
      * Initialize an offer object.
      */
@@ -27,8 +40,8 @@ public class Address extends Resource {
         super(jsonString);
     }
 
-    public boolean IsPrimary() {
-        return super.getBoolean(Constants.Properties.IS_PRIMARY);
+    public boolean isPrimary() {
+        return Boolean.TRUE.equals(super.getBoolean(Constants.Properties.IS_PRIMARY));
     }
 
     void setIsPrimary(boolean isPrimary) {
@@ -73,5 +86,10 @@ public class Address extends Resource {
 
     public void setPartitionKeyRangeId(String partitionKeyRangeId) {
         BridgeInternal.setProperty(this, Constants.Properties.PARTITION_KEY_RANGE_ID, partitionKeyRangeId);
+    }
+
+    @Override
+    public Object get(String propertyName) {
+        return super.get(propertyName);
     }
 }

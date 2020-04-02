@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -63,9 +63,9 @@ public class TextAnalyticsClientBuilderUnitTest {
      */
     @Test
     public void emptyApiKey() {
-        assertThrows(IllegalArgumentException.class, () -> new TextAnalyticsApiKeyCredential(""));
+        assertThrows(IllegalArgumentException.class, () -> new AzureKeyCredential(""));
     }
-    
+
     /**
      * Test for null AAD credential
      */

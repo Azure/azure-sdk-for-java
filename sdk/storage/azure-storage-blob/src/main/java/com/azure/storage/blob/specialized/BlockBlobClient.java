@@ -109,7 +109,7 @@ public final class BlockBlobClient extends BlobClientBase {
      * will be overwritten.
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
-     * 
+     *
      * @param requestConditions A {@link BlobRequestConditions} object that represents the access conditions for the
      * blob.
      *
@@ -250,7 +250,6 @@ public final class BlockBlobClient extends BlobClientBase {
         Mono<Response<BlockBlobItem>> upload = client
             .uploadWithResponse(fbb.subscribeOn(Schedulers.elastic()), length, headers, metadata, tier, contentMd5,
                 requestConditions, context);
-
         try {
             return blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {

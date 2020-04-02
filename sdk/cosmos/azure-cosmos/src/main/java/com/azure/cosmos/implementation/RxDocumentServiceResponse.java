@@ -3,20 +3,22 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.Resource;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,12 +86,16 @@ public class RxDocumentServiceResponse {
         return this.headersMap;
     }
 
-    public String getReponseBodyAsString() {
+    public byte[] getResponseBodyAsByteArray() {
         return this.storeResponse.getResponseBody();
     }
 
+    public String getResponseBodyAsString() {
+        return Utils.utf8StringFromOrNull(this.getResponseBodyAsByteArray());
+    }
+
     public <T extends Resource> T getResource(Class<T> c) {
-        String responseBody = this.getReponseBodyAsString();
+        String responseBody = this.getResponseBodyAsString();
         if (StringUtils.isEmpty(responseBody))
             return null;
 
@@ -107,8 +113,10 @@ public class RxDocumentServiceResponse {
         return resource;
     }
 
+    @SuppressWarnings("unchecked")
+    // Given cls (where cls == Class<T>), objectNode is first decoded to cls and then casted to T.
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
-        String responseBody = this.getReponseBodyAsString();
+        byte[] responseBody = this.getResponseBodyAsByteArray();
         if (responseBody == null) {
             return new ArrayList<T>();
         }
@@ -131,18 +139,12 @@ public class RxDocumentServiceResponse {
                 // Aggregate on single partition collection may return the aggregated value only
                 // In that case it needs to encapsulated in a special document
 
-                String resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
-                        ? String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString())
-                                : toJson(jToken);
-                        T resource = null;
-                        try {
-                            resource = c.getConstructor(String.class).newInstance(resourceJson);
-                        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                            throw new IllegalStateException("Failed to instantiate class object.", e);
-                        }
+                JsonNode resourceJson = jToken.isValueNode() || jToken.isArray()// to add nulls, arrays, objects
+                        ? fromJson(String.format("{\"%s\": %s}", Constants.Properties.VALUE, jToken.toString()))
+                                : jToken;
 
-                        queryResults.add(resource);
+               T resource = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) resourceJson, c);
+               queryResults.add(resource);
             }
         }
 
@@ -165,11 +167,11 @@ public class RxDocumentServiceResponse {
         }
     }
 
-    private static String toJson(Object object){
+    private static JsonNode fromJson(byte[] json){
         try {
-            return Utils.getSimpleObjectMapper().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Can't serialize the object into the json string", e);
+            return Utils.getSimpleObjectMapper().readTree(json);
+        } catch (IOException e) {
+            throw new IllegalStateException(String.format("Unable to parse JSON %s", Arrays.toString(json)), e);
         }
     }
 
@@ -178,10 +180,6 @@ public class RxDocumentServiceResponse {
             return this.headersMap.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
         }
         return null;
-    }
-
-    public InputStream getContentStream() {
-        return this.storeResponse.getResponseStream();
     }
 
     CosmosResponseDiagnostics getCosmosResponseRequestDiagnosticStatistics() {

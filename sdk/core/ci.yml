@@ -57,3 +57,6 @@ stages:
         - name: azure-core-tracing-opentelemetry
           groupId: com.azure
           safeName: azurecoretracingopentelemetry
+      AdditionalModules:
+        - name: azure-data-appconfiguration
+          groupId: com.azure

@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestsexistserror25512a9751292fd264?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "6e1eaa6c-4492-4695-ab34-0300a39b51fd"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-07-07",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7BA2D0DC93929",
+      "Last-Modified" : "Tue, 25 Feb 2020 19:58:16 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "36779641-001a-0029-4615-ecac4f000000",
+      "Date" : "Tue, 25 Feb 2020 19:58:15 GMT",
+      "x-ms-client-request-id" : "6e1eaa6c-4492-4695-ab34-0300a39b51fd"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryapitestsexistserror25512a9751292fd264/directoryapitestsexistserror3710024d91b79e9e44?restype=directory&sig=REDACTED",
+    "Headers" : {
+      "x-ms-version" : "2019-07-07",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7dd454c5-4d45-40ea-b421-32b17c4c19e1"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "AuthenticationFailed",
+      "retry-after" : "0",
+      "Content-Length" : "407",
+      "StatusCode" : "403",
+      "x-ms-request-id" : "36779646-001a-0029-4815-ecac4f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>AuthenticationFailed</Code><Message>Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.\nRequestId:36779646-001a-0029-4815-ecac4f000000\nTime:2020-02-25T19:58:16.6199877Z</Message><AuthenticationErrorDetail>sr is mandatory. Cannot be empty</AuthenticationErrorDetail></Error>",
+      "Date" : "Tue, 25 Feb 2020 19:58:16 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "directoryapitestsexistserror25512a9751292fd264", "directoryapitestsexistserror3710024d91b79e9e44" ]
+}

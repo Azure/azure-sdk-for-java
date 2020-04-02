@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -17,4 +18,32 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = AzureDataLakeStoreWriteSettings.class)
 @JsonTypeName("AzureDataLakeStoreWriteSettings")
 public class AzureDataLakeStoreWriteSettings extends StoreWriteSettings {
+    /**
+     * Specifies the expiry time of the written files. The time is applied to
+     * the UTC time zone in the format of "2018-12-01T05:00:00Z". Default value
+     * is NULL. Type: integer (or Expression with resultType integer).
+     */
+    @JsonProperty(value = "expiryDateTime")
+    private Object expiryDateTime;
+
+    /**
+     * Get specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: integer (or Expression with resultType integer).
+     *
+     * @return the expiryDateTime value
+     */
+    public Object expiryDateTime() {
+        return this.expiryDateTime;
+    }
+
+    /**
+     * Set specifies the expiry time of the written files. The time is applied to the UTC time zone in the format of "2018-12-01T05:00:00Z". Default value is NULL. Type: integer (or Expression with resultType integer).
+     *
+     * @param expiryDateTime the expiryDateTime value to set
+     * @return the AzureDataLakeStoreWriteSettings object itself.
+     */
+    public AzureDataLakeStoreWriteSettings withExpiryDateTime(Object expiryDateTime) {
+        this.expiryDateTime = expiryDateTime;
+        return this;
+    }
+
 }

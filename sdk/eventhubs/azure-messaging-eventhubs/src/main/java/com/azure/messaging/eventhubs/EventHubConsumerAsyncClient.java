@@ -74,6 +74,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private final int prefetchCount;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClosed;
     /**
      * Keeps track of the open partition consumers keyed by linkName. The link name is generated as: {@code
      * "partitionId_GUID"}. For receiving from all partitions, links are prefixed with {@code "all-GUID-partitionId"}.
@@ -83,7 +84,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
 
     EventHubConsumerAsyncClient(String fullyQualifiedNamespace, String eventHubName,
         EventHubConnectionProcessor connectionProcessor, MessageSerializer messageSerializer, String consumerGroup,
-        int prefetchCount, Scheduler scheduler, boolean isSharedConnection) {
+        int prefetchCount, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClosed) {
         this.fullyQualifiedNamespace = fullyQualifiedNamespace;
         this.eventHubName = eventHubName;
         this.connectionProcessor = connectionProcessor;
@@ -92,6 +93,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
         this.prefetchCount = prefetchCount;
         this.scheduler = scheduler;
         this.isSharedConnection = isSharedConnection;
+        this.onClientClosed = onClientClosed;
     }
 
     /**
@@ -316,7 +318,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
         openPartitionConsumers.forEach((key, value) -> value.close());
         openPartitionConsumers.clear();
 
-        if (!isSharedConnection) {
+        if (isSharedConnection) {
+            onClientClosed.run();
+        } else {
             connectionProcessor.dispose();
         }
     }
@@ -324,10 +328,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
     private Flux<PartitionEvent> createConsumer(String linkName, String partitionId, EventPosition startingPosition,
         ReceiveOptions receiveOptions) {
         return openPartitionConsumers
-            .computeIfAbsent(linkName, name -> {
-                logger.info("{}: Creating receive consumer for partition '{}'", linkName, partitionId);
-                return createPartitionConsumer(name, partitionId, startingPosition, receiveOptions);
-            })
+            .computeIfAbsent(linkName,
+                name -> createPartitionConsumer(name, partitionId, startingPosition, receiveOptions))
             .receive()
             .doOnCancel(() -> removeLink(linkName, partitionId, SignalType.CANCEL))
             .doOnComplete(() -> removeLink(linkName, partitionId, SignalType.ON_COMPLETE))
@@ -335,7 +337,9 @@ public class EventHubConsumerAsyncClient implements Closeable {
     }
 
     private void removeLink(String linkName, String partitionId, SignalType signalType) {
-        logger.info("{}: Receiving completed. Partition[{}]. Signal[{}]", linkName, partitionId, signalType);
+        logger.info("linkName[{}], partitionId[{}], signal[{}]: Receiving completed.",
+            linkName, partitionId, signalType);
+
         final EventHubPartitionAsyncConsumer consumer = openPartitionConsumers.remove(linkName);
 
         if (consumer != null) {
@@ -349,10 +353,12 @@ public class EventHubConsumerAsyncClient implements Closeable {
             getEventHubName(), consumerGroup, partitionId);
 
         final AtomicReference<Supplier<EventPosition>> initialPosition = new AtomicReference<>(() -> startingPosition);
-        final Flux<AmqpReceiveLink> receiveLinkMono =
-            connectionProcessor.flatMap(connection ->
-                connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions))
-                .doOnNext(next -> logger.verbose("Creating consumer for path: {}", next.getEntityPath()))
+        final Flux<AmqpReceiveLink> receiveLinkMono = connectionProcessor
+            .flatMap(connection -> {
+                logger.info("connectionId[{}] linkName[{}]: Creating receive consumer for partition '{}'",
+                    connection.getId(), linkName, partitionId);
+                return connection.createReceiveLink(linkName, entityPath, initialPosition.get().get(), receiveOptions);
+            })
             .repeat();
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());

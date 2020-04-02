@@ -3,10 +3,10 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.AccessCondition;
+import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.IndexingDirective;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.IndexingDirective;
+import com.azure.cosmos.models.PartitionKey;
 
 import java.util.HashMap;
 import java.util.List;

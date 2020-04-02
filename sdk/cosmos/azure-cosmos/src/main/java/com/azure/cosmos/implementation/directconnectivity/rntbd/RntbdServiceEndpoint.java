@@ -4,14 +4,15 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.GoneException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
+import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.azure.cosmos.implementation.guava27.Strings;
-import com.google.common.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
@@ -37,8 +38,8 @@ import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @JsonSerialize(using = RntbdServiceEndpoint.JsonSerializer.class)
@@ -275,6 +276,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     // region Types
 
     static final class JsonSerializer extends StdSerializer<RntbdServiceEndpoint> {
+
+        private static final long serialVersionUID = -5764954918168771152L;
 
         public JsonSerializer() {
             super(RntbdServiceEndpoint.class);

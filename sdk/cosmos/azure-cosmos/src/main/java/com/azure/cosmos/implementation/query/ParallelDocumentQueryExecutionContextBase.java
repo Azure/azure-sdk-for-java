@@ -4,11 +4,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -69,7 +69,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         this.pageSize = initialPageSize;
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
-        for (PartitionKeyRange targetRange : partitionKeyRangeToContinuationTokenMap.keySet()) {
+        for (Map.Entry<PartitionKeyRange, String> entry : partitionKeyRangeToContinuationTokenMap.entrySet()) {
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (partitionKeyRange,
                                                                                                      continuationToken, pageSize) -> {
                 Map<String, String> headers = new HashMap<>(commonRequestHeaders);
@@ -77,8 +77,8 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
                 PartitionKeyInternal partitionKeyInternal = null;
-                if (feedOptions.partitionKey() != null && feedOptions.partitionKey() != PartitionKey.NONE) {
-                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.partitionKey());
+                if (feedOptions.getPartitionKey() != null && feedOptions.getPartitionKey() != PartitionKey.NONE) {
+                    partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(feedOptions.getPartitionKey());
                     headers.put(HttpConstants.HttpHeaders.PARTITION_KEY,
                         partitionKeyInternal.toJson());
 
@@ -90,16 +90,18 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 return this.executeRequestAsync(request);
             };
 
+            final PartitionKeyRange targetRange = entry.getKey();
+            final String continuationToken = entry.getValue();
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
-                    partitionKeyRangeToContinuationTokenMap.get(targetRange), initialPageSize, feedOptions,
-                    querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
-                    () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
+                continuationToken, initialPageSize, feedOptions,
+                querySpecForInit, commonRequestHeaders, createRequestFunc, executeFunc,
+                () -> client.getResetSessionTokenRetryPolicy().getRequestPolicy());
 
             documentProducers.add(dp);
         }
     }
 
-    protected <TContinuationToken> int FindTargetRangeAndExtractContinuationTokens(
+    protected <TContinuationToken> int findTargetRangeAndExtractContinuationTokens(
             List<PartitionKeyRange> partitionKeyRanges, Range<String> range) throws CosmosClientException {
         if (partitionKeyRanges == null) {
             throw new IllegalArgumentException("partitionKeyRanges can not be null.");
@@ -158,7 +160,9 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         String collectionRid) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
-        for (PartitionKeyRange targetRange : rangeQueryMap.keySet()) {
+        for (Map.Entry<PartitionKeyRange, SqlQuerySpec> entry : rangeQueryMap.entrySet()) {
+            final PartitionKeyRange targetRange = entry.getKey();
+            final SqlQuerySpec querySpec = entry.getValue();
             TriFunction<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc = (
                 partitionKeyRange,
                 continuationToken, pageSize) -> {
@@ -166,12 +170,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
-                PartitionKeyInternal partitionKeyInternal = null;
                 return this.createDocumentServiceRequest(headers,
-                                                         rangeQueryMap.get(targetRange),
-                                                         partitionKeyInternal,
-                                                         partitionKeyRange,
-                                                         collectionRid);
+                    querySpec,
+                    null,
+                    partitionKeyRange,
+                    collectionRid);
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> {
@@ -181,7 +184,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
             // TODO: Review pagesize -1
             DocumentProducer<T> dp = createDocumentProducer(collectionRid, targetRange,
                                                             null, -1, feedOptions,
-                                                            rangeQueryMap.get(targetRange),
+                                                            querySpec,
                                                             commonRequestHeaders, createRequestFunc, executeFunc,
                                                             () -> client.getResetSessionTokenRetryPolicy()
                                                                       .getRequestPolicy());

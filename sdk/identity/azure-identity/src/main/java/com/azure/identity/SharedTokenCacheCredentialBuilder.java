@@ -18,7 +18,7 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @param username The username for the account.
      *
      * @return The updated SharedTokenCacheCredentialBuilder object.
-     * */
+     */
     public SharedTokenCacheCredentialBuilder username(String username) {
         this.username = username;
         return this;

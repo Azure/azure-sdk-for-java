@@ -6,11 +6,11 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
@@ -49,17 +49,17 @@ public class TopQueryTests extends TestSuiteBase {
     public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        
-        options.maxItemCount(9);
+
+        options.setMaxItemCount(9);
         options.setMaxDegreeOfParallelism(2);
-        options.populateQueryMetrics(qmEnabled);
+        options.setPopulateQueryMetrics(qmEnabled);
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
         int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
+            CosmosPagedFlux<CosmosItemProperties> queryObservable1 = createdCollection.queryItems("SELECT TOP 0 value AVG(c.field) from c",
                 options,
                 CosmosItemProperties.class);
 
@@ -68,7 +68,7 @@ public class TopQueryTests extends TestSuiteBase {
 
             validateQuerySuccess(queryObservable1.byPage(), validator1, TIMEOUT);
 
-            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
+            CosmosPagedFlux<CosmosItemProperties> queryObservable2 = createdCollection.queryItems("SELECT TOP 1 value AVG(c.field) from c",
                 options,
                 CosmosItemProperties.class);
 
@@ -77,7 +77,7 @@ public class TopQueryTests extends TestSuiteBase {
 
             validateQuerySuccess(queryObservable2.byPage(), validator2, TIMEOUT);
 
-            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, CosmosItemProperties.class);
+            CosmosPagedFlux<CosmosItemProperties> queryObservable3 = createdCollection.queryItems("SELECT TOP 20 * from c", options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator3 = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                     .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
@@ -86,7 +86,7 @@ public class TopQueryTests extends TestSuiteBase {
             validateQuerySuccess(queryObservable3.byPage(), validator3, TIMEOUT);
 
             if (i == 0) {
-                options.partitionKey(new PartitionKey(firstPk));
+                options.setPartitionKey(new PartitionKey(firstPk));
                 expectedTotalSize = 10;
                 expectedNumberOfPages = 2;
                 expectedPageLengths = new int[] { 9, 1 };
@@ -144,11 +144,11 @@ public class TopQueryTests extends TestSuiteBase {
 
         do {
             FeedOptions options = new FeedOptions();
-            options.maxItemCount(pageSize);
-            
+            options.setMaxItemCount(pageSize);
+
             options.setMaxDegreeOfParallelism(2);
-            options.requestContinuation(requestContinuation);
-            CosmosContinuablePagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(query, options, CosmosItemProperties.class);
+            options.setRequestContinuation(requestContinuation);
+            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.<CosmosItemProperties>queryItems(query, options, CosmosItemProperties.class);
 
             //Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
@@ -157,6 +157,7 @@ public class TopQueryTests extends TestSuiteBase {
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
+            @SuppressWarnings("unchecked")
             FeedResponse<CosmosItemProperties> firstPage = (FeedResponse<CosmosItemProperties>) testSubscriber.getEvents().get(0).get(0);
             requestContinuation = firstPage.getContinuationToken();
             receivedDocuments.addAll(firstPage.getResults());
@@ -200,12 +201,12 @@ public class TopQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_TopQueryTests() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         bulkInsert(client);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 }

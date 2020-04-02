@@ -3,32 +3,34 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CompositePath;
-import com.azure.cosmos.CompositePathSortOrder;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.DataType;
+import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.DocumentClientTest;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.IncludedPath;
-import com.azure.cosmos.Index;
-import com.azure.cosmos.IndexingPolicy;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.RetryOptions;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.Index;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.CaseFormat;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -39,10 +41,12 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Listeners;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +57,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 
+@Listeners({TestNGLogListener.class})
 public class TestSuiteBase extends DocumentClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
@@ -172,7 +177,7 @@ public class TestSuiteBase extends DocumentClientTest {
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(-1);
 
-            options.maxItemCount(100);
+            options.setMaxItemCount(100);
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
@@ -184,9 +189,9 @@ public class TestSuiteBase extends DocumentClientTest {
 
                         if (paths != null && !paths.isEmpty()) {
                             List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = doc.getObjectByPath(pkPath);
+                            Object propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
                             if (propertyValue == null) {
-                                propertyValue = Undefined.Value();
+                                propertyValue = Undefined.value();
                             }
 
                             requestOptions.setPartitionKey(new PartitionKey(propertyValue));
@@ -250,6 +255,7 @@ public class TestSuiteBase extends DocumentClientTest {
         logger.info("Finished truncating collection {}.", collection.getId());
     }
 
+    @SuppressWarnings("fallthrough")
     protected static void waitIfNeededForReplicasToCatchUp(Builder clientBuilder) {
         switch (clientBuilder.getDesiredConsistencyLevel()) {
             case EVENTUAL:
@@ -433,10 +439,6 @@ public class TestSuiteBase extends DocumentClientTest {
         return bulkInsert(client, collectionLink, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
     }
 
-    public static ConsistencyLevel getAccountDefaultConsistencyLevel(AsyncDocumentClient client) {
-        return BridgeInternal.getConsistencyPolicy(client.getDatabaseAccount().single().block()).getDefaultConsistencyLevel();
-    }
-
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
         return client.createUser("dbs/" + databaseId, user, null).single().block().getResource();
     }
@@ -512,7 +514,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
     public static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
         FeedOptions options = new FeedOptions();
-        options.partitionKey(new PartitionKey(docId));
+        options.setPartitionKey(new PartitionKey(docId));
         List<Document> res = client
                 .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
                 .single().block().getResults();
@@ -861,6 +863,7 @@ public class TestSuiteBase extends DocumentClientTest {
         }
     }
 
+    @SuppressWarnings("fallthrough")
     static List<ConsistencyLevel> allEqualOrLowerConsistencies(ConsistencyLevel accountConsistency) {
         List<ConsistencyLevel> testConsistencies = new ArrayList<>();
         switch (accountConsistency) {
@@ -906,9 +909,9 @@ public class TestSuiteBase extends DocumentClientTest {
     static protected Builder createGatewayHouseKeepingDocumentClient() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        RetryOptions options = new RetryOptions();
-        options.setMaxRetryWaitTimeInSeconds(SUITE_SETUP_TIMEOUT);
-        connectionPolicy.setRetryOptions(options);
+        ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
+        connectionPolicy.setThrottlingRetryOptions(options);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)

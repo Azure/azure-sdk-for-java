@@ -30,15 +30,18 @@ class EventHubAsyncClient implements Closeable {
     private final EventHubConnectionProcessor connectionProcessor;
     private final Scheduler scheduler;
     private final boolean isSharedConnection;
+    private final Runnable onClientClose;
     private final TracerProvider tracerProvider;
 
     EventHubAsyncClient(EventHubConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection) {
+        MessageSerializer messageSerializer, Scheduler scheduler, boolean isSharedConnection, Runnable onClientClose) {
         this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
             "'connectionProcessor' cannot be null.");
         this.scheduler = Objects.requireNonNull(scheduler, "'scheduler' cannot be null");
+        this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
+
         this.isSharedConnection = isSharedConnection;
     }
 
@@ -102,7 +105,7 @@ class EventHubAsyncClient implements Closeable {
     EventHubProducerAsyncClient createProducer() {
         return new EventHubProducerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
             connectionProcessor, connectionProcessor.getRetryOptions(), tracerProvider, messageSerializer, scheduler,
-            isSharedConnection);
+            isSharedConnection, onClientClose);
     }
 
     /**
@@ -126,7 +129,8 @@ class EventHubAsyncClient implements Closeable {
         }
 
         return new EventHubConsumerAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), getEventHubName(),
-            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection);
+            connectionProcessor, messageSerializer, consumerGroup, prefetchCount, scheduler, isSharedConnection,
+            onClientClose);
     }
 
     /**

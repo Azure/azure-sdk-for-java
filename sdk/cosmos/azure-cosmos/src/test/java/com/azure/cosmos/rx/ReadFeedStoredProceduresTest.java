@@ -5,10 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosStoredProcedureProperties;
-import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -39,8 +39,8 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosContinuablePagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
-                                                                                                      .readAllStoredProcedures(options);
+        CosmosPagedFlux<CosmosStoredProcedureProperties> feedObservable = createdCollection.getScripts()
+                                                                                           .readAllStoredProcedures(options);
 
         int expectedPageSize = (createdStoredProcedures.size() + maxItemCount - 1) / maxItemCount;
 
@@ -57,7 +57,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_ReadFeedStoredProceduresTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -65,7 +65,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
             createdStoredProcedures.add(createStoredProcedures(createdCollection));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

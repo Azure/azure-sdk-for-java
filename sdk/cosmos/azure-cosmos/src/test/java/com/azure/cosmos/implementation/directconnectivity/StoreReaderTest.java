@@ -5,12 +5,12 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -24,7 +24,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.VectorSessionToken;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.Mockito;
@@ -82,7 +82,7 @@ public class StoreReaderTest {
         subject.onNext(uris);
         subject.onComplete();
 
-        TimeUnit.MILLISECONDS.sleep(100);
+        TimeUnit.MILLISECONDS.sleep(500);
         AssertionsForClassTypes.assertThat(c.getCount()).isEqualTo(0);
         AssertionsForClassTypes.assertThat(b.getNumberWaiting()).isEqualTo(1);
         b.await(1000, TimeUnit.MILLISECONDS);

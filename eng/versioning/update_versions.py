@@ -85,7 +85,7 @@ def update_versions(update_type, version_map, ext_dep_map, target_file, skip_rea
                             new_version = module.current
                             newline = re.sub(version_regex_str_no_anchor, new_version, line)
                         except AttributeError:
-                            # This can happen when a dependency is an unreleased_ dependency and the tag is current instead of dependency
+                            # This can happen when a dependency is an unreleased_ or beta_ dependency and the tag is current instead of dependency
                             raise ValueError('Module: {0} does not have a current version.\nFile={1}\nLine={2}'.format(module_name, target_file, line))
                     elif version_type == 'dependency':
                         try:
@@ -169,6 +169,8 @@ def load_version_map_from_file(the_file, version_map):
             if not stripped_line or stripped_line.startswith('#'):
                 continue
             module = CodeModule(stripped_line)
+            if (module.name in version_map):
+                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name)) 
             version_map[module.name] = module
 
 def display_version_info(version_map):

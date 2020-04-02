@@ -3,12 +3,11 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.GoneException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,7 +1,10 @@
 # Release History
 
-## 12.3.0-beta.1 (Unreleased)
+## 12.4.0-beta.1 (Unreleased)
 
+
+## 12.3.0 (2020-03-11)
+- Added support for exists methods on Share, ShareDirectory and ShareFile clients.
 
 ## 12.2.0 (2020-02-12)
 - Fixed bug in ShareClient.getStatistics where shareUsageInGB was not properly converted. Added parameter to ShareStatistics to include a shareUsageInBytes parameter.

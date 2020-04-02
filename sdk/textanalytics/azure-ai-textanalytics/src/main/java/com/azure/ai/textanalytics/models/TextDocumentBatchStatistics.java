@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * If {@link TextAnalyticsRequestOptions#showStatistics()} is set to {@code true} this class will will contain
+ * If {@link TextAnalyticsRequestOptions#isIncludeStatistics()} is set to {@code true} this class will will contain
  * information about the request payload.
  */
 @Immutable
@@ -34,14 +34,14 @@ public final class TextDocumentBatchStatistics {
     private final long transactionCount;
 
     /**
-     * Creates a {@code TextDocumentBatchStatistics} model that describes the statistics of batch text.
+     * Creates a {@link TextDocumentBatchStatistics} model that describes the statistics of batch text.
      *
-     * @param documentCount number of documents submitted in the request
-     * @param validDocumentCount number of valid documents. This excludes empty, over-size limit or
-     * non-supported languages documents
-     * @param invalidDocumentCount Number of invalid documents. This includes empty, over-size limit or
-     * non-supported languages documents
-     * @param transactionCount number of transactions for the request
+     * @param documentCount The number of documents submitted in the request.
+     * @param validDocumentCount The number of valid documents. This excludes empty, over-size limit or
+     * non-supported languages documents.
+     * @param invalidDocumentCount The number of invalid documents. This includes empty, over-size limit or
+     * non-supported languages documents.
+     * @param transactionCount The number of transactions for the request.
      */
     public TextDocumentBatchStatistics(int documentCount, int validDocumentCount, int invalidDocumentCount,
         long transactionCount) {
@@ -54,7 +54,7 @@ public final class TextDocumentBatchStatistics {
     /**
      * Get the documentCount property: Number of documents submitted in the request.
      *
-     * @return the documentCount value.
+     * @return The documentCount value.
      */
     public int getDocumentCount() {
         return this.documentCount;
@@ -64,7 +64,7 @@ public final class TextDocumentBatchStatistics {
      * Get the validDocumentCount property: Number of valid documents.
      * This excludes empty, over-size limit or non-supported languages documents.
      *
-     * @return the validDocumentCount value.
+     * @return The {@code validDocumentCount} value.
      */
     public int getValidDocumentCount() {
         return this.validDocumentCount;
@@ -74,7 +74,7 @@ public final class TextDocumentBatchStatistics {
      * Get the invalidDocumentCount property: Number of invalid documents.
      * This includes empty, over-size limit or non-supported languages documents.
      *
-     * @return the invalidDocumentCount value.
+     * @return the {@code invalidDocumentCount} value.
      */
     public int getInvalidDocumentCount() {
         return this.invalidDocumentCount;
@@ -83,7 +83,7 @@ public final class TextDocumentBatchStatistics {
     /**
      * Get the transactionCount property: Number of transactions for the request.
      *
-     * @return the transactionCount value.
+     * @return the {@code transactionCount} value.
      */
     public long getTransactionCount() {
         return this.transactionCount;

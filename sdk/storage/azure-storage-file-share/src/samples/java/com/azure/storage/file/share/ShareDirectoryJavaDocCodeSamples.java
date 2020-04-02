@@ -33,6 +33,8 @@ public class ShareDirectoryJavaDocCodeSamples {
     private String value1 = "val1";
 
     private String leaseId = "leaseId";
+    ShareDirectoryClient client = createClientWithSASToken();
+    private Duration timeout = Duration.ofSeconds(30);
 
     /**
      * Generates code sample for {@link ShareDirectoryClient} instantiation.
@@ -97,6 +99,21 @@ public class ShareDirectoryJavaDocCodeSamples {
             .buildDirectoryClient();
         // END: com.azure.storage.file.share.ShareDirectoryClient.instantiation.connectionstring
         return shareDirectoryClient;
+    }
+
+    /**
+     * Code snippets for {@link ShareDirectoryClient#exists()} and {@link ShareDirectoryClient#existsWithResponse(
+     * Duration, Context)}
+     */
+    public void exists() {
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.exists
+        System.out.printf("Exists? %b%n", client.exists());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.exists
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context
+        Context context = new Context("Key", "Value");
+        System.out.printf("Exists? %b%n", client.existsWithResponse(timeout, context).getValue());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.existsWithResponse#Duration-Context
     }
 
     /**

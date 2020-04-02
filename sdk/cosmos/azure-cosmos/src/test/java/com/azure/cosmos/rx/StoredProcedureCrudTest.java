@@ -5,11 +5,11 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
-import com.azure.cosmos.CosmosAsyncStoredProcedureResponse;
+import com.azure.cosmos.models.CosmosAsyncStoredProcedureResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CosmosStoredProcedureProperties;
-import com.azure.cosmos.CosmosStoredProcedureRequestOptions;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -57,7 +57,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         storedProcedureDef.setBody("function() {var x = 10;}");
         CosmosAsyncStoredProcedure storedProcedure = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions()).block().getStoredProcedure();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
@@ -85,7 +85,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
 
         validateSuccess(deleteObservable, validator);
 
-        waitIfNeededForReplicasToCatchUp(this.clientBuilder());
+        waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
         FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
@@ -95,7 +95,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = 10_000 * SETUP_TIMEOUT)
     public void before_StoredProcedureCrudTest() {
         assertThat(this.client).isNull();
-        this.client = clientBuilder().buildAsyncClient();
+        this.client = getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 

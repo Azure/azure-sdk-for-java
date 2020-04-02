@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
 
 import java.util.ArrayList;
 import java.util.List;

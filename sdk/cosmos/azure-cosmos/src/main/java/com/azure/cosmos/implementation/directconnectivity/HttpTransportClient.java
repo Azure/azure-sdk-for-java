@@ -3,27 +3,27 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConflictException;
+import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.ForbiddenException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.LockedException;
-import com.azure.cosmos.MethodNotAllowedException;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.PreconditionFailedException;
-import com.azure.cosmos.RequestEntityTooLargeException;
-import com.azure.cosmos.RequestRateTooLargeException;
-import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.RetryWithException;
-import com.azure.cosmos.ServiceUnavailableException;
-import com.azure.cosmos.UnauthorizedException;
+import com.azure.cosmos.implementation.ForbiddenException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LockedException;
+import com.azure.cosmos.implementation.MethodNotAllowedException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.implementation.RequestEntityTooLargeException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Integers;
@@ -39,23 +39,23 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.azure.cosmos.implementation.Utils.trimBeginningAndEndingSlashes;
 /*
@@ -67,16 +67,16 @@ public class HttpTransportClient extends TransportClient {
     private final Map<String, String> defaultHeaders;
     private final Configs configs;
 
-    HttpClient createHttpClient(int requestTimeout) {
+    HttpClient createHttpClient(Duration requestTimeout) {
         // TODO: use one instance of SSL context everywhere
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
-        httpClientConfig.withRequestTimeoutInMillis(requestTimeout * 1000);
+        httpClientConfig.withRequestTimeout(requestTimeout);
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
 
         return HttpClient.createFixed(httpClientConfig);
     }
 
-    public HttpTransportClient(Configs configs, int requestTimeout, UserAgentContainer userAgent) {
+    public HttpTransportClient(Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
         this.configs = configs;
         this.httpClient = createHttpClient(requestTimeout);
 
@@ -213,7 +213,7 @@ public class HttpTransportClient extends TransportClient {
                     });
 
             return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
-                    httpRequest, activityId.toString(), rsp, physicalAddress));
+                    httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {
             return Mono.error(e);
@@ -281,81 +281,81 @@ public class HttpTransportClient extends TransportClient {
             case Create:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
+                assert request.getContentAsByteBufFlux() != null;
                 httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case ExecuteJavaScript:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                assert request.getContentAsByteBufFlux() != null;
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Delete:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.DELETE;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case Read:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.GET;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case ReadFeed:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.GET;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case Replace:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.PUT;
-                assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                assert request.getContentAsByteBufFlux() != null;
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Update:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = new HttpMethod("PATCH");
-                assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                assert request.getContentAsByteBufFlux() != null;
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Query:
             case SqlQuery:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                assert request.getContentAsByteBufFlux() != null;
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 HttpTransportClient.addHeader(httpRequestMessage.headers(), HttpConstants.HttpHeaders.CONTENT_TYPE, request);
                 break;
 
             case Upsert:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.POST;
-                assert request.getContent() != null;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
-                httpRequestMessage.withBody(request.getContent());
+                assert request.getContentAsByteBufFlux() != null;
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
+                httpRequestMessage.withBody(request.getContentAsByteBufFlux());
                 break;
 
             case Head:
                 requestUri = getResourceEntryUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.HEAD;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             case HeadFeed:
                 requestUri = getResourceFeedUri(resourceOperation.resourceType, physicalAddress.getURIAsString(), request);
                 method = HttpMethod.HEAD;
-                httpRequestMessage = new HttpRequest(method, requestUri.toString(), physicalAddress.getURI().getPort());
+                httpRequestMessage = new HttpRequest(method, requestUri, physicalAddress.getURI().getPort());
                 break;
 
             default:
@@ -394,7 +394,7 @@ public class HttpTransportClient extends TransportClient {
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.IS_READ_ONLY_SCRIPT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONTENT_SERIALIZATION_FORMAT, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.CONTINUATION, request.getContinuation());
-        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId.toString());
+        HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY, request);
         HttpTransportClient.addHeader(httpRequestHeaders, HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, request);
 
@@ -705,7 +705,7 @@ public class HttpTransportClient extends TransportClient {
                     List<String> lsnValues = null;
                     String[] headerValues = response.headers().values(WFConstants.BackendHeaders.LSN);
                     if (headerValues != null) {
-                        lsnValues = com.google.common.collect.Lists.newArrayList(headerValues);
+                        lsnValues = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
 
                     if (lsnValues != null) {
@@ -717,7 +717,8 @@ public class HttpTransportClient extends TransportClient {
                     List<String> partitionKeyRangeIdValues = null;
                     headerValues = response.headers().values(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
                     if (headerValues != null) {
-                        partitionKeyRangeIdValues = com.google.common.collect.Lists.newArrayList(headerValues);
+                        partitionKeyRangeIdValues
+                            = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                     }
                     if (partitionKeyRangeIdValues != null) {
                         responsePartitionKeyRangeId = Lists.firstOrDefault(partitionKeyRangeIdValues, null);
@@ -938,7 +939,8 @@ public class HttpTransportClient extends TransportClient {
                             List<String> values = null;
                             headerValues = response.headers().values(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);
                             if (headerValues != null) {
-                                values = com.google.common.collect.Lists.newArrayList(headerValues);
+                                values
+                                    = com.azure.cosmos.implementation.guava25.collect.Lists.newArrayList(headerValues);
                             }
                             if (values == null || values.isEmpty()) {
                                 logger.warn("RequestRateTooLargeException being thrown without RetryAfter.");

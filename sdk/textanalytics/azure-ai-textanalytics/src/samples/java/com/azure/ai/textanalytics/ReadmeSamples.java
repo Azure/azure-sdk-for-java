@@ -3,15 +3,10 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.LinkedEntity;
-import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -46,7 +41,7 @@ public class ReadmeSamples {
      */
     public void useApiKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -56,7 +51,7 @@ public class ReadmeSamples {
      */
     public void useApiKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -72,102 +67,85 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for detecting language in a text.
+     * Code snippet for rotating API key of the client
      */
-    public void detectLanguages() {
-        String inputText = "Bonjour tout le monde";
-        DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(inputText);
-        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %.2f.%n",
-            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
-    }
+    public void rotatingApiKey() {
+        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+            .apiKey(credential)
+            .endpoint("{endpoint}")
+            .buildClient();
 
-    /**
-     * Code snippet for recognizing category entity in a text.
-     */
-    public void recognizeCategorizedEntity() {
-        String text = "Satya Nadella is the CEO of Microsoft";
-        for (CategorizedEntity entity : textAnalyticsClient.recognizeEntities(text)) {
-            System.out.printf("Recognized categorized entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-        }
-    }
-
-    /**
-     * Code snippet for recognizing Personally Identifiable Information entity in a text.
-     */
-    public void recognizePiiEntity() {
-        String text = "My SSN is 555-55-5555";
-        for (PiiEntity entity : textAnalyticsClient.recognizePiiEntities(text)) {
-            System.out.printf("Recognized Personally Identifiable Information entity: %s, category: %s, subCategory: %s, score: %.2f.%n",
-                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getScore());
-        }
-    }
-
-    /**
-     * Code snippet for recognizing linked entity in a text.
-     */
-    public void recognizeLinkedEntity() {
-        String text = "Old Faithful is a geyser at Yellowstone Park.";
-        for (LinkedEntity linkedEntity : textAnalyticsClient.recognizeLinkedEntities(text)) {
-            System.out.println("Linked Entities:");
-            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-            for (LinkedEntityMatch linkedEntityMatch : linkedEntity.getLinkedEntityMatches()) {
-                System.out.printf("Text: %s, offset: %s, length: %s, score: %.2f.%n", linkedEntityMatch.getText(),
-                    linkedEntityMatch.getOffset(), linkedEntityMatch.getLength(), linkedEntityMatch.getScore());
-            }
-        }
-    }
-
-    /**
-     * Code snippet for extracting key phrases in a text.
-     */
-    public void extractKeyPhrases() {
-        String text = "My cat might need to see a veterinarian.";
-        System.out.println("Extracted phrases:");
-        for (String keyPhrase : textAnalyticsClient.extractKeyPhrases(text)) {
-            System.out.printf("%s.%n", keyPhrase);
-        }
-    }
-
-    /**
-     * Code snippet for analyzing sentiment of a text.
-     */
-    public void analyzeSentiment() {
-        String text = "The hotel was dark and unclean. I like microsoft.";
-        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(text);
-        System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
-        for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment());
-        }
+        credential.update("{new_api_key}");
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
-        List<DetectLanguageInput> inputs = Arrays.asList(
+        List<DetectLanguageInput> documents = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
-            new DetectLanguageInput("1", "Este es un document escrito en Español.", "es")
+            new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
         );
 
         try {
-            textAnalyticsClient.detectLanguageBatchWithResponse(inputs, null, Context.NONE);
+            textAnalyticsClient.detectLanguageBatch(documents, null, Context.NONE);
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
     }
 
     /**
-     * Code snippet for rotating API key of the client
+     * Code snippet for analyzing sentiment of a document.
      */
-    public void rotatingApiKey() {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
-        TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
-            .endpoint("{endpoint}")
-            .buildClient();
+    public void analyzeSentiment() {
+        String document = "The hotel was dark and unclean. I like microsoft.";
+        DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(document);
+        System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
+        documentSentiment.getSentences().forEach(sentenceSentiment ->
+            System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
+    }
 
-        credential.updateCredential("{new_api_key}");
+    /**
+     * Code snippet for detecting language in a document.
+     */
+    public void detectLanguages() {
+        String document = "Bonjour tout le monde";
+        DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
+        System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+    }
+
+    /**
+     * Code snippet for recognizing category entity in a document.
+     */
+    public void recognizeEntity() {
+        String document = "Satya Nadella is the CEO of Microsoft";
+        textAnalyticsClient.recognizeEntities(document).forEach(entity ->
+            System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
+                entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+    }
+
+    /**
+     * Code snippet for recognizing linked entity in a document.
+     */
+    public void recognizeLinkedEntity() {
+        String document = "Old Faithful is a geyser at Yellowstone Park.";
+        textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
+            System.out.println("Linked Entities:");
+            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
+            linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
+                System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
+        });
+    }
+
+    /**
+     * Code snippet for extracting key phrases in a document.
+     */
+    public void extractKeyPhrases() {
+        String document = "My cat might need to see a veterinarian.";
+        System.out.println("Extracted phrases:");
+        textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
     }
 }

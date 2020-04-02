@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -13,7 +14,6 @@ import com.azure.cosmos.implementation.RuntimeConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -25,6 +25,7 @@ class QueryPlanRetriever {
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
                                                                QueryFeature.OrderBy.name() + ", " +
                                                                QueryFeature.OffsetAndLimit.name() + ", " +
+                                                               QueryFeature.Distinct.name() + ", " +
                                                                QueryFeature.Top.name();
 
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(IDocumentQueryClient queryClient,
@@ -41,7 +42,7 @@ class QueryPlanRetriever {
                                                                                  resourceLink,
                                                                                  requestHeaders);
         request.UseGatewayMode = true;
-        request.setContentBytes(sqlQuerySpec.toJson().getBytes(StandardCharsets.UTF_8));
+        request.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
         final DocumentClientRetryPolicy retryPolicyInstance =
             queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy();
@@ -51,7 +52,7 @@ class QueryPlanRetriever {
                 retryPolicyInstance.onBeforeSendRequest(req);
                 return queryClient.executeQueryAsync(request).flatMap(rxDocumentServiceResponse -> {
                     PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getReponseBodyAsString());
+                        new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray());
                     return Mono.just(partitionedQueryExecutionInfo);
 
                 });

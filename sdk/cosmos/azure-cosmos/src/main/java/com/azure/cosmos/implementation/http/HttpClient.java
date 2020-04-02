@@ -30,9 +30,9 @@ public interface HttpClient {
             throw new IllegalArgumentException("HttpClientConfig is null");
         }
 
-        Integer maxIdleConnectionTimeoutInMillis = httpClientConfig.getConfigs().getMaxIdleConnectionTimeoutInMillis();
-        if (httpClientConfig.getMaxIdleConnectionTimeoutInMillis() != null) {
-            maxIdleConnectionTimeoutInMillis = httpClientConfig.getMaxIdleConnectionTimeoutInMillis();
+        Duration maxIdleConnectionTimeoutInMillis = httpClientConfig.getConfigs().getMaxIdleConnectionTimeout();
+        if (httpClientConfig.getMaxIdleConnectionTimeout() != null) {
+            maxIdleConnectionTimeoutInMillis = httpClientConfig.getMaxIdleConnectionTimeout();
         }
 
         //  Default pool size
@@ -41,11 +41,11 @@ public interface HttpClient {
             maxPoolSize = httpClientConfig.getMaxPoolSize();
         }
 
-        int connectionAcquireTimeoutInMillis = httpClientConfig.getConfigs().getConnectionAcquireTimeoutInMillis();
+        Duration connectionAcquireTimeout = httpClientConfig.getConfigs().getConnectionAcquireTimeout();
 
         ConnectionProvider fixedConnectionProvider =
             ConnectionProvider.fixed(httpClientConfig.getConfigs().getReactorNettyConnectionPoolName(),
-                maxPoolSize, connectionAcquireTimeoutInMillis, Duration.ofMillis(maxIdleConnectionTimeoutInMillis));
+                maxPoolSize, connectionAcquireTimeout.toMillis(), maxIdleConnectionTimeoutInMillis);
 
         return ReactorNettyClient.createWithConnectionProvider(fixedConnectionProvider, httpClientConfig);
     }

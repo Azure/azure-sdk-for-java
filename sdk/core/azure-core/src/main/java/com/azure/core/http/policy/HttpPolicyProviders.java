@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -12,12 +13,12 @@ import java.util.ServiceLoader;
 public final class HttpPolicyProviders {
     private static final String INVALID_POLICY = "HttpPipelinePolicy created with %s resulted in a null policy.";
 
-    private static final Iterable<BeforeRetryPolicyProvider> BEFORE_PROVIDER;
-    private static final Iterable<AfterRetryPolicyProvider> AFTER_PROVIDER;
+    private static final List<BeforeRetryPolicyProvider> BEFORE_PROVIDER = new ArrayList<>();
+    private static final List<AfterRetryPolicyProvider> AFTER_PROVIDER = new ArrayList<>();
 
     static {
-        BEFORE_PROVIDER = ServiceLoader.load(BeforeRetryPolicyProvider.class);
-        AFTER_PROVIDER = ServiceLoader.load(AfterRetryPolicyProvider.class);
+        ServiceLoader.load(BeforeRetryPolicyProvider.class).forEach(BEFORE_PROVIDER::add);
+        ServiceLoader.load(AfterRetryPolicyProvider.class).forEach(AFTER_PROVIDER::add);
     }
 
     private HttpPolicyProviders() {
@@ -42,8 +43,7 @@ public final class HttpPolicyProviders {
         addPolices(policies, AFTER_PROVIDER);
     }
 
-    private static void addPolices(List<HttpPipelinePolicy> policies,
-        Iterable<? extends HttpPolicyProvider> providers) {
+    private static void addPolices(List<HttpPipelinePolicy> policies, List<? extends HttpPolicyProvider> providers) {
         for (HttpPolicyProvider provider : providers) {
             HttpPipelinePolicy policy = provider.create();
             if (policy == null) {

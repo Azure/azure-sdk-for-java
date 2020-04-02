@@ -3,16 +3,17 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConflictResolutionPolicy;
-import com.azure.cosmos.IndexingPolicy;
-import com.azure.cosmos.PartitionKeyDefinition;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.UniqueKeyPolicy;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.UniqueKeyPolicy;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static com.azure.cosmos.BridgeInternal.populatePropertyBagJsonSerializable;
+import static com.azure.cosmos.models.ModelBridgeInternal.populatePropertyBagJsonSerializable;
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.BridgeInternal.remove;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -26,6 +27,16 @@ public final class DocumentCollection extends Resource {
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public DocumentCollection(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize a document collection object.
@@ -150,7 +161,7 @@ public final class DocumentCollection extends Resource {
         if (timeToLive != null) {
             setProperty(this, Constants.Properties.DEFAULT_TTL, timeToLive);
         } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
-            remove(this, Constants.Properties.DEFAULT_TTL);
+            remove(Constants.Properties.DEFAULT_TTL);
         }
     }
 
@@ -258,7 +269,8 @@ public final class DocumentCollection extends Resource {
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
     }
 
-    void populatePropertyBag() {
+    protected void populatePropertyBag() {
+        super.populatePropertyBag();
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
         }

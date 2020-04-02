@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ISessionContainer;
@@ -20,7 +20,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Utils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;

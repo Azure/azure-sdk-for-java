@@ -34,7 +34,13 @@ public enum VisualFeatureTypes {
     TAGS("Tags"),
 
     /** Enum value Description. */
-    DESCRIPTION("Description");
+    DESCRIPTION("Description"),
+
+    /** Enum value Objects. */
+    OBJECTS("Objects"),
+
+    /** Enum value Brands. */
+    BRANDS("Brands");
 
     /** The actual serialized value for a VisualFeatureTypes instance. */
     private String value;

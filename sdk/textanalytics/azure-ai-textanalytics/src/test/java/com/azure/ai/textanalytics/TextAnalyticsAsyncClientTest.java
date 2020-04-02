@@ -3,24 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DocumentSentimentLabel;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.SentenceSentimentLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScorePerLabel;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
+import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,8 +26,8 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEn
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedCategorizedEntities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
@@ -62,13 +54,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     // Detected Languages
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with request options.
      */
     @Test
     public void detectLanguagesBatchInputShowStatistics() {
         detectLanguageShowStatisticsRunner((inputs, options) ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, options))
-                .assertNext(response -> validateDetectLanguage(true, getExpectedBatchDetectedLanguages(), response.getValue()))
+            StepVerifier.create(client.detectLanguageBatch(inputs, options).byPage())
+                .assertNext(response -> validateDetectLanguage(true, getExpectedBatchDetectedLanguages(), response))
                 .verifyComplete());
     }
 
@@ -78,19 +70,30 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchInput() {
         detectLanguageRunner((inputs) ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, null))
-                .assertNext(response -> validateDetectLanguage(false, getExpectedBatchDetectedLanguages(), response.getValue()))
+            StepVerifier.create(client.detectLanguageBatch(inputs, null).byPage())
+                .assertNext(response -> validateDetectLanguage(false, getExpectedBatchDetectedLanguages(), response))
                 .verifyComplete());
     }
 
     /**
-     * Test to detect language for each string input of batch, with given country hint.
+     * Test to detect language for each string input of batch with given country hint.
      */
     @Test
     public void detectLanguagesBatchListCountryHint() {
         detectLanguagesCountryHintRunner((inputs, countryHint) ->
-            StepVerifier.create(client.detectLanguageBatch(inputs, countryHint, null))
+            StepVerifier.create(client.detectLanguageBatch(inputs, countryHint).byPage())
                 .assertNext(response -> validateDetectLanguage(false, getExpectedBatchDetectedLanguages(), response))
+                .verifyComplete());
+    }
+
+    /**
+     * Test to detect language for each string input of batch with request options.
+     */
+    @Test
+    public void detectLanguagesBatchListCountryHintWithOptions() {
+        detectLanguagesBatchListCountryHintWithOptionsRunner((inputs, options) ->
+            StepVerifier.create(client.detectLanguageBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateDetectLanguage(true, getExpectedBatchDetectedLanguages(), response))
                 .verifyComplete());
     }
 
@@ -100,13 +103,13 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguagesBatchStringInput() {
         detectLanguageStringInputRunner((inputs) ->
-            StepVerifier.create(client.detectLanguageBatch(inputs))
+            StepVerifier.create(client.detectLanguageBatch(inputs).byPage())
                 .assertNext(response -> validateDetectLanguage(false, getExpectedBatchDetectedLanguages(), response))
                 .verifyComplete());
     }
 
     /**
-     * Verifies that a single DetectedLanguage is returned for a text input to detectLanguage.
+     * Verifies that a single DetectedLanguage is returned for a document to detectLanguage.
      */
     @Test
     public void detectSingleTextLanguage() {
@@ -117,17 +120,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an TextAnalyticsException is thrown for a text input with invalid country hint.
+     * Verifies that an TextAnalyticsException is thrown for a document with invalid country hint.
      */
     @Test
     public void detectLanguageInvalidCountryHint() {
-        StepVerifier.create(client.detectLanguage("Este es un document escrito en Español.", "en"))
+        StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español.", "en"))
             .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                 && throwable.getMessage().equals(INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE));
     }
 
     /**
-     * Verifies that TextAnalyticsException is thrown for a empty text input.
+     * Verifies that TextAnalyticsException is thrown for an empty document.
      */
     @Test
     public void detectLanguageEmptyText() {
@@ -141,9 +144,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageFaultyText() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
         StepVerifier.create(client.detectLanguage("!@#%%"))
-            .assertNext(response -> validatePrimaryLanguage(primaryLanguage, response))
+            .assertNext(response -> validatePrimaryLanguage(
+                new DetectedLanguage("(Unknown)", "(Unknown)", 0.0), response))
             .verifyComplete();
     }
 
@@ -153,18 +156,37 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void detectLanguageDuplicateIdInput() {
         detectLanguageDuplicateIdRunner((inputs, options) ->
-            StepVerifier.create(client.detectLanguageBatchWithResponse(inputs, options))
+            StepVerifier.create(client.detectLanguageBatch(inputs, options))
                 .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
+    }
+
+    /**
+     * Verify that with countryHint with empty string will not throw exception.
+     */
+    @Test
+    public void detectLanguageEmptyCountryHint() {
+        StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", ""))
+            .assertNext(response -> validatePrimaryLanguage(
+                new DetectedLanguage("Spanish", "es", 0.0), response))
+            .verifyComplete();
+    }
+
+    /**
+     * Verify that with countryHint with "none" will not throw exception.
+     */
+    @Test
+    public void detectLanguageNoneCountryHint() {
+        StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", "none"))
+            .assertNext(response -> validatePrimaryLanguage(
+                new DetectedLanguage("Spanish", "es", 0.0), response))
+            .verifyComplete();
     }
 
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", "Location", null, 26, 7, 0.0);
-        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", "DateTime", "DateRange", 34, 9, 0.0);
-        StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateCategorizedEntity(categorizedEntity1, response))
-            .assertNext(response -> validateCategorizedEntity(categorizedEntity2, response))
+        StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week.").byPage())
+            .assertNext(response -> validateCategorizedEntities(getExpectedCategorizedEntities(), response))
             .verifyComplete();
     }
 
@@ -185,7 +207,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
                 .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
                     && throwable.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE)));
     }
@@ -193,32 +215,40 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForBatchInput() {
         recognizeBatchCategorizedEntityRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, null))
-                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response.getValue()))
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null).byPage())
+                .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForBatchInputShowStatistics() {
         recognizeBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeEntitiesBatchWithResponse(inputs, options))
-                .assertNext(response -> validateCategorizedEntity(true, getExpectedBatchCategorizedEntities(), response.getValue()))
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, options).byPage())
+                .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(true, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForBatchStringInput() {
         recognizeCategorizedEntityStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs))
-                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response))
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs).byPage())
+                .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeEntitiesForListLanguageHint() {
-        recognizeCatgeorizedEntitiesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeEntitiesBatch(inputs, language, null))
-                .assertNext(response -> validateCategorizedEntity(false, getExpectedBatchCategorizedEntities(), response))
+        recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, language).byPage())
+                .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), response))
+                .verifyComplete());
+    }
+
+    @Test
+    public void recognizeEntitiesForListWithOptions() {
+        recognizeStringBatchCategorizedEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateCategorizedEntitiesWithPagedResponse(true, getExpectedBatchCategorizedEntities(), response))
                 .verifyComplete());
     }
 
@@ -226,7 +256,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
         final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
-        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", Collections.singletonList(linkedEntityMatch), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
+        final LinkedEntity linkedEntity = new LinkedEntity("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
             .assertNext(response -> validateLinkedEntity(linkedEntity, response))
@@ -250,86 +280,40 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForBatchInput() {
         recognizeBatchLinkedEntityRunner((inputs) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, null))
-                .assertNext(response -> validateLinkedEntity(false, getExpectedBatchLinkedEntities(), response.getValue()))
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null).byPage())
+                .assertNext(response -> validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeLinkedEntitiesForBatchInputShowStatistics() {
         recognizeBatchLinkedEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(inputs, options))
-                .assertNext(response -> validateLinkedEntity(true, getExpectedBatchLinkedEntities(), response.getValue()))
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, options).byPage())
+                .assertNext(response -> validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
     public void recognizeLinkedEntitiesForBatchStringInput() {
         recognizeLinkedStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs))
-                .assertNext(response -> validateLinkedEntity(false, getExpectedBatchLinkedEntities(), response))
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs).byPage())
+                .assertNext(response -> validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
+
     @Test
     public void recognizeLinkedEntitiesForListLanguageHint() {
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, language, null))
-                .assertNext(response -> validateLinkedEntity(false, getExpectedBatchLinkedEntities(), response))
-                .verifyComplete());
-    }
-
-    // Personally Identifiable Information Entities
-    @Test
-    public void recognizePiiEntitiesForTextInput() {
-        PiiEntity piiEntity = new PiiEntity("859-98-0987", "U.S. Social Security Number (SSN)", "", 28, 11, 0.0);
-        StepVerifier.create(client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's."))
-            .assertNext(response -> validatePiiEntity(piiEntity, response))
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizePiiEntitiesForEmptyText() {
-        StepVerifier.create(client.recognizePiiEntities(""))
-            .expectErrorMatches(throwable -> throwable instanceof TextAnalyticsException
-                && throwable.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForFaultyText() {
-        StepVerifier.create(client.recognizePiiEntities("!@#%%"))
-            .expectNextCount(0)
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInput() {
-        recognizeBatchPiiRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, null))
-                .assertNext(response -> validatePiiEntity(false, getExpectedBatchPiiEntities(), response.getValue()))
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, language).byPage())
+                .assertNext(response -> validateLinkedEntitiesWithPagedResponse(false, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
 
     @Test
-    public void recognizePiiEntitiesForBatchInputShowStatistics() {
-        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs, options))
-                .assertNext(response -> validatePiiEntity(true, getExpectedBatchPiiEntities(), response.getValue()))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchStringInput() {
-        recognizePiiStringInputRunner((inputs) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs))
-                .assertNext(response -> validatePiiEntity(false, getExpectedBatchPiiEntities(), response))
-                .verifyComplete());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListLanguageHint() {
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language, null))
-                .assertNext(response -> validatePiiEntity(false, getExpectedBatchPiiEntities(), response))
+    public void recognizeLinkedEntitiesForListStringWithOptions() {
+        recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
     }
 
@@ -358,8 +342,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForBatchInput() {
         extractBatchKeyPhrasesRunner((inputs) ->
-            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
-                .assertNext(response -> validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), response.getValue()))
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null).byPage())
+                .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
 
     }
@@ -367,24 +351,32 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForBatchInputShowStatistics() {
         extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, options))
-                .assertNext(response -> validateExtractKeyPhrase(true, getExpectedBatchKeyPhrases(), response.getValue()))
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, options).byPage())
+                .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 
     @Test
     public void extractKeyPhrasesForBatchStringInput() {
         extractKeyPhrasesStringInputRunner((inputs) ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs))
-                .assertNext(response -> validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), response))
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs).byPage())
+                .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 
     @Test
     public void extractKeyPhrasesForListLanguageHint() {
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language, null))
-                .assertNext(response -> validateExtractKeyPhrase(false, getExpectedBatchKeyPhrases(), response))
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language).byPage())
+                .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(false, getExpectedBatchKeyPhrases(), response))
+                .verifyComplete());
+    }
+
+    @Test
+    public void extractKeyPhrasesForListStringWithOptions() {
+        extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 
@@ -395,12 +387,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(DocumentSentimentLabel.MIXED,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEGATIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(SentenceSentimentLabel.POSITIVE, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 35, 32)
-            ));
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new IterableStream<>(Arrays.asList(
+                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
+                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
+            )));
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
@@ -408,7 +400,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an TextAnalyticsException is thrown for a empty text input.
+     * Verifies that an TextAnalyticsException is thrown for an empty document.
      */
     @Test
     public void analyseSentimentForEmptyText() {
@@ -418,17 +410,17 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Test analyzing sentiment for a faulty input text.
+     * Test analyzing sentiment for a faulty document.
      */
     @Test
     public void analyseSentimentForFaultyText() {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
-            DocumentSentimentLabel.NEUTRAL,
-            new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0),
-            Arrays.asList(
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(SentenceSentimentLabel.NEUTRAL, new SentimentConfidenceScorePerLabel(0.0, 0.0, 0.0), 4, 1)
-            ));
+            TextSentiment.NEUTRAL,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
+            new IterableStream<>(Arrays.asList(
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
+                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
+            )));
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))
             .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
@@ -440,162 +432,52 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void analyseSentimentForBatchStringInput() {
         analyseSentimentStringInputRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs))
-                .assertNext(response -> validateSentiment(false, getExpectedBatchTextSentiment(), response))
+            StepVerifier.create(client.analyzeSentimentBatch(inputs).byPage())
+                .assertNext(response -> validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
 
     /**
-     * Test analyzing sentiment for a list of string input with language hint.
+     * Test analyzing sentiment for a list of string input with language code.
      */
     @Test
     public void analyseSentimentForListLanguageHint() {
         analyseSentimentLanguageHintRunner((inputs, language) ->
-            StepVerifier.create(client.analyzeSentimentBatch(inputs, language, null))
-                .assertNext(response -> validateSentiment(false, getExpectedBatchTextSentiment(), response))
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, language).byPage())
+                .assertNext(response -> validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
 
     /**
-     * Test analyzing sentiment for batch input.
+     * Test analyzing sentiment for a list of string input with request options.
+     */
+    @Test
+    public void analyseSentimentForListStringWithOptions() {
+        analyseBatchStringSentimentShowStatsRunner((inputs, options) ->
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null, options).byPage())
+                .assertNext(response -> validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), response))
+                .verifyComplete());
+    }
+
+    /**
+     * Test analyzing sentiment for a batch of documents.
      */
     @Test
     public void analyseSentimentForBatchInput() {
         analyseBatchSentimentRunner(inputs ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, null))
-                .assertNext(response -> validateSentiment(false, getExpectedBatchTextSentiment(), response.getValue()))
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null).byPage())
+                .assertNext(response -> validateSentimentWithPagedResponse(false, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
     }
 
     /**
-     * Verify that we can get statistics on the collection result when given a batch input with options.
+     * Verify that we can get statistics on the collection result when given a batch of documents with options.
      */
     @Test
     public void analyseSentimentForBatchInputShowStatistics() {
         analyseBatchSentimentShowStatsRunner((inputs, options) ->
-            StepVerifier.create(client.analyzeSentimentBatchWithResponse(inputs, options))
-                .assertNext(response -> validateSentiment(true, getExpectedBatchTextSentiment(), response.getValue()))
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, options).byPage())
+                .assertNext(response -> validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), response))
                 .verifyComplete());
-    }
-
-    /**
-     * Test client builder with valid API key
-     */
-    @Test
-    public void validKey() {
-        // Arrange
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(getApiKey())).buildAsyncClient();
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
-    }
-
-    /**
-     * Test client builder with invalid API key
-     */
-    @Test
-    public void invalidKey() {
-        // Arrange
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildAsyncClient();
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .verifyError(HttpResponseException.class);
-    }
-
-    /**
-     * Test client with valid API key but update to invalid key and make call to server.
-     */
-    @Test
-    public void updateToInvalidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential(getApiKey());
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
-
-        // Update to invalid key
-        credential.updateCredential(INVALID_KEY);
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .verifyError(HttpResponseException.class);
-    }
-
-    /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @Test
-    public void updateToValidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(INVALID_KEY);
-
-        final TextAnalyticsAsyncClient client = createClientBuilder(getEndpoint(), credential).buildAsyncClient();
-
-        // Update to valid key
-        credential.updateCredential(getApiKey());
-
-        // Action and Assert
-        StepVerifier.create(client.detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
-    }
-
-    /**
-     * Test for null service version, which would take the default service version by default
-     */
-    @Test
-    public void nullServiceVersion() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .retryPolicy(new RetryPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
-    }
-
-    /**
-     * Test for default pipeline in client builder
-     */
-    @Test
-    public void defaultPipeline() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        StepVerifier.create(clientBuilder.buildAsyncClient().detectLanguage("This is a test English Text"))
-            .assertNext(response ->
-                validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0), response))
-            .verifyComplete();
     }
 }

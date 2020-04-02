@@ -24,7 +24,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.2.0</version>
+  <version>12.3.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,10 +32,11 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 ### Create a Storage Account
 To create a Storage Account you can use the Azure Portal or [Azure CLI][azure_cli].
 
-```powershell
-az group create \
-    --name storage-resource-group \
-    --location westus
+```bash
+az storage account create \
+    --resource-group <resource-group-name> \
+    --name <storage-account-name> \
+    --location <location>
 ```
 
 ### Authenticate the client

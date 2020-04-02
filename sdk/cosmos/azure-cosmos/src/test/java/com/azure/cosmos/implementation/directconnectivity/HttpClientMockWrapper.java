@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -85,6 +86,7 @@ public class HttpClientMockWrapper {
             Mockito.doReturn(this.status).when(resp).statusCode();
             Mockito.doReturn(Flux.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, this.content))).when(resp).body();
             Mockito.doReturn(Mono.just(this.content)).when(resp).bodyAsString();
+            Mockito.doReturn(Mono.just(this.content != null ? Utils.getUTF8Bytes(this.content) : new byte[0])).when(resp).bodyAsByteArray();
             Mockito.doReturn(this.httpHeaders).when(resp).headers();
             return resp;
         }

@@ -6,11 +6,12 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -24,8 +25,8 @@ import com.azure.cosmos.implementation.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -114,8 +115,8 @@ implements IDocumentQueryExecutionContext<T> {
 
     public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         FeedOptions options = new FeedOptions(this.feedOptions);
-        options.requestContinuation(continuationToken);
-        options.maxItemCount(maxPageSize);
+        options.setRequestContinuation(continuationToken);
+        options.setMaxItemCount(maxPageSize);
         return options;
     }
 
@@ -150,12 +151,12 @@ implements IDocumentQueryExecutionContext<T> {
             }
         }
 
-        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.requestContinuation());
+        requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, feedOptions.getRequestContinuation());
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY, Strings.toString(true));
 
         // Flow the pageSize only when we are not doing client eval
-        if (feedOptions.maxItemCount() != null && feedOptions.maxItemCount() > 0) {
-            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.maxItemCount()));
+        if (feedOptions.getMaxItemCount() != null && feedOptions.getMaxItemCount() > 0) {
+            requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(feedOptions.getMaxItemCount()));
         }
 
         if (feedOptions.getMaxDegreeOfParallelism() != 0) {
@@ -171,8 +172,8 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.toString());
         }
 
-        if(feedOptions.populateQueryMetrics()){
-            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.populateQueryMetrics()));
+        if(feedOptions.isPopulateQueryMetrics()){
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.isPopulateQueryMetrics()));
         }
 
         return requestHeaders;
@@ -213,11 +214,12 @@ implements IDocumentQueryExecutionContext<T> {
             SqlQuerySpec querySpec) {
         RxDocumentServiceRequest executeQueryRequest;
 
-        String queryText;
         switch (this.client.getQueryCompatibilityMode()) {
         case SqlQuery:
-            SqlParameterList params = querySpec.getParameters();
-            Utils.checkStateOrThrow(params != null && params.size() > 0, "query.parameters",
+            List<SqlParameter> params = querySpec.getParameters();
+            // SqlQuerySpec::getParameters is guaranteed to return non-null SqlParameterList list
+            // hence no null check for params is necessary.
+            Utils.checkStateOrThrow(params.size() > 0, "query.parameters",
                     "Unsupported argument in query compatibility mode '%s'",
                     this.client.getQueryCompatibilityMode().toString());
 
@@ -227,7 +229,7 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.JSON);
-            queryText = querySpec.getQueryText();
+            executeQueryRequest.setContentBytes(Utils.getUTF8Bytes(querySpec.getQueryText()));
             break;
 
         case Default:
@@ -239,16 +241,8 @@ implements IDocumentQueryExecutionContext<T> {
                     requestHeaders);
 
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
-            queryText = querySpec.toJson();
+            executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;
-        }
-
-        try {
-            executeQueryRequest.setContentBytes(queryText.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            // TODO: exception should be handled differently
-            e.printStackTrace();
         }
 
         return executeQueryRequest;

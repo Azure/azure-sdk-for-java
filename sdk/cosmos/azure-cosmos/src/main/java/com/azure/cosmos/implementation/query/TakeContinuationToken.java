@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.JsonSerializable;
+import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,5 +68,10 @@ public final class TakeContinuationToken extends JsonSerializable {
 
     private void setSourceToken(String sourceToken) {
         BridgeInternal.setProperty(this, SourceTokenPropetryName, sourceToken);
+    }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
     }
 }

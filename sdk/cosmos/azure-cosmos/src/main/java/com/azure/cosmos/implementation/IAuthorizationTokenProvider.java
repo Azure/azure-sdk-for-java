@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.RequestVerb;
+import com.azure.cosmos.models.RequestVerb;
 
 import java.util.Map;
 

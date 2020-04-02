@@ -3,15 +3,14 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 
-import static com.azure.cosmos.BridgeInternal.remove;
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.BridgeInternal.setMapper;
-
 /**
  * Represents a document in the Azure Cosmos DB database service.
  * <p>
@@ -20,6 +19,16 @@ import static com.azure.cosmos.BridgeInternal.setMapper;
  * can be authorized using the master key or resource keys.
  */
 public class Document extends Resource {
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the
+     * {@link JsonSerializable}
+     */
+    public Document(ObjectNode objectNode) {
+        super(objectNode);
+    }
 
     /**
      * Initialize a document object.
@@ -42,24 +51,12 @@ public class Document extends Resource {
      * Initialize a document object from json string.
      *
      * @param jsonString the json string that represents the document object.
-     * @param objectMapper the custom object mapper
-     */
-    Document(String jsonString, ObjectMapper objectMapper) {
-        // TODO: Made package private due to #153. #171 adding custom serialization options back.
-        super(jsonString);
-        setMapper(this, objectMapper);
-    }
-
-    /**
-     * Initialize a document object from json string.
-     *
-     * @param jsonString the json string that represents the document object.
      */
     public Document(String jsonString) {
         super(jsonString);
     }
 
-    public static Document FromObject(Object document, ObjectMapper objectMapper) {
+    public static Document fromObject(Object document, ObjectMapper objectMapper) {
         Document typedDocument;
         if (document instanceof Document) {
             typedDocument = (Document) document;
@@ -108,7 +105,27 @@ public class Document extends Resource {
         if (timeToLive != null) {
             setProperty(this, Constants.Properties.TTL, timeToLive);
         } else if (super.has(Constants.Properties.TTL)) {
-            remove(this, Constants.Properties.TTL);
+            remove(Constants.Properties.TTL);
         }
+    }
+
+    @Override
+    public String toJson() {
+        return super.toJson();
+    }
+
+    @Override
+    public String getString(String propertyName) {
+        return super.getString(propertyName);
+    }
+
+    @Override
+    public Integer getInt(String propertyName) {
+        return super.getInt(propertyName);
+    }
+
+    @Override
+    public Object get(String propertyName) {
+        return super.get(propertyName);
     }
 }

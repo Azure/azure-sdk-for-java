@@ -26,6 +26,18 @@ import com.microsoft.azure.management.storage.v2019_06_01.AzureEntityResource;
 @JsonFlatten
 public class ListContainerItemInner extends AzureEntityResource {
     /**
+     * Default the container to use specified encryption scope for all writes.
+     */
+    @JsonProperty(value = "properties.defaultEncryptionScope")
+    private String defaultEncryptionScope;
+
+    /**
+     * Block override of encryption scope from the container default.
+     */
+    @JsonProperty(value = "properties.denyEncryptionScopeOverride")
+    private Boolean denyEncryptionScopeOverride;
+
+    /**
      * Specifies whether data in the container may be accessed publicly and the
      * level of access. Possible values include: 'Container', 'Blob', 'None'.
      */
@@ -96,6 +108,46 @@ public class ListContainerItemInner extends AzureEntityResource {
      */
     @JsonProperty(value = "properties.hasImmutabilityPolicy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasImmutabilityPolicy;
+
+    /**
+     * Get default the container to use specified encryption scope for all writes.
+     *
+     * @return the defaultEncryptionScope value
+     */
+    public String defaultEncryptionScope() {
+        return this.defaultEncryptionScope;
+    }
+
+    /**
+     * Set default the container to use specified encryption scope for all writes.
+     *
+     * @param defaultEncryptionScope the defaultEncryptionScope value to set
+     * @return the ListContainerItemInner object itself.
+     */
+    public ListContainerItemInner withDefaultEncryptionScope(String defaultEncryptionScope) {
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get block override of encryption scope from the container default.
+     *
+     * @return the denyEncryptionScopeOverride value
+     */
+    public Boolean denyEncryptionScopeOverride() {
+        return this.denyEncryptionScopeOverride;
+    }
+
+    /**
+     * Set block override of encryption scope from the container default.
+     *
+     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value to set
+     * @return the ListContainerItemInner object itself.
+     */
+    public ListContainerItemInner withDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+        return this;
+    }
 
     /**
      * Get specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'.

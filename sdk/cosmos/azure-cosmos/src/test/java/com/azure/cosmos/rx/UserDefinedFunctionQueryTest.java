@@ -6,9 +6,9 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.CosmosUserDefinedFunctionProperties;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -51,7 +51,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 5;
-        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
@@ -75,7 +75,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         
-        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .containsExactly(new ArrayList<>())
@@ -94,7 +94,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
         int maxItemCount = 3;
         
-        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF;
 
@@ -118,7 +118,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         
-        CosmosContinuablePagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
+        CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(CosmosClientException.class)
@@ -135,7 +135,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_UserDefinedFunctionQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -143,7 +143,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
             createdUDF.add(createUserDefinedFunction(createdCollection));
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

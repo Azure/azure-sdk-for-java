@@ -5,10 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosConflictProperties;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
+import com.azure.cosmos.models.CosmosConflictProperties;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -36,9 +36,9 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
 
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(requestPageSize);
+        options.setMaxItemCount(requestPageSize);
 
-        CosmosContinuablePagedFlux<CosmosConflictProperties> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
+        CosmosPagedFlux<CosmosConflictProperties> conflictReadFeedFlux = createdCollection.readAllConflicts(options);
 
         Iterator<FeedResponse<CosmosConflictProperties>> it = conflictReadFeedFlux.byPage().toIterable().iterator();
 
@@ -61,7 +61,7 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosAsyncConflictTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 
@@ -73,6 +73,6 @@ public class CosmosAsyncConflictTest extends TestSuiteBase {
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeMethod() {
         safeClose(client);
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
     }
 }

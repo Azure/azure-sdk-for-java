@@ -3,54 +3,57 @@
 
 package com.azure.storage.blob.perf;
 
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomInputStream;
+
+import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.blob.perf.core.BlobTestBase;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import com.azure.perf.test.core.RandomStream;
-import com.azure.perf.test.core.SizeOptions;
-import com.azure.storage.blob.perf.core.BlobTestBase;
 import reactor.core.publisher.Mono;
 
-public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
+public class UploadFromFileTest extends BlobTestBase<PerfStressOptions> {
 
-    private static Path tempFile;
+    private static final Path TEMP_FILE;
 
-    public UploadFromFileTest(SizeOptions options) {
+    static {
+        try {
+            TEMP_FILE = Files.createTempFile(null, null);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public UploadFromFileTest(PerfStressOptions options) {
         super(options);
     }
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync().then(CreateTempFile());
+        return super.globalSetupAsync().then(createTempFile());
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return DeleteTempFile().then(super.globalCleanupAsync());
+        return deleteTempFile().then(super.globalCleanupAsync());
     }
 
-    private Mono<Void> CreateTempFile() {
-        try {
-            tempFile = Files.createTempFile(null, null);
-            
-            InputStream inputStream = RandomStream.create(options.getSize());
-            OutputStream outputStream = new FileOutputStream(tempFile.toString());
+    private Mono<Void> createTempFile() {
+        try (InputStream inputStream = createRandomInputStream(options.getSize());
+             OutputStream outputStream = new FileOutputStream(TEMP_FILE.toString())) {
             copyStream(inputStream, outputStream);
-            outputStream.close();
-            
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Mono<Void> DeleteTempFile() {
+    private Mono<Void> deleteTempFile() {
         try {
-            Files.delete(tempFile);
+            Files.delete(TEMP_FILE);
             return Mono.empty();
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,11 +62,11 @@ public class UploadFromFileTest extends BlobTestBase<SizeOptions> {
 
     @Override
     public void run() {
-        blobClient.uploadFromFile(tempFile.toString(), true);
+        blobClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return blobAsyncClient.uploadFromFile(tempFile.toString(), true);
+        return blobAsyncClient.uploadFromFile(TEMP_FILE.toString(), true);
     }
 }

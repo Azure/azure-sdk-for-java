@@ -1,7 +1,13 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (Unreleased)
 
+
+## 12.5.0 (2020-03-11)
+- Fixed a bug where the EncryptedBlockClientBuilder.pipeline method would not allow the client to support decryption.
+- Added support for specifying a customer provided key.
+- Fixed a bug that would cause EncryptedBlobClient.upload(InputStream, long) to not encrypt the data.
+- Changed getAppendBlobClient, getBlockBlobClient, and getPageBlobClient on EncryptedBlobClient to throw as working with such clients is not supported. 
 
 ## 12.4.0 (2020-02-12)
 - Added support for upload via OutputStream by adding EncryptedBlobClient.getOutputStream methods

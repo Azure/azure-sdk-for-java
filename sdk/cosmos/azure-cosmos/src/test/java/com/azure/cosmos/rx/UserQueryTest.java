@@ -5,10 +5,10 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.CosmosUserProperties;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.CosmosUserProperties;
+import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.TestUtils;
@@ -47,7 +47,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 5;
-        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers.stream()
                                                                .filter(c -> StringUtils.equals(filterUserId, c.getId()) ).collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class UserQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
         String databaseLink = TestUtils.getDatabaseNameLink(databaseId);
-        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers;
 
@@ -99,7 +99,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
-        CosmosContinuablePagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
+        CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .containsExactly(new ArrayList<>())
@@ -112,7 +112,7 @@ public class UserQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_UserQueryTest() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
 
         createdDatabase = createDatabase(client, databaseId);
 
@@ -122,7 +122,7 @@ public class UserQueryTest extends TestSuiteBase {
             createdUsers.add(createUser(client, databaseId, user).read().block().getProperties());
         }
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

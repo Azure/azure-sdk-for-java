@@ -26,6 +26,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
 /**
  * This class provides a client that contains all the operations for interacting with a share in Azure Storage Share.
  * Operations allowed by the client are creating and deleting the share, creating snapshots for the share, creating and
@@ -103,6 +105,36 @@ public class ShareClient {
      */
     public ShareFileClient getFileClient(String filePath) {
         return new ShareFileClient(client.getFileClient(filePath));
+    }
+
+    /**
+     * Determines if the share this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.exists}
+     *
+     * @return Flag indicating existence of the share.
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the share this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Flag indicating existence of the share.
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = client.existsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**

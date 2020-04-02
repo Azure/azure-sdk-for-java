@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.Utils;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricFilter;
@@ -27,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -58,10 +56,10 @@ abstract class AsyncBenchmark<T> {
 
     AsyncBenchmark(Configuration cfg) {
         cosmosClient = new CosmosClientBuilder()
-            .setEndpoint(cfg.getServiceEndpoint())
-            .setKey(cfg.getMasterKey())
-            .setConnectionPolicy(cfg.getConnectionPolicy())
-            .setConsistencyLevel(cfg.getConsistencyLevel())
+            .endpoint(cfg.getServiceEndpoint())
+            .key(cfg.getMasterKey())
+            .connectionPolicy(cfg.getConnectionPolicy())
+            .consistencyLevel(cfg.getConsistencyLevel())
             .buildAsyncClient();
 
         cosmosAsyncContainer = cosmosClient.getDatabase(cfg.getDatabaseId()).getContainer(cfg.getCollectionId()).read().block().getContainer();
@@ -85,7 +83,7 @@ abstract class AsyncBenchmark<T> {
 
                 Flux<PojoizedJson> obs = cosmosAsyncContainer.createItem(newDoc).map(resp -> {
                                                                                          PojoizedJson x =
-                                                                                             resp.getResource();
+                                                                                             resp.getItem();
                                                                                          return x;
                                                                                      }
                 ).flux();

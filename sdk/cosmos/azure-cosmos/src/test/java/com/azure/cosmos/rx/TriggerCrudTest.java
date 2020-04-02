@@ -5,16 +5,15 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncTrigger;
-import com.azure.cosmos.CosmosAsyncTriggerResponse;
+import com.azure.cosmos.models.CosmosAsyncTriggerResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.CosmosTriggerProperties;
-import com.azure.cosmos.TriggerOperation;
-import com.azure.cosmos.TriggerType;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -63,7 +62,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         CosmosAsyncTrigger readBackTrigger = createdCollection.getScripts().createTrigger(trigger).block().getTrigger();
 
         // read trigger
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncTriggerResponse> readObservable = readBackTrigger.read();
 
         // validate read trigger
@@ -98,7 +97,7 @@ public class TriggerCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_TriggerCrudTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
     }
 

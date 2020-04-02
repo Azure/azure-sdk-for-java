@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.assertj.core.api.Condition;
 
@@ -13,20 +12,19 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public interface StoreResponseValidator {
-    
+
     void validate(StoreResponse storeResponse);
 
     public static Builder create() {
         return new Builder();
     }
 
-    public class Builder<T extends Resource> {
+    public class Builder {
         private List<StoreResponseValidator> validators = new ArrayList<>();
 
         public StoreResponseValidator build() {
             return new StoreResponseValidator() {
 
-                @SuppressWarnings({"rawtypes", "unchecked"})
                 @Override
                 public void validate(StoreResponse resp) {
                     for (StoreResponseValidator validator : validators) {
@@ -83,7 +81,7 @@ public interface StoreResponseValidator {
             return this;
         }
 
-        public Builder withContent(String content) {
+        public Builder withContent(byte[] content) {
 
             validators.add(new StoreResponseValidator() {
                 @Override

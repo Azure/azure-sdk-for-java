@@ -7,6 +7,8 @@ import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SharedTransportClientTest {
@@ -15,8 +17,8 @@ public class SharedTransportClientTest {
         TransportClient transportClient1 = null;
         TransportClient transportClient2 = null;
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
 
             assertThat(transportClient2).isSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
@@ -31,8 +33,8 @@ public class SharedTransportClientTest {
         TransportClient transportClient1 = null;
         TransportClient transportClient2 = null;
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.HTTPS, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
 
             assertThat(transportClient2).isSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
@@ -49,12 +51,12 @@ public class SharedTransportClientTest {
         TransportClient transportClient3 = null;
 
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
             transportClient2.close();
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(1);
 
-            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
             assertThat(transportClient3).isSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(2);
         } finally {
@@ -70,13 +72,13 @@ public class SharedTransportClientTest {
         TransportClient transportClient3 = null;
 
         try {
-            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
-            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient1 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
+            transportClient2 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
             transportClient1.close();
             transportClient2.close();
             assertThat(((SharedTransportClient) transportClient1).getReferenceCounter()).isEqualTo(0);
 
-            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), 1, new UserAgentContainer());
+            transportClient3 = SharedTransportClient.getOrCreateInstance(Protocol.TCP, new Configs(), Duration.ofSeconds(1), new UserAgentContainer());
             assertThat(transportClient3).isNotSameAs(transportClient1);
             assertThat(((SharedTransportClient) transportClient3).getReferenceCounter()).isEqualTo(1);
         } finally {

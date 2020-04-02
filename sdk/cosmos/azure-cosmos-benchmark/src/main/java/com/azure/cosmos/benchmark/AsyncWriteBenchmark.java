@@ -3,9 +3,9 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.CosmosAsyncItemResponse;
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.PartitionKey;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
 import com.codahale.metrics.Timer;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.reactivestreams.Subscription;

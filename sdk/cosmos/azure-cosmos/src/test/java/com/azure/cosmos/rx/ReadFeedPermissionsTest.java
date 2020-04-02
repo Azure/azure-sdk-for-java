@@ -2,16 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PermissionMode;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.User;
 import org.testng.annotations.AfterClass;
@@ -45,11 +45,11 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     public void readPermissions() throws Exception {
 
         FeedOptions options = new FeedOptions();
-        options.maxItemCount(2);
+        options.setMaxItemCount(2);
 
         Flux<FeedResponse<Permission>> feedObservable = client.readPermissions(getUserLink(), options);
 
-        int expectedPageSize = (createdPermissions.size() + options.maxItemCount() - 1) / options.maxItemCount();
+        int expectedPageSize = (createdPermissions.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Permission> validator = new FeedResponseListValidator.Builder<Permission>()
                 .totalSize(createdPermissions.size())

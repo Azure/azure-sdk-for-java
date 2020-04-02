@@ -15,6 +15,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.util.IllegalReferenceCountException;
 import io.netty.util.ReferenceCounted;
 import io.netty.util.ResourceLeakDetector;
 
@@ -25,8 +26,9 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static java.lang.Integer.min;
 
 @JsonPropertyOrder({ "messageLength", "referenceCount", "frame", "headers", "content" })
@@ -34,7 +36,7 @@ public final class RntbdResponse implements ReferenceCounted {
 
     // region Fields
 
-    private static final AtomicIntegerFieldUpdater REFERENCE_COUNT =
+    private static final AtomicIntegerFieldUpdater<RntbdResponse> REFERENCE_COUNT =
         AtomicIntegerFieldUpdater.newUpdater(RntbdResponse.class, "referenceCount");
 
     @JsonSerialize(using = PayloadSerializer.class)
@@ -58,6 +60,16 @@ public final class RntbdResponse implements ReferenceCounted {
 
     // region Constructors
 
+    /**
+     * Initializes a new {@link RntbdResponse} instance.
+     * <p>
+     * This method is provided for testing purposes only. It should not be used in product code.
+     *
+     * @param activityId an activity ID
+     * @param statusCode a response status code.
+     * @param map a collection of response headers.
+     * @param content a body to be copied to the response.
+     */
     public RntbdResponse(
         final UUID activityId,
         final int statusCode,
@@ -66,7 +78,7 @@ public final class RntbdResponse implements ReferenceCounted {
 
         this.headers = RntbdResponseHeaders.fromMap(map, content.readableBytes() > 0);
         this.message = Unpooled.EMPTY_BUFFER;
-        this.content = content.copy().retain();
+        this.content = content.copy();
 
         final HttpResponseStatus status = HttpResponseStatus.valueOf(statusCode);
         final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength();
@@ -82,12 +94,12 @@ public final class RntbdResponse implements ReferenceCounted {
         final RntbdResponseHeaders headers,
         final ByteBuf content) {
 
-        this.message = message.retain();
+        this.message = message;
         this.referenceCount = 0;
         this.frame = frame;
         this.headers = headers;
-        this.content = content.retain();
-        this.messageLength = message.writerIndex();
+        this.content = content;
+        this.messageLength = message.writerIndex();;
     }
 
     // endregion
@@ -128,6 +140,11 @@ public final class RntbdResponse implements ReferenceCounted {
 
     // region Methods
 
+    /**
+     * Serializes the current {@link RntbdResponse response} to the given {@link ByteBuf byte buffer}.
+     *
+     * @param out the output {@link ByteBuf byte buffer}.
+     */
     public void encode(final ByteBuf out) {
 
         final int start = out.writerIndex();
@@ -146,11 +163,24 @@ public final class RntbdResponse implements ReferenceCounted {
         }
     }
 
+    /**
+     * Returns the value of the given {@link RntbdResponse response} {@link RntbdResponseHeader header}.
+     *
+     * @param header the {@link RntbdResponse response} {@link RntbdResponseHeader header}.
+     * @param <T> the {@link RntbdResponse response} {@link RntbdResponseHeader header} value type.
+     *
+     * @return the value of the given {@code header}.
+     */
     @SuppressWarnings("unchecked")
     public <T> T getHeader(final RntbdResponseHeader header) {
         return (T) this.headers.get(header).getValue();
     }
 
+    /**
+     * Returns {@code true} if this {@link RntbdResponse response} has a payload.
+     *
+     * @return {@code true} if this {@link RntbdResponse response} has a payload; {@code false} otherwise.
+     */
     public boolean hasPayload() {
         return this.headers.isPayloadPresent();
     }
@@ -164,7 +194,9 @@ public final class RntbdResponse implements ReferenceCounted {
     }
 
     /**
-     * Decreases the reference count by {@code 1} and deallocate this response if the count reaches {@code 0}.
+     * Decreases the reference count by {@code 1}.
+     * <p>
+     * The current {@link RntbdResponse response} is deallocated if the count reaches {@code 0}.
      *
      * @return {@code true} if and only if the reference count became {@code 0} and this response is deallocated.
      */
@@ -183,30 +215,23 @@ public final class RntbdResponse implements ReferenceCounted {
     @Override
     public boolean release(final int decrement) {
 
-        return REFERENCE_COUNT.accumulateAndGet(this, decrement, (value, n) -> {
+        checkArgument(decrement > 0, "expected decrement, not %s", decrement);
 
-            value = value - min(value, n);
+        return REFERENCE_COUNT.accumulateAndGet(this, decrement, (referenceCount, decrease) -> {
 
-            if (value == 0) {
+            if (referenceCount < decrement) {
+                throw new IllegalReferenceCountException(referenceCount, -decrease);
+            };
 
-                checkState(this.headers != null && this.content != null);
-                this.headers.releaseBuffers();
+            referenceCount = referenceCount - decrease;
 
-                if (this.message != Unpooled.EMPTY_BUFFER) {
+            if (referenceCount == 0) {
+                this.content.release();
+                this.headers.release();
                     this.message.release();
                 }
 
-                if (this.content != Unpooled.EMPTY_BUFFER) {
-                    this.content.release();
-                }
-
-                // TODO: DANOBLE: figure out why PooledUnsafeDirectByteBuf violates these expectations:
-                //    checkState(this.in == Unpooled.EMPTY_BUFFER || this.in.refCnt() == 0);
-                //    checkState(this.content == Unpooled.EMPTY_BUFFER || this.content.refCnt() == 0);
-                //  Specifically, why are this.in.refCnt() and this.content.refCnt() equal to 1?
-            }
-
-            return value;
+            return referenceCount;
 
         }) == 0;
     }
@@ -215,9 +240,8 @@ public final class RntbdResponse implements ReferenceCounted {
      * Increases the reference count by {@code 1}.
      */
     @Override
-    public ReferenceCounted retain() {
-        REFERENCE_COUNT.incrementAndGet(this);
-        return this;
+    public RntbdResponse retain() {
+        return this.retain(1);
     }
 
     /**
@@ -226,8 +250,19 @@ public final class RntbdResponse implements ReferenceCounted {
      * @param increment amount of the increase
      */
     @Override
-    public ReferenceCounted retain(final int increment) {
-        REFERENCE_COUNT.addAndGet(this, increment);
+    public RntbdResponse retain(final int increment) {
+
+        checkArgument(increment > 0, "expected positive increment, not %s", increment);
+
+        REFERENCE_COUNT.accumulateAndGet(this, increment, (referenceCount, increase) -> {
+            if (referenceCount == 0) {
+                this.content.retain();
+                this.headers.retain();
+                this.message.retain();
+            }
+            return referenceCount + increase;
+        });
+
         return this;
     }
 
@@ -243,7 +278,7 @@ public final class RntbdResponse implements ReferenceCounted {
      * {@link ResourceLeakDetector}.  This method is a shortcut to {@link #touch(Object) touch(null)}.
      */
     @Override
-    public ReferenceCounted touch() {
+    public RntbdResponse touch() {
         return this;
     }
 
@@ -256,7 +291,7 @@ public final class RntbdResponse implements ReferenceCounted {
      * @param hint information useful for debugging (unused)
      */
     @Override
-    public ReferenceCounted touch(final Object hint) {
+    public RntbdResponse touch(final Object hint) {
         return this;
     }
 
@@ -272,7 +307,6 @@ public final class RntbdResponse implements ReferenceCounted {
         if (hasPayload) {
 
             if (!RntbdFramer.canDecodePayload(in)) {
-                headers.releaseBuffers();
                 in.resetReaderIndex();
                 return null;
             }
@@ -292,14 +326,19 @@ public final class RntbdResponse implements ReferenceCounted {
 
     StoreResponse toStoreResponse(final RntbdContext context) {
 
-        checkNotNull(context, "context");
-        final int length = this.content.readableBytes();
+        checkNotNull(context, "expected non-null context");
 
-        return new StoreResponse(
-            this.getStatus().code(),
-            this.headers.asList(context, this.getActivityId()),
-            length == 0 ? null : this.content.readCharSequence(length, StandardCharsets.UTF_8).toString()
-        );
+        final int length = this.content.writerIndex();
+        final byte[] content;
+
+        if (length == 0) {
+            content = null;
+        } else {
+            content = new byte[length];
+            this.content.getBytes(0, content);
+        }
+
+        return new StoreResponse(this.getStatus().code(), this.headers.asList(context, this.getActivityId()), content);
     }
 
     // endregion
@@ -307,6 +346,8 @@ public final class RntbdResponse implements ReferenceCounted {
     // region Types
 
     private static class PayloadSerializer extends StdSerializer<ByteBuf> {
+
+        private static final long serialVersionUID = 1717212953958644366L;
 
         PayloadSerializer() {
             super(ByteBuf.class, true);

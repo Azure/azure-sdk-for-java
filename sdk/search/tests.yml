@@ -14,3 +14,7 @@ jobs:
         AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
         AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
         AZURE_SUBSCRIPTION_ID: $(aad-azure-sdk-test-subscription-id)
+      Artifacts:
+        - name: azure-search-documents
+          groupId: com.azure
+          safeName: azuresearch

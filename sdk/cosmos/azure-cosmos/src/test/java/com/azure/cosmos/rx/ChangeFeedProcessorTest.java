@@ -4,20 +4,18 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.ChangeFeedProcessorOptions;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SqlParameter;
-import com.azure.cosmos.SqlParameterList;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.changefeed.ServiceItemLease;
@@ -39,6 +37,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -82,11 +81,11 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
         }; 
         changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(hostName)
-            .setHandleChanges(itemConsumer)
-            .setFeedContainer(createdFeedCollection)
-            .setLeaseContainer(createdLeaseCollection)
-            .setOptions(new ChangeFeedProcessorOptions()
+            .hostName(hostName)
+            .handleChanges(itemConsumer)
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
+            .options(new ChangeFeedProcessorOptions()
                 .setLeaseRenewInterval(Duration.ofSeconds(20))
                 .setLeaseAcquireInterval(Duration.ofSeconds(10))
                 .setLeaseExpirationInterval(Duration.ofSeconds(30))
@@ -95,7 +94,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .setMaxItemCount(10)
                 .setStartFromBeginning(true)
                 .setMaxScaleCount(0) // unlimited
-                .setDiscardExistingLeases(true)
+                .setExistingLeasesDiscarded(true)
             )
             .build();
 
@@ -113,6 +112,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         } catch (InterruptedException e) {
             log.error(e.getMessage());
         }
+
+        assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -132,17 +133,17 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() {
         ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(hostName)
-            .setHandleChanges((List<JsonNode> docs) -> {
+            .hostName(hostName)
+            .handleChanges((List<JsonNode> docs) -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {}", Thread.currentThread().getId());
                 for (JsonNode item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {}", Thread.currentThread().getId());
             })
-            .setFeedContainer(createdFeedCollection)
-            .setLeaseContainer(createdLeaseCollection)
-            .setOptions(new ChangeFeedProcessorOptions()
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
+            .options(new ChangeFeedProcessorOptions()
                 .setLeaseRenewInterval(Duration.ofSeconds(20))
                 .setLeaseAcquireInterval(Duration.ofSeconds(10))
                 .setLeaseExpirationInterval(Duration.ofSeconds(30))
@@ -152,7 +153,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .setStartTime(OffsetDateTime.now().minusDays(1))
                 .setMinScaleCount(1)
                 .setMaxScaleCount(3)
-                .setDiscardExistingLeases(true)
+                .setExistingLeasesDiscarded(true)
             )
             .build();
 
@@ -178,6 +179,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         assertThat(remainingWork >= 0).as("Failed to receive all the feed documents").isTrue();
+        assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
         changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
@@ -201,30 +203,30 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         final String leasePrefix = "TEST";
 
         ChangeFeedProcessor changeFeedProcessorFirst = ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(ownerFirst)
-            .setHandleChanges(docs -> {
+            .hostName(ownerFirst)
+            .handleChanges(docs -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
                 ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerFirst);
             })
-            .setFeedContainer(createdFeedCollection)
-            .setLeaseContainer(createdLeaseCollection)
-            .setOptions(new ChangeFeedProcessorOptions()
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
+            .options(new ChangeFeedProcessorOptions()
                 .setLeasePrefix(leasePrefix)
             )
             .build();
 
         ChangeFeedProcessor changeFeedProcessorSecond = ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(ownerSecond)
-            .setHandleChanges((List<JsonNode> docs) -> {
+            .hostName(ownerSecond)
+            .handleChanges((List<JsonNode> docs) -> {
                 ChangeFeedProcessorTest.log.info("START processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
                 for (JsonNode item : docs) {
                     processItem(item);
                 }
                 ChangeFeedProcessorTest.log.info("END processing from thread {} using host {}", Thread.currentThread().getId(), ownerSecond);
             })
-            .setFeedContainer(createdFeedCollection)
-            .setLeaseContainer(createdLeaseCollection)
-            .setOptions(new ChangeFeedProcessorOptions()
+            .feedContainer(createdFeedCollection)
+            .leaseContainer(createdLeaseCollection)
+            .options(new ChangeFeedProcessorOptions()
                     .setLeaseRenewInterval(Duration.ofSeconds(10))
                     .setLeaseAcquireInterval(Duration.ofSeconds(5))
                     .setLeaseExpirationInterval(Duration.ofSeconds(20))
@@ -262,8 +264,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     param.setName("@PartitionLeasePrefix");
                     param.setValue(leasePrefix);
                     SqlQuerySpec querySpec = new SqlQuerySpec(
-                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-                        new SqlParameterList(param));
+                        "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)", Collections.singletonList(param));
 
                     FeedOptions feedOptions = new FeedOptions();
 
@@ -339,7 +340,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
 
 //        try {
 //            client.getDatabase(databaseId).read()
@@ -397,7 +398,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         createdDocuments = bulkInsertBlocking(createdFeedCollection, docDefList);
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     private CosmosItemProperties getDocumentDefinition() {

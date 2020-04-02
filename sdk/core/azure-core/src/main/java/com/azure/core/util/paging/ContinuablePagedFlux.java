@@ -6,48 +6,54 @@ package com.azure.core.util.paging;
 import reactor.core.publisher.Flux;
 
 /**
- * A contract that represents a Flux that provides the ability to operate on pages of type
- * {@link ContinuablePage} and individual items in such pages. This type supports user-provided
- * continuation tokens, allowing for restarting from a previously-retrieved continuation token.
+ * This class is a {@link Flux} implementation that provides the ability to operate on pages of type
+ * {@link ContinuablePage} and individual items in such pages. This type supports user-provided continuation tokens,
+ * allowing for restarting from a previously-retrieved continuation token.
  *
- * @param <C> the type of continuation token
- * @param <T> the type of elements in the page
- * @param <P> the type of page
- *
+ * @param <C> Type of the continuation token.
+ * @param <T> Type of the elements in the page.
+ * @param <P> Type of the page.
  * @see Flux
  * @see ContinuablePage
  */
 public abstract class ContinuablePagedFlux<C, T, P extends ContinuablePage<C, T>> extends Flux<T> {
     /**
-     * @return a Flux of {@link ContinuablePage} in this Paged Flux.
+     * Gets a {@link Flux} of {@link ContinuablePage} starting at the first page.
+     *
+     * @return A {@link Flux} of {@link ContinuablePage}.
      */
     public abstract Flux<P> byPage();
+
     /**
-     * Get a Flux {@link ContinuablePage} identified by the given continuation token.
+     * Gets a {@link Flux} of {@link ContinuablePage} beginning at the page identified by the given continuation token.
      *
-     * @param continuationToken the continuation token
-     * @return a Flux of {@link ContinuablePage}
+     * @param continuationToken A continuation token identifying the page to select.
+     * @return A {@link Flux} of {@link ContinuablePage}.
      */
     public abstract Flux<P> byPage(C continuationToken);
+
     /**
-     * Get a Flux of {@link ContinuablePage} in this Paged Flux, with each page containing
+     * Gets a {@link Flux} of {@link ContinuablePage} starting at the first page requesting each page to contain a
      * number of elements equal to the preferred page size.
+     * <p>
+     * The service may or may not honor the preferred page size therefore the client <em>MUST</em> be prepared to handle
+     * pages with different page sizes.
      *
-     * @param preferredPageSize the preferred page size, service may or may not honor the page
-     *                          size preference hence client MUST be prepared to handle pages
-     *                          with different page size.
-     * @return a Flux of {@link ContinuablePage}
+     * @param preferredPageSize The preferred page size.
+     * @return A {@link Flux} of {@link ContinuablePage}.
      */
     public abstract Flux<P> byPage(int preferredPageSize);
+
     /**
-     * Get a Flux of {@link ContinuablePage} identified by the given continuation token, with each
-     * page containing number of elements equal to the preferred page size.
+     * Gets a {@link Flux} of {@link ContinuablePage} beginning at the page identified by the given continuation token
+     * requesting each page to contain the number of elements equal to the preferred page size.
+     * <p>
+     * The service may or may not honor the preferred page size therefore the client <em>MUST</em> be prepared to handle
+     * pages with different page sizes.
      *
-     * @param continuationToken the continuation token
-     * @param preferredPageSize the preferred page size, service may or may not honor the page
-     *                          size preference hence client MUST be prepared to handle pages
-     *                          with different page size.
-     * @return a Flux of {@link ContinuablePage}
+     * @param continuationToken A continuation token identifying the page to select.
+     * @param preferredPageSize The preferred page size.
+     * @return A {@link Flux} of {@link ContinuablePage}.
      */
     public abstract Flux<P> byPage(C continuationToken, int preferredPageSize);
 }

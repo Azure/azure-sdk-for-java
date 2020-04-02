@@ -22,19 +22,20 @@ public class ImageAnalysis {
     private List<Category> categories;
 
     /**
-     * The adult property.
+     * An object describing whether the image contains adult-oriented content
+     * and/or is racy.
      */
     @JsonProperty(value = "adult")
     private AdultInfo adult;
 
     /**
-     * The color property.
+     * An object providing additional metadata describing color attributes.
      */
     @JsonProperty(value = "color")
     private ColorInfo color;
 
     /**
-     * The imageType property.
+     * An object providing possible image types and matching confidence levels.
      */
     @JsonProperty(value = "imageType")
     private ImageType imageType;
@@ -46,7 +47,8 @@ public class ImageAnalysis {
     private List<ImageTag> tags;
 
     /**
-     * The description property.
+     * A collection of content tags, along with a list of captions sorted by
+     * confidence level, and image metadata.
      */
     @JsonProperty(value = "description")
     private ImageDescriptionDetails description;
@@ -58,7 +60,19 @@ public class ImageAnalysis {
     private List<FaceDescription> faces;
 
     /**
-     * Id of the request for tracking purposes.
+     * Array of objects describing what was detected in the image.
+     */
+    @JsonProperty(value = "objects")
+    private List<DetectedObject> objects;
+
+    /**
+     * Array of brands detected in the image.
+     */
+    @JsonProperty(value = "brands")
+    private List<DetectedBrand> brands;
+
+    /**
+     * Id of the REST API request.
      */
     @JsonProperty(value = "requestId")
     private String requestId;
@@ -206,6 +220,46 @@ public class ImageAnalysis {
      */
     public ImageAnalysis withFaces(List<FaceDescription> faces) {
         this.faces = faces;
+        return this;
+    }
+
+    /**
+     * Get the objects value.
+     *
+     * @return the objects value
+     */
+    public List<DetectedObject> objects() {
+        return this.objects;
+    }
+
+    /**
+     * Set the objects value.
+     *
+     * @param objects the objects value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withObjects(List<DetectedObject> objects) {
+        this.objects = objects;
+        return this;
+    }
+
+    /**
+     * Get the brands value.
+     *
+     * @return the brands value
+     */
+    public List<DetectedBrand> brands() {
+        return this.brands;
+    }
+
+    /**
+     * Set the brands value.
+     *
+     * @param brands the brands value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withBrands(List<DetectedBrand> brands) {
+        this.brands = brands;
         return this;
     }
 

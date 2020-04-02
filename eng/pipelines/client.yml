@@ -169,7 +169,7 @@ jobs:
           JavaVersion: '1.8'
         macOS - Java 8:
           OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'macOS-10.15'
           JavaVersion: '1.8'
         Windows - Java 8:
           OSName: 'Windows'
@@ -181,7 +181,7 @@ jobs:
           JavaVersion: '1.11'
         macOS - Java 11:
           OSName: 'macOS'
-          OSVmImage: 'macOS-10.13'
+          OSVmImage: 'macOS-10.15'
           JavaVersion: '1.11'
         Windows - Java 11:
           OSName: 'Windows'

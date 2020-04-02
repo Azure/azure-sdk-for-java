@@ -134,11 +134,17 @@ class Transforms {
     }
 
     private static BlobContainerListDetails toBlobContainerListDetails(FileSystemListDetails fileSystemListDetails) {
+        if (fileSystemListDetails == null) {
+            return null;
+        }
         return new BlobContainerListDetails()
             .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata());
     }
 
     static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
+        if (listFileSystemsOptions == null) {
+            return null;
+        }
         return new ListBlobContainersOptions()
             .setDetails(toBlobContainerListDetails(listFileSystemsOptions.getDetails()))
             .setMaxResultsPerPage(listFileSystemsOptions.getMaxResultsPerPage())
@@ -255,9 +261,9 @@ class Transforms {
             return null;
         }
         return new PathItem(path.getETag(),
-            OffsetDateTime.parse(path.getLastModified(), DateTimeFormatter.RFC_1123_DATE_TIME),
-            path.getContentLength() == null ? 0 : path.getContentLength(), path.getGroup(),
-            path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
+            path.getLastModified() == null ? null : OffsetDateTime.parse(path.getLastModified(),
+                DateTimeFormatter.RFC_1123_DATE_TIME), path.getContentLength() == null ? 0 : path.getContentLength(),
+            path.getGroup(), path.isDirectory() == null ? false : path.isDirectory(), path.getName(), path.getOwner(),
             path.getPermissions());
     }
 
@@ -320,7 +326,7 @@ class Transforms {
             .setVersion(h.getVersion())
             .setAcceptRanges(h.getAcceptRanges())
             .setDateProperty(h.getDateProperty())
-            .setIsServerEncrypted(h.isServerEncrypted())
+            .setServerEncrypted(h.isServerEncrypted())
             .setEncryptionKeySha256(h.getEncryptionKeySha256())
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())

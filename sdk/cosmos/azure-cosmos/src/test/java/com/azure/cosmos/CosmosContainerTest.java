@@ -6,8 +6,17 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -31,7 +40,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
     @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
-        client = clientBuilder().buildClient();
+        client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
@@ -209,12 +218,12 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.readAllContainers();
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.readAllContainers();
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
         FeedOptions feedOptions = new FeedOptions();
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 = createdDatabase.readAllContainers(feedOptions);
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
@@ -229,21 +238,21 @@ public class CosmosContainerTest extends TestSuiteBase {
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
         FeedOptions feedOptions = new FeedOptions();
 
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.queryContainers(query);
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.queryContainers(query);
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator1 =
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator1 =
             createdDatabase.queryContainers(query, feedOptions);
         // Very basic validation
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
 
         SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator2 =
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator2 =
             createdDatabase.queryContainers(querySpec);
         assertThat(feedResponseIterator2.iterator().hasNext()).isTrue();
 
-        CosmosContinuablePagedIterable<CosmosContainerProperties> feedResponseIterator3 =
+        CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator3 =
             createdDatabase.queryContainers(querySpec, feedOptions);
         assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
     }

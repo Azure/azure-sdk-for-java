@@ -1,9 +1,9 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://cameravault.vault.azure.net/secrets/secretKey?api-version=7.0",
+    "Uri" : "https://azure-java-live-test3.vault.azure.net/secrets/secretKey?api-version=7.1-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/4.1.0-beta.1 (11.0.5; Mac OS X 10.14.3)",
+      "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,26 +12,26 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 05 Dec 2019 13:55:32 GMT",
+      "Date" : "Thu, 12 Mar 2020 19:54:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "addr=182.68.109.216;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "eastus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "250",
-      "x-ms-request-id" : "fa1c861a-cac8-4e11-92a0-598befd359d8",
-      "x-ms-keyvault-service-version" : "1.1.0.883",
-      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://cameravault.vault.azure.net/secrets/secretKey/6dd095137e474864a6518c005bb74ae7\",\"attributes\":{\"enabled\":true,\"created\":1575554132,\"updated\":1575554132,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "Content-Length" : "260",
+      "x-ms-request-id" : "e923e9f9-32c9-449d-a850-ea5367bc1c7d",
+      "x-ms-keyvault-service-version" : "1.1.0.897",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azure-java-live-test3.vault.azure.net/secrets/secretKey/4d67e02fc329485bb7a2860b94228eb8\",\"attributes\":{\"enabled\":true,\"created\":1584042869,\"updated\":1584042869,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://cameravault.vault.azure.net/secrets/secretKey/6dd095137e474864a6518c005bb74ae7?api-version=7.0",
+    "Uri" : "https://azure-java-live-test3.vault.azure.net/secrets/secretKey/4d67e02fc329485bb7a2860b94228eb8?api-version=7.1-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-Azure-Keyvault/4.1.0-beta.1 (11.0.5; Mac OS X 10.14.3)",
+      "User-Agent" : "azsdk-java-client_name/client_version (12.0.1; Mac OS X 10.14.6)",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -40,17 +40,17 @@
       "Pragma" : "no-cache",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Date" : "Thu, 05 Dec 2019 13:55:32 GMT",
+      "Date" : "Thu, 12 Mar 2020 19:54:29 GMT",
       "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
       "Cache-Control" : "no-cache",
       "X-AspNet-Version" : "4.0.30319",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "addr=182.68.109.216;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "eastus",
+      "x-ms-keyvault-network-info" : "addr=172.103.233.178;act_addr_fam=InterNetwork;",
       "Expires" : "-1",
-      "Content-Length" : "250",
-      "x-ms-request-id" : "ffbccf2d-6dc2-4910-a4e8-c2d60ddc7ad1",
-      "x-ms-keyvault-service-version" : "1.1.0.883",
-      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://cameravault.vault.azure.net/secrets/secretKey/6dd095137e474864a6518c005bb74ae7\",\"attributes\":{\"enabled\":true,\"created\":1575554132,\"updated\":1575554132,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
+      "Content-Length" : "260",
+      "x-ms-request-id" : "aa5da731-0f2c-4e10-a321-de5598f10288",
+      "x-ms-keyvault-service-version" : "1.1.0.897",
+      "Body" : "{\"value\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYX\",\"id\":\"https://azure-java-live-test3.vault.azure.net/secrets/secretKey/4d67e02fc329485bb7a2860b94228eb8\",\"attributes\":{\"enabled\":true,\"created\":1584042869,\"updated\":1584042869,\"recoveryLevel\":\"Recoverable+Purgeable\"}}",
       "X-Powered-By" : "ASP.NET",
       "Content-Type" : "application/json; charset=utf-8"
     },

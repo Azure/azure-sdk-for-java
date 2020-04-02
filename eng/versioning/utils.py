@@ -67,14 +67,14 @@ class CodeModule:
         self.artifact_id = items[0].split(':')[1]
 
         if len(items) == 2:
-            if self.group_id.startswith('unreleased_'):
+            if self.group_id.startswith('unreleased_') or self.group_id.startswith('beta_'):
                 self.dependency = items[1].strip()
                 self.update_type = UpdateType.library
             else:
                 self.external_dependency = items[1].strip()
                 self.update_type = UpdateType.external_dependency
         elif len(items) == 3:
-            if self.group_id.startswith('unreleased_'):
+            if self.group_id.startswith('unreleased_') or self.group_id.startswith('beta_'):
                 raise ValueError('Unreleased dependency entries should not have a current version, they should only a dependency version')
             self.dependency = items[1]
             self.current = items[2].strip()

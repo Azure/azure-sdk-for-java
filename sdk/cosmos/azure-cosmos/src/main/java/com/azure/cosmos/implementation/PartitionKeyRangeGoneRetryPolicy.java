@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
+import com.azure.cosmos.models.FeedOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -62,7 +62,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                     // AuthorizationTokenType.PrimaryMasterKey)
                     );
             if (this.feedOptions != null) {
-                request.properties = this.feedOptions.properties();
+                request.properties = this.feedOptions.getProperties();
             }
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
 

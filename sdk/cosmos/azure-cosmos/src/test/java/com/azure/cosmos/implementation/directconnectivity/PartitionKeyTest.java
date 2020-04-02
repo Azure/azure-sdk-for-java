@@ -4,12 +4,13 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.PartitionKeyDefinition;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -21,7 +22,7 @@ public class PartitionKeyTest {
     @DataProvider(name = "paramProvider")
     public Object[][] paramProvider() {
         return new Object[][] {
-                { Undefined.Value(), "[{}]" },
+                { Undefined.value(), "[{}]" },
                 { null, "[null]"},
                 { false, "[false]"},
                 { true, "[true]"},
@@ -44,7 +45,7 @@ public class PartitionKeyTest {
      */
     @Test(groups = "unit", dataProvider = "paramProvider")
     public void partitionKeyCompare(Object partitionKey, String partitionKeyAsJson) {
-        assertThat(new PartitionKey(partitionKey)).isEqualTo(BridgeInternal.partitionKeyfromJsonString(partitionKeyAsJson));
+        assertThat(new PartitionKey(partitionKey)).isEqualTo(ModelBridgeInternal.partitionKeyfromJsonString(partitionKeyAsJson));
     }
 
     /**
@@ -54,7 +55,7 @@ public class PartitionKeyTest {
     public void tooFewPartitionKeyComponents() {
         PartitionKeyDefinition pkd = new PartitionKeyDefinition();
         pkd.setPaths(ImmutableList.of("/pk1", "/pk2"));
-        PartitionKey pk = BridgeInternal.partitionKeyfromJsonString("[\"PartitionKeyValue\"]");
+        PartitionKey pk = ModelBridgeInternal.partitionKeyfromJsonString("[\"PartitionKeyValue\"]");
 
         try {
             PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);
@@ -71,7 +72,7 @@ public class PartitionKeyTest {
     public void tooManyPartitionKeyComponents() {
         PartitionKeyDefinition pkd = new PartitionKeyDefinition();
         pkd.setPaths(ImmutableList.of("/pk1"));
-        PartitionKey pk = BridgeInternal.partitionKeyfromJsonString(("[true, false]"));
+        PartitionKey pk = ModelBridgeInternal.partitionKeyfromJsonString(("[true, false]"));
 
         try {
             PartitionKeyInternalHelper.getEffectivePartitionKeyString(BridgeInternal.getPartitionKeyInternal(pk), pkd);

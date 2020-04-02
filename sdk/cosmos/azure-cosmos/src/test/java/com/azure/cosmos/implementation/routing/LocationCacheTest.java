@@ -4,10 +4,10 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.BridgeUtils;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.DatabaseAccount;
-import com.azure.cosmos.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -15,9 +15,9 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import org.apache.commons.collections4.list.UnmodifiableList;
+import com.azure.cosmos.models.ModelBridgeUtils;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -37,7 +37,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import static com.azure.cosmos.BridgeUtils.createDatabaseAccountLocation;
+import static com.azure.cosmos.models.ModelBridgeUtils.createDatabaseAccountLocation;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -105,7 +105,7 @@ public class LocationCacheTest {
     }
 
     private static DatabaseAccount createDatabaseAccount(boolean useMultipleWriteLocations) {
-        DatabaseAccount databaseAccount = BridgeUtils.createDatabaseAccount(
+        DatabaseAccount databaseAccount = ModelBridgeUtils.createDatabaseAccount(
                 // read endpoints
                 ImmutableList.of(
                         createDatabaseAccountLocation("location1", LocationCacheTest.Location1Endpoint.toString()),
@@ -145,7 +145,7 @@ public class LocationCacheTest {
         this.cache.onDatabaseAccountRead(this.databaseAccount);
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setEnableEndpointDiscovery(enableEndpointDiscovery);
+        connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
         BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
         connectionPolicy.setPreferredLocations(this.preferredLocations);
 
@@ -330,7 +330,7 @@ public class LocationCacheTest {
         IntStream.range(0, 10)
                 .mapToObj(index -> this.endpointManager.refreshLocationAsync(null, false))
                 .collect(Collectors.toList());
-        for (Mono completable : list) {
+        for (Mono<Void> completable : list) {
             completable.block();
         }
 
@@ -411,7 +411,7 @@ public class LocationCacheTest {
 
     private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, resourceType);
-        request.requestContext.RouteToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
+        request.requestContext.routeToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
     }
 

@@ -60,6 +60,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 /**
@@ -75,6 +76,8 @@ public class EventHubProducerClientTest {
     private EventHubAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
+    @Mock
+    private Runnable onClientClosed;
     @Captor
     private ArgumentCaptor<Message> singleMessageCaptor;
     @Captor
@@ -95,14 +98,14 @@ public class EventHubProducerClientTest {
 
         final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
 
-        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, "event-hub-path", tokenCredential,
+        ConnectionOptions connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP_WEB_SOCKETS, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel());
         connectionProcessor = Flux.<EventHubAmqpConnection>create(sink -> sink.next(connection))
             .subscribeWith(new EventHubConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
-                connectionOptions.getEntityPath(), connectionOptions.getRetry()));
+                "event-hub-path", connectionOptions.getRetry()));
         asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, retryOptions,
-            tracerProvider, messageSerializer, Schedulers.parallel(), false);
+            tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
     }
@@ -113,6 +116,7 @@ public class EventHubProducerClientTest {
         sendLink = null;
         singleMessageCaptor = null;
         messagesCaptor = null;
+        asyncProducer.close();
     }
 
     /**
@@ -129,7 +133,11 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         // Act
-        producer.send(eventData);
+        try {
+            producer.send(eventData);
+        } finally {
+            producer.close();
+        }
 
         // Assert
         verify(sendLink, times(1)).send(any(Message.class));
@@ -149,7 +157,8 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8));
 
@@ -179,7 +188,11 @@ public class EventHubProducerClientTest {
         );
 
         //Act
-        producer.send(eventData);
+        try {
+            producer.send(eventData);
+        } finally {
+            producer.close();
+        }
 
         //Assert
         verify(tracer1, times(1))
@@ -187,6 +200,8 @@ public class EventHubProducerClientTest {
         verify(tracer1, times(1))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+
+        verifyZeroInteractions(onClientClosed);
     }
 
     /**
@@ -204,7 +219,7 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
         final EventData eventData = new EventData("hello-world".getBytes(UTF_8))
             .addContext(SPAN_CONTEXT_KEY, Context.NONE);
@@ -225,13 +240,19 @@ public class EventHubProducerClientTest {
         );
 
         //Act
-        producer.send(eventData);
+        try {
+            producer.send(eventData);
+        } finally {
+            producer.close();
+        }
 
         //Assert
         verify(tracer1, times(1)).start(eq("EventHubs.send"), any(), eq(ProcessKind.SEND));
         verify(tracer1, never()).start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(1)).addLink(any());
         verify(tracer1, times(1)).end(eq("success"), isNull(), any());
+
+        verifyZeroInteractions(onClientClosed);
     }
 
     /**
@@ -256,7 +277,11 @@ public class EventHubProducerClientTest {
             .thenReturn(Mono.just(sendLink));
 
         // Act
-        producer.send(events, options);
+        try {
+            producer.send(events, options);
+        } finally {
+            producer.close();
+        }
 
         // Assert
         verify(sendLink).send(messagesCaptor.capture());
@@ -265,6 +290,8 @@ public class EventHubProducerClientTest {
         Assertions.assertEquals(count, messagesSent.size());
 
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
+
+        verifyZeroInteractions(onClientClosed);
     }
 
     /**
@@ -316,7 +343,8 @@ public class EventHubProducerClientTest {
         final List<Tracer> tracers = Collections.singletonList(tracer1);
         final TracerProvider tracerProvider = new TracerProvider(tracers);
         final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
-            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(), false);
+            connectionProcessor, retryOptions, tracerProvider, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed);
         final EventHubProducerClient producer = new EventHubProducerClient(asyncProducer, retryOptions.getTryTimeout());
 
         final AmqpSendLink link = mock(AmqpSendLink.class);
@@ -334,13 +362,20 @@ public class EventHubProducerClientTest {
         );
 
         // Act & Assert
-        final EventDataBatch batch = producer.createBatch();
-        Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
-        Assertions.assertTrue(batch.tryAdd(new EventData("Test World".getBytes(UTF_8))));
+        try {
+            final EventDataBatch batch = producer.createBatch();
+            Assertions.assertTrue(batch.tryAdd(new EventData("Hello World".getBytes(UTF_8))));
+            Assertions.assertTrue(batch.tryAdd(new EventData("Test World".getBytes(UTF_8))));
+        } finally {
+            producer.close();
+        }
+
 
         verify(tracer1, times(2))
             .start(eq("EventHubs.message"), any(), eq(ProcessKind.MESSAGE));
         verify(tracer1, times(2)).end(eq("success"), isNull(), any());
+
+        verifyZeroInteractions(onClientClosed);
     }
 
     /**

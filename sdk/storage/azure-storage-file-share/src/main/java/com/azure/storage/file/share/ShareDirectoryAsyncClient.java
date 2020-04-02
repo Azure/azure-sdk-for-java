@@ -5,6 +5,7 @@ package com.azure.storage.file.share;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -28,6 +29,7 @@ import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -156,6 +158,54 @@ public class ShareDirectoryAsyncClient {
         String directoryPath = this.directoryPath + "/" + subdirectoryName;
         return new ShareDirectoryAsyncClient(azureFileStorageClient, shareName, directoryPath, snapshot, accountName,
             serviceVersion);
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.exists}
+     *
+     * @return Flag indicating existence of the directory.
+     */
+    public Mono<Boolean> exists() {
+        return existsWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Determines if the directory this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareDirectoryAsyncClient.existsWithResponse}
+     *
+     * @return Flag indicating existence of the directory.
+     */
+    public Mono<Response<Boolean>> existsWithResponse() {
+        try {
+            return withContext(this::existsWithResponse);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<Boolean>> existsWithResponse(Context context) {
+        return this.getPropertiesWithResponse(context)
+            .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
+            .onErrorResume(this::checkDoesNotExistStatusCode,
+                t -> {
+                    HttpResponse response = ((ShareStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
+    }
+
+    private boolean checkDoesNotExistStatusCode(Throwable t) {
+        return t instanceof ShareStorageException
+            && ((ShareStorageException) t).getStatusCode() == 404
+            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+            || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND);
     }
 
     /**

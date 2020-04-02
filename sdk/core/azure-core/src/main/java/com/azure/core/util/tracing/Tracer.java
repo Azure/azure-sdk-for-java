@@ -63,6 +63,11 @@ public interface Tracer {
     String SPAN_BUILDER_KEY = "builder";
 
     /**
+     * Key for {@link Context} which indicates the the time of the last enqueued message in the partition's stream.
+     */
+    String MESSAGE_ENQUEUED_TIME = "x-opt-enqueued-time";
+
+    /**
      * Creates a new tracing span.
      * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span

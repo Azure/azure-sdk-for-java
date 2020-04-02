@@ -3,29 +3,30 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConflictException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.CosmosError;
-import com.azure.cosmos.ForbiddenException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.LockedException;
-import com.azure.cosmos.MethodNotAllowedException;
-import com.azure.cosmos.NotFoundException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.PreconditionFailedException;
-import com.azure.cosmos.RequestEntityTooLargeException;
-import com.azure.cosmos.RequestRateTooLargeException;
-import com.azure.cosmos.RequestTimeoutException;
-import com.azure.cosmos.RetryWithException;
-import com.azure.cosmos.ServiceUnavailableException;
-import com.azure.cosmos.UnauthorizedException;
+import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.ForbiddenException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.LockedException;
+import com.azure.cosmos.implementation.MethodNotAllowedException;
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.PreconditionFailedException;
+import com.azure.cosmos.implementation.RequestEntityTooLargeException;
+import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RetryWithException;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
+import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelException;
@@ -64,8 +65,8 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker.Timestamps;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
@@ -724,7 +725,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
             // ..Create Error instance
 
             final CosmosError error = response.hasPayload()
-                ? BridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response))
+                ? ModelBridgeInternal.createCosmosError(RntbdObjectMapper.readTree(response))
                 : new CosmosError(Integer.toString(statusCode), status.reasonPhrase(), status.codeClass().name());
 
             // ..Map RNTBD response headers to HTTP response headers

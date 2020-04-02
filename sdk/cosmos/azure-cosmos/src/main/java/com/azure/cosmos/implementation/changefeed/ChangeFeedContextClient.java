@@ -2,20 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed;
 
-import com.azure.cosmos.ChangeFeedOptions;
+import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncContainerResponse;
+import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.CosmosAsyncItemResponse;
-import com.azure.cosmos.CosmosContainerProperties;
-import com.azure.cosmos.CosmosContainerRequestOptions;
-import com.azure.cosmos.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.CosmosItemRequestOptions;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.PartitionKey;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
@@ -84,7 +84,7 @@ public interface ChangeFeedContextClient {
      * @param options   the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the deleted item or an error.
      */
-    Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey, 
+    Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                              CosmosItemRequestOptions options);
 
     /**

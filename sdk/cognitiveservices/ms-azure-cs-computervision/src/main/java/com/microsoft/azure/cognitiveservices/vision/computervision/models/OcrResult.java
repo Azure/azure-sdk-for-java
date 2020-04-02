@@ -22,7 +22,7 @@ public class OcrResult {
     private String language;
 
     /**
-     * The angle, in degrees, of the detected text with respect to the closest
+     * The angle, in radians, of the detected text with respect to the closest
      * horizontal or vertical direction. After rotating the input image
      * clockwise by this angle, the recognized text lines become horizontal or
      * vertical. In combination with the orientation property it can be used to
@@ -37,10 +37,12 @@ public class OcrResult {
     private double textAngle;
 
     /**
-     * Orientation of the text recognized in the image. The value
-     * (up,down,left, or right) refers to the direction that the top of the
+     * Orientation of the text recognized in the image, if requested. The value
+     * (up, down, left, or right) refers to the direction that the top of the
      * recognized text is facing, after the image has been rotated around its
      * center according to the detected text angle (see textAngle property).
+     * If detection of the orientation was not requested, or no text is
+     * detected, the value is 'NotDetected'.
      */
     @JsonProperty(value = "orientation")
     private String orientation;

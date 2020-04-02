@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
+import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
@@ -153,40 +154,6 @@ class EncyptedBlockBlobAPITest extends APISpec {
         true    | false
         false   | true
         true    | true
-    }
-
-    def "Test Async and Sync EncryptedBlockBlobClient to BlockBlobClient"() {
-        when:
-        beac.upload(defaultFlux, null).block()
-        BlockBlobAsyncClient normalAsyncClient = beac.getBlockBlobAsyncClient()
-
-        then:
-        normalAsyncClient.blobUrl == beac.blobUrl
-        normalAsyncClient.getHttpPipeline().policyCount == beac.getHttpPipeline().policyCount
-        normalAsyncClient.getHttpPipeline().httpClient == beac.getHttpPipeline().httpClient
-
-        and:
-        normalAsyncClient.download().blockLast()
-
-        then:
-        notThrown(BlobStorageException)
-
-        when:
-        bec.uploadFromFile(getRandomFile(KB).toPath().toString())
-        BlockBlobClient normalClient = bec.getBlockBlobClient()
-
-        // Check that an encrypted client has correct number of policies and important properties are the same
-        then:
-        normalClient.blobUrl == bec.blobUrl
-        normalClient.getHttpPipeline().policyCount == bec.getHttpPipeline().policyCount
-        normalClient.getHttpPipeline().httpClient == bec.getHttpPipeline().httpClient
-
-        and:
-        normalClient.download(new ByteArrayOutputStream())
-
-        then:
-        notThrown(BlobStorageException)
-
     }
 
     // This test checks that encryption is not just a no-op
@@ -1345,6 +1312,88 @@ class EncyptedBlockBlobAPITest extends APISpec {
         100                  | _
         8 * 1026 * 1024 + 10 | _
     }
+
+    def "Encryption upload IS overwrite fails"() {
+        when:
+        ebc.upload(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        thrown(BlobStorageException)
+    }
+
+    def "Encryption upload IS overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        ebc.upload(input, Constants.KB, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        ebc.downloadWithResponse(stream, null, null, null, false, null, null)
+        stream.toByteArray() == randomData
+    }
+
+    // This test checks that encryption is not just a no-op
+    def "Encryption upload IS sync not a no-op"() {
+        setup:
+        ByteBuffer byteBuffer = getRandomData(Constants.KB)
+        def os = new ByteArrayOutputStream()
+
+        when:
+        ebc.upload(new ByteArrayInputStream(byteBuffer.array()), byteBuffer.remaining(), true)
+        cc.getBlobClient(ebc.getBlobName()).download(os)
+
+        ByteBuffer outputByteBuffer = ByteBuffer.wrap(os.toByteArray())
+
+        then:
+        outputByteBuffer.array() != byteBuffer.array()
+    }
+
+    @Requires( { liveMode() } )
+    def "Encryption upload IS large data"() {
+        setup:
+        def randomData = getRandomByteArray(20 * Constants.MB)
+        def os = new ByteArrayOutputStream()
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions(null, null, null, Constants.MB)
+
+        when:
+        // Uses blob output stream under the hood.
+        ebc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
+        ebc.download(os)
+
+        then:
+        notThrown(BlobStorageException)
+        os.toByteArray() == randomData
+    }
+
+    @Unroll
+    def "Encryption uploadIS numBlocks"() {
+        setup:
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        def pto = new ParallelTransferOptions((Integer) maxUploadSize, null, null, (Integer) maxUploadSize)
+
+        when:
+        bec.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
+
+        then:
+        def blocksUploaded = cc.getBlobClient(bec.getBlobName()).getBlockBlobClient()
+            .listBlocks(BlockListType.ALL).getCommittedBlocks()
+        blocksUploaded.size() == (int) numBlocks
+
+        where:
+        size            | maxUploadSize || numBlocks
+        0               | null          || 0
+        Constants.KB    | null          || 0 // default is MAX_UPLOAD_BYTES
+        Constants.MB    | null          || 0 // default is MAX_UPLOAD_BYTES
+        3 * Constants.MB| Constants.MB  || 4 // Encryption padding will add an extra block
+    }
+
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
         result.position(0)

@@ -4,29 +4,31 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.util.IterableStream;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedIterable;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+
+import java.io.Closeable;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos database service.
  * SyncClient is used to perform operations in a synchronous way
  */
 @ServiceClient(builder = CosmosClientBuilder.class)
-public class CosmosClient implements AutoCloseable {
+public final class CosmosClient implements Closeable {
     private final CosmosAsyncClient asyncClientWrapper;
 
     CosmosClient(CosmosClientBuilder builder) {
         this.asyncClientWrapper = builder.buildAsyncClient();
-    }
-
-    /**
-     * Instantiate the cosmos client builder to build cosmos client
-     *
-     * @return {@link CosmosClientBuilder}
-     */
-    public static CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder();
     }
 
     /**
@@ -151,19 +153,19 @@ public class CosmosClient implements AutoCloseable {
      * Reads all databases.
      *
      * @param options {@link FeedOptions}the feed options.
-     * @return the {@link CosmosContinuablePagedIterable} for feed response with the read databases.
+     * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
-    public CosmosContinuablePagedIterable<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
-        return getCosmosContinuablePagedIterable(asyncClientWrapper.readAllDatabases(options));
+    public CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
+        return getCosmosPagedIterable(asyncClientWrapper.readAllDatabases(options));
     }
 
     /**
      * Reads all databases.
      *
-     * @return the {@link CosmosContinuablePagedIterable} for feed response with the read databases.
+     * @return the {@link CosmosPagedIterable} for feed response with the read databases.
      */
-    public CosmosContinuablePagedIterable<CosmosDatabaseProperties> readAllDatabases() {
-        return getCosmosContinuablePagedIterable(asyncClientWrapper.readAllDatabases());
+    public CosmosPagedIterable<CosmosDatabaseProperties> readAllDatabases() {
+        return getCosmosPagedIterable(asyncClientWrapper.readAllDatabases());
     }
 
     /**
@@ -171,10 +173,10 @@ public class CosmosClient implements AutoCloseable {
      *
      * @param query the query
      * @param options {@link FeedOptions}the feed options.
-     * @return the {@link CosmosContinuablePagedIterable} for feed response with the obtained databases.
+     * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
-    public CosmosContinuablePagedIterable<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
-        return getCosmosContinuablePagedIterable(asyncClientWrapper.queryDatabases(query, options));
+    public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
+        return getCosmosPagedIterable(asyncClientWrapper.queryDatabases(query, options));
     }
 
     /**
@@ -182,11 +184,11 @@ public class CosmosClient implements AutoCloseable {
      *
      * @param querySpec {@link SqlQuerySpec} the query spec
      * @param options the query
-     * @return the {@link CosmosContinuablePagedIterable} for feed response with the obtained databases.
+     * @return the {@link CosmosPagedIterable} for feed response with the obtained databases.
      */
-    public CosmosContinuablePagedIterable<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec,
-                                                                                   FeedOptions options) {
-        return getCosmosContinuablePagedIterable(asyncClientWrapper.queryDatabases(querySpec, options));
+    public CosmosPagedIterable<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec,
+                                                                        FeedOptions options) {
+        return getCosmosPagedIterable(asyncClientWrapper.queryDatabases(querySpec, options));
     }
 
     /**
@@ -200,7 +202,7 @@ public class CosmosClient implements AutoCloseable {
     }
 
     CosmosDatabaseResponse convertResponse(CosmosAsyncDatabaseResponse response) {
-        return new CosmosDatabaseResponse(response, this);
+        return ModelBridgeInternal.createCosmosDatabaseResponse(response, this);
     }
 
     CosmosAsyncClient asyncClient() {
@@ -214,8 +216,8 @@ public class CosmosClient implements AutoCloseable {
         asyncClientWrapper.close();
     }
 
-    private <T> CosmosContinuablePagedIterable<T> getCosmosContinuablePagedIterable(CosmosContinuablePagedFlux<T> cosmosContinuablePagedFlux) {
-        return new CosmosContinuablePagedIterable<>(cosmosContinuablePagedFlux);
+    private <T> CosmosPagedIterable<T> getCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
+        return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
 }

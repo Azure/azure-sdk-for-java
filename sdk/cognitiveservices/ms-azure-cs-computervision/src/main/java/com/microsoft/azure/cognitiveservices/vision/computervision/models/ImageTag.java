@@ -11,23 +11,23 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An image caption, i.e. a brief description of what the image depicts.
+ * An entity observation in the image, along with the confidence score.
  */
 public class ImageTag {
     /**
-     * The tag value.
+     * Name of the entity.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * The level of confidence the service has in the caption.
+     * The level of confidence that the entity was observed.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
 
     /**
-     * Optional categorization for the tag.
+     * Optional hint/details for this tag.
      */
     @JsonProperty(value = "hint")
     private String hint;

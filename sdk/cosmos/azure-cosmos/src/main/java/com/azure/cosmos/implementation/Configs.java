@@ -2,18 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 
-import static com.google.common.base.MoreObjects.firstNonNull;
-import static com.google.common.base.Strings.emptyToNull;
+import java.time.Duration;
+import java.util.Locale;
+
+import static com.azure.cosmos.implementation.guava25.base.MoreObjects.firstNonNull;
+import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
@@ -56,8 +59,8 @@ public class Configs {
     private static final int DEFAULT_DIRECT_HTTPS_POOL_SIZE = CPU_CNT * 500;
 
     //  Reactor Netty Constants
-    private static final int MAX_IDLE_CONNECTION_TIMEOUT_IN_MILLIS = 60 * 1000;
-    private static final int CONNECTION_ACQUIRE_TIMEOUT_IN_MILLIS = 45 * 1000;
+    private static final Duration MAX_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration CONNECTION_ACQUIRE_TIMEOUT = Duration.ofSeconds(45);
     private static final int REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE = 1000;
     private static final String REACTOR_NETTY_CONNECTION_POOL_NAME = "reactor-netty-connection-pool";
 
@@ -88,7 +91,7 @@ public class Configs {
             emptyToNull(System.getenv().get(PROTOCOL_ENVIRONMENT_VARIABLE)),
             DEFAULT_PROTOCOL.name()));
         try {
-            return Protocol.valueOf(protocol.toUpperCase());
+            return Protocol.valueOf(protocol.toUpperCase(Locale.ROOT));
         } catch (Exception e) {
             logger.error("Parsing protocol {} failed. Using the default {}.", protocol, DEFAULT_PROTOCOL, e);
             return DEFAULT_PROTOCOL;
@@ -155,21 +158,16 @@ public class Configs {
         return REACTOR_NETTY_CONNECTION_POOL_NAME;
     }
 
-    public int getMaxIdleConnectionTimeoutInMillis() {
-        return MAX_IDLE_CONNECTION_TIMEOUT_IN_MILLIS;
+    public Duration getMaxIdleConnectionTimeout() {
+        return MAX_IDLE_CONNECTION_TIMEOUT;
     }
 
-    public int getConnectionAcquireTimeoutInMillis() {
-        return CONNECTION_ACQUIRE_TIMEOUT_IN_MILLIS;
+    public Duration getConnectionAcquireTimeout() {
+        return CONNECTION_ACQUIRE_TIMEOUT;
     }
 
     public int getReactorNettyMaxConnectionPoolSize() {
         return REACTOR_NETTY_MAX_CONNECTION_POOL_SIZE;
-    }
-
-    private static String getJVMConfigAsString(String propName, String defaultValue) {
-        String propValue = System.getProperty(propName);
-        return StringUtils.defaultString(propValue, defaultValue);
     }
 
     private static int getJVMConfigAsInt(String propName, int defaultValue) {

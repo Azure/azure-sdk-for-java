@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -131,5 +131,15 @@ public class Offer extends Resource {
 
     private void setContent(ObjectNode offerContent) {
         BridgeInternal.setProperty(this, Constants.Properties.OFFER_CONTENT, offerContent);
+    }
+
+    @Override
+    public String getString(String propertyName) {
+        return super.getString(propertyName);
+    }
+
+    @Override
+    public Integer getInt(String propertyName) {
+        return super.getInt(propertyName);
     }
 }

@@ -6,10 +6,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosContinuablePagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.Resource;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import org.testng.annotations.AfterClass;
@@ -40,7 +40,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
 
-        CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
                 .totalSize(createdDocuments.size())
                 .numberOfPagesIsGreaterThanOrEqualTo(1)
@@ -59,7 +59,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 2;
-        CosmosContinuablePagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
+        CosmosPagedFlux<CosmosItemProperties> feedObservable = createdCollection.readAllItems(options, CosmosItemProperties.class);
         FeedResponseListValidator<CosmosItemProperties> validator =
             new FeedResponseListValidator.Builder<CosmosItemProperties>()
                                                         .totalSize(createdDocuments.size())
@@ -81,7 +81,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     //  see https://github.com/Azure/azure-sdk-for-java/issues/6379
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT, alwaysRun = true)
     public void before_ReadFeedDocumentsTest() {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
@@ -92,7 +92,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         }
 
         createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

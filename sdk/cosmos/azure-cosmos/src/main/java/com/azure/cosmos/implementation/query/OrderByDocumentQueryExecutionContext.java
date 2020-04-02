@@ -4,10 +4,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.FeedOptions;
-import com.azure.cosmos.FeedResponse;
-import com.azure.cosmos.Resource;
-import com.azure.cosmos.SqlQuerySpec;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -20,8 +21,7 @@ import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
 import com.azure.cosmos.implementation.routing.Range;
-import org.apache.commons.lang3.NotImplementedException;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,8 +42,8 @@ import java.util.function.Function;
  */
 public class OrderByDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
-    private final String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
-    private final String True = "true";
+    private final static String FormatPlaceHolder = "{documentdb-formattableorderbyquery-filter}";
+    private final static String True = "true";
     private final String collectionRid;
     private final OrderbyRowComparer<T> consumeComparer;
     private final RequestChargeTracker tracker;
@@ -108,7 +108,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                     partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                     initialPageSize,
-                    feedOptions.requestContinuation());
+                    feedOptions.getRequestContinuation());
 
             return Flux.just(context);
         } catch (CosmosClientException dce) {
@@ -161,7 +161,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             }
 
             // At this point the token is valid.
-            ImmutablePair<Integer, FormattedFilterInfo> targetIndexAndFilters = this.GetFiltersForPartitions(
+            ImmutablePair<Integer, FormattedFilterInfo> targetIndexAndFilters = this.getFiltersForPartitions(
                     orderByContinuationToken,
                     partitionKeyRanges,
                     sortOrders,
@@ -229,17 +229,17 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         querySpec.getParameters()));
     }
 
-    private ImmutablePair<Integer, FormattedFilterInfo> GetFiltersForPartitions(
+    private ImmutablePair<Integer, FormattedFilterInfo> getFiltersForPartitions(
             OrderByContinuationToken orderByContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) throws CosmosClientException {
         // Find the partition key range we left off on
-        int startIndex = this.FindTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
+        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 orderByContinuationToken.getCompositeContinuationToken().getRange());
 
         // Get the filters.
-        FormattedFilterInfo formattedFilterInfo = this.GetFormattedFilters(orderByExpressions,
+        FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
                 orderByContinuationToken.getOrderByItems(),
                 sortOrders,
                 orderByContinuationToken.getInclusive());
@@ -248,7 +248,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                 formattedFilterInfo);
     }
 
-    private OrderByDocumentQueryExecutionContext<T>.FormattedFilterInfo GetFormattedFilters(
+    private OrderByDocumentQueryExecutionContext<T>.FormattedFilterInfo getFormattedFilters(
             Collection<String> orderByExpressionCollection,
             QueryItem[] orderByItems,
             Collection<SortOrder> sortOrderCollection,
@@ -439,10 +439,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                                 orderByRowResults,
                                 headerResponse(tracker.getAndResetCharge()));
                         if (!queryMetricMap.isEmpty()) {
-                            for (String key : queryMetricMap.keySet()) {
+                            for (Map.Entry<String, QueryMetrics> entry : queryMetricMap.entrySet()) {
                                 BridgeInternal.putQueryMetricsIntoMap(feedResponse,
-                                        key,
-                                        queryMetricMap.get(key));
+                                    entry.getKey(),
+                                    entry.getValue());
                             }
                         }
                         return feedResponse;
@@ -547,7 +547,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
 
     @Override
     public Flux<FeedResponse<T>> executeAsync() {
-        return drainAsync(feedOptions.maxItemCount());
+        return drainAsync(feedOptions.getMaxItemCount());
     }
 
     private String getContinuationToken(

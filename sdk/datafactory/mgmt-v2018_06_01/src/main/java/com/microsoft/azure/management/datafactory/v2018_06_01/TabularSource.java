@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.datafactory.v2018_06_01;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -86,6 +87,13 @@ public class TabularSource extends CopySource {
     private Object queryTimeout;
 
     /**
+     * Specifies the additional columns to be added to source data. Type: array
+     * of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "additionalColumns")
+    private List<AdditionalColumns> additionalColumns;
+
+    /**
      * Get query timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      *
      * @return the queryTimeout value
@@ -102,6 +110,26 @@ public class TabularSource extends CopySource {
      */
     public TabularSource withQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
+        return this;
+    }
+
+    /**
+     * Get specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @return the additionalColumns value
+     */
+    public List<AdditionalColumns> additionalColumns() {
+        return this.additionalColumns;
+    }
+
+    /**
+     * Set specifies the additional columns to be added to source data. Type: array of objects (or Expression with resultType array of objects).
+     *
+     * @param additionalColumns the additionalColumns value to set
+     * @return the TabularSource object itself.
+     */
+    public TabularSource withAdditionalColumns(List<AdditionalColumns> additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 

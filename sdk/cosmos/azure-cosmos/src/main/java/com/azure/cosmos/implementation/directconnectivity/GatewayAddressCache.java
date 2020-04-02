@@ -5,8 +5,6 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.RequestVerb;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -16,6 +14,7 @@ import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
@@ -24,15 +23,16 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.RequestVerb;
 import io.netty.handler.codec.http.HttpMethod;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -129,10 +129,6 @@ public class GatewayAddressCache implements IAddressCache {
              userAgent,
              httpClient,
              DefaultSuboptimalPartitionForceRefreshIntervalInSeconds);
-    }
-
-    private URI getServiceEndpoint() {
-        return this.serviceEndpoint;
     }
 
     @Override
@@ -501,7 +497,7 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     private static AddressInformation toAddressInformation(Address address) {
-        return new AddressInformation(true, address.IsPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
+        return new AddressInformation(true, address.isPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
     }
 
     public Mono<Void> openAsync(

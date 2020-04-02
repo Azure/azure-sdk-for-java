@@ -3,14 +3,14 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BadRequestException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InternalServerErrorException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.InternalServerErrorException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
@@ -22,8 +22,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -31,7 +31,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -386,8 +385,10 @@ public class StoreReader {
                                     // TODO: enforceSessionCheck is true, replace with true
                                     boolean enforceSessionCheck = true;
 
-                                    MutableVolatile<Boolean> hasGoneException = new MutableVolatile(false);
-                                    MutableVolatile<ReadReplicaResult> shortCircuitResult = new MutableVolatile();
+                                    MutableVolatile<Boolean> hasGoneException
+                                        = new MutableVolatile<>(false);
+                                    MutableVolatile<ReadReplicaResult> shortCircuitResult
+                                        = new MutableVolatile<>();
 
                                     return Flux.defer(() ->
                                                                     readFromReplicas(
@@ -873,7 +874,7 @@ public class StoreReader {
         return;
     }
 
-    private class ReadReplicaResult {
+    private static class ReadReplicaResult {
         public ReadReplicaResult(boolean retryWithForceRefresh, List<StoreResult> responses) {
             this.retryWithForceRefresh = retryWithForceRefresh;
             this.responses = responses;
