@@ -11,7 +11,7 @@ import java.time.Duration;
  * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue
  * using sync client.
  */
-public class ReceiveMessageBatchSyncSample {
+public class ReceiveMessageSyncSample {
     /**
      * Main method to invoke this demo on how to receive a stream of {@link ServiceBusMessage} from an
      * Azure Service Bus Queue.

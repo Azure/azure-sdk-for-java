@@ -36,7 +36,8 @@ public class ReadmeSamples {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
-            .queueName("<< QUEUE NAME >>")
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
             .buildAsyncClient();
     }
 
