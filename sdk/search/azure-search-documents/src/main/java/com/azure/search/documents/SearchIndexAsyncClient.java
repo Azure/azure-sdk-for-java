@@ -666,7 +666,8 @@ public final class SearchIndexAsyncClient {
             return new JacksonAdapter().deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS),
                 SearchRequest.class, SerializerEncoding.JSON);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw logger.logExceptionAsError(new IllegalArgumentException("The continuation token is invalid. Token: "
+                + continuationToken));
         }
     }
 

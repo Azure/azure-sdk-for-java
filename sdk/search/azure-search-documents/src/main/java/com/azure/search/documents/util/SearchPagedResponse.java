@@ -84,7 +84,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         try {
             return new JacksonAdapter().serialize(result.getNextPageParameters(), SerializerEncoding.JSON);
         } catch (IOException ex) {
-            throw new RuntimeException("Failed to serialize the search request.");
+            throw new IllegalStateException("Failed to serialize the search request.");
         }
     }
 
