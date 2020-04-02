@@ -67,7 +67,7 @@ public final class LocalCryptographyClientBuilder {
      * @param key The key to be used for cryptography operations.
      * @return the updated builder object.
      */
-    LocalCryptographyClientBuilder key(JsonWebKey key) {
+    public LocalCryptographyClientBuilder key(JsonWebKey key) {
         this.jsonWebKey = key;
         return this;
     }

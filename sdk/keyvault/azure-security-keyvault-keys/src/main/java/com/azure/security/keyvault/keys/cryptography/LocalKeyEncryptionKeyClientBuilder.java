@@ -11,16 +11,14 @@ import reactor.core.publisher.Mono;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link
- * AsyncKeyEncryptionKey local KeyEncryptionKey async client} and {@link KeyEncryptionKey local KeyEncryptionKey sync client},
+ * LocalKeyEncryptionKeyAsyncClient AsyncKeyEncryptionKey} and {@link LocalKeyEncryptionKeyClient KeyEncryptionKey},
  * by calling {@link LocalKeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(JsonWebKey)} and {@link
  * LocalKeyEncryptionKeyClientBuilder#buildKeyEncryptionKey(JsonWebKey)} respectively.
  * It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link LocalKeyEncryptionKeyClientBuilder} to
- * build {@link AsyncKeyEncryptionKey} is {@link JsonWebKey json web key}).</p>
- *
- * <p> The minimal configuration options required by {@link LocalKeyEncryptionKeyClientBuilder}
- * to build {@link KeyEncryptionKey} is {@link JsonWebKey json web key}).</p>
+ * build {@link LocalKeyEncryptionKeyAsyncClient} or {@link LocalKeyEncryptionKeyClient} is
+ * {@link JsonWebKey json web key}).</p>
  *
  * @see LocalKeyEncryptionKeyAsyncClient
  * @see LocalKeyEncryptionKeyClient

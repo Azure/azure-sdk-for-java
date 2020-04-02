@@ -75,7 +75,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
         DecryptResult decryptResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptedData);
         System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte
-     }
+    }
 
     /**
      * Generates a code sample for using {@link LocalCryptographyClient#sign(SignatureAlgorithm, byte[])} and
