@@ -81,9 +81,9 @@ public class EnvironmentCredential implements TokenCredential {
         }).flatMap(cred -> cred.getToken(request));
     }
 
-    private boolean verifyNotNull(String... configs){
-        for(String config: configs){
-            if(config == null){
+    private boolean verifyNotNull(String... configs) {
+        for (String config: configs) {
+            if (config == null) {
                 return false;
             }
         }
