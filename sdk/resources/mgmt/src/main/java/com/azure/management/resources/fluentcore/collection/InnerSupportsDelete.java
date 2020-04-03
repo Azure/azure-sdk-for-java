@@ -17,7 +17,7 @@ public interface InnerSupportsDelete<ResponseT> {
      * Deletes a resource asynchronously.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceName      The name of the resource within specified resource group.
+     * @param resourceName The name of the resource within specified resource group.
      * @return the {@link Mono} object if successful.
      */
     Mono<ResponseT> deleteAsync(String resourceGroupName, String resourceName);

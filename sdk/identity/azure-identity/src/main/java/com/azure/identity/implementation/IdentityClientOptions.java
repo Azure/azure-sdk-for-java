@@ -6,6 +6,7 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.KnownAuthorityHosts;
 
 import java.time.Duration;
@@ -33,7 +34,8 @@ public final class IdentityClientOptions {
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        authorityHost = KnownAuthorityHosts.AZURE_CLOUD;
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
     }

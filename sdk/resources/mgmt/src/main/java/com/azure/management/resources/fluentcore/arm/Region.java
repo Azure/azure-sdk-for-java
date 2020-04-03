@@ -134,7 +134,7 @@ public final class Region {
     /**
      * Creates a region from a name and a label.
      *
-     * @param name  the uniquely identifiable name of the region
+     * @param name the uniquely identifiable name of the region
      * @param label the label of the region
      * @return the newly created region
      */

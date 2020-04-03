@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceProviderOperationDisplayProperties model.
- */
+/** The ResourceProviderOperationDisplayProperties model. */
 @Fluent
 public final class ResourceProviderOperationDisplayProperties {
     /*
@@ -44,7 +42,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Get the publisher property: Operation description.
-     * 
+     *
      * @return the publisher value.
      */
     public String publisher() {
@@ -53,7 +51,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Set the publisher property: Operation description.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
@@ -64,7 +62,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Get the provider property: Operation provider.
-     * 
+     *
      * @return the provider value.
      */
     public String provider() {
@@ -73,7 +71,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Set the provider property: Operation provider.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
@@ -84,7 +82,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Get the resource property: Operation resource.
-     * 
+     *
      * @return the resource value.
      */
     public String resource() {
@@ -93,7 +91,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Set the resource property: Operation resource.
-     * 
+     *
      * @param resource the resource value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
@@ -104,7 +102,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Get the operation property: Resource provider operation.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -113,7 +111,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Set the operation property: Resource provider operation.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
@@ -124,7 +122,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Get the description property: Operation description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -133,7 +131,7 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Set the description property: Operation description.
-     * 
+     *
      * @param description the description value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */

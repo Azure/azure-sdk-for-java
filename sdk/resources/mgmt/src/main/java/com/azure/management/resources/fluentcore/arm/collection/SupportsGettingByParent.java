@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
  * <p>
  * (Note this interface is not intended to be implemented by user code.)
  *
- * @param <T>        the type of the resource collection
- * @param <ParentT>  the parent resource type
+ * @param <T> the type of the resource collection
+ * @param <ParentT> the parent resource type
  * @param <ManagerT> the client manager type representing the service
  */
 public interface SupportsGettingByParent<T, ParentT extends Resource & HasResourceGroup, ManagerT> {
@@ -21,8 +21,8 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      * Gets the information about a resource from Azure based on the resource id.
      *
      * @param resourceGroup the name of resource group
-     * @param parentName    the name of parent resource
-     * @param name          the name of resource
+     * @param parentName the name of parent resource
+     * @param name the name of resource
      * @return an immutable representation of the resource
      */
     T getByParent(String resourceGroup, String parentName, String name);
@@ -31,7 +31,7 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      * Gets the information about a resource from Azure based on the resource id.
      *
      * @param parentResource the instance of parent resource
-     * @param name           the name of resource
+     * @param name the name of resource
      * @return an immutable representation of the resource
      */
     T getByParent(ParentT parentResource, String name);
@@ -40,8 +40,8 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      * Gets the information about a resource from Azure based on the resource id.
      *
      * @param resourceGroup the name of resource group
-     * @param parentName    the name of parent resource
-     * @param name          the name of resource
+     * @param parentName the name of parent resource
+     * @param name the name of resource
      * @return a {@link Mono} that emits the found resource asynchronously.
      */
     Mono<T> getByParentAsync(String resourceGroup, String parentName, String name);
@@ -50,7 +50,7 @@ public interface SupportsGettingByParent<T, ParentT extends Resource & HasResour
      * Gets the information about a resource from Azure based on the resource id.
      *
      * @param parentResource the instance of parent resource.
-     * @param name           the name of resource.
+     * @param name the name of resource.
      * @return a {@link Mono} that emits the found resource asynchronously.
      */
     Mono<T> getByParentAsync(ParentT parentResource, String name);

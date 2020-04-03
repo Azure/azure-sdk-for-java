@@ -23,7 +23,7 @@ public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlVirtualNetworkRulesAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {

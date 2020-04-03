@@ -34,7 +34,7 @@ public class Node<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * Creates a graph node.
      *
-     * @param key  unique id of the node
+     * @param key unique id of the node
      * @param data data to be stored in the node
      */
     public Node(final String key, final DataT data) {

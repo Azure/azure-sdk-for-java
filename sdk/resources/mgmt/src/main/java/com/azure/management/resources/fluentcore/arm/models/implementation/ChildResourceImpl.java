@@ -9,9 +9,9 @@ import com.azure.management.resources.fluentcore.model.implementation.IndexableW
  * Child resource abstract implementation.
  * (Internal use only)
  *
- * @param <InnerT>      Azure inner child class type
+ * @param <InnerT> Azure inner child class type
  * @param <ParentImplT> parent implementation
- * @param <ParentT>     parent interface
+ * @param <ParentT> parent interface
  */
 public abstract class ChildResourceImpl<InnerT, ParentImplT extends ParentT, ParentT>
         extends IndexableWrapperImpl<InnerT>

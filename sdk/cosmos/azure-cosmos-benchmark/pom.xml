@@ -212,8 +212,54 @@ Licensed under the MIT License.
           <skip>true</skip>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <searchTransitive>false</searchTransitive>
+                  <excludes>
+                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                    dependencies when they are used for test scope or otherwise) -->
+                    <exclude>*:*:*:*:runtime</exclude>
+                    <exclude>*:*:*:*:compile</exclude>
+                    <exclude>*:*:*:*:provided</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.azure:*</include>
+                    <include>org.slf4j</include>
+                    <include>io.dropwizard.metrics:metrics-core</include>
+                    <include>com.beust:jcommander</include>
+
+                    <!-- The benchmarking tool is allowed additional dependencies as it is not a library -->
+                    <include>com.google.guava:guava</include>
+                    <include>io.micrometer:micrometer-registry-graphite</include>
+                    <include>org.apache.commons:commons-lang3</include>
+                    <include>org.apache.logging.log4j:log4j-core</include>
+                    <include>io.dropwizard.metrics:metrics-jvm</include>
+                    <include>io.dropwizard.metrics:metrics-graphite</include>
+                    <include>io.micrometer:micrometer-registry-azure-monitor</include>
+                    <include>org.apache.logging.log4j:log4j-slf4j-impl</include>
+                    <include>org.apache.logging.log4j:log4j-api:jar</include>
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
   <profiles>
     <profile>
       <!-- unit test -->
