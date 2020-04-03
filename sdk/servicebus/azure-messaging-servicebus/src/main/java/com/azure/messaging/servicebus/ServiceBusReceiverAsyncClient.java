@@ -509,15 +509,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
 
-        final UUID lockToken = UUID.fromString(message.getLockToken());
+
         if (receiveMode != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
-        } else if (lockToken == null) {
+        } else if (message.getLockToken() == null) {
             return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
                 "'message.getLockToken()' cannot be null.")));
         }
-
+        final UUID lockToken = UUID.fromString(message.getLockToken());
         final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Lock: {}. Expiration: {}",
             entityPath, dispositionStatus, lockToken, instant);

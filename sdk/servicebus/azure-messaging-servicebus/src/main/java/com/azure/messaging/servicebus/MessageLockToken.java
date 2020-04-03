@@ -15,14 +15,14 @@ public interface MessageLockToken {
     /**
      * Gets the lock token.
      *
-     * @return {@link String} representation of {@link UUID}, which represents the lock-token.
+     * @return {@link String} which represents the lock-token.
      */
     String getLockToken();
 
     /**
-     * Created the {@link MessageLockToken} given a {@link String} representation of {@link UUID}.
+     * Created the {@link MessageLockToken} given a {@link String}.
      *
-     * @param uuid {@link String} representation of {@link UUID} for creating {@link MessageLockToken} instance;
+     * @param uuid {@link String} for creating {@link MessageLockToken} instance;
      *
      * @return The created {@link MessageLockToken} object.
      */
