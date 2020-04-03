@@ -384,15 +384,28 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithUserRefreshToken(TokenRequestContext request, MsalToken msalToken) {
         SilentParameters parameters;
+        SilentParameters forceParameters;
         if (msalToken.getAccount() != null) {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount()).build();
+            forceParameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount())
+                    .forceRefresh(true).build();
         } else {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes())).build();
+            forceParameters = SilentParameters.builder(new HashSet<>(request.getScopes())).forceRefresh(true).build();
         }
         return Mono.defer(() -> {
             try {
                 return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters))
-                        .map(ar -> new MsalToken(ar, options));
+                        .map(ar -> new MsalToken(ar, options))
+                        .filter(t -> !t.isExpired())
+                        .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
+                                    try {
+                                        return publicClientApplication.acquireTokenSilently(forceParameters);
+                                    } catch (MalformedURLException e) {
+                                        throw logger.logExceptionAsWarning(new RuntimeException(e));
+                                    }
+                                }
+                        ).map(result -> new MsalToken(result, options))));
             } catch (MalformedURLException e) {
                 return Mono.error(e);
             }

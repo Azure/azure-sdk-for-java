@@ -7,7 +7,9 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.msalextensions.PersistentTokenCacheAccessAspect;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
@@ -16,7 +18,6 @@ import com.microsoft.aad.msal4j.SilentParameters;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
  * {@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME} environment variable will be used.
  */
 public class SharedTokenCacheCredential implements TokenCredential {
+    private final ClientLogger logger = new ClientLogger(SharedTokenCacheCredential.class);
     private final String username;
     private final String clientId;
     private final String tenantId;
@@ -130,16 +132,29 @@ public class SharedTokenCacheCredential implements TokenCredential {
                 // if it does, then request the token
                 SilentParameters params = SilentParameters.builder(
                         new HashSet<>(request.getScopes()), requestedAccount)
-                    .authorityUrl(authorityUrl)
-                    .build();
+                        .authorityUrl(authorityUrl)
+                        .build();
+
+                SilentParameters forceParams = SilentParameters.builder(
+                        new HashSet<>(request.getScopes()), requestedAccount)
+                        .authorityUrl(authorityUrl)
+                        .forceRefresh(true)
+                        .build();
 
                 CompletableFuture<IAuthenticationResult> future;
                 try {
                     future = pubClient.acquireTokenSilently(params);
                     return Mono.fromFuture(() -> future).map(result ->
-                        new AccessToken(result.accessToken(),
-                            result.expiresOnDate().toInstant().atOffset(ZoneOffset.UTC)));
-
+                            new MsalToken(result, options))
+                            .filter(t -> !t.isExpired())
+                            .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
+                                    try {
+                                        return pubClient.acquireTokenSilently(forceParams);
+                                    } catch (MalformedURLException e) {
+                                        throw logger.logExceptionAsWarning(new RuntimeException(e));
+                                    }
+                                }
+                            ).map(result -> new MsalToken(result, options))));
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                     return Mono.error(new RuntimeException("Token was not found"));
