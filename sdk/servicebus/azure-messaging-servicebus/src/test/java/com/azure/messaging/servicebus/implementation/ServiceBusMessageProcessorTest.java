@@ -67,10 +67,10 @@ class ServiceBusMessageProcessorTest {
         expected.add(message3);
         expected.add(message4);
 
-        final UUID lock1 = UUID.randomUUID();
-        final UUID lock2 = UUID.randomUUID();
-        final UUID lock3 = UUID.randomUUID();
-        final UUID lock4 = UUID.randomUUID();
+        final String lock1 = UUID.randomUUID().toString();
+        final String lock2 = UUID.randomUUID().toString();
+        final String lock3 = UUID.randomUUID().toString();
+        final String lock4 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
         when(message2.getLockToken()).thenReturn(lock2);
         when(message3.getLockToken()).thenReturn(lock3);

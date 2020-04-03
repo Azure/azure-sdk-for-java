@@ -35,6 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
+import static com.azure.messaging.servicebus.implementation.Messages.INVALID_LOCK_TOKEN_STRING;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -437,11 +438,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else if (Objects.isNull(lockToken)) {
             return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
         }
+        UUID lockTokenUUID;
+        try {
+            lockTokenUUID = UUID.fromString(lockToken.getLockToken());
+        } catch (IllegalArgumentException ex) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_LOCK_TOKEN_STRING, lockToken.getLockToken())));
+        }
 
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken.getLockToken()))
+                serviceBusManagementNode.renewMessageLock(lockTokenUUID))
             .map(instant -> {
                 if (lockToken instanceof ServiceBusReceivedMessage) {
                     ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
@@ -501,7 +509,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new NullPointerException("'message' cannot be null."));
         }
 
-        final UUID lockToken = message.getLockToken();
+        final UUID lockToken = UUID.fromString(message.getLockToken());
         if (receiveMode != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
