@@ -295,7 +295,9 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private static Integer getPlatFormOffset() {
         String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        System.out.println("It is currently running on os: " + currentOs);
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
+        System.out.println("It is using jdk: " + currentJdk);
 
         for (int i = 0; i < PLATFORM_LIST.size(); i++) {
             if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].toLowerCase(Locale.ROOT))
