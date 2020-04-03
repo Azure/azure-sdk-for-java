@@ -1,7 +1,9 @@
 # Release History
 
-## 11.0.0-beta.2 (2020-04-03)
+## 1.0.0-beta.2 (2020-04-03)
 
+- Renamed the azure-search module to azure-search-documents
+- Changed the namespace com.azure.search to com.azure.search.documents
 - Added support for continuation tokens to resume server-side paging.
 - Replaced `SearchApiKeyCredential` with `AzureKeyCredential`.
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
