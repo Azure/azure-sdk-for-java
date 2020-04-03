@@ -315,7 +315,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.clear();
     }
 
-    @Test(groups = { "emulator" }, timeOut = CHANGE_FEED_PROCESSOR_TIMEOUT * 50)
+//    @Test(groups = { "simple" }, timeOut = CHANGE_FEED_PROCESSOR_TIMEOUT * 50)
     public void readFeedDocumentsAfterSplit() {
         createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
 
@@ -354,7 +354,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             )
             .subscribe();
 
-//        // Wait for the feed processor to receive and process the first batch of documents and apply throughput change.
+        // Wait for the feed processor to receive and process the first batch of documents and apply throughput change.
         try {
             Thread.sleep(4 * CHANGE_FEED_PROCESSOR_TIMEOUT);
         } catch (InterruptedException e) {
@@ -373,6 +373,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             })
             .map(partitionKeyRangeFeedResponse -> {
                 int count = partitionKeyRangeFeedResponse.getResults().size();
+
                 if ( count < 2) {
                     log.warn("Throughput change is pending.");
                     throw new RuntimeException("Throughput change is not done.");
