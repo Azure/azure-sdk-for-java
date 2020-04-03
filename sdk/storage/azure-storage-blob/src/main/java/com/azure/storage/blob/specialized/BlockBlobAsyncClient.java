@@ -104,7 +104,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
-     * <p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -133,7 +132,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
-     * <p>
      *
      * <p><strong>Code Samples</strong></p>
      *
