@@ -8,7 +8,7 @@ import java.time.Duration;
 /**
  * Sample example showing how peek would work.
  */
-public class PeekMessageWithConnectionStringSample {
+public class PeekMessageAsyncSample {
     /**
      * Main method to invoke this demo on how to peek at a message within a Service Bus Queue.
      *
@@ -19,7 +19,8 @@ public class PeekMessageWithConnectionStringSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+        String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+            + "SharedAccessKey={key}";
 
         // Create a receiver using connection string.
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
