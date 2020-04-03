@@ -16,7 +16,6 @@ import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.LoadBalancerTcpProbe;
 import com.azure.management.network.LoadBalancingRule;
-import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NicIPConfiguration;
 import com.azure.management.network.ProbeProtocol;
 import com.azure.management.network.PublicIPAddress;

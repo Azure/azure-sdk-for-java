@@ -18,7 +18,6 @@ import com.azure.management.resources.models.ResourcesInner;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Implementation of the {@link GenericResources}.

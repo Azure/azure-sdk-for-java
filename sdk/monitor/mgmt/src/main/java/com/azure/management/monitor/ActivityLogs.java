@@ -11,7 +11,6 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
 
-import java.util.List;
 
 /**
  * Entry point for Monitor Activity logs API.

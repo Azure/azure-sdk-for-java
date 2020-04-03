@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.management.AzureTokenCredential;
 
 import java.net.Proxy;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 /**
