@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 
 /**
