@@ -15,19 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class BlobRestoreRange {
     /**
-     * Blob start range. Empty means account start.
+     * Blob start range. This is inclusive. Empty means account start.
      */
     @JsonProperty(value = "startRange", required = true)
     private String startRange;
 
     /**
-     * Blob end range. Empty means account end.
+     * Blob end range. This is exclusive. Empty means account end.
      */
     @JsonProperty(value = "endRange", required = true)
     private String endRange;
 
     /**
-     * Get blob start range. Empty means account start.
+     * Get blob start range. This is inclusive. Empty means account start.
      *
      * @return the startRange value
      */
@@ -36,7 +36,7 @@ public class BlobRestoreRange {
     }
 
     /**
-     * Set blob start range. Empty means account start.
+     * Set blob start range. This is inclusive. Empty means account start.
      *
      * @param startRange the startRange value to set
      * @return the BlobRestoreRange object itself.
@@ -47,7 +47,7 @@ public class BlobRestoreRange {
     }
 
     /**
-     * Get blob end range. Empty means account end.
+     * Get blob end range. This is exclusive. Empty means account end.
      *
      * @return the endRange value
      */
@@ -56,7 +56,7 @@ public class BlobRestoreRange {
     }
 
     /**
-     * Set blob end range. Empty means account end.
+     * Set blob end range. This is exclusive. Empty means account end.
      *
      * @param endRange the endRange value to set
      * @return the BlobRestoreRange object itself.
