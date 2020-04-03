@@ -237,7 +237,9 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     private static Arguments printout(Arguments arguments) {
-        System.out.println(Arrays.toString(arguments.get()));
+        if (testMode == TestMode.LIVE) {
+            System.out.println(Arrays.toString(arguments.get()));
+        }
         return arguments;
     }
 
