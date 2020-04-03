@@ -84,7 +84,7 @@ public final class SubscriptionClientBuilder {
      *
      * @return an instance of SubscriptionClientImpl.
      */
-    public SubscriptionClientImpl build() {
+    public SubscriptionClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }

@@ -100,7 +100,7 @@ public final class ResourceManagementClientBuilder {
      *
      * @return an instance of ResourceManagementClientImpl.
      */
-    public ResourceManagementClientImpl build() {
+    public ResourceManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }

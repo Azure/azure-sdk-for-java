@@ -84,7 +84,7 @@ public final class PolicyClientBuilder {
      *
      * @return an instance of PolicyClientImpl.
      */
-    public PolicyClientImpl build() {
+    public PolicyClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
