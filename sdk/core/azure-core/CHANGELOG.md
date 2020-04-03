@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0 (2020-04-02)
+## 1.4.0 (2020-04-03)
 
 - Added `AzureKeyCredential` and `AzureKeyCredentialPolicy` to support generic key based authorizations.
 - Fixed a deserialization issue when a JSON property contained a `.` and the containing class was annotated with `JsonFlatten`.

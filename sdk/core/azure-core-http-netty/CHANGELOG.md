@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (2020-04-02)
+## 1.5.0 (2020-04-03)
 
 - Generalized configuration for `NioEventLoopGroup` to `EventLoopGroup`. Deprecated `NioEventLoopGroup` setter.
 - Updated Netty dependencies to `4.1.45.FINAL` and Netty Reactor to `0.9.5.RELEASE`.

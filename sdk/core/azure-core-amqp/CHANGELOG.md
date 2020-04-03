@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.2 (2020-04-02)
+## 1.0.2 (2020-04-03)
 
 - Fix bug where management channel would not be re-created upon closing.
 
