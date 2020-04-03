@@ -1287,7 +1287,9 @@ class BlockBlobAPITest extends APISpec {
     @Unroll
     def "Buffered upload illegal args out of bounds"() {
         when:
-        new ParallelTransferOptions(bufferSize, numBuffs, null)
+        new ParallelTransferOptions()
+        .setBlockSize(bufferSize)
+        .setNumBuffers(numBuffs)
 
         then:
         thrown(IllegalArgumentException)
