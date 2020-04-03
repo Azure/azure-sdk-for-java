@@ -5,30 +5,25 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
 
 /**
  * This class provides a synchronous client that contains model management the operations that apply
  * to Azure Form Recognizer.
- * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
- * subscription account information.
+ * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
  *
  * @see FormRecognizerClientBuilder
  */
-@ServiceClient(builder = FormRecognizerClientBuilder.class)
 public class FormTrainingClient {
 
+    private final ClientLogger logger = new ClientLogger(FormTrainingClient.class);
     private final FormTrainingAsyncClient client;
 
     /**
@@ -52,10 +47,9 @@ public class FormTrainingClient {
 
     /**
      * Create and train a custom model.
-     * <p>Models are trained using documents that are of the following content
+     * Models are trained using documents that are of the following content
      * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
      * Other type of content is ignored.
-     * </p>
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -66,9 +60,8 @@ public class FormTrainingClient {
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
+        return beginTraining(fileSourceUrl, useLabelFile, false, null);
     }
 
     /**
@@ -87,42 +80,38 @@ public class FormTrainingClient {
      * @param filePrefix A case-sensitive prefix string to filter documents in the source path
      * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
      * sub folders for training.
-     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
-     * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
-        boolean includeSubFolders, String filePrefix, Duration pollInterval) {
-        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders,
-            filePrefix, pollInterval).getSyncPoller();
+                                                                      boolean includeSubFolders, String filePrefix) {
+        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders, filePrefix).getSyncPoller();
     }
 
     /**
      * Get detailed information for a specified custom model id.
      *
-     * @param modelId The UUID string format model identifier.
+     * @param modelId Model identifier.
      *
      * @return The detailed information for the specified model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CustomFormModel getCustomModel(String modelId) {
-        return getCustomModelWithResponse(modelId, Context.NONE).getValue();
+        return getCustomFormModelWithResponse(modelId, Context.NONE).getValue();
     }
 
     /**
      * Get detailed information for a specified custom model id.
      *
-     * @param modelId The UUID string format model identifier.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
+     * @param modelId Model identifier.
+     * @param context The context.
+     * 
      * @return The detailed information for the specified model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CustomFormModel> getCustomModelWithResponse(String modelId, Context context) {
-        return client.getCustomModelWithResponse(modelId, context).block();
+    public Response<CustomFormModel> getCustomFormModelWithResponse(String modelId, Context context) {
+        return client.getCustomFormModelWithResponse(modelId, context).block();
     }
 
     /**
@@ -138,8 +127,6 @@ public class FormTrainingClient {
     /**
      * Get account information for all custom models.
      *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
      * @return The account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -150,7 +137,7 @@ public class FormTrainingClient {
     /**
      * Deletes the specified custom model.
      *
-     * @param modelId The UUID string format model identifier.
+     * @param modelId The modelIdentifier
      */
     public void deleteModel(String modelId) {
         deleteModelWithResponse(modelId, Context.NONE);
@@ -159,8 +146,8 @@ public class FormTrainingClient {
     /**
      * Deletes the specified custom model.
      *
-     * @param modelId The UUID string format model identifier.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param modelId The modelIdentifier.
+     * @param context The context object.
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
@@ -168,24 +155,6 @@ public class FormTrainingClient {
         return client.deleteModelWithResponse(modelId, context).block();
     }
 
-    /**
-     * List information for all models.
-     *
-     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomFormModelInfo> listModels() {
-        return new PagedIterable<>(client.listModels(Context.NONE));
-    }
-
-    /**
-     * List information for all models with taking {@link Context}.
-     *
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CustomFormModelInfo> listModels(Context context) {
-        return new PagedIterable<>(client.listModels(context));
-    }
+    // list models
+    // TODO
 }

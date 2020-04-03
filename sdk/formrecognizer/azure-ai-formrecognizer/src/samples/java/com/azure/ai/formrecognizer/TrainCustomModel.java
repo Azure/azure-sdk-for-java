@@ -29,7 +29,7 @@ public class TrainCustomModel {
             .buildAsyncClient().getFormTrainingAsyncClient();
 
         // Train custom model
-        String trainingSetSource = "{training-set-SAS-URL}";
+        String trainingSetSource = "https://krpraticstorageacc.blob.core.windows.net/form-recognizer-merged?sp=racwdl&st=2020-04-07T19:04:26Z&se=2020-06-08T19:04:00Z&sv=2019-02-02&sr=c&sig=55DKi6ZtztMjWRd6IKxXWVwcJHY2BB3utLjLxush%2FpQ%3D";
         PollerFlux<OperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingSetSource, true);
 
         CustomFormModel customFormModel = trainingPoller
@@ -39,8 +39,9 @@ public class TrainCustomModel {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
-                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus()));
+                    System.out.println("Polling completed unsuccessfully with status:"
+                        + trainingOperationResponse.getStatus());
+                    return Mono.empty();
                 }
             }).block();
 
@@ -50,7 +51,7 @@ public class TrainCustomModel {
         customFormModel.getSubModels().forEach(customFormSubModel ->
             customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
                 System.out.printf("Model Type Id: %s Field Text: %s Field Accuracy: %s%n",
-                    key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+                    key, customFormModelField.getFieldText(), customFormModelField.getAccuracy())));
 
     }
 }

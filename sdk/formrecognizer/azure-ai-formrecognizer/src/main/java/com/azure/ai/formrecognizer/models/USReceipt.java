@@ -5,14 +5,13 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
-import java.time.LocalDate;
 import java.util.List;
 
-/**
+/*
  * The USReceipt model.
  */
 @Immutable
-public final class USReceipt extends RecognizedReceipt {
+public class USReceipt extends RecognizedReceipt {
 
     /**
      * List of recognized field items.
@@ -27,47 +26,47 @@ public final class USReceipt extends RecognizedReceipt {
     /**
      * Recognized field merchant name.
      */
-    private final FormField<String> merchantName;
+    private final FieldValue<?> merchantName;
 
     /**
      * Recognized field merchant address.
      */
-    private final FormField<String> merchantAddress;
+    private final FieldValue<?> merchantAddress;
 
     /**
      * Recognized field merchant phone number.
      */
-    private final FormField<String> merchantPhoneNumber;
+    private final FieldValue<?> merchantPhoneNumber;
 
     /**
      * Recognized field subtotal.
      */
-    private final FormField<Float> subtotal;
+    private final FieldValue<?> subtotal;
 
     /**
      * Recognized field tax.
      */
-    private final FormField<Float> tax;
+    private final FieldValue<?> tax;
 
     /**
      * Recognized field tip.
      */
-    private final FormField<Float> tip;
+    private final FieldValue<?> tip;
 
     /**
      * Recognized field total.
      */
-    private final FormField<Float> total;
+    private final FieldValue<?> total;
 
     /**
      * Recognized field transaction date.
      */
-    private final FormField<LocalDate> transactionDate;
+    private final FieldValue<?> transactionDate;
 
     /**
      * Recognized field transaction time.
      */
-    private final FormField<String> transactionTime;
+    private final FieldValue<?> transactionTime;
 
     /**
      * Constructs a USReceipt object.
@@ -80,21 +79,17 @@ public final class USReceipt extends RecognizedReceipt {
      * @param merchantAddress Recognized field merchant address.
      * @param merchantPhoneNumber Recognized field merchant phone number.
      * @param subtotal Recognized field subtotal.
-     * @param tax Recognized field tax.
+     * @param tax Recognized field tac.
      * @param tip Recognized field tip.
      * @param total Recognized field total.
      * @param transactionDate Recognized field transaction date.
      * @param transactionTime Recognized field transaction time.
      */
-    public USReceipt(String receiptLocale, RecognizedForm recognizedForm,
-        final List<USReceiptItem> receiptItems,
-        final USReceiptType receiptType, final FormField<String> merchantName,
-        final FormField<String> merchantAddress,
-        final FormField<String> merchantPhoneNumber, final FormField<Float> subtotal,
-        final FormField<Float> tax,
-        final FormField<Float> tip, final FormField<Float> total,
-        final FormField<LocalDate> transactionDate,
-        final FormField<String> transactionTime) {
+    public USReceipt(String receiptLocale, RecognizedForm recognizedForm, final List<USReceiptItem> receiptItems, 
+        final USReceiptType receiptType, final FieldValue<?> merchantName, final FieldValue<?> merchantAddress, 
+        final FieldValue<?> merchantPhoneNumber, final FieldValue<?> subtotal, final FieldValue<?> tax, 
+        final FieldValue<?> tip, final FieldValue<?> total, final FieldValue<?> transactionDate,
+        final FieldValue<?> transactionTime) {
         super(receiptLocale, recognizedForm);
         this.receiptItems = receiptItems;
         this.receiptType = receiptType;
@@ -126,101 +121,102 @@ public final class USReceipt extends RecognizedReceipt {
     }
 
     /**
-     * Get the itemized fields in the Recognized Receipt.
+     * Get the receiptItems property: Receipt Items.
      *
-     * @return the list itemized fields.
+     * @return the list of recognized receipt items.
      */
     public List<USReceiptItem> getReceiptItems() {
         return this.receiptItems;
     }
 
     /**
-     * Get the type of Recognized Receipt.
+     * Get the receiptType property: Receipt type.
      *
-     * @return the type of Recognized Receipt.
+     * @return the Receipt type value.
      */
     public USReceiptType getReceiptType() {
         return this.receiptType;
     }
 
     /**
-     * Get the merchant name field.
+     * Get the merchantName property: Merchant name field.
      *
      * @return the merchantName value.
      */
-    public FormField<String> getMerchantName() {
+    public FieldValue<?> getMerchantName() {
         return this.merchantName;
     }
 
+
     /**
-     * Get the merchant address field.
+     * Get the merchantAddress property: Merchant address field.
      *
      * @return the merchantAddress value.
      */
-    public FormField<String> getMerchantAddress() {
+    public FieldValue<?> getMerchantAddress() {
         return this.merchantAddress;
     }
 
     /**
-     * Get the merchant Phone number field.
+     * Get the merchantPhoneNumber property: Merchant Phone number field.
      *
      * @return the merchantPhoneNumber value.
      */
-    public FormField<String> getMerchantPhoneNumber() {
+    public FieldValue<?> getMerchantPhoneNumber() {
         return this.merchantPhoneNumber;
     }
 
     /**
-     * Get the subtotal field.
+     * Get the subtotal property: The subtotal field.
      *
      * @return the subtotal value.
      */
-    public FormField<Float> getSubtotal() {
+    public FieldValue<?> getSubtotal() {
         return this.subtotal;
     }
 
     /**
-     * Get the tax field.
+     * Get the tax property: The tax field.
      *
      * @return the tax value.
      */
-    public FormField<Float> getTax() {
+    public FieldValue<?> getTax() {
         return this.tax;
     }
 
     /**
-     * Get the tip field.
+     * Get the tip property: The tip field.
      *
      * @return the tip value.
      */
-    public FormField<Float> getTip() {
+    public FieldValue<?> getTip() {
         return this.tip;
     }
 
     /**
-     * Get the Total field.
+     * Get the total property: The Total field.
      *
      * @return the total value.
      */
-    public FormField<Float> getTotal() {
+    public FieldValue<?> getTotal() {
         return this.total;
     }
 
     /**
-     * Get the Transaction date field.
+     * Get the transactionDate property: The TransactionDate field.
      *
      * @return the transactionDate value.
      */
-    public FormField<LocalDate> getTransactionDate() {
+    public FieldValue<?> getTransactionDate() {
         return this.transactionDate;
     }
 
     /**
-     * Get the transaction time field.
+     * Get the transactionTime property: The TransactionTime field.
      *
      * @return the transactionTime value.
      */
-    public FormField<String> getTransactionTime() {
+    public FieldValue<?> getTransactionTime() {
         return this.transactionTime;
     }
 }

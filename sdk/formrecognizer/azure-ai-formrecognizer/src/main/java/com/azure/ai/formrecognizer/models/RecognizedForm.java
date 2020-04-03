@@ -4,20 +4,19 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 
 import java.util.Map;
 
-/**
+/*
  * The RecognizedForm model.
  */
 @Immutable
-public final class RecognizedForm {
+public class RecognizedForm {
 
     /*
      * Dictionary of named field values.
      */
-    private final Map<String, FormField<?>> fields;
+    private final Map<String, FieldValue<?>> fields;
 
     /*
      * Form type.
@@ -32,7 +31,7 @@ public final class RecognizedForm {
     /*
      * List of extracted pages from the form.
      */
-    private final IterableStream<FormPage> pages;
+    private final Iterable<FormPage> pages;
 
     /**
      * Constructs a RecognizedForm object.
@@ -42,8 +41,8 @@ public final class RecognizedForm {
      * @param pageRange First and last page number where the document is found.
      * @param pages List of extracted pages from the form.
      */
-    public RecognizedForm(final Map<String, FormField<?>> fields, final String formType, final PageRange pageRange,
-        final IterableStream<FormPage> pages) {
+    public RecognizedForm(final Map<String, FieldValue<?>> fields, final String formType, final PageRange pageRange,
+        final Iterable<FormPage> pages) {
         this.fields = fields;
         this.formType = formType;
         this.pageRange = pageRange;
@@ -51,16 +50,16 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the dictionary of named field values.
+     * Get the fields property: Dictionary of named field values.
      *
      * @return the fields value.
      */
-    public Map<String, FormField<?>> getFields() {
+    public Map<String, FieldValue<?>> getFields() {
         return this.fields;
     }
 
     /**
-     * Get the recognized form type.
+     * Get the formType property: Form type.
      *
      * @return the formType value.
      */
@@ -69,7 +68,8 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the first and last page number where the document is found.
+     * Get the pageRange property: First and last page number where the
+     * document is found.
      *
      * @return the pageRange value.
      */
@@ -78,11 +78,11 @@ public final class RecognizedForm {
     }
 
     /**
-     * Get the list of extracted pages.
+     * Get the pages property: List of extracted pages.
      *
      * @return the pages value.
      */
-    public IterableStream<FormPage> getPages() {
+    public Iterable<FormPage> getPages() {
         return this.pages;
     }
 }

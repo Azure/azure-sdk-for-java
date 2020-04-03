@@ -9,17 +9,12 @@ import com.azure.core.annotation.Immutable;
  * The CustomFormModelField model.
  */
 @Immutable
-public final class CustomFormModelField {
-
-    /*
-     * Training field label.
-     */
-    private final String label;
+public class CustomFormModelField {
 
     /*
      * Training field name.
      */
-    private final String name;
+    private final String fieldText;
 
     /*
      * Estimated extraction accuracy for this field.
@@ -29,36 +24,25 @@ public final class CustomFormModelField {
     /**
      * Constructs a CustomFormModelField object.
      *
-     * @param label Training field label.
-     * @param name Training field name.
+     * @param fieldText Training field name.
      * @param accuracy Estimated extraction accuracy for this field.
      */
-    public CustomFormModelField(final String label, final String name, final Float accuracy) {
-        this.label = label;
-        this.name = name;
+    public CustomFormModelField(final String fieldText, final Float accuracy) {
+        this.fieldText = fieldText;
         this.accuracy = accuracy;
     }
 
     /**
-     * Get the recognized field label value.
+     * Get the field text property: Training field name.
      *
      * @return the fieldName value.
      */
-    public String getLabel() {
-        return this.label;
+    public String getFieldText() {
+        return this.fieldText;
     }
 
     /**
-     * Get the recognized field name value.
-     *
-     * @return the fieldName value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the estimated extraction accuracy for this field.
+     * Get the accuracy property: Estimated extraction accuracy for this field.
      *
      * @return the accuracy value.
      */

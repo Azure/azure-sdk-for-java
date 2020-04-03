@@ -149,15 +149,21 @@ public final class FormRecognizerClientBuilder {
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
-        if (pipeline == null) {
-            pipeline = getDefaultHttpPipeline(buildConfiguration);
-        }
+        pipeline = getDefaultHttpPipeline(buildConfiguration, pipeline);
+
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
             .build();
 
         return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
+    }
+
+    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration, HttpPipeline pipeline) {
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
+        }
+        return pipeline;
     }
 
     private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {

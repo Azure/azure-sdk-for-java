@@ -3,12 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Immutable;
-
-/**
- * The FormContent model.
- */
-@Immutable
 public abstract class FormContent {
 
     /*
@@ -19,17 +13,12 @@ public abstract class FormContent {
     /*
      * The 1-based page number in the input document.
      */
-    private final Integer pageNumber;
+    private final int pageNumber;
 
     /*
      * BoundingBox specifying relative coordinates of the element.
      */
     private final BoundingBox boundingBox;
-
-    /*
-     * Form text content type.
-     */
-    private final TextContentType textContentType;
 
     /**
      * Creates raw OCR item.
@@ -37,14 +26,11 @@ public abstract class FormContent {
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
-     * @param textContentType The type of text content.
      */
-    FormContent(final String text, final BoundingBox boundingBox, 
-        final Integer pageNumber, final TextContentType textContentType) {
+    FormContent(final String text, final BoundingBox boundingBox, final int pageNumber) {
         this.boundingBox = boundingBox;
         this.text = text;
         this.pageNumber = pageNumber;
-        this.textContentType = textContentType;
     }
 
     /**
@@ -70,16 +56,7 @@ public abstract class FormContent {
      *
      * @return the page number value.
      */
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return this.pageNumber;
-    }
-
-    /**
-     * Get the TextContent type of the FormContent.
-     *
-     * @return The TextContent type of the FormContent.
-     */
-    public TextContentType getTextContentType() {
-        return this.textContentType;
     }
 }

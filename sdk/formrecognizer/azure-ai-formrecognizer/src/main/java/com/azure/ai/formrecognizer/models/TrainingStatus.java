@@ -7,22 +7,22 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
+/*
  * Define enum values for TrainingStatus.
  */
 public final class TrainingStatus extends ExpandableStringEnum<TrainingStatus> {
 
     /**
-     * Static value succeeded for TrainingStatus.
+     * Static value Creating for TrainingStatus.
      */
     public static final TrainingStatus SUCCEEDED = fromString("succeeded");
     /**
-     * Static value partiallySucceeded for TrainingStatus.
+     * Static value Creating for TrainingStatus.
      */
     public static final TrainingStatus PARTIALLY_SUCCEEDED = fromString("partiallySucceeded");
 
     /**
-     * Static value failed for TrainingStatus.
+     * Static value Creating for TrainingStatus.
      */
     public static final TrainingStatus FAILED = fromString("failed");
 

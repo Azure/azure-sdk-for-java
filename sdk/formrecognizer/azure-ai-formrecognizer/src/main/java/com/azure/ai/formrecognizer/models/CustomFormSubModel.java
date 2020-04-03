@@ -11,15 +11,16 @@ import java.util.Map;
  * The CustomFormSubModel model.
  */
 @Immutable
-public final class CustomFormSubModel {
+public class CustomFormSubModel {
 
     /*
      * Estimated extraction accuracy for this model.
      */
-    private final Float accuracy;
+    private final float accuracy;
 
     /*
-     * Map of fields used to train the model.
+     * List of fields used to train the model and the train operation error
+     * reported by each.
      */
     private final Map<String, CustomFormModelField> fieldMap;
 
@@ -28,14 +29,7 @@ public final class CustomFormSubModel {
      */
     private final String formType;
 
-    /**
-     * Constructs a CustomFormSubModel object.
-     *
-     * @param accuracy The estimated extraction accuracy for this model.
-     * @param fieldMap The Map of fields used to train the model.
-     * @param formType The recognized form type.
-     */
-    public CustomFormSubModel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap,
+    public CustomFormSubModel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap, 
         final String formType) {
         this.accuracy = accuracy;
         this.fieldMap = fieldMap;
@@ -43,16 +37,16 @@ public final class CustomFormSubModel {
     }
 
     /**
-     * Get the estimated extraction accuracy for this model.
+     * Get the accuracy property: Estimated extraction accuracy for this model.
      *
      * @return the accuracy value.
      */
-    public Float getAccuracy() {
+    public float getAccuracy() {
         return this.accuracy;
     }
 
     /**
-     * Gets the recognized form type for the model.
+     * Gets the form type for the model.
      *
      * @return the form type for the model.
      */

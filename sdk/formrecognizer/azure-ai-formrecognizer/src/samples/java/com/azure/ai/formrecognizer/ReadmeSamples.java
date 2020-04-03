@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.ReceiptExtensions;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
@@ -68,20 +69,20 @@ public class ReadmeSamples {
     public void extractReceipt() {
         String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
+            formRecognizerClient.beginExtractReceiptsFromUrl(receiptSourceUrl);
         IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
         receiptPageResults.forEach(recognizedReceipt -> {
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-            System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
-            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
-            System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+            System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getText());
+            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getValue());
+            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getText());
+            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getValue());
+            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getText());
+            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getValue());
+            System.out.printf("Total: %s%n", usReceipt.getTotal().getText());
+            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getValue());
         });
     }
 }

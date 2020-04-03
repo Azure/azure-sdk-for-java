@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The FormRecognizerError model.
  */
 @Immutable
-public final class FormRecognizerError {
+public class FormRecognizerError {
     /*
      * The code property.
      */

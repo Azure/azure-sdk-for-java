@@ -10,7 +10,7 @@ import com.azure.core.util.IterableStream;
  * The FormLine model.
  */
 @Immutable
-public final class FormLine extends FormContent {
+public class FormLine extends FormContent {
 
     /*
      * List of words in the text line.
@@ -21,14 +21,13 @@ public final class FormLine extends FormContent {
      * Creates raw OCR item.
      * When includeTextDetails is set to true, a list of recognized text lines.
      *
-     * @param text The text content of recognized field.
-     * @param boundingBox The BoundingBox of the recognized field.
-     * @param pageNumber the page number.
-     * @param formWords The list of word element references.
+     * @param text The text content of ExtractedField.
+     * @param boundingBox The BoundingBox of ExtractedField.
+     * @param pageNumber the pagenumber.
+     * @param formWords The formwords
      */
-    public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
-        final IterableStream<FormWord> formWords) {
-        super(text, boundingBox, pageNumber, TextContentType.LINE);
+    public FormLine(String text, BoundingBox boundingBox, int pageNumber, final IterableStream<FormWord> formWords) {
+        super(text, boundingBox, pageNumber);
         this.formWords = formWords;
     }
 
@@ -41,35 +40,18 @@ public final class FormLine extends FormContent {
         return this.formWords;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TextContentType getTextContentType() {
-        return super.getTextContentType();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return super.getText();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 }

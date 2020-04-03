@@ -11,7 +11,7 @@ import java.util.List;
  * The TrainingDocumentInfo model.
  */
 @Immutable
-public final class TrainingDocumentInfo {
+public class TrainingDocumentInfo {
 
     /*
      * Training document name.
@@ -31,7 +31,7 @@ public final class TrainingDocumentInfo {
     /*
      * List of errors.
      */
-    private final List<FormRecognizerError> documentErrors;
+    private final List<FormRecognizerError> documentError;
 
     /**
      * Constructs a TrainingDocumentInfo object.
@@ -39,18 +39,18 @@ public final class TrainingDocumentInfo {
      * @param name Training document name.
      * @param trainingStatus Status of the training operation.
      * @param pageCount Total number of pages trained.
-     * @param documentErrors List of errors.
+     * @param documentError List of errors.
      */
     public TrainingDocumentInfo(final String name, final TrainingStatus trainingStatus, final int pageCount,
-                                final List<FormRecognizerError> documentErrors) {
+                                final List<FormRecognizerError> documentError) {
         this.name = name;
         this.trainingStatus = trainingStatus;
         this.pageCount = pageCount;
-        this.documentErrors = documentErrors;
+        this.documentError = documentError;
     }
 
     /**
-     * Get the training document name.
+     * Get the documentName property: Training document name.
      *
      * @return the documentName value.
      */
@@ -59,7 +59,7 @@ public final class TrainingDocumentInfo {
     }
 
     /**
-     * Get the status of the training operation.
+     * Get the status property: Status of the training operation.
      *
      * @return the status value.
      */
@@ -68,7 +68,7 @@ public final class TrainingDocumentInfo {
     }
 
     /**
-     * Get the total number of pages trained.
+     * Get the pageCount property: Total number of pages trained.
      *
      * @return the pages value.
      */
@@ -77,11 +77,11 @@ public final class TrainingDocumentInfo {
     }
 
     /**
-     * Get the list of errors.
+     * Get the errors property: List of errors.
      *
      * @return the errors value.
      */
-    public List<FormRecognizerError> getDocumentErrors() {
-        return this.documentErrors;
+    public List<FormRecognizerError> getDocumentError() {
+        return this.documentError;
     }
 }

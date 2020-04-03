@@ -5,115 +5,50 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.List;
+
 /**
- * The FormField model.
- *
- * @param <T> The type of FormField.
+ * The FormField Model.
  */
 @Immutable
-public final class FormField<T> {
+public class FormField {
 
     /*
-     * The confidence value of the field.
+     * The recognized form type id.
      */
-    private final float confidence;
+    private final String formTypeId;
 
     /*
-     * The label text of the field.
+     * The list of recognized fields.
      */
-    private final FieldText labelText;
-
-    /*
-     * The name value of the field.
-     */
-    private final String name;
-
-    /*
-     * The value of the field.
-     */
-    private final T fieldValue;
-
-    /*
-     * The text value field..
-     */
-    private final FieldText valueText;
-
-    /*
-     * The 1 based page number.
-     */
-    private final Integer pageNumber;
+    private final List<String> fields;
 
     /**
      * Constructs a FormField object.
      *
-     * @param confidence The confidence of the recognized field.
-     * @param labelText The label text value for the field.
-     * @param name The name the field.
-     * @param fieldValue The value of the field.
-     * @param valueText The label value text for the field.
-     * @param pageNumber The label text value for the field.
+     * @param formTypeId The recognized form type Id.
+     * @param fields The list of recognized fields.
      */
-    public FormField(final float confidence, final FieldText labelText, final String name, final T fieldValue,
-        final FieldText valueText, final Integer pageNumber) {
-        this.confidence = confidence;
-        this.labelText = labelText;
-        this.name = name;
-        this.fieldValue = fieldValue;
-        this.valueText = valueText;
-        this.pageNumber = pageNumber;
+    public FormField(final String formTypeId, final List<String> fields) {
+        this.formTypeId = formTypeId;
+        this.fields = fields;
     }
 
     /**
-     * Get the estimated confidence value of the recognized field.
+     * The recognized form type id.
      *
-     * @return the confidence value.
+     * @return The recognized form type Id.
      */
-    public float getConfidence() {
-        return this.confidence;
+    public String getFormTypeId() {
+        return this.formTypeId;
     }
 
     /**
-     * Get the label text of the field.
+     * List of recognized fields.
      *
-     * @return the text-label value.
+     * @return The list of recognized fields.
      */
-    public FieldText getLabelText() {
-        return this.labelText;
-    }
-
-    /**
-     * Get the name of the field in the provided document.
-     *
-     * @return the name value.
-     */
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the value of the field.
-     *
-     * @return Value of the field.
-     */
-    public T getFieldValue() {
-        return this.fieldValue;
-    }
-
-    /**
-     * Get the value text of the field.
-     *
-     * @return the value text of the field.
-     */
-    public FieldText getValueText() {
-        return this.valueText;
-    }
-
-    /**
-     * Get the 1-based page number in the input document.
-     *
-     * @return the page number value.
-     */
-    public Integer getPageNumber() {
-        return this.pageNumber;
+    public List<String> getFields() {
+        return this.fields;
     }
 }

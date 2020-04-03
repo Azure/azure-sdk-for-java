@@ -4,33 +4,34 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The FormTableCell model.
  */
 @Immutable
-public final class FormTableCell extends FormContent {
+public class FormTableCell extends FormContent {
 
     /*
      * Row index of the cell.
      */
-    private final Integer rowIndex;
+    private final int rowIndex;
 
     /*
      * Column index of the cell.
      */
-    private final Integer columnIndex;
+    private final int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
-    private final Integer rowSpan;
+    private final int rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
-    private final Integer columnSpan;
+    private final int columnSpan;
 
     /*
      * Confidence value.
@@ -41,7 +42,7 @@ public final class FormTableCell extends FormContent {
      * When includeTextDetails is set to true, a list of references to the text
      * elements constituting this table cell.
      */
-    private final IterableStream<FormContent> elements;
+    private final List<FormContent> elements;
 
     /*
      * Is the current cell a header cell?
@@ -63,28 +64,28 @@ public final class FormTableCell extends FormContent {
      * @param text The recognized text value.
      * @param boundingBox The bounding box properties of the cell.
      * @param confidence Confidence value of the recognized text.
+     * @param elements a list of references to the text elements constituting this table cell.
      * @param isHeader Is the current cell a header cell?
      * @param isFooter Is the current cell a footer cell?
      * @param pageNumber The 1 based page number of the cell
-     * @param textContent a list of references to the text elements constituting this table cell.
      */
-    public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
-        final Integer columnSpan, final String text, final BoundingBox boundingBox,
-        final float confidence, final boolean isHeader, final boolean isFooter, final int pageNumber,
-        final IterableStream<FormContent> textContent) {
-        super(text, boundingBox, pageNumber, null);
+    public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan, 
+        final Integer columnSpan, final String text, final BoundingBox boundingBox, 
+        final float confidence, final List<FormContent> elements, final boolean isHeader,
+        final boolean isFooter, final int pageNumber) {
+        super(text, boundingBox, pageNumber);
         this.rowIndex = rowIndex;
         this.columnIndex = columnIndex;
         this.rowSpan = rowSpan;
         this.columnSpan = columnSpan;
         this.confidence = confidence;
+        this.elements = elements;
         this.isHeader = isHeader;
         this.isFooter = isFooter;
-        this.elements = textContent;
     }
 
     /**
-     * Get the confidence of the text of the cell.
+     * Get the confidence property: Confidence of the text of the cell.
      *
      * @return the confidence value.
      */
@@ -92,79 +93,70 @@ public final class FormTableCell extends FormContent {
         return this.confidence;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Integer getPageNumber() {
+    public int getPageNumber() {
         return super.getPageNumber();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getText() {
         return super.getText();
     }
 
     /**
-     * Get the row index of the cell.
+     * Get the rowIndex property: Row index of the cell.
      *
      * @return the rowIndex value.
      */
-    public Integer getRowIndex() {
+    public int getRowIndex() {
         return this.rowIndex;
     }
 
     /**
-     * Get the column index of the cell.
+     * Get the columnIndex property: Column index of the cell.
      *
      * @return the columnIndex value.
      */
-    public Integer getColumnIndex() {
+    public int getColumnIndex() {
         return this.columnIndex;
     }
 
     /**
-     * Get the number of rows spanned by this cell.
+     * Get the rowSpan property: Number of rows spanned by this cell.
      *
      * @return the rowSpan value.
      */
-    public Integer getRowSpan() {
+    public int getRowSpan() {
         return this.rowSpan;
     }
 
 
     /**
-     * Get the number of columns spanned by this cell.
+     * Get the columnSpan property: Number of columns spanned by this cell.
      *
      * @return the columnSpan value.
      */
-    public Integer getColumnSpan() {
+    public int getColumnSpan() {
         return this.columnSpan;
     }
 
     /**
-     * Get the list of references to the text elements constituting this table cell
-     * When includeTextDetails is set to true.
+     * Get the elements property: When includeTextDetails is set to true, a
+     * list of references to the text elements constituting this table cell.
      *
      * @return the elements value.
      */
-    public IterableStream<FormContent> getElements() {
+    public List<FormContent> getElements() {
         return this.elements;
     }
 
     /**
-     * Get the boolean if the current cell a header cell.
+     * Get the isHeader property: Is the current cell a header cell?.
      *
      * @return the isHeader value.
      */
@@ -173,7 +165,7 @@ public final class FormTableCell extends FormContent {
     }
 
     /**
-     * Get the boolean if the current cell a footer cell.
+     * Get the isFooter property: Is the current cell a footer cell?.
      *
      * @return the isFooter value.
      */

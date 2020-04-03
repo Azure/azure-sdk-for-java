@@ -69,7 +69,7 @@ To use an [API key][api_key], provide the key as a string. This can be found in 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ``` 
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L40-L43 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -78,7 +78,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L59-L65 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L50-L66 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -119,25 +119,8 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 ```
 
 ### Extract receipt information
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L69-L85 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L70-86 -->
 ```java
-String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
-SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-    formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
-IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
-
-receiptPageResults.forEach(recognizedReceipt -> {
-    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
-    System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-    System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-    System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
-    System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-    System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
-    System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
-    System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
-    System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-    System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
-});
 ```
 For more detailed examples, refer to [here][samples_readme].
 

@@ -13,7 +13,7 @@ import java.util.List;
  * The CustomFormModel
  */
 @Immutable
-public final class CustomFormModel {
+public class CustomFormModel {
 
     /*
      * List of errors returned during the training operation.
@@ -28,7 +28,7 @@ public final class CustomFormModel {
     /*
      * Status of the model.
      */
-    private final CustomFormModelStatus modelStatus;
+    private final ModelTrainingStatus modelStatus;
 
     /*
      * Date and time (UTC) when the model was created.
@@ -61,7 +61,7 @@ public final class CustomFormModel {
      * @param modelError List of errors returned during the training operation.
      * @param trainingDocuments List of the documents used to train the model.
      */
-    public CustomFormModel(final String modelId, final CustomFormModelStatus modelStatus,
+    public CustomFormModel(final String modelId, final ModelTrainingStatus modelStatus,
         final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn,
         final IterableStream<CustomFormSubModel> subModels, final List<FormRecognizerError> modelError,
         final List<TrainingDocumentInfo> trainingDocuments) {
@@ -75,7 +75,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the Model identifier.
+     * Get the modelId property: Model identifier.
      *
      * @return the modelId value.
      */
@@ -84,16 +84,16 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the status of the model.
+     * Get the status property: Status of the model.
      *
      * @return the status value.
      */
-    public CustomFormModelStatus getModelStatus() {
+    public ModelTrainingStatus getModelStatus() {
         return this.modelStatus;
     }
 
     /**
-     * Get the Date and time (UTC) when the model was
+     * Get the createdDateTime property: Date and time (UTC) when the model was
      * created.
      *
      * @return the createdDateTime value.
@@ -103,7 +103,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the Date and time (UTC) when the
+     * Get the lastUpdatedDateTime property: Date and time (UTC) when the
      * status was last updated.
      *
      * @return the lastUpdatedDateTime value.
@@ -113,7 +113,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the errors returned during the training operation.
+     * Get the errors property: Errors returned during the training operation.
      *
      * @return the errors value.
      */
@@ -122,7 +122,7 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the recognized sub models returned during the training operation.
+     * Get the sub models property: The sub models returned during the training operation.
      *
      * @return the sub models value.
      */
@@ -131,7 +131,8 @@ public final class CustomFormModel {
     }
 
     /**
-     * Get the list of the documents used to train the model and any errors reported in each document.
+     * Get the trainingDocuments property: List of the documents used to train
+     * the model and any errors reported in each document.
      *
      * @return the trainingDocuments value.
      */
