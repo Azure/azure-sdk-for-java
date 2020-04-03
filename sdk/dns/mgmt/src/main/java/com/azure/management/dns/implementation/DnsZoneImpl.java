@@ -395,8 +395,7 @@ public class DnsZoneImpl
 
     @Override
     public DnsZoneImpl withETagCheck() {
-        this.eTagState.withImplicitETagCheckOnCreate();
-        this.eTagState.withImplicitETagCheckOnUpdate();
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
         return this;
     }
 

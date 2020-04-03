@@ -311,8 +311,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withETagCheck() {
-        this.eTagState.withImplicitETagCheckOnCreate();
-        this.eTagState.withImplicitETagCheckOnUpdate();
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
         return this;
     }
 
@@ -406,5 +405,9 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     DnsRecordSetImpl withETagOnDelete(String eTagValue) {
         this.eTagState.withExplicitETagCheckOnDelete(eTagValue);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.inner().getId() == null;
     }
 }

@@ -9,13 +9,12 @@ public class ETagState {
     private String eTagOnUpdate;
     private String eTagOnDelete;
 
-    public ETagState withImplicitETagCheckOnCreate() {
-        this.doImplicitETagCheckOnCreate = true;
-        return this;
-    }
-
-    public ETagState withImplicitETagCheckOnUpdate() {
-        this.doImplicitETagCheckOnUpdate = true;
+    public ETagState withImplicitETagCheckOnCreateOrUpdate(boolean isInCreateMode) {
+        if (isInCreateMode) {
+            this.doImplicitETagCheckOnCreate = true;
+        } else {
+            this.doImplicitETagCheckOnUpdate = true;
+        }
         return this;
     }
 

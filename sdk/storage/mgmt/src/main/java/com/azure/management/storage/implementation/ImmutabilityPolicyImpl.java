@@ -117,7 +117,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public ImmutabilityPolicyImpl withETagCheck() {
-        this.eTagState.withImplicitETagCheckOnUpdate();
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
         return this;
     }
 
