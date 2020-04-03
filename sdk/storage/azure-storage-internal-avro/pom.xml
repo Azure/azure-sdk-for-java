@@ -41,37 +41,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+      <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
     </dependency>
-    <!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-core-test</artifactId>-->
-<!--      <version>1.1.0</version> &lt;!&ndash; {x-version-update;com.azure:azure-core-test;dependency} &ndash;&gt;-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-identity</artifactId>-->
-<!--      <version>1.0.4</version> &lt;!&ndash; {x-version-update;com.azure:azure-identity;dependency} &ndash;&gt;-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.junit.jupiter</groupId>-->
-<!--      <artifactId>junit-jupiter-api</artifactId>-->
-<!--      <version>5.4.2</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} &ndash;&gt;-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.junit.jupiter</groupId>-->
-<!--      <artifactId>junit-jupiter-engine</artifactId>-->
-<!--      <version>5.4.2</version> &lt;!&ndash; {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} &ndash;&gt;-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>io.projectreactor</groupId>-->
-<!--      <artifactId>reactor-test</artifactId>-->
-<!--      <version>3.3.0.RELEASE</version> &lt;!&ndash; {x-version-update;io.projectreactor:reactor-test;external_dependency} &ndash;&gt;-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
   </dependencies>
 </project>

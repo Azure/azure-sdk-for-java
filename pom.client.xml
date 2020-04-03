@@ -429,7 +429,8 @@
               com.azure.tools.checkstyle*:
               com.azure.core.test*:
               com.azure.endtoend*:
-              com.azure.perf*
+              com.azure.perf*:
+              com.azure.storage.internal.avro*
             </excludePackageNames>
             <!-- CosmosSkip - This is temporary, BridgeInternal gets converted to implementation -->
             <sourceFileExcludes>
@@ -521,10 +522,6 @@
               <group>
                 <title>Azure Storage Files - Data Lake</title>
                 <packages>com.azure.storage.file.datalake*</packages>
-              </group>
-              <group>
-                <title>Azure Storage Internal Avro</title>
-                <packages>com.azure.storage.internal.avro*</packages>
               </group>
               <group>
                 <title>Azure Storage - Queues</title>
