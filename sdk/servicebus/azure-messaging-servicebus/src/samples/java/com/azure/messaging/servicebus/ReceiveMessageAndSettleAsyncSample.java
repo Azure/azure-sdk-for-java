@@ -52,15 +52,9 @@ public class ReceiveMessageAndSettleAsyncSample {
                 // message successfully.
 
                 if (messageProcessed) {
-                    return receiverAsyncClient.complete(message)
-                        .doFinally(signalType -> {
-                            System.out.println("Message completed.");
-                        }).then();
+                    return receiverAsyncClient.complete(message).then();
                 } else {
-                    return receiverAsyncClient.abandon(message)
-                        .doFinally(signalType -> {
-                            System.out.println("Message Abandoned.");
-                        }).then();
+                    return receiverAsyncClient.abandon(message).then();
                 }
             }).subscribe();
 

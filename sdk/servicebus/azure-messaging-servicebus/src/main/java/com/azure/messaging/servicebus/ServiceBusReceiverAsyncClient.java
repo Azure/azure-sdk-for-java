@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
-import static com.azure.messaging.servicebus.implementation.Messages.INVALID_LOCK_TOKEN_STRING;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -430,7 +429,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns an empty value.
      */
     public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {
         if (isDisposed.get()) {
@@ -438,16 +437,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         } else if (Objects.isNull(lockToken)) {
             return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
-        } else if (CoreUtils.isNullOrEmpty(lockToken.getLockToken())) {
+        } else if (Objects.isNull(lockToken.getLockToken())) {
             return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
+        } else if (lockToken.getLockToken().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
         UUID lockTokenUUID;
         try {
             lockTokenUUID = UUID.fromString(lockToken.getLockToken());
         } catch (IllegalArgumentException ex) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_LOCK_TOKEN_STRING, lockToken.getLockToken())));
+            throw ex;
         }
 
         return connectionProcessor
@@ -510,7 +510,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
         } else if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
+        } else if (Objects.isNull(message.getLockToken())) {
+            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
+        } else if (message.getLockToken().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
 
@@ -521,7 +525,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
                 "'message.lockToken' cannot be null.")));
         }
-        
+
         final UUID lockToken = UUID.fromString(message.getLockToken());
         final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Lock: {}. Expiration: {}",
