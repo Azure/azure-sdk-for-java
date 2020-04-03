@@ -163,17 +163,17 @@ public final class EncryptedBlobClientBuilder {
             boolean decryptionPolicyPresent = false;
             for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
                 HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
-                decryptionPolicyPresent |= currPolicy instanceof BlobDecryptionPolicy;
+                if (currPolicy instanceof BlobDecryptionPolicy) {
+                    throw logger.logExceptionAsError(new IllegalArgumentException("The passed pipeline was already"
+                        + " configured for encryption/decryption in a way that might conflict with the passed key "
+                        + "information. Please ensure that the passed pipeline is not already configured for "
+                        + "encryption/decryption"));
+                }
                 policies.add(currPolicy);
             }
-            // If a decryption policy is not already present, add it to the front.
-            if (!decryptionPolicyPresent) {
-                policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
-            } else {
-                throw new IllegalArgumentException("The passed pipeline was already configured for "
-                    + "encryption/decryption in a way that might conflict with the passed key information. Please "
-                    + "ensure that the passed pipeline is not already configured for encryption/decryption");
-            }
+            // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
+
             return new HttpPipelineBuilder()
                 .httpClient(httpPipeline.getHttpClient())
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -493,7 +493,7 @@ public final class EncryptedBlobClientBuilder {
 
     /**
      * Sets the {@link HttpPipeline} to use for the service client, and adds a decryption policy if one is not present.
-     * Note that the underlying pipeline should not already be configured for configured for encryption/decryption.
+     * Note that the underlying pipeline should not already be configured for encryption/decryption.
      * <p>
      * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}
      * and {@link #customerProvidedKey(CustomerProvidedKey) customer provided key}.
@@ -549,7 +549,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
      * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service. Note that the underlying
-     * pipeline should not already be configured for configured for encryption/decryption.
+     * pipeline should not already be configured for encryption/decryption.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
@@ -570,7 +570,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Configures the builder based on the passed {@link BlobAsyncClient}. This will set the {@link HttpPipeline},
      * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service. Note that the underlying
-     * pipeline should not already be configured for configured for encryption/decryption.
+     * pipeline should not already be configured for encryption/decryption.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
