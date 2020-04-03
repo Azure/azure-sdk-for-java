@@ -2,6 +2,9 @@
 
 ## 1.0.0-beta.2 (2020-04-03)
 
+Version 1.0.0-beta.2 is the consecutive beta version followed by 11.0.0-beta.1. The version is made because we renamed 
+the model and namespace.
+
 - Renamed the azure-search module to azure-search-documents.
 - Changed the namespace com.azure.search to com.azure.search.documents.
 - Added support for continuation tokens to resume server-side paging.
