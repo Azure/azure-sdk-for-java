@@ -37,6 +37,10 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
                 put("clientId", clientId);
                 put("port", port);
             }});
+        if (cacheFileLocation != null) {
+            identityClientOptions.setPersistenceSettings(cacheFileLocation, keychainService, keychainAccount,
+                    keyringName, keyringItemSchema, keyringItemName, attributes, useUnprotectedFileOnLinux);
+        }
         return new InteractiveBrowserCredential(clientId, tenantId, port, identityClientOptions);
     }
 }
