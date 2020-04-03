@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.collection;
 
@@ -20,7 +17,7 @@ public interface SupportsListingByTag<T> {
     /**
      * Lists all the resources with the specified tag.
      *
-     * @param tagName  tag's name as the key
+     * @param tagName tag's name as the key
      * @param tagValue tag's value
      * @return a {@link PagedIterable} of resources
      */
@@ -29,7 +26,7 @@ public interface SupportsListingByTag<T> {
     /**
      * Lists all the resources with the specified tag.
      *
-     * @param tagName  tag's name as the key
+     * @param tagName tag's name as the key
      * @param tagValue tag's value
      * @return a representation of the deferred computation of this call, returning the requested resources
      */

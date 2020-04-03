@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
@@ -137,7 +134,7 @@ public interface AvailabilitySet extends
             /**
              * Set information about the proximity placement group that the availability set should
              * be assigned to.
-             * @param promixityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */
@@ -192,7 +189,7 @@ public interface AvailabilitySet extends
             /**
              * Set information about the proximity placement group that the availability set should
              * be assigned to.
-             * @param promixityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */

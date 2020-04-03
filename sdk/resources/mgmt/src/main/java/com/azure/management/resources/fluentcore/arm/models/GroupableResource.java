@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.models;
 
@@ -16,7 +13,7 @@ import com.azure.management.resources.fluentcore.model.HasInner;
  * Base interface for resources in resource groups.
  *
  * @param <TManager> the manager object type representing the service
- * @param <InnerT>   the wrapped, inner, auto-generated implementation object type
+ * @param <InnerT> the wrapped, inner, auto-generated implementation object type
  */
 @Fluent()
 public interface GroupableResource<TManager, InnerT> extends
@@ -95,7 +92,7 @@ public interface GroupableResource<TManager, InnerT> extends
              * <p>
              * The group will be created in the same location as the resource.
              *
-             * @param name   the name of the new group
+             * @param name the name of the new group
              * @param region the region where resource group needs to be created
              * @return the next stage of the definition
              */

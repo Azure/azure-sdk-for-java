@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.samples;
 
@@ -42,8 +39,8 @@ public final class SSHShell {
     /**
      * Creates SSHShell.
      *
-     * @param host     the host name
-     * @param port     the ssh port
+     * @param host the host name
+     * @param port the ssh port
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
@@ -76,9 +73,9 @@ public final class SSHShell {
     /**
      * Creates SSHShell.
      *
-     * @param host          the host name
-     * @param port          the ssh port
-     * @param userName      the ssh user name
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
      * @param sshPrivateKey the ssh password
      * @return the shell
      * @throws JSchException
@@ -110,8 +107,8 @@ public final class SSHShell {
     /**
      * Opens a SSH shell.
      *
-     * @param host     the host name
-     * @param port     the ssh port
+     * @param host the host name
+     * @param port the ssh port
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
@@ -126,9 +123,9 @@ public final class SSHShell {
     /**
      * Opens a SSH shell.
      *
-     * @param host          the host name
-     * @param port          the ssh port
-     * @param userName      the ssh user name
+     * @param host the host name
+     * @param port the ssh port
+     * @param userName the ssh user name
      * @param sshPrivateKey the ssh private key
      * @return the shell
      * @throws JSchException exception thrown
@@ -165,9 +162,9 @@ public final class SSHShell {
     /**
      * Executes a command on the remote host.
      *
-     * @param command       the command to be executed
+     * @param command the command to be executed
      * @param getExitStatus return the exit status captured in the stdout
-     * @param withErr       capture the stderr as part of the output
+     * @param withErr capture the stderr as part of the output
      * @return the content of the remote output from executing the command
      * @throws Exception exception thrown
      */
@@ -221,8 +218,8 @@ public final class SSHShell {
     /**
      * Downloads the content of a file from the remote host as a String.
      *
-     * @param fileName        the name of the file for which the content will be downloaded
-     * @param fromPath        the path of the file for which the content will be downloaded
+     * @param fileName the name of the file for which the content will be downloaded
+     * @param fromPath the path of the file for which the content will be downloaded
      * @param isUserHomeBased true if the path of the file is relative to the user's home directory
      * @return the content of the file
      * @throws Exception exception thrown
@@ -244,11 +241,11 @@ public final class SSHShell {
     /**
      * Creates a new file on the remote host using the input content.
      *
-     * @param from            the byte array content to be uploaded
-     * @param fileName        the name of the file for which the content will be saved into
-     * @param toPath          the path of the file for which the content will be saved into
+     * @param from the byte array content to be uploaded
+     * @param fileName the name of the file for which the content will be saved into
+     * @param toPath the path of the file for which the content will be saved into
      * @param isUserHomeBased true if the path of the file is relative to the user's home directory
-     * @param filePerm        file permissions to be set
+     * @param filePerm file permissions to be set
      * @throws Exception exception thrown
      */
     public void upload(InputStream from, String fileName, String toPath, boolean isUserHomeBased, String filePerm) throws Exception {
@@ -303,7 +300,7 @@ public final class SSHShell {
      * Automatically generate SSH keys.
      *
      * @param passPhrase the byte array content to be uploaded
-     * @param comment    the name of the file for which the content will be saved into
+     * @param comment the name of the file for which the content will be saved into
      * @return SSH public and private key
      * @throws Exception exception thrown
      */
@@ -335,7 +332,7 @@ public final class SSHShell {
          * Constructor.
          *
          * @param sshPrivateKey SSH private key
-         * @param sshPublicKey  SSH public key
+         * @param sshPublicKey SSH public key
          */
         public SshPublicPrivateKey(String sshPrivateKey, String sshPublicKey) {
             this.sshPrivateKey = sshPrivateKey;

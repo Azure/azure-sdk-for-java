@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OnErrorDeploymentExtended model.
- */
+/** The OnErrorDeploymentExtended model. */
 @Fluent
 public final class OnErrorDeploymentExtended {
     /*
@@ -32,55 +30,52 @@ public final class OnErrorDeploymentExtended {
     private String deploymentName;
 
     /**
-     * Get the provisioningState property: The state of the provisioning for
-     * the on error deployment.
-     * 
+     * Get the provisioningState property: The state of the provisioning for the on error deployment.
+     *
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
-     * Get the type property: The deployment on error behavior type. Possible
-     * values are LastSuccessful and SpecificDeployment.
-     * 
+     * Get the type property: The deployment on error behavior type. Possible values are LastSuccessful and
+     * SpecificDeployment.
+     *
      * @return the type value.
      */
-    public OnErrorDeploymentType getType() {
+    public OnErrorDeploymentType type() {
         return this.type;
     }
 
     /**
-     * Set the type property: The deployment on error behavior type. Possible
-     * values are LastSuccessful and SpecificDeployment.
-     * 
+     * Set the type property: The deployment on error behavior type. Possible values are LastSuccessful and
+     * SpecificDeployment.
+     *
      * @param type the type value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
-    public OnErrorDeploymentExtended setType(OnErrorDeploymentType type) {
+    public OnErrorDeploymentExtended withType(OnErrorDeploymentType type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the deploymentName property: The deployment to be used on error
-     * case.
-     * 
+     * Get the deploymentName property: The deployment to be used on error case.
+     *
      * @return the deploymentName value.
      */
-    public String getDeploymentName() {
+    public String deploymentName() {
         return this.deploymentName;
     }
 
     /**
-     * Set the deploymentName property: The deployment to be used on error
-     * case.
-     * 
+     * Set the deploymentName property: The deployment to be used on error case.
+     *
      * @param deploymentName the deploymentName value to set.
      * @return the OnErrorDeploymentExtended object itself.
      */
-    public OnErrorDeploymentExtended setDeploymentName(String deploymentName) {
+    public OnErrorDeploymentExtended withDeploymentName(String deploymentName) {
         this.deploymentName = deploymentName;
         return this;
     }

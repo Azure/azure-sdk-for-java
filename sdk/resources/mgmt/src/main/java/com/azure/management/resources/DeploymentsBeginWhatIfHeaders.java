@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentsBeginWhatIfHeaders model.
- */
+/** The DeploymentsBeginWhatIfHeaders model. */
 @Fluent
 public final class DeploymentsBeginWhatIfHeaders {
     /*
@@ -26,40 +24,40 @@ public final class DeploymentsBeginWhatIfHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     * 
+     *
      * @return the retryAfter value.
      */
-    public String getRetryAfter() {
+    public String retryAfter() {
         return this.retryAfter;
     }
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     * 
+     *
      * @param retryAfter the retryAfter value to set.
      * @return the DeploymentsBeginWhatIfHeaders object itself.
      */
-    public DeploymentsBeginWhatIfHeaders setRetryAfter(String retryAfter) {
+    public DeploymentsBeginWhatIfHeaders withRetryAfter(String retryAfter) {
         this.retryAfter = retryAfter;
         return this;
     }
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the DeploymentsBeginWhatIfHeaders object itself.
      */
-    public DeploymentsBeginWhatIfHeaders setLocation(String location) {
+    public DeploymentsBeginWhatIfHeaders withLocation(String location) {
         this.location = location;
         return this;
     }

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -37,47 +34,47 @@ final class DeploymentOperationImpl extends
 
     @Override
     public String operationId() {
-        return inner().getOperationId();
+        return inner().operationId();
     }
 
     @Override
     public String provisioningState() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getProvisioningState();
+        return this.inner().properties().provisioningState();
     }
 
     @Override
     public OffsetDateTime timestamp() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getTimestamp();
+        return this.inner().properties().timestamp();
     }
 
     @Override
     public String statusCode() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getStatusCode();
+        return this.inner().properties().statusCode();
     }
 
     @Override
     public Object statusMessage() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getStatusMessage();
+        return this.inner().properties().statusMessage();
     }
 
     @Override
     public TargetResource targetResource() {
-        if (this.inner().getProperties() == null) {
+        if (this.inner().properties() == null) {
             return null;
         }
-        return this.inner().getProperties().getTargetResource();
+        return this.inner().properties().targetResource();
     }
 
     @Override

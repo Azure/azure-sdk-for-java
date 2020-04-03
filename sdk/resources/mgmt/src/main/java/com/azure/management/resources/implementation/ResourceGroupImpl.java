@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -41,7 +38,7 @@ class ResourceGroupImpl extends
 
     @Override
     public String provisioningState() {
-        return this.inner().getProperties().getProvisioningState();
+        return this.inner().properties().provisioningState();
     }
 
     @Override
@@ -81,8 +78,8 @@ class ResourceGroupImpl extends
     @Override
     public Mono<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
         ExportTemplateRequest inner = new ExportTemplateRequest()
-                .setResources(Arrays.asList("*"))
-                .setOptions(options.toString());
+                .withResources(Arrays.asList("*"))
+                .withOptions(options.toString());
         return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner -> new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
     }
 

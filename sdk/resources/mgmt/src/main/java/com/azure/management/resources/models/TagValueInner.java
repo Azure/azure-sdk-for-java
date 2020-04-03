@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.TagCount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TagValue model.
- */
+/** The TagValue model. */
 @Fluent
 public final class TagValueInner {
     /*
@@ -33,7 +31,7 @@ public final class TagValueInner {
 
     /**
      * Get the id property: The tag ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -42,40 +40,40 @@ public final class TagValueInner {
 
     /**
      * Get the tagValue property: The tag value.
-     * 
+     *
      * @return the tagValue value.
      */
-    public String getTagValue() {
+    public String tagValue() {
         return this.tagValue;
     }
 
     /**
      * Set the tagValue property: The tag value.
-     * 
+     *
      * @param tagValue the tagValue value to set.
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setTagValue(String tagValue) {
+    public TagValueInner withTagValue(String tagValue) {
         this.tagValue = tagValue;
         return this;
     }
 
     /**
      * Get the count property: The tag value count.
-     * 
+     *
      * @return the count value.
      */
-    public TagCount getCount() {
+    public TagCount count() {
         return this.count;
     }
 
     /**
      * Set the count property: The tag value count.
-     * 
+     *
      * @param count the count value to set.
      * @return the TagValueInner object itself.
      */
-    public TagValueInner setCount(TagCount count) {
+    public TagValueInner withCount(TagCount count) {
         this.count = count;
         return this;
     }

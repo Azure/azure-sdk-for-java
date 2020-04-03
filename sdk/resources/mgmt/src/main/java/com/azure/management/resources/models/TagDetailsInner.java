@@ -9,9 +9,7 @@ import com.azure.management.resources.TagCount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TagDetails model.
- */
+/** The TagDetails model. */
 @Fluent
 public final class TagDetailsInner {
     /*
@@ -41,7 +39,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the id property: The tag ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -50,64 +48,62 @@ public final class TagDetailsInner {
 
     /**
      * Get the tagName property: The tag name.
-     * 
+     *
      * @return the tagName value.
      */
-    public String getTagName() {
+    public String tagName() {
         return this.tagName;
     }
 
     /**
      * Set the tagName property: The tag name.
-     * 
+     *
      * @param tagName the tagName value to set.
      * @return the TagDetailsInner object itself.
      */
-    public TagDetailsInner setTagName(String tagName) {
+    public TagDetailsInner withTagName(String tagName) {
         this.tagName = tagName;
         return this;
     }
 
     /**
-     * Get the count property: The total number of resources that use the
-     * resource tag. When a tag is initially created and has no associated
-     * resources, the value is 0.
-     * 
+     * Get the count property: The total number of resources that use the resource tag. When a tag is initially created
+     * and has no associated resources, the value is 0.
+     *
      * @return the count value.
      */
-    public TagCount getCount() {
+    public TagCount count() {
         return this.count;
     }
 
     /**
-     * Set the count property: The total number of resources that use the
-     * resource tag. When a tag is initially created and has no associated
-     * resources, the value is 0.
-     * 
+     * Set the count property: The total number of resources that use the resource tag. When a tag is initially created
+     * and has no associated resources, the value is 0.
+     *
      * @param count the count value to set.
      * @return the TagDetailsInner object itself.
      */
-    public TagDetailsInner setCount(TagCount count) {
+    public TagDetailsInner withCount(TagCount count) {
         this.count = count;
         return this;
     }
 
     /**
      * Get the values property: The list of tag values.
-     * 
+     *
      * @return the values value.
      */
-    public List<TagValueInner> getValues() {
+    public List<TagValueInner> values() {
         return this.values;
     }
 
     /**
      * Set the values property: The list of tag values.
-     * 
+     *
      * @param values the values value to set.
      * @return the TagDetailsInner object itself.
      */
-    public TagDetailsInner setValues(List<TagValueInner> values) {
+    public TagDetailsInner withValues(List<TagValueInner> values) {
         this.values = values;
         return this;
     }

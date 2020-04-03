@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
 import com.azure.core.management.AzureEnvironment;
@@ -86,7 +83,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * Creates an instance of NetworkManager that exposes network resource management API entry points.
      *
-     * @param credential     the credentials to use
+     * @param credential the credentials to use
      * @param subscriptionId the subscription UUID
      * @return the NetworkManager
      */
@@ -104,7 +101,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * Creates an instance of NetworkManager that exposes network resource management API entry points.
      *
-     * @param restClient     the RestClient to be used for API calls.
+     * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
      * @return the NetworkManager
      */
@@ -123,7 +120,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         /**
          * Creates an instance of NetworkManager that exposes network management API entry points.
          *
-         * @param credentials    the credentials to use
+         * @param credentials the credentials to use
          * @param subscriptionId the subscription UUID
          * @return the interface exposing network management API entry points that work across subscriptions
          */

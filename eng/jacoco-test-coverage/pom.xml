@@ -38,6 +38,11 @@
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-ai-formrecognizer</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-ai-formrecognizer;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-ai-textanalytics</artifactId>
       <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-ai-textanalytics;current} -->
     </dependency>
@@ -50,6 +55,11 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
       <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-jdk-httpclient</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

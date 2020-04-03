@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Dependency model.
- */
+/** The Dependency model. */
 @Fluent
 public final class Dependency {
     /*
@@ -39,27 +37,27 @@ public final class Dependency {
 
     /**
      * Get the dependsOn property: The list of dependencies.
-     * 
+     *
      * @return the dependsOn value.
      */
-    public List<BasicDependency> getDependsOn() {
+    public List<BasicDependency> dependsOn() {
         return this.dependsOn;
     }
 
     /**
      * Set the dependsOn property: The list of dependencies.
-     * 
+     *
      * @param dependsOn the dependsOn value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setDependsOn(List<BasicDependency> dependsOn) {
+    public Dependency withDependsOn(List<BasicDependency> dependsOn) {
         this.dependsOn = dependsOn;
         return this;
     }
 
     /**
      * Get the id property: The ID of the dependency.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -68,51 +66,51 @@ public final class Dependency {
 
     /**
      * Set the id property: The ID of the dependency.
-     * 
+     *
      * @param id the id value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setId(String id) {
+    public Dependency withId(String id) {
         this.id = id;
         return this;
     }
 
     /**
      * Get the resourceType property: The dependency resource type.
-     * 
+     *
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
     /**
      * Set the resourceType property: The dependency resource type.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setResourceType(String resourceType) {
+    public Dependency withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
 
     /**
      * Get the resourceName property: The dependency resource name.
-     * 
+     *
      * @return the resourceName value.
      */
-    public String getResourceName() {
+    public String resourceName() {
         return this.resourceName;
     }
 
     /**
      * Set the resourceName property: The dependency resource name.
-     * 
+     *
      * @param resourceName the resourceName value to set.
      * @return the Dependency object itself.
      */
-    public Dependency setResourceName(String resourceName) {
+    public Dependency withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }

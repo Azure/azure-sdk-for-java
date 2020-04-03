@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.model.implementation;
 
@@ -13,7 +10,7 @@ import reactor.core.publisher.Mono;
  * Base implementation for Wrapper interface.
  *
  * @param <InnerT> wrapped type
- * @param <Impl>   impl type
+ * @param <Impl> impl type
  */
 public abstract class RefreshableWrapperImpl<InnerT, Impl>
         extends WrapperImpl<InnerT>

@@ -22,6 +22,10 @@ trigger:
       - sdk/authorization/
     exclude:
       - sdk/authorization/mgmt
+      - sdk/authorization/mgmt-v2015_06_01
+      - sdk/authorization/mgmt-v2015_07_01
+      - sdk/authorization/mgmt-v2018_07_01_preview
+      - sdk/authorization/mgmt-v2018_09_01_preview
 
 pr:
   branches:
@@ -35,6 +39,10 @@ pr:
       - sdk/authorization/
     exclude:
       - sdk/authorization/mgmt
+      - sdk/authorization/mgmt-v2015_06_01
+      - sdk/authorization/mgmt-v2015_07_01
+      - sdk/authorization/mgmt-v2018_07_01_preview
+      - sdk/authorization/mgmt-v2018_09_01_preview
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OperationListResult model.
- */
+/** The OperationListResult model. */
 @Fluent
 public final class OperationListResultInner {
     /*
@@ -27,42 +25,40 @@ public final class OperationListResultInner {
 
     /**
      * Get the value property: List of Microsoft.Resources operations.
-     * 
+     *
      * @return the value value.
      */
-    public List<OperationInner> getValue() {
+    public List<OperationInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: List of Microsoft.Resources operations.
-     * 
+     *
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
-    public OperationListResultInner setValue(List<OperationInner> value) {
+    public OperationListResultInner withValue(List<OperationInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list
-     * results if there are any.
-     * 
+     * Get the nextLink property: URL to get the next set of operation list results if there are any.
+     *
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list
-     * results if there are any.
-     * 
+     * Set the nextLink property: URL to get the next set of operation list results if there are any.
+     *
      * @param nextLink the nextLink value to set.
      * @return the OperationListResultInner object itself.
      */
-    public OperationListResultInner setNextLink(String nextLink) {
+    public OperationListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

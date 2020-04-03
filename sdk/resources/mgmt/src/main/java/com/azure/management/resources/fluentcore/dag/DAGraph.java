@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.dag;
 
@@ -175,7 +172,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     /**
      * Reports that a node is faulted.
      *
-     * @param faulted   the node faulted
+     * @param faulted the node faulted
      * @param throwable the reason for fault
      */
     public void reportError(NodeT faulted, Throwable throwable) {

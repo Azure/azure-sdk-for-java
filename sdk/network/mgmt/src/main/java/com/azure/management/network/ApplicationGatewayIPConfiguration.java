@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 
@@ -68,7 +65,7 @@ public interface ApplicationGatewayIPConfiguration extends
             /**
              * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
              *
-             * @param network    an existing virtual network
+             * @param network an existing virtual network
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
@@ -118,7 +115,7 @@ public interface ApplicationGatewayIPConfiguration extends
             /**
              * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
              *
-             * @param network    an existing virtual network
+             * @param network an existing virtual network
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the update
              */
@@ -163,7 +160,7 @@ public interface ApplicationGatewayIPConfiguration extends
             /**
              * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
              *
-             * @param network    an existing virtual network
+             * @param network an existing virtual network
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
