@@ -57,9 +57,9 @@ public class KeyVaultSecrets {
         LOGGER.info("---------------------");
 
         // Configure authority host from AZURE_CLOUD
-        String authorityHostAlias = System.getenv("AZURE_CLOUD");
+        String azureCloud = System.getenv("AZURE_CLOUD");
         String authorityHost = AUTHORITY_HOST_MAP.getOrDefault(
-            authorityHostAlias, KnownAuthorityHosts.AZURE_CLOUD);
+            azureCloud, KnownAuthorityHosts.AZURE_CLOUD);
 
 
         /* DefaultAzureCredentialBuilder() is expecting the following environment variables:
