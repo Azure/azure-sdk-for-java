@@ -16,8 +16,8 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2018_03_01_preview.implementation.StorageManager;
-import org.joda.time.DateTime;
 import java.util.Map;
+import org.joda.time.DateTime;
 
 /**
  * Type representing BlobContainer.
@@ -96,7 +96,7 @@ public interface BlobContainer extends HasInner<BlobContainerInner>, Indexable, 
     /**
      * The entirety of the BlobContainer definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithBlobService, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithBlobService, DefinitionStages.WithPublicAccess, DefinitionStages.WithMetadata, DefinitionStages.WithCreate {
     }
 
     /**
@@ -115,8 +115,35 @@ public interface BlobContainer extends HasInner<BlobContainerInner>, Indexable, 
         interface WithBlobService {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive
+            * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only
+            * @return the next definition stage
             */
-            WithCreate withExistingBlobService(String resourceGroupName, String accountName);
+            WithPublicAccess withExistingBlobService(String resourceGroupName, String accountName);
+        }
+
+        /**
+         * The stage of the blobcontainer definition allowing to specify PublicAccess.
+         */
+        interface WithPublicAccess {
+           /**
+            * Specifies publicAccess.
+            * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
+            * @return the next definition stage
+            */
+            WithMetadata withPublicAccess(PublicAccess publicAccess);
+        }
+
+        /**
+         * The stage of the blobcontainer definition allowing to specify Metadata.
+         */
+        interface WithMetadata {
+           /**
+            * Specifies metadata.
+            * @param metadata A name-value pair to associate with the container as metadata
+            * @return the next definition stage
+            */
+            WithCreate withMetadata(Map<String, String> metadata);
         }
 
         /**
@@ -130,12 +157,36 @@ public interface BlobContainer extends HasInner<BlobContainerInner>, Indexable, 
     /**
      * The template for a BlobContainer update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BlobContainer> {
+    interface Update extends Appliable<BlobContainer>, UpdateStages.WithPublicAccess, UpdateStages.WithMetadata {
     }
 
     /**
      * Grouping of BlobContainer update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the blobcontainer update allowing to specify PublicAccess.
+         */
+        interface WithPublicAccess {
+            /**
+             * Specifies publicAccess.
+             * @param publicAccess Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'Container', 'Blob', 'None'
+             * @return the next update stage
+             */
+            Update withPublicAccess(PublicAccess publicAccess);
+        }
+
+        /**
+         * The stage of the blobcontainer update allowing to specify Metadata.
+         */
+        interface WithMetadata {
+            /**
+             * Specifies metadata.
+             * @param metadata A name-value pair to associate with the container as metadata
+             * @return the next update stage
+             */
+            Update withMetadata(Map<String, String> metadata);
+        }
+
     }
 }
