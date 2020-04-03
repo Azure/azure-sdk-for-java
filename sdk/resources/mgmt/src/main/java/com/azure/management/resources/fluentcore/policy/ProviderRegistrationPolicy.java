@@ -97,16 +97,16 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                 provider -> {
                     if (isProviderRegistered(provider)) return Mono.empty();
                     return resourceManager.providers().getByNameAsync(namespace)
-                            .map(providerGet -> checkProviderRegistered(providerGet))
+                            .flatMap(providerGet -> checkProviderRegistered(providerGet))
                             .retry(60, ProviderUnregisteredException.class::isInstance);
                 }
             );
     }
 
-    private Void checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {
-        if (isProviderRegistered(provider)) return null;
+    private Mono<Void> checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {
+        if (isProviderRegistered(provider)) return Mono.empty();
         SdkContext.sleep(5 * 1000);
-        throw new ProviderUnregisteredException();
+        return Mono.error(new ProviderUnregisteredException());
     }
 
     private boolean isProviderRegistered(Provider provider) {

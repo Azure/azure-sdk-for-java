@@ -413,7 +413,8 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
                             .doOnNext(createdExternalChild -> externalChild.setPendingOperation(PendingOperation.None))
                             .map(updatedExternalChild -> updatedExternalChild);
                 case ToBeRemoved:
-                    // With 2.0 runtime, deleteResourceAsync() will be returning 'Completable' then use below code instead
+                    // With 2.0 runtime, deleteResourceAsync() will be
+                    // returning 'Completable' then use below code instead
                     //
                     //  return this.externalChild.deleteResourceAsync().doOnCompleted(new Action0() {
                     //      @Override
@@ -429,7 +430,9 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
                 default:
                     // PendingOperation.None
                     //
-                    return Mono.error(new IllegalStateException("No action pending on child resource: " + externalChild.name + ", invokeAsync should not be called "));
+                    return Mono.error(new IllegalStateException(
+                        String.format("No action pending on child resource: %s, invokeAsync should not be called ",
+                                      externalChild.name)));
             }
         }
 

@@ -27,6 +27,11 @@ public class DelayProvider {
         this.longRunningOperationRetryTimeout = lroRetryTimeout;
     }
 
+    /**
+     * Thread sleep.
+     *
+     * @param milliseconds time for sleep
+     */
     public void sleep(int milliseconds) {
         try {
             Thread.sleep(milliseconds);

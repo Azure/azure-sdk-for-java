@@ -11,13 +11,13 @@ import java.security.InvalidParameterException;
  */
 public final class ResourceId {
 
-    private String subscriptionId = null;
-    private String resourceGroupName = null;
-    private String name = null;
-    private String providerNamespace = null;
-    private String resourceType = null;
-    private String id = null;
-    private String parentId = null;
+    private final String subscriptionId = null;
+    private final String resourceGroupName = null;
+    private final String name = null;
+    private final String providerNamespace = null;
+    private final String resourceType = null;
+    private final String id = null;
+    private final String parentId = null;
 
     private static String badIdErrorText(String id) {
         return String.format("The specified ID `%s` is not a valid Azure resource ID.", id);
@@ -38,8 +38,11 @@ public final class ResourceId {
             this.id = id;
 
             // Format of id:
-            // /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/<providerNamespace>(/<parentResourceType>/<parentName>)*/<resourceType>/<name>
-            //  0             1                2              3                   4         5                                                        N-2            N-1
+            // /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers
+            // /<providerNamespace>(/<parentResourceType>/<parentName>)*/<resourceType>/<name>
+
+            // 0             1                2              3                   4
+            // 5                                                        N-2            N-1
 
             // Extract resource type and name
             if (splits.length < 2) {
