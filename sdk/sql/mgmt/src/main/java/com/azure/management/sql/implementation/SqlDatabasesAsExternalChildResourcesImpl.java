@@ -30,7 +30,7 @@ public class SqlDatabasesAsExternalChildResourcesImpl
     /**
      * Creates a new ExternalChildResourcesNonCachedImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlDatabasesAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {

@@ -7,9 +7,7 @@ package com.azure.management.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Location model.
- */
+/** The Location model. */
 @Immutable
 public final class LocationInner {
     /*
@@ -50,10 +48,9 @@ public final class LocationInner {
     private String longitude;
 
     /**
-     * Get the id property: The fully qualified ID of the location. For
-     * example,
+     * Get the id property: The fully qualified ID of the location. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -62,7 +59,7 @@ public final class LocationInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -71,7 +68,7 @@ public final class LocationInner {
 
     /**
      * Get the name property: The location name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -80,7 +77,7 @@ public final class LocationInner {
 
     /**
      * Get the displayName property: The display name of the location.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -89,7 +86,7 @@ public final class LocationInner {
 
     /**
      * Get the latitude property: The latitude of the location.
-     * 
+     *
      * @return the latitude value.
      */
     public String latitude() {
@@ -98,7 +95,7 @@ public final class LocationInner {
 
     /**
      * Get the longitude property: The longitude of the location.
-     * 
+     *
      * @return the longitude value.
      */
     public String longitude() {

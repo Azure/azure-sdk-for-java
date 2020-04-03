@@ -59,15 +59,21 @@ class SnippetDict:
             print("Unable to finalize snippet w/ key {}".format(key))
             return [""]
 
+
 def re_space_snippet(snippet_list):
     # find identation (or whitespace characters) on the left side
-    white_space = [re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"] for line in snippet_list]
+    white_space = [
+        re.match(WHITESPACE_EXTRACTION, line).groupdict()["leadingspace"]
+        for line in snippet_list
+        if line.strip()
+    ]
 
     # now figure out the shortest one
     white_space_for_replacement = min(white_space, key=len)
 
     # return the list, replacing leading whitespace with the specified amount
     return [line.replace(white_space_for_replacement, "", 1) for line in snippet_list]
+
 
 def get_snippets_from_file(file):
     finished_snippets = {}
@@ -166,6 +172,6 @@ if __name__ == "__main__":
 
         if needs_amend:
             print("Replacing " + file)
-            with open(file, "w") as out_file:
+            with open(file, "w", encoding="utf-8") as out_file:
                 for line in amended_file:
                     out_file.write(line)

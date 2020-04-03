@@ -17,7 +17,7 @@ public class OrderImpl
     /**
      * Creates SandwichImpl.
      *
-     * @param name        the name of the model
+     * @param name the name of the model
      * @param innerObject the inner model object
      */
     protected OrderImpl(String name, OrderInner innerObject) {

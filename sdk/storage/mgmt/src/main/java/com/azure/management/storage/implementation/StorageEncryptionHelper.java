@@ -43,7 +43,7 @@ final class StorageEncryptionHelper {
      * Creates StorageEncryptionHelper.
      *
      * @param updateParameters the model representing payload for storage account update
-     * @param inner            the current state of storage account
+     * @param inner the current state of storage account
      */
     StorageEncryptionHelper(StorageAccountUpdateParameters updateParameters, final StorageAccountInner inner) {
         this.isInCreateMode = false;

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SubscriptionListResult model.
- */
+/** The SubscriptionListResult model. */
 @Fluent
 public final class SubscriptionListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class SubscriptionListResultInner {
 
     /**
      * Get the value property: An array of subscriptions.
-     * 
+     *
      * @return the value value.
      */
     public List<SubscriptionInner> value() {
@@ -36,7 +34,7 @@ public final class SubscriptionListResultInner {
 
     /**
      * Set the value property: An array of subscriptions.
-     * 
+     *
      * @param value the value value to set.
      * @return the SubscriptionListResultInner object itself.
      */
@@ -47,7 +45,7 @@ public final class SubscriptionListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,7 +54,7 @@ public final class SubscriptionListResultInner {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the SubscriptionListResultInner object itself.
      */

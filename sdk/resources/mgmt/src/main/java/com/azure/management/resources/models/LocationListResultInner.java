@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LocationListResult model.
- */
+/** The LocationListResult model. */
 @Fluent
 public final class LocationListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class LocationListResultInner {
 
     /**
      * Get the value property: An array of locations.
-     * 
+     *
      * @return the value value.
      */
     public List<LocationInner> value() {
@@ -30,7 +28,7 @@ public final class LocationListResultInner {
 
     /**
      * Set the value property: An array of locations.
-     * 
+     *
      * @param value the value value to set.
      * @return the LocationListResultInner object itself.
      */

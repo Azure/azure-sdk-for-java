@@ -68,7 +68,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -221,6 +221,7 @@
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share.implementation=ALL-UNNAMED
+                --add-opens com.azure.storage.file.share/com.azure.storage.file.share.implementation.util=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share.models=ALL-UNNAMED
                 --add-opens com.azure.storage.file.share/com.azure.storage.file.share.specialized=ALL-UNNAMED
                 --add-reads com.azure.core=ALL-UNNAMED

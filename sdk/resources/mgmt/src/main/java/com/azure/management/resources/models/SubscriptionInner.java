@@ -9,9 +9,7 @@ import com.azure.management.resources.SubscriptionPolicies;
 import com.azure.management.resources.SubscriptionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Subscription model.
- */
+/** The Subscription model. */
 @Fluent
 public final class SubscriptionInner {
     /*
@@ -55,9 +53,9 @@ public final class SubscriptionInner {
     private String authorizationSource;
 
     /**
-     * Get the id property: The fully qualified ID for the subscription. For
-     * example, /subscriptions/00000000-0000-0000-0000-000000000000.
-     * 
+     * Get the id property: The fully qualified ID for the subscription. For example,
+     * /subscriptions/00000000-0000-0000-0000-000000000000.
+     *
      * @return the id value.
      */
     public String getId() {
@@ -66,7 +64,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -75,7 +73,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the displayName property: The subscription display name.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,9 +81,9 @@ public final class SubscriptionInner {
     }
 
     /**
-     * Get the state property: The subscription state. Possible values are
-     * Enabled, Warned, PastDue, Disabled, and Deleted.
-     * 
+     * Get the state property: The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and
+     * Deleted.
+     *
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -94,7 +92,7 @@ public final class SubscriptionInner {
 
     /**
      * Get the subscriptionPolicies property: The subscription policies.
-     * 
+     *
      * @return the subscriptionPolicies value.
      */
     public SubscriptionPolicies subscriptionPolicies() {
@@ -103,7 +101,7 @@ public final class SubscriptionInner {
 
     /**
      * Set the subscriptionPolicies property: The subscription policies.
-     * 
+     *
      * @param subscriptionPolicies the subscriptionPolicies value to set.
      * @return the SubscriptionInner object itself.
      */
@@ -113,10 +111,9 @@ public final class SubscriptionInner {
     }
 
     /**
-     * Get the authorizationSource property: The authorization source of the
-     * request. Valid values are one or more combinations of Legacy, RoleBased,
-     * Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     * 
+     * Get the authorizationSource property: The authorization source of the request. Valid values are one or more
+     * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
+     *
      * @return the authorizationSource value.
      */
     public String authorizationSource() {
@@ -124,10 +121,9 @@ public final class SubscriptionInner {
     }
 
     /**
-     * Set the authorizationSource property: The authorization source of the
-     * request. Valid values are one or more combinations of Legacy, RoleBased,
-     * Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
-     * 
+     * Set the authorizationSource property: The authorization source of the request. Valid values are one or more
+     * combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
+     *
      * @param authorizationSource the authorizationSource value to set.
      * @return the SubscriptionInner object itself.
      */

@@ -12,10 +12,10 @@ import reactor.core.publisher.Mono;
  * The implementation for GroupableResource.
  * (Internal use only)
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
- * @param <ManagerT>         the service manager type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableParentResourceImpl<
         FluentModelT extends Resource,

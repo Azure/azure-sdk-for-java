@@ -51,7 +51,7 @@ public class ExpressRouteCircuitSkuType {
     /**
      * Creates a custom value for ExpressRouteCircuitSkuType.
      *
-     * @param skuTier   a SKU tier
+     * @param skuTier a SKU tier
      * @param skuFamily an SKU family
      */
     public ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier skuTier, ExpressRouteCircuitSkuFamily skuFamily) {

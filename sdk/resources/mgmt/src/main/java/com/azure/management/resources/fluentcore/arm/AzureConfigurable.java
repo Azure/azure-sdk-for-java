@@ -55,7 +55,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the read timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withReadTimeout(long timeout, TimeUnit unit);
@@ -64,7 +64,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the connection timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withConnectionTimeout(long timeout, TimeUnit unit);
