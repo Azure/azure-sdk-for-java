@@ -138,7 +138,7 @@ stages:
               displayName: Publish Docs to GitHubIO Blob Storage
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
               environment: githubio
-              dependsOn: PublishPackage
+
 
               pool:
                 vmImage: windows-2019
@@ -173,7 +173,7 @@ stages:
               displayName: "Update Package Version"
               condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
               environment: github
-              dependsOn: PublishPackage
+
 
               pool:
                 vmImage: windows-2019
