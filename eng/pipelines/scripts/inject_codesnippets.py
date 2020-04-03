@@ -19,10 +19,9 @@ SAMPLE_PATH_GLOB = "**/src/samples/java/**"
 EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
 
 HTML_ESCAPE_TABLE = {
-    "&": "&amp;",
     '"': "&quot;",
-    ">": "&gt;",
-    "<": "&lt;",
+    ">": "&#62;",
+    "<": "&#60;",
     "@": "{@literal @}",
     "{": "&#123;",
     "}": "&#125;",
