@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ProviderListResult model.
- */
+/** The ProviderListResult model. */
 @Fluent
 public final class ProviderListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class ProviderListResultInner {
 
     /**
      * Get the value property: An array of resource providers.
-     * 
+     *
      * @return the value value.
      */
     public List<ProviderInner> value() {
@@ -36,7 +34,7 @@ public final class ProviderListResultInner {
 
     /**
      * Set the value property: An array of resource providers.
-     * 
+     *
      * @param value the value value to set.
      * @return the ProviderListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class ProviderListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The DeploymentPropertiesExtended model.
- */
+/** The DeploymentPropertiesExtended model. */
 @Fluent
 public final class DeploymentPropertiesExtended {
     /*
@@ -103,7 +101,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the provisioningState property: The state of the provisioning.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -112,7 +110,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the correlationId property: The correlation ID of the deployment.
-     * 
+     *
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -121,7 +119,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the timestamp property: The timestamp of the template deployment.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -130,7 +128,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the duration property: The duration of the template deployment.
-     * 
+     *
      * @return the duration value.
      */
     public String duration() {
@@ -138,9 +136,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the outputs property: Key/value pairs that represent deployment
-     * output.
-     * 
+     * Get the outputs property: Key/value pairs that represent deployment output.
+     *
      * @return the outputs value.
      */
     public Object outputs() {
@@ -148,9 +145,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the outputs property: Key/value pairs that represent deployment
-     * output.
-     * 
+     * Set the outputs property: Key/value pairs that represent deployment output.
+     *
      * @param outputs the outputs value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -160,9 +156,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the providers property: The list of resource providers needed for
-     * the deployment.
-     * 
+     * Get the providers property: The list of resource providers needed for the deployment.
+     *
      * @return the providers value.
      */
     public List<ProviderInner> providers() {
@@ -170,9 +165,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the providers property: The list of resource providers needed for
-     * the deployment.
-     * 
+     * Set the providers property: The list of resource providers needed for the deployment.
+     *
      * @param providers the providers value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -183,7 +177,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the dependencies property: The list of deployment dependencies.
-     * 
+     *
      * @return the dependencies value.
      */
     public List<Dependency> dependencies() {
@@ -192,7 +186,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Set the dependencies property: The list of deployment dependencies.
-     * 
+     *
      * @param dependencies the dependencies value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -202,9 +196,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the template property: The template content. Use only one of
-     * Template or TemplateLink.
-     * 
+     * Get the template property: The template content. Use only one of Template or TemplateLink.
+     *
      * @return the template value.
      */
     public Object template() {
@@ -212,9 +205,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the template property: The template content. Use only one of
-     * Template or TemplateLink.
-     * 
+     * Set the template property: The template content. Use only one of Template or TemplateLink.
+     *
      * @param template the template value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -224,9 +216,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the templateLink property: The URI referencing the template. Use
-     * only one of Template or TemplateLink.
-     * 
+     * Get the templateLink property: The URI referencing the template. Use only one of Template or TemplateLink.
+     *
      * @return the templateLink value.
      */
     public TemplateLink templateLink() {
@@ -234,9 +225,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the templateLink property: The URI referencing the template. Use
-     * only one of Template or TemplateLink.
-     * 
+     * Set the templateLink property: The URI referencing the template. Use only one of Template or TemplateLink.
+     *
      * @param templateLink the templateLink value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -246,9 +236,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the parameters property: Deployment parameters. Use only one of
-     * Parameters or ParametersLink.
-     * 
+     * Get the parameters property: Deployment parameters. Use only one of Parameters or ParametersLink.
+     *
      * @return the parameters value.
      */
     public Object parameters() {
@@ -256,9 +245,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the parameters property: Deployment parameters. Use only one of
-     * Parameters or ParametersLink.
-     * 
+     * Set the parameters property: Deployment parameters. Use only one of Parameters or ParametersLink.
+     *
      * @param parameters the parameters value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -268,9 +256,9 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the parametersLink property: The URI referencing the parameters. Use
-     * only one of Parameters or ParametersLink.
-     * 
+     * Get the parametersLink property: The URI referencing the parameters. Use only one of Parameters or
+     * ParametersLink.
+     *
      * @return the parametersLink value.
      */
     public ParametersLink parametersLink() {
@@ -278,9 +266,9 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the parametersLink property: The URI referencing the parameters. Use
-     * only one of Parameters or ParametersLink.
-     * 
+     * Set the parametersLink property: The URI referencing the parameters. Use only one of Parameters or
+     * ParametersLink.
+     *
      * @param parametersLink the parametersLink value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -290,9 +278,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the mode property: The deployment mode. Possible values are
-     * Incremental and Complete.
-     * 
+     * Get the mode property: The deployment mode. Possible values are Incremental and Complete.
+     *
      * @return the mode value.
      */
     public DeploymentMode mode() {
@@ -300,9 +287,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the mode property: The deployment mode. Possible values are
-     * Incremental and Complete.
-     * 
+     * Set the mode property: The deployment mode. Possible values are Incremental and Complete.
+     *
      * @param mode the mode value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -313,7 +299,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the debugSetting property: The debug setting of the deployment.
-     * 
+     *
      * @return the debugSetting value.
      */
     public DebugSetting debugSetting() {
@@ -322,7 +308,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Set the debugSetting property: The debug setting of the deployment.
-     * 
+     *
      * @param debugSetting the debugSetting value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
@@ -333,7 +319,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the onErrorDeployment property: The deployment on error behavior.
-     * 
+     *
      * @return the onErrorDeployment value.
      */
     public OnErrorDeploymentExtended onErrorDeployment() {
@@ -342,7 +328,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Set the onErrorDeployment property: The deployment on error behavior.
-     * 
+     *
      * @param onErrorDeployment the onErrorDeployment value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */

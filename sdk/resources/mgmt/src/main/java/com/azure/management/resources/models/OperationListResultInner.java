@@ -8,13 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OperationListResult model.
- */
+/** The OperationListResult model. */
 @Fluent
 public final class OperationListResultInner {
     /*
-     * List of Microsoft.Features operations.
+     * List of Microsoft.Resources operations.
      */
     @JsonProperty(value = "value")
     private List<OperationInner> value;
@@ -26,8 +24,8 @@ public final class OperationListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: List of Microsoft.Features operations.
-     * 
+     * Get the value property: List of Microsoft.Resources operations.
+     *
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -35,8 +33,8 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the value property: List of Microsoft.Features operations.
-     * 
+     * Set the value property: List of Microsoft.Resources operations.
+     *
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list
-     * results if there are any.
-     * 
+     * Get the nextLink property: URL to get the next set of operation list results if there are any.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +53,8 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list
-     * results if there are any.
-     * 
+     * Set the nextLink property: URL to get the next set of operation list results if there are any.
+     *
      * @param nextLink the nextLink value to set.
      * @return the OperationListResultInner object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ScopedDeployment model.
- */
+/** The ScopedDeployment model. */
 @Fluent
 public final class ScopedDeployment {
     /*
@@ -26,7 +24,7 @@ public final class ScopedDeployment {
 
     /**
      * Get the location property: The location to store the deployment data.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -35,7 +33,7 @@ public final class ScopedDeployment {
 
     /**
      * Set the location property: The location to store the deployment data.
-     * 
+     *
      * @param location the location value to set.
      * @return the ScopedDeployment object itself.
      */
@@ -46,7 +44,7 @@ public final class ScopedDeployment {
 
     /**
      * Get the properties property: The deployment properties.
-     * 
+     *
      * @return the properties value.
      */
     public DeploymentProperties properties() {
@@ -55,7 +53,7 @@ public final class ScopedDeployment {
 
     /**
      * Set the properties property: The deployment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the ScopedDeployment object itself.
      */
