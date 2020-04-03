@@ -51,12 +51,6 @@ public class KeyClientTest extends KeyClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        System.out.println("----------------------------------");
-        if (httpClient != null) {
-            System.out.println(httpClient.toString());
-        }
-        System.out.println(serviceVersion.toString());
-        System.out.println("----------------------------------");
         getKeyClient(httpClient, serviceVersion);
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
