@@ -10,37 +10,28 @@ import java.time.ZoneOffset;
 import com.azure.core.util.Configuration;
 
 public class IdentityClientOptionsTest {
-    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
-    private static final String ENV_AUTHORITY_HOST = "https://foo.com/";
 
     @Test
-    public void testAuthorithostIsDefault() throws IllegalArgumentException, IllegalAccessException,
-            NoSuchFieldException, SecurityException, ClassNotFoundException {
+    public void testDefaultAuthorityHost() {
+        String defaultAuthorityHost = "https://login.microsoftonline.com/";        
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        Assert.assertEquals(DEFAULT_AUTHORITY_HOST, identityClientOptions.getAuthorityHost());
-        IdentityClient identityClient = new IdentityClient(null, null, identityClientOptions);
-        Field reflectIdentityClientOptions = Class.forName("com.azure.identity.implementation.IdentityClient")
-                .getDeclaredField("options");
-        reflectIdentityClientOptions.setAccessible(true);
-        Assert.assertEquals(identityClientOptions, reflectIdentityClientOptions.get(identityClient));
+        Assert.assertEquals(defaultAuthorityHost, identityClientOptions.getAuthorityHost());
     }
 
     @Test
-    public void tesNoIdentityClientOptions() throws IllegalArgumentException, IllegalAccessException,
-            NoSuchFieldException, SecurityException, ClassNotFoundException {
-        IdentityClient identityClient = new IdentityClient(null, null, null);
-        Field reflectIdentityClientOptions = Class.forName("com.azure.identity.implementation.IdentityClient")
-                .getDeclaredField("options");
-        reflectIdentityClientOptions.setAccessible(true);
-        IdentityClientOptions identityClientOptions = (IdentityClientOptions) reflectIdentityClientOptions
-                .get(identityClient);
-        Assert.assertEquals(DEFAULT_AUTHORITY_HOST, identityClientOptions.getAuthorityHost());
-    }
-
-    @Test
-    public void testAuthorithostIsEnv() {
-        Configuration.getGlobalConfiguration().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, ENV_AUTHORITY_HOST);
+    public void testEnvAuthorityHost() {
+        String envAuthorityHost = "https://foo.com/";
+        Configuration.getGlobalConfiguration().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, envAuthorityHost);
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        Assert.assertEquals(ENV_AUTHORITY_HOST, identityClientOptions.getAuthorityHost());
+        Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
     }
+
+    @Test
+    public void testCustomAuthorityHost() {
+        String authorityHost = "https://custom.com/";        
+        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
+        identityClientOptions.setAuthorityHost(authorityHost);
+        Assert.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
+    }
+
 }
