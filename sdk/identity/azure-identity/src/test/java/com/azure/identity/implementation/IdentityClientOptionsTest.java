@@ -21,7 +21,7 @@ public class IdentityClientOptionsTest {
     public void testEnvAuthorityHost() {
         Configuration configuration = Configuration.getGlobalConfiguration();
 
-        try{
+        try {
             String envAuthorityHost = "https://envauthority.com/";
             configuration.put("AZURE_AUTHORITY_HOST", envAuthorityHost);
             IdentityClientOptions identityClientOptions = new IdentityClientOptions();
