@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the Azure rollup client.
+ * This package contains the base classes for management sdk.
  */
 package com.azure.management;

@@ -3,7 +3,6 @@
 // license information.
 
 /**
- * This package contains the base classes for resource models, and their
- * variants for creating and updating scenarios.
+ * This package contains the base classes for resources http policy.
  */
 package com.azure.management.resources.fluentcore.policy;
