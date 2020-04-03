@@ -167,10 +167,7 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(isAutoComplete)
-            .isLockAutoRenewed(isAutoRenew)
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(10));
+            .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
         assertThrows(IllegalStateException.class, receiverBuilder::buildClient);
@@ -186,9 +183,7 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(false)
-            .isLockAutoRenewed(true);
+            .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
         assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
@@ -205,7 +200,6 @@ class ServiceBusClientBuilderTest {
             .receiver()
             .topicName("baz").subscriptionName("bar")
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(true)
             .prefetchCount(0);
 
         // Act & Assert
@@ -230,10 +224,7 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(false)
-            .isLockAutoRenewed(true)
-            .maxAutoLockRenewalDuration(duration);
+            .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);

@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.exception.LinkErrorContext;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -590,9 +591,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     })
                     .repeat();
 
+            final LinkErrorContext context = new LinkErrorContext(fullyQualifiedNamespace, entityPath, linkName, null);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
             final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
-                new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor));
+                new ServiceBusReceiveLinkProcessor(prefetch, retryPolicy, connectionProcessor, context));
             final boolean isAutoLockRenewal = options.getMaxAutoRenewDuration() != null
                 && !options.getMaxAutoRenewDuration().isZero();
 
