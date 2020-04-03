@@ -19,10 +19,9 @@ SAMPLE_PATH_GLOB = "**/src/samples/java/**"
 EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
 
 HTML_ESCAPE_TABLE = {
-    "&": "&amp;",
     '"': "&quot;",
-    ">": "&gt;",
-    "<": "&lt;",
+    ">": "&#62;",
+    "<": "&#60;",
     "@": "{@literal @}",
     "{": "&#123;",
     "}": "&#125;",
@@ -175,3 +174,4 @@ if __name__ == "__main__":
             with open(file, "w", encoding="utf-8") as out_file:
                 for line in amended_file:
                     out_file.write(line)
+ 
