@@ -6,6 +6,7 @@ package com.azure.core.http.jdk.httpclient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import java.net.InetSocketAddress;
+import java.time.Duration;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -21,6 +22,13 @@ public class ReadmeSamples {
      */
     public void createBasicClient() {
         HttpClient client = new JdkAsyncHttpClientBuilder().build();
+    }
+
+    /**
+     * Sample code for create async JDK HttpClient with connection timeout.
+     */
+    public void createClientWithConnectionTimeout() {
+        HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
     }
 
     /**

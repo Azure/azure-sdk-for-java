@@ -32,18 +32,25 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Simple Client
 
-Create an HttpClient using a connection timeout of 60 seconds.
+Create a HttpClient.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L23-L23 -->
+<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L24-L24 -->
+```java
+HttpClient client = new JdkAsyncHttpClientBuilder().build();
+```
+
+Create a HttpClient using a connection timeout of 60 seconds.
+
+<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L31-L31 -->
 ```java
 HttpClient client = new JdkAsyncHttpClientBuilder().connectionTimeout(Duration.ofSeconds(60)).build();
 ```
 
 ### Create a Client with Proxy
 
-Create an HttpClient that is using a proxy.
+Create a HttpClient that is using a proxy.
 
-<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L30-L32 -->
+<!-- embedme ./src/samples/java/com/azure/core/http/jdk/httpclient/ReadmeSamples.java#L38-L40 -->
 ```java
 HttpClient client = new JdkAsyncHttpClientBuilder()
     .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
