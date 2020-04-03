@@ -45,18 +45,22 @@ public class ReceiveMessageAndSettleAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiverAsyncClient.receive()
-            .map(message -> {
+            .flatMap(message -> {
                 boolean messageProcessed =  false;
                 // Process the message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
 
                 if (messageProcessed) {
-                    System.out.println("Completing message ...");
-                    return receiverAsyncClient.complete(message).then();
-                } else {
-                    System.out.println("Abandoning message ...");
-                    return receiverAsyncClient.abandon(message).then();
+                    return receiverAsyncClient.complete(message)
+                        .doFinally(signalType -> {
+                            System.out.println("Message completed.");
+                        }).then();
+                }else {
+                    return receiverAsyncClient.abandon(message)
+                        .doFinally(signalType -> {
+                            System.out.println("Message Abandoned.");
+                        }).then();
                 }
             }).subscribe();
 
