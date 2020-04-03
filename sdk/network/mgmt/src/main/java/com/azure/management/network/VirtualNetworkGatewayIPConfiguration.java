@@ -75,7 +75,7 @@ public interface VirtualNetworkGatewayIPConfiguration extends
             /**
              * Specifies an existing subnet the virtual network gateway should be part of and get its private IP address from.
              *
-             * @param network    an existing virtual network
+             * @param network an existing virtual network
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */

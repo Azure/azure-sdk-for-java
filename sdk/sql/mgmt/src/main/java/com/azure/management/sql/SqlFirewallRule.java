@@ -107,7 +107,7 @@ public interface SqlFirewallRule
              * Sets the starting IP address of SQL server's Firewall Rule.
              *
              * @param startIPAddress starting IP address in IPv4 format.
-             * @param endIPAddress   starting IP address in IPv4 format.
+             * @param endIPAddress starting IP address in IPv4 format.
              * @return The next stage of the definition.
              */
             WithAttach<ParentT> withIPAddressRange(String startIPAddress, String endIPAddress);

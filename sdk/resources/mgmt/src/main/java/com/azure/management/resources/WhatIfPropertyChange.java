@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The WhatIfPropertyChange model.
- */
+/** The WhatIfPropertyChange model. */
 @Fluent
 public final class WhatIfPropertyChange {
     /*
@@ -45,7 +43,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the path property: The path of the property.
-     * 
+     *
      * @return the path value.
      */
     public String path() {
@@ -54,7 +52,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the path property: The path of the property.
-     * 
+     *
      * @param path the path value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -65,7 +63,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the propertyChangeType property: The type of property change.
-     * 
+     *
      * @return the propertyChangeType value.
      */
     public PropertyChangeType propertyChangeType() {
@@ -74,7 +72,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the propertyChangeType property: The type of property change.
-     * 
+     *
      * @param propertyChangeType the propertyChangeType value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -84,9 +82,8 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Get the before property: The value of the property before the deployment
-     * is executed.
-     * 
+     * Get the before property: The value of the property before the deployment is executed.
+     *
      * @return the before value.
      */
     public Object before() {
@@ -94,9 +91,8 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Set the before property: The value of the property before the deployment
-     * is executed.
-     * 
+     * Set the before property: The value of the property before the deployment is executed.
+     *
      * @param before the before value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -106,9 +102,8 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Get the after property: The value of the property after the deployment
-     * is executed.
-     * 
+     * Get the after property: The value of the property after the deployment is executed.
+     *
      * @return the after value.
      */
     public Object after() {
@@ -116,9 +111,8 @@ public final class WhatIfPropertyChange {
     }
 
     /**
-     * Set the after property: The value of the property after the deployment
-     * is executed.
-     * 
+     * Set the after property: The value of the property after the deployment is executed.
+     *
      * @param after the after value to set.
      * @return the WhatIfPropertyChange object itself.
      */
@@ -129,7 +123,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the children property: Nested property changes.
-     * 
+     *
      * @return the children value.
      */
     public List<WhatIfPropertyChange> children() {
@@ -138,7 +132,7 @@ public final class WhatIfPropertyChange {
 
     /**
      * Set the children property: Nested property changes.
-     * 
+     *
      * @param children the children value to set.
      * @return the WhatIfPropertyChange object itself.
      */

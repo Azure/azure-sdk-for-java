@@ -14,7 +14,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus using Azure Identity.
  */
-public class SendMessageWithAzureIdentity {
+public class SendMessageWithAzureIdentityAsyncSample {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     /**

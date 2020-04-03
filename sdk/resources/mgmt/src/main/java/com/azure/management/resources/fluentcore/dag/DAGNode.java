@@ -35,7 +35,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     /**
      * Creates a DAG node.
      *
-     * @param key  unique id of the node
+     * @param key unique id of the node
      * @param data data to be stored in the node
      */
     public DAGNode(final String key, final DataT data) {
@@ -146,7 +146,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
      * Reports a dependency of this node has been faulted.
      *
      * @param dependencyKey the id of the dependency node
-     * @param throwable     the reason for unsuccessful resolution
+     * @param throwable the reason for unsuccessful resolution
      */
     protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
         if (toBeResolved == 0) {

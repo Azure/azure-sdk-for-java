@@ -58,6 +58,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-jdk-httpclient</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
       <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>

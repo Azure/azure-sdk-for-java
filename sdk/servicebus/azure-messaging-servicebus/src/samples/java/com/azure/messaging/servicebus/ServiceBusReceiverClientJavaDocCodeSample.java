@@ -15,7 +15,8 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
             .connectionString(
-                "Endpoint={eh-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key};Entity-Path={hub-name}")
+                "Endpoint={eh-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key};"
+                    + "Entity-Path={hub-name}")
             .receiver()
             .queueName("<< QUEUE NAME >>")
             .buildClient();
