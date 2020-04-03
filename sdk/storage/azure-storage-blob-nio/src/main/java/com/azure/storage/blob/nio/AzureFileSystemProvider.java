@@ -17,7 +17,21 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.file.*;
+import java.nio.file.AccessMode;
+import java.nio.file.CopyOption;
+import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileStore;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystemAlreadyExistsException;
+import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.LinkOption;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.NotDirectoryException;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
@@ -194,10 +208,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         /*
+        Ensure the path is a directory. Note that roots are always directories. The case of an invalid root will be
+        caught in instatiating the stream below.
+
         Possible optimization later is to save the result of the list call to use as the first list call inside the
         stream rather than a list call for checking the status and a list call for listing.
          */
-        if (! new AzureResource(path).checkDirectoryExists()) {
+        if (!((AzurePath) path).isRoot() && !(new AzureResource(path).checkDirectoryExists())) {
             throw LoggingUtility.logError(logger, new NotDirectoryException(path.toString()));
         }
 

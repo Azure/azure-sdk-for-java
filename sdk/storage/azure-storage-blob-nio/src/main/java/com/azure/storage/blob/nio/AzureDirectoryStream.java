@@ -87,8 +87,8 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
                 .setDetails(new BlobListDetails().setRetrieveMetadata(true));
             if (path.isRoot()) {
                 String containerName = path.toString().substring(0, path.toString().length() - 1);
-                containerClient = ((AzureFileSystem) path.getFileSystem()).getBlobServiceClient()
-                    .getBlobContainerClient(containerName);
+                AzureFileSystem afs = ((AzureFileSystem) path.getFileSystem());
+                containerClient = ((AzureFileStore) afs.getFileStore(containerName)).getContainerClient();
             } else {
                 AzureResource azureResource = new AzureResource(path);
                 listOptions.setPrefix(azureResource.getBlobClient().getBlobName() + AzureFileSystem.PATH_SEPARATOR);

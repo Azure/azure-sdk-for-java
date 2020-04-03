@@ -719,6 +719,17 @@ class AzureFileSystemProviderTest extends APISpec {
         !it.hasNext()
     }
 
+    def "DirectoryStream invalid root"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newDirectoryStream(fs.getPath("fakeRoot:"), {path -> true})
+
+        then:
+        thrown(IOException)
+    }
+
     def basicSetupForCopyTest(FileSystem fs) {
         // Generate resource names.
         // Don't use default directory to ensure we honor the root.
