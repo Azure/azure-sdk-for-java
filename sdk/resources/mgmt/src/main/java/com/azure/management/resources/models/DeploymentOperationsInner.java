@@ -34,16 +34,16 @@ public final class DeploymentOperationsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private DeploymentOperationsService service;
+    private final DeploymentOperationsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private ResourceManagementClientImpl client;
+    private final ResourceManagementClientImpl client;
 
     /**
      * Initializes an instance of DeploymentOperationsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DeploymentOperationsInner(ResourceManagementClientImpl client) {
@@ -152,7 +152,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -168,7 +168,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -190,7 +190,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -205,7 +205,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -228,7 +228,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -245,7 +245,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +263,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -278,7 +278,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,7 +294,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +309,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +330,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,7 +344,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -366,7 +366,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +382,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -399,7 +399,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +413,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -428,7 +428,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -444,7 +444,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -466,7 +466,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -481,7 +481,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -504,7 +504,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -521,7 +521,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -539,7 +539,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -554,7 +554,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,7 +570,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -585,7 +585,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -606,7 +606,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -620,7 +620,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +642,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,7 +658,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -675,7 +675,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,7 +689,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -704,7 +704,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -720,7 +720,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -742,7 +742,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
@@ -757,7 +757,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -780,7 +780,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -797,7 +797,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -815,7 +815,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
@@ -830,7 +830,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,7 +846,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -867,7 +867,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -888,7 +888,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -909,7 +909,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -930,7 +930,7 @@ public final class DeploymentOperationsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.

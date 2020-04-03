@@ -291,7 +291,7 @@ public final class PagedList<E> implements List<E> {
                 } catch (IndexOutOfBoundsException ex) {
                     // The nextIndex got invalid means a different instance of iterator
                     // removed item from this index.
-                    throw new ConcurrentModificationException();
+                    throw logger.logExceptionAsError(new ConcurrentModificationException());
                 }
             }
         }
@@ -299,7 +299,7 @@ public final class PagedList<E> implements List<E> {
         @Override
         public void remove() {
             if (this.lastRetIndex < 0) {
-                throw new IllegalStateException();
+                throw logger.logExceptionAsError(new IllegalStateException());
             } else {
                 try {
                     items.remove(this.lastRetIndex);
@@ -320,16 +320,16 @@ public final class PagedList<E> implements List<E> {
         public E previous() {
             int i = this.nextIndex - 1;
             if (i < 0) {
-                throw new NoSuchElementException();
+                throw logger.logExceptionAsError(new NoSuchElementException());
             } else if (i >= items.size()) {
-                throw new ConcurrentModificationException();
+                throw logger.logExceptionAsError(new ConcurrentModificationException());
             } else {
                 try {
                     this.nextIndex = i;
                     this.lastRetIndex = i;
                     return items.get(this.lastRetIndex);
                 } catch (IndexOutOfBoundsException ex) {
-                    throw new ConcurrentModificationException();
+                    throw logger.logExceptionAsError(new ConcurrentModificationException());
                 }
             }
         }
@@ -347,12 +347,12 @@ public final class PagedList<E> implements List<E> {
         @Override
         public void set(E e) {
             if (this.lastRetIndex < 0) {
-                throw new IllegalStateException();
+                throw logger.logExceptionAsError(new IllegalStateException());
             } else {
                 try {
                     items.set(this.lastRetIndex, e);
                 } catch (IndexOutOfBoundsException ex) {
-                    throw new ConcurrentModificationException();
+                    throw logger.logExceptionAsError(new ConcurrentModificationException());
                 }
             }
         }
@@ -364,7 +364,7 @@ public final class PagedList<E> implements List<E> {
                 this.nextIndex = this.nextIndex + 1;
                 this.lastRetIndex = -1;
             } catch (IndexOutOfBoundsException ex) {
-                throw new ConcurrentModificationException();
+                throw logger.logExceptionAsError(new ConcurrentModificationException());
             }
         }
     }

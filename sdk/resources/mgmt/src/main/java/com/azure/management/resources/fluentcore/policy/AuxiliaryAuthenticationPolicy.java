@@ -13,6 +13,7 @@ import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.AzureTokenCredential;
+import com.azure.management.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +72,7 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
                                 Flux<String> tokens = Flux.fromIterable(Arrays.asList(tokenCredentials))
                                     .flatMap(
                                         credential -> {
-                                            String defaultScope = getDefaultScopeFromRequest(
+                                            String defaultScope = Utils.getDefaultScopeFromRequest(
                                                 context.getHttpRequest(), credential.getEnvironment());
                                             return credential.getToken(
                                                 new TokenRequestContext().addScopes(defaultScope))
