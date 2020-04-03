@@ -10,7 +10,8 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
  * @param <FluentModelT> fluent type of the external child resource
  * @param <ParentT> parent interface
  */
-public interface ExternalChildResource<FluentModelT, ParentT> extends ChildResource<ParentT>, Refreshable<FluentModelT> {
+public interface ExternalChildResource<FluentModelT, ParentT>
+        extends ChildResource<ParentT>, Refreshable<FluentModelT> {
     /**
      * @return the id of the external child resource
      */
