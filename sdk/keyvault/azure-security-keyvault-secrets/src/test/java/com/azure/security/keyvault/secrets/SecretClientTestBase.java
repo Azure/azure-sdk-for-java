@@ -44,7 +44,6 @@ public abstract class SecretClientTestBase extends TestBase {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS = "AZURE_KEYVAULT_TEST_SECRETS_SERVICE_VERSIONS";
     private static final String SERVICE_VERSION_FROM_ENV = Configuration.getGlobalConfiguration().get(AZURE_TEST_KEYVAULT_SECRET_SERVICE_VERSIONS);
-    private static Stream<Arguments> ARGUMENTS_STREAM;
 
     private static final String SECRET_NAME = "javaSecretTemp";
     private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
@@ -447,13 +446,9 @@ public abstract class SecretClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        if (ARGUMENTS_STREAM != null) {
-            return ARGUMENTS_STREAM;
-        }
         List<ServiceVersion> serviceVersions = Arrays.stream(SecretServiceVersion.values())
             .filter(SecretClientTestBase::shouldServiceVersionBeTested).collect(Collectors.toList());
-        ARGUMENTS_STREAM = getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
-        return ARGUMENTS_STREAM;
+        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
     }
 
     /**

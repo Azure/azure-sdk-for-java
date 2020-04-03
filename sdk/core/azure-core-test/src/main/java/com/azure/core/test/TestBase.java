@@ -175,15 +175,21 @@ public abstract class TestBase implements BeforeEachCallback {
         if (rollingServiceVersion && rollingHttpClient) {
             return IntStream.range(0, ARGUMENTS_LIST.size())
                 .filter(n -> n % PLATFORM_COUNT == offset % ARGUMENTS_LIST.size())
-                .mapToObj(ARGUMENTS_LIST::get);
+                .mapToObj(ARGUMENTS_LIST::get)
+                .map(TestBase::printout);
         } else if (rollingServiceVersion) {
             return IntStream.range(0, ARGUMENTS_LIST.size())
                 .filter(n -> (n / httpClientCount) % PLATFORM_COUNT == offset % serviceVersionCount)
-                .mapToObj(ARGUMENTS_LIST::get);
+                .mapToObj(ARGUMENTS_LIST::get)
+                .map(TestBase::printout);
         } else if (rollingHttpClient) {
             return IntStream.range(0, ARGUMENTS_LIST.size())
                 .filter(n -> n % httpClientCount % PLATFORM_COUNT  == offset % httpClientCount)
-                .mapToObj(ARGUMENTS_LIST::get);
+                .mapToObj(ARGUMENTS_LIST::get)
+                .map(TestBase::printout);
+        }
+        for(Arguments arguments: ARGUMENTS_LIST) {
+            printout(arguments);
         }
         return ARGUMENTS_LIST.stream();
     }
@@ -234,6 +240,10 @@ public abstract class TestBase implements BeforeEachCallback {
                 .contains(configuredHttpClient.trim().toLowerCase(Locale.ROOT)));
     }
 
+    private static Arguments printout(Arguments arguments) {
+        System.out.println(Arrays.toString(arguments.get()));
+        return arguments;
+    }
     private static TestMode initializeTestMode() {
         final ClientLogger logger = new ClientLogger(TestBase.class);
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
@@ -276,7 +286,7 @@ public abstract class TestBase implements BeforeEachCallback {
      */
     private static int getOffset() {
         if (testMode == TestMode.PLAYBACK) {
-            return -1;
+            return 0;
         }
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
         return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
@@ -284,7 +294,9 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private static Integer getPlatFormOffset() {
         String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        System.out.println("It is currently running on os: " + currentOs);
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
+        System.out.println("It is currently using Java version: " + currentJdk);
 
         for (int i = 0; i < PLATFORM_LIST.size(); i++) {
             if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].toLowerCase(Locale.ROOT))
