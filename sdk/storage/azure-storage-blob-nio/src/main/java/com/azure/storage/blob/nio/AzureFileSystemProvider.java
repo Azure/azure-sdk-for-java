@@ -17,20 +17,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
-import java.nio.file.AccessMode;
-import java.nio.file.CopyOption;
-import java.nio.file.DirectoryNotEmptyException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.FileStore;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystemAlreadyExistsException;
-import java.nio.file.FileSystemNotFoundException;
-import java.nio.file.LinkOption;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
@@ -196,6 +183,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * Returns an {@link AzureDirectoryStream} for iterating over the contents of a directory.
      *
      * {@inheritDoc}
+     * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
      */
     @Override
     public DirectoryStream<Path> newDirectoryStream(Path path, DirectoryStream.Filter<? super Path> filter)
@@ -204,6 +192,15 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             throw LoggingUtility.logError(logger, new IllegalArgumentException("This provider cannot operate on "
                 + "subtypes of Path other than AzurePath"));
         }
+
+        /*
+        Possible optimization later is to save the result of the list call to use as the first list call inside the
+        stream rather than a list call for checking the status and a list call for listing.
+         */
+        if (! new AzureResource(path).checkDirectoryExists()) {
+            throw LoggingUtility.logError(logger, new NotDirectoryException(path.toString()));
+        }
+
         return new AzureDirectoryStream((AzurePath) path, filter);
     }
 
@@ -260,6 +257,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * information.
      *
      * {@inheritDoc}
+     * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
      */
     @Override
     public void createDirectory(Path path, FileAttribute<?>... fileAttributes) throws IOException {
@@ -296,6 +294,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * and doing so will not immediately invalidate any channels open to that file--they will simply start to fail.
      * Root directories cannot be deleted even when empty.
      * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
      */
     @Override
     public void delete(Path path) throws IOException {
@@ -344,6 +344,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * mentioned above, this check is not atomic with the creation of the resultant directory.
      *
      * {@inheritDoc}
+     * @throws IllegalArgumentException If the path type is not an instance of {@link AzurePath}.
      * @see #createDirectory(Path, FileAttribute[]) for more information about directory existence.
      */
     @Override

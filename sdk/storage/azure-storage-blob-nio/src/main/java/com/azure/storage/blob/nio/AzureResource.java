@@ -13,6 +13,7 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ListBlobsOptions;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -37,7 +38,7 @@ import java.util.Objects;
 final class AzureResource {
     private final ClientLogger logger = new ClientLogger(AzureResource.class);
 
-    static final String DIR_METADATA_MARKER = "hdi_isfolder";
+    static final String DIR_METADATA_MARKER = Constants.HeaderConstants.DIRECTORY_METADATA_KEY;
 
     private final AzurePath path;
     private final BlobClient blobClient;
@@ -114,10 +115,10 @@ final class AzureResource {
                     return DirectoryStatus.NOT_EMPTY;
                 }
                 if (!item.getName().equals(this.blobClient.getBlobName())) {
-                /*
-                Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir "foo"
-                exists.
-                 */
+                    /*
+                    Names do not match. Must be a virtual dir with one item. e.g. blob with name "foo/bar" means dir
+                    "foo" exists.
+                     */
                     return DirectoryStatus.NOT_EMPTY;
                 }
                 if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {

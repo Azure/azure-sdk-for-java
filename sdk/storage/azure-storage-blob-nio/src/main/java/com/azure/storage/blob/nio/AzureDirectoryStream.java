@@ -19,11 +19,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * An object for iterating the contents of a directory.
- *
- * This type does not validate that the given path is a directory; a listing call will be made against the given
- * resource in either case, and if the resource is a file, it will simply return 0 results (assuming there are no
- * other files that {@link AzurePath#startsWith(String) start with} the given path.
+ * A type for iterating over the contents of a directory.
  *
  * This type is asynchronously closeable, i.e. closing the stream from any thread will cause the stream to stop
  * returning elements at that point.
@@ -122,7 +118,7 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
                 BlobItem nextBlob = this.blobIterator.next();
                 Path nextPath = getNextListResult(nextBlob);
                 try {
-                    if (this.filter.accept(nextPath) && passesDirectoryDuplicateFilter(nextPath, nextBlob)) {
+                    if (this.filter.accept(nextPath) && isNotDuplicate(nextPath, nextBlob)) {
                         this.bufferedNext = nextPath;
                         return true;
                     }
@@ -168,7 +164,7 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
         and once as the prefix for its children. We don't want to return the item twice, and we have no guarantees on
         result ordering, so we have to maintain a cache of directory paths we've seen in order to de-dup.
          */
-        private boolean passesDirectoryDuplicateFilter(Path path, BlobItem blob) {
+        private boolean isNotDuplicate(Path path, BlobItem blob) {
             /*
             If the blob is not a prefix and the blob does not contain the directory metadata marker, it is a normal blob
             and therefore will not be duplicated.
