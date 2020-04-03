@@ -324,7 +324,6 @@ Licensed under the MIT License.
 
                     <include>io.micrometer:micrometer-core</include>
                     <include>io.dropwizard.metrics:metrics-core</include>
-                    <include>com.fasterxml.uuid:java-uuid-generator</include>
                     <include>io.projectreactor.netty</include>
                     <include>io.netty:netty-codec-http</include>
                     <include>io.netty:netty-codec-http2</include>
