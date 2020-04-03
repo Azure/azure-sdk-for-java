@@ -56,7 +56,7 @@ public class ReceiveMessageAndSettleAsyncSample {
                         .doFinally(signalType -> {
                             System.out.println("Message completed.");
                         }).then();
-                }else {
+                } else {
                     return receiverAsyncClient.abandon(message)
                         .doFinally(signalType -> {
                             System.out.println("Message Abandoned.");
