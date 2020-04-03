@@ -30,7 +30,6 @@ import java.util.Locale;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.reducing;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -188,7 +187,7 @@ public abstract class TestBase implements BeforeEachCallback {
                 .mapToObj(ARGUMENTS_LIST::get)
                 .map(TestBase::printout);
         }
-        for(Arguments arguments: ARGUMENTS_LIST) {
+        for (Arguments arguments: ARGUMENTS_LIST) {
             printout(arguments);
         }
         return ARGUMENTS_LIST.stream();
