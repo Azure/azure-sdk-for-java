@@ -174,9 +174,10 @@ public class BlobClient extends BlobClientBase {
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         Flux<ByteBuffer> dataFlux = Utility.convertStreamToByteBuffer(data, length,
-            parallelTransferOptions.getBlockSize());
-        Mono<Response<BlockBlobItem>> upload = this.client.uploadWithResponse(dataFlux, parallelTransferOptions,
-            headers, metadata, tier, requestConditions).subscriberContext(FluxUtil.toReactorContext(context));
+            validatedParallelTransferOptions.getBlockSize());
+        Mono<Response<BlockBlobItem>> upload = this.client.uploadWithResponse(dataFlux,
+            validatedParallelTransferOptions, headers, metadata, tier, requestConditions)
+            .subscriberContext(FluxUtil.toReactorContext(context));
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
