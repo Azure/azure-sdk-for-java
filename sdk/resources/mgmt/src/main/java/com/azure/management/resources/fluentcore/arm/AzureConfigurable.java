@@ -3,13 +3,11 @@
 
 package com.azure.management.resources.fluentcore.arm;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.management.AzureTokenCredential;
 
 import java.net.Proxy;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -55,7 +53,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the read timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withReadTimeout(long timeout, TimeUnit unit);
@@ -64,7 +62,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the connection timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withConnectionTimeout(long timeout, TimeUnit unit);

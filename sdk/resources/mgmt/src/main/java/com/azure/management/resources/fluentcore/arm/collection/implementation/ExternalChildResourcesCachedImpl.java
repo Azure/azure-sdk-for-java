@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
@@ -22,7 +23,7 @@ import java.util.Map;
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
  * @param <FluentModelT>     the fluent model type of the child resource
  * @param <InnerModelT>      Azure inner resource class type representing the child resource
- * @param <ParentImplT>      <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentImplT>      the parent Azure resource impl class type that implements {@link ParentT}
  * @param <ParentT>          the parent interface
  */
 public abstract class ExternalChildResourcesCachedImpl<
@@ -32,6 +33,8 @@ public abstract class ExternalChildResourcesCachedImpl<
         ParentImplT extends ParentT,
         ParentT>
         extends ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> {
+    private final ClientLogger logger = new ClientLogger(this.getClass());
+    private final String errorMessageFormat = "A child resource ('%s') with name (key) '%s (%s)' %s";
     /**
      * Creates a new ExternalChildResourcesImpl.
      *
@@ -39,7 +42,8 @@ public abstract class ExternalChildResourcesCachedImpl<
      * @param parentTaskGroup   the TaskGroup the parent Azure resource belongs to
      * @param childResourceName the child resource name
      */
-    protected ExternalChildResourcesCachedImpl(ParentImplT parent, TaskGroup parentTaskGroup, String childResourceName) {
+    protected ExternalChildResourcesCachedImpl(ParentImplT parent,
+                                               TaskGroup parentTaskGroup, String childResourceName) {
         super(parent, parentTaskGroup, childResourceName);
     }
 
@@ -70,7 +74,8 @@ public abstract class ExternalChildResourcesCachedImpl<
     }
 
     /**
-     * Prepare for inline definition of a new external child resource (along with the definition or update of parent resource).
+     * Prepare for inline definition of a new external child resource
+     * (along with the definition or update of parent resource).
      *
      * @param name the name for the new external child resource
      * @return the child resource
@@ -80,7 +85,8 @@ public abstract class ExternalChildResourcesCachedImpl<
     }
 
     /**
-     * Prepare for inline definition of a new external child resource (along with the definition or update of parent resource).
+     * Prepare for inline definition of a new external child resource
+     * (along with the definition or update of parent resource).
      *
      * @param name the name of the new external child resource
      * @param key  the key
@@ -88,7 +94,8 @@ public abstract class ExternalChildResourcesCachedImpl<
      */
     protected final FluentModelTImpl prepareInlineDefine(String name, String key) {
         if (find(key) != null) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name (key) '" + name + " (" + key + ")' already exists");
+            String errorMessage = String.format(errorMessageFormat, childResourceName, name, key, "already exists");
+            throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         FluentModelTImpl childResource = newChildResource(name);
         childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
@@ -116,10 +123,13 @@ public abstract class ExternalChildResourcesCachedImpl<
         FluentModelTImpl childResource = find(key);
         if (childResource == null
                 || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name (key) '" + name + " (" + key + ")' not found");
+            String errorMessage = String.format(errorMessageFormat, childResourceName, name, key, "not found");
+            throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         if (childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name (key) '" + name + " (" + key + ")' is marked for deletion");
+            String errorMessage = String.format(errorMessageFormat,
+                childResourceName, name, key, "is marked for deletion");
+            throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeUpdated);
         return super.prepareForFutureCommitOrPostRun(childResource);
@@ -144,7 +154,8 @@ public abstract class ExternalChildResourcesCachedImpl<
         FluentModelTImpl childResource = find(key);
         if (childResource == null
                 || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name (key) '" + name + " (" + key + ")' not found");
+            String errorMessage = String.format(errorMessageFormat, childResourceName, name, key, "not found");
+            throw logger.logExceptionAsError(new IllegalArgumentException(errorMessage));
         }
         childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
         super.prepareForFutureCommitOrPostRun(childResource);

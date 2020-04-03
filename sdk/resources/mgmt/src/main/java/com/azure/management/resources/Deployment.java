@@ -165,7 +165,7 @@ public interface Deployment extends
             /**
              * Creates a new resource group to put the deployment in.
              *
-             * @param name   the name of the new group
+             * @param name the name of the new group
              * @param region the region to create the resource group in
              * @return the next stage of the definition
              */
@@ -204,7 +204,7 @@ public interface Deployment extends
             /**
              * Specifies the template as a URL.
              *
-             * @param uri            the location of the remote template file
+             * @param uri the location of the remote template file
              * @param contentVersion the version of the template file
              * @return the next stage of the definition
              */
@@ -235,7 +235,7 @@ public interface Deployment extends
             /**
              * Specifies the parameters as a URL.
              *
-             * @param uri            the location of the remote parameters file
+             * @param uri the location of the remote parameters file
              * @param contentVersion the version of the parameters file
              * @return the next stage of the definition
              */
@@ -307,7 +307,7 @@ public interface Deployment extends
             /**
              * Specifies the template as a URL.
              *
-             * @param uri            the location of the remote template file
+             * @param uri the location of the remote template file
              * @param contentVersion the version of the template file
              * @return the next stage of the deployment update
              */
@@ -338,7 +338,7 @@ public interface Deployment extends
             /**
              * Specifies the parameters as a URL.
              *
-             * @param uri            the location of the remote parameters file
+             * @param uri the location of the remote parameters file
              * @param contentVersion the version of the parameters file
              * @return the next stage of the deployment update
              */
@@ -449,14 +449,16 @@ public interface Deployment extends
          */
         interface WithWhatIfResultFormat {
             /**
-             * Specifies the result format with value of 'FULL_RESOURCE_PAYLOADS' in What-if settings of deployment properties.
+             * Specifies the result format with value of 'FULL_RESOURCE_PAYLOADS'
+             * in What-if settings of deployment properties.
              *
              * @return the next stage of the execution.
              */
             WithWhatIf withFullResourcePayloadsResultFormat();
 
             /**
-             * Specifies the result format with value of 'RESOURCE_ID_ONLY' in What-if settings of deployment properties.
+             * Specifies the result format with value of 'RESOURCE_ID_ONLY'
+             * in What-if settings of deployment properties.
              *
              * @return the next stage of the execution.
              */
@@ -478,7 +480,7 @@ public interface Deployment extends
             /**
              * Specifies the uri and content version of template.
              *
-             * @param uri            the uri value to set.
+             * @param uri the uri value to set.
              * @param contentVersion the content version value to set.
              * @return the next stage of the execution.
              */
@@ -500,7 +502,7 @@ public interface Deployment extends
             /**
              * Specifies the uri and content version of parameters file.
              *
-             * @param uri            the uri value to set.
+             * @param uri the uri value to set.
              * @param contentVersion the content version value to set.
              * @return the next stage of the execution.
              */
@@ -535,7 +537,8 @@ public interface Deployment extends
             WhatIfOperationResult whatIf();
 
             /**
-             * Gets changes that will be made by the deployment if executed at the scope of the resource group asynchronously.
+             * Gets changes that will be made by the deployment
+             * if executed at the scope of the resource group asynchronously.
              *
              * @return the next stage of the execution.
              */
@@ -550,7 +553,8 @@ public interface Deployment extends
             WhatIfOperationResult whatIfAtSubscriptionScope();
 
             /**
-             * Gets changes that will be made by the deployment if executed at the scope of the subscription asynchronously.
+             * Gets changes that will be made by the deployment
+             * if executed at the scope of the subscription asynchronously.
              *
              * @return the next stage of the execution.
              */

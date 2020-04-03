@@ -12,8 +12,8 @@ import com.azure.management.resources.fluentcore.arm.models.Resource;
  * <p>
  * (Note this interface is not intended to be implemented by user code.)
  *
- * @param <T>        the type of the resources listed
- * @param <ParentT>  the type of the parent resource
+ * @param <T> the type of the resources listed
+ * @param <ParentT> the type of the parent resource
  * @param <ManagerT> the client manager type representing the service
  */
 public interface SupportsListingByParent<T, ParentT extends Resource & HasResourceGroup, ManagerT> {
@@ -21,7 +21,7 @@ public interface SupportsListingByParent<T, ParentT extends Resource & HasResour
      * Lists resources of the specified type in the specified parent resource.
      *
      * @param resourceGroupName the name of the resource group to list the resources from
-     * @param parentName        the name of parent resource.
+     * @param parentName the name of parent resource.
      * @return the list of resources
      */
     PagedIterable<T> listByParent(String resourceGroupName, String parentName);
