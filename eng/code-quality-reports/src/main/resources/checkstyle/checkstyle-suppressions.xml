@@ -347,7 +347,6 @@
 
   <!-- management sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]mgmt[/\\]src[/\\]test[/\\]"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.management.resources.fluentcore.arm.ResourceId"/>
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]perf-test[/\\].*\.java"/>
