@@ -52,4 +52,3 @@ stages:
         - name: azure-security-keyvault-secrets
           groupId: com.azure
           safeName: azuresecuritykeyvaultsecrets
-
