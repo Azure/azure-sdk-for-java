@@ -10,7 +10,7 @@ import com.azure.management.resources.fluentcore.utils.SdkContext;
 /**
  * Generic base class for Azure resource managers.
  *
- * @param <T>      specific manager type
+ * @param <T> specific manager type
  * @param <InnerT> inner management client implementation type
  */
 public abstract class Manager<T, InnerT> extends ManagerBase implements HasInner<InnerT> {

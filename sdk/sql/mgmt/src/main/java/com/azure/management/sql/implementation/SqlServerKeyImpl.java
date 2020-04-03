@@ -35,8 +35,8 @@ public class SqlServerKeyImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
@@ -57,10 +57,10 @@ public class SqlServerKeyImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param resourceGroupName the resource group name
-     * @param sqlServerName     the parent SQL server name
-     * @param name              the name of this external child resource
-     * @param innerObject       reference to the inner object representing this external child resource
-     * @param sqlServerManager  reference to the SQL server manager that accesses firewall rule operations
+     * @param sqlServerName the parent SQL server name
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
     SqlServerKeyImpl(String resourceGroupName, String sqlServerName, String name, ServerKeyInner innerObject, SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
@@ -76,8 +76,8 @@ public class SqlServerKeyImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name             the name of this external child resource
-     * @param innerObject      reference to the inner object representing this external child resource
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
     SqlServerKeyImpl(String name, ServerKeyInner innerObject, SqlServerManager sqlServerManager) {

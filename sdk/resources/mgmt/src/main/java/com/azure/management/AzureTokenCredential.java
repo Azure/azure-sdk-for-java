@@ -25,7 +25,7 @@ public abstract class AzureTokenCredential implements TokenCredential {
      * Initializes a new instance of the AzureTokenCredential.
      *
      * @param environment the Azure environment to use
-     * @param domain      the tenant or domain the credential is authorized to
+     * @param domain the tenant or domain the credential is authorized to
      */
     public AzureTokenCredential(AzureEnvironment environment, String domain) {
         this.environment = (environment == null) ? AzureEnvironment.AZURE : environment;

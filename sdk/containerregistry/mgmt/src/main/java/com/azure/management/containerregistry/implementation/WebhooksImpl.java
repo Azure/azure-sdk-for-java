@@ -20,7 +20,7 @@ public class WebhooksImpl
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected WebhooksImpl(RegistryImpl parent, String childResourceName) {

@@ -36,7 +36,7 @@ public interface FunctionApps extends
      * List function information elements.
      *
      * @param resourceGroupName resource group name
-     * @param name              function app name
+     * @param name function app name
      * @return list of function information elements
      */
     PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name);

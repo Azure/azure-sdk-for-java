@@ -50,7 +50,7 @@ public interface Providers extends
     /**
      * Gets the information about a provider from Azure based on the provider name.
      *
-     * @param name                      the name of the provider
+     * @param name the name of the provider
      * @return a representation of the deferred computation of this call returning the found provider, if any
      */
     Mono<Provider> getByNameAsync(String name);

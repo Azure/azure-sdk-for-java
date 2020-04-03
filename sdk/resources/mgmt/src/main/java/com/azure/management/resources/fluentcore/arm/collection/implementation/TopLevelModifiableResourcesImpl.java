@@ -31,11 +31,11 @@ import java.util.Collection;
  * Base class for resource collection classes.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
+ * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class TopLevelModifiableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,

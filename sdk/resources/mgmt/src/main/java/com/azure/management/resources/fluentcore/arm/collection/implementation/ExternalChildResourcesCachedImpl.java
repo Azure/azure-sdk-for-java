@@ -20,10 +20,10 @@ import java.util.Map;
  * using separate GET call, that can be expensive if the child resources are pagable.
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
- * @param <FluentModelT>     the fluent model type of the child resource
- * @param <InnerModelT>      Azure inner resource class type representing the child resource
- * @param <ParentImplT>      <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
- * @param <ParentT>          the parent interface
+ * @param <FluentModelT> the fluent model type of the child resource
+ * @param <InnerModelT> Azure inner resource class type representing the child resource
+ * @param <ParentImplT> <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentT> the parent interface
  */
 public abstract class ExternalChildResourcesCachedImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
@@ -35,8 +35,8 @@ public abstract class ExternalChildResourcesCachedImpl<
     /**
      * Creates a new ExternalChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
-     * @param parentTaskGroup   the TaskGroup the parent Azure resource belongs to
+     * @param parent the parent Azure resource
+     * @param parentTaskGroup the TaskGroup the parent Azure resource belongs to
      * @param childResourceName the child resource name
      */
     protected ExternalChildResourcesCachedImpl(ParentImplT parent, TaskGroup parentTaskGroup, String childResourceName) {
@@ -83,7 +83,7 @@ public abstract class ExternalChildResourcesCachedImpl<
      * Prepare for inline definition of a new external child resource (along with the definition or update of parent resource).
      *
      * @param name the name of the new external child resource
-     * @param key  the key
+     * @param key the key
      * @return the child resource
      */
     protected final FluentModelTImpl prepareInlineDefine(String name, String key) {
@@ -109,7 +109,7 @@ public abstract class ExternalChildResourcesCachedImpl<
      * Prepare for inline update of an external child resource (along with the update of parent resource).
      *
      * @param name the name of the external child resource
-     * @param key  the key
+     * @param key the key
      * @return the external child resource to be updated
      */
     protected final FluentModelTImpl prepareInlineUpdate(String name, String key) {
@@ -138,7 +138,7 @@ public abstract class ExternalChildResourcesCachedImpl<
      * Prepare for inline removal of an external child resource (along with the update of parent resource).
      *
      * @param name the name of the external child resource
-     * @param key  the key
+     * @param key the key
      */
     protected final void prepareInlineRemove(String name, String key) {
         FluentModelTImpl childResource = find(key);
@@ -162,7 +162,7 @@ public abstract class ExternalChildResourcesCachedImpl<
     /**
      * Adds an external child resource to the childCollection.
      *
-     * @param key           the key
+     * @param key the key
      * @param childResource the external child resource
      */
     protected void addChildResource(String key, FluentModelTImpl childResource) {
