@@ -84,12 +84,6 @@
       <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-runtime</artifactId>
-      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-runtime;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
 
     <!-- Test dependencies for creating search resources -->
     <dependency>
@@ -102,12 +96,6 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-authentication</artifactId>
       <version>1.7.3</version> <!-- {x-version-update;com.microsoft.azure:azure-client-authentication;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-search</artifactId>
-      <version>1.24.1</version> <!-- {x-version-update;com.microsoft.azure:azure-mgmt-search;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
