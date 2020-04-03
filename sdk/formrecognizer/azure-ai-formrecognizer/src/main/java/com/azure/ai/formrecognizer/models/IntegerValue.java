@@ -79,7 +79,7 @@ public class IntegerValue extends FieldValue<Integer> {
      * {@inheritDoc}
      */
     @Override
-    public List<Element> getElements() {
+    public List<FormContent> getElements() {
         return super.getElements();
     }
 

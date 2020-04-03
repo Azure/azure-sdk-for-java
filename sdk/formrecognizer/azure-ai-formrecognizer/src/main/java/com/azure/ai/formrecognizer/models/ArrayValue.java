@@ -6,15 +6,15 @@ package com.azure.ai.formrecognizer.models;
 import java.util.List;
 
 /**
- * Class to represent the String value for
- * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}
+ * Class to represent the Array value for
+ * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray()}
  */
-public class StringValue extends FieldValue<String> {
+public class ArrayValue extends FieldValue<List<FieldValue<?>>> {
 
     /*
-     * String value.
+     * Date value.
      */
-    private final String valueString;
+    private final List<FieldValue<?>> valueArray;
 
     /*
      * Type of the FieldValue.
@@ -22,17 +22,17 @@ public class StringValue extends FieldValue<String> {
     private final FieldValueType fieldValueType;
 
     /**
-     * Constructs a StringValue.
+     * Constructs a DateValue.
      *
      * @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
-     * @param valueString String value.
+     * @param valueArray Array of field values.
      * @param pageNumber The page number on which this field exists.
      */
-    public StringValue(String text, BoundingBox boundingBox, String valueString, int pageNumber) {
+    public ArrayValue(String text, BoundingBox boundingBox, List<FieldValue<?>> valueArray, int pageNumber) {
         super(text, boundingBox, pageNumber);
-        this.valueString = valueString;
-        this.fieldValueType = FieldValueType.STRING;
+        this.valueArray = valueArray;
+        this.fieldValueType = FieldValueType.ARRAY;
     }
 
     /**
@@ -63,8 +63,8 @@ public class StringValue extends FieldValue<String> {
      * {@inheritDoc}
      */
     @Override
-    public String getValue() {
-        return this.valueString;
+    public List<FieldValue<?>> getValue() {
+        return this.valueArray;
     }
 
     /**

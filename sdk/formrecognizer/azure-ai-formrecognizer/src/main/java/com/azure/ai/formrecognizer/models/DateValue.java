@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import java.util.List;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Class to represent the Date value for
@@ -80,7 +80,7 @@ public class DateValue extends FieldValue<LocalDate> {
      * {@inheritDoc}
      */
     @Override
-    public List<Element> getElements() {
+    public List<FormContent> getElements() {
         return super.getElements();
     }
 

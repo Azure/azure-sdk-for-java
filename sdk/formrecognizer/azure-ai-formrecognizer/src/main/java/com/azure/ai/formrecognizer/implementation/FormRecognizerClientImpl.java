@@ -9,7 +9,6 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.Models;
@@ -30,6 +29,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
@@ -121,17 +121,17 @@ public final class FormRecognizerClientImpl {
     private interface FormRecognizerClientService {
         @Post("/custom/models")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<TrainCustomModelAsyncResponse> trainCustomModelAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") TrainRequest trainRequest, Context context);
 
         @Get("/custom/models/{modelId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<Model>> getCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeKeys") Boolean includeKeys, Context context);
 
         @Delete("/custom/models/{modelId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, Context context);
 
         @Post("/custom/models/{modelId}/analyze")
@@ -146,7 +146,7 @@ public final class FormRecognizerClientImpl {
 
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResult(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @PathParam("resultId") UUID resultId, Context context);
 
         @Post("/prebuilt/receipt/analyze")
@@ -156,12 +156,12 @@ public final class FormRecognizerClientImpl {
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Get("/prebuilt/receipt/analyzeResults/{resultId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResult(@HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
 
         @Post("/layout/analyze")
@@ -176,22 +176,22 @@ public final class FormRecognizerClientImpl {
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResult(@HostParam("endpoint") String endpoint, @PathParam("resultId") UUID resultId, Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<Models>> listCustomModels(@HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
 
         @Get("/custom/models")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<Models>> getCustomModels(@HostParam("endpoint") String endpoint, @QueryParam("op") String op, Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<Models>> listCustomModelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -200,7 +200,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param trainRequest Request parameter to train a new custom model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -215,7 +215,7 @@ public final class FormRecognizerClientImpl {
      * @param trainRequest Request parameter to train a new custom model.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -230,7 +230,7 @@ public final class FormRecognizerClientImpl {
      * @param modelId Model identifier.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information about a custom model.
      */
@@ -246,7 +246,7 @@ public final class FormRecognizerClientImpl {
      * @param context The context to associate with this operation.
      * @param includeKeys Include list of extracted keys in model information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information about a custom model.
      */
@@ -260,7 +260,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -275,7 +275,7 @@ public final class FormRecognizerClientImpl {
      * @param modelId Model identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -293,7 +293,7 @@ public final class FormRecognizerClientImpl {
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -312,7 +312,7 @@ public final class FormRecognizerClientImpl {
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -328,7 +328,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -345,7 +345,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -360,7 +360,7 @@ public final class FormRecognizerClientImpl {
      * @param modelId Model identifier.
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -376,7 +376,7 @@ public final class FormRecognizerClientImpl {
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -393,7 +393,7 @@ public final class FormRecognizerClientImpl {
      * @param contentLength The contentLength parameter.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -411,7 +411,7 @@ public final class FormRecognizerClientImpl {
      * @param context The context to associate with this operation.
      * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -426,7 +426,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -442,7 +442,7 @@ public final class FormRecognizerClientImpl {
      * @param includeTextDetails Include text lines and element references in the result.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -456,7 +456,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -471,7 +471,7 @@ public final class FormRecognizerClientImpl {
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -487,7 +487,7 @@ public final class FormRecognizerClientImpl {
      * @param fileStream Uri or local path to source data.
      * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -504,7 +504,7 @@ public final class FormRecognizerClientImpl {
      * @param contentLength The contentLength parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -518,7 +518,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -533,7 +533,7 @@ public final class FormRecognizerClientImpl {
      * @param context The context to associate with this operation.
      * @param fileStream Uri or local path to source data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -547,7 +547,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param resultId Analyze operation result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -562,7 +562,7 @@ public final class FormRecognizerClientImpl {
      * @param resultId Analyze operation result identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status and result of the queued analyze operation.
      */
@@ -631,7 +631,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
@@ -646,7 +646,7 @@ public final class FormRecognizerClientImpl {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response to the list custom models operation.
      */

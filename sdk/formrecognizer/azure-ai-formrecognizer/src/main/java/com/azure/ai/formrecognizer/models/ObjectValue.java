@@ -1,20 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer.models;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Class to represent the String value for
- * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}
+ * Class to represent the Array value for
+ * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueObject()}
  */
-public class StringValue extends FieldValue<String> {
+public class ObjectValue extends FieldValue<Map<String, FieldValue<?>>> {
 
     /*
-     * String value.
+     * Object value.
      */
-    private final String valueString;
+    private final Map<String, FieldValue<?>> valueObject;
 
     /*
      * Type of the FieldValue.
@@ -22,17 +26,17 @@ public class StringValue extends FieldValue<String> {
     private final FieldValueType fieldValueType;
 
     /**
-     * Constructs a StringValue.
+     * Constructs a ObjectValue.
      *
      * @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
-     * @param valueString String value.
+     * @param valueArray Array of field values.
      * @param pageNumber The page number on which this field exists.
      */
-    public StringValue(String text, BoundingBox boundingBox, String valueString, int pageNumber) {
+    public ObjectValue(String text, BoundingBox boundingBox, Map<String, FieldValue<?>> valueArray, int pageNumber) {
         super(text, boundingBox, pageNumber);
-        this.valueString = valueString;
-        this.fieldValueType = FieldValueType.STRING;
+        this.valueObject = valueArray;
+        this.fieldValueType = FieldValueType.OBJECT;
     }
 
     /**
@@ -63,8 +67,8 @@ public class StringValue extends FieldValue<String> {
      * {@inheritDoc}
      */
     @Override
-    public String getValue() {
-        return this.valueString;
+    public Map<String, FieldValue<?>> getValue() {
+        return this.valueObject;
     }
 
     /**

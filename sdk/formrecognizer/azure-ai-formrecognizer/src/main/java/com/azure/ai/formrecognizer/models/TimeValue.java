@@ -80,7 +80,7 @@ public class TimeValue extends FieldValue<String> {
      * {@inheritDoc}
      */
     @Override
-    public List<Element> getElements() {
+    public List<FormContent> getElements() {
         return super.getElements();
     }
 

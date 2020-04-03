@@ -3,8 +3,10 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.ReceiptExtensions;
+import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -66,23 +68,21 @@ public class ReadmeSamples {
 
     public void extractReceipt() {
         String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
-        SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
+        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
             formRecognizerClient.beginExtractReceiptsFromUrl(receiptSourceUrl);
-        IterableStream<ExtractedReceipt> extractedReceipts = syncPoller.getFinalResult();
+        IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
-        for (ExtractedReceipt extractedReceiptItem : extractedReceipts) {
-            System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
-            System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
-            System.out.printf("Merchant Address %s%n", extractedReceiptItem.getMerchantAddress().getText());
-            System.out.printf("Merchant Phone Number %s%n", extractedReceiptItem.getMerchantPhoneNumber().getText());
-            System.out.printf("Total: %s%n", extractedReceiptItem.getTotal().getText());
-            System.out.printf("Receipt Items: %n");
-            extractedReceiptItem.getReceiptItems().forEach(receiptItem -> {
-                System.out.printf("Name: %s%n", receiptItem.getName().getText());
-                System.out.printf("Quantity: %s%n", receiptItem.getQuantity().getText());
-                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
-                System.out.println();
-            });
-        }
+        receiptPageResults.forEach(recognizedReceipt -> {
+            USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+            System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
+            System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getText());
+            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getValue());
+            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getText());
+            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getValue());
+            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getText());
+            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getValue());
+            System.out.printf("Total: %s%n", usReceipt.getTotal().getText());
+            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getValue());
+        });
     }
 }

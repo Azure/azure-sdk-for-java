@@ -136,6 +136,7 @@ public final class FormRecognizerClientBuilder {
      * @throws IllegalArgumentException if {@link #endpoint(String) endpoint} cannot be parsed into a valid URL.
      */
     public FormRecognizerAsyncClient buildAsyncClient() {
+        // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         // Global Env configuration store
@@ -145,10 +146,19 @@ public final class FormRecognizerClientBuilder {
         final FormRecognizerServiceVersion serviceVersion =
             version != null ? version : FormRecognizerServiceVersion.getLatest();
 
-        // Endpoint cannot be null, which is required in request authentication
-
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
+        pipeline = getDefaultHttpPipeline(buildConfiguration, pipeline);
+
+        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
+            .endpoint(endpoint)
+            .pipeline(pipeline)
+            .build();
+
+        return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
+    }
+
+    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration, HttpPipeline pipeline) {
         if (pipeline == null) {
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -179,13 +189,7 @@ public final class FormRecognizerClientBuilder {
                 .httpClient(httpClient)
                 .build();
         }
-
-        final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
-            .endpoint(endpoint)
-            .pipeline(pipeline)
-            .build();
-
-        return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
+        return pipeline;
     }
 
     /**

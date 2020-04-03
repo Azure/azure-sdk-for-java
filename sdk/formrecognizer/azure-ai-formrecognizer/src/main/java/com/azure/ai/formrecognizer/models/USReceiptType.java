@@ -6,10 +6,10 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The ReceiptType model.
+ * The USReceiptType model.
  */
 @Immutable
-public final class ReceiptType {
+public final class USReceiptType {
 
     /*
      * The type of the receipt.
@@ -19,14 +19,15 @@ public final class ReceiptType {
     /*
      * Confidence score.
      */
-    private final Float confidence;
+    private final float confidence;
 
     /**
      * Constructs a Receipt Type.
-     *  @param type The type of the receipt.
+     *
+     * @param type The type of the receipt.
      * @param confidence The confidence score.
      */
-    public ReceiptType(final String type, final Float confidence) {
+    public USReceiptType(final String type, final Float confidence) {
         this.type = type;
         this.confidence = confidence;
     }
@@ -45,7 +46,7 @@ public final class ReceiptType {
      *
      * @return The confidence score of the detected type of the receipt.
      */
-    public Float getConfidence() {
+    public float getConfidence() {
         return this.confidence;
     }
 }

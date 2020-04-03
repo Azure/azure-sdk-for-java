@@ -25,7 +25,7 @@ public abstract class FieldValue<T> extends RawItem {
     /**
      * List of references to the text elements constituting this field.
      */
-    private List<Element> elements;
+    private List<FormContent> elements;
 
     /**
      * Constructs a {@code FieldValue fieldValue} to describe fields on
@@ -90,7 +90,7 @@ public abstract class FieldValue<T> extends RawItem {
      *
      * @return the elements value.
      */
-    public List<Element> getElements() {
+    public List<FormContent> getElements() {
         return this.elements;
     }
 
@@ -102,7 +102,7 @@ public abstract class FieldValue<T> extends RawItem {
      *
      * @return the FieldValue object itself.
      */
-    public FieldValue<T> setElements(final List<Element> elements) {
+    public FieldValue<T> setElements(final List<FormContent> elements) {
         this.elements = elements;
         return this;
     }

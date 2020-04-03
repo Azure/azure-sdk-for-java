@@ -1,0 +1,160 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.formrecognizer;
+
+import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.SyncPoller;
+import reactor.core.publisher.Mono;
+
+/**
+ * This class provides a synchronous client that contains model management the operations that apply
+ * to Azure Form Recognizer.
+ * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
+ *
+ * @see FormRecognizerClientBuilder
+ */
+public class FormTrainingClient {
+
+    private final ClientLogger logger = new ClientLogger(FormTrainingClient.class);
+    private final FormTrainingAsyncClient client;
+
+    /**
+     * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
+     * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
+     *
+     * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
+     */
+    FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
+        this.client = formTrainingAsyncClient;
+    }
+
+    /**
+     * Gets the service version the client is using.
+     *
+     * @return the service version the client is using.
+     */
+    public FormRecognizerServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
+    }
+
+    /**
+     * Create and train a custom model.
+     * Models are trained using documents that are of the following content
+     * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
+     * Other type of content is ignored.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * @param fileSourceUrl source URL parameter that is either an externally accessible
+     * Azure storage blob container Uri (preferably a Shared Access Signature Uri).
+     * @param useLabelFile Boolean to specify the use of labeled files for training the model.
+     *
+     * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
+     * been cancelled.
+     */
+    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
+        return beginTraining(fileSourceUrl, useLabelFile, false, null);
+    }
+
+    /**
+     * Create and train a custom model.
+     * Models are trained using documents that are of the following content type - 'application/pdf',
+     * 'image/jpeg', 'image/png', 'image/tiff'.
+     * Other type of content is ignored.
+     * <p>The service does not support cancellation of the long running operation and returns with an
+     * error message indicating absence of cancellation support.</p>
+     *
+     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure storage
+     * blob container Uri (preferably a Shared Access Signature Uri).
+     * @param useLabelFile Boolean to specify the use of labeled files for training the model.
+     * @param includeSubFolders to indicate if sub folders within the set of prefix folders will
+     * also need to be included when searching for content to be preprocessed.
+     * @param filePrefix A case-sensitive prefix string to filter documents in the source path
+     * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
+     * sub folders for training.
+     *
+     * @return A {@link SyncPoller} that polls the extract receipt operation until it
+     * has completed, has failed, or has been cancelled.
+     */
+    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
+                                                                      boolean includeSubFolders, String filePrefix) {
+        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders, filePrefix).getSyncPoller();
+    }
+
+    /**
+     * Get detailed information for a specified custom model id.
+     *
+     * @param modelId Model identifier.
+     *
+     * @return The detailed information for the specified model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomFormModel getCustomModel(String modelId) {
+        return getCustomFormModelWithResponse(modelId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get detailed information for a specified custom model id.
+     *
+     * @param modelId Model identifier.
+     * @param context The context.
+     * 
+     * @return The detailed information for the specified model.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CustomFormModel> getCustomFormModelWithResponse(String modelId, Context context) {
+        return client.getCustomFormModelWithResponse(modelId, context).block();
+    }
+
+    /**
+     * Get account information for all custom models.
+     *
+     * @return The account information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccountProperties getAccountProperties() {
+        return getAccountPropertiesWithResponse(Context.NONE).getValue();
+    }
+
+    /**
+     * Get account information for all custom models.
+     *
+     * @return The account information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccountProperties> getAccountPropertiesWithResponse(Context context) {
+        return client.getAccountPropertiesWithResponse(context).block();
+    }
+
+    /**
+     * Deletes the specified custom model.
+     *
+     * @param modelId The modelIdentifier
+     */
+    public void deleteModel(String modelId) {
+        deleteModelWithResponse(modelId, Context.NONE);
+    }
+
+    /**
+     * Deletes the specified custom model.
+     *
+     * @param modelId The modelIdentifier.
+     * @param context The context object.
+     *
+     * @return A {@link Mono} containing containing status code and HTTP headers
+     */
+    public Response<Void> deleteModelWithResponse(String modelId, Context context) {
+        return client.deleteModelWithResponse(modelId, context).block();
+    }
+
+    // list models
+    // TODO
+}

@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 
@@ -48,5 +49,20 @@ public final class Utility {
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    /**
+     * Extracts the result ID from the URL.
+     *
+     * @param operationLocation The URL specified in the 'Operation-Location' response header containing the
+     * resultId used to track the progress and obtain the result of the analyze operation.
+     *
+     * @return The resultId used to track the progress.
+     */
+    public static String parseModelId(String operationLocation) {
+        if (!CoreUtils.isNullOrEmpty(operationLocation)) {
+            return operationLocation.substring(operationLocation.lastIndexOf('/') + 1);
+        }
+        throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse operation header for result Id."));
     }
 }
