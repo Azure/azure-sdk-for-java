@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
@@ -437,7 +438,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         } else if (Objects.isNull(lockToken)) {
             return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
+        } else if (CoreUtils.isNullOrEmpty(lockToken.getLockToken())) {
+            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
         }
+
         UUID lockTokenUUID;
         try {
             lockTokenUUID = UUID.fromString(lockToken.getLockToken());
