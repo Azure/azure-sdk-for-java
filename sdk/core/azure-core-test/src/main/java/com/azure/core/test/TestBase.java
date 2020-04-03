@@ -244,6 +244,7 @@ public abstract class TestBase implements BeforeEachCallback {
         System.out.println(Arrays.toString(arguments.get()));
         return arguments;
     }
+
     private static TestMode initializeTestMode() {
         final ClientLogger logger = new ClientLogger(TestBase.class);
         final String azureTestMode = Configuration.getGlobalConfiguration().get(AZURE_TEST_MODE);
@@ -294,9 +295,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private static Integer getPlatFormOffset() {
         String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        System.out.println("It is currently running on os: " + currentOs);
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
-        System.out.println("It is currently using Java version: " + currentJdk);
 
         for (int i = 0; i < PLATFORM_LIST.size(); i++) {
             if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].toLowerCase(Locale.ROOT))
@@ -305,7 +304,8 @@ public abstract class TestBase implements BeforeEachCallback {
                 return i;
             }
         }
-        return null;
+        throw new RuntimeException(String.format("Not running on the expected platform. os: %s, jdk: %s",
+            currentOs, currentJdk));
     }
 
     private static List<String> buildPlatformList() {
