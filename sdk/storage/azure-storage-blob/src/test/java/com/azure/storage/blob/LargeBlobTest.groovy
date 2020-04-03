@@ -52,6 +52,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("Takes really long time")
     def "Stage Real Large Blob"() {
         given:
         def stream = createLargeInputStream(maxBlockSize)
@@ -65,6 +66,7 @@ class LargeBlobTest extends APISpec {
 
         then:
         blockList.committedBlocks.size() == 1
+        blockList.committedBlocks.get(0).getSizeLong() == maxBlockSize
     }
 
     @Requires({ liveMode() })

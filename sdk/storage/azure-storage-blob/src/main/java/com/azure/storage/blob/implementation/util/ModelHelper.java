@@ -26,14 +26,17 @@ public class ModelHelper {
      * @return An object with defaults filled in for null values in the original.
      */
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
-        other = other == null ? new ParallelTransferOptions((Long) null, null, null) : other;
-        return new ParallelTransferOptions(
-            other.getBlockSizeLong() == null ? Long.valueOf(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : other.getBlockSizeLong(),
-            other.getNumBuffers() == null ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
-                : other.getNumBuffers(),
-            other.getProgressReceiver(),
-            other.getMaxSingleUploadSizeLong() == null ? Long.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG)
+        other = other == null ? new ParallelTransferOptions() : other;
+        return new ParallelTransferOptions()
+            .setBlockSize(other.getBlockSizeLong() == null
+                ? Long.valueOf(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : other.getBlockSizeLong())
+            .setNumBuffers(other.getNumBuffers() == null
+                ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
+                : other.getNumBuffers())
+            .setProgressReceiver(other.getProgressReceiver())
+            .setMaxSingleUploadSize(other.getMaxSingleUploadSizeLong() == null
+                ? Long.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG)
                 : other.getMaxSingleUploadSizeLong());
     }
 
@@ -51,7 +54,10 @@ public class ModelHelper {
             : blobOptions.getProgressReceiver()::reportProgress;
         Long maxSingleUploadSize = blobOptions.getMaxSingleUploadSizeLong();
 
-        return new com.azure.storage.common.ParallelTransferOptions(blockSize, numBuffers, wrappedReceiver,
-            maxSingleUploadSize);
+        return new com.azure.storage.common.ParallelTransferOptions()
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers)
+            .setProgressReceiver(wrappedReceiver)
+            .setMaxSingleUploadSize(maxSingleUploadSize);
     }
 }

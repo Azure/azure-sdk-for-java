@@ -418,7 +418,7 @@ public class BlobClientJavaDocCodeSnippets {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Long blockSize = 100L * 1024L * 1024L; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, null, null);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize);
 
         try {
             client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata,

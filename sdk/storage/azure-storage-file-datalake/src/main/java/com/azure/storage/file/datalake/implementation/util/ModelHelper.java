@@ -37,7 +37,7 @@ public class ModelHelper {
      * @return An object with defaults filled in for null values in the original.
      */
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
-        other = other == null ? new ParallelTransferOptions((Long) null, null, null, null) : other;
+        other = other == null ? new ParallelTransferOptions() : other;
 
         // For now these two checks are useful for when we transition to
         if (other.getBlockSizeLong() != null) {
@@ -50,13 +50,13 @@ public class ModelHelper {
                 other.getMaxSingleUploadSizeLong(), 1, MAX_APPEND_FILE_BYTES);
         }
 
-        return new ParallelTransferOptions(
-            other.getBlockSizeLong() == null ? Long.valueOf(FILE_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : other.getBlockSizeLong(),
-            other.getNumBuffers() == null ? Integer.valueOf(FILE_DEFAULT_NUMBER_OF_BUFFERS)
-                : other.getNumBuffers(),
-            other.getProgressReceiver(),
-            other.getMaxSingleUploadSizeLong() == null ? Long.valueOf(MAX_APPEND_FILE_BYTES)
+        return new ParallelTransferOptions()
+            .setBlockSize(other.getBlockSizeLong() == null ? Long.valueOf(FILE_DEFAULT_UPLOAD_BLOCK_SIZE)
+                : other.getBlockSizeLong())
+            .setNumBuffers(other.getNumBuffers() == null ? Integer.valueOf(FILE_DEFAULT_NUMBER_OF_BUFFERS)
+                : other.getNumBuffers())
+            .setProgressReceiver(other.getProgressReceiver())
+            .setMaxSingleUploadSize(other.getMaxSingleUploadSizeLong() == null ? Long.valueOf(MAX_APPEND_FILE_BYTES)
                 : other.getMaxSingleUploadSizeLong());
     }
 }
