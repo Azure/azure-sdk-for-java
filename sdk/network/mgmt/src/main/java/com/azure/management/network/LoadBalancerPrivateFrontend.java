@@ -53,7 +53,7 @@ public interface LoadBalancerPrivateFrontend extends
             /**
              * Assigns the specified subnet to this private frontend of an internal load balancer.
              *
-             * @param network    the virtual network the subnet exists in
+             * @param network the virtual network the subnet exists in
              * @param subnetName the name of a subnet
              * @return the next stage of the definition
              */
@@ -112,7 +112,7 @@ public interface LoadBalancerPrivateFrontend extends
             /**
              * Assigns the specified subnet to this private frontend of the internal load balancer.
              *
-             * @param network    the virtual network the subnet exists in
+             * @param network the virtual network the subnet exists in
              * @param subnetName the name of a subnet
              * @return the next stage of the definition
              */
@@ -150,7 +150,7 @@ public interface LoadBalancerPrivateFrontend extends
             /**
              * Assigns the specified subnet to this private frontend of the internal load balancer.
              *
-             * @param network    the virtual network the subnet exists in
+             * @param network the virtual network the subnet exists in
              * @param subnetName the name of a subnet
              * @return the next stage of the definition
              */

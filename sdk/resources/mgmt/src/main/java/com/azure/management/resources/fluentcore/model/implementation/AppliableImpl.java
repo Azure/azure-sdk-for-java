@@ -12,8 +12,8 @@ import reactor.core.publisher.Mono;
 /**
  * The base class for all updatable resource.
  *
- * @param <FluentModelT>     the fluent model type representing the creatable resource
- * @param <InnerModelT>      the model inner type that the fluent model type wraps
+ * @param <FluentModelT> the fluent model type representing the creatable resource
+ * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the fluent model implementation type
  */
 public abstract class AppliableImpl<
@@ -28,7 +28,7 @@ public abstract class AppliableImpl<
     /**
      * Creates an AppliableImpl.
      *
-     * @param name        the appliable name
+     * @param name the appliable name
      * @param innerObject the inner object
      */
     protected AppliableImpl(String name, InnerModelT innerObject) {

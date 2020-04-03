@@ -254,7 +254,7 @@ public interface KubernetesCluster extends
             /**
              * The first stage of a network profile definition.
              *
-             * @param <ParentT>  the stage of the Kubernetes cluster network profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the Kubernetes cluster network profile definition to return to after attaching this definition
              */
             interface Blank<ParentT>  extends WithAttach<ParentT> {
                 /**
@@ -269,7 +269,7 @@ public interface KubernetesCluster extends
             /**
              * The stage of a network profile definition allowing to specify the network policy.
              *
-             * @param <ParentT>  the stage of the network profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
              */
             interface WithNetworkPolicy<ParentT> {
                 /**
@@ -285,7 +285,7 @@ public interface KubernetesCluster extends
              * The stage of a network profile definition allowing to specify a CIDR notation IP range from which to
              * assign pod IPs when kubenet is used.
              *
-             * @param <ParentT>  the stage of the network profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
              */
             interface WithPodCidr<ParentT> {
                 /**
@@ -301,7 +301,7 @@ public interface KubernetesCluster extends
              * The stage of a network profile definition allowing to specify a CIDR notation IP range from which to
              * assign service cluster IPs.
              *
-             * @param <ParentT>  the stage of the network profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
              */
             interface WithServiceCidr<ParentT> {
                 /**
@@ -318,7 +318,7 @@ public interface KubernetesCluster extends
             /**
              * The stage of a network profile definition allowing to specify an IP address assigned to the Kubernetes DNS service.
              *
-             * @param <ParentT>  the stage of the network profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
              */
             interface WithDnsServiceIP<ParentT> {
                 /**
@@ -336,7 +336,7 @@ public interface KubernetesCluster extends
              * The stage of a network profile definition allowing to specify a CIDR notation IP range assigned to the
              *   Docker bridge network.
              *
-             * @param <ParentT>  the stage of the network profile definition to return to after attaching this definition
+             * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
              */
             interface WithDockerBridgeCidr<ParentT> {
                 /**
@@ -368,7 +368,7 @@ public interface KubernetesCluster extends
         /**
          * The Kubernetes cluster network profile definition.
          * The entirety of a Kubernetes cluster network profile definition as a part of a parent definition.
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface NetworkProfileDefinition<ParentT> extends
             NetworkProfileDefinitionStages.Blank<ParentT>,

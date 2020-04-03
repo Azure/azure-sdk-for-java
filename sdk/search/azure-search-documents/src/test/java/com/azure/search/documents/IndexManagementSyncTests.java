@@ -36,6 +36,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.generateIfNotChangedAccessCondition;
 import static com.azure.search.documents.TestHelpers.getETag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -76,7 +77,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         Index index = createTestIndex();
 
         Index createdIndex = client.createIndex(index);
-        TestHelpers.assertIndexesEqual(index, createdIndex);
+        assertObjectEquals(index, createdIndex, true, "etag");
     }
 
     @Test
@@ -85,7 +86,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Response<Index> createIndexResponse = client.createIndexWithResponse(index.setName("hotel2"),
             generateRequestOptions(), Context.NONE);
-        TestHelpers.assertIndexesEqual(index, createIndexResponse.getValue());
+        assertObjectEquals(index, createIndexResponse.getValue(), true, "etag");
     }
 
     @Test
@@ -141,7 +142,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         client.createIndex(index);
 
         Index createdIndex = client.getIndex(index.getName());
-        TestHelpers.assertIndexesEqual(index, createdIndex);
+        assertObjectEquals(index, createdIndex, true, "etag");
     }
 
     @Test
@@ -151,7 +152,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Response<Index> getIndexResponse = client.getIndexWithResponse(index.getName(), generateRequestOptions(),
             Context.NONE);
-        TestHelpers.assertIndexesEqual(index, getIndexResponse.getValue());
+        assertObjectEquals(index, getIndexResponse.getValue(), true, "etag");
     }
 
     @Test
@@ -328,7 +329,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
-        TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
+        assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
     @Test
@@ -354,7 +355,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Index updatedIndex = client.createOrUpdateIndex(index);
 
-        TestHelpers.assertIndexesEqual(fullFeaturedIndex, updatedIndex);
+        assertObjectEquals(fullFeaturedIndex, updatedIndex, true, "etag", "@odata.etag");
 
         // Modify the fields on an existing index
         Index existingIndex = client.getIndex(fullFeaturedIndex.getName());
@@ -381,7 +382,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
-        TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
+
+        assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
     @Test
@@ -405,8 +407,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Index updatedIndex = client.createOrUpdateIndexWithResponse(existingIndex,
             true, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
-
-        TestHelpers.assertIndexesEqual(existingIndex, updatedIndex);
+        assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
 
     @Test
@@ -435,10 +436,10 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         Index expected = createTestIndex();
 
         Index actual = client.createOrUpdateIndex(expected);
-        TestHelpers.assertIndexesEqual(expected, actual);
+        assertObjectEquals(expected, actual, true, "etag");
 
         actual = client.createOrUpdateIndex(expected.setName("hotel1"));
-        TestHelpers.assertIndexesEqual(expected, actual);
+        assertObjectEquals(expected, actual, true, "etag");
 
         Index res = client.createOrUpdateIndex(expected.setName("hotel2"));
         assertEquals(expected.getName(), res.getName());
@@ -450,11 +451,11 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         Index actual = client.createOrUpdateIndexWithResponse(expected, false, new MatchConditions(),
             generateRequestOptions(), Context.NONE).getValue();
-        TestHelpers.assertIndexesEqual(expected, actual);
+        assertObjectEquals(expected, actual, true, "etag");
 
         actual = client.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
             false, new MatchConditions(), generateRequestOptions(), Context.NONE).getValue();
-        TestHelpers.assertIndexesEqual(expected, actual);
+        assertObjectEquals(expected, actual, true, "etag");
 
         Response<Index> createOrUpdateResponse = client.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
             false, new MatchConditions(), generateRequestOptions(), Context.NONE);

@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/apimanagement/
-    exclude:
-      - sdk/apimanagement/azure
-      - sdk/apimanagement/microsoft-azure
-      - sdk/apimanagement/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/apimanagement/
-    exclude:
-      - sdk/apimanagement/azure
-      - sdk/apimanagement/microsoft-azure
-      - sdk/apimanagement/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

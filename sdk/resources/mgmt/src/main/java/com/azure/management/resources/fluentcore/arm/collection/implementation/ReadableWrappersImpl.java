@@ -8,8 +8,8 @@ import com.azure.core.http.rest.PagedIterable;
  * Base class for readable wrapper collections, i.e. those whose models can only be read, not created.
  * (Internal use only)
  *
- * @param <T>      the individual resource type returned
- * @param <ImplT>  the individual resource implementation
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
 public abstract class ReadableWrappersImpl<

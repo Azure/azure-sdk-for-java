@@ -22,12 +22,12 @@ import reactor.core.publisher.Mono;
  * Base class for independent child collection class.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
- * @param <ParentT>          the type of the parent resource
+ * @param <ManagerT> the manager type for this resource provider type
+ * @param <ParentT> the type of the parent resource
  */
 public abstract class IndependentChildrenImpl<
         T extends IndependentChild<ManagerT>,

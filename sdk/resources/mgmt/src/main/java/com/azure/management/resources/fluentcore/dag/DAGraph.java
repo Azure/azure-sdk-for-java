@@ -172,7 +172,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     /**
      * Reports that a node is faulted.
      *
-     * @param faulted   the node faulted
+     * @param faulted the node faulted
      * @param throwable the reason for fault
      */
     public void reportError(NodeT faulted, Throwable throwable) {

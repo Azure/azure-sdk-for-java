@@ -16,7 +16,7 @@ public interface VirtualMachineEncryption {
      * Legacy encryption extension will be used to enable encryption.
      *
      * @param keyVaultId resource ID of the key vault to store the disk encryption key
-     * @param aadClientId  client ID of an AAD application which has permission to the key vault
+     * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      *
      * @return a representation of the deferred computation of this call, returning the current volume encryption status
@@ -66,7 +66,7 @@ public interface VirtualMachineEncryption {
      * Enable encryption for virtual machine disks.
      *
      * @param keyVaultId resource ID of the key vault to store the disk encryption key
-     * @param aadClientId  client ID of an AAD application which has permission to the key vault
+     * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      *
      * @return current volume decryption status

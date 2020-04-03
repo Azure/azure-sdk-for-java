@@ -98,7 +98,7 @@ public interface HasFrontend {
              * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
              * Else, an automatically named new private frontend will be created implicitly on the load balancer.
              *
-             * @param network    an existing network
+             * @param network an existing network
              * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
@@ -111,7 +111,7 @@ public interface HasFrontend {
              * Else, an automatically named new private frontend will be created implicitly on the load balancer.
              *
              * @param networkResourceId the resource ID of an existing network
-             * @param subnetName        the name of an existing subnet within the specified network
+             * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
             ReturnT fromExistingSubnet(String networkResourceId, String subnetName);
@@ -195,7 +195,7 @@ public interface HasFrontend {
              * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
              * Else, an automatically named new private frontend will be created implicitly on the load balancer.
              *
-             * @param network    an existing network
+             * @param network an existing network
              * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
@@ -208,7 +208,7 @@ public interface HasFrontend {
              * Else, an automatically named new private frontend will be created implicitly on the load balancer.
              *
              * @param networkResourceId the resource ID of an existing network
-             * @param subnetName        the name of an existing subnet within the specified network
+             * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
             ReturnT fromExistingSubnet(String networkResourceId, String subnetName);
