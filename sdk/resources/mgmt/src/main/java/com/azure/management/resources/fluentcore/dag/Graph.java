@@ -147,7 +147,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      * Find the path.
      *
      * @param start key of first node in the path
-     * @param end   key of last node in the path
+     * @param end key of last node in the path
      * @return string containing the nodes keys in the path separated by arrow symbol
      */
     protected String findPath(String start, String end) {
@@ -197,8 +197,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
         /**
          * visit an edge.
          *
-         * @param fromKey  key of the from node
-         * @param toKey    key of the to node
+         * @param fromKey key of the from node
+         * @param toKey key of the to node
          * @param edgeType the edge type
          */
         void visitEdge(String fromKey, String toKey, EdgeType edgeType);

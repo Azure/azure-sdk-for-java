@@ -114,9 +114,9 @@ public interface GenericResource extends
             /**
              * Specifies the plan of the resource. The plan can only be set for 3rd party resources.
              *
-             * @param name          the name of the plan
-             * @param publisher     the publisher of the plan
-             * @param product       the name of the product
+             * @param name the name of the plan
+             * @param publisher the publisher of the plan
+             * @param product the name of the product
              * @param promotionCode the promotion code, if any
              * @return the next stage of the definition
              */
@@ -229,9 +229,9 @@ public interface GenericResource extends
             /**
              * Specifies the plan of the resource.
              *
-             * @param name          the name of the plan
-             * @param publisher     the publisher of the plan
-             * @param product       the name of the product
+             * @param name the name of the plan
+             * @param publisher the publisher of the plan
+             * @param product the name of the product
              * @param promotionCode the promotion code, if any
              * @return the next stage of the generic resource update
              */

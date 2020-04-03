@@ -57,7 +57,7 @@ public interface KubernetesClusterAgentPool
 
     /**
      * The entirety of a container service agent pool definition as a part of a parent definition.
-     * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+     * @param <ParentT> the stage of the container service definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -78,7 +78,7 @@ public interface KubernetesClusterAgentPool
         /**
          * The first stage of a container service agent pool definition allowing to specify the agent virtual machine size.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface Blank<ParentT> {
             /**
@@ -92,7 +92,7 @@ public interface KubernetesClusterAgentPool
         /**
          * The stage of a container service agent pool definition allowing to specify the agent pool OS type.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithOSType<ParentT> {
             /**
@@ -108,7 +108,7 @@ public interface KubernetesClusterAgentPool
         /**
          * The stage of a container service agent pool definition allowing to specify the agent pool OS disk size.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithOSDiskSize<ParentT> {
             /**
@@ -124,7 +124,7 @@ public interface KubernetesClusterAgentPool
          * The stage of a container service agent pool definition allowing to specify the type of agent pool.
          * Allowed values could be seen in AgentPoolType Class.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithAgentPoolType<ParentT> {
             /**
@@ -150,7 +150,7 @@ public interface KubernetesClusterAgentPool
          * <p>
          *   Allowed values must be in the range of 1 to 100 (inclusive); the default value is 1.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithAgentPoolVirtualMachineCount<ParentT> {
             /**
@@ -166,7 +166,7 @@ public interface KubernetesClusterAgentPool
         /**
          * The stage of a container service agent pool definition allowing to specify the maximum number of pods that can run on a node.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithMaxPodsCount<ParentT> {
             /**
@@ -181,7 +181,7 @@ public interface KubernetesClusterAgentPool
         /**
          * The stage of a container service agent pool definition allowing to specify a virtual network to be used for the agents.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithVirtualNetwork<ParentT> {
             /**

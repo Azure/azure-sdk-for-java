@@ -12,12 +12,12 @@ import com.azure.management.resources.fluentcore.arm.models.Resource;
  * Base class for independent child resource collection class.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
- * @param <ParentT>          the type of the parent resource
+ * @param <ManagerT> the manager type for this resource provider type
+ * @param <ParentT> the type of the parent resource
  */
 public abstract class IndependentChildResourcesImpl<
         T extends IndependentChildResource<ManagerT, InnerT>,

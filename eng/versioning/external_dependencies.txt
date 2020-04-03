@@ -5,7 +5,6 @@ com.fasterxml.jackson.core:jackson-core;2.10.1
 com.fasterxml.jackson.core:jackson-databind;2.10.1
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
-com.fasterxml.uuid:java-uuid-generator;4.0.1
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5
@@ -122,6 +121,7 @@ org.apache.maven.plugins:maven-checkstyle-plugin;3.1.0
 org.apache.maven.plugins:maven-clean-plugin;3.0.0
 org.apache.maven.plugins:maven-compiler-plugin;3.8.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
+org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2

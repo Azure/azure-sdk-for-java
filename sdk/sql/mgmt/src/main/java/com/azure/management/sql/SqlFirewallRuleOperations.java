@@ -35,7 +35,7 @@ public interface SqlFirewallRuleOperations extends
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
+             * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
             WithIPAddressRange withExistingSqlServer(String resourceGroupName, String sqlServerName);
@@ -65,7 +65,7 @@ public interface SqlFirewallRuleOperations extends
              * Sets the starting IP address of SQL server's firewall rule.
              *
              * @param startIPAddress starting IP address in IPv4 format.
-             * @param endIPAddress   starting IP address in IPv4 format.
+             * @param endIPAddress starting IP address in IPv4 format.
              * @return The next stage of the definition.
              */
             WithCreate withIPAddressRange(String startIPAddress, String endIPAddress);

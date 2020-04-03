@@ -7,9 +7,7 @@ package com.azure.management.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentExportResult model.
- */
+/** The DeploymentExportResult model. */
 @Fluent
 public final class DeploymentExportResultInner {
     /*
@@ -20,7 +18,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Get the template property: The template content.
-     * 
+     *
      * @return the template value.
      */
     public Object template() {
@@ -29,7 +27,7 @@ public final class DeploymentExportResultInner {
 
     /**
      * Set the template property: The template content.
-     * 
+     *
      * @param template the template value to set.
      * @return the DeploymentExportResultInner object itself.
      */
