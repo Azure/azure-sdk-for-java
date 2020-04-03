@@ -16,6 +16,7 @@ import com.azure.storage.blob.BlobServiceVersion;
  */
 @ServiceClientBuilder(serviceClients = {BlobChangefeedClient.class, BlobChangefeedAsyncClient.class})
 public final class BlobChangefeedClientBuilder {
+
     private final String accountUrl;
     private final HttpPipeline pipeline;
     private final BlobServiceVersion version;
@@ -67,6 +68,6 @@ public final class BlobChangefeedClientBuilder {
      */
     public BlobChangefeedAsyncClient buildAsyncClient() {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        return new BlobChangefeedAsyncClient(accountUrl, pipeline, serviceVersion);
+        return new BlobChangefeedAsyncClient(pipeline, accountUrl, serviceVersion);
     }
 }

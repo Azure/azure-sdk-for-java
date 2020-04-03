@@ -17,6 +17,11 @@ public class BlobChangefeedClient {
 
     private final BlobChangefeedAsyncClient client;
 
+    /**
+     * Package-private constructor for use by {@link BlobChangefeedClientBuilder}.
+     *
+     * @param client {@link BlobChangefeedAsyncClient}.
+     */
     BlobChangefeedClient(BlobChangefeedAsyncClient client) {
         this.client = client;
     }

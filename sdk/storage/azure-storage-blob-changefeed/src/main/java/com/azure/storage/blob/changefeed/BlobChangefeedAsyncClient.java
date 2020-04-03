@@ -25,15 +25,26 @@ public class BlobChangefeedAsyncClient {
 
     private final BlobContainerAsyncClient client;
 
-    BlobChangefeedAsyncClient(String accountUrl, HttpPipeline pipeline, BlobServiceVersion version) {
+    /**
+     * Package-private constructor for use by {@link BlobChangefeedClientBuilder}.
+     *
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param version The version of the service to receive requests.
+     */
+    BlobChangefeedAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion version) {
         this.client = new BlobContainerClientBuilder()
-            .endpoint(accountUrl)
+            .endpoint(url)
             .containerName(CHANGEFEED_CONTAINER_NAME)
             .pipeline(pipeline)
             .serviceVersion(version)
             .buildAsyncClient();
     }
 
+    /**
+     *
+     * @return
+     */
     public BlobChangefeedPagedFlux getEvents() {
         return getEvents(null, null);
     }

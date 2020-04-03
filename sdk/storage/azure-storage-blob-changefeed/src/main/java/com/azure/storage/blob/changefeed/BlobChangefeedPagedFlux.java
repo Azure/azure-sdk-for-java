@@ -23,26 +23,32 @@ import java.util.List;
 public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, BlobChangefeedEvent,
     BlobChangefeedPagedResponse> {
 
-//    private final BlobContainerAsyncClient client;
     private final Changefeed changefeed;
     private final Integer defaultPageSize = 5000;
 
     /**
+     * Package-private constructor for use by {@link BlobChangefeedAsyncClient}.
      * Creates an instance of {@link BlobChangefeedPagedFlux}.
+     *
      * @param client The {@link BlobContainerAsyncClient changefeed client}.
      * @param startTime The {@link OffsetDateTime start time}.
      * @param endTime The {@link OffsetDateTime end time}.
      */
     BlobChangefeedPagedFlux(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime) {
-//        this.client = client;
         startTime = startTime == null ? OffsetDateTime.MIN : startTime;
         endTime = endTime == null ? OffsetDateTime.MAX : endTime;
 
         this.changefeed = new Changefeed(client, startTime, endTime);
     }
 
+    /**
+     * Package-private constructor for use by {@link BlobChangefeedAsyncClient}.
+     * Creates an instance of {@link BlobChangefeedPagedFlux}.
+     *
+     * @param client The {@link BlobContainerAsyncClient changefeed client}.
+     * @param cursor The cursor.
+     */
     BlobChangefeedPagedFlux(BlobContainerAsyncClient client, String cursor) {
-//        this.client = client;
         this.changefeed = new Changefeed(client, cursor);
     }
 

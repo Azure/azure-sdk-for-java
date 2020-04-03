@@ -13,12 +13,14 @@ import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
  */
 public final class BlobChangefeedPagedIterable extends ContinuablePagedIterable<String,
     BlobChangefeedEvent, BlobChangefeedPagedResponse> {
+
     /**
+     * Package-private constructor for use by {@link BlobChangefeedClient}.
      * Creates an instance of {@link BlobChangefeedPagedIterable}.
      *
      * @param pagedFlux The {@link BlobChangefeedPagedFlux} that will be consumed as an iterable.
      */
-    public BlobChangefeedPagedIterable(BlobChangefeedPagedFlux pagedFlux) {
+    BlobChangefeedPagedIterable(BlobChangefeedPagedFlux pagedFlux) {
         super(pagedFlux);
     }
 }
