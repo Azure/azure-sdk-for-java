@@ -178,6 +178,8 @@ detailed in the [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/
 ## Next steps
 
 - Samples are explained in detail [here][samples_readme].
+- [Watch a demo or deep dive video](https://azure.microsoft.com/resources/videos/index/?services=search)
+- [Read more about the Azure Cognitive Search service](https://docs.microsoft.com/azure/search/search-what-is-azure-search)
 
 ## Contributing
 
