@@ -1324,6 +1324,7 @@ directive:
   where: $.definitions.Block
   transform: >
     $.properties.Size["x-ms-client-name"] = "sizeLong";
+    $.properties.Size["format"] = "int64";
     $.properties.SizeInt = { "type" : "integer" };
     $.required.push("SizeInt");
 ```
