@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
-import java.util.List;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in

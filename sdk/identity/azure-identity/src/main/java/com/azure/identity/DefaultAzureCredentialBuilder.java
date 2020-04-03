@@ -7,8 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
