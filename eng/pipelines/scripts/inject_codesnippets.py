@@ -19,7 +19,16 @@ SAMPLE_PATH_GLOB = "**/src/samples/java/**"
 EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
 
 HTML_ESCAPE_TABLE = {
-    "@": "{@literal @}"
+    '"': "&quot;",
+    ">": "&#62;",
+    "<": "&#60;",
+    "@": "{@literal @}",
+    "{": "&#123;",
+    "}": "&#125;",
+    "(": "&#40;",
+    ")": "&#41;",
+    "/": "&#47;",
+    "\\": "&#92;",
 }
 
 
@@ -139,7 +148,7 @@ if __name__ == "__main__":
                     lead_space = snippet_ref.groupdict()["leadingspace"] + " "
                     if id_ending in snippets:
                         result_array = [
-                            lead_space + "<pre>{@code \n",
+                            lead_space + "<pre>\n",
                             escape(
                                 (
                                     "".join(
@@ -151,7 +160,7 @@ if __name__ == "__main__":
                                 ),
                                 HTML_ESCAPE_TABLE,
                             ),
-                            lead_space + "}</pre>\n",
+                            lead_space + "</pre>\n",
                         ]
                         amended_file.append("".join(result_array))
                         needs_amend = True
@@ -165,3 +174,4 @@ if __name__ == "__main__":
             with open(file, "w", encoding="utf-8") as out_file:
                 for line in amended_file:
                     out_file.write(line)
+ 
