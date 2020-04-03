@@ -48,6 +48,16 @@
         "Version": "3.8.1"
       }
     }
+  },
+  {
+    "Component": {
+      "Type": "Maven",
+      "Maven": {
+        "ArtifactId": "java-uuid-generator",
+        "GroupId": "com.fasterxml.uuid",
+        "Version": "4.0.1"
+      }
+    }
   }
 ],
   "Version": 1
