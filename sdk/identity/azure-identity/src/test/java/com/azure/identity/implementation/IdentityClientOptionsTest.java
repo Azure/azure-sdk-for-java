@@ -20,7 +20,7 @@ public class IdentityClientOptionsTest {
 
     @Test
     public void testEnvAuthorityHost() {
-        String envAuthorityHost = "https://foo.com/";
+        String envAuthorityHost = "https://env.com/";
         Configuration.getGlobalConfiguration().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, envAuthorityHost);
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
         Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
@@ -28,10 +28,9 @@ public class IdentityClientOptionsTest {
 
     @Test
     public void testCustomAuthorityHost() {
-        String authorityHost = "https://custom.com/";        
+        String authorityHost = "https://custom.com/";
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
         identityClientOptions.setAuthorityHost(authorityHost);
         Assert.assertEquals(authorityHost, identityClientOptions.getAuthorityHost());
     }
-
 }
