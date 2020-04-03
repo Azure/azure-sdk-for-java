@@ -5,21 +5,55 @@ parameters:
 stages:
   - stage: Build
     jobs:
-    - template: ../jobs/archetype-sdk-data.yml
+    - template: ../jobs/archetype-sdk-client.yml
       parameters:
         ServiceDirectory: ${{parameters.ServiceDirectory}}
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
         SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
         TestMatrix:
-          Windows - java8:
+          Linux - Java 8:
+            OSName: 'Linux'
+            OSVmImage: 'ubuntu-16.04'
+            JavaVersion: '1.8'
+            RunTitle: 'Linux on Java 1.8'
+            ProfileFlag: '-Punit'
+          macOS - Java 8:
+            OSName: 'macOS'
+            OSVmImage: 'macOS-10.15'
+            JavaVersion: '1.8'
+            RunTitle: 'macOS on Java 1.8'
+            ProfileFlag: '-Punit'
+          Windows - Java 8:
+            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
-            OSName: Windows
+            RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
-          MacOS - java8:
-            OSVmImage: 'macOS-10.13'
+          Linux - Java 11:
+            OSName: 'Linux'
+            OSVmImage: 'ubuntu-16.04'
+            JavaVersion: '1.11'
+            RunTitle: 'Linux on Java 1.11'
+            ProfileFlag: '-Punit'
+          macOS - Java 11:
+            OSName: 'macOS'
+            OSVmImage: 'macOS-10.15'
+            JavaVersion: '1.11'
+            RunTitle: 'macOS on Java 1.11'
+            ProfileFlag: '-Punit'
+          Windows - Java 11:
+            OSName: 'Windows'
+            OSVmImage: 'windows-2019'
+            JavaVersion: '1.11'
+            RunTitle: 'Windows on Java 1.11'
+            ProfileFlag: '-Punit'
+          Windows From Source - Java 8:
+            OSName: 'Windows'
+            OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
-            OSName: macOS
+            RunTitle: 'From Source: Windows on Java 1.8'
+            TestFromSource: true
             ProfileFlag: '-Punit'
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
@@ -29,6 +63,8 @@ stages:
         TestName: Emulator
         DisableAzureResourceCreation: true
         ServiceDirectory: cosmos
+        Artifacts: ${{ parameters.Artifacts }}
+        AdditionalModules: ${{ parameters.AdditionalModules }}
         Matrix:
           Tcp_Integration_Tests_Java8:
             OSVmImage: 'windows-2019'
@@ -54,7 +90,7 @@ stages:
 
         TestStepMavenInputs:
           goals: 'verify'
-          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
+          options: '$(ProfileFlag) -Dgpg.skip -DargLine="-DACCOUNT_HOST=https://localhost:8081/" -pl $(ProjectList)'
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaVersion)
 

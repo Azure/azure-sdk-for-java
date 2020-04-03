@@ -22,8 +22,11 @@ trigger:
     include:
       - sdk/eventhubs/
     exclude:
-      - sdk/eventhubs/azure
-      - sdk/eventhubs/mgmt-
+      - sdk/eventhubs/mgmt-v2015_08_01
+      - sdk/eventhubs/mgmt-v2017_04_01
+      - sdk/eventhubs/mgmt-v2018_01_01_preview
+      - sdk/eventhubs/azure-messaging-eventhubs
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
 
 pr:
   branches:
@@ -36,8 +39,11 @@ pr:
     include:
       - sdk/eventhubs/
     exclude:
-      - sdk/eventhubs/azure
-      - sdk/eventhubs/mgmt-
+      - sdk/eventhubs/mgmt-v2015_08_01
+      - sdk/eventhubs/mgmt-v2017_04_01
+      - sdk/eventhubs/mgmt-v2018_01_01_preview
+      - sdk/eventhubs/azure-messaging-eventhubs
+      - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
@@ -47,12 +53,9 @@ stages:
         - name: azure-eventhubs
           groupId: com.microsoft.azure
           safeName: azureeventhubs
-          stagingProfileId: 534d15ee3800f4
         - name: azure-eventhubs-eph
           groupId: com.microsoft.azure
           safeName: azureeventhubseph
-          stagingProfileId: 534d15ee3800f4
         - name: azure-eventhubs-extensions
           groupId: com.microsoft.azure
           safeName: azureeventhubsextensions
-          stagingProfileId: 534d15ee3800f4

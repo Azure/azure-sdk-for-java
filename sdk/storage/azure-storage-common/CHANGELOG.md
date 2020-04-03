@@ -1,7 +1,16 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (Unreleased)
+- Added a constant for the directory metadata marker. 
+- Fixed bug where x-ms headers were not being word-sorted. 
 
+## 12.5.0 (2020-03-11)
+- Added types that enabled buffered upload in datalake.
+
+## 12.4.0 (2020-02-12)
+
+## 12.3.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
 
 ## 12.3.0 (2020-01-15)
 

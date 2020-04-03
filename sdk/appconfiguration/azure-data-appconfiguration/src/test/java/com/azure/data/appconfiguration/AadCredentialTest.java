@@ -3,17 +3,20 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 
 /**
  * Unit test for construct a configuration client by using AAD token credential.
@@ -24,8 +27,8 @@ public class AadCredentialTest extends TestBase {
     static String connectionString;
     static TokenCredential tokenCredential;
 
-    @BeforeEach
-    public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
+    private void setup(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
+        throws InvalidKeyException, NoSuchAlgorithmException {
         if (interceptorManager.isPlaybackMode()) {
             connectionString = "Endpoint=http://localhost:8080;Id=0000000000000;Secret=MDAwMDAw";
 
@@ -42,15 +45,20 @@ public class AadCredentialTest extends TestBase {
 
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             client = new ConfigurationClientBuilder()
+                .httpClient(httpClient)
                 .credential(tokenCredential)
                 .endpoint(endpoint)
                 .addPolicy(interceptorManager.getRecordPolicy()) // Record
+                .serviceVersion(serviceVersion)
                 .buildClient();
         }
     }
 
-    @Test
-    public void aadAuthenticationAzConfigClient() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void aadAuthenticationAzConfigClient(HttpClient httpClient, ConfigurationServiceVersion serviceVersion)
+        throws Exception {
+        setup(httpClient, serviceVersion);
         final String key = "newKey";
         final String value = "newValue";
 
@@ -58,4 +66,5 @@ public class AadCredentialTest extends TestBase {
         Assertions.assertEquals(addedSetting.getKey(), key);
         Assertions.assertEquals(addedSetting.getValue(), value);
     }
+
 }

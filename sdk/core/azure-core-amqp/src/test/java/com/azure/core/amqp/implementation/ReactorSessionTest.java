@@ -107,4 +107,10 @@ public class ReactorSessionTest {
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
+    
+    @Test
+    public void verifyDispose() {
+        reactorSession.dispose();
+        Assertions.assertTrue(reactorSession.isDisposed());
+    }
 }

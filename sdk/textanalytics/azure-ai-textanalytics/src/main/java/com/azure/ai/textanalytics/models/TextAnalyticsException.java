@@ -13,26 +13,26 @@ public class TextAnalyticsException extends AzureException {
     private static final String ERROR_CODE = "ErrorCodeValue";
     private static final String TARGET = "target";
 
-    private final String errorCodeValue;
+    private final String code;
     private final String target;
 
     /**
-     * Initializes a new instance of the TextAnalyticsException class.
+     * Initializes a new instance of the {@link TextAnalyticsException} class.
      *
-     * @param message Text containing any additional details of the exception.
-     * @param errorCodeValue The service returned error code value.
+     * @param message Text contains any additional details of the exception.
+     * @param code The service returned error code value.
      * @param target The target for this exception.
      */
-    public TextAnalyticsException(String message, String errorCodeValue, String target) {
+    public TextAnalyticsException(String message, String code, String target) {
         super(message);
-        this.errorCodeValue = errorCodeValue;
+        this.code = code;
         this.target = target;
     }
 
     @Override
     public String getMessage() {
         StringBuilder baseMessage = new StringBuilder().append(super.getMessage()).append(" ").append(ERROR_CODE)
-            .append(": {").append(errorCodeValue).append("}");
+            .append(": {").append(code).append("}");
 
         if (this.target == null) {
             return baseMessage.toString();
@@ -51,11 +51,11 @@ public class TextAnalyticsException extends AzureException {
     }
 
     /**
-     * Gets the TextAnalyticsErrorCode for this exception.
+     * Gets the {@link TextAnalyticsErrorCode} for this exception.
      *
-     * @return The TextAnalyticsErrorCode for this exception.
+     * @return The {@link TextAnalyticsErrorCode} for this exception.
      */
-    public TextAnalyticsErrorCode getErrorCodeValue() {
-        return TextAnalyticsErrorCode.fromString(errorCodeValue);
+    public TextAnalyticsErrorCode getCode() {
+        return TextAnalyticsErrorCode.fromString(code);
     }
 }

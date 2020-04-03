@@ -41,6 +41,8 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
  * Operations allowed by the client are creating, uploading, copying, listing, downloading, and deleting files.
@@ -132,6 +134,36 @@ public class ShareFileClient {
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
         return new StorageFileOutputStream(shareFileAsyncClient, offset);
+    }
+
+    /**
+     * Determines if the file this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.exists}
+     *
+     * @return Flag indicating existence of the file.
+     */
+    public Boolean exists() {
+        return existsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Determines if the file this client represents exists in the cloud.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareFileClient.existsWithResponse#Duration-Context}
+     *
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return Flag indicating existence of the file.
+     */
+    public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+        Mono<Response<Boolean>> response = shareFileAsyncClient.existsWithResponse(context);
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**

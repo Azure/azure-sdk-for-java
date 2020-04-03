@@ -16,7 +16,12 @@ import java.util.List;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.DomainProvisioningState;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchema;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InputSchemaMapping;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PublicNetworkAccess;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.InboundIpRule;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.ResourceSku;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.IdentityInfo;
+import java.util.ArrayList;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnection;
 import rx.functions.Func1;
 
 class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainImpl, EventGridManager> implements Domain, Domain.Definition, Domain.Update {
@@ -70,13 +75,13 @@ class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainIm
     }
 
     @Override
-    public Boolean allowTrafficFromAllIPs() {
-        return this.inner().allowTrafficFromAllIPs();
+    public String endpoint() {
+        return this.inner().endpoint();
     }
 
     @Override
-    public String endpoint() {
-        return this.inner().endpoint();
+    public IdentityInfo identity() {
+        return this.inner().identity();
     }
 
     @Override
@@ -100,8 +105,29 @@ class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainIm
     }
 
     @Override
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
+        if (this.inner().privateEndpointConnections() != null) {
+            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
+                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
+    }
+
+    @Override
     public DomainProvisioningState provisioningState() {
         return this.inner().provisioningState();
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
+    }
+
+    @Override
+    public ResourceSku sku() {
+        return this.inner().sku();
     }
 
     @Override
@@ -117,11 +143,17 @@ class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainIm
     }
 
     @Override
-    public DomainImpl withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
+    public DomainImpl withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        this.inner().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    @Override
+    public DomainImpl withIdentity(IdentityInfo identity) {
         if (isInCreateMode()) {
-            this.inner().withAllowTrafficFromAllIPs(allowTrafficFromAllIPs);
+            this.inner().withIdentity(identity);
         } else {
-            this.updateParameter.withAllowTrafficFromAllIPs(allowTrafficFromAllIPs);
+            this.updateParameter.withIdentity(identity);
         }
         return this;
     }
@@ -132,6 +164,26 @@ class DomainImpl extends GroupableResourceCoreImpl<Domain, DomainInner, DomainIm
             this.inner().withInboundIpRules(inboundIpRules);
         } else {
             this.updateParameter.withInboundIpRules(inboundIpRules);
+        }
+        return this;
+    }
+
+    @Override
+    public DomainImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (isInCreateMode()) {
+            this.inner().withPublicNetworkAccess(publicNetworkAccess);
+        } else {
+            this.updateParameter.withPublicNetworkAccess(publicNetworkAccess);
+        }
+        return this;
+    }
+
+    @Override
+    public DomainImpl withSku(ResourceSku sku) {
+        if (isInCreateMode()) {
+            this.inner().withSku(sku);
+        } else {
+            this.updateParameter.withSku(sku);
         }
         return this;
     }

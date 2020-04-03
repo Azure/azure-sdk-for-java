@@ -92,7 +92,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerlistblobsflat599194fd2429ab45244ee3?include=&restype=container&comp=list",
+    "Uri" : "https://gaprastg71.blob.core.windows.net/jtccontainerlistblobsflat599194fd2429ab45244ee3?restype=container&comp=list",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.1.0 (11.0.4; Windows 10 10.0)",

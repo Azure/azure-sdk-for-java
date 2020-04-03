@@ -17,10 +17,12 @@ import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptionProvisioningState;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptionDestination;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.DeliveryWithResourceIdentity;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptionFilter;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventDeliverySchema;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.RetryPolicy;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.DeadLetterDestination;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.DeadLetterWithResourceIdentity;
 import rx.functions.Func1;
 
 class EventSubscriptionImpl extends CreatableUpdatableImpl<EventSubscription, EventSubscriptionInner, EventSubscriptionImpl> implements EventSubscription, EventSubscription.Definition, EventSubscription.Update {
@@ -104,6 +106,16 @@ class EventSubscriptionImpl extends CreatableUpdatableImpl<EventSubscription, Ev
     }
 
     @Override
+    public DeadLetterWithResourceIdentity deadLetterWithResourceIdentity() {
+        return this.inner().deadLetterWithResourceIdentity();
+    }
+
+    @Override
+    public DeliveryWithResourceIdentity deliveryWithResourceIdentity() {
+        return this.inner().deliveryWithResourceIdentity();
+    }
+
+    @Override
     public EventSubscriptionDestination destination() {
         return this.inner().destination();
     }
@@ -170,6 +182,26 @@ class EventSubscriptionImpl extends CreatableUpdatableImpl<EventSubscription, Ev
             this.inner().withDeadLetterDestination(deadLetterDestination);
         } else {
             this.updateParameter.withDeadLetterDestination(deadLetterDestination);
+        }
+        return this;
+    }
+
+    @Override
+    public EventSubscriptionImpl withDeadLetterWithResourceIdentity(DeadLetterWithResourceIdentity deadLetterWithResourceIdentity) {
+        if (isInCreateMode()) {
+            this.inner().withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
+        } else {
+            this.updateParameter.withDeadLetterWithResourceIdentity(deadLetterWithResourceIdentity);
+        }
+        return this;
+    }
+
+    @Override
+    public EventSubscriptionImpl withDeliveryWithResourceIdentity(DeliveryWithResourceIdentity deliveryWithResourceIdentity) {
+        if (isInCreateMode()) {
+            this.inner().withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
+        } else {
+            this.updateParameter.withDeliveryWithResourceIdentity(deliveryWithResourceIdentity);
         }
         return this;
     }

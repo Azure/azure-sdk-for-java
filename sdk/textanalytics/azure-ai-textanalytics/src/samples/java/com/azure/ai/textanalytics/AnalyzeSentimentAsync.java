@@ -3,47 +3,42 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to asynchronously analyze the sentiment of an input text.
+ * Sample demonstrates how to asynchronously analyze the sentiment of document.
  */
 public class AnalyzeSentimentAsync {
     /**
-     * Main method to invoke this demo about how to analyze the sentiment of an input text.
+     * Main method to invoke this demo about how to analyze the sentiment of document.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that need be analysed.
-        String text = "The hotel was dark and unclean. I like Microsoft";
+        // The document that needs be analyzed.
+        String document = "The hotel was dark and unclean. I like Microsoft";
 
-        client.analyzeSentiment(text).subscribe(
+        client.analyzeSentiment(document).subscribe(
             documentSentiment -> {
+                SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
                 System.out.printf(
-                    "Recognized document sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                    documentSentiment.getSentiment(),
-                    documentSentiment.getSentimentScores().getPositive(),
-                    documentSentiment.getSentimentScores().getNeutral(),
-                    documentSentiment.getSentimentScores().getNegative());
+                    "Recognized document sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                    documentSentiment.getSentiment(), scores.getPositive(), scores.getNeutral(), scores.getNegative());
 
-                for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
-                    System.out.printf(
-                        "Recognized sentence sentiment: %s, positive score: %s, neutral score: %s, negative score: %s.%n",
-                        sentenceSentiment.getSentiment(),
-                        sentenceSentiment.getSentimentScores().getPositive(),
-                        sentenceSentiment.getSentimentScores().getNeutral(),
-                        sentenceSentiment.getSentimentScores().getNegative());
-                }
+                documentSentiment.getSentences().forEach(sentenceSentiment -> {
+                    SentimentConfidenceScores sentenceScores = sentenceSentiment.getConfidenceScores();
+                    System.out.printf("Recognized sentence sentiment: %s, positive score: %f, neutral score: %f, negative score: %f.%n",
+                        sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
+                });
             },
             error -> System.err.println("There was an error analyzing sentiment of the text." + error),
             () -> System.out.println("Sentiment analyzed."));

@@ -1,8 +1,17 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (2020-04-02)
+
+- Added az namespace info attribute to all outgoing spans for Http Libraries.
+- `io.opentelemetry` version update to `0.2.4` API changes.
+
+## 1.0.0-beta.3 (2020-03-06)
+
+- EventHubs: add enqueueTime to Process span links.
+- EventHubs: add az namespace attribute to all outgoing spans. 
 
 ## 1.0.0-beta.2 (2020-01-07)
+
 - Add `EventHubs.*` properties to attributes of processing spans.
 - Remove `Azure` prefix from convenience layer span names.
 - Add links for batch send operation in Event Hubs client library. 

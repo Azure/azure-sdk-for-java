@@ -1,8 +1,26 @@
 # Release History
 
-## 12.0.0-beta.11 (Unreleased)
+## 12.1.0-beta.1 (Unreleased)
+- Fixed a NPE caused due to deserializing a non existent lastModifiedTime.
+- Added an isDirectory property to PathProperties. 
+- Fixed DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to not overwrite by default 
+- Added overloads to DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to allow overwrite behavior.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
+
+## 12.0.1 (2020-03-11)
+- GA release. 
+- Fixed bug that caused rename to fail on paths that are url encoded.
+- Mapped StorageErrorException and BlobStorageException to DataLakeStorageException on DataLakeServiceClient.listFileSystems
+- Removed DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
+
+## 12.0.0-beta.12 (2020-02-12)
 - Added ability to rename files and directories across file systems.
 - Added DataLakeFileSystem.getRootDirectory methods to get the root directory in a file system.
+- Fixed bug which caused NullPointerException when creating a PathItem.
+
+## 12.0.0-beta.11 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-blob` to version 12.3.1
 
 ## 12.0.0-beta.10 (2020-01-15)
 This package's

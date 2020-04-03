@@ -4,16 +4,9 @@
 package com.azure.storage.blob.nio
 
 import com.azure.core.http.HttpClient
-import com.azure.core.http.HttpHeaders
-import com.azure.core.http.HttpMethod
-import com.azure.core.http.HttpPipelineCallContext
-import com.azure.core.http.HttpPipelineNextPolicy
-import com.azure.core.http.HttpRequest
-import com.azure.core.http.HttpResponse
 import com.azure.core.http.ProxyOptions
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
-import com.azure.core.http.rest.Response
 import com.azure.core.test.InterceptorManager
 import com.azure.core.test.TestMode
 import com.azure.core.test.utils.TestResourceNamer
@@ -21,7 +14,6 @@ import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
 import com.azure.core.util.logging.ClientLogger
-import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.BlobClientBuilder
@@ -32,16 +24,9 @@ import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
-import com.azure.storage.blob.models.BlobProperties
-import com.azure.storage.blob.models.BlobRetentionPolicy
-import com.azure.storage.blob.models.BlobServiceProperties
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.ListBlobContainersOptions
-import com.azure.storage.blob.specialized.BlobAsyncClientBase
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.blob.specialized.BlobLeaseClient
-import com.azure.storage.blob.specialized.BlobLeaseClientBuilder
+import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
@@ -53,8 +38,10 @@ import spock.lang.Timeout
 
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystem
+import java.nio.file.Path
+import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.TimeUnit
@@ -95,7 +82,7 @@ class APISpec extends Specification {
 
     String blobPrefix = "javablob"
 
-    public static final String defaultEndpointTemplate = "http://%s.blob.core.windows.net/"
+    public static final String defaultEndpointTemplate = "https://%s.blob.core.windows.net/"
 
     static def AZURE_TEST_MODE = "AZURE_TEST_MODE"
     static def PRIMARY_STORAGE = "PRIMARY_STORAGE_"
@@ -114,6 +101,17 @@ class APISpec extends Specification {
     protected TestResourceNamer resourceNamer
     protected String testName
     String containerName
+
+
+    // The values below are used to create data-driven tests for access conditions.
+    static final OffsetDateTime oldDate = OffsetDateTime.now().minusDays(1)
+    static final OffsetDateTime newDate = OffsetDateTime.now().plusDays(1)
+    static final String garbageEtag = "garbage"
+    /*
+     Note that this value is only used to check if we are depending on the received etag. This value will not actually
+     be used.
+     */
+    static final String receivedEtag = "received"
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -185,7 +183,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountKey = "astorageaccountkey"
+            return "astorageaccountkey"
         }
     }
 
@@ -193,7 +191,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
         } else {
-            accountName = "azstoragesdkaccount"
+            return "azstoragesdkaccount"
         }
     }
 
@@ -374,6 +372,10 @@ class APISpec extends Specification {
     Map<String, Object> initializeConfigMap() {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = getHttpClient()
+        if (testMode == TestMode.RECORD) {
+            config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] =
+                [interceptorManager.getRecordPolicy()] as HttpPipelinePolicy[]
+        }
         config[AzureFileSystem.AZURE_STORAGE_USE_HTTPS] = defaultEndpointTemplate.startsWith("https")
         return config as Map<String, Object>
     }
@@ -404,6 +406,13 @@ class APISpec extends Specification {
 
     String getBlockID() {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
+    }
+
+    def createFS(Map<String,Object> config) {
+        config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
+        config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
+
+        return new AzureFileSystem(new AzureFileSystemProvider(), getAccountName(PRIMARY_STORAGE), config)
     }
 
     OffsetDateTime getUTCNow() {
@@ -488,6 +497,86 @@ class APISpec extends Specification {
     def sleepIfRecord(long milliseconds) {
         if (testMode != TestMode.PLAYBACK) {
             sleep(milliseconds)
+        }
+    }
+
+    def rootNameToContainerName(String root) {
+        return root.substring(0, root.length() - 1)
+    }
+
+    def rootNameToContainerClient(String root) {
+        return primaryBlobServiceClient.getBlobContainerClient(rootNameToContainerName(root))
+    }
+
+    def getNonDefaultRootDir(FileSystem fs) {
+        for (Path dir : fs.getRootDirectories()) {
+            if (!dir.equals(((AzureFileSystem) fs).getDefaultDirectory())) {
+                return dir.toString()
+            }
+        }
+        throw new Exception("File system only contains the default directory");
+    }
+
+    def getDefaultDir(FileSystem fs) {
+        return ((AzureFileSystem) fs).getDefaultDirectory().toString()
+    }
+
+    def getPathWithDepth(int depth) {
+        def pathStr = ""
+        for (int i = 0; i < depth; i++) {
+            pathStr += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        return pathStr
+    }
+
+    def putDirectoryBlob(BlockBlobClient blobClient) {
+        blobClient.commitBlockListWithResponse(Collections.emptyList(), null,
+            [(AzureResource.DIR_METADATA_MARKER): "true"], null, null, null, null)
+    }
+
+    /**
+     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
+     *
+     * @param bc
+     *      The URL to the blob to get the etag on.
+     * @param match
+     *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
+     *      the blob's actual etag for this test, so it is retrieved.
+     * @return
+     * The appropriate etag value to run the current test.
+     */
+    def setupBlobMatchCondition(BlobClientBase bc, String match) {
+        if (match == receivedEtag) {
+            return bc.getProperties().getETag()
+        } else {
+            return match
+        }
+    }
+
+    def checkBlobIsDir(BlobClient blobClient) {
+         String isDir = blobClient.getPropertiesWithResponse(null, null, null)
+             .getValue().getMetadata().get(AzureResource.DIR_METADATA_MARKER)
+        return isDir != null && isDir == "true"
+    }
+
+    static class TestFileAttribute<T> implements  FileAttribute<T> {
+        String name
+        T value
+
+        TestFileAttribute(String name, T value) {
+            this.name = name
+            this.value = value
+        }
+
+        @Override
+        String name() {
+            return this.name
+        }
+
+        @Override
+        T value() {
+            return this.value
         }
     }
 }

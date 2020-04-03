@@ -16,16 +16,17 @@ module com.azure.core {
     // public API surface area
     exports com.azure.core.annotation;
     exports com.azure.core.credential;
+    exports com.azure.core.cryptography;
     exports com.azure.core.exception;
     exports com.azure.core.http;
     exports com.azure.core.http.policy;
     exports com.azure.core.http.rest;
     exports com.azure.core.util;
     exports com.azure.core.util.logging;
+    exports com.azure.core.util.paging;
     exports com.azure.core.util.polling;
     exports com.azure.core.util.serializer;
     exports com.azure.core.util.tracing;
-    exports com.azure.core.cryptography;
 
     // exporting some packages specifically for Jackson
     opens com.azure.core.http to com.fasterxml.jackson.databind;
@@ -37,7 +38,10 @@ module com.azure.core {
     opens com.azure.core.implementation.serializer to com.fasterxml.jackson.databind;
     opens com.azure.core.implementation.serializer.jsonwrapper to com.fasterxml.jackson.databind;
 
-    // service provider interfaces
+    // Exports HttpProviders#getAllHttpClients API to azure-core-test module
+    exports com.azure.core.implementation.http to com.azure.core.test;
+
+  // service provider interfaces
     uses com.azure.core.util.tracing.Tracer;
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;

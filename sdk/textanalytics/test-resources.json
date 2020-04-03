@@ -84,7 +84,7 @@
             "type": "String",
             "value": "[parameters('testApplicationSecret')]"
         },
-        "AZURE_TEXT_ANALYTICS_SUBSCRIPTION_KEY": {
+        "AZURE_TEXT_ANALYTICS_API_KEY": {
             "type": "string",
             "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('textAnalyticsApiVersion')).key1]"
         },

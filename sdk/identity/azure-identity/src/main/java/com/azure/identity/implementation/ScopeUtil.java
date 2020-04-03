@@ -5,6 +5,7 @@ package com.azure.identity.implementation;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * Utilities to convert between scopes and resources for connecting to Azure Active Directory.
@@ -12,6 +13,7 @@ import java.util.Objects;
 public final class ScopeUtil {
 
     private static final String DEFAULT_SUFFIX = "/.default";
+    private static final Pattern SCOPE_PATTERN = Pattern.compile("^[0-9a-zA-Z-.:/]+$");
 
     /**
      * Convert a list of scopes to a resource for Azure Active Directory.
@@ -41,6 +43,20 @@ public final class ScopeUtil {
     public static String[] resourceToScopes(String resource) {
         Objects.requireNonNull(resource);
         return new String[] { resource + DEFAULT_SUFFIX };
+    }
+
+    /**
+     * Validate the format of the input scope.
+     * @param scope the scope input
+     * @throws IllegalArgumentException if a scope with invalid format is provided.
+     */
+    public static void validateScope(String scope) {
+        boolean isScopeMatch = SCOPE_PATTERN.matcher(scope).matches();
+
+        if (!isScopeMatch) {
+            throw new IllegalArgumentException("The specified scope is not in expected format."
+                                               + " Only alphanumeric characters, '.', '-', ':', and '/' are allowed");
+        }
     }
 
     private ScopeUtil() {

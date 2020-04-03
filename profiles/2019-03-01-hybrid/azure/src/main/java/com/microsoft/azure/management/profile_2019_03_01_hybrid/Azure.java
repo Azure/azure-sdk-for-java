@@ -109,12 +109,8 @@ import com.microsoft.azure.management.storage.v2017_10_01.Skus;
 import com.microsoft.azure.management.storage.v2017_10_01.StorageAccounts;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import okhttp3.ConnectionSpec;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Entry point to Azure ContainerService resource management.
@@ -809,14 +805,7 @@ public final class Azure {
      */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
         private static RestClient.Builder createRestClientBuilderWithAllCipherSuites() {
-            ConnectionSpec tlsConnectionSpec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
-                .cipherSuites(CustomCipherSuites.ALL_CIPHER_SUITES)
-                .build();
-
-            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-                .connectionSpecs(Arrays.asList(tlsConnectionSpec, ConnectionSpec.CLEARTEXT));
-
-            return new RestClient.Builder(clientBuilder, new Retrofit.Builder());
+            return new RestClient.Builder().withCipherSuites(CustomCipherSuites.ALL_CIPHER_SUITES);
         }
 
         public ConfigurableImpl() {

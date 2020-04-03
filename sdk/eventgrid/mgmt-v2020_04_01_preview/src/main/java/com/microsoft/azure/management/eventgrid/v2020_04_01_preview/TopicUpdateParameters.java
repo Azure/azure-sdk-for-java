@@ -11,10 +11,12 @@ package com.microsoft.azure.management.eventgrid.v2020_04_01_preview;
 import java.util.Map;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Properties of the Topic update.
  */
+@JsonFlatten
 public class TopicUpdateParameters {
     /**
      * Tags of the resource.
@@ -23,18 +25,33 @@ public class TopicUpdateParameters {
     private Map<String, String> tags;
 
     /**
-     * This determines if IP filtering rules ought to be evaluated or not. By
-     * default it will not evaluate and will allow traffic from all IPs.
+     * Resource identity information.
      */
-    @JsonProperty(value = "allowTrafficFromAllIPs")
-    private Boolean allowTrafficFromAllIPs;
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
 
     /**
-     * This determines the IP filtering rules that ought be applied when events
-     * are received on this domain.
+     * This determines if traffic is allowed over public network. By default it
+     * is enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
+     * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules"
+     * /&gt;. Possible values include: 'Enabled', 'Disabled'.
      */
-    @JsonProperty(value = "inboundIpRules")
+    @JsonProperty(value = "properties.publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
+
+    /**
+     * This can be used to restrict traffic from specific IPs instead of all
+     * IPs. Note: These are considered only if PublicNetworkAccess is enabled.
+     */
+    @JsonProperty(value = "properties.inboundIpRules")
     private List<InboundIpRule> inboundIpRules;
+
+    /**
+     * The Sku pricing tier for the topic.
+     */
+    @JsonProperty(value = "sku")
+    private ResourceSku sku;
 
     /**
      * Get tags of the resource.
@@ -57,27 +74,49 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Get this determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+     * Get resource identity information.
      *
-     * @return the allowTrafficFromAllIPs value
+     * @return the identity value
      */
-    public Boolean allowTrafficFromAllIPs() {
-        return this.allowTrafficFromAllIPs;
+    public IdentityInfo identity() {
+        return this.identity;
     }
 
     /**
-     * Set this determines if IP filtering rules ought to be evaluated or not. By default it will not evaluate and will allow traffic from all IPs.
+     * Set resource identity information.
      *
-     * @param allowTrafficFromAllIPs the allowTrafficFromAllIPs value to set
+     * @param identity the identity value to set
      * @return the TopicUpdateParameters object itself.
      */
-    public TopicUpdateParameters withAllowTrafficFromAllIPs(Boolean allowTrafficFromAllIPs) {
-        this.allowTrafficFromAllIPs = allowTrafficFromAllIPs;
+    public TopicUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
         return this;
     }
 
     /**
-     * Get this determines the IP filtering rules that ought be applied when events are received on this domain.
+     * Get this determines if traffic is allowed over public network. By default it is enabled.
+     You can further restrict to specific IPs by configuring &lt;seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules" /&gt;. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set this determines if traffic is allowed over public network. By default it is enabled.
+     You can further restrict to specific IPs by configuring &lt;seealso cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.TopicUpdateParameterProperties.InboundIpRules" /&gt;. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get this can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      *
      * @return the inboundIpRules value
      */
@@ -86,13 +125,33 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Set this determines the IP filtering rules that ought be applied when events are received on this domain.
+     * Set this can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
      *
      * @param inboundIpRules the inboundIpRules value to set
      * @return the TopicUpdateParameters object itself.
      */
     public TopicUpdateParameters withInboundIpRules(List<InboundIpRule> inboundIpRules) {
         this.inboundIpRules = inboundIpRules;
+        return this;
+    }
+
+    /**
+     * Get the Sku pricing tier for the topic.
+     *
+     * @return the sku value
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the Sku pricing tier for the topic.
+     *
+     * @param sku the sku value to set
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
         return this;
     }
 

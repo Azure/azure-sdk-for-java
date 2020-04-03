@@ -86,6 +86,10 @@
     "source": "specification/databox/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "datafactory/resource-manager": {
+    "source": "specification/datafactory/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "datalakeanalytics/resource-manager": {
     "source": "specification/datalake-analytics/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -314,6 +318,18 @@
     "fconfig": {
       "\"moduleName\"": "\"StreamAnalytics\""
     }
+  },
+  "support/resource-manager": {
+    "source": "specification/support/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "synapse/resource-manager": {
+    "source": "specification/synapse/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "timeseriesinsights/resource-manager": {
+    "source": "specification/timeseriesinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "vmwarecloudsimple/resource-manager": {
     "source": "specification/vmwarecloudsimple/resource-manager/readme.md",

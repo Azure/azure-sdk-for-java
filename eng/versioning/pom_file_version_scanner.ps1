@@ -111,14 +111,14 @@ function Build-Dependency-Hash-From-File {
                 [Dependency]$dep = [Dependency]::new($line)
                 if ($depHash.ContainsKey($dep.id))
                 {
-                    Write-Error "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
+                    Write-Error-With-Color "Error: Duplicate dependency encountered. '$($dep.id)' defined in '$($depFile)' already exists in the dependency list which means it is defined in multiple version_*.txt files."
                     $script:FoundError = $true
                     continue
                 }
                 $depHash.Add($dep.id, $dep)
             }
             catch {
-                Write-Error "Invalid dependency line='$($line) in file=$($depFile)"
+                Write-Error-With-Color "Invalid dependency line='$($line) in file=$($depFile)"
             }
         } 
         else 
@@ -127,14 +127,14 @@ function Build-Dependency-Hash-From-File {
                 [ExternalDependency]$dep = [ExternalDependency]::new($line)
                 if ($depHash.ContainsKey($dep.id))
                 {
-                    Write-Error "Error: Duplicate external_dependency encountered. '$($dep.id)' has a duplicate entry defined in '$($depFile)'. Please ensure that all entries are unique."
+                    Write-Error-With-Color "Error: Duplicate external_dependency encountered. '$($dep.id)' has a duplicate entry defined in '$($depFile)'. Please ensure that all entries are unique."
                     $script:FoundError = $true
                     continue
                 }
                 $depHash.Add($dep.id, $dep)
             }
             catch {
-                Write-Error "Invalid external dependency line='$($line) in file=$($depFile)"
+                Write-Error-With-Color "Invalid external dependency line='$($line) in file=$($depFile)"
             }
         }
     }
@@ -201,10 +201,10 @@ function Test-Dependency-Tag-And-Version {
             }
             elseif ($depType -eq $DependencyTypeCurrent) 
             {
-                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_'
-                if ($depKey.StartsWith('unreleased_'))
+                # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
+                if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
                 {
-                    return "Error: $($versionUpdateString) is using an unreleased_ dependency and trying to set current value. Only dependency versions can be set with an unreleased dependency."
+                    return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
                 }
                 if ($versionString -ne $libHash[$depKey].curVer)
                 {
@@ -218,6 +218,29 @@ function Test-Dependency-Tag-And-Version {
             }
         }
     }
+}
+
+# There are some configurations, like org.apache.maven.plugins:maven-enforcer-plugin, 
+# that have plugin and dependency configuration entries that are string patterns. This
+# function will be called if the groupId and artifactId for a given plugin or dependency
+# are both empty. It'll climb up the parents it finds a configuration entry or there are
+# no more parents. If the node is part of a configuration entry then return true, otherwise
+# return false.
+function Confirm-Node-Is-Part-Of-Configuration {
+    param(
+        [System.Xml.XmlNode]$theNode
+    )
+    # Climbing up the parents the nodes will be System.Xml.XmlElement until we're at the very end
+    # which will have a type of just 'xml'. If we encounter a configuration node return true
+    # otherwise return false.
+    while ($theNode.GetType() -ieq [System.Xml.XmlElement]) {
+        if ($theNode.Name -ieq 'configuration')
+        {
+            return $true
+        }
+        $theNode = $theNode.ParentNode
+    }
+    return $false
 }
 
 # Create one dependency hashtable for libraries we build (the groupIds will make the entries unique) and
@@ -257,10 +280,11 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             return
         }
     }
+
     Write-Host "processing pomFile=$($pomFile)"
-    $dependencyManagement = $xmlPomFile.GetElementsByTagName("dependencyManagement")[0]
-    if ($dependencyManagement)
+    if ($xmlPomFile.project.dependencyManagement)
     {
+        $script:FoundError = $true
         Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
@@ -289,7 +313,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 else
                 {
                     # verify the version tag and version are correct
-                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                     if ($retVal)
                     {
                         $script:FoundError = $true
@@ -333,7 +357,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                 else
                 {
                     # verify the version tag and version are correct
-                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                    $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                     if ($retVal)
                     {
                         $script:FoundError = $true
@@ -362,6 +386,20 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     {
         $artifactId = $dependencyNode.artifactId
         $groupId = $dependencyNode.groupId
+        # If the artifactId and groupId are both empty then check to see if this
+        # is part of a configuration entry. If so then just continue.
+        if (!$artifactId -and !$groupId)
+        {
+            $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $dependencyNode
+            if (!$isPartOfConfig)
+            {
+                $script:FoundError = $true
+                # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
+                Write-Error-With-Color "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
+            }
+            continue
+        } 
+
         $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
         if (!$versionNode) 
         {
@@ -381,7 +419,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             else
             {
                 # verify the version tag and version are correct
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                 if ($retVal)
                 {
                     $script:FoundError = $true
@@ -402,7 +440,20 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     {
         $artifactId = $pluginNode.artifactId
         $groupId = $pluginNode.groupId
-        # plugins will always have an artifact but may not have a groupId
+        # If the artifactId and groupId are both empty then check to see if this
+        # is part of a configuration entry.
+        if (!$artifactId -and !$groupId)
+        {
+            $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $pluginNode
+            if (!$isPartOfConfig)
+            {
+                $script:FoundError = $true
+                # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
+                Write-Error-With-Color "Error: plugin is missing version element and/or artifactId and groupId elements pluginNode=$($pluginNode.OuterXml)"
+            }
+            continue
+        } 
+        # plugins should always have an artifact but may not have a groupId
         if (!$groupId)
         {
             $script:FoundError = $true
@@ -428,7 +479,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             else
             {
                 # verify the version tag and version are correct
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText $versionNode.NextSibling.Value
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
                 if ($retVal)
                 {
                     $script:FoundError = $true

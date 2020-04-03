@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * The DocumentResult model.
+ * The {@link DocumentResult} model.
  */
 @Immutable
 public class DocumentResult {
@@ -20,14 +20,15 @@ public class DocumentResult {
     private final boolean isError;
 
     /**
-     * Create a {@code DocumentResult} model that maintains document id, information about the document payload,
+     * Create a {@link DocumentResult} model that maintains document id, information about the document payload,
      * and document error.
      *
-     * @param id unique, non-empty document identifier
-     * @param textDocumentStatistics text document statistics
-     * @param error the document error.
+     * @param id Unique, non-empty document identifier.
+     * @param textDocumentStatistics The text document statistics.
+     * @param error The document error.
      */
-    DocumentResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
+    DocumentResult(String id, TextDocumentStatistics textDocumentStatistics,
+        TextAnalyticsError error) {
         this.id = id;
         this.error = error;
         this.isError = error != null;
@@ -37,7 +38,7 @@ public class DocumentResult {
     /**
      * Get the document id.
      *
-     * @return the document id
+     * @return The document id.
      */
     public String getId() {
         return id;
@@ -46,7 +47,7 @@ public class DocumentResult {
     /**
      * Get the statistics of the text document.
      *
-     * @return the {@link TextDocumentStatistics} statistics of the text document
+     * @return The {@link TextDocumentStatistics} statistics of the text document.
      */
     public TextDocumentStatistics getStatistics() {
         throwExceptionIfError();
@@ -56,7 +57,7 @@ public class DocumentResult {
     /**
      * Get the error of text document.
      *
-     * @return the error of text document
+     * @return The error of text document.
      */
     public TextAnalyticsError getError() {
         return error;
@@ -65,7 +66,7 @@ public class DocumentResult {
     /**
      * Get the boolean value indicates if the document result is error or not.
      *
-     * @return A boolean indicates if the document result is error or not
+     * @return A boolean indicates if the document result is error or not.
      */
     public boolean isError() {
         return isError;
@@ -73,7 +74,6 @@ public class DocumentResult {
 
     /**
      * Throw a {@link TextAnalyticsException} if result has isError true and when a non-error property was accessed.
-     *
      */
     void throwExceptionIfError() {
         if (this.isError()) {

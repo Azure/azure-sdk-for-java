@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -22,7 +23,10 @@ import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.Locale;
 import java.util.Objects;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ConfigurationClientBuilderTest extends TestBase {
@@ -113,8 +117,9 @@ public class ConfigurationClientBuilderTest extends TestBase {
         assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
     }
 
-    @Test
-    public void nullServiceVersion() {
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void nullServiceVersion(HttpClient httpClient) {
         final String key = "newKey";
         final String value = "newValue";
         connectionString = interceptorManager.isPlaybackMode()
@@ -127,13 +132,11 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
+            .serviceVersion(null)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -159,17 +162,16 @@ public class ConfigurationClientBuilderTest extends TestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .pipeline(new HttpPipelineBuilder().build());
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
 
             assertThrows(HttpResponseException.class,
                 () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
+        HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
+            : new NettyAsyncHttpClientBuilder().wiretap(true).build();
 
-        clientBuilder.pipeline(null);
+        clientBuilder.pipeline(null).httpClient(defaultHttpClient);
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         Assertions.assertEquals(addedSetting.getKey(), key);

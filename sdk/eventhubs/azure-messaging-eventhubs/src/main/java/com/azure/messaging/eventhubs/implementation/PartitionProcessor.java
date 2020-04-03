@@ -9,7 +9,6 @@ import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.InitializationContext;
 
 /**
@@ -35,9 +34,7 @@ public abstract class PartitionProcessor {
 
     /**
      * This method is called when this {@link EventProcessorClient} takes ownership of a new partition and before any
-     * events from this partition are received. By default, each partition is processed from {@link
-     * EventPosition#earliest()}. To start processing from a different position, use {@link
-     * InitializationContext#setInitialPosition(EventPosition)} to
+     * events from this partition are received.
      *
      * @param initializationContext The initialization context before events from the partition are processed.
      */

@@ -36,9 +36,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
-  - [Common exceptions](#common-exceptions)
-  - [Other exceptions](#other-exceptions)
-  - [Handling transient AMQP exceptions](#handling-transient-amqp-exceptions)
+  - [Exceptions](#exceptions)
   - [Default SSL library](#default-ssl-library)
 - [Next steps](#next-steps)
 - [Contributing](#contributing)
@@ -61,7 +59,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -319,7 +317,7 @@ managing the underlying consumer operations.
 
 In our example, we will focus on building the [`EventProcessorClient`][EventProcessorClient], use the
 [`InMemoryCheckpointStore`][InMemoryCheckpointStore] available in samples, and a callback function that processes events
-received from the Event Hub and writes to console. For production applications, it's recommended to use a durable 
+received from the Event Hub and writes to console. For production applications, it's recommended to use a durable
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
 
@@ -354,8 +352,8 @@ eventProcessorClient.stop();
 ### Enable client logging
 
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
-example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
-be found here: [log levels][LogLevels].
+example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. For more
+information, see [Logging with Azure SDK][LoggingAzureWithSDK].
 
 ### Enable AMQP transport logging
 
@@ -381,14 +379,14 @@ java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter
 java.util.logging.SimpleFormatter.format=[%1$tF %1$tr] %3$s %4$s: %5$s %n
 ```
 
-
-### Common exceptions
+### Exceptions
 
 #### AMQP exception
 
 This is a general exception for AMQP related failures, which includes the AMQP errors as `ErrorCondition` and the
 context that caused this exception as `AmqpErrorContext`. `isTransient` is a boolean indicating if the exception is a
-transient error or not. If true, then the request can be retried; otherwise not.
+transient error or not. If true, then the request can be retried according to [retry options][AmqpRetryOptions] set;
+otherwise not.
 
 [`AmqpErrorCondition`][AmqpErrorCondition] contains error conditions common to the AMQP protocol and used by Azure
 services. When an AMQP exception is thrown, examining the error condition field can inform developers as to why the AMQP
@@ -402,11 +400,6 @@ this exception occurred at and whether it was an issue in one of the producers o
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
 [Event Hubs Messaging Exceptions][event_hubs_messaging_exceptions] guidance.
 
-#### Operation cancelled exception
-
-It occurs when the underlying AMQP layer encounters an abnormal link abort or the connection is disconnected in an
-unexpected fashion. It is recommended to attempt to verify the current state and retry if necessary.
-
 #### Message size exceeded
 
 Event data, both individual and in batches, have a maximum size allowed. This includes the data of the event, as well as
@@ -414,16 +407,10 @@ any associated metadata and system overhead. The best approach for resolving thi
 events being sent in a batch or the size of data included in the message. Because size limits are subject to change,
 please refer to [Azure Event Hubs quotas and limits][event_hubs_quotas] for specifics.
 
-### Other exceptions
+#### Other exceptions
 
 For detailed information about these and other exceptions that may occur, please refer to [Event Hubs Messaging
 Exceptions][event_hubs_messaging_exceptions].
-
-### Handling transient AMQP exceptions
-
-If a transient AMQP exception occurs, the client library retries the operation as many times as the 
-[AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
-user.
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -473,8 +460,8 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [EventProcessorClient]: ./src/main/java/com/azure/messaging/eventhubs/EventProcessorClient.java
 [CreateBatchOptions]: ./src/main/java/com/azure/messaging/eventhubs/models/CreateBatchOptions.java
 [InMemoryCheckpointStore]: ./src/samples/java/com/azure/messaging/eventhubs/InMemoryCheckpointStore.java
-[LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
-[RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
+[LoggingAzureWithSDK]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[AmqpRetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [BlobCheckpointStore]: ../azure-messaging-eventhubs-checkpointstore-blob/README.md
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)

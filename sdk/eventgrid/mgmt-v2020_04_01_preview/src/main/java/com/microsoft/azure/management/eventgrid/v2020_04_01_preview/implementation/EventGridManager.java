@@ -18,9 +18,19 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Domains;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.DomainTopics;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannels;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptions;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.SystemTopicEventSubscriptions;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopicEventSubscriptions;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Operations;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerNamespaces;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerRegistrations;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopics;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnections;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateLinkResources;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.SystemTopics;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.Topics;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.ExtensionTopics;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.TopicTypes;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -31,9 +41,19 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class EventGridManager extends ManagerCore<EventGridManager, EventGridManagementClientImpl> {
     private Domains domains;
     private DomainTopics domainTopics;
+    private EventChannels eventChannels;
     private EventSubscriptions eventSubscriptions;
+    private SystemTopicEventSubscriptions systemTopicEventSubscriptions;
+    private PartnerTopicEventSubscriptions partnerTopicEventSubscriptions;
     private Operations operations;
+    private PartnerNamespaces partnerNamespaces;
+    private PartnerRegistrations partnerRegistrations;
+    private PartnerTopics partnerTopics;
+    private PrivateEndpointConnections privateEndpointConnections;
+    private PrivateLinkResources privateLinkResources;
+    private SystemTopics systemTopics;
     private Topics topics;
+    private ExtensionTopics extensionTopics;
     private TopicTypes topicTypes;
     /**
     * Get a Configurable instance that can be used to create EventGridManager with optional configuration.
@@ -103,6 +123,16 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
     }
 
     /**
+     * @return Entry point to manage EventChannels.
+     */
+    public EventChannels eventChannels() {
+        if (this.eventChannels == null) {
+            this.eventChannels = new EventChannelsImpl(this);
+        }
+        return this.eventChannels;
+    }
+
+    /**
      * @return Entry point to manage EventSubscriptions.
      */
     public EventSubscriptions eventSubscriptions() {
@@ -110,6 +140,26 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
             this.eventSubscriptions = new EventSubscriptionsImpl(this);
         }
         return this.eventSubscriptions;
+    }
+
+    /**
+     * @return Entry point to manage SystemTopicEventSubscriptions.
+     */
+    public SystemTopicEventSubscriptions systemTopicEventSubscriptions() {
+        if (this.systemTopicEventSubscriptions == null) {
+            this.systemTopicEventSubscriptions = new SystemTopicEventSubscriptionsImpl(this);
+        }
+        return this.systemTopicEventSubscriptions;
+    }
+
+    /**
+     * @return Entry point to manage PartnerTopicEventSubscriptions.
+     */
+    public PartnerTopicEventSubscriptions partnerTopicEventSubscriptions() {
+        if (this.partnerTopicEventSubscriptions == null) {
+            this.partnerTopicEventSubscriptions = new PartnerTopicEventSubscriptionsImpl(this);
+        }
+        return this.partnerTopicEventSubscriptions;
     }
 
     /**
@@ -123,6 +173,66 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
     }
 
     /**
+     * @return Entry point to manage PartnerNamespaces.
+     */
+    public PartnerNamespaces partnerNamespaces() {
+        if (this.partnerNamespaces == null) {
+            this.partnerNamespaces = new PartnerNamespacesImpl(this);
+        }
+        return this.partnerNamespaces;
+    }
+
+    /**
+     * @return Entry point to manage PartnerRegistrations.
+     */
+    public PartnerRegistrations partnerRegistrations() {
+        if (this.partnerRegistrations == null) {
+            this.partnerRegistrations = new PartnerRegistrationsImpl(this);
+        }
+        return this.partnerRegistrations;
+    }
+
+    /**
+     * @return Entry point to manage PartnerTopics.
+     */
+    public PartnerTopics partnerTopics() {
+        if (this.partnerTopics == null) {
+            this.partnerTopics = new PartnerTopicsImpl(this);
+        }
+        return this.partnerTopics;
+    }
+
+    /**
+     * @return Entry point to manage PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
+        }
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(this);
+        }
+        return this.privateLinkResources;
+    }
+
+    /**
+     * @return Entry point to manage SystemTopics.
+     */
+    public SystemTopics systemTopics() {
+        if (this.systemTopics == null) {
+            this.systemTopics = new SystemTopicsImpl(this);
+        }
+        return this.systemTopics;
+    }
+
+    /**
      * @return Entry point to manage Topics.
      */
     public Topics topics() {
@@ -130,6 +240,16 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
             this.topics = new TopicsImpl(this);
         }
         return this.topics;
+    }
+
+    /**
+     * @return Entry point to manage ExtensionTopics.
+     */
+    public ExtensionTopics extensionTopics() {
+        if (this.extensionTopics == null) {
+            this.extensionTopics = new ExtensionTopicsImpl(this);
+        }
+        return this.extensionTopics;
     }
 
     /**

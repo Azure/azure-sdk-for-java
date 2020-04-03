@@ -1,8 +1,9 @@
 # Azure SDK for Java
 
-[![Packages](https://img.shields.io/badge/packages-latest-blue.svg)](https://azure.github.io/azure-sdk/releases/latest/java.html) [![Dependencies](https://img.shields.io/badge/dependencies-report-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html) [![DepGraph](https://img.shields.io/badge/dependencies-graph-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/InterdependencyGraph.html) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html) [![SpotBugs](https://img.shields.io/badge/SpotBugs-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html) [![CheckStyle](https://img.shields.io/badge/CheckStyle-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html)
+[![Packages](https://img.shields.io/badge/packages-latest-blue.svg)](https://azure.github.io/azure-sdk/releases/latest/java.html) [![Dependencies](https://img.shields.io/badge/dependency-report-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/dependencies.html) [![DepGraph](https://img.shields.io/badge/dependency-graph-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/InterdependencyGraph.html) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html) [![SpotBugs](https://img.shields.io/badge/SpotBugs-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/spotbugsXml.html) [![CheckStyle](https://img.shields.io/badge/CheckStyle-Clean-success.svg)](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/staging/checkstyle-aggregate.html)
 
 This repository is for active development of the Azure SDK for Java. For consumers of the SDK we recommend visiting our [public developer docs](https://docs.microsoft.com/en-us/java/azure/) or our versioned [developer docs](https://azure.github.io/azure-sdk-for-java).
+
 
 ## Getting started
 
@@ -12,11 +13,13 @@ For tutorials, samples, quick starts and other documentation, visit [Azure for J
 
 ### Prerequisites
 
-Java 8 or later is required to use the new client libraries, otherwise Java 7 or later is required.
+Java 8 or later is required to use libraries under the `com.azure` package, for libraries under the `com.microsoft.azure` package Java 7 or later is required.
+
 
 ## Latest Release
 
 Each service might have a number of libraries available from each of the following categories:
+
 
 - [Client: New Releases](#Client-New-Releases)
 - [Client: Previous Versions](#Client-Previous-Versions)
@@ -25,8 +28,8 @@ Each service might have a number of libraries available from each of the followi
 
 ### Client: New Releases
 
-New wave of packages that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md).
 
+New wave of packages that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md).
 These libraries can be easily identified by folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
 You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java-packages). This list includes the most recent releases: both GA and preview.
@@ -37,22 +40,25 @@ You can find the [most up to date list of all of the new packages on our page](h
 
 Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the GA releases. They do however offer wider coverage of services.
 
+
 ### Management
 
 Libraries which enable you to provision specific resources. They are responsible for directly mirroring and consuming Azure service's REST endpoints. Management library directories contain `-mgmt-`, e.g. `azure-mgmt-keyvault`.
 
-## Need help?
+## Need help
 
-* For reference documentation visit the [Azure SDK for Java documentation](http://aka.ms/java-docs).
-* For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
-* For build reports on code quality, test coverage, etc, visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
-* File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
-* Check [previous questions](https://stackoverflow.com/questions/tagged/azure-java-sdk) or ask new ones on StackOverflow using `azure-java-sdk` tag.
+- For reference documentation visit the [Azure SDK for Java documentation](http://aka.ms/java-docs).
+- For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
+- For build reports on code quality, test coverage, etc, visit [Azure Java SDK](https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html).
+- File an issue via [Github Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose).
+- Check [previous questions](https://stackoverflow.com/questions/tagged/azure-java-sdk) or ask new ones on StackOverflow using `azure-java-sdk` tag.
 
 ## Navigating the repository
 
 ### Master branch
+
 The master branch has the most recent code with new features and bug fixes. It does **not** represent latest released **GA** SDK. See [above](#Client-New-Releases) for latest **GA** release.<br/>
+
 
 ### Release branches (Release tagging)
 
@@ -63,8 +69,7 @@ Format of the release tags are `<package-name>_<package-version>`. For more info
 
 For details on contributing to this repository, see the [contributing guide](CONTRIBUTING.md).
 
-This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit
-https://cla.microsoft.com.
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, view [Microsoft's CLA](https://cla.microsoft.com).
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repositories using our CLA.
 
@@ -74,14 +79,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 Many people all over the world have helped make this project better.  You'll want to check out:
 
-* [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22)
-* [How to build and test your change](CONTRIBUTING.md#developer-guide)
-* [How you can make a change happen!](CONTRIBUTING.md#pull-requests)
-* Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Java wiki](https://github.com/azure/azure-sdk-for-java/wiki).
+- [What are some good first issues for new contributors to the repo?](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3A%22up+for+grabs%22)
+- [How to build and test your change](CONTRIBUTING.md#developer-guide)
+- [How you can make a change happen!](CONTRIBUTING.md#pull-requests)
+- Frequently Asked Questions (FAQ) and Conceptual Topics in the detailed [Azure SDK for Java wiki](https://github.com/azure/azure-sdk-for-java/wiki).
 
 ### Community
 
-* Chat with other community members [![Join the chat at https://gitter.im/azure/azure-sdk-for-java](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/azure/azure-sdk-for-java?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Chat with other community members [![Join the chat at https://gitter.im/azure/azure-sdk-for-java](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/azure/azure-sdk-for-java?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Reporting security issues and security bugs
 
@@ -90,5 +95,17 @@ Security issues and bugs should be reported privately, via email, to the Microso
 ### License
 
 Azure SDK for Java is licensed under the [MIT](LICENSE.txt) license.
+
+<!-- Links -->
+[java_guidelines]: https://azure.github.io/azure-sdk/java_introduction.html
+[latest_release_page]: https://azure.github.io/azure-sdk/releases/2020-03/java.html
+[feb_20_release_page]: https://azure.github.io/azure-sdk/releases/2020-02/java.html
+[jan_20_release_page]: https://azure.github.io/azure-sdk/releases/2020-01/java.html
+[dec_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-12/java.html
+[nov_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-11/java.html
+[oct_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-10-11/java.html
+[sep_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-09-17/java.html
+[aug_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-08-06/java.html
+[jul_19_release_page]: https://azure.github.io/azure-sdk/releases/2019-07-10/java.html
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2FREADME.png)

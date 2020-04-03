@@ -55,6 +55,10 @@ import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 public class CryptographyAsyncClient {
     static final String KEY_VAULT_SCOPE = "https://vault.azure.net/.default";
     static final String SECRETS_COLLECTION = "secrets";
+
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
     JsonWebKey key;
     private final CryptographyService service;
     private CryptographyServiceClient cryptographyServiceClient;
@@ -89,7 +93,7 @@ public class CryptographyAsyncClient {
         service = RestProxy.create(CryptographyService.class, pipeline);
         if (!Strings.isNullOrEmpty(key.getId())) {
             unpackAndValidateId(key.getId());
-            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service);
+            cryptographyServiceClient = new CryptographyServiceClient(key.getId(), service, version);
         } else {
             cryptographyServiceClient = null;
         }
@@ -107,7 +111,7 @@ public class CryptographyAsyncClient {
         unpackAndValidateId(keyId);
         this.keyId = keyId;
         service = RestProxy.create(CryptographyService.class, pipeline);
-        cryptographyServiceClient = new CryptographyServiceClient(keyId, service);
+        cryptographyServiceClient = new CryptographyServiceClient(keyId, service, version);
         this.key = null;
     }
 
@@ -180,7 +184,8 @@ public class CryptographyAsyncClient {
 
     Mono<JsonWebKey> getSecretKey() {
         try {
-            return withContext(context -> cryptographyServiceClient.getSecretKey(context)).flatMap(FluxUtil::toMono);
+            return withContext(context -> cryptographyServiceClient.getSecretKey(context))
+                .flatMap(FluxUtil::toMono);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

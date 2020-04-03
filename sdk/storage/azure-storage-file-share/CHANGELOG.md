@@ -1,13 +1,25 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.4.0-beta.1 (Unreleased)
+- Fixed an issue where whitespace would cause NtfsFileAttributes.toAttributes/fromAttributes to result in an error parsing the attributes.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
+
+## 12.3.0 (2020-03-11)
+- Added support for exists methods on Share, ShareDirectory and ShareFile clients.
+
+## 12.2.0 (2020-02-12)
 - Fixed bug in ShareClient.getStatistics where shareUsageInGB was not properly converted. Added parameter to ShareStatistics to include a shareUsageInBytes parameter.
 - Fixed bug where ShareDirectoryAsyncClient.getFileClient appended an extra / for files in the root directory.
+
 - Added support for the 2019-07-07 service version.
 - Added support for file leases. Includes adding the ShareLeaseClientBuilder, ShareLeaseClient, and ShareLeaseAsync client and overloads accepting leaseIds for operations that support leases.
 - Added failedClosedHandles property to CloseHandlesInfo to allow users to access number of failed handles in forceCloseAllHandles and closeHandle.
 - Added support for obtaining premium file properties in ShareServiceClient.listShares and ShareClient.getProperties.
 - Added support for additional start copy parameters - FileSmbProperties, file permission, file permission copy mode, set archive and ignore read only.
+
+## 12.1.1 (2020-02-10)
+- Updated `azure-core-http-netty` to version 1.3.0
+- Update `azure-storage-common` to version 12.3.1
 
 ## 12.1.0 (2020-01-08)
 This package's

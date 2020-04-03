@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
@@ -59,11 +60,6 @@ public class DataLakeFileSystemClient {
     public static final String ROOT_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME;
 
     private static final String ROOT_DIRECTORY_NAME = "";
-
-//    public static final String STATIC_WEBSITE_FILESYSTEM_NAME =
-//    DataLakeFileSystemAsyncClient.STATIC_WEBSITE_FILESYSTEM_NAME;
-
-//    public static final String LOG_FILESYSTEM_NAME = DataLakeFileSystemAsyncClient.LOG_FILESYSTEM_NAME;
 
     /**
      * Package-private constructor for use by {@link DataLakeFileSystemClientBuilder}.
@@ -129,7 +125,7 @@ public class DataLakeFileSystemClient {
      *
      * @return A new {@link DataLakeDirectoryClient} object which references the root directory in this file system.
      */
-    public DataLakeDirectoryClient getRootDirectoryClient() {
+    DataLakeDirectoryClient getRootDirectoryClient() {
         return getDirectoryClient(DataLakeFileSystemClient.ROOT_DIRECTORY_NAME);
     }
 
@@ -356,9 +352,8 @@ public class DataLakeFileSystemClient {
     }
 
     /**
-     * Creates a new file within a file system. If a file with the same name already exists, the file will be
-     * overwritten. For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     * Creates a new file within a file system. By default, this method will not overwrite an existing file. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -368,7 +363,28 @@ public class DataLakeFileSystemClient {
      * @return A {@link DataLakeFileClient} used to interact with the file created.
      */
     public DataLakeFileClient createFile(String fileName) {
-        return createFileWithResponse(fileName, null, null, null, null, null, null, Context.NONE).getValue();
+        return createFile(fileName, false);
+    }
+
+    /**
+     * Creates a new file within a file system. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createFile#String-boolean}
+     *
+     * @param fileName Name of the file to create.
+     * @param overwrite Whether or not to overwrite, should a file exist.
+     * @return A {@link DataLakeFileClient} used to interact with the file created.
+     */
+    public DataLakeFileClient createFile(String fileName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createFileWithResponse(fileName, null, null, null, null, requestConditions, null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -436,8 +452,8 @@ public class DataLakeFileSystemClient {
     }
 
     /**
-     * Creates a new directory within a file system. If a directory with the same name already exists, the directory
-     * will be overwritten. For more information, see the
+     * Creates a new directory within a file system. By default, this method will not overwrite an existing directory.
+     * For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -448,7 +464,28 @@ public class DataLakeFileSystemClient {
      * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
      */
     public DataLakeDirectoryClient createDirectory(String directoryName) {
-        return createDirectoryWithResponse(directoryName, null, null, null, null, null, null, null).getValue();
+        return createDirectory(directoryName, false);
+    }
+
+    /**
+     * Creates a new directory within a file system. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createDirectory#String-boolean}
+     *
+     * @param directoryName Name of the directory to create.
+     * @param overwrite Whether or not to overwrite, should a directory exist.
+     * @return A {@link DataLakeDirectoryClient} used to interact with the directory created.
+     */
+    public DataLakeDirectoryClient createDirectory(String directoryName, boolean overwrite) {
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
+        if (!overwrite) {
+            requestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        return createDirectoryWithResponse(directoryName, null, null, null, null, requestConditions, null, Context.NONE)
+            .getValue();
     }
 
     /**

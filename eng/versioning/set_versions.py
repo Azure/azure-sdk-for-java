@@ -84,7 +84,7 @@ def set_dev_zero_version(build_type, build_qualifier):
                 newlines.append(module.string_for_version_file())
                 continue
 
-            if module.name.startswith('unreleased_'):
+            if module.name.startswith('unreleased_') or module.name.startswith('beta_'):
                 newlines.append(module.string_for_version_file())
                 continue
 
@@ -165,10 +165,10 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                 # version so that packages from this build that are released to
                 # the dev feed will depend on a version that should be found in
                 # the dev feed.
-                # This script runs once for each artifact so  it makes no
+                # This script runs once for each artifact so it makes no
                 # changes in the case where a dependency version has already
                 # been modified.
-                elif module.name.startswith('unreleased_') and not module.dependency.startswith('['):
+                elif (module.name.startswith('unreleased_') or module.name.startswith('beta_'))  and not module.dependency.startswith('['):
                     # Assuming a build qualifier of the form: "dev.20200204.1"
                     # Converts "dev.20200204.1" -> "dev.20200204."
                     unreleased_build_qualifier = build_qualifier[:build_qualifier.rfind('.') + 1]
@@ -179,7 +179,7 @@ def update_versions_file_for_nightly_devops(build_type, build_qualifier, artifac
                         module_current_version = f'{module.dependency}-{unreleased_build_qualifier}'
 
                     module.dependency = f'[{module_current_version},]'
-                    print(f'updating unreleased dependency {module.name} to use dependency version range: "{module.dependency}"')
+                    print(f'updating unreleased/beta dependency {module.name} to use dependency version range: "{module.dependency}"')
 
                 version_map[module.name] = module
                 newlines.append(module.string_for_version_file())
@@ -262,7 +262,7 @@ def increment_library_version(build_type, artifact_id, group_id):
                     if (module.dependency != module.current):
                         print('library_to_update {}, previous dependency version={}, new dependency version={}'.format(library_to_update, module.dependency, module.current))
                         module.dependency = module.current
-                    print('library_to_update {}, previous version={}, new current version={}'.format(library_to_update, module.current, new_version))
+                    print('library_to_update {}, previous current version={}, new current version={}'.format(library_to_update, module.current, new_version))
                     module.current = new_version
                 newlines.append(module.string_for_version_file())
 

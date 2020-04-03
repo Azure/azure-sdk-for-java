@@ -5,66 +5,68 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.DocumentResultCollection;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Sample demonstrates how to extract the key phrases of a batch input text.
+ * Sample demonstrates how to extract the key phrases of {@link TextDocumentInput} documents.
  */
 public class ExtractKeyPhrasesBatchDocuments {
     /**
-     * Main method to invoke this demo about how to extract the key phrases of a batch input text.
+     * Main method to invoke this demo about how to extract the key phrases of {@link TextDocumentInput} documents.
      *
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
-        // The texts that need be analysed.
-        List<TextDocumentInput> inputs = Arrays.asList(
-            new TextDocumentInput("1", "My cat might need to see a veterinarian.", "en"),
-            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.", "en")
+        // The texts that need be analyzed.
+        List<TextDocumentInput> documents = Arrays.asList(
+            new TextDocumentInput("A", "The food was delicious and there were wonderful staff.", "en"),
+            new TextDocumentInput("B", "The pitot tube is used to measure airspeed.", "en")
         );
 
         // Request options: show statistics and model version
-        final TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setShowStatistics(true);
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
-        // Extracting batch key phrases
-        final DocumentResultCollection<ExtractKeyPhraseResult> extractedBatchResult = client.extractKeyPhrasesBatchWithResponse(inputs, requestOptions, Context.NONE).getValue();
-        System.out.printf("Model version: %s%n", extractedBatchResult.getModelVersion());
+        Iterable<TextAnalyticsPagedResponse<ExtractKeyPhraseResult>> keyPhrasesBatchResult =
+            client.extractKeyPhrasesBatch(documents, requestOptions, Context.NONE).iterableByPage();
 
-        // Batch statistics
-        final TextDocumentBatchStatistics batchStatistics = extractedBatchResult.getStatistics();
-        System.out.printf("A batch of document statistics, document count: %s, erroneous document count: %s, transaction count: %s, valid document count: %s.%n",
-            batchStatistics.getDocumentCount(),
-            batchStatistics.getInvalidDocumentCount(),
-            batchStatistics.getTransactionCount(),
-            batchStatistics.getValidDocumentCount());
+        // Extracting key phrases for each document in a batch of documents
+        keyPhrasesBatchResult.forEach(pagedResponse -> {
+            System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", pagedResponse.getModelVersion());
 
-        // Extracted key phrase for each of document from a batch of documents
-        for (ExtractKeyPhraseResult extractKeyPhraseResult : extractedBatchResult) {
-            System.out.printf("Document ID: %s%n", extractKeyPhraseResult.getId());
-            // Erroneous document
-            if (extractKeyPhraseResult.isError()) {
-                System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
-                continue;
+            // Batch statistics
+            TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+            System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+
+            // Extracted key phrases for each document in a batch of documents
+            AtomicInteger counter = new AtomicInteger();
+            for (ExtractKeyPhraseResult extractKeyPhraseResult : pagedResponse.getElements()) {
+                System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
+                if (extractKeyPhraseResult.isError()) {
+                    // Erroneous document
+                    System.out.printf("Cannot extract key phrases. Error: %s%n", extractKeyPhraseResult.getError().getMessage());
+                } else {
+                    // Valid document
+                    System.out.println("Extracted phrases:");
+                    extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
+                }
             }
-            // Valid document
-            for (String keyPhrases : extractKeyPhraseResult.getKeyPhrases()) {
-                System.out.printf("Extracted phrases: %s.%n", keyPhrases);
-            }
-        }
+        });
     }
 }
