@@ -134,7 +134,7 @@ if __name__ == "__main__":
         needs_amend = False
         amended_file = []
 
-        with open(file, "r", encoding="utf-8") as source:
+        with open(file, "r", encoding='utf-8') as source:
             for line in source.readlines():
                 snippet_ref = re.match(SNIPPET_CALL, line)
 
@@ -166,6 +166,6 @@ if __name__ == "__main__":
 
         if needs_amend:
             print("Replacing " + file)
-            with open(file, "w") as out_file:
+            with open(file, "w", encoding='utf-8') as out_file:
                 for line in amended_file:
                     out_file.write(line)
