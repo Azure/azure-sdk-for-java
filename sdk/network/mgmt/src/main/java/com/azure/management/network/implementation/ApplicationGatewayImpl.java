@@ -553,7 +553,7 @@ class ApplicationGatewayImpl
      *
      * @param byName object found by name
      * @param byPort object found by port
-     * @param name   the desired name of the object
+     * @param name the desired name of the object
      * @return true if already found, false if ok to create, null if conflict
      */
     <T> Boolean needToCreate(T byName, T byPort, String name) {

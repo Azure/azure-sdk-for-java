@@ -9,9 +9,7 @@ import com.azure.management.resources.TagCount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TagDetails model.
- */
+/** The TagDetails model. */
 @Fluent
 public final class TagDetailsInner {
     /*
@@ -41,7 +39,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the id property: The tag ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -50,7 +48,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the tagName property: The tag name.
-     * 
+     *
      * @return the tagName value.
      */
     public String tagName() {
@@ -59,7 +57,7 @@ public final class TagDetailsInner {
 
     /**
      * Set the tagName property: The tag name.
-     * 
+     *
      * @param tagName the tagName value to set.
      * @return the TagDetailsInner object itself.
      */
@@ -69,10 +67,9 @@ public final class TagDetailsInner {
     }
 
     /**
-     * Get the count property: The total number of resources that use the
-     * resource tag. When a tag is initially created and has no associated
-     * resources, the value is 0.
-     * 
+     * Get the count property: The total number of resources that use the resource tag. When a tag is initially created
+     * and has no associated resources, the value is 0.
+     *
      * @return the count value.
      */
     public TagCount count() {
@@ -80,10 +77,9 @@ public final class TagDetailsInner {
     }
 
     /**
-     * Set the count property: The total number of resources that use the
-     * resource tag. When a tag is initially created and has no associated
-     * resources, the value is 0.
-     * 
+     * Set the count property: The total number of resources that use the resource tag. When a tag is initially created
+     * and has no associated resources, the value is 0.
+     *
      * @param count the count value to set.
      * @return the TagDetailsInner object itself.
      */
@@ -94,7 +90,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the values property: The list of tag values.
-     * 
+     *
      * @return the values value.
      */
     public List<TagValueInner> values() {
@@ -103,7 +99,7 @@ public final class TagDetailsInner {
 
     /**
      * Set the values property: The list of tag values.
-     * 
+     *
      * @param values the values value to set.
      * @return the TagDetailsInner object itself.
      */

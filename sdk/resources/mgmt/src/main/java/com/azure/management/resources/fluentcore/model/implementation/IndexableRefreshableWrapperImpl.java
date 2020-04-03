@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
  * The implementation for {@link Indexable}, {@link Refreshable}, and {@link HasInner}.
  *
  * @param <FluentModelT> The fluent model type
- * @param <InnerModelT>  Azure inner resource class type
+ * @param <InnerModelT> Azure inner resource class type
  */
 public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         extends IndexableRefreshableImpl<FluentModelT>

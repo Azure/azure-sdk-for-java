@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentExtendedFilter model.
- */
+/** The DeploymentExtendedFilter model. */
 @Fluent
 public final class DeploymentExtendedFilter {
     /*
@@ -20,7 +18,7 @@ public final class DeploymentExtendedFilter {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -29,7 +27,7 @@ public final class DeploymentExtendedFilter {
 
     /**
      * Set the provisioningState property: The provisioning state.
-     * 
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the DeploymentExtendedFilter object itself.
      */

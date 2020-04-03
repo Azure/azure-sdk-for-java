@@ -248,7 +248,7 @@ public interface PublicIPAddress extends
             /**
              * Sets an ipTag associated with the public IP address.
              *
-             * @param tag       ip tag value
+             * @param tag ip tag value
              * @param ipTagType ipTagType
              * @return the next stage of the definition
              */
@@ -387,7 +387,7 @@ public interface PublicIPAddress extends
             /**
              * Sets an ipTag associated with the public IP address.
              *
-             * @param tag       ip tag value
+             * @param tag ip tag value
              * @param ipTagType ipTagType
              * @return the next stage of the update
              */

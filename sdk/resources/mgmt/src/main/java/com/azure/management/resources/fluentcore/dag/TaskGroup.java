@@ -83,7 +83,7 @@ public class TaskGroup
      * Creates TaskGroup.
      *
      * @param rootTaskItemId the id of the root task in the group
-     * @param rootTaskItem   the root task
+     * @param rootTaskItem the root task
      */
     public TaskGroup(String rootTaskItemId,
                      TaskItem rootTaskItem) {
@@ -258,11 +258,11 @@ public class TaskGroup
     /**
      * Invokes tasks in the group.
      *
-     * @param context                    group level shared context that need be passed to invokeAsync(cxt)
+     * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                                   method of each task item in the group when it is selected for invocation.
      * @param shouldRunBeforeGroupInvoke indicate whether to run the 'beforeGroupInvoke' method
      *                                   of each tasks before invoking them
-     * @param skipBeforeGroupInvoke      the tasks keys for which 'beforeGroupInvoke' should not be called
+     * @param skipBeforeGroupInvoke the tasks keys for which 'beforeGroupInvoke' should not be called
      *                                   before invoking them
      * @return an observable that emits the result of tasks in the order they finishes.
      */
@@ -366,7 +366,7 @@ public class TaskGroup
      * if the task cannot be invoked because the group marked as cancelled then an observable
      * that emit {@link TaskCancelledException} will be returned.
      *
-     * @param entry   the entry holding task
+     * @param entry the entry holding task
      * @param context a group level shared context that is passed to {@link TaskItem#invokeAsync(InvocationContext)}
      *                method of the task item this entry wraps.
      * @return an observable that emits result of task in the given entry and result of subset of tasks which gets
@@ -397,7 +397,7 @@ public class TaskGroup
      * Invokes the {@link TaskItem#invokeAfterPostRunAsync(boolean)} method of an actual TaskItem
      * if the given entry holds a ProxyTaskItem.
      *
-     * @param entry   the entry holding a ProxyTaskItem
+     * @param entry the entry holding a ProxyTaskItem
      * @param context a group level shared context
      * @return An Observable that represents asynchronous work started by
      * {@link TaskItem#invokeAfterPostRunAsync(boolean)} method of actual TaskItem and result of subset
@@ -439,7 +439,7 @@ public class TaskGroup
      * If the task is not root (terminal) task then this kickoff execution of next set of ready tasks
      *
      * @param completedEntry the entry holding completed task
-     * @param context        the context object shared across all the task entries in this group during execution
+     * @param context the context object shared across all the task entries in this group during execution
      * @return an observable represents asynchronous operation in the next stage
      */
     private Flux<Indexable> processCompletedTaskAsync(final TaskGroupEntry<TaskItem> completedEntry,
@@ -456,8 +456,8 @@ public class TaskGroup
      * Handles a faulted task.
      *
      * @param faultedEntry the entry holding faulted task
-     * @param throwable    the reason for fault
-     * @param context      the context object shared across all the task entries in this group during execution
+     * @param throwable the reason for fault
+     * @param context the context object shared across all the task entries in this group during execution
      * @return an observable represents asynchronous operation in the next stage
      */
     private Flux<Indexable> processFaultedTaskAsync(final TaskGroupEntry<TaskItem> faultedEntry,
@@ -588,7 +588,7 @@ public class TaskGroup
         /**
          * Put a key-value in the context.
          *
-         * @param key   the key
+         * @param key the key
          * @param value the value
          */
         public void put(String key, Object value) {

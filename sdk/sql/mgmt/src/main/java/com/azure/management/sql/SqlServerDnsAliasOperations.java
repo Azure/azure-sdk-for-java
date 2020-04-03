@@ -75,7 +75,7 @@ public interface SqlServerDnsAliasOperations extends
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
+             * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
             SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(String resourceGroupName, String sqlServerName);
