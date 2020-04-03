@@ -42,7 +42,7 @@ The SDK provides two clients.
 Once you have the values of the Cognitive Search Service [URL endpoint](https://docs.microsoft.com/en-us/azure/search/search-create-service-portal#get-a-key-and-url-endpoint) 
 and [admin key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys) you can create the Search Service client:
 
-<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L31-L34 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L40-L43 -->
 ```Java
 SearchServiceClient client = new SearchServiceClientBuilder()
     .endpoint(endpoint)
@@ -52,7 +52,7 @@ SearchServiceClient client = new SearchServiceClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L38-L41 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L47-L50 -->
 ```Java
 SearchServiceAsyncClient client = new SearchServiceClientBuilder()
     .endpoint(endpoint)
@@ -67,7 +67,7 @@ To create a SearchIndexClient, you will need an existing index name as well as t
 [query key](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
 Note that you will need an admin key to index documents (query keys only work for queries).
 
-<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L45-L49 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L54-L58 -->
 ```Java
 SearchIndexClient client = new SearchIndexClientBuilder()
     .endpoint(endpoint)
@@ -78,7 +78,7 @@ SearchIndexClient client = new SearchIndexClientBuilder()
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/search/ReadmeSamples.java#L53-L57 -->
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L62-L66 -->
 ```Java
 SearchIndexAsyncClient client = new SearchIndexClientBuilder()
     .endpoint(endpoint)
@@ -102,41 +102,59 @@ There are several types of operations that can be executed against the service:
 -   [Skillset operations](https://docs.microsoft.com/en-us/rest/api/searchservice/skillset-operations). Part of AI workload, a skillset defines a series of a series of enrichment processing steps. A skillset is consumed by an indexer.
 -   [Synonym map operations](https://docs.microsoft.com/en-us/rest/api/searchservice/synonym-map-operations). A synonym map is a service-level resource that contains user-defined synonyms. This resource is maintained independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
 
-### Asynchronous and Synchronous Pagination and Iteration
-
-The SDK uses an [azure-core](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md) concept for paging and async streaming implemented as `PagedFlux<T>`.
-
-Many APIs in Azure Cognitive Search can return multiple items from a single request. For example, the search API returns all the documents that match a given query. To handle the case where not all items can be returned in a single response, the Java SDK supports paging.
-The SDK handles this by returning PagedIterableBase for sync APIs and PagedFluxBase for async APIs (More reading can be found in the Java SDK [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Pagination-and-Iteration)).
-
-Both PagedIterable and PagedFlux enable the common case to be quickly and easily achieved: iterating over a paginated response deserialized into a given type T. In the case of PagedIterable, it implements the Iterable interface, and offers API to receive a Stream. In the case of PagedFlux, it is a Flux.
-
-#### Pages
-
-For the Cognitive Search service SDK, each page in the response will contain page-specific additional information, based on the executed API:
-
-**[SearchPagedResponse](src/main/java/com/azure/search/util/SearchPagedResponse.java)**
-Represents an HTTP response from the search API request that contains a list of items deserialized into a page. Additional information includes the count of total documents returned, and other metadata.
-
-**[SuggestPagedResponse](src/main/java/com/azure/search/util/SuggestPagedResponse.java)**
-Represents an HTTP response from the suggest API request that contains a list of items deserialized into a page. The additional information is:
-
--   coverage - coverage value
-
-**[AutocompletePagedResponse](src/main/java/com/azure/search/util/AutocompletePagedResponse.java)**
-Represents an HTTP response from the autocomplete API request that contains a list of items deserialized into a page.
-
-#### Synchronous Pagination and Iteration
-
-[Search query options with sync client](src/samples/java/com/azure/search/SearchOptionsExample.java)
-
-#### Asynchronous Pagination and Iteration
-
-[Search queries options with async client](src/samples/java/com/azure/search/SearchOptionsAsyncExample.java)
-
 ## Examples
 
-Samples are explained in detail [here][samples_readme].
+### Create an index
+
+Create Index using `SearchIndexClient` create in above [section](Create-a-SearchIndexClient)
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L96-L107 -->
+```java
+Index newIndex = new Index()
+    .setName("index_name")
+    .setFields(
+        Arrays.asList(new Field()
+                .setName("Name")
+                .setType(DataType.EDM_STRING)
+                .setKey(Boolean.TRUE),
+            new Field()
+                .setName("Cuisine")
+                .setType(DataType.EDM_STRING)));
+// Create index.
+searchClient.createIndex(newIndex);
+```
+### Upload a Document
+
+Upload hotel document to Search Index.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L111-L116 -->
+```java
+List<Hotel> hotels = new ArrayList<>();
+hotels.add(new Hotel().setHotelId("100"));
+hotels.add(new Hotel().setHotelId("200"));
+hotels.add(new Hotel().setHotelId("300"));
+// Upload hotel.
+indexClient.uploadDocuments(hotels);
+```
+
+### Search on hotel name
+
+Search hotel using keyword.
+
+<!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L120-L130 -->
+```java
+// Perform a text-based search
+for (SearchResult result : indexClient.search("luxury hotel",
+    new SearchOptions(), new RequestOptions(), Context.NONE)) {
+
+    // Each result is a dynamic Map
+    SearchDocument doc = result.getDocument();
+    String hotelName = (String) doc.get("HotelName");
+    Double rating = (Double) doc.get("Rating");
+
+    System.out.printf("%s: %s%n", hotelName, rating);
+}
+```
 
 ## Troubleshooting
 
