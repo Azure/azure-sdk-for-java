@@ -407,8 +407,8 @@ public final class SearchIndexAsyncClient {
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
         String continuationToken, Context context) {
-        SearchRequest requestToUse = (continuationToken == null) ? request :
-            SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
+        SearchRequest requestToUse = (continuationToken == null) ? request
+            : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
             .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));

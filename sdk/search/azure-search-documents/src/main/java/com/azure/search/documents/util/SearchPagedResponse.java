@@ -55,7 +55,7 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
-        if (documentsResult == null){
+        if (documentsResult == null) {
             return null;
         }
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), documentsResult.getNextLink(),
