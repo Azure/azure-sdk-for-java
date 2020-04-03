@@ -438,28 +438,6 @@
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>io.projectreactor</include>
-                    <include>io.projectreactor.netty</include>
-                    <include>io.netty</include>
-                    <include>com.squareup.okhttp3</include>
-                    <include>org.slf4j</include>
-                    <include>com.fasterxml.jackson.*</include>
-                    <include>io.opentelemetry</include>
-                    <include>net.java.dev.jna</include>
-
-                    <!-- azure-core-amqp requires the following: -->
-                    <include>org.apache.qpid:proton-j</include>
-                    <include>com.microsoft.azure:qpid-proton-j-extensions</include>
-
-                    <!-- FIXME temporary support for cosmos dependencies -->
-                    <include>io.micrometer:micrometer-core</include>
-                    <include>io.dropwizard.metrics:metrics-core</include>
-                    <include>com.fasterxml.uuid:java-uuid-generator</include>
-
-                    <!-- azure-identity requires the following: -->
-                    <include>com.nimbusds:oauth2-oidc-sdk</include>
-                    <include>com.microsoft.azure:msal4j</include>
-                    <include>org.nanohttpd:nanohttpd</include>
 
                     <!-- Used by many libraries to bring in annotations used by Reactor -->
                     <include>com.google.code.findbugs:jsr305</include>
