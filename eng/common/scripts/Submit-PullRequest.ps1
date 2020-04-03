@@ -1,4 +1,4 @@
- #!/usr/bin/env pwsh -c
+#!/usr/bin/env pwsh -c
 
 <#
 .DESCRIPTION
@@ -45,16 +45,23 @@ Write-Host $MyInvocation.Line
 
 $query = "state=open&head=${PROwner}:${PRBranch}&base=${BaseBranch}"
 
+Write-Host "Got Here 2"
+
 $resp = Invoke-RestMethod "https://api.github.com/repos/$RepoOwner/$RepoName/pulls?$query"
 $resp | Write-Verbose
 
-if ($resp.Count -gt 0) {
-    Write-Host -f green "Pull request already exists $($resp[0].html_url)"
-}
-else {
+Write-Host "Got Here 3"
+
+if ($resp.Count -gt 0)
+{
+  Write-Host -f green "Pull request already exists $($resp[0].html_url)"
+} else
+{
+  Write-Host "Got Here 4"
   $headers = @{
     Authorization = "bearer $AuthToken"
   }
+  Write-Host "Got Here 5"
 
   $data = @{
     title                 = $PRTitle
@@ -63,10 +70,13 @@ else {
     body                  = $PRBody
     maintainer_can_modify = $true
   }
+  Write-Host "Got Here 6"
 
   $resp = Invoke-RestMethod -Method POST -Headers $headers `
-                            https://api.github.com/repos/$RepoOwner/$RepoName/pulls `
-                            -Body ($data | ConvertTo-Json)
+    https://api.github.com/repos/$RepoOwner/$RepoName/pulls `
+    -Body ($data | ConvertTo-Json)
+  Write-Host "Got Here 7"
   $resp | Write-Verbose
+  Write-Host "Got Here 8"
   Write-Host -f green "Pull request created https://github.com/$RepoOwner/$RepoName/pull/$($resp.number)"
 }

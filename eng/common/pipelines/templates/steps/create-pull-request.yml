@@ -55,7 +55,6 @@ steps:
       -PRBranch "${{ parameters.PRBranchName }}" `
       -AuthToken "$(azuresdk-github-pat)" `
       -PRTitle "${{ parameters.PRTitle }}"
-      -Verbose
 
   displayName: Create pull request
   workingDirectory: ${{ parameters.WorkingDirectory }}
