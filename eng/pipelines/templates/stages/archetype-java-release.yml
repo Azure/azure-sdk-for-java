@@ -192,13 +192,11 @@ stages:
                       - script: |
                           python --version
                           python eng/versioning/set_versions.py --build-type ${{ parameters.SDKType }} --increment-version --ai ${{ artifact.name }} --gi ${{ artifact.groupId }}
-                        workingDirectory: $(Pipeline.Workspace)/s/azure-sdk-for-java
                         displayName: Increment package version for ${{ artifact.groupId }} ${{ artifact.name }}
 
                       - script: |
                           python --version
                           python eng/versioning/update_versions.py --update-type library --build-type ${{ parameters.SDKType }} --avi --sr
-                        workingDirectory: $(Pipeline.Workspace)/s/azure-sdk-for-java
                         displayName: Update pom files for new version of ${{ artifact.groupId }} ${{ artifact.name }}
 
                       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
