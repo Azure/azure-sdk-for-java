@@ -42,7 +42,7 @@ These sample can be run in your IDE with default JDK.
 ## Examples
 The following sections provide several code snippets covering some of the most common service tasks, including:
 
--   [Using autocomplete to expand a query from index contents](java/com/azure/search/AutoCompleteExample.java)
+-   [Using autocomplete to expand a query from index contents](AutoCompleteExample.java)
 -   [Creating a new index](java/com/azure/search/CreateIndexExample.java)
 -   [Create a new indexer](java/com/azure/search/CreateIndexerExample.java)
 -   [Creating, listing and deleting data sources](java/com/azure/search/DataSourceExample.java)

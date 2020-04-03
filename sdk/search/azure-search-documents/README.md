@@ -1,4 +1,4 @@
-# Azure cognitive search client library for Java
+# Azure Cognitive Search client library for Java
 
 This is the Java client library for [Azure Cognitive Search](https://docs.microsoft.com/en-us/rest/api/searchservice/).
 Azure Cognitive Search is a fully managed cloud search service that provides a rich search experience to custom applications.
@@ -9,38 +9,23 @@ create and manage indexes, load data, implement search features, execute queries
 
 ## Getting started
 
-### Prerequisites
-
-- Java Development Kit (JDK) with version 8 or above
-- [Azure subscription][azure_subscription]
-- [Cognitive search service][search]
-
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-search-documents;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
-## Key concepts
+### Prerequisites
 
-Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains 
-one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. 
-Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data 
-source to extract and load data into an index.
-
-There are several types of operations that can be executed against the service:
-
--   [Index management operations](https://docs.microsoft.com/en-us/rest/api/searchservice/index-operations). Create, delete, update, or configure a search index.
--   [Document operations](https://docs.microsoft.com/en-us/rest/api/searchservice/document-operations). Add, update, or delete documents in the index, query the index, or look up specific documents by ID.
--   [Indexer operations](https://docs.microsoft.com/en-us/rest/api/searchservice/indexer-operations). Automate aspects of an indexing operation by configuring a data source and an indexer that you can schedule or run on demand. This feature is supported for a limited number of data source types.
--   [Skillset operations](https://docs.microsoft.com/en-us/rest/api/searchservice/skillset-operations). Part of a cognitive search workload, a skillset defines a series of a series of enrichment processing steps. A skillset is consumed by an indexer.
--   [Synonym map operations](https://docs.microsoft.com/en-us/rest/api/searchservice/synonym-map-operations). A synonym map is a service-level resource that contains user-defined synonyms. This resource is maintained independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+- Java Development Kit (JDK) with version 8 or above
+- [Azure subscription][azure_subscription]
+- [Cognitive Search service][search]
 
 ### Authenticate the client
 
@@ -101,6 +86,21 @@ SearchIndexAsyncClient client = new SearchIndexClientBuilder()
     .indexName(indexName)
     .buildAsyncClient();
 ```
+
+## Key concepts
+
+Azure Cognitive Search has the concepts of search services and indexes and documents, where a search service contains 
+one or more indexes that provides persistent storage of searchable data, and data is loaded in the form of JSON documents. 
+Data can be pushed to an index from an external data source, but if you use an indexer, it's possible to crawl a data 
+source to extract and load data into an index.
+
+There are several types of operations that can be executed against the service:
+
+-   [Index management operations](https://docs.microsoft.com/en-us/rest/api/searchservice/index-operations). Create, delete, update, or configure a search index.
+-   [Document operations](https://docs.microsoft.com/en-us/rest/api/searchservice/document-operations). Add, update, or delete documents in the index, query the index, or look up specific documents by ID.
+-   [Indexer operations](https://docs.microsoft.com/en-us/rest/api/searchservice/indexer-operations). Automate aspects of an indexing operation by configuring a data source and an indexer that you can schedule or run on demand. This feature is supported for a limited number of data source types.
+-   [Skillset operations](https://docs.microsoft.com/en-us/rest/api/searchservice/skillset-operations). Part of AI workload, a skillset defines a series of a series of enrichment processing steps. A skillset is consumed by an indexer.
+-   [Synonym map operations](https://docs.microsoft.com/en-us/rest/api/searchservice/synonym-map-operations). A synonym map is a service-level resource that contains user-defined synonyms. This resource is maintained independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
 
 ### Asynchronous and Synchronous Pagination and Iteration
 
