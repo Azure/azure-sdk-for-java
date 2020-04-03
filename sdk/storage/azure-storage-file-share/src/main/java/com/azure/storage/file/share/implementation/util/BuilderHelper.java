@@ -60,15 +60,16 @@ public final class BuilderHelper {
 
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
         policies.add(new AddDatePolicy());
 
         HttpPipelinePolicy credentialPolicy = credentialPolicySupplier.get();
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 
