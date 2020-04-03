@@ -11,9 +11,7 @@ import com.azure.management.resources.WhatIfChange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The WhatIfOperationResult model.
- */
+/** The WhatIfOperationResult model. */
 @JsonFlatten
 @Fluent
 public class WhatIfOperationResultInner {
@@ -37,62 +35,60 @@ public class WhatIfOperationResultInner {
 
     /**
      * Get the status property: Status of the What-If operation.
-     * 
+     *
      * @return the status value.
      */
-    public String getStatus() {
+    public String status() {
         return this.status;
     }
 
     /**
      * Set the status property: Status of the What-If operation.
-     * 
+     *
      * @param status the status value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner setStatus(String status) {
+    public WhatIfOperationResultInner withStatus(String status) {
         this.status = status;
         return this;
     }
 
     /**
      * Get the error property: Error when What-If operation fails.
-     * 
+     *
      * @return the error value.
      */
-    public ErrorResponse getError() {
+    public ErrorResponse error() {
         return this.error;
     }
 
     /**
      * Set the error property: Error when What-If operation fails.
-     * 
+     *
      * @param error the error value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner setError(ErrorResponse error) {
+    public WhatIfOperationResultInner withError(ErrorResponse error) {
         this.error = error;
         return this;
     }
 
     /**
-     * Get the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Get the changes property: List of resource changes predicted by What-If operation.
+     *
      * @return the changes value.
      */
-    public List<WhatIfChange> getChanges() {
+    public List<WhatIfChange> changes() {
         return this.changes;
     }
 
     /**
-     * Set the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Set the changes property: List of resource changes predicted by What-If operation.
+     *
      * @param changes the changes value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
-    public WhatIfOperationResultInner setChanges(List<WhatIfChange> changes) {
+    public WhatIfOperationResultInner withChanges(List<WhatIfChange> changes) {
         this.changes = changes;
         return this;
     }

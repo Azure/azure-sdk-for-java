@@ -1,8 +1,10 @@
 # Release History
 
-## 11.0.0-beta.2 (Unreleased)
+## 11.0.0-beta.2 (2020-04-03)
 
+- Added support for continuation tokens to resume server-side paging.
 - Replaced `SearchApiKeyCredential` with `AzureKeyCredential`.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 
 ## 11.0.0-beta.1 (2020-03-10)
 

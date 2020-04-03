@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Operation model.
- */
+/** The Operation model. */
 @Fluent
 public final class OperationInner {
     /*
@@ -26,43 +24,41 @@ public final class OperationInner {
     private OperationDisplay display;
 
     /**
-     * Get the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Get the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
     /**
-     * Set the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Set the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setName(String name) {
+    public OperationInner withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
      * Get the display property: The object that represents the operation.
-     * 
+     *
      * @return the display value.
      */
-    public OperationDisplay getDisplay() {
+    public OperationDisplay display() {
         return this.display;
     }
 
     /**
      * Set the display property: The object that represents the operation.
-     * 
+     *
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
-    public OperationInner setDisplay(OperationDisplay display) {
+    public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
         return this;
     }

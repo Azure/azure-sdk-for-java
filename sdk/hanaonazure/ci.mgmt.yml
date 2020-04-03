@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/hanaonazure/
-    exclude:
-      - sdk/hanaonazure/azure
-      - sdk/hanaonazure/microsoft-azure
-      - sdk/hanaonazure/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/hanaonazure/
-    exclude:
-      - sdk/hanaonazure/azure
-      - sdk/hanaonazure/microsoft-azure
-      - sdk/hanaonazure/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

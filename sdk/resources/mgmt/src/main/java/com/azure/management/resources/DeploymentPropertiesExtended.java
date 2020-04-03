@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The DeploymentPropertiesExtended model.
- */
+/** The DeploymentPropertiesExtended model. */
 @Fluent
 public final class DeploymentPropertiesExtended {
     /*
@@ -103,250 +101,238 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the provisioningState property: The state of the provisioning.
-     * 
+     *
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Get the correlationId property: The correlation ID of the deployment.
-     * 
+     *
      * @return the correlationId value.
      */
-    public String getCorrelationId() {
+    public String correlationId() {
         return this.correlationId;
     }
 
     /**
      * Get the timestamp property: The timestamp of the template deployment.
-     * 
+     *
      * @return the timestamp value.
      */
-    public OffsetDateTime getTimestamp() {
+    public OffsetDateTime timestamp() {
         return this.timestamp;
     }
 
     /**
      * Get the duration property: The duration of the template deployment.
-     * 
+     *
      * @return the duration value.
      */
-    public String getDuration() {
+    public String duration() {
         return this.duration;
     }
 
     /**
-     * Get the outputs property: Key/value pairs that represent deployment
-     * output.
-     * 
+     * Get the outputs property: Key/value pairs that represent deployment output.
+     *
      * @return the outputs value.
      */
-    public Object getOutputs() {
+    public Object outputs() {
         return this.outputs;
     }
 
     /**
-     * Set the outputs property: Key/value pairs that represent deployment
-     * output.
-     * 
+     * Set the outputs property: Key/value pairs that represent deployment output.
+     *
      * @param outputs the outputs value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setOutputs(Object outputs) {
+    public DeploymentPropertiesExtended withOutputs(Object outputs) {
         this.outputs = outputs;
         return this;
     }
 
     /**
-     * Get the providers property: The list of resource providers needed for
-     * the deployment.
-     * 
+     * Get the providers property: The list of resource providers needed for the deployment.
+     *
      * @return the providers value.
      */
-    public List<ProviderInner> getProviders() {
+    public List<ProviderInner> providers() {
         return this.providers;
     }
 
     /**
-     * Set the providers property: The list of resource providers needed for
-     * the deployment.
-     * 
+     * Set the providers property: The list of resource providers needed for the deployment.
+     *
      * @param providers the providers value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setProviders(List<ProviderInner> providers) {
+    public DeploymentPropertiesExtended withProviders(List<ProviderInner> providers) {
         this.providers = providers;
         return this;
     }
 
     /**
      * Get the dependencies property: The list of deployment dependencies.
-     * 
+     *
      * @return the dependencies value.
      */
-    public List<Dependency> getDependencies() {
+    public List<Dependency> dependencies() {
         return this.dependencies;
     }
 
     /**
      * Set the dependencies property: The list of deployment dependencies.
-     * 
+     *
      * @param dependencies the dependencies value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setDependencies(List<Dependency> dependencies) {
+    public DeploymentPropertiesExtended withDependencies(List<Dependency> dependencies) {
         this.dependencies = dependencies;
         return this;
     }
 
     /**
-     * Get the template property: The template content. Use only one of
-     * Template or TemplateLink.
-     * 
+     * Get the template property: The template content. Use only one of Template or TemplateLink.
+     *
      * @return the template value.
      */
-    public Object getTemplate() {
+    public Object template() {
         return this.template;
     }
 
     /**
-     * Set the template property: The template content. Use only one of
-     * Template or TemplateLink.
-     * 
+     * Set the template property: The template content. Use only one of Template or TemplateLink.
+     *
      * @param template the template value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setTemplate(Object template) {
+    public DeploymentPropertiesExtended withTemplate(Object template) {
         this.template = template;
         return this;
     }
 
     /**
-     * Get the templateLink property: The URI referencing the template. Use
-     * only one of Template or TemplateLink.
-     * 
+     * Get the templateLink property: The URI referencing the template. Use only one of Template or TemplateLink.
+     *
      * @return the templateLink value.
      */
-    public TemplateLink getTemplateLink() {
+    public TemplateLink templateLink() {
         return this.templateLink;
     }
 
     /**
-     * Set the templateLink property: The URI referencing the template. Use
-     * only one of Template or TemplateLink.
-     * 
+     * Set the templateLink property: The URI referencing the template. Use only one of Template or TemplateLink.
+     *
      * @param templateLink the templateLink value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setTemplateLink(TemplateLink templateLink) {
+    public DeploymentPropertiesExtended withTemplateLink(TemplateLink templateLink) {
         this.templateLink = templateLink;
         return this;
     }
 
     /**
-     * Get the parameters property: Deployment parameters. Use only one of
-     * Parameters or ParametersLink.
-     * 
+     * Get the parameters property: Deployment parameters. Use only one of Parameters or ParametersLink.
+     *
      * @return the parameters value.
      */
-    public Object getParameters() {
+    public Object parameters() {
         return this.parameters;
     }
 
     /**
-     * Set the parameters property: Deployment parameters. Use only one of
-     * Parameters or ParametersLink.
-     * 
+     * Set the parameters property: Deployment parameters. Use only one of Parameters or ParametersLink.
+     *
      * @param parameters the parameters value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setParameters(Object parameters) {
+    public DeploymentPropertiesExtended withParameters(Object parameters) {
         this.parameters = parameters;
         return this;
     }
 
     /**
-     * Get the parametersLink property: The URI referencing the parameters. Use
-     * only one of Parameters or ParametersLink.
-     * 
+     * Get the parametersLink property: The URI referencing the parameters. Use only one of Parameters or
+     * ParametersLink.
+     *
      * @return the parametersLink value.
      */
-    public ParametersLink getParametersLink() {
+    public ParametersLink parametersLink() {
         return this.parametersLink;
     }
 
     /**
-     * Set the parametersLink property: The URI referencing the parameters. Use
-     * only one of Parameters or ParametersLink.
-     * 
+     * Set the parametersLink property: The URI referencing the parameters. Use only one of Parameters or
+     * ParametersLink.
+     *
      * @param parametersLink the parametersLink value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setParametersLink(ParametersLink parametersLink) {
+    public DeploymentPropertiesExtended withParametersLink(ParametersLink parametersLink) {
         this.parametersLink = parametersLink;
         return this;
     }
 
     /**
-     * Get the mode property: The deployment mode. Possible values are
-     * Incremental and Complete.
-     * 
+     * Get the mode property: The deployment mode. Possible values are Incremental and Complete.
+     *
      * @return the mode value.
      */
-    public DeploymentMode getMode() {
+    public DeploymentMode mode() {
         return this.mode;
     }
 
     /**
-     * Set the mode property: The deployment mode. Possible values are
-     * Incremental and Complete.
-     * 
+     * Set the mode property: The deployment mode. Possible values are Incremental and Complete.
+     *
      * @param mode the mode value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setMode(DeploymentMode mode) {
+    public DeploymentPropertiesExtended withMode(DeploymentMode mode) {
         this.mode = mode;
         return this;
     }
 
     /**
      * Get the debugSetting property: The debug setting of the deployment.
-     * 
+     *
      * @return the debugSetting value.
      */
-    public DebugSetting getDebugSetting() {
+    public DebugSetting debugSetting() {
         return this.debugSetting;
     }
 
     /**
      * Set the debugSetting property: The debug setting of the deployment.
-     * 
+     *
      * @param debugSetting the debugSetting value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setDebugSetting(DebugSetting debugSetting) {
+    public DeploymentPropertiesExtended withDebugSetting(DebugSetting debugSetting) {
         this.debugSetting = debugSetting;
         return this;
     }
 
     /**
      * Get the onErrorDeployment property: The deployment on error behavior.
-     * 
+     *
      * @return the onErrorDeployment value.
      */
-    public OnErrorDeploymentExtended getOnErrorDeployment() {
+    public OnErrorDeploymentExtended onErrorDeployment() {
         return this.onErrorDeployment;
     }
 
     /**
      * Set the onErrorDeployment property: The deployment on error behavior.
-     * 
+     *
      * @param onErrorDeployment the onErrorDeployment value to set.
      * @return the DeploymentPropertiesExtended object itself.
      */
-    public DeploymentPropertiesExtended setOnErrorDeployment(OnErrorDeploymentExtended onErrorDeployment) {
+    public DeploymentPropertiesExtended withOnErrorDeployment(OnErrorDeploymentExtended onErrorDeployment) {
         this.onErrorDeployment = onErrorDeployment;
         return this;
     }

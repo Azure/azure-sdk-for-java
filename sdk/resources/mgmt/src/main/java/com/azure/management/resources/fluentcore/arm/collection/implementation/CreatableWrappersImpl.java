@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
@@ -11,8 +8,8 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
  * Base class for creatable wrapper collections, i.e. those where a new member of the collection can be created.
  * (Internal use only)
  *
- * @param <T>      the individual resource type returned
- * @param <ImplT>  the individual resource implementation
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
 public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>

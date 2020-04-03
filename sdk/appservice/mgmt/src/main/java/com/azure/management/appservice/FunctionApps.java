@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.appservice;
 
@@ -39,7 +36,7 @@ public interface FunctionApps extends
      * List function information elements.
      *
      * @param resourceGroupName resource group name
-     * @param name              function app name
+     * @param name function app name
      * @return list of function information elements
      */
     PagedIterable<FunctionEnvelope> listFunctions(String resourceGroupName, String name);

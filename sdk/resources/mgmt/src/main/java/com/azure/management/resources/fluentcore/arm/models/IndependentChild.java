@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.models;
 
@@ -30,14 +27,14 @@ public interface IndependentChild<ManagerT> extends
         /**
          * A resource definition allowing a new resource group to be created.
          *
-         * @param <T>       the resource type.
+         * @param <T> the resource type.
          * @param <ParentT> parent resource type.
          */
         interface WithParentResource<T, ParentT> {
             /**
              * Creates a new child resource under parent resource.
              *
-             * @param groupName  the name of the resource group for parent resource.
+             * @param groupName the name of the resource group for parent resource.
              * @param parentName the name of the parent resource.
              * @return the creatable for the child resource
              */

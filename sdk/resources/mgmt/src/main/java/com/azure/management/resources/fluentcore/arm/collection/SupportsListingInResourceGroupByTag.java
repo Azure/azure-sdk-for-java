@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.collection;
 
@@ -21,8 +18,8 @@ public interface SupportsListingInResourceGroupByTag<T> {
      * Lists all the resources with the specified tag.
      *
      * @param resourceGroupName the name of the resource group
-     * @param tagName           tag's name as the key
-     * @param tagValue          tag's value
+     * @param tagName tag's name as the key
+     * @param tagValue tag's value
      * @return the list of resources
      */
     PagedIterable<T> listByTag(String resourceGroupName, String tagName, String tagValue);
@@ -31,8 +28,8 @@ public interface SupportsListingInResourceGroupByTag<T> {
      * Lists all the resources with the specified tag.
      *
      * @param resourceGroupName the name of the resource group
-     * @param tagName           tag's name as the key
-     * @param tagValue          tag's value
+     * @param tagName tag's name as the key
+     * @param tagValue tag's value
      * @return a {@link PagedFlux} of the requested resources
      */
     PagedFlux<T> listByTagAsync(String resourceGroupName, String tagName, String tagValue);

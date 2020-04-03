@@ -21,7 +21,10 @@ trigger:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/servicebus/mgmt-
+      - sdk/servicebus/mgmt-v2015_08_01
+      - sdk/servicebus/mgmt-v2017_04_01
+      - sdk/servicebus/mgmt-v2018_01_01_preview
+      - sdk/servicebus/azure-servicebus
 
 pr:
   branches:
@@ -34,8 +37,10 @@ pr:
     include:
       - sdk/servicebus/
     exclude:
-      - sdk/servicebus/azure
-      - sdk/servicebus/mgmt-
+      - sdk/servicebus/mgmt-v2015_08_01
+      - sdk/servicebus/mgmt-v2017_04_01
+      - sdk/servicebus/mgmt-v2018_01_01_preview
+      - sdk/servicebus/azure-servicebus
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

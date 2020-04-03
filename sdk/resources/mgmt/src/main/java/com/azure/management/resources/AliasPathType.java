@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AliasPathType model.
- */
+/** The AliasPathType model. */
 @Fluent
 public final class AliasPathType {
     /*
@@ -27,40 +25,40 @@ public final class AliasPathType {
 
     /**
      * Get the path property: The path of an alias.
-     * 
+     *
      * @return the path value.
      */
-    public String getPath() {
+    public String path() {
         return this.path;
     }
 
     /**
      * Set the path property: The path of an alias.
-     * 
+     *
      * @param path the path value to set.
      * @return the AliasPathType object itself.
      */
-    public AliasPathType setPath(String path) {
+    public AliasPathType withPath(String path) {
         this.path = path;
         return this;
     }
 
     /**
      * Get the apiVersions property: The API versions.
-     * 
+     *
      * @return the apiVersions value.
      */
-    public List<String> getApiVersions() {
+    public List<String> apiVersions() {
         return this.apiVersions;
     }
 
     /**
      * Set the apiVersions property: The API versions.
-     * 
+     *
      * @param apiVersions the apiVersions value to set.
      * @return the AliasPathType object itself.
      */
-    public AliasPathType setApiVersions(List<String> apiVersions) {
+    public AliasPathType withApiVersions(List<String> apiVersions) {
         this.apiVersions = apiVersions;
         return this;
     }

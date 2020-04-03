@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.core.management.Resource;
@@ -22,11 +19,11 @@ import reactor.core.publisher.Mono;
  * Base class for resource collection classes.
  * (Internal use only)
  *
- * @param <T>                the individual resource type returned
- * @param <ImplT>            the individual resource implementation
- * @param <InnerT>           the wrapper inner type
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
+ * @param <InnerT> the wrapper inner type
  * @param <InnerCollectionT> the inner type of the collection object
- * @param <ManagerT>         the manager type for this resource provider type
+ * @param <ManagerT> the manager type for this resource provider type
  */
 public abstract class GroupableResourcesImpl<
         T extends GroupableResource<ManagerT, InnerT>,

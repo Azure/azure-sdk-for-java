@@ -41,6 +41,9 @@ az storage account create \
     --location <location>
 ```
 
+Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
+http(s)://<storage-account-name>.dfs.core.windows.net
+
 ### Authenticate the client
 
 In order to interact with the Storage Service you'll need to create an instance of the Service Client class.
@@ -129,6 +132,32 @@ Data Lake Storage Gen2 offers two types of resources:
 |Path (File or Directory)   | Blob       |
 
 Note: This client library does not support hierarchical namespace (HNS) disabled storage accounts.
+
+### URL format
+Paths are addressable using the following URL format:
+The following URL addresses a file:
+https://myaccount.dfs.core.windows.net/myfilesystem/myfile
+
+#### Resource URI Syntax
+For the storage account, the base URI for datalake operations includes the name of the account only:
+
+```
+https://myaccount.dfs.core.windows.net
+```
+
+For a file system, the base URI includes the name of the account and the name of the file system:
+
+```
+https://myaccount.dfs.core.windows.net/myfilesystem
+```
+
+For a file/directory, the base URI includes the name of the account, the name of the file system and the name of the path:
+
+```
+https://myaccount.dfs.core.windows.net/myfilesystem/mypath
+```
+
+Note that the above URIs may not hold for more advanced scenarios such as custom domain names.
 
 ## Examples
 

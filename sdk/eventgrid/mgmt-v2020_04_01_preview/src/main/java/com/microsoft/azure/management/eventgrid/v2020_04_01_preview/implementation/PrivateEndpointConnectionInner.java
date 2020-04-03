@@ -17,7 +17,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * PrivateEndpointConnection resource information.
+ * The PrivateEndpointConnectionInner model.
  */
 @JsonFlatten
 public class PrivateEndpointConnectionInner extends ProxyResource {

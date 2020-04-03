@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
@@ -26,7 +23,7 @@ public interface VirtualMachineScaleSetNetworkInterfaces extends
      * Gets a network interface associated with a virtual machine scale set instance.
      *
      * @param instanceId the virtual machine scale set vm instance id
-     * @param name       the network interface name
+     * @param name the network interface name
      * @return the network interface
      */
     VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name);

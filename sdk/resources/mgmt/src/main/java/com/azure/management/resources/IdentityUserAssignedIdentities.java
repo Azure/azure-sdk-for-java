@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The IdentityUserAssignedIdentities model.
- */
+/** The IdentityUserAssignedIdentities model. */
 @Immutable
 public final class IdentityUserAssignedIdentities {
     /*
@@ -25,21 +23,20 @@ public final class IdentityUserAssignedIdentities {
     private String clientId;
 
     /**
-     * Get the principalId property: The principal id of user assigned
-     * identity.
-     * 
+     * Get the principalId property: The principal id of user assigned identity.
+     *
      * @return the principalId value.
      */
-    public String getPrincipalId() {
+    public String principalId() {
         return this.principalId;
     }
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     * 
+     *
      * @return the clientId value.
      */
-    public String getClientId() {
+    public String clientId() {
         return this.clientId;
     }
 }

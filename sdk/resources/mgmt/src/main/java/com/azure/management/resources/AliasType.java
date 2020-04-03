@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AliasType model.
- */
+/** The AliasType model. */
 @Fluent
 public final class AliasType {
     /*
@@ -27,40 +25,40 @@ public final class AliasType {
 
     /**
      * Get the name property: The alias name.
-     * 
+     *
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
     /**
      * Set the name property: The alias name.
-     * 
+     *
      * @param name the name value to set.
      * @return the AliasType object itself.
      */
-    public AliasType setName(String name) {
+    public AliasType withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
      * Get the paths property: The paths for an alias.
-     * 
+     *
      * @return the paths value.
      */
-    public List<AliasPathType> getPaths() {
+    public List<AliasPathType> paths() {
         return this.paths;
     }
 
     /**
      * Set the paths property: The paths for an alias.
-     * 
+     *
      * @param paths the paths value to set.
      * @return the AliasType object itself.
      */
-    public AliasType setPaths(List<AliasPathType> paths) {
+    public AliasType withPaths(List<AliasPathType> paths) {
         this.paths = paths;
         return this;
     }
