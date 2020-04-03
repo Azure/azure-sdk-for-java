@@ -9,9 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.resources.DeploymentPropertiesExtended;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentExtended model.
- */
+/** The DeploymentExtended model. */
 @Fluent
 public final class DeploymentExtendedInner extends ProxyResource {
     /*
@@ -28,7 +26,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
 
     /**
      * Get the location property: the location of the deployment.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -37,7 +35,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
 
     /**
      * Set the location property: the location of the deployment.
-     * 
+     *
      * @param location the location value to set.
      * @return the DeploymentExtendedInner object itself.
      */
@@ -48,7 +46,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
 
     /**
      * Get the properties property: Deployment properties.
-     * 
+     *
      * @return the properties value.
      */
     public DeploymentPropertiesExtended properties() {
@@ -57,7 +55,7 @@ public final class DeploymentExtendedInner extends ProxyResource {
 
     /**
      * Set the properties property: Deployment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the DeploymentExtendedInner object itself.
      */

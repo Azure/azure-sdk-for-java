@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The Identity model.
- */
+/** The Identity model. */
 @Fluent
 public final class Identity {
     /*
@@ -41,7 +39,7 @@ public final class Identity {
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -50,7 +48,7 @@ public final class Identity {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -59,7 +57,7 @@ public final class Identity {
 
     /**
      * Get the type property: The identity type.
-     * 
+     *
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -68,7 +66,7 @@ public final class Identity {
 
     /**
      * Set the type property: The identity type.
-     * 
+     *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -78,11 +76,10 @@ public final class Identity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities
-     * associated with the resource. The user identity dictionary key
-     * references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     * 
+     *
      * @return the userAssignedIdentities value.
      */
     public Map<String, IdentityUserAssignedIdentities> userAssignedIdentities() {
@@ -90,11 +87,10 @@ public final class Identity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities
-     * associated with the resource. The user identity dictionary key
-     * references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     * 
+     *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.
      */

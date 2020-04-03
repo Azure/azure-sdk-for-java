@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourcesMoveInfo model.
- */
+/** The ResourcesMoveInfo model. */
 @Fluent
 public final class ResourcesMoveInfo {
     /*
@@ -27,7 +25,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Get the resources property: The IDs of the resources.
-     * 
+     *
      * @return the resources value.
      */
     public List<String> resources() {
@@ -36,7 +34,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Set the resources property: The IDs of the resources.
-     * 
+     *
      * @param resources the resources value to set.
      * @return the ResourcesMoveInfo object itself.
      */
@@ -47,7 +45,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Get the targetResourceGroup property: The target resource group.
-     * 
+     *
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -56,7 +54,7 @@ public final class ResourcesMoveInfo {
 
     /**
      * Set the targetResourceGroup property: The target resource group.
-     * 
+     *
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the ResourcesMoveInfo object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TenantIdDescription model.
- */
+/** The TenantIdDescription model. */
 @Immutable
 public final class TenantIdDescriptionInner {
     /*
@@ -28,7 +26,7 @@ public final class TenantIdDescriptionInner {
     /**
      * Get the id property: The fully qualified ID of the tenant. For example,
      * /tenants/00000000-0000-0000-0000-000000000000.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -36,9 +34,8 @@ public final class TenantIdDescriptionInner {
     }
 
     /**
-     * Get the tenantId property: The tenant ID. For example,
-     * 00000000-0000-0000-0000-000000000000.
-     * 
+     * Get the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
