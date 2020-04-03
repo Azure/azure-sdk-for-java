@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -110,8 +111,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return new DefaultAzureCredential(getCredentialsChain());
     }
 
-    private List<TokenCredential> getCredentialsChain() {
-        List<TokenCredential> output = new ArrayList<>(4);
+    private ArrayDeque<TokenCredential> getCredentialsChain() {
+        ArrayDeque<TokenCredential> output = new ArrayDeque<>(4);
         if (!excludeEnvironmentCredential) {
             output.add(new EnvironmentCredential(identityClientOptions));
         }
@@ -128,6 +129,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         if (!excludeAzureCliCredential) {
             output.add(new AzureCliCredential(identityClientOptions));
         }
+
         if (output.size() == 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("At least one credential type must be"
                                                                          + " included in the authentication flow."));

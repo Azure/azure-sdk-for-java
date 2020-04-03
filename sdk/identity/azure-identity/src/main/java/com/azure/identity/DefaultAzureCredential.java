@@ -34,7 +34,7 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      *
      * @param tokenCredentials the list of credentials to execute for authentication.
      */
-    DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
-        super(new ArrayDeque<>(tokenCredentials));
+    DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
+        super(tokenCredentials);
     }
 }
