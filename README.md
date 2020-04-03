@@ -4,7 +4,6 @@
 
 This repository is for active development of the Azure SDK for Java. For consumers of the SDK we recommend visiting our [public developer docs](https://docs.microsoft.com/en-us/java/azure/) or our versioned [developer docs](https://azure.github.io/azure-sdk-for-java).
 
-
 ## Getting started
 
 To get started with a specific service library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk` directory. For a list of all the services we support access our [list of all existing libraries](https://azure.github.io/azure-sdk/releases/latest/all/java.html). 
@@ -15,37 +14,32 @@ For tutorials, samples, quick starts and other documentation, visit [Azure for J
 
 Java 8 or later is required to use libraries under the `com.azure` package, for libraries under the `com.microsoft.azure` package Java 7 or later is required.
 
-
-## Latest Release
+## Available packages
 
 Each service might have a number of libraries available from each of the following categories:
-
 
 - [Client: New Releases](#Client-New-Releases)
 - [Client: Previous Versions](#Client-Previous-Versions)
 - [Management](#Management)
 
-
 ### Client: New Releases
-
 
 New wave of packages that follow the [Azure SDK Design Guidelines for Java](https://azure.github.io/azure-sdk/java/guidelines/) and share a number of core features such as HTTP retries, logging, transport protocols, authentication protocols, etc., so that once you learn how to use these features in one client library, you will know how to use them in other client libraries. You can learn about these shared features [here](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/README.md).
 These libraries can be easily identified by folder, package, and namespaces names starting with `azure-`, e.g. `azure-keyvault`.
 
-You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java-packages). This list includes the most recent releases: both GA and preview.
+You can find the **[most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#java-packages)**. This list includes the most recent releases: both GA and preview.
 
 > NOTE: If you need to ensure your code is ready for production use one of the stable, non-preview libraries.
 
 ### Client: Previous Versions
 
-Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the GA releases. They do however offer wider coverage of services.
-
+Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide similar functionalities to the new libraries, as they allow you to use and consume existing resources and interact with them, for example: upload a blob. Previous library directories start with `microsoft-azure-`, e.g. `microsoft-azure-keyvault`. They might not implement the [guidelines](https://azure.github.io/azure-sdk/java_introduction.html) or have the same feature set as the new releases. They do however offer wider coverage of services.
 
 ### Management
 
 Libraries which enable you to provision specific resources. They are responsible for directly mirroring and consuming Azure service's REST endpoints. Management library directories contain `-mgmt-`, e.g. `azure-mgmt-keyvault`.
 
-## Need help
+## Need help?
 
 - For reference documentation visit the [Azure SDK for Java documentation](http://aka.ms/java-docs).
 - For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
