@@ -124,18 +124,21 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                     CosmosClientException clientException = (CosmosClientException) throwable;
                     logger.warn("CosmosClientException: partition {} from thread {}",
-                        this.options.partitionKey().getInternalPartitionKey(), Thread.currentThread().getId(), clientException);
+                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
                         case PARTITION_NOT_FOUND: {
                             this.resultException = new PartitionNotFoundException("Partition not found.", this.lastContinuation);
+                            break;
                         }
                         case PARTITION_SPLIT: {
                             this.resultException = new PartitionSplitException("Partition split.", this.lastContinuation);
+                            break;
                         }
                         case UNDEFINED: {
                             this.resultException = new RuntimeException(clientException);
+                            break;
                         }
                         case MAX_ITEM_COUNT_TOO_LARGE: {
                             if (this.options.maxItemCount() == null) {
@@ -160,15 +163,17 @@ class PartitionProcessorImpl implements PartitionProcessor {
                                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                                     }).flatMap( values -> Flux.empty());
                             }
+                            break;
                         }
                         default: {
                             logger.error("Unrecognized Cosmos exception returned error code {}", docDbError, clientException);
                             this.resultException = new RuntimeException(clientException);
+                            break;
                         }
                     }
                 } else if (throwable instanceof LeaseLostException) {
                     logger.info("LeaseLoseException with partition {} from thread {}",
-                        this.options.partitionKey().getInternalPartitionKey(), Thread.currentThread().getId());
+                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId());
                     this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Task cancelled exception: partition {} from {}",
