@@ -56,11 +56,6 @@
       <artifactId>azure-storage-blob</artifactId>
       <version>12.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.28</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-    </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
