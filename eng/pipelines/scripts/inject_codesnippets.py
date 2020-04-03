@@ -21,8 +21,8 @@ EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
 HTML_ESCAPE_TABLE = {
     "&": "&amp;",
     '"': "&quot;",
-    ">": "&gt;",
-    "<": "&lt;",
+    ">": "&amp;gt;",
+    "<": "&amp;lt;",
     "@": "{@literal @}",
     "{": "&#123;",
     "}": "&#125;",
