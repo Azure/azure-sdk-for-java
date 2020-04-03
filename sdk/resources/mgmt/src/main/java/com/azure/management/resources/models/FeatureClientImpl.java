@@ -36,7 +36,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the FeatureClientImpl type. */
 public final class FeatureClientImpl extends AzureServiceClient {
     /** The proxy service used to perform REST calls. */
-    private FeatureClientService service;
+    private final FeatureClientService service;
 
     /** The ID of the target subscription. */
     private String subscriptionId;
