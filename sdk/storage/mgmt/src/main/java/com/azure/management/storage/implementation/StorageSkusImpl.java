@@ -5,7 +5,6 @@ package com.azure.management.storage.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.storage.Sku;
 import com.azure.management.storage.StorageSku;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.models.SkusInner;

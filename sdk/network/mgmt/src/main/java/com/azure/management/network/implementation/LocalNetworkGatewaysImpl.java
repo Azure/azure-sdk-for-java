@@ -9,13 +9,11 @@ import com.azure.management.network.LocalNetworkGateway;
 import com.azure.management.network.LocalNetworkGateways;
 import com.azure.management.network.models.LocalNetworkGatewayInner;
 import com.azure.management.network.models.LocalNetworkGatewaysInner;
-import com.azure.management.network.models.VirtualNetworkGatewayInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.Function;
 
 /**

@@ -4,7 +4,6 @@
 package com.azure.management.monitor.implementation;
 
 import com.azure.management.monitor.Metric;
-import com.azure.management.monitor.models.MetricInner;
 import com.azure.management.monitor.models.ResponseInner;
 import com.azure.management.monitor.MetricCollection;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;

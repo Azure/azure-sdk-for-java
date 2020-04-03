@@ -3,7 +3,6 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.implementation.annotation.Beta;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
