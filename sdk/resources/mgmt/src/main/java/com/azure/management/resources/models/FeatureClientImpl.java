@@ -251,6 +251,6 @@ public final class FeatureClientImpl extends AzureServiceClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
 }
