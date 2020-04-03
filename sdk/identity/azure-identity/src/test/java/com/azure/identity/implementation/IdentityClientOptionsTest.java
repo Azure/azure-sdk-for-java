@@ -19,10 +19,16 @@ public class IdentityClientOptionsTest {
 
     @Test
     public void testEnvAuthorityHost() {
-        String envAuthorityHost = "https://env.com/";
-        Configuration.getGlobalConfiguration().put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, envAuthorityHost);
-        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        try{
+            String envAuthorityHost = "https://envauthority.com/";
+            configuration.put("AZURE_AUTHORITY_HOST", envAuthorityHost);
+            IdentityClientOptions identityClientOptions = new IdentityClientOptions();
+            Assert.assertEquals(envAuthorityHost, identityClientOptions.getAuthorityHost());
+        } finally {
+            configuration.remove("AZURE_AUTHORITY_HOST");
+        }
     }
 
     @Test
