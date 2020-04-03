@@ -15,8 +15,7 @@ import java.time.Duration;
 public class ReceiveMessageAndSettleAsyncSample {
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
-     * Queue
+     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus Queue
      *
      * @param args Unused arguments to the program.
      */
@@ -33,20 +32,17 @@ public class ReceiveMessageAndSettleAsyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isLockAutoRenewed(true)
             .queueName("<<queue-name>>")
-            .isAutoComplete(false)
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
 
         Disposable subscription = receiverAsyncClient.receive()
             .flatMap(message -> {
-                boolean messageProcessed =  false;
+                boolean messageProcessed = false;
+
                 // Process the message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
