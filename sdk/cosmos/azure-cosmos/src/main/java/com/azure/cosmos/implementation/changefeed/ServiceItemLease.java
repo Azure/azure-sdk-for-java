@@ -63,7 +63,8 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
+    @JsonProperty("_etag")
     public String getETag() {
         return this._etag;
     }
@@ -133,6 +134,10 @@ public class ServiceItemLease implements Lease {
         this.withTimestamp(date.toInstant().atZone(zoneId));
     }
 
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public void setId(String id) {
         this.withId(id);
@@ -192,23 +197,6 @@ public class ServiceItemLease implements Lease {
         return this.getETag();
     }
 
-    public static ServiceItemLease fromDocument(Document document) {
-        ServiceItemLease lease = new ServiceItemLease()
-            .withId(document.getId())
-            .withETag(document.getETag())
-            .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
-            .withOwner(document.getString("Owner"))
-            .withLeaseToken(document.getString("LeaseToken"))
-            .withContinuationToken(document.getString("ContinuationToken"));
-
-        String leaseTimestamp = document.getString("timestamp");
-        if (leaseTimestamp != null) {
-            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
-        } else {
-            return lease;
-        }
-    }
-
     public static ServiceItemLease fromDocument(CosmosItemProperties document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.getId())
@@ -223,6 +211,21 @@ public class ServiceItemLease implements Lease {
             return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
         } else {
             return lease;
+        }
+    }
+
+    public void setServiceItemLease(Lease lease) {
+        this.setId(lease.getId());
+        this.setConcurrencyToken(lease.getConcurrencyToken());
+        this.setOwner(lease.getOwner());
+        this.withLeaseToken(lease.getLeaseToken());
+        this.setContinuationToken(getContinuationToken());
+
+        String leaseTimestamp = lease.getTimestamp();
+        if (leaseTimestamp != null) {
+           this.setTimestamp(ZonedDateTime.parse(leaseTimestamp));
+        } else {
+            this.setTimestamp(lease.getTimestamp());
         }
     }
 
