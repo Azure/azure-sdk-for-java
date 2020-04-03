@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 import java.util.Collection;
@@ -358,7 +355,7 @@ public interface ApplicationGateway extends
              * Creates a frontend port with the specified name and port number, unless a port matching this name and/or number already exists.
              *
              * @param portNumber a port number
-             * @param name       the name to assign to the port
+             * @param name the name to assign to the port
              * @return the next stage of the definition, or null if a port matching either the name or the number, but not both, already exists.
              */
             WithCreate withFrontendPort(int portNumber, String name);
@@ -482,7 +479,7 @@ public interface ApplicationGateway extends
              * Specifies webApplicationFirewallConfiguration with default values.
              *
              * @param enabled enable the firewall when created
-             * @param mode    Web application firewall mode.
+             * @param mode Web application firewall mode.
              * @return the next stage of the definition
              */
             WithCreate withWebApplicationFirewall(boolean enabled, ApplicationGatewayFirewallMode mode);
@@ -547,7 +544,7 @@ public interface ApplicationGateway extends
              * <p>
              * Private (internal) frontends, if any have been enabled, will be configured to use this subnet as well.
              *
-             * @param network    the virtual network the subnet is part of
+             * @param network the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
@@ -743,7 +740,7 @@ public interface ApplicationGateway extends
              * <p>
              * Private (internal) front ends, if any have been enabled, will be configured to use this subnet as well.
              *
-             * @param network    the virtual network the subnet is part of
+             * @param network the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the update
              */
@@ -806,7 +803,7 @@ public interface ApplicationGateway extends
              * Creates a front end port with the specified name and port number, unless a port matching this name and/or number already exists.
              *
              * @param portNumber a port number
-             * @param name       the name to assign to the port
+             * @param name the name to assign to the port
              * @return the next stage of the definition, or null if a port matching either the name or the number, but not both, already exists.
              */
             Update withFrontendPort(int portNumber, String name);

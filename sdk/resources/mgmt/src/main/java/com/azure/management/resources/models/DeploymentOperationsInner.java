@@ -26,177 +26,261 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DeploymentOperations.
- */
+/** An instance of this class provides access to all the operations defined in DeploymentOperations. */
 public final class DeploymentOperationsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private DeploymentOperationsService service;
+    /** The proxy service used to perform REST calls. */
+    private final DeploymentOperationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private ResourceManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final ResourceManagementClientImpl client;
 
     /**
      * Initializes an instance of DeploymentOperationsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DeploymentOperationsInner(ResourceManagementClientImpl client) {
-        this.service = RestProxy.create(DeploymentOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(DeploymentOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ResourceManagementClientDeploymentOperations to be used by the proxy
+     * The interface defining all the services for ResourceManagementClientDeploymentOperations to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementClientDeploymentOperations")
+    @ServiceInterface(name = "ResourceManagementCl")
     private interface DeploymentOperationsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtScope(
+            @HostParam("$host") String host,
+            @PathParam("scope") String scope,
+            @PathParam("deploymentName") String deploymentName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScope(@HostParam("$host") String host, @PathParam("scope") String scope, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScope(
+            @HostParam("$host") String host,
+            @PathParam("scope") String scope,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScope(
+            @HostParam("$host") String host,
+            @PathParam("deploymentName") String deploymentName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScope(
+            @HostParam("$host") String host,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
+                + "/{deploymentName}/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScope(
+            @HostParam("$host") String host,
+            @PathParam("groupId") String groupId,
+            @PathParam("deploymentName") String deploymentName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments"
+                + "/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScope(@HostParam("$host") String host, @PathParam("groupId") String groupId, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScope(
+            @HostParam("$host") String host,
+            @PathParam("groupId") String groupId,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations/{operationId}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
+                + "/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScope(
+            @HostParam("$host") String host,
+            @PathParam("deploymentName") String deploymentName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScope(@HostParam("$host") String host, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScope(
+            @HostParam("$host") String host,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations/{operationId}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}"
+                + "/operations/{operationId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<DeploymentOperationInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("deploymentName") String deploymentName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}"
+                + "/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("deploymentName") String deploymentName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("deploymentName") String deploymentName,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtScopeNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtTenantScopeNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtManagementGroupScopeNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScopeNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listAtSubscriptionScopeNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<DeploymentOperationsListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeploymentOperationInner>> getAtScopeWithResponseAsync(String scope, String deploymentName, String operationId) {
-        return FluxUtil.withContext(context -> service.getAtScope(this.client.getHost(), scope, deploymentName, operationId, this.client.getApiVersion(), context))
+    public Mono<SimpleResponse<DeploymentOperationInner>> getAtScopeWithResponseAsync(
+        String scope, String deploymentName, String operationId) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAtScope(
+                            this.client.getHost(),
+                            scope,
+                            deploymentName,
+                            operationId,
+                            this.client.getApiVersion(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentOperationInner> getAtScopeAsync(String scope, String deploymentName, String operationId) {
         return getAtScopeWithResponseAsync(scope, deploymentName, operationId)
-            .flatMap((SimpleResponse<DeploymentOperationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DeploymentOperationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtScope(String scope, String deploymentName, String operationId) {
@@ -205,36 +289,46 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(String scope, String deploymentName, Integer top) {
-        return FluxUtil.withContext(context -> service.listAtScope(this.client.getHost(), scope, deploymentName, top, this.client.getApiVersion(), context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<DeploymentOperationInner>> listAtScopeSinglePageAsync(
+        String scope, String deploymentName, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAtScope(
+                            this.client.getHost(), scope, deploymentName, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName, Integer top) {
@@ -245,12 +339,13 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtScopeAsync(String scope, String deploymentName) {
@@ -263,13 +358,14 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName, Integer top) {
@@ -278,12 +374,13 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtScope(String scope, String deploymentName) {
@@ -294,48 +391,58 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(String deploymentName, String operationId) {
-        return FluxUtil.withContext(context -> service.getAtTenantScope(this.client.getHost(), deploymentName, operationId, this.client.getApiVersion(), context))
+    public Mono<SimpleResponse<DeploymentOperationInner>> getAtTenantScopeWithResponseAsync(
+        String deploymentName, String operationId) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAtTenantScope(
+                            this.client.getHost(), deploymentName, operationId, this.client.getApiVersion(), context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentOperationInner> getAtTenantScopeAsync(String deploymentName, String operationId) {
         return getAtTenantScopeWithResponseAsync(deploymentName, operationId)
-            .flatMap((SimpleResponse<DeploymentOperationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DeploymentOperationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtTenantScope(String deploymentName, String operationId) {
@@ -344,34 +451,44 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(String deploymentName, Integer top) {
-        return FluxUtil.withContext(context -> service.listAtTenantScope(this.client.getHost(), deploymentName, top, this.client.getApiVersion(), context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeSinglePageAsync(
+        String deploymentName, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAtTenantScope(
+                            this.client.getHost(), deploymentName, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName, Integer top) {
@@ -382,11 +499,12 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtTenantScopeAsync(String deploymentName) {
@@ -399,12 +517,13 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName, Integer top) {
@@ -413,11 +532,12 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtTenantScope(String deploymentName) {
@@ -428,92 +548,120 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, String operationId) {
-        return FluxUtil.withContext(context -> service.getAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, operationId, this.client.getApiVersion(), context))
+    public Mono<SimpleResponse<DeploymentOperationInner>> getAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName, String operationId) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAtManagementGroupScope(
+                            this.client.getHost(),
+                            groupId,
+                            deploymentName,
+                            operationId,
+                            this.client.getApiVersion(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(String groupId, String deploymentName, String operationId) {
+    public Mono<DeploymentOperationInner> getAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, String operationId) {
         return getAtManagementGroupScopeWithResponseAsync(groupId, deploymentName, operationId)
-            .flatMap((SimpleResponse<DeploymentOperationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DeploymentOperationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeploymentOperationInner getAtManagementGroupScope(String groupId, String deploymentName, String operationId) {
+    public DeploymentOperationInner getAtManagementGroupScope(
+        String groupId, String deploymentName, String operationId) {
         return getAtManagementGroupScopeAsync(groupId, deploymentName, operationId).block();
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(String groupId, String deploymentName, Integer top) {
-        return FluxUtil.withContext(context -> service.listAtManagementGroupScope(this.client.getHost(), groupId, deploymentName, top, this.client.getApiVersion(), context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeSinglePageAsync(
+        String groupId, String deploymentName, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAtManagementGroupScope(
+                            this.client.getHost(), groupId, deploymentName, top, this.client.getApiVersion(), context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName, Integer top) {
+    public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, Integer top) {
         return new PagedFlux<>(
             () -> listAtManagementGroupScopeSinglePageAsync(groupId, deploymentName, top),
             nextLink -> listAtManagementGroupScopeNextSinglePageAsync(nextLink));
@@ -521,12 +669,13 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtManagementGroupScopeAsync(String groupId, String deploymentName) {
@@ -539,27 +688,30 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName, Integer top) {
+    public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(
+        String groupId, String deploymentName, Integer top) {
         return new PagedIterable<>(listAtManagementGroupScopeAsync(groupId, deploymentName, top));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtManagementGroupScope(String groupId, String deploymentName) {
@@ -570,48 +722,63 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(String deploymentName, String operationId) {
-        return FluxUtil.withContext(context -> service.getAtSubscriptionScope(this.client.getHost(), deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+    public Mono<SimpleResponse<DeploymentOperationInner>> getAtSubscriptionScopeWithResponseAsync(
+        String deploymentName, String operationId) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAtSubscriptionScope(
+                            this.client.getHost(),
+                            deploymentName,
+                            operationId,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeploymentOperationInner> getAtSubscriptionScopeAsync(String deploymentName, String operationId) {
         return getAtSubscriptionScopeWithResponseAsync(deploymentName, operationId)
-            .flatMap((SimpleResponse<DeploymentOperationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DeploymentOperationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner getAtSubscriptionScope(String deploymentName, String operationId) {
@@ -620,34 +787,49 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(String deploymentName, Integer top) {
-        return FluxUtil.withContext(context -> service.listAtSubscriptionScope(this.client.getHost(), deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeSinglePageAsync(
+        String deploymentName, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listAtSubscriptionScope(
+                            this.client.getHost(),
+                            deploymentName,
+                            top,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName, Integer top) {
@@ -658,11 +840,12 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeploymentOperationInner> listAtSubscriptionScopeAsync(String deploymentName) {
@@ -675,12 +858,13 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName, Integer top) {
@@ -689,11 +873,12 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeploymentOperationInner> listAtSubscriptionScope(String deploymentName) {
@@ -704,51 +889,68 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DeploymentOperationInner>> getWithResponseAsync(String resourceGroupName, String deploymentName, String operationId) {
-        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, deploymentName, operationId, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
+    public Mono<SimpleResponse<DeploymentOperationInner>> getWithResponseAsync(
+        String resourceGroupName, String deploymentName, String operationId) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            deploymentName,
+                            operationId,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeploymentOperationInner> getAsync(String resourceGroupName, String deploymentName, String operationId) {
+    public Mono<DeploymentOperationInner> getAsync(
+        String resourceGroupName, String deploymentName, String operationId) {
         return getWithResponseAsync(resourceGroupName, deploymentName, operationId)
-            .flatMap((SimpleResponse<DeploymentOperationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DeploymentOperationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a deployments operation.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param operationId The ID of the operation to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deployments operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeploymentOperationInner get(String resourceGroupName, String deploymentName, String operationId) {
@@ -757,39 +959,56 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String deploymentName, Integer top) {
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), resourceGroupName, deploymentName, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<DeploymentOperationInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, String deploymentName, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            deploymentName,
+                            top,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName, Integer top) {
+    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
+        String resourceGroupName, String deploymentName, Integer top) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, deploymentName, top),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -797,15 +1016,17 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(String resourceGroupName, String deploymentName) {
+    public PagedFlux<DeploymentOperationInner> listByResourceGroupAsync(
+        String resourceGroupName, String deploymentName) {
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
@@ -815,30 +1036,34 @@ public final class DeploymentOperationsInner {
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param top The number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName, Integer top) {
+    public PagedIterable<DeploymentOperationInner> listByResourceGroup(
+        String resourceGroupName, String deploymentName, Integer top) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
     }
 
     /**
      * Gets all deployments operations for a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all deployments operations for a deployment.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeploymentOperationInner> listByResourceGroup(String resourceGroupName, String deploymentName) {
+    public PagedIterable<DeploymentOperationInner> listByResourceGroup(
+        String resourceGroupName, String deploymentName) {
         final Integer top = null;
         final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, deploymentName, top));
@@ -846,106 +1071,127 @@ public final class DeploymentOperationsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtScopeNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listAtScopeNext(nextLink, context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listAtScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listAtTenantScopeNext(nextLink, context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listAtTenantScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listAtManagementGroupScopeNext(nextLink, context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<DeploymentOperationInner>> listAtManagementGroupScopeNextSinglePageAsync(
+        String nextLink) {
+        return FluxUtil
+            .withContext(context -> service.listAtManagementGroupScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listAtSubscriptionScopeNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listAtSubscriptionScopeNext(nextLink, context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listAtSubscriptionScopeNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of deployment operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DeploymentOperationInner>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<DeploymentOperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<DeploymentOperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

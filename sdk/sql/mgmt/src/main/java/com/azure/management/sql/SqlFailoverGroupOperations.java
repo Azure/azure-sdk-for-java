@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -84,8 +81,8 @@ public interface SqlFailoverGroupOperations extends
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
-             * @param location          the parent SQL server location
+             * @param sqlServerName the parent SQL server name
+             * @param location the parent SQL server location
              * @return the next stage of the definition
              */
             SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(String resourceGroupName, String sqlServerName, String location);

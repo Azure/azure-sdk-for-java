@@ -103,7 +103,7 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-
+        
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}

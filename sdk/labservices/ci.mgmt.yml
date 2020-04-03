@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/labservices/
-    exclude:
-      - sdk/labservices/azure
-      - sdk/labservices/microsoft-azure
-      - sdk/labservices/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/labservices/
-    exclude:
-      - sdk/labservices/azure
-      - sdk/labservices/microsoft-azure
-      - sdk/labservices/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

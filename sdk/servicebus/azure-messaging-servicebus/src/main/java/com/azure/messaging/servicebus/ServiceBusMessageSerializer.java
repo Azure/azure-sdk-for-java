@@ -61,6 +61,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String REQUEST_RESPONSE_MESSAGE = "message";
     private static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
     private static final String LOCK_TOKEN_KEY = "lock-token";
+    private static final String SEQUENCE_NUMBERS = "sequence-numbers";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -191,10 +192,30 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             return (List<T>) deserializeListOfMessages(message);
         } else if (clazz == Instant.class) {
             return (List<T>) deserializeListOfInstant(message);
+        } else if (clazz == Long.class) {
+            return (List<T>) deserializeListOfLong(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports ServiceBusReceivedMessage."));
         }
+    }
+
+    private List<Long> deserializeListOfLong(Message amqpMessage) {
+        if (amqpMessage.getBody() instanceof AmqpValue) {
+            AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
+            if (amqpValue.getValue() instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
+                Object expirationListObj = responseBody.get(SEQUENCE_NUMBERS);
+
+                if (expirationListObj instanceof long[]) {
+                    return Arrays.stream((long[]) expirationListObj)
+                        .boxed()
+                        .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
     }
 
     private List<Instant> deserializeListOfInstant(Message amqpMessage) {
@@ -215,6 +236,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
         return Collections.emptyList();
     }
+
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
         final List<ServiceBusReceivedMessage> messageList = new ArrayList<>();
         final int statusCode = RequestResponseUtils.getResponseStatusCode(amqpMessage);

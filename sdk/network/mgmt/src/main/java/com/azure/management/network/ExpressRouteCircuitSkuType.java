@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 
@@ -54,7 +51,7 @@ public class ExpressRouteCircuitSkuType {
     /**
      * Creates a custom value for ExpressRouteCircuitSkuType.
      *
-     * @param skuTier   a SKU tier
+     * @param skuTier a SKU tier
      * @param skuFamily an SKU family
      */
     public ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier skuTier, ExpressRouteCircuitSkuFamily skuFamily) {

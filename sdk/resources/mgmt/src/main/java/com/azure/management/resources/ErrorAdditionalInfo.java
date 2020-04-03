@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ErrorAdditionalInfo model.
- */
+/** The ErrorAdditionalInfo model. */
 @Immutable
 public final class ErrorAdditionalInfo {
     /*
@@ -26,7 +24,7 @@ public final class ErrorAdditionalInfo {
 
     /**
      * Get the type property: The additional info type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -35,7 +33,7 @@ public final class ErrorAdditionalInfo {
 
     /**
      * Get the info property: The additional info.
-     * 
+     *
      * @return the info value.
      */
     public Object info() {

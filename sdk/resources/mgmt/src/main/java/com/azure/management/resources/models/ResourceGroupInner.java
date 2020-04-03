@@ -9,9 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.management.resources.ResourceGroupProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceGroup model.
- */
+/** The ResourceGroup model. */
 @Fluent
 public final class ResourceGroupInner extends Resource {
     /*
@@ -28,7 +26,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Get the properties property: The resource group properties.
-     * 
+     *
      * @return the properties value.
      */
     public ResourceGroupProperties properties() {
@@ -37,7 +35,7 @@ public final class ResourceGroupInner extends Resource {
 
     /**
      * Set the properties property: The resource group properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the ResourceGroupInner object itself.
      */
@@ -47,9 +45,8 @@ public final class ResourceGroupInner extends Resource {
     }
 
     /**
-     * Get the managedBy property: The ID of the resource that manages this
-     * resource group.
-     * 
+     * Get the managedBy property: The ID of the resource that manages this resource group.
+     *
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -57,9 +54,8 @@ public final class ResourceGroupInner extends Resource {
     }
 
     /**
-     * Set the managedBy property: The ID of the resource that manages this
-     * resource group.
-     * 
+     * Set the managedBy property: The ID of the resource that manages this resource group.
+     *
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupInner object itself.
      */

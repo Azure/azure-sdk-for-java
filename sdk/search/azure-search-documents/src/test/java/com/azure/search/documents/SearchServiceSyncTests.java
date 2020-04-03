@@ -10,9 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-import org.unitils.reflectionassert.ReflectionAssert;
 
-import static org.unitils.reflectionassert.ReflectionComparatorMode.IGNORE_DEFAULTS;
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 
 public class SearchServiceSyncTests extends SearchServiceTestBase {
 
@@ -21,7 +20,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
-        ReflectionAssert.assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
+        assertObjectEquals(serviceStatistics, getExpectedServiceStatistics(), true);
     }
 
     @Test
@@ -29,7 +28,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
-        ReflectionAssert.assertReflectionEquals(serviceStatistics, getExpectedServiceStatistics(), IGNORE_DEFAULTS);
+        assertObjectEquals(serviceStatistics, getExpectedServiceStatistics(), true);
     }
 
     @Test
@@ -50,6 +49,6 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
-        ReflectionAssert.assertReflectionEquals(response.getValue(), getExpectedServiceStatistics(), IGNORE_DEFAULTS);
+        assertObjectEquals(response.getValue(), getExpectedServiceStatistics(), true);
     }
 }
