@@ -1,11 +1,12 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.storage.blob.changefeed.implementation.util.TimeUtils
+import spock.lang.Specification
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-class TimeUtilsTest extends APISpec {
+class TimeUtilsTest extends Specification {
 
     def "convertPathToTime"() {
         expect:
