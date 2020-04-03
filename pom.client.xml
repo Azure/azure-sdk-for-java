@@ -1368,6 +1368,7 @@
     <module>sdk/core/azure-core-management</module>
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
+    <module>sdk/core/azure-core-http-jdk-httpclient</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/cosmos/azure-cosmos</module>
