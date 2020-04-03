@@ -166,7 +166,7 @@ public class JsonWebKey {
     /**
      * Set the key identifier value.
      *
-     * @param keyId The kid value to set
+     * @param keyId The keyId value to set
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey setId(String keyId) {

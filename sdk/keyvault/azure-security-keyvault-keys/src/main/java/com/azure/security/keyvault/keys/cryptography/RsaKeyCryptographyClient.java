@@ -4,6 +4,8 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
@@ -26,6 +28,7 @@ import java.security.NoSuchAlgorithmException;
 
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
     private KeyPair keyPair;
+    private final ClientLogger logger = new ClientLogger(RsaKeyCryptographyClient.class);
 
     /*
      * Creates a RsaKeyCryptographyClient that uses {@code serviceClient) to service requests
@@ -135,7 +138,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (serviceCryptoAvailable()) {
             return serviceClient.sign(algorithm, digest, context);
         } else {
-            return Mono.error(new UnsupportedOperationException("Sign operation on Local RSA key"
+            return FluxUtil.monoError(logger, new UnsupportedOperationException("Sign operation on Local RSA key"
                                                                     + " is not supported currently."));
         }
     }
@@ -146,7 +149,7 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (serviceCryptoAvailable()) {
             return serviceClient.verify(algorithm, digest, signature, context);
         } else {
-            return Mono.error(new UnsupportedOperationException("Verify operation on Local RSA key is not"
+            return FluxUtil.monoError(logger, new UnsupportedOperationException("Verify operation on Local RSA key is not"
                                                                     + " supported currently."));
         }
     }

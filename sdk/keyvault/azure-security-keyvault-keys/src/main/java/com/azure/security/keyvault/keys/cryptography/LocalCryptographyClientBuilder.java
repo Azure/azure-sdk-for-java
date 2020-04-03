@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.keys.cryptography;
 
-import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 
@@ -23,7 +22,6 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
  * @see LocalCryptographyAsyncClient
  * @see LocalCryptographyClient
  */
-@ServiceClientBuilder(serviceClients = LocalKeyCryptographyClient.class)
 public final class LocalCryptographyClientBuilder {
     private final ClientLogger logger = new ClientLogger(LocalCryptographyClientBuilder.class);
     private JsonWebKey jsonWebKey;

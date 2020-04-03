@@ -28,7 +28,7 @@ public class LocalCryptographyClient {
     private final LocalCryptographyAsyncClient client;
 
     /**
-     * Creates a KeyClient that uses {@code pipeline} to service requests
+     * Creates a LocalCryptographyClient for local cryptography operations.
      *
      * @param client The {@link LocalCryptographyAsyncClient} that the client routes its request through.
      */

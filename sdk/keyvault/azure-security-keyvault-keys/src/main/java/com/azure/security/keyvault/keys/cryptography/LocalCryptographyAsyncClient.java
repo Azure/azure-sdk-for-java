@@ -29,7 +29,7 @@ public class LocalCryptographyAsyncClient {
     private final CryptographyAsyncClient cryptographyAsyncClient;
 
     /**
-     * Creates a LocalCryptographyAsyncClient that uses {@code pipeline} to service requests
+     * Creates a LocalCryptographyAsyncClient for local cryptography operations.
      *
      * @param jsonWebKey the json web key to use for cryptography operations.
      */
