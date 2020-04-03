@@ -19,9 +19,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.management.AzureEnvironment;
 import reactor.core.publisher.Mono;
 
-/**
- * A builder for creating a new instance of the FeatureClientImpl type.
- */
+/** A builder for creating a new instance of the FeatureClientImpl type. */
 @ServiceClientBuilder(serviceClients = {FeatureClientImpl.class})
 public final class FeatureClientBuilder {
     /*
@@ -31,7 +29,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the FeatureClientBuilder.
      */
@@ -47,7 +45,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the FeatureClientBuilder.
      */
@@ -63,7 +61,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the FeatureClientBuilder.
      */
@@ -79,7 +77,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the FeatureClientBuilder.
      */
@@ -95,7 +93,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the FeatureClientBuilder.
      */
@@ -106,7 +104,7 @@ public final class FeatureClientBuilder {
 
     /**
      * Builds an instance of FeatureClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of FeatureClientImpl.
      */
     public FeatureClientImpl build() {
@@ -120,7 +118,10 @@ public final class FeatureClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         FeatureClientImpl client = new FeatureClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);
