@@ -3,6 +3,7 @@
 package com.azure;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.KnownAuthorityHosts;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
@@ -12,6 +13,7 @@ import com.azure.core.util.polling.SyncPoller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class KeyVaultSecrets {
@@ -20,6 +22,13 @@ public class KeyVaultSecrets {
     private static final String SECRET_VALUE = "MySecretValue";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecrets.class);
+
+    private static HashMap<String, String> AUTHORITY_HOST_MAP = new HashMap<String, String>() {{
+        put("AzureCloud", KnownAuthorityHosts.AZURE_CLOUD);
+        put("AzureChinaCloud", KnownAuthorityHosts.AZURE_CHINA_CLOUD);
+        put("AzureGermanCloud", KnownAuthorityHosts.AZURE_GERMAN_CLOUD);
+        put("AzureUSGovernment", KnownAuthorityHosts.AZURE_US_GOVERNMENT);
+    }};
 
     private static void setSecret() {
         LOGGER.info("Setting a secret...");
@@ -47,19 +56,22 @@ public class KeyVaultSecrets {
         LOGGER.info("IDENTITY - CREDENTIAL");
         LOGGER.info("---------------------");
 
+        // Configure authority host from AZURE_CLOUD
+        String azureCloud = System.getenv("AZURE_CLOUD");
+        String authorityHost = AUTHORITY_HOST_MAP.getOrDefault(
+            azureCloud, KnownAuthorityHosts.AZURE_CLOUD);
+
+
         /* DefaultAzureCredentialBuilder() is expecting the following environment variables:
          * AZURE_CLIENT_ID
          * AZURE_CLIENT_SECRET
          * AZURE_TENANT_ID
-         *
-         * AZURE_AUTHORITY_HOST -- this is supplied to the credential builder
-         * for use in other clouds
          */
         secretClient = new SecretClientBuilder()
             .vaultUrl(System.getenv("AZURE_PROJECT_URL"))
             .credential(
                 new DefaultAzureCredentialBuilder()
-                    .authorityHost(System.getenv("AZURE_AUTHORITY_HOST"))
+                    .authorityHost(authorityHost)
                     .build()
             ).buildClient();
         try {
