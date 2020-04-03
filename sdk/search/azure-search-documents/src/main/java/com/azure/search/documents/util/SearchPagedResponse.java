@@ -7,25 +7,14 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.API_VERSION;
-import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.NEXT_LINK;
-import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.NEXT_PAGE_PARAMETERS;
 
 /**
  * Represents an HTTP response from the search API request that contains a list of items deserialized into a {@link
@@ -66,26 +55,11 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     private static String createContinuationToken(SimpleResponse<SearchDocumentsResult> documentSearchResponse,
         SearchServiceVersion serviceVersion) {
         SearchDocumentsResult documentsResult = documentSearchResponse.getValue();
-        if (documentsResult == null || CoreUtils.isNullOrEmpty(documentsResult.getNextLink())
-            || documentsResult.getNextPageParameters() == null
-            || documentsResult.getNextPageParameters().getSkip() == null) {
+        if (documentsResult == null){
             return null;
         }
-
-        ObjectNode tokenJson = new ObjectMapper().createObjectNode();
-        tokenJson.put(API_VERSION, serviceVersion.getVersion());
-        tokenJson.put(NEXT_LINK, documentsResult.getNextLink());
-        tokenJson.put(NEXT_PAGE_PARAMETERS, getNextPageParameters(documentsResult));
-
-        return Base64.getEncoder().encodeToString(tokenJson.toString().getBytes(StandardCharsets.UTF_8));
-    }
-
-    private static String getNextPageParameters(SearchDocumentsResult result) {
-        try {
-            return new JacksonAdapter().serialize(result.getNextPageParameters(), SerializerEncoding.JSON);
-        } catch (IOException ex) {
-            throw new IllegalStateException("Failed to serialize the search request.");
-        }
+        return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), documentsResult.getNextLink(),
+            documentsResult.getNextPageParameters());
     }
 
     /**

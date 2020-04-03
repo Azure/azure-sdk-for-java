@@ -11,8 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.models.IndexBatchException;
@@ -40,17 +40,11 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.API_VERSION;
-import static com.azure.search.documents.implementation.util.ContinuationTokenConstants.NEXT_PAGE_PARAMETERS;
 
 /**
  * Cognitive Search Asynchronous Client to query an index and upload, merge, or delete documents
@@ -413,7 +407,8 @@ public final class SearchIndexAsyncClient {
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
         String continuationToken, Context context) {
-        SearchRequest requestToUse = (continuationToken == null) ? request : buildRequestFromToken(continuationToken);
+        SearchRequest requestToUse = (continuationToken == null) ? request :
+            SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
             .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
@@ -645,29 +640,6 @@ public final class SearchIndexAsyncClient {
         }
 
         return searchRequest;
-    }
-
-    /**
-     * Build request from continuation token.
-     *
-     * @param continuationToken The token used to deserialize the SearchRequest.
-     * @return The SearchRequest for next page.
-     */
-    @SuppressWarnings("unchecked")
-    private SearchRequest buildRequestFromToken(String continuationToken) {
-        try {
-            String decodedToken = new String(Base64.getDecoder().decode(continuationToken), StandardCharsets.UTF_8);
-            Map<String, String> tokenFields = new ObjectMapper().readValue(decodedToken, Map.class);
-            if (!serviceVersion.getVersion().equals(tokenFields.get(API_VERSION))) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Continuation token uses "
-                    + "invalid apiVersion" + serviceVersion.getVersion()));
-            }
-            return new JacksonAdapter().deserialize(tokenFields.get(NEXT_PAGE_PARAMETERS),
-                SearchRequest.class, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("The continuation token is invalid. Token: "
-                + continuationToken));
-        }
     }
 
     /**
