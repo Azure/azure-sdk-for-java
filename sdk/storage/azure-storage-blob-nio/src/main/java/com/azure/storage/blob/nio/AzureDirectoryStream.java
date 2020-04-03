@@ -67,6 +67,7 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
         private final DirectoryStream.Filter<? super Path> filter;
         private final Iterator<BlobItem> blobIterator;
         private final AzurePath path;
+        private final Path withoutRoot;
         private Path bufferedNext = null;
         private final Set<String> directoryPaths;
 
@@ -75,6 +76,14 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
             this.parentStream = parentStream;
             this.filter = filter;
             this.path = path;
+
+            /*
+            Resolving two paths requires that either both have a root or neither does. Because the paths returned from
+            listing will never have a root, we prepare a copy of the list path without a root for quick resolving later.
+             */
+            Path root = this.path.getRoot();
+            this.withoutRoot = root == null ? this.path : root.relativize(this.path);
+
             directoryPaths = new HashSet<>();
 
             BlobContainerClient containerClient;
@@ -127,11 +136,11 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
         @Override
         public Path next() {
             if (this.bufferedNext == null) {
-                if (!this.hasNext()) { // This will populate cachedNext in the process.
+                if (!this.hasNext()) { // This will populate bufferedNext in the process.
                     throw LoggingUtility.logError(logger, new NoSuchElementException());
                 }
             }
-            Path next = this.bufferedNext; // cachedNext will have been populated by hasNext()
+            Path next = this.bufferedNext; // bufferedNext will have been populated by hasNext()
             this.bufferedNext = null;
             return next;
         }
@@ -142,18 +151,12 @@ public class AzureDirectoryStream implements DirectoryStream<Path> {
         }
 
         private Path getNextListResult(BlobItem blobItem) {
-            // Strip the root if it is present so we can relativize the list result, which never has a root.
-            Path withoutRoot = this.path;
-            if (withoutRoot.isAbsolute()) {
-                withoutRoot = this.path.getRoot().relativize(this.path);
-            }
-
             /*
             Listing results return the full blob path, and we don't want to duplicate the path we listed off of, so
             we relativize to remove it.
              */
             String blobName = blobItem.getName();
-            Path relativeResult = withoutRoot.relativize(
+            Path relativeResult = this.withoutRoot.relativize(
                 this.path.getFileSystem().getPath(blobName));
 
             // Resolve the cleaned list result against the original path for the final result.
