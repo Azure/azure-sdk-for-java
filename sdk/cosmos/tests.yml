@@ -19,7 +19,7 @@ jobs:
           groupId: com.azure
         - name: azure-cosmos-examples
           groupId: com.azure
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-key)
@@ -88,7 +88,7 @@ jobs:
           groupId: com.azure
         - name: azure-cosmos-examples
           groupId: com.azure
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-session-singleregion-one-host)
         ACCOUNT_KEY: $(java-cosmos-session-singleregion-one-key)
@@ -156,7 +156,7 @@ jobs:
           groupId: com.azure
         - name: azure-cosmos-examples
           groupId: com.azure
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
@@ -233,7 +233,7 @@ jobs:
           groupId: com.azure
         - name: azure-cosmos-examples
           groupId: com.azure
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-strong-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-strong-singleregion-key)
@@ -336,7 +336,7 @@ jobs:
           groupId: com.azure
         - name: azure-cosmos-examples
           groupId: com.azure
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-multiregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-multiregion-key)
@@ -401,7 +401,7 @@ jobs:
           groupId: com.azure
         - name: azure-cosmos-examples
           groupId: com.azure
-      TimeoutInMinutes: 240
+      TimeoutInMinutes: 90
       EnvVars:
         ACCOUNT_HOST: $(java-cosmos-multimaster-singleregion-host)
         ACCOUNT_KEY: $(java-cosmos-multimaster-singleregion-key)

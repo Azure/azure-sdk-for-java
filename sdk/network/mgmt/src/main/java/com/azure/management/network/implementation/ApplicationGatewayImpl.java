@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
@@ -556,7 +553,7 @@ class ApplicationGatewayImpl
      *
      * @param byName object found by name
      * @param byPort object found by port
-     * @param name   the desired name of the object
+     * @param name the desired name of the object
      * @return true if already found, false if ok to create, null if conflict
      */
     <T> Boolean needToCreate(T byName, T byPort, String name) {

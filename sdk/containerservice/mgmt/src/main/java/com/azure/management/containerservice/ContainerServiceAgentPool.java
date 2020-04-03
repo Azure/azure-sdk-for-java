@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerservice;
 
 
@@ -74,7 +71,7 @@ public interface ContainerServiceAgentPool extends
 
     /**
      * The entirety of a container service agent pool definition as a part of a parent definition.
-     * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+     * @param <ParentT> the stage of the container service definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.WithAttach<ParentT>,
@@ -91,7 +88,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The first stage of a container service agent pool definition.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface Blank<ParentT> {
             /**
@@ -106,7 +103,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify the agent virtual machine size.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithVMSize<ParentT> {
             /**
@@ -120,7 +117,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify the DNS prefix.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithLeafDomainLabel<ParentT> {
             /**
@@ -134,7 +131,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify the agent pool ports to be exposed.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithPorts<ParentT> {
             /**
@@ -150,7 +147,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify the agent pool OS type.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithOSType<ParentT> {
             /**
@@ -166,7 +163,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify the agent pool OS disk size.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithOSDiskSize<ParentT> {
             /**
@@ -181,7 +178,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify the agent pool storage kind.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithStorageProfile<ParentT> {
             /**
@@ -196,7 +193,7 @@ public interface ContainerServiceAgentPool extends
         /**
          * The stage of a container service agent pool definition allowing to specify a virtual network to be used for the agents.
          *
-         * @param <ParentT>  the stage of the container service definition to return to after attaching this definition
+         * @param <ParentT> the stage of the container service definition to return to after attaching this definition
          */
         interface WithVirtualNetwork<ParentT> {
             /**

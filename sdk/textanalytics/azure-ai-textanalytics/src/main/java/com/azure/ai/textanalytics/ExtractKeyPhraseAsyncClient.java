@@ -26,12 +26,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing extract key phrase endpoint.
@@ -180,7 +182,8 @@ class ExtractKeyPhraseAsyncClient {
         return service.keyPhrasesWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))

@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Plan model.
- */
+/** The Plan model. */
 @Fluent
 public final class Plan {
     /*
@@ -44,100 +42,100 @@ public final class Plan {
 
     /**
      * Get the name property: The plan ID.
-     * 
+     *
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
     /**
      * Set the name property: The plan ID.
-     * 
+     *
      * @param name the name value to set.
      * @return the Plan object itself.
      */
-    public Plan setName(String name) {
+    public Plan withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
      * Get the publisher property: The publisher ID.
-     * 
+     *
      * @return the publisher value.
      */
-    public String getPublisher() {
+    public String publisher() {
         return this.publisher;
     }
 
     /**
      * Set the publisher property: The publisher ID.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
-    public Plan setPublisher(String publisher) {
+    public Plan withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
 
     /**
      * Get the product property: The offer ID.
-     * 
+     *
      * @return the product value.
      */
-    public String getProduct() {
+    public String product() {
         return this.product;
     }
 
     /**
      * Set the product property: The offer ID.
-     * 
+     *
      * @param product the product value to set.
      * @return the Plan object itself.
      */
-    public Plan setProduct(String product) {
+    public Plan withProduct(String product) {
         this.product = product;
         return this;
     }
 
     /**
      * Get the promotionCode property: The promotion code.
-     * 
+     *
      * @return the promotionCode value.
      */
-    public String getPromotionCode() {
+    public String promotionCode() {
         return this.promotionCode;
     }
 
     /**
      * Set the promotionCode property: The promotion code.
-     * 
+     *
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
-    public Plan setPromotionCode(String promotionCode) {
+    public Plan withPromotionCode(String promotionCode) {
         this.promotionCode = promotionCode;
         return this;
     }
 
     /**
      * Get the version property: The plan's version.
-     * 
+     *
      * @return the version value.
      */
-    public String getVersion() {
+    public String version() {
         return this.version;
     }
 
     /**
      * Set the version property: The plan's version.
-     * 
+     *
      * @param version the version value to set.
      * @return the Plan object itself.
      */
-    public Plan setVersion(String version) {
+    public Plan withVersion(String version) {
         this.version = version;
         return this;
     }

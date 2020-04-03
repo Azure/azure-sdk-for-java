@@ -99,7 +99,7 @@ public final class OcrSkill extends Skill {
      *
      * @return the shouldDetectOrientation value.
      */
-    public Boolean isShouldDetectOrientation() {
+    public Boolean shouldDetectOrientation() {
         return this.shouldDetectOrientation;
     }
 

@@ -25,7 +25,7 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
      * 
      * @return the appId value.
      */
-    public String getAppId() {
+    public String appId() {
         return this.appId;
     }
 
@@ -35,7 +35,7 @@ public final class ServicePrincipalCreateParameters extends ServicePrincipalBase
      * @param appId the appId value to set.
      * @return the ServicePrincipalCreateParameters object itself.
      */
-    public ServicePrincipalCreateParameters setAppId(String appId) {
+    public ServicePrincipalCreateParameters withAppId(String appId) {
         this.appId = appId;
         return this;
     }

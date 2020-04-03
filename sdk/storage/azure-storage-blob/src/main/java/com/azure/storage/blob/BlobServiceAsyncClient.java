@@ -8,12 +8,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.AzureBlobStorageBuilder;
 import com.azure.storage.blob.implementation.AzureBlobStorageImpl;
@@ -50,6 +50,8 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
@@ -195,8 +197,8 @@ public final class BlobServiceAsyncClient {
     public Mono<Response<BlobContainerAsyncClient>> createBlobContainerWithResponse(String containerName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
-            return withContext(
-                context -> createBlobContainerWithResponse(containerName, metadata, accessType, context));
+            return withContext(context -> createBlobContainerWithResponse(containerName, metadata, accessType,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -365,8 +367,10 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<BlobServiceProperties>> getPropertiesWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null, context)
+        return this.azureBlobStorage.services().getPropertiesWithRestResponseAsync(null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
@@ -473,8 +477,10 @@ public final class BlobServiceAsyncClient {
             finalProperties.setStaticWebsite(properties.getStaticWebsite());
 
         }
+        context = context == null ? Context.NONE : context;
 
-        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null, context)
+        return this.azureBlobStorage.services().setPropertiesWithRestResponseAsync(finalProperties, null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -565,12 +571,14 @@ public final class BlobServiceAsyncClient {
                 new IllegalArgumentException("`start` must be null or a datetime before `expiry`."));
         }
         throwOnAnonymousAccess();
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.services().getUserDelegationKeyWithRestResponseAsync(
                 new KeyInfo()
                     .setStart(start == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(start))
                     .setExpiry(Constants.ISO_8601_UTC_DATE_FORMATTER.format(expiry)),
-                null, null, context).map(rb -> new SimpleResponse<>(rb, rb.getValue()));
+                null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 
     /**
@@ -616,7 +624,10 @@ public final class BlobServiceAsyncClient {
 
     Mono<Response<BlobServiceStatistics>> getStatisticsWithResponse(Context context) {
         throwOnAnonymousAccess();
-        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null, context)
+        context = context == null ? Context.NONE : context;
+
+        return this.azureBlobStorage.services().getStatisticsWithRestResponseAsync(null, null,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> new SimpleResponse<>(rb, rb.getValue()));
     }
 

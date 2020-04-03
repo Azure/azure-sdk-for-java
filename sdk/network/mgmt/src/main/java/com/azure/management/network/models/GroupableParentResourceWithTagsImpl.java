@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network.models;
 
 import com.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
@@ -14,10 +11,10 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation for {@link GroupableResource} that can update tags as a separate operation.
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
- * @param <ManagerT>         the service manager type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableParentResourceWithTagsImpl<
         FluentModelT extends Resource,

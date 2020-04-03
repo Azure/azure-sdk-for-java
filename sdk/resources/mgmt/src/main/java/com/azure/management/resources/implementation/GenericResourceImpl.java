@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -69,12 +66,12 @@ final class GenericResourceImpl
 
     @Override
     public Plan plan() {
-        return inner().getPlan();
+        return inner().plan();
     }
 
     @Override
     public Object properties() {
-        return inner().getProperties();
+        return inner().properties();
     }
 
     @Override
@@ -89,7 +86,7 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withProperties(Object properties) {
-        inner().setProperties(properties);
+        inner().withProperties(properties);
         return this;
     }
 
@@ -105,13 +102,13 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().setPlan(new Plan().setName(name).setPublisher(publisher).setProduct(product).setPromotionCode(promotionCode));
+        inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
         return this;
     }
 
     @Override
     public GenericResourceImpl withoutPlan() {
-        inner().setPlan(null);
+        inner().withPlan(null);
         return this;
     }
 

@@ -33,7 +33,7 @@ public final class OptionalClaim {
     private Boolean essential;
 
     /*
-     * MISSING·SCHEMA-DESCRIPTION-OBJECTSCHEMA
+     * Any object
      */
     @JsonProperty(value = "additionalProperties")
     private Object additionalProperties;
@@ -43,7 +43,7 @@ public final class OptionalClaim {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -53,7 +53,7 @@ public final class OptionalClaim {
      * @param name the name value to set.
      * @return the OptionalClaim object itself.
      */
-    public OptionalClaim setName(String name) {
+    public OptionalClaim withName(String name) {
         this.name = name;
         return this;
     }
@@ -63,7 +63,7 @@ public final class OptionalClaim {
      * 
      * @return the source value.
      */
-    public String getSource() {
+    public String source() {
         return this.source;
     }
 
@@ -73,7 +73,7 @@ public final class OptionalClaim {
      * @param source the source value to set.
      * @return the OptionalClaim object itself.
      */
-    public OptionalClaim setSource(String source) {
+    public OptionalClaim withSource(String source) {
         this.source = source;
         return this;
     }
@@ -83,7 +83,7 @@ public final class OptionalClaim {
      * 
      * @return the essential value.
      */
-    public Boolean isEssential() {
+    public Boolean essential() {
         return this.essential;
     }
 
@@ -93,29 +93,27 @@ public final class OptionalClaim {
      * @param essential the essential value to set.
      * @return the OptionalClaim object itself.
      */
-    public OptionalClaim setEssential(Boolean essential) {
+    public OptionalClaim withEssential(Boolean essential) {
         this.essential = essential;
         return this;
     }
 
     /**
-     * Get the additionalProperties property:
-     * MISSING·SCHEMA-DESCRIPTION-OBJECTSCHEMA.
+     * Get the additionalProperties property: Any object.
      * 
      * @return the additionalProperties value.
      */
-    public Object getAdditionalProperties() {
+    public Object additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
-     * Set the additionalProperties property:
-     * MISSING·SCHEMA-DESCRIPTION-OBJECTSCHEMA.
+     * Set the additionalProperties property: Any object.
      * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the OptionalClaim object itself.
      */
-    public OptionalClaim setAdditionalProperties(Object additionalProperties) {
+    public OptionalClaim withAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

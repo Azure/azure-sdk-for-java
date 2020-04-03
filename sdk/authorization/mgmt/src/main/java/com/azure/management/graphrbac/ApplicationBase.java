@@ -77,9 +77,7 @@ public class ApplicationBase {
     private String homepage;
 
     /*
-     * Represents a group of URIs that provide terms of service, marketing,
-     * support and privacy policy information about an application. The default
-     * value for each string is null.
+     * URLs with more information about the application.
      */
     @JsonProperty(value = "informationalUrls")
     private InformationalUrl informationalUrls;
@@ -220,7 +218,7 @@ public class ApplicationBase {
      * 
      * @return the allowGuestsSignIn value.
      */
-    public Boolean isAllowGuestsSignIn() {
+    public Boolean allowGuestsSignIn() {
         return this.allowGuestsSignIn;
     }
 
@@ -232,7 +230,7 @@ public class ApplicationBase {
      * @param allowGuestsSignIn the allowGuestsSignIn value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setAllowGuestsSignIn(Boolean allowGuestsSignIn) {
+    public ApplicationBase withAllowGuestsSignIn(Boolean allowGuestsSignIn) {
         this.allowGuestsSignIn = allowGuestsSignIn;
         return this;
     }
@@ -243,7 +241,7 @@ public class ApplicationBase {
      * 
      * @return the allowPassthroughUsers value.
      */
-    public Boolean isAllowPassthroughUsers() {
+    public Boolean allowPassthroughUsers() {
         return this.allowPassthroughUsers;
     }
 
@@ -254,7 +252,7 @@ public class ApplicationBase {
      * @param allowPassthroughUsers the allowPassthroughUsers value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setAllowPassthroughUsers(Boolean allowPassthroughUsers) {
+    public ApplicationBase withAllowPassthroughUsers(Boolean allowPassthroughUsers) {
         this.allowPassthroughUsers = allowPassthroughUsers;
         return this;
     }
@@ -265,7 +263,7 @@ public class ApplicationBase {
      * 
      * @return the appLogoUrl value.
      */
-    public String getAppLogoUrl() {
+    public String appLogoUrl() {
         return this.appLogoUrl;
     }
 
@@ -276,7 +274,7 @@ public class ApplicationBase {
      * @param appLogoUrl the appLogoUrl value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setAppLogoUrl(String appLogoUrl) {
+    public ApplicationBase withAppLogoUrl(String appLogoUrl) {
         this.appLogoUrl = appLogoUrl;
         return this;
     }
@@ -288,7 +286,7 @@ public class ApplicationBase {
      * 
      * @return the appRoles value.
      */
-    public List<AppRole> getAppRoles() {
+    public List<AppRole> appRoles() {
         return this.appRoles;
     }
 
@@ -300,7 +298,7 @@ public class ApplicationBase {
      * @param appRoles the appRoles value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setAppRoles(List<AppRole> appRoles) {
+    public ApplicationBase withAppRoles(List<AppRole> appRoles) {
         this.appRoles = appRoles;
         return this;
     }
@@ -310,7 +308,7 @@ public class ApplicationBase {
      * 
      * @return the appPermissions value.
      */
-    public List<String> getAppPermissions() {
+    public List<String> appPermissions() {
         return this.appPermissions;
     }
 
@@ -320,7 +318,7 @@ public class ApplicationBase {
      * @param appPermissions the appPermissions value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setAppPermissions(List<String> appPermissions) {
+    public ApplicationBase withAppPermissions(List<String> appPermissions) {
         this.appPermissions = appPermissions;
         return this;
     }
@@ -331,7 +329,7 @@ public class ApplicationBase {
      * 
      * @return the availableToOtherTenants value.
      */
-    public Boolean isAvailableToOtherTenants() {
+    public Boolean availableToOtherTenants() {
         return this.availableToOtherTenants;
     }
 
@@ -342,7 +340,7 @@ public class ApplicationBase {
      * @param availableToOtherTenants the availableToOtherTenants value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setAvailableToOtherTenants(Boolean availableToOtherTenants) {
+    public ApplicationBase withAvailableToOtherTenants(Boolean availableToOtherTenants) {
         this.availableToOtherTenants = availableToOtherTenants;
         return this;
     }
@@ -353,7 +351,7 @@ public class ApplicationBase {
      * 
      * @return the errorUrl value.
      */
-    public String getErrorUrl() {
+    public String errorUrl() {
         return this.errorUrl;
     }
 
@@ -364,7 +362,7 @@ public class ApplicationBase {
      * @param errorUrl the errorUrl value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setErrorUrl(String errorUrl) {
+    public ApplicationBase withErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
         return this;
     }
@@ -375,7 +373,7 @@ public class ApplicationBase {
      * 
      * @return the groupMembershipClaims value.
      */
-    public GroupMembershipClaimTypes getGroupMembershipClaims() {
+    public GroupMembershipClaimTypes groupMembershipClaims() {
         return this.groupMembershipClaims;
     }
 
@@ -386,7 +384,7 @@ public class ApplicationBase {
      * @param groupMembershipClaims the groupMembershipClaims value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setGroupMembershipClaims(GroupMembershipClaimTypes groupMembershipClaims) {
+    public ApplicationBase withGroupMembershipClaims(GroupMembershipClaimTypes groupMembershipClaims) {
         this.groupMembershipClaims = groupMembershipClaims;
         return this;
     }
@@ -396,7 +394,7 @@ public class ApplicationBase {
      * 
      * @return the homepage value.
      */
-    public String getHomepage() {
+    public String homepage() {
         return this.homepage;
     }
 
@@ -406,33 +404,29 @@ public class ApplicationBase {
      * @param homepage the homepage value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setHomepage(String homepage) {
+    public ApplicationBase withHomepage(String homepage) {
         this.homepage = homepage;
         return this;
     }
 
     /**
-     * Get the informationalUrls property: Represents a group of URIs that
-     * provide terms of service, marketing, support and privacy policy
-     * information about an application. The default value for each string is
-     * null.
+     * Get the informationalUrls property: URLs with more information about the
+     * application.
      * 
      * @return the informationalUrls value.
      */
-    public InformationalUrl getInformationalUrls() {
+    public InformationalUrl informationalUrls() {
         return this.informationalUrls;
     }
 
     /**
-     * Set the informationalUrls property: Represents a group of URIs that
-     * provide terms of service, marketing, support and privacy policy
-     * information about an application. The default value for each string is
-     * null.
+     * Set the informationalUrls property: URLs with more information about the
+     * application.
      * 
      * @param informationalUrls the informationalUrls value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setInformationalUrls(InformationalUrl informationalUrls) {
+    public ApplicationBase withInformationalUrls(InformationalUrl informationalUrls) {
         this.informationalUrls = informationalUrls;
         return this;
     }
@@ -457,7 +451,7 @@ public class ApplicationBase {
      * set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
+    public ApplicationBase withIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
         this.isDeviceOnlyAuthSupported = isDeviceOnlyAuthSupported;
         return this;
     }
@@ -467,7 +461,7 @@ public class ApplicationBase {
      * 
      * @return the keyCredentials value.
      */
-    public List<KeyCredentialInner> getKeyCredentials() {
+    public List<KeyCredentialInner> keyCredentials() {
         return this.keyCredentials;
     }
 
@@ -477,7 +471,7 @@ public class ApplicationBase {
      * @param keyCredentials the keyCredentials value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+    public ApplicationBase withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
         this.keyCredentials = keyCredentials;
         return this;
     }
@@ -491,7 +485,7 @@ public class ApplicationBase {
      * 
      * @return the knownClientApplications value.
      */
-    public List<String> getKnownClientApplications() {
+    public List<String> knownClientApplications() {
         return this.knownClientApplications;
     }
 
@@ -505,7 +499,7 @@ public class ApplicationBase {
      * @param knownClientApplications the knownClientApplications value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setKnownClientApplications(List<String> knownClientApplications) {
+    public ApplicationBase withKnownClientApplications(List<String> knownClientApplications) {
         this.knownClientApplications = knownClientApplications;
         return this;
     }
@@ -515,7 +509,7 @@ public class ApplicationBase {
      * 
      * @return the logoutUrl value.
      */
-    public String getLogoutUrl() {
+    public String logoutUrl() {
         return this.logoutUrl;
     }
 
@@ -525,7 +519,7 @@ public class ApplicationBase {
      * @param logoutUrl the logoutUrl value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setLogoutUrl(String logoutUrl) {
+    public ApplicationBase withLogoutUrl(String logoutUrl) {
         this.logoutUrl = logoutUrl;
         return this;
     }
@@ -536,7 +530,7 @@ public class ApplicationBase {
      * 
      * @return the oauth2AllowImplicitFlow value.
      */
-    public Boolean isOauth2AllowImplicitFlow() {
+    public Boolean oauth2AllowImplicitFlow() {
         return this.oauth2AllowImplicitFlow;
     }
 
@@ -547,7 +541,7 @@ public class ApplicationBase {
      * @param oauth2AllowImplicitFlow the oauth2AllowImplicitFlow value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
+    public ApplicationBase withOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
         this.oauth2AllowImplicitFlow = oauth2AllowImplicitFlow;
         return this;
     }
@@ -559,7 +553,7 @@ public class ApplicationBase {
      * 
      * @return the oauth2AllowUrlPathMatching value.
      */
-    public Boolean isOauth2AllowUrlPathMatching() {
+    public Boolean oauth2AllowUrlPathMatching() {
         return this.oauth2AllowUrlPathMatching;
     }
 
@@ -572,7 +566,7 @@ public class ApplicationBase {
      * to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
+    public ApplicationBase withOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
         this.oauth2AllowUrlPathMatching = oauth2AllowUrlPathMatching;
         return this;
     }
@@ -585,7 +579,7 @@ public class ApplicationBase {
      * 
      * @return the oauth2Permissions value.
      */
-    public List<OAuth2Permission> getOauth2Permissions() {
+    public List<OAuth2Permission> oauth2Permissions() {
         return this.oauth2Permissions;
     }
 
@@ -598,7 +592,7 @@ public class ApplicationBase {
      * @param oauth2Permissions the oauth2Permissions value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setOauth2Permissions(List<OAuth2Permission> oauth2Permissions) {
+    public ApplicationBase withOauth2Permissions(List<OAuth2Permission> oauth2Permissions) {
         this.oauth2Permissions = oauth2Permissions;
         return this;
     }
@@ -611,7 +605,7 @@ public class ApplicationBase {
      * 
      * @return the oauth2RequirePostResponse value.
      */
-    public Boolean isOauth2RequirePostResponse() {
+    public Boolean oauth2RequirePostResponse() {
         return this.oauth2RequirePostResponse;
     }
 
@@ -625,7 +619,7 @@ public class ApplicationBase {
      * set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
+    public ApplicationBase withOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
         this.oauth2RequirePostResponse = oauth2RequirePostResponse;
         return this;
     }
@@ -636,7 +630,7 @@ public class ApplicationBase {
      * 
      * @return the orgRestrictions value.
      */
-    public List<String> getOrgRestrictions() {
+    public List<String> orgRestrictions() {
         return this.orgRestrictions;
     }
 
@@ -647,7 +641,7 @@ public class ApplicationBase {
      * @param orgRestrictions the orgRestrictions value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setOrgRestrictions(List<String> orgRestrictions) {
+    public ApplicationBase withOrgRestrictions(List<String> orgRestrictions) {
         this.orgRestrictions = orgRestrictions;
         return this;
     }
@@ -658,7 +652,7 @@ public class ApplicationBase {
      * 
      * @return the optionalClaims value.
      */
-    public OptionalClaims getOptionalClaims() {
+    public OptionalClaims optionalClaims() {
         return this.optionalClaims;
     }
 
@@ -669,7 +663,7 @@ public class ApplicationBase {
      * @param optionalClaims the optionalClaims value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setOptionalClaims(OptionalClaims optionalClaims) {
+    public ApplicationBase withOptionalClaims(OptionalClaims optionalClaims) {
         this.optionalClaims = optionalClaims;
         return this;
     }
@@ -680,7 +674,7 @@ public class ApplicationBase {
      * 
      * @return the passwordCredentials value.
      */
-    public List<PasswordCredentialInner> getPasswordCredentials() {
+    public List<PasswordCredentialInner> passwordCredentials() {
         return this.passwordCredentials;
     }
 
@@ -691,7 +685,7 @@ public class ApplicationBase {
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+    public ApplicationBase withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
         this.passwordCredentials = passwordCredentials;
         return this;
     }
@@ -702,7 +696,7 @@ public class ApplicationBase {
      * 
      * @return the preAuthorizedApplications value.
      */
-    public List<PreAuthorizedApplication> getPreAuthorizedApplications() {
+    public List<PreAuthorizedApplication> preAuthorizedApplications() {
         return this.preAuthorizedApplications;
     }
 
@@ -714,7 +708,7 @@ public class ApplicationBase {
      * set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setPreAuthorizedApplications(List<PreAuthorizedApplication> preAuthorizedApplications) {
+    public ApplicationBase withPreAuthorizedApplications(List<PreAuthorizedApplication> preAuthorizedApplications) {
         this.preAuthorizedApplications = preAuthorizedApplications;
         return this;
     }
@@ -726,7 +720,7 @@ public class ApplicationBase {
      * 
      * @return the publicClient value.
      */
-    public Boolean isPublicClient() {
+    public Boolean publicClient() {
         return this.publicClient;
     }
 
@@ -738,7 +732,7 @@ public class ApplicationBase {
      * @param publicClient the publicClient value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setPublicClient(Boolean publicClient) {
+    public ApplicationBase withPublicClient(Boolean publicClient) {
         this.publicClient = publicClient;
         return this;
     }
@@ -749,7 +743,7 @@ public class ApplicationBase {
      * 
      * @return the publisherDomain value.
      */
-    public String getPublisherDomain() {
+    public String publisherDomain() {
         return this.publisherDomain;
     }
 
@@ -760,7 +754,7 @@ public class ApplicationBase {
      * @param publisherDomain the publisherDomain value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setPublisherDomain(String publisherDomain) {
+    public ApplicationBase withPublisherDomain(String publisherDomain) {
         this.publisherDomain = publisherDomain;
         return this;
     }
@@ -771,7 +765,7 @@ public class ApplicationBase {
      * 
      * @return the replyUrls value.
      */
-    public List<String> getReplyUrls() {
+    public List<String> replyUrls() {
         return this.replyUrls;
     }
 
@@ -782,7 +776,7 @@ public class ApplicationBase {
      * @param replyUrls the replyUrls value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setReplyUrls(List<String> replyUrls) {
+    public ApplicationBase withReplyUrls(List<String> replyUrls) {
         this.replyUrls = replyUrls;
         return this;
     }
@@ -796,7 +790,7 @@ public class ApplicationBase {
      * 
      * @return the requiredResourceAccess value.
      */
-    public List<RequiredResourceAccess> getRequiredResourceAccess() {
+    public List<RequiredResourceAccess> requiredResourceAccess() {
         return this.requiredResourceAccess;
     }
 
@@ -810,7 +804,7 @@ public class ApplicationBase {
      * @param requiredResourceAccess the requiredResourceAccess value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
+    public ApplicationBase withRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
         this.requiredResourceAccess = requiredResourceAccess;
         return this;
     }
@@ -821,7 +815,7 @@ public class ApplicationBase {
      * 
      * @return the samlMetadataUrl value.
      */
-    public String getSamlMetadataUrl() {
+    public String samlMetadataUrl() {
         return this.samlMetadataUrl;
     }
 
@@ -832,7 +826,7 @@ public class ApplicationBase {
      * @param samlMetadataUrl the samlMetadataUrl value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setSamlMetadataUrl(String samlMetadataUrl) {
+    public ApplicationBase withSamlMetadataUrl(String samlMetadataUrl) {
         this.samlMetadataUrl = samlMetadataUrl;
         return this;
     }
@@ -844,7 +838,7 @@ public class ApplicationBase {
      * 
      * @return the signInAudience value.
      */
-    public String getSignInAudience() {
+    public String signInAudience() {
         return this.signInAudience;
     }
 
@@ -856,7 +850,7 @@ public class ApplicationBase {
      * @param signInAudience the signInAudience value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setSignInAudience(String signInAudience) {
+    public ApplicationBase withSignInAudience(String signInAudience) {
         this.signInAudience = signInAudience;
         return this;
     }
@@ -866,7 +860,7 @@ public class ApplicationBase {
      * 
      * @return the wwwHomepage value.
      */
-    public String getWwwHomepage() {
+    public String wwwHomepage() {
         return this.wwwHomepage;
     }
 
@@ -876,7 +870,7 @@ public class ApplicationBase {
      * @param wwwHomepage the wwwHomepage value to set.
      * @return the ApplicationBase object itself.
      */
-    public ApplicationBase setWwwHomepage(String wwwHomepage) {
+    public ApplicationBase withWwwHomepage(String wwwHomepage) {
         this.wwwHomepage = wwwHomepage;
         return this;
     }

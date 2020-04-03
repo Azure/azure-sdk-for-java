@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The TagsListResult model.
- */
+/** The TagsListResult model. */
 @Fluent
 public final class TagsListResultInner {
     /*
@@ -27,31 +25,30 @@ public final class TagsListResultInner {
 
     /**
      * Get the value property: An array of tags.
-     * 
+     *
      * @return the value value.
      */
-    public List<TagDetailsInner> getValue() {
+    public List<TagDetailsInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: An array of tags.
-     * 
+     *
      * @param value the value value to set.
      * @return the TagsListResultInner object itself.
      */
-    public TagsListResultInner setValue(List<TagDetailsInner> value) {
+    public TagsListResultInner withValue(List<TagDetailsInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

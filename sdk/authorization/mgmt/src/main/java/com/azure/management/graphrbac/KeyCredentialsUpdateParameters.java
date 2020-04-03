@@ -27,7 +27,7 @@ public final class KeyCredentialsUpdateParameters {
      * 
      * @return the value value.
      */
-    public List<KeyCredentialInner> getValue() {
+    public List<KeyCredentialInner> value() {
         return this.value;
     }
 
@@ -37,7 +37,7 @@ public final class KeyCredentialsUpdateParameters {
      * @param value the value value to set.
      * @return the KeyCredentialsUpdateParameters object itself.
      */
-    public KeyCredentialsUpdateParameters setValue(List<KeyCredentialInner> value) {
+    public KeyCredentialsUpdateParameters withValue(List<KeyCredentialInner> value) {
         this.value = value;
         return this;
     }

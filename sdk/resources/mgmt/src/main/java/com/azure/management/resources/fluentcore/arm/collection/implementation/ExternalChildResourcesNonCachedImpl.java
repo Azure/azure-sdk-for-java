@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -20,10 +17,10 @@ import com.azure.management.resources.fluentcore.dag.TaskGroup;
  * child resource PUT if PATCH is not supported.
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
- * @param <FluentModelT>     the fluent model type of the child resource
- * @param <InnerModelT>      Azure inner resource class type representing the child resource
- * @param <ParentImplT>      <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
- * @param <ParentT>          the parent interface
+ * @param <FluentModelT> the fluent model type of the child resource
+ * @param <InnerModelT> Azure inner resource class type representing the child resource
+ * @param <ParentImplT> <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentT> the parent interface
  */
 public abstract class ExternalChildResourcesNonCachedImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
@@ -35,8 +32,8 @@ public abstract class ExternalChildResourcesNonCachedImpl<
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
-     * @param parentTaskGroup   the TaskGroup the parent Azure resource belongs to
+     * @param parent the parent Azure resource
+     * @param parentTaskGroup the TaskGroup the parent Azure resource belongs to
      * @param childResourceName the child resource name
      */
     protected ExternalChildResourcesNonCachedImpl(ParentImplT parent, TaskGroup parentTaskGroup, String childResourceName) {

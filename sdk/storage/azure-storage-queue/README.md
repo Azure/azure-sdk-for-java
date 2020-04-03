@@ -28,8 +28,11 @@ A single queue message can be up to 64 KB in size, and a queue can contain milli
 ### Create a Storage Account
 To create a Storage Account you can use the Azure Portal or [Azure CLI][azure_cli].
 
-```Powershell
-az group create --name storage-resource-group --location westus
+```bash
+az storage account create \
+    --resource-group <resource-group-name> \
+    --name <storage-account-name> \
+    --location <location>
 ```
 
 ### Authenticate the client

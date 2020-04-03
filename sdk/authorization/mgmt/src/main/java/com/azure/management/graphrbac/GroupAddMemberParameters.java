@@ -34,7 +34,7 @@ public final class GroupAddMemberParameters {
      * 
      * @return the url value.
      */
-    public String getUrl() {
+    public String url() {
         return this.url;
     }
 
@@ -45,7 +45,7 @@ public final class GroupAddMemberParameters {
      * @param url the url value to set.
      * @return the GroupAddMemberParameters object itself.
      */
-    public GroupAddMemberParameters setUrl(String url) {
+    public GroupAddMemberParameters withUrl(String url) {
         this.url = url;
         return this;
     }
@@ -56,7 +56,7 @@ public final class GroupAddMemberParameters {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -67,7 +67,7 @@ public final class GroupAddMemberParameters {
      * @param additionalProperties the additionalProperties value to set.
      * @return the GroupAddMemberParameters object itself.
      */
-    public GroupAddMemberParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public GroupAddMemberParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

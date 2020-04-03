@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourceListResult model.
- */
+/** The ResourceListResult model. */
 @Fluent
 public final class ResourceListResultInner {
     /*
@@ -27,31 +25,30 @@ public final class ResourceListResultInner {
 
     /**
      * Get the value property: An array of resources.
-     * 
+     *
      * @return the value value.
      */
-    public List<GenericResourceExpandedInner> getValue() {
+    public List<GenericResourceExpandedInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: An array of resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the ResourceListResultInner object itself.
      */
-    public ResourceListResultInner setValue(List<GenericResourceExpandedInner> value) {
+    public ResourceListResultInner withValue(List<GenericResourceExpandedInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.DeploymentOperationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentOperation model.
- */
+/** The DeploymentOperation model. */
 @Fluent
 public final class DeploymentOperationInner {
     /*
@@ -33,7 +31,7 @@ public final class DeploymentOperationInner {
 
     /**
      * Get the id property: Full deployment operation ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -42,29 +40,29 @@ public final class DeploymentOperationInner {
 
     /**
      * Get the operationId property: Deployment operation ID.
-     * 
+     *
      * @return the operationId value.
      */
-    public String getOperationId() {
+    public String operationId() {
         return this.operationId;
     }
 
     /**
      * Get the properties property: Deployment properties.
-     * 
+     *
      * @return the properties value.
      */
-    public DeploymentOperationProperties getProperties() {
+    public DeploymentOperationProperties properties() {
         return this.properties;
     }
 
     /**
      * Set the properties property: Deployment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the DeploymentOperationInner object itself.
      */
-    public DeploymentOperationInner setProperties(DeploymentOperationProperties properties) {
+    public DeploymentOperationInner withProperties(DeploymentOperationProperties properties) {
         this.properties = properties;
         return this;
     }

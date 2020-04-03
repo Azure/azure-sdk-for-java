@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
@@ -42,24 +39,24 @@ class ActiveDirectoryGroupImpl
     private Set<String> membersToRemove;
 
     ActiveDirectoryGroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
-        super(innerModel.getDisplayName(), innerModel);
+        super(innerModel.displayName(), innerModel);
         this.manager = manager;
         this.createParameters = new GroupCreateParameters()
-                .setDisplayName(innerModel.getDisplayName())
-                .setMailEnabled(false)
-                .setSecurityEnabled(true);
+                .withDisplayName(innerModel.displayName())
+                .withMailEnabled(false)
+                .withSecurityEnabled(true);
         membersToAdd = new HashSet<>();
         membersToRemove = new HashSet<>();
     }
 
     @Override
     public boolean securityEnabled() {
-        return Utils.toPrimitiveBoolean(inner().isSecurityEnabled());
+        return Utils.toPrimitiveBoolean(inner().securityEnabled());
     }
 
     @Override
     public String mail() {
-        return inner().getMail();
+        return inner().mail();
     }
 
     @Override
@@ -111,7 +108,7 @@ class ActiveDirectoryGroupImpl
         }
         if (!membersToAdd.isEmpty()) {
             group = group.flatMap(o -> Flux.fromIterable(membersToAdd)
-                    .flatMap(s -> manager().inner().groups().addMemberAsync(id(), new GroupAddMemberParameters().setUrl(s)))
+                    .flatMap(s -> manager().inner().groups().addMemberAsync(id(), s))
                     .singleOrEmpty()
                     .thenReturn(Mono.just(this))
                     .doFinally(signalType -> membersToAdd.clear()));
@@ -127,7 +124,7 @@ class ActiveDirectoryGroupImpl
             domainName = parts[1];
             mailNickname = parts[0];
         }
-        createParameters.setMailNickname(mailNickname);
+        createParameters.withMailNickname(mailNickname);
         return this;
     }
 
@@ -176,7 +173,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public String id() {
-        return inner().getObjectId();
+        return inner().objectId();
     }
 
     @Override

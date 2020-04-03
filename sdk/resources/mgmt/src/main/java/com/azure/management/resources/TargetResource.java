@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TargetResource model.
- */
+/** The TargetResource model. */
 @Fluent
 public final class TargetResource {
     /*
@@ -32,7 +30,7 @@ public final class TargetResource {
 
     /**
      * Get the id property: The ID of the resource.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -41,51 +39,51 @@ public final class TargetResource {
 
     /**
      * Set the id property: The ID of the resource.
-     * 
+     *
      * @param id the id value to set.
      * @return the TargetResource object itself.
      */
-    public TargetResource setId(String id) {
+    public TargetResource withId(String id) {
         this.id = id;
         return this;
     }
 
     /**
      * Get the resourceName property: The name of the resource.
-     * 
+     *
      * @return the resourceName value.
      */
-    public String getResourceName() {
+    public String resourceName() {
         return this.resourceName;
     }
 
     /**
      * Set the resourceName property: The name of the resource.
-     * 
+     *
      * @param resourceName the resourceName value to set.
      * @return the TargetResource object itself.
      */
-    public TargetResource setResourceName(String resourceName) {
+    public TargetResource withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
     }
 
     /**
      * Get the resourceType property: The type of the resource.
-     * 
+     *
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
     /**
      * Set the resourceType property: The type of the resource.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the TargetResource object itself.
      */
-    public TargetResource setResourceType(String resourceType) {
+    public TargetResource withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }

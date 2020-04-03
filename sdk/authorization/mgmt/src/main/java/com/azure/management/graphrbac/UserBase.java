@@ -66,7 +66,7 @@ public class UserBase {
      * 
      * @return the immutableId value.
      */
-    public String getImmutableId() {
+    public String immutableId() {
         return this.immutableId;
     }
 
@@ -79,7 +79,7 @@ public class UserBase {
      * @param immutableId the immutableId value to set.
      * @return the UserBase object itself.
      */
-    public UserBase setImmutableId(String immutableId) {
+    public UserBase withImmutableId(String immutableId) {
         this.immutableId = immutableId;
         return this;
     }
@@ -92,7 +92,7 @@ public class UserBase {
      * 
      * @return the usageLocation value.
      */
-    public String getUsageLocation() {
+    public String usageLocation() {
         return this.usageLocation;
     }
 
@@ -105,7 +105,7 @@ public class UserBase {
      * @param usageLocation the usageLocation value to set.
      * @return the UserBase object itself.
      */
-    public UserBase setUsageLocation(String usageLocation) {
+    public UserBase withUsageLocation(String usageLocation) {
         this.usageLocation = usageLocation;
         return this;
     }
@@ -115,7 +115,7 @@ public class UserBase {
      * 
      * @return the givenName value.
      */
-    public String getGivenName() {
+    public String givenName() {
         return this.givenName;
     }
 
@@ -125,7 +125,7 @@ public class UserBase {
      * @param givenName the givenName value to set.
      * @return the UserBase object itself.
      */
-    public UserBase setGivenName(String givenName) {
+    public UserBase withGivenName(String givenName) {
         this.givenName = givenName;
         return this;
     }
@@ -135,7 +135,7 @@ public class UserBase {
      * 
      * @return the surname value.
      */
-    public String getSurname() {
+    public String surname() {
         return this.surname;
     }
 
@@ -145,7 +145,7 @@ public class UserBase {
      * @param surname the surname value to set.
      * @return the UserBase object itself.
      */
-    public UserBase setSurname(String surname) {
+    public UserBase withSurname(String surname) {
         this.surname = surname;
         return this;
     }
@@ -156,7 +156,7 @@ public class UserBase {
      * 
      * @return the userType value.
      */
-    public UserType getUserType() {
+    public UserType userType() {
         return this.userType;
     }
 
@@ -167,7 +167,7 @@ public class UserBase {
      * @param userType the userType value to set.
      * @return the UserBase object itself.
      */
-    public UserBase setUserType(UserType userType) {
+    public UserBase withUserType(UserType userType) {
         this.userType = userType;
         return this;
     }
@@ -177,7 +177,7 @@ public class UserBase {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -187,7 +187,7 @@ public class UserBase {
      * @param additionalProperties the additionalProperties value to set.
      * @return the UserBase object itself.
      */
-    public UserBase setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public UserBase withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

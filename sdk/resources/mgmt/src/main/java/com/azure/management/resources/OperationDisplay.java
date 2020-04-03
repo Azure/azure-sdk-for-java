@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OperationDisplay model.
- */
+/** The OperationDisplay model. */
 @Fluent
 public final class OperationDisplay {
     /*
@@ -38,82 +36,80 @@ public final class OperationDisplay {
 
     /**
      * Get the provider property: Service provider: Microsoft.Resources.
-     * 
+     *
      * @return the provider value.
      */
-    public String getProvider() {
+    public String provider() {
         return this.provider;
     }
 
     /**
      * Set the provider property: Service provider: Microsoft.Resources.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setProvider(String provider) {
+    public OperationDisplay withProvider(String provider) {
         this.provider = provider;
         return this;
     }
 
     /**
-     * Get the resource property: Resource on which the operation is performed:
-     * Profile, endpoint, etc.
-     * 
+     * Get the resource property: Resource on which the operation is performed: Profile, endpoint, etc.
+     *
      * @return the resource value.
      */
-    public String getResource() {
+    public String resource() {
         return this.resource;
     }
 
     /**
-     * Set the resource property: Resource on which the operation is performed:
-     * Profile, endpoint, etc.
-     * 
+     * Set the resource property: Resource on which the operation is performed: Profile, endpoint, etc.
+     *
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setResource(String resource) {
+    public OperationDisplay withResource(String resource) {
         this.resource = resource;
         return this;
     }
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     * 
+     *
      * @return the operation value.
      */
-    public String getOperation() {
+    public String operation() {
         return this.operation;
     }
 
     /**
      * Set the operation property: Operation type: Read, write, delete, etc.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setOperation(String operation) {
+    public OperationDisplay withOperation(String operation) {
         this.operation = operation;
         return this;
     }
 
     /**
      * Get the description property: Description of the operation.
-     * 
+     *
      * @return the description value.
      */
-    public String getDescription() {
+    public String description() {
         return this.description;
     }
 
     /**
      * Set the description property: Description of the operation.
-     * 
+     *
      * @param description the description value to set.
      * @return the OperationDisplay object itself.
      */
-    public OperationDisplay setDescription(String description) {
+    public OperationDisplay withDescription(String description) {
         this.description = description;
         return this;
     }

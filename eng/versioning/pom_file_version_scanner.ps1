@@ -220,6 +220,29 @@ function Test-Dependency-Tag-And-Version {
     }
 }
 
+# There are some configurations, like org.apache.maven.plugins:maven-enforcer-plugin, 
+# that have plugin and dependency configuration entries that are string patterns. This
+# function will be called if the groupId and artifactId for a given plugin or dependency
+# are both empty. It'll climb up the parents it finds a configuration entry or there are
+# no more parents. If the node is part of a configuration entry then return true, otherwise
+# return false.
+function Confirm-Node-Is-Part-Of-Configuration {
+    param(
+        [System.Xml.XmlNode]$theNode
+    )
+    # Climbing up the parents the nodes will be System.Xml.XmlElement until we're at the very end
+    # which will have a type of just 'xml'. If we encounter a configuration node return true
+    # otherwise return false.
+    while ($theNode.GetType() -ieq [System.Xml.XmlElement]) {
+        if ($theNode.Name -ieq 'configuration')
+        {
+            return $true
+        }
+        $theNode = $theNode.ParentNode
+    }
+    return $false
+}
+
 # Create one dependency hashtable for libraries we build (the groupIds will make the entries unique) and
 # one hash for external dependencies
 $libHash = @{}
@@ -363,6 +386,20 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     {
         $artifactId = $dependencyNode.artifactId
         $groupId = $dependencyNode.groupId
+        # If the artifactId and groupId are both empty then check to see if this
+        # is part of a configuration entry. If so then just continue.
+        if (!$artifactId -and !$groupId)
+        {
+            $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $dependencyNode
+            if (!$isPartOfConfig)
+            {
+                $script:FoundError = $true
+                # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
+                Write-Error-With-Color "Error: dependency is missing version element and/or artifactId and groupId elements dependencyNode=$($dependencyNode.OuterXml)"
+            }
+            continue
+        } 
+
         $versionNode = $dependencyNode.GetElementsByTagName("version")[0]
         if (!$versionNode) 
         {
@@ -403,7 +440,20 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     {
         $artifactId = $pluginNode.artifactId
         $groupId = $pluginNode.groupId
-        # plugins will always have an artifact but may not have a groupId
+        # If the artifactId and groupId are both empty then check to see if this
+        # is part of a configuration entry.
+        if (!$artifactId -and !$groupId)
+        {
+            $isPartOfConfig = Confirm-Node-Is-Part-Of-Configuration $pluginNode
+            if (!$isPartOfConfig)
+            {
+                $script:FoundError = $true
+                # Because this particular case is harder to track down, print the OuterXML which is effectively the entire tag
+                Write-Error-With-Color "Error: plugin is missing version element and/or artifactId and groupId elements pluginNode=$($pluginNode.OuterXml)"
+            }
+            continue
+        } 
+        # plugins should always have an artifact but may not have a groupId
         if (!$groupId)
         {
             $script:FoundError = $true

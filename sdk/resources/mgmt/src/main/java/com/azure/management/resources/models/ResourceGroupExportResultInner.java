@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceGroupExportResult model.
- */
+/** The ResourceGroupExportResult model. */
 @Fluent
 public final class ResourceGroupExportResultInner {
     /*
@@ -27,40 +25,40 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Get the template property: The template content.
-     * 
+     *
      * @return the template value.
      */
-    public Object getTemplate() {
+    public Object template() {
         return this.template;
     }
 
     /**
      * Set the template property: The template content.
-     * 
+     *
      * @param template the template value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
-    public ResourceGroupExportResultInner setTemplate(Object template) {
+    public ResourceGroupExportResultInner withTemplate(Object template) {
         this.template = template;
         return this;
     }
 
     /**
      * Get the error property: The template export error.
-     * 
+     *
      * @return the error value.
      */
-    public ErrorResponse getError() {
+    public ErrorResponse error() {
         return this.error;
     }
 
     /**
      * Set the error property: The template export error.
-     * 
+     *
      * @param error the error value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
-    public ResourceGroupExportResultInner setError(ErrorResponse error) {
+    public ResourceGroupExportResultInner withError(ErrorResponse error) {
         this.error = error;
         return this;
     }

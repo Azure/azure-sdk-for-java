@@ -51,7 +51,7 @@ public final class DomainInner {
      * 
      * @return the authenticationType value.
      */
-    public String getAuthenticationType() {
+    public String authenticationType() {
         return this.authenticationType;
     }
 
@@ -78,7 +78,7 @@ public final class DomainInner {
      * 
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
@@ -88,7 +88,7 @@ public final class DomainInner {
      * @param name the name value to set.
      * @return the DomainInner object itself.
      */
-    public DomainInner setName(String name) {
+    public DomainInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -99,7 +99,7 @@ public final class DomainInner {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -110,7 +110,7 @@ public final class DomainInner {
      * @param additionalProperties the additionalProperties value to set.
      * @return the DomainInner object itself.
      */
-    public DomainInner setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public DomainInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

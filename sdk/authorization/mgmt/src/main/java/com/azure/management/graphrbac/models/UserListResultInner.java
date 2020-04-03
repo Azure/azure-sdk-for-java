@@ -25,14 +25,14 @@ public final class UserListResultInner {
      * The URL to get the next set of results.
      */
     @JsonProperty(value = "odata.nextLink")
-    private String odatanextLink;
+    private String odataNextLink;
 
     /**
      * Get the value property: the list of users.
      * 
      * @return the value value.
      */
-    public List<UserInner> getValue() {
+    public List<UserInner> value() {
         return this.value;
     }
 
@@ -42,28 +42,28 @@ public final class UserListResultInner {
      * @param value the value value to set.
      * @return the UserListResultInner object itself.
      */
-    public UserListResultInner setValue(List<UserInner> value) {
+    public UserListResultInner withValue(List<UserInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the odatanextLink property: The URL to get the next set of results.
+     * Get the odataNextLink property: The URL to get the next set of results.
      * 
-     * @return the odatanextLink value.
+     * @return the odataNextLink value.
      */
-    public String getOdatanextLink() {
-        return this.odatanextLink;
+    public String odataNextLink() {
+        return this.odataNextLink;
     }
 
     /**
-     * Set the odatanextLink property: The URL to get the next set of results.
+     * Set the odataNextLink property: The URL to get the next set of results.
      * 
-     * @param odatanextLink the odatanextLink value to set.
+     * @param odataNextLink the odataNextLink value to set.
      * @return the UserListResultInner object itself.
      */
-    public UserListResultInner setOdatanextLink(String odatanextLink) {
-        this.odatanextLink = odatanextLink;
+    public UserListResultInner withOdataNextLink(String odataNextLink) {
+        this.odataNextLink = odataNextLink;
         return this;
     }
 }

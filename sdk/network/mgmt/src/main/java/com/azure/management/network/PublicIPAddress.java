@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
@@ -251,7 +248,7 @@ public interface PublicIPAddress extends
             /**
              * Sets an ipTag associated with the public IP address.
              *
-             * @param tag       ip tag value
+             * @param tag ip tag value
              * @param ipTagType ipTagType
              * @return the next stage of the definition
              */
@@ -390,7 +387,7 @@ public interface PublicIPAddress extends
             /**
              * Sets an ipTag associated with the public IP address.
              *
-             * @param tag       ip tag value
+             * @param tag ip tag value
              * @param ipTagType ipTagType
              * @return the next stage of the update
              */

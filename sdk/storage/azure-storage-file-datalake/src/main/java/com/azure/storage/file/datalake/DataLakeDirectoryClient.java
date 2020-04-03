@@ -90,7 +90,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * Docs</a></p>
      */
     public void delete() {
-        deleteWithResponse(false, null, null, null).getValue();
+        deleteWithResponse(false, null, null, Context.NONE).getValue();
     }
 
     /**
@@ -218,7 +218,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param fileName Name of the file to delete.
      */
     public void deleteFile(String fileName) {
-        deleteFileWithResponse(fileName, null, null, null);
+        deleteFileWithResponse(fileName, null, null, Context.NONE);
     }
 
     /**
@@ -343,7 +343,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param subdirectoryName Name of the sub-directory to delete.
      */
     public void deleteSubdirectory(String subdirectoryName) {
-        deleteSubdirectoryWithResponse(subdirectoryName, false, null, null, null);
+        deleteSubdirectoryWithResponse(subdirectoryName, false, null, null, Context.NONE);
     }
 
     /**
@@ -387,7 +387,7 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @return A {@link DataLakeDirectoryClient} used to interact with the new directory created.
      */
     public DataLakeDirectoryClient rename(String destinationFileSystem, String destinationPath) {
-        return renameWithResponse(destinationFileSystem, destinationPath, null, null, null, null).getValue();
+        return renameWithResponse(destinationFileSystem, destinationPath, null, null, null, Context.NONE).getValue();
     }
 
     /**

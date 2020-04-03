@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.sql.SqlDatabase;
@@ -33,7 +30,7 @@ public class SqlDatabasesAsExternalChildResourcesImpl
     /**
      * Creates a new ExternalChildResourcesNonCachedImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlDatabasesAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {

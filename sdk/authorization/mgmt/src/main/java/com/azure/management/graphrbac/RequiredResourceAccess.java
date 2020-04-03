@@ -48,7 +48,7 @@ public final class RequiredResourceAccess {
      * 
      * @return the resourceAccess value.
      */
-    public List<ResourceAccess> getResourceAccess() {
+    public List<ResourceAccess> resourceAccess() {
         return this.resourceAccess;
     }
 
@@ -59,7 +59,7 @@ public final class RequiredResourceAccess {
      * @param resourceAccess the resourceAccess value to set.
      * @return the RequiredResourceAccess object itself.
      */
-    public RequiredResourceAccess setResourceAccess(List<ResourceAccess> resourceAccess) {
+    public RequiredResourceAccess withResourceAccess(List<ResourceAccess> resourceAccess) {
         this.resourceAccess = resourceAccess;
         return this;
     }
@@ -71,7 +71,7 @@ public final class RequiredResourceAccess {
      * 
      * @return the resourceAppId value.
      */
-    public String getResourceAppId() {
+    public String resourceAppId() {
         return this.resourceAppId;
     }
 
@@ -83,7 +83,7 @@ public final class RequiredResourceAccess {
      * @param resourceAppId the resourceAppId value to set.
      * @return the RequiredResourceAccess object itself.
      */
-    public RequiredResourceAccess setResourceAppId(String resourceAppId) {
+    public RequiredResourceAccess withResourceAppId(String resourceAppId) {
         this.resourceAppId = resourceAppId;
         return this;
     }
@@ -99,7 +99,7 @@ public final class RequiredResourceAccess {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -115,7 +115,7 @@ public final class RequiredResourceAccess {
      * @param additionalProperties the additionalProperties value to set.
      * @return the RequiredResourceAccess object itself.
      */
-    public RequiredResourceAccess setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public RequiredResourceAccess withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

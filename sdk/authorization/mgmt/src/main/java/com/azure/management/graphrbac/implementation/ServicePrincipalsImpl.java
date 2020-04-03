@@ -1,13 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.graphrbac.GraphErrorException;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.graphrbac.ServicePrincipals;
 import com.azure.management.graphrbac.models.ServicePrincipalInner;
@@ -87,12 +85,12 @@ class ServicePrincipalsImpl
 
     @Override
     public ServicePrincipalImpl define(String name) {
-        return new ServicePrincipalImpl(new ServicePrincipalInner().setDisplayName(name), manager());
+        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
     }
 
     @Override
     protected ServicePrincipalImpl wrapModel(String name) {
-        return new ServicePrincipalImpl(new ServicePrincipalInner().setDisplayName(name), manager());
+        return new ServicePrincipalImpl(new ServicePrincipalInner().withDisplayName(name), manager());
     }
 
     @Override

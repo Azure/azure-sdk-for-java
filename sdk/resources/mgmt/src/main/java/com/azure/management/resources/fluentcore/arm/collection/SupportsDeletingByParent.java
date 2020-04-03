@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.collection;
 
@@ -17,18 +14,18 @@ public interface SupportsDeletingByParent {
     /**
      * Deletes a resource from Azure, identifying it by its name and its resource group.
      *
-     * @param groupName  The group the resource is part of
+     * @param groupName The group the resource is part of
      * @param parentName the name of parent resource.
-     * @param name       The name of the resource
+     * @param name The name of the resource
      */
     void deleteByParent(String groupName, String parentName, String name);
 
     /**
      * Asynchronously delete a resource from Azure, identifying it by its name and its resource group.
      *
-     * @param groupName  The group the resource is part of
+     * @param groupName The group the resource is part of
      * @param parentName the name of parent resource.
-     * @param name       The name of the resource
+     * @param name The name of the resource
      * @return a representation of the deferred computation of this call
      */
     Mono<Void> deleteByParentAsync(String groupName, String parentName, String name);

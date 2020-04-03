@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
@@ -34,18 +31,18 @@ class PasswordCredentialImpl<T>
 
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
-        if (passwordCredential.getCustomKeyIdentifier() != null && passwordCredential.getCustomKeyIdentifier().length > 0) {
-            this.name = new String(Base64.getDecoder().decode(new String(passwordCredential.getCustomKeyIdentifier())));
+        if (passwordCredential.customKeyIdentifier() != null && passwordCredential.customKeyIdentifier().length > 0) {
+            this.name = new String(Base64.getDecoder().decode(new String(passwordCredential.customKeyIdentifier())));
         } else {
-            this.name = passwordCredential.getKeyId();
+            this.name = passwordCredential.keyId();
         }
     }
 
     PasswordCredentialImpl(String name, HasCredential<?> parent) {
         super(new PasswordCredentialInner()
-                .setCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes()))
-                .setStartDate(OffsetDateTime.now())
-                .setEndDate(OffsetDateTime.now().plusYears(1)));
+                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes()))
+                .withStartDate(OffsetDateTime.now())
+                .withEndDate(OffsetDateTime.now().plusYears(1)));
         this.name = name;
         this.parent = parent;
     }
@@ -62,17 +59,17 @@ class PasswordCredentialImpl<T>
 
     @Override
     public OffsetDateTime startDate() {
-        return inner().getStartDate();
+        return inner().startDate();
     }
 
     @Override
     public OffsetDateTime endDate() {
-        return inner().getEndDate();
+        return inner().endDate();
     }
 
     @Override
     public String value() {
-        return inner().getValue();
+        return inner().value();
     }
 
 
@@ -85,14 +82,14 @@ class PasswordCredentialImpl<T>
 
     @Override
     public PasswordCredentialImpl<T> withPasswordValue(String password) {
-        inner().setValue(password);
+        inner().withValue(password);
         return this;
     }
 
     @Override
     public PasswordCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
-        inner().setStartDate(startDate);
+        inner().withStartDate(startDate);
         // Adjust end time
         withDuration(Duration.between(original, endDate()));
         return this;
@@ -100,7 +97,7 @@ class PasswordCredentialImpl<T>
 
     @Override
     public PasswordCredentialImpl<T> withDuration(Duration duration) {
-        inner().setEndDate(startDate().plus(duration));
+        inner().withEndDate(startDate().plus(duration));
         return this;
     }
 
@@ -141,7 +138,7 @@ class PasswordCredentialImpl<T>
 
     @Override
     public String id() {
-        return inner().getKeyId();
+        return inner().keyId();
     }
 
     @Override

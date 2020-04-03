@@ -36,7 +36,7 @@ public final class CheckGroupMembershipResultInner {
      * 
      * @return the value value.
      */
-    public Boolean isValue() {
+    public Boolean value() {
         return this.value;
     }
 
@@ -48,7 +48,7 @@ public final class CheckGroupMembershipResultInner {
      * @param value the value value to set.
      * @return the CheckGroupMembershipResultInner object itself.
      */
-    public CheckGroupMembershipResultInner setValue(Boolean value) {
+    public CheckGroupMembershipResultInner withValue(Boolean value) {
         this.value = value;
         return this;
     }
@@ -59,7 +59,7 @@ public final class CheckGroupMembershipResultInner {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -70,7 +70,7 @@ public final class CheckGroupMembershipResultInner {
      * @param additionalProperties the additionalProperties value to set.
      * @return the CheckGroupMembershipResultInner object itself.
      */
-    public CheckGroupMembershipResultInner setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public CheckGroupMembershipResultInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

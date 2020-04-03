@@ -17,7 +17,6 @@ module com.azure.cosmos {
     requires io.netty.transport.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty;
-    requires com.fasterxml.uuid;
     requires org.slf4j;
     requires com.codahale.metrics;
     requires com.fasterxml.jackson.module.afterburner;
@@ -36,9 +35,11 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.caches to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.changefeed to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.http to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.query to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.aggregation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;

@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -130,6 +129,7 @@ public final class RntbdTransportClient extends TransportClient {
         return Mono.fromFuture(record.whenComplete((response, throwable) -> {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
+
             if (request.requestContext.cosmosResponseDiagnostics == null) {
                 request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }

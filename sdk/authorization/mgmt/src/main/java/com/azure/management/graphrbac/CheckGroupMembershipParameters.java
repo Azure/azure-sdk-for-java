@@ -39,7 +39,7 @@ public final class CheckGroupMembershipParameters {
      * 
      * @return the groupId value.
      */
-    public String getGroupId() {
+    public String groupId() {
         return this.groupId;
     }
 
@@ -49,7 +49,7 @@ public final class CheckGroupMembershipParameters {
      * @param groupId the groupId value to set.
      * @return the CheckGroupMembershipParameters object itself.
      */
-    public CheckGroupMembershipParameters setGroupId(String groupId) {
+    public CheckGroupMembershipParameters withGroupId(String groupId) {
         this.groupId = groupId;
         return this;
     }
@@ -60,7 +60,7 @@ public final class CheckGroupMembershipParameters {
      * 
      * @return the memberId value.
      */
-    public String getMemberId() {
+    public String memberId() {
         return this.memberId;
     }
 
@@ -71,7 +71,7 @@ public final class CheckGroupMembershipParameters {
      * @param memberId the memberId value to set.
      * @return the CheckGroupMembershipParameters object itself.
      */
-    public CheckGroupMembershipParameters setMemberId(String memberId) {
+    public CheckGroupMembershipParameters withMemberId(String memberId) {
         this.memberId = memberId;
         return this;
     }
@@ -82,7 +82,7 @@ public final class CheckGroupMembershipParameters {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -93,7 +93,7 @@ public final class CheckGroupMembershipParameters {
      * @param additionalProperties the additionalProperties value to set.
      * @return the CheckGroupMembershipParameters object itself.
      */
-    public CheckGroupMembershipParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public CheckGroupMembershipParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
