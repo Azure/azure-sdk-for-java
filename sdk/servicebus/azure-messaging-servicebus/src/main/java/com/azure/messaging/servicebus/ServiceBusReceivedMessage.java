@@ -172,7 +172,7 @@ public final class ServiceBusReceivedMessage implements MessageLockToken {
      * href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Deferral API</a> and, with that,
      * take the message out of the regular delivery state flow. This property is read-only.
      *
-     * @return {@link String} representation of {@link UUID}, which represents the lock-token for this message.
+     * @return {@link String} representing the lock-token for this message.
      *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message
      * transfers, locks, and settlement</a>
