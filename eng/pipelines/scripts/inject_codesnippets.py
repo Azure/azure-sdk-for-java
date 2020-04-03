@@ -21,8 +21,6 @@ EXCLUSION_ARRAY = ["JavadocCodeSnippetCheck.java"]
 HTML_ESCAPE_TABLE = {
     "&": "&amp;",
     '"': "&quot;",
-    ">": "&amp;gt;",
-    "<": "&amp;lt;",
     "@": "{@literal @}",
     "{": "&#123;",
     "}": "&#125;",
@@ -149,7 +147,7 @@ if __name__ == "__main__":
                     lead_space = snippet_ref.groupdict()["leadingspace"] + " "
                     if id_ending in snippets:
                         result_array = [
-                            lead_space + "<pre>\n",
+                            lead_space + "<pre>{@code \n",
                             escape(
                                 (
                                     "".join(
@@ -161,7 +159,7 @@ if __name__ == "__main__":
                                 ),
                                 HTML_ESCAPE_TABLE,
                             ),
-                            lead_space + "</pre>\n",
+                            lead_space + "}</pre>\n",
                         ]
                         amended_file.append("".join(result_array))
                         needs_amend = True
