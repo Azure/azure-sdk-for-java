@@ -127,25 +127,29 @@ public final class SearchIndexClientBuilder {
             ? Configuration.getGlobalConfiguration()
             : configuration;
 
-        policies.add(new AddHeadersPolicy(headers));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
+        httpPipelinePolicies.add(new AddHeadersPolicy(headers));
+        httpPipelinePolicies.add(new RequestIdPolicy());
 
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        HttpPolicyProviders.addBeforeRetryPolicies(httpPipelinePolicies);
+        httpPipelinePolicies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
 
+        httpPipelinePolicies.add(new AddDatePolicy());
         if (keyCredential != null) {
             this.policies.add(new AzureKeyCredentialPolicy(API_KEY, keyCredential));
         }
+        httpPipelinePolicies.addAll(this.policies);
 
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+        HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
+
+        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
             buildConfiguration));
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline buildPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
         return new SearchIndexAsyncClient(endpoint, indexName, buildVersion, buildPipeline);

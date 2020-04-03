@@ -5,7 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
+import java.net.MalformedURLException;
+import java.security.SecureRandom;
+
+import static com.azure.search.documents.SearchServiceClientBuilderTests.request;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -190,5 +195,24 @@ public class SearchIndexClientBuilderTests {
 
         assertEquals(SearchServiceVersion.getLatest().getVersion(),
             searchIndexAsyncClient.getServiceVersion().getVersion());
+    }
+
+    @Test
+    public void indexClientFreshDateOnRetry() throws MalformedURLException {
+        byte[] randomData = new byte[256];
+        new SecureRandom().nextBytes(randomData);
+        SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder()
+            .endpoint(searchEndpoint)
+            .credential(searchApiKeyCredential)
+            .indexName("test_builder")
+            .httpClient(new SearchServiceClientBuilderTests.FreshDateTestClient())
+            .buildAsyncClient();
+
+        StepVerifier.create(searchIndexAsyncClient.getHttpPipeline().send(
+            request(searchIndexAsyncClient.getEndpoint())))
+            .assertNext(response -> {
+                assertEquals(200, response.getStatusCode());
+            })
+            .verifyComplete();
     }
 }
