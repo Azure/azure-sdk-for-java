@@ -116,9 +116,9 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken1 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
         final ServiceBusReceivedMessage receivedMessage2 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken2 = UUID.randomUUID();
+        final String lockToken2 = UUID.randomUUID().toString();
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
@@ -153,9 +153,9 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final Message message2 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken1 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
         final ServiceBusReceivedMessage receivedMessage2 = mock(ServiceBusReceivedMessage.class);
-        final UUID lockToken2 = UUID.randomUUID();
+        final String lockToken2 = UUID.randomUUID().toString();
 
         when(receivedMessage1.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);

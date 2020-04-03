@@ -14,7 +14,7 @@ class MessageLockTokenTest {
 
     @Test
     public void aUuidTest() {
-        UUID uuid = UUID.randomUUID();
+        String uuid = UUID.randomUUID().toString();
         MessageLockToken myLockToken = MessageLockToken.fromUuid(uuid);
 
         assertNotNull(myLockToken);

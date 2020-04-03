@@ -242,9 +242,9 @@ class ServiceBusReceiverAsyncClientTest {
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1.toString());
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
-        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2.toString());
         when(receivedMessage2.getLockedUntil()).thenReturn(expiration);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
@@ -351,7 +351,7 @@ class ServiceBusReceiverAsyncClientTest {
             MessagingEntityType.QUEUE, false, options, connectionProcessor, tracerProvider,
             messageSerializer, messageContainer, onClientClose);
 
-        final UUID lockToken1 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
 
@@ -420,7 +420,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1.toString());
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
@@ -455,9 +455,9 @@ class ServiceBusReceiverAsyncClientTest {
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1.toString());
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
-        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2.toString());
         when(receivedMessage2.getLockedUntil()).thenReturn(expiration);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
