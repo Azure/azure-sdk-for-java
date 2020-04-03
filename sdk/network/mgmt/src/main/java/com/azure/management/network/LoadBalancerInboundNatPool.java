@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
@@ -87,7 +84,7 @@ public interface LoadBalancerInboundNatPool extends
              * Specifies the frontend port range to receive network traffic from.
              *
              * @param from the starting port number, between 1 and 65534
-             * @param to   the ending port number, greater than the starting port number and no more than 65534
+             * @param to the ending port number, greater than the starting port number and no more than 65534
              * @return the next stage of the definition
              */
             WithBackendPort<ParentT> fromFrontendPortRange(int from, int to);
@@ -143,7 +140,7 @@ public interface LoadBalancerInboundNatPool extends
              * Specifies the frontend port range.
              *
              * @param from the starting port number, between 1 and 65534
-             * @param to   the ending port number, greater than the starting port number and no more than 65534
+             * @param to the ending port number, greater than the starting port number and no more than 65534
              * @return the next stage of the definition
              */
             Update fromFrontendPortRange(int from, int to);
@@ -220,7 +217,7 @@ public interface LoadBalancerInboundNatPool extends
              * Specified the frontend port range.
              *
              * @param from the starting port number, between 1 and 65534
-             * @param to   the ending port number, greater than the starting port number and no more than 65534
+             * @param to the ending port number, greater than the starting port number and no more than 65534
              * @return the next stage of the definition
              */
             WithAttach<ParentT> fromFrontendPortRange(int from, int to);

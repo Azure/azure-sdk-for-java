@@ -41,6 +41,7 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -201,7 +202,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         assertEquals(hotelsList.size(), actualResults.size());
         for (int i = 0; i < hotelsList.size(); i++) {
-            TestHelpers.assertHotelsEqual(hotelsList.get(i), actualResults.get(i));
+            assertObjectEquals(hotelsList.get(i), actualResults.get(i), true);
         }
     }
 
@@ -232,8 +233,8 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedResponse result = iterator.next();
         assertEquals(2, result.getValue().size());
-        TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(result.getValue().get(0).getDocument(), NonNullableModel.class));
-        TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(result.getValue().get(1).getDocument(), NonNullableModel.class));
+        assertObjectEquals(doc1, convertToType(result.getValue().get(0).getDocument(), NonNullableModel.class), true);
+        assertObjectEquals(doc2, convertToType(result.getValue().get(1).getDocument(), NonNullableModel.class), true);
     }
 
     @Test
@@ -498,7 +499,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> searchResultsList = getSearchResults(results);
         assertEquals(2, searchResultsList.size());
         for (int i = 0; i < searchResultsList.size(); i++) {
-            TestHelpers.assertDocumentsEqual(expectedDocsList.get(i), searchResultsList.get(i));
+            assertObjectEquals(expectedDocsList.get(i), searchResultsList.get(i), true);
         }
     }
 

@@ -11,6 +11,7 @@
   <modules>
     <module>azure-core</module>
     <module>azure-core-amqp</module>
+    <module>azure-core-http-jdk-httpclient</module>
     <module>azure-core-http-netty</module>
     <module>azure-core-http-okhttp</module>
     <module>azure-core-serializer-avro-apache</module>

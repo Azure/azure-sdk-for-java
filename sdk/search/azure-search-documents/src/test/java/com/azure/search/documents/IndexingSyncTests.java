@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -203,13 +204,13 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         }
 
         Hotel actualHotel1 = convertToType(client.getDocument(hotel1.hotelId()), Hotel.class);
-        TestHelpers.assertHotelsEqual(hotel1, actualHotel1);
+        assertObjectEquals(hotel1, actualHotel1, true);
 
         Hotel actualHotel2 = convertToType(client.getDocument(hotel2.hotelId()), Hotel.class);
-        TestHelpers.assertHotelsEqual(hotel2, actualHotel2);
+        assertObjectEquals(hotel2, actualHotel2, true);
 
         Hotel actualHotel3 = convertToType(client.getDocument(hotel3.hotelId()), Hotel.class);
-        TestHelpers.assertHotelsEqual(hotel3, actualHotel3);
+        assertObjectEquals(hotel3, actualHotel3, true);
     }
 
     @Test
@@ -313,7 +314,8 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         for (Hotel expected : boundaryConditionDocs) {
             SearchDocument doc = client.getDocument(expected.hotelId());
             Hotel actual = convertToType(doc, Hotel.class);
-            TestHelpers.assertHotelsEqual(expected, actual);
+
+            assertObjectEquals(expected, actual, true);
         }
     }
 
@@ -491,10 +493,10 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
         List<Hotel> updatedDocs = new ArrayList<>();
         updatedDocs.add(updatedDoc);
         client.mergeDocuments(updatedDocs);
-        TestHelpers.assertHotelsEqual(expectedDoc, convertToType(client.getDocument("1"), Hotel.class));
+        assertObjectEquals(expectedDoc, convertToType(client.getDocument("1"), Hotel.class), true);
 
         client.mergeDocuments(originalDocs);
-        TestHelpers.assertHotelsEqual(originalDoc, convertToType(client.getDocument("1"), Hotel.class));
+        assertObjectEquals(originalDoc, convertToType(client.getDocument("1"), Hotel.class), true);
     }
 
     @Test
@@ -627,14 +629,14 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         SearchDocument result = client.getDocument("1");
         LoudHotel actualDoc = convertToType(result, LoudHotel.class);
-        TestHelpers.assertLoudHotelsEqual(expectedDoc, actualDoc);
+        assertObjectEquals(expectedDoc, actualDoc, true);
 
         client.uploadDocuments(originalDocs);
         waitForIndexing();
 
         result = client.getDocument("1");
         actualDoc = convertToType(result, LoudHotel.class);
-        TestHelpers.assertLoudHotelsEqual(originalDoc, actualDoc);
+        assertObjectEquals(originalDoc, actualDoc, true);
     }
 
     @Test

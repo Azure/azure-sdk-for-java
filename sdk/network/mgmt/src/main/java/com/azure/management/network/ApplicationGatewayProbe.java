@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 import java.util.Set;
@@ -197,7 +194,7 @@ public interface ApplicationGatewayProbe extends
              * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
              *
              * @param from the lowest number in the range
-             * @param to   the highest number in the range
+             * @param to the highest number in the range
              * @return the next stage of the definition
              */
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);
@@ -362,7 +359,7 @@ public interface ApplicationGatewayProbe extends
              * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
              *
              * @param from the lowest number in the range
-             * @param to   the highest number in the range
+             * @param to the highest number in the range
              * @return the next stage of the update
              */
             Update withHealthyHttpResponseStatusCodeRange(int from, int to);
@@ -539,7 +536,7 @@ public interface ApplicationGatewayProbe extends
              * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
              *
              * @param from the lowest number in the range
-             * @param to   the highest number in the range
+             * @param to the highest number in the range
              * @return the next stage of the definition
              */
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);

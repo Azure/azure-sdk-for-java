@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.storage.implementation;
 
@@ -48,7 +45,7 @@ final class StorageNetworkRulesHelper {
      * Creates StorageNetworkRulesHelper.
      *
      * @param updateParameters the model representing payload for storage account update
-     * @param inner            the current state of storage account
+     * @param inner the current state of storage account
      */
     StorageNetworkRulesHelper(StorageAccountUpdateParameters updateParameters, final StorageAccountInner inner) {
         this.isInCreateMode = false;

@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceProviderOperationDisplayProperties model.
- */
+/** The ResourceProviderOperationDisplayProperties model. */
 @Fluent
 public final class ResourceProviderOperationDisplayProperties {
     /*
@@ -44,100 +42,100 @@ public final class ResourceProviderOperationDisplayProperties {
 
     /**
      * Get the publisher property: Operation description.
-     * 
+     *
      * @return the publisher value.
      */
-    public String getPublisher() {
+    public String publisher() {
         return this.publisher;
     }
 
     /**
      * Set the publisher property: Operation description.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setPublisher(String publisher) {
+    public ResourceProviderOperationDisplayProperties withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
     }
 
     /**
      * Get the provider property: Operation provider.
-     * 
+     *
      * @return the provider value.
      */
-    public String getProvider() {
+    public String provider() {
         return this.provider;
     }
 
     /**
      * Set the provider property: Operation provider.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setProvider(String provider) {
+    public ResourceProviderOperationDisplayProperties withProvider(String provider) {
         this.provider = provider;
         return this;
     }
 
     /**
      * Get the resource property: Operation resource.
-     * 
+     *
      * @return the resource value.
      */
-    public String getResource() {
+    public String resource() {
         return this.resource;
     }
 
     /**
      * Set the resource property: Operation resource.
-     * 
+     *
      * @param resource the resource value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setResource(String resource) {
+    public ResourceProviderOperationDisplayProperties withResource(String resource) {
         this.resource = resource;
         return this;
     }
 
     /**
      * Get the operation property: Resource provider operation.
-     * 
+     *
      * @return the operation value.
      */
-    public String getOperation() {
+    public String operation() {
         return this.operation;
     }
 
     /**
      * Set the operation property: Resource provider operation.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setOperation(String operation) {
+    public ResourceProviderOperationDisplayProperties withOperation(String operation) {
         this.operation = operation;
         return this;
     }
 
     /**
      * Get the description property: Operation description.
-     * 
+     *
      * @return the description value.
      */
-    public String getDescription() {
+    public String description() {
         return this.description;
     }
 
     /**
      * Set the description property: Operation description.
-     * 
+     *
      * @param description the description value to set.
      * @return the ResourceProviderOperationDisplayProperties object itself.
      */
-    public ResourceProviderOperationDisplayProperties setDescription(String description) {
+    public ResourceProviderOperationDisplayProperties withDescription(String description) {
         this.description = description;
         return this;
     }

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm;
 
@@ -58,7 +55,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the read timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withReadTimeout(long timeout, TimeUnit unit);
@@ -67,7 +64,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * Set the connection timeout on the HTTP client. Default is 10 seconds.
      *
      * @param timeout the timeout numeric value
-     * @param unit    the time unit for the numeric value
+     * @param unit the time unit for the numeric value
      * @return the configurable object itself for chaining
      */
     T withConnectionTimeout(long timeout, TimeUnit unit);

@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/locks/
-    exclude:
-      - sdk/locks/azure
-      - sdk/locks/microsoft-azure
-      - sdk/locks/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/locks/
-    exclude:
-      - sdk/locks/azure
-      - sdk/locks/microsoft-azure
-      - sdk/locks/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

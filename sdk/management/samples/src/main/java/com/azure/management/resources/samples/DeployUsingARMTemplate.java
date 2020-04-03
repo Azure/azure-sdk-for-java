@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.samples;
 
@@ -86,8 +83,8 @@ public final class DeployUsingARMTemplate {
                     if (operation.targetResource() != null) {
                         String operationTxt = String.format("id:%s name:%s type: %s provisioning-state:%s code: %s msg: %s",
                                 operation.targetResource().getId(),
-                                operation.targetResource().getResourceName(),
-                                operation.targetResource().getResourceType(),
+                                operation.targetResource().resourceName(),
+                                operation.targetResource().resourceType(),
                                 operation.provisioningState(),
                                 operation.statusCode(),
                                 operation.statusMessage());

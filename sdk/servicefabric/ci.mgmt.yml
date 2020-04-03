@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/servicefabric/
-    exclude:
-      - sdk/servicefabric/azure
-      - sdk/servicefabric/microsoft-azure
-      - sdk/servicefabric/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/servicefabric/
-    exclude:
-      - sdk/servicefabric/azure
-      - sdk/servicefabric/microsoft-azure
-      - sdk/servicefabric/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

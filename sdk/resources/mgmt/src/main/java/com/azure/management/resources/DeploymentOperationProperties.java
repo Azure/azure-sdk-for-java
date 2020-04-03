@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The DeploymentOperationProperties model.
- */
+/** The DeploymentOperationProperties model. */
 @Immutable
 public final class DeploymentOperationProperties {
     /*
@@ -69,83 +67,82 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the provisioningState property: The state of the provisioning.
-     * 
+     *
      * @return the provisioningState value.
      */
-    public String getProvisioningState() {
+    public String provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Get the timestamp property: The date and time of the operation.
-     * 
+     *
      * @return the timestamp value.
      */
-    public OffsetDateTime getTimestamp() {
+    public OffsetDateTime timestamp() {
         return this.timestamp;
     }
 
     /**
      * Get the duration property: The duration of the operation.
-     * 
+     *
      * @return the duration value.
      */
-    public String getDuration() {
+    public String duration() {
         return this.duration;
     }
 
     /**
-     * Get the serviceRequestId property: Deployment operation service request
-     * id.
-     * 
+     * Get the serviceRequestId property: Deployment operation service request id.
+     *
      * @return the serviceRequestId value.
      */
-    public String getServiceRequestId() {
+    public String serviceRequestId() {
         return this.serviceRequestId;
     }
 
     /**
      * Get the statusCode property: Operation status code.
-     * 
+     *
      * @return the statusCode value.
      */
-    public String getStatusCode() {
+    public String statusCode() {
         return this.statusCode;
     }
 
     /**
      * Get the statusMessage property: Operation status message.
-     * 
+     *
      * @return the statusMessage value.
      */
-    public Object getStatusMessage() {
+    public Object statusMessage() {
         return this.statusMessage;
     }
 
     /**
      * Get the targetResource property: The target resource.
-     * 
+     *
      * @return the targetResource value.
      */
-    public TargetResource getTargetResource() {
+    public TargetResource targetResource() {
         return this.targetResource;
     }
 
     /**
      * Get the request property: The HTTP request message.
-     * 
+     *
      * @return the request value.
      */
-    public HttpMessage getRequest() {
+    public HttpMessage request() {
         return this.request;
     }
 
     /**
      * Get the response property: The HTTP response message.
-     * 
+     *
      * @return the response value.
      */
-    public HttpMessage getResponse() {
+    public HttpMessage response() {
         return this.response;
     }
 }
