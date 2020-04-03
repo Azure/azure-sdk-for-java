@@ -18,7 +18,9 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
     private String resourceGroupName;
     private String accountName;
     private String containerName;
+    private String cifMatch;
     private int cimmutabilityPeriodSinceCreationInDays;
+    private String uifMatch;
     private int uimmutabilityPeriodSinceCreationInDays;
 
     ImmutabilityPolicyImpl(String name, StorageManager manager) {
@@ -34,7 +36,7 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
         this.manager = manager;
         // Set resource name
         this.containerName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
@@ -49,14 +51,14 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
     @Override
     public Observable<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.cimmutabilityPeriodSinceCreationInDays)
+        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.cimmutabilityPeriodSinceCreationInDays, this.cifMatch)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.uimmutabilityPeriodSinceCreationInDays)
+        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.uimmutabilityPeriodSinceCreationInDays, this.uifMatch)
             .map(innerToFluentMap(this));
     }
 
@@ -107,6 +109,16 @@ class ImmutabilityPolicyImpl extends CreatableUpdatableImpl<ImmutabilityPolicy, 
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.containerName = containerName;
+        return this;
+    }
+
+    @Override
+    public ImmutabilityPolicyImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.cifMatch = ifMatch;
+        } else {
+            this.uifMatch = ifMatch;
+        }
         return this;
     }
 
