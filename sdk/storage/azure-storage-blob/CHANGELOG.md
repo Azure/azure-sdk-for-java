@@ -3,6 +3,7 @@
 ## 12.6.0-beta.1 (Unreleased)
 - Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
 - Fixed a bug that would prevent progress from being reported when uploading small files.
+- Modified BlobOutputStream to wait on a condition variable until transfer is complete instead of polling.
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 
 ## 12.5.0 (2020-03-11)
