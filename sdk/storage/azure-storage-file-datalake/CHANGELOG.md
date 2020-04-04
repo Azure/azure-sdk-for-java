@@ -1,7 +1,11 @@
 # Release History
 
 ## 12.1.0-beta.1 (Unreleased)
-
+- Fixed a NPE caused due to deserializing a non existent lastModifiedTime.
+- Added an isDirectory property to PathProperties. 
+- Fixed DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to not overwrite by default 
+- Added overloads to DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to allow overwrite behavior.
+- Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 
 ## 12.0.1 (2020-03-11)
 - GA release. 

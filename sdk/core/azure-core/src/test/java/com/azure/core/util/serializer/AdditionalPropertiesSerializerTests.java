@@ -72,4 +72,30 @@ public class AdditionalPropertiesSerializerTests {
         Assertions.assertEquals("barbar", deserialized.additionalProperties().get("properties.bar"));
         Assertions.assertTrue(deserialized instanceof FooChild);
     }
+
+    @Test
+    public void canSerializeAdditionalPropertiesWithNestedAdditionalProperties() throws Exception {
+        Foo foo = new Foo();
+        foo.bar("hello.world");
+        foo.baz(new ArrayList<>());
+        foo.baz().add("hello");
+        foo.baz().add("hello.world");
+        foo.qux(new HashMap<>());
+        foo.qux().put("hello", "world");
+        foo.qux().put("a.b", "c.d");
+        foo.qux().put("bar.a", "ttyy");
+        foo.qux().put("bar.b", "uuzz");
+        foo.additionalProperties(new HashMap<>());
+        foo.additionalProperties().put("bar", "baz");
+        foo.additionalProperties().put("a.b", "c.d");
+        foo.additionalProperties().put("properties.bar", "barbar");
+        Foo nestedFoo = new Foo();
+        nestedFoo.bar("bye.world");
+        nestedFoo.additionalProperties(new HashMap<>());
+        nestedFoo.additionalProperties().put("name", "Sushi");
+        foo.additionalProperties().put("foo", nestedFoo);
+
+        String serialized = new JacksonAdapter().serialize(foo, SerializerEncoding.JSON);
+        Assertions.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"foo\":{\"properties\":{\"bar\":\"bye.world\"},\"name\":\"Sushi\"},\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}", serialized);
+    }
 }

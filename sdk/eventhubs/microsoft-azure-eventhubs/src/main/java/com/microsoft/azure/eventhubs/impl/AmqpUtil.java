@@ -14,6 +14,8 @@ import org.apache.qpid.proton.message.Message;
 import java.util.Date;
 import java.util.Locale;
 
+import com.microsoft.azure.eventhubs.EventHubException;
+
 public final class AmqpUtil {
 
     private AmqpUtil() {
@@ -51,7 +53,7 @@ public final class AmqpUtil {
         return 0;
     }
 
-    public static int getDataSerializedSize(Message amqpMessage) {
+    public static int getDataSerializedSize(Message amqpMessage) throws EventHubException {
 
         if (amqpMessage == null) {
             return 0;
@@ -78,6 +80,9 @@ public final class AmqpUtil {
 
         if (applicationProperties != null) {
             for (Object value : applicationProperties.getValue().keySet()) {
+                if (value == null) {
+                    throw new EventHubException(false, "An application property name is null, which is not allowed");
+                }
                 applicationPropertiesSize += sizeof(value);
             }
 
@@ -90,6 +95,11 @@ public final class AmqpUtil {
     }
 
     private static int sizeof(Object obj) {
+        if (obj == null) {
+            // In AMQP, null is a special type which has no data beyond the encoding byte.
+            return 0;
+        }
+
         if (obj instanceof String) {
             return obj.toString().length() << 1;
         }

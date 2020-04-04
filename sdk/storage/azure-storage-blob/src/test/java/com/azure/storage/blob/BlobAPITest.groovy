@@ -1079,6 +1079,7 @@ class BlobAPITest extends APISpec {
         key1  | value1 | key2   | value2 || statusCode
         null  | null   | null   | null   || 200
         "foo" | "bar"  | "fizz" | "buzz" || 200
+        "i0"  | "a"    | "i_"   | "a"    || 200 /* Test culture sensitive word sort */
     }
 
     @Unroll

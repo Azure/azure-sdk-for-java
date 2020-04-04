@@ -28,6 +28,11 @@ public interface EventChannel extends HasInner<EventChannelInner>, Indexable, Re
     EventChannelDestination destination();
 
     /**
+     * @return the filter value.
+     */
+    EventChannelFilter filter();
+
+    /**
      * @return the id value.
      */
     String id();
@@ -94,6 +99,18 @@ public interface EventChannel extends HasInner<EventChannelInner>, Indexable, Re
         }
 
         /**
+         * The stage of the eventchannel definition allowing to specify Filter.
+         */
+        interface WithFilter {
+            /**
+             * Specifies filter.
+             * @param filter Information about the filter for the event channel
+             * @return the next definition stage
+             */
+            WithCreate withFilter(EventChannelFilter filter);
+        }
+
+        /**
          * The stage of the eventchannel definition allowing to specify Source.
          */
         interface WithSource {
@@ -110,13 +127,13 @@ public interface EventChannel extends HasInner<EventChannelInner>, Indexable, Re
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<EventChannel>, DefinitionStages.WithDestination, DefinitionStages.WithSource {
+        interface WithCreate extends Creatable<EventChannel>, DefinitionStages.WithDestination, DefinitionStages.WithFilter, DefinitionStages.WithSource {
         }
     }
     /**
      * The template for a EventChannel update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<EventChannel>, UpdateStages.WithDestination, UpdateStages.WithSource {
+    interface Update extends Appliable<EventChannel>, UpdateStages.WithDestination, UpdateStages.WithFilter, UpdateStages.WithSource {
     }
 
     /**
@@ -133,6 +150,18 @@ public interface EventChannel extends HasInner<EventChannelInner>, Indexable, Re
              * @return the next update stage
              */
             Update withDestination(EventChannelDestination destination);
+        }
+
+        /**
+         * The stage of the eventchannel update allowing to specify Filter.
+         */
+        interface WithFilter {
+            /**
+             * Specifies filter.
+             * @param filter Information about the filter for the event channel
+             * @return the next update stage
+             */
+            Update withFilter(EventChannelFilter filter);
         }
 
         /**

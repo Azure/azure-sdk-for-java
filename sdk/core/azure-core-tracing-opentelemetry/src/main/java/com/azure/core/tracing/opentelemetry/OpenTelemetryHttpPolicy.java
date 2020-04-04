@@ -14,8 +14,8 @@ import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.common.AttributeValue;
 import io.opentelemetry.context.propagation.HttpTextFormat;
-import io.opentelemetry.trace.AttributeValue;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.Tracer;
@@ -42,7 +42,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
-    private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
+    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";

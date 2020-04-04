@@ -213,6 +213,8 @@ public final class Constants {
 
         public static final String ETAG_WILDCARD = "*";
 
+        public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
+
         private HeaderConstants() {
             // Private to prevent construction.
         }
