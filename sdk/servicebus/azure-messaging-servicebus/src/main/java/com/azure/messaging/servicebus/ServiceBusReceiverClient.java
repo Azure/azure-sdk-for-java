@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.core.util.FluxUtil.monoError;
+
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
  * topic on Azure Service Bus.
@@ -28,8 +30,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public class ServiceBusReceiverClient implements AutoCloseable {
-    private static final Duration DEFAULT_RECEIVE_WAIT_TIME = Duration.ofMinutes(1);
-
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClient.class);
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
@@ -262,15 +262,7 @@ public class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is zero or a negative value.
      */
     public IterableStream<ServiceBusReceivedMessage> receive(int maxMessages) {
-        if (maxMessages <= 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
-        }
-
-        final Flux<ServiceBusReceivedMessage> messages = Flux.create(emitter -> queueWork(maxMessages,
-            DEFAULT_RECEIVE_WAIT_TIME, emitter));
-
-        return new IterableStream<>(messages);
+        return receive(maxMessages, operationTimeout);
     }
 
     /**
@@ -286,6 +278,9 @@ public class ServiceBusReceiverClient implements AutoCloseable {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
+        } else if (Objects.isNull(maxWaitTime)) {
+            throw logger.logExceptionAsError(
+                new NullPointerException("'maxWaitTime' cannot be null."));
         } else if (maxWaitTime.isNegative() || maxWaitTime.isZero()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
