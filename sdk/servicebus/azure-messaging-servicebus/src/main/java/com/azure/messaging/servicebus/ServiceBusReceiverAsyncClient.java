@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
@@ -27,6 +28,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
@@ -56,8 +58,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.</p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
+ * {@link BaseSubscriber#request(long)}.</p> {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber}
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
@@ -356,14 +357,26 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity and completes them
      * when they are finished processing.
      *
+     * <p>
+     * By default, each successfully consumed message is {@link #complete(MessageLockToken) auto-completed} and {@link
+     * #renewMessageLock(MessageLockToken) auto-renewed}. When downstream consumers throw an exception, the
+     * auto-completion feature will {@link #abandon(MessageLockToken) abandon} the message. {@link
+     * #renewMessageLock(MessageLockToken) Auto-renewal} occurs until the {@link AmqpRetryOptions#getTryTimeout()
+     * operation timeout} has elapsed.
+     * </p>
+     *
      * @return A stream of messages from the Service Bus entity.
+     * @throws AmqpException if {@link AmqpRetryOptions#getTryTimeout() operation timeout} has elapsed and
+     *     downstream consumers are still processing the message.
      */
     public Flux<ServiceBusReceivedMessage> receive() {
         return receive(defaultReceiveOptions);
     }
 
     /**
-     * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity with a set of
+     * options. To disable lock auto-renewal, set {@link ReceiveAsyncOptions#setMaxAutoRenewDuration(Duration)
+     * setMaxAutoRenewDuration} to {@link Duration#ZERO} or {@code null}.
      *
      * @return A stream of messages from the Service Bus entity.
      * @throws NullPointerException if {@code options} is null.

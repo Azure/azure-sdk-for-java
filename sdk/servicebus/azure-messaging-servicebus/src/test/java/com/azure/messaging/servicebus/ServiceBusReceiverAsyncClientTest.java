@@ -31,9 +31,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -54,11 +52,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -208,15 +204,17 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages(10);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setMaxAutoRenewDuration(Duration.ZERO)
+            .setEnableAutoComplete(false);
 
         ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
         when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
-
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
             .thenReturn(receivedMessage);
 
         // Act & Assert
-        StepVerifier.create(consumer.receive().take(numberOfEvents))
+        StepVerifier.create(consumer.receive(options).take(numberOfEvents))
             .then(() -> messages.forEach(m -> messageSink.next(m)))
             .expectNextCount(numberOfEvents)
             .verifyComplete();
@@ -277,6 +275,53 @@ class ServiceBusReceiverAsyncClientTest {
     }
 
     /**
+     * Verifies that if there is no lock token, and auto-complete is requested. It errors.
+     */
+    @Test
+    void receivesAndAutoCompleteWithoutLockTokenErrors() {
+        // Arrange
+        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH);
+        final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
+            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
+            tracerProvider, messageSerializer, messageContainer, onClientClose);
+
+        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+        final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+        when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
+
+        final Instant lockedUntil = Instant.now().plusSeconds(30);
+        final Instant lockedUntil2 = Instant.now().plusSeconds(30);
+
+        when(receivedMessage.getLockToken()).thenReturn(null);
+        when(receivedMessage.getLockedUntil()).thenReturn(lockedUntil);
+
+        when(receivedMessage2.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(receivedMessage2.getLockedUntil()).thenReturn(lockedUntil2);
+
+        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
+            .thenReturn(Mono.just(managementNode));
+
+        when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
+            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
+
+        // Act and Assert
+        try {
+            StepVerifier.create(consumer2.receive().take(2))
+                .then(() -> {
+                    messageSink.next(message);
+                })
+                .expectNext(receivedMessage)
+                .verifyComplete();
+        } finally {
+            consumer2.close();
+        }
+
+        verifyZeroInteractions(managementNode);
+    }
+
+    /**
      * Verifies that if there is no lock token, the message is not completed.
      */
     @Test
@@ -295,8 +340,15 @@ class ServiceBusReceiverAsyncClientTest {
 
         final String lockToken1 = UUID.randomUUID().toString();
         final String lockToken2 = UUID.randomUUID().toString();
+
+        final Instant lockedUntil = Instant.now().plusSeconds(30);
+        final Instant lockedUntil2 = Instant.now().plusSeconds(30);
+
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage.getLockedUntil()).thenReturn(lockedUntil);
+
         when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
+        when(receivedMessage2.getLockedUntil()).thenReturn(lockedUntil2);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));

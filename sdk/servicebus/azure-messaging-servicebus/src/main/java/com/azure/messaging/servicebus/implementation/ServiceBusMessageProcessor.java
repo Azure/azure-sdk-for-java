@@ -6,6 +6,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.MessageLockToken;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -325,14 +326,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         final String lockToken = message.getLockToken();
 
         final boolean isCompleteMessage = isAutoComplete && lockToken != null && !lockToken.isEmpty();
-        final Instant initialLockedUntil;
-        if (lockToken != null && !lockToken.isEmpty()) {
-            initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
-        } else {
-            initialLockedUntil = message.getLockedUntil();
-        }
 
-        logger.info("seq[{}]. lock[{}]. lockedUntil[{}].", sequenceNumber, initialLockedUntil, initialLockedUntil);
+        if (isCompleteMessage && CoreUtils.isNullOrEmpty(lockToken)) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot auto-complete message without a lock token on message. Sequence number: " + sequenceNumber));
+        }
 
         final AtomicBoolean hasError = new AtomicBoolean();
         final Disposable renewLockOperation = getRenewLockOperation(message, hasError);
@@ -385,9 +383,23 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             return Disposables.disposed();
         }
 
-        final String lockToken = message.getLockToken();
         final long sequenceNumber = message.getSequenceNumber();
-        final Duration initialInterval = Duration.between(Instant.now(), message.getLockedUntil());
+        final String lockToken = message.getLockToken();
+        final Instant initialLockedUntil;
+        if (!CoreUtils.isNullOrEmpty(lockToken)) {
+            initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
+        } else {
+            initialLockedUntil = message.getLockedUntil();
+        }
+
+        if (initialLockedUntil == null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
+        }
+
+        final Duration initialInterval = Duration.between(Instant.now(), initialLockedUntil);
+
+        logger.info("lock[{}]. lockedUntil[{}]. interval[{}]", lockToken, initialLockedUntil, initialInterval);
 
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
