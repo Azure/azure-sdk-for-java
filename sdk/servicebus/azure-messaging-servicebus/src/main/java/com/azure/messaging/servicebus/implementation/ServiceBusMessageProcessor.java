@@ -309,7 +309,12 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 break;
             }
 
-            next(message);
+            try {
+                next(message);
+            } catch (Exception e) {
+                setInternalError(e);
+                break;
+            }
         }
 
         return numberEmitted;
@@ -317,13 +322,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
 
     private void next(ServiceBusReceivedMessage message) {
         final long sequenceNumber = message.getSequenceNumber();
-        final UUID lockToken = !Objects.isNull(message.getLockToken())
-            ? UUID.fromString(message.getLockToken())
-            : null;
+        final String lockToken = message.getLockToken();
 
-        final boolean isCompleteMessage = isAutoComplete && lockToken != null;
+        final boolean isCompleteMessage = isAutoComplete && lockToken != null && !lockToken.isEmpty();
         final Instant initialLockedUntil;
-        if (lockToken != null) {
+        if (lockToken != null && !lockToken.isEmpty()) {
             initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
         } else {
             initialLockedUntil = message.getLockedUntil();
@@ -382,7 +385,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             return Disposables.disposed();
         }
 
-        final UUID lockToken = message.getLockToken();
+        final String lockToken = message.getLockToken();
         final long sequenceNumber = message.getSequenceNumber();
         final Duration initialInterval = Duration.between(Instant.now(), message.getLockedUntil());
 

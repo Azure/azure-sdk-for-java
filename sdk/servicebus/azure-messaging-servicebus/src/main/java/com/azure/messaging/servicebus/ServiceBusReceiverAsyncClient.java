@@ -510,7 +510,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         onClientClose.run();
     }
 
-    private Mono<Boolean> isLockTokenValid(UUID lockToken) {
+    private Mono<Boolean> isLockTokenValid(String lockToken) {
         final Instant lockedUntilUtc = messageLockContainer.getLockTokenExpiration(lockToken);
         if (lockedUntilUtc == null) {
             logger.warning("lockToken[{}] is not owned by this receiver.", lockToken);
@@ -553,7 +553,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
-        final UUID lockToken = UUID.fromString(message.getLockToken());
+        final String lockToken = message.getLockToken();
         final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Lock: {}. Expiration: {}",
             entityPath, dispositionStatus, lockToken, instant);
