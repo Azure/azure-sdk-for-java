@@ -78,7 +78,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void readFeedDocumentsStartFromBeginning() {
         setupReadFeedDocuments(createdFeedCollection, FEED_COUNT);
 
@@ -132,7 +132,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.clear();
      }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() {
         ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .hostName(hostName)
@@ -189,7 +189,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.clear();
     }
 
-    @Test(groups = { "emulator" }, timeOut = 40 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void staledLeaseAcquiring() {
         final String ownerFirst = "Owner_First";
         final String ownerSecond = "Owner_Second";
@@ -315,7 +315,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.clear();
     }
 
-//    @Test(groups = { "simple" }, timeOut = CHANGE_FEED_PROCESSOR_TIMEOUT * 50)
+    @Test(groups = { "simple" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit() {
         createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
 
@@ -361,6 +361,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             log.error(e.getMessage());
         }
 
+        // Loop through reading the current partition count until we get a split
+        //   This can take up to two minute or more.
         String partitionKeyRangesPath = extractContainerSelfLink(createdFeedCollectionForSplit);
         FeedOptions feedOptions = new FeedOptions();
         feedOptions.setRequestContinuation(null);
@@ -380,6 +382,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 }
                 return count;
             })
+            // this will timeout approximately after 3 minutes
             .retry(40, throwable -> {
                 try {
                     log.warn("Retrying...");
