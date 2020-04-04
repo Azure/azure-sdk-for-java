@@ -512,11 +512,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
         } else if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
-        } else if (Objects.isNull(message.getLockToken())) {
+        } /*else if (Objects.isNull(message.getLockToken())) {
             return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
-        }
+        }*/
 
 
         if (receiveMode != ReceiveMode.PEEK_LOCK) {

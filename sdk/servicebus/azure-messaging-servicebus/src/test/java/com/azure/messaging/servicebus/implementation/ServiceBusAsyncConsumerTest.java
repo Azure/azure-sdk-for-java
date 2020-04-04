@@ -198,6 +198,7 @@ class ServiceBusAsyncConsumerTest {
         final Message message1 = mock(Message.class);
         final ServiceBusReceivedMessage receivedMessage1 = mock(ServiceBusReceivedMessage.class);
 
+        when(receivedMessage1.getLockToken()).thenReturn(UUID.randomUUID().toString());
         when(serializer.deserialize(message1, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage1);
 
         // Act and Assert

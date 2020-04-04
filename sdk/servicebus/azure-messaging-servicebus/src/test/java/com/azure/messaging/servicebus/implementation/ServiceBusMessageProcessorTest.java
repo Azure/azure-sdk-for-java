@@ -48,6 +48,11 @@ class ServiceBusMessageProcessorTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
+        when(message1.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(message2.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(message3.getLockToken()).thenReturn(UUID.randomUUID().toString());
+        when(message4.getLockToken()).thenReturn(UUID.randomUUID().toString());
+
     }
 
     @AfterEach
@@ -106,7 +111,7 @@ class ServiceBusMessageProcessorTest {
         };
 
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(true, false, renewDuration,
+            .subscribeWith(new ServiceBusMessageProcessor(false, false, renewDuration,
                 retryOptions, messageContainer, onCompleteMethod, onAbandon, onRenewLock));
 
         // Act & Assert

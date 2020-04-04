@@ -205,8 +205,11 @@ class ServiceBusReceiverAsyncClientTest {
         final int numberOfEvents = 1;
         final List<Message> messages = getMessages(10);
 
+        ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+        when(receivedMessage.getLockToken()).thenReturn(UUID.randomUUID().toString());
+
         when(messageSerializer.deserialize(any(Message.class), eq(ServiceBusReceivedMessage.class)))
-            .thenReturn(mock(ServiceBusReceivedMessage.class));
+            .thenReturn(receivedMessage);
 
         // Act & Assert
         StepVerifier.create(consumer.receive().take(numberOfEvents))
@@ -325,7 +328,7 @@ class ServiceBusReceiverAsyncClientTest {
         when(receivedMessage.getLockToken()).thenReturn(null);
 
         StepVerifier.create(consumer.complete(receivedMessage))
-            .expectError(IllegalArgumentException.class)
+            .expectError(NullPointerException.class)
             .verify();
 
         verify(managementNode, times(0))
