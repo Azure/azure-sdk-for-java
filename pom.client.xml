@@ -1034,8 +1034,10 @@
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
                 --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
@@ -1164,7 +1166,7 @@
     <!-- Skip codesnippet injection unless -Dinject-codesnippets is passed as an argument.
       This is specifically done to prevent requiring python as a pre-requisite since
       this is only needed by the build system. This is also necessary due to limitations in consumption
-      from docs side. 
+      from docs side.
        -->
     <profile>
       <id>replace-codesnippet-references</id>
