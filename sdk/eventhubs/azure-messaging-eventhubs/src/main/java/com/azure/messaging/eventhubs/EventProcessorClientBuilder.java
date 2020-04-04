@@ -15,11 +15,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.CloseContext;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -73,11 +75,14 @@ public class EventProcessorClientBuilder {
     private String consumerGroup;
     private CheckpointStore checkpointStore;
     private Consumer<EventContext> processEvent;
+    private Consumer<List<EventContext>> processEventBatch;
     private Consumer<ErrorContext> processError;
     private Consumer<InitializationContext> processPartitionInitialization;
     private Consumer<CloseContext> processPartitionClose;
     private boolean trackLastEnqueuedEventProperties;
     private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
+    private int maxBatchSize = 1; // setting this to 1 by default
+    private Duration maxWaitTime;
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -240,7 +245,64 @@ public class EventProcessorClientBuilder {
      * @throws NullPointerException if {@code processEvent} is {@code null}.
      */
     public EventProcessorClientBuilder processEvent(Consumer<EventContext> processEvent) {
+        return this.processEvent(processEvent, null);
+    }
+
+    /**
+     * The function that is called for each event received by this {@link EventProcessorClient}. The input contains the
+     * partition context and the event data. If the max wait time is set, the receive will wait for that duration to
+     * receive an event and if is no event received, the consumer will be invoked with a null event data.
+     *
+     * @param processEvent The callback that's called when an event is received by this {@link EventProcessorClient} or
+     * when the max wait duration has expired.
+     * @param maxWaitTime The max time duration to wait to receive an event before invoking this handler.
+     * @return The updated {@link EventProcessorClient} instance.
+     * @throws NullPointerException if {@code processEvent} is {@code null}.
+     */
+    public EventProcessorClientBuilder processEvent(Consumer<EventContext> processEvent, Duration maxWaitTime) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
+        this.maxWaitTime = maxWaitTime;
+        return this;
+    }
+
+    /**
+     * The function that is called for each event received by this {@link EventProcessorClient}. The input contains the
+     * partition context and the event data. If the max wait time is set, the receive will wait for that duration to
+     * receive an event and if is no event received, the consumer will be invoked with a null event data.
+     *
+     * @param processEventBatch The callback that's called when an event is received by this {@link
+     * EventProcessorClient} or when the max wait duration has expired.
+     * @param maxBatchSize The maximum number of events that will be in the list when this callback is invoked.
+     * @return The updated {@link EventProcessorClient} instance.
+     * @throws NullPointerException if {@code processEvent} is {@code null}.
+     */
+    public EventProcessorClientBuilder processEventBatch(Consumer<List<EventContext>> processEventBatch,
+        int maxBatchSize) {
+        return this.processEventBatch(processEventBatch, maxBatchSize, null);
+    }
+
+    /**
+     * The function that is called for each event received by this {@link EventProcessorClient}. The input contains the
+     * partition context and the event data. If the max wait time is set, the receive will wait for that duration to
+     * receive an event and if is no event received, the consumer will be invoked with a null event data.
+     *
+     * @param processEventBatch The callback that's called when an event is received  or when the max wait duration has
+     * expired.
+     * @param maxBatchSize The maximum number of events that will be in the list when this callback is invoked.
+     * @param maxWaitTime The max time duration to wait to receive a batch of events upto the max batch size before
+     * invoking this callback.
+     * @return The updated {@link EventProcessorClient} instance.
+     * @throws NullPointerException if {@code processEvent} is {@code null}.
+     */
+    public EventProcessorClientBuilder processEventBatch(Consumer<List<EventContext>> processEventBatch,
+        int maxBatchSize, Duration maxWaitTime) {
+        if (maxBatchSize <= 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
+        }
+        this.processEventBatch = Objects.requireNonNull(processEventBatch, "'processEventBatch' cannot be null");
+        this.maxBatchSize = maxBatchSize;
+        this.maxWaitTime = maxWaitTime;
+
         return this;
     }
 
@@ -292,8 +354,8 @@ public class EventProcessorClientBuilder {
      * amount of additional network bandwidth consumption that is generally a favorable trade-off when considered
      * against periodically making requests for partition properties using the Event Hub client.</p>
      *
-     * @param trackLastEnqueuedEventProperties {@code true} if the resulting events will keep track of the last
-     *     enqueued information for that partition; {@code false} otherwise.
+     * @param trackLastEnqueuedEventProperties {@code true} if the resulting events will keep track of the last enqueued
+     * information for that partition; {@code false} otherwise.
      * @return The updated {@link EventProcessorClientBuilder} instance.
      */
     public EventProcessorClientBuilder trackLastEnqueuedEventProperties(boolean trackLastEnqueuedEventProperties) {
@@ -303,9 +365,9 @@ public class EventProcessorClientBuilder {
 
     /**
      * Sets the map containing the event position to use for each partition if a checkpoint for the partition does not
-     * exist in {@link CheckpointStore}. This map is keyed off of the partition id. If there is no checkpoint in
-     * {@link CheckpointStore} and there is no entry in this map, the processing of the partition will start from
-     * {@link EventPosition#latest() latest} position.
+     * exist in {@link CheckpointStore}. This map is keyed off of the partition id. If there is no checkpoint in {@link
+     * CheckpointStore} and there is no entry in this map, the processing of the partition will start from {@link
+     * EventPosition#latest() latest} position.
      *
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
      * @return The updated {@link EventProcessorClientBuilder} instance.
@@ -328,29 +390,49 @@ public class EventProcessorClientBuilder {
      * </p>
      *
      * @return A new instance of {@link EventProcessorClient}.
-     * @throws NullPointerException if {@code processEvent} or {@code processError} or {@code checkpointStore} or
-     * {@code consumerGroup} is {@code null}.
+     * @throws NullPointerException if {@code processEvent} or {@code processError} or {@code checkpointStore} or {@code
+     * consumerGroup} is {@code null}.
      * @throws IllegalArgumentException if the credentials have not been set using either {@link
      * #connectionString(String)} or {@link #credential(String, String, TokenCredential)}. Or, if a proxy is specified
      * but the transport type is not {@link AmqpTransportType#AMQP_WEB_SOCKETS web sockets}.
      */
     public EventProcessorClient buildEventProcessorClient() {
-        Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
         Objects.requireNonNull(processError, "'processError' cannot be null");
         Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null");
         Objects.requireNonNull(consumerGroup, "'consumerGroup' cannot be null");
 
+        if (processEvent == null && processEventBatch == null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Either processEvent or processEventBatch "
+                + "has to be set"));
+        }
+
+        if (processEvent != null && processEventBatch != null) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Both processEvent and processEventBatch "
+                + "cannot be set"));
+        }
+
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
         return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
-            processError, initialPartitionEventPosition);
+            processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
         return () -> new PartitionProcessor() {
             @Override
             public void processEvent(EventContext eventContext) {
-                processEvent.accept(eventContext);
+                if (processEvent != null) {
+                    processEvent.accept(eventContext);
+                }
+            }
+
+            @Override
+            public void processEventBatch(List<EventContext> eventContextBatch) {
+                if (processEventBatch != null) {
+                    processEventBatch.accept(eventContextBatch);
+                } else {
+                    eventContextBatch.forEach(this::processEvent);
+                }
             }
 
             @Override

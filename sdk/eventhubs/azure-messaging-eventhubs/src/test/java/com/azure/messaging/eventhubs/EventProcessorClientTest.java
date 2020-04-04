@@ -14,9 +14,13 @@ import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -41,6 +45,7 @@ import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -142,7 +147,8 @@ public class EventProcessorClientTest {
 
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false);
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
 
@@ -188,6 +194,7 @@ public class EventProcessorClientTest {
      *
      * @throws Exception if an error occurs while running the test.
      */
+    @Disabled("Tracing for batch receive is not supported")
     @Test
     public void testProcessSpans() throws Exception {
         //Arrange
@@ -232,7 +239,8 @@ public class EventProcessorClientTest {
 
         //Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
+            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false);
 
         eventProcessorClient.start();
         TimeUnit.SECONDS.sleep(10);
@@ -294,7 +302,8 @@ public class EventProcessorClientTest {
         // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder,
             "test-consumer",
-            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>());
+            TestPartitionProcessor::new, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            1, null, false);
         eventProcessorClient.start();
         final boolean completed = count.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();
@@ -318,16 +327,114 @@ public class EventProcessorClientTest {
             }).verifyComplete();
     }
 
+
+    @Test
+    public void testBatchReceive() throws Exception {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData3.getOffset()).thenReturn(150L);
+
+        final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
+
+        final long beforeTest = System.currentTimeMillis();
+        String diagnosticId = "00-08ee063508037b1719dddcbf248e30e2-1365c684eb25daed-01";
+        when(tracer1.extractContext(eq(diagnosticId), any())).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value");
+            }
+        );
+        when(tracer1.start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS))).thenAnswer(
+            invocation -> {
+                Context passed = invocation.getArgument(1, Context.class);
+                return passed.addData(SPAN_CONTEXT_KEY, "value1")
+                    .addData("scope", (Closeable) () -> {
+                    })
+                    .addData(PARENT_SPAN_KEY, "value2");
+            }
+        );
+
+        // Act
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            2, Duration.ofSeconds(1), true);
+        eventProcessorClient.start();
+        TimeUnit.SECONDS.sleep(10);
+
+        // Assert
+        assertNotNull(eventProcessorClient.getIdentifier());
+
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+            .expectNextCount(1).verifyComplete();
+
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+            .assertNext(partitionOwnership -> {
+                assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals(eventProcessorClient.getIdentifier(), partitionOwnership.getOwnerId(), "OwnerId");
+                assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
+                assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
+                assertNotNull(partitionOwnership.getETag());
+            }).verifyComplete();
+
+        verify(eventHubAsyncClient, atLeastOnce()).getPartitionIds();
+        verify(eventHubAsyncClient, atLeastOnce())
+            .createConsumer(anyString(), anyInt());
+        verify(consumer1, atLeastOnce()).receiveFromPartition(anyString(), any(EventPosition.class),
+            any(ReceiveOptions.class));
+        verify(consumer1, atLeastOnce()).close();
+        assertIterableEquals(testPartitionProcessor.receivedEventsCount, Arrays.asList(2, 1));
+        eventProcessorClient.stop();
+        StepVerifier.create(checkpointStore.listOwnership("test-ns", "test-eh", "test-consumer"))
+            .assertNext(partitionOwnership -> {
+                assertEquals("1", partitionOwnership.getPartitionId(), "Partition");
+                assertEquals("test-consumer", partitionOwnership.getConsumerGroup(), "Consumer");
+                assertEquals("test-eh", partitionOwnership.getEventHubName(), "EventHub name");
+                assertEquals("", partitionOwnership.getOwnerId(), "Owner Id");
+                assertTrue(partitionOwnership.getLastModifiedTime() >= beforeTest, "LastModifiedTime");
+                assertTrue(partitionOwnership.getLastModifiedTime() <= System.currentTimeMillis(), "LastModifiedTime");
+                assertNotNull(partitionOwnership.getETag());
+            }).verifyComplete();
+
+    }
+
     private PartitionEvent getEvent(EventData event) {
         PartitionContext context = new PartitionContext("test-ns", "foo", "bar", "baz");
         return new PartitionEvent(context, event, null);
     }
 
     private static final class TestPartitionProcessor extends PartitionProcessor {
-
+        List<Integer> receivedEventsCount = new ArrayList<>();
         @Override
         public void processEvent(EventContext eventContext) {
             eventContext.updateCheckpoint();
+        }
+
+        @Override
+        public void processEventBatch(List<EventContext> eventContextBatch) {
+            receivedEventsCount.add(eventContextBatch.size());
+            eventContextBatch.forEach(eventContext -> {
+                eventContext.updateCheckpoint();
+            });
         }
 
         @Override

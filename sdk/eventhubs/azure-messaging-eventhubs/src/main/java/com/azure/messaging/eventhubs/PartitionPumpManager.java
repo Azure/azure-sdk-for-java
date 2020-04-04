@@ -3,6 +3,15 @@
 
 package com.azure.messaging.eventhubs;
 
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
+import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
+import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
+import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
+import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,24 +29,17 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.PartitionOwnership;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import reactor.core.publisher.Signal;
-
 import java.io.Closeable;
 import java.io.IOException;
+import java.time.Duration;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.SCOPE_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
+import java.util.stream.Collectors;
+import reactor.core.publisher.Signal;
 
 /**
  * The partition pump manager that keeps track of all the partition pumps started by this {@link EventProcessorClient}.
@@ -51,6 +53,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NA
  * </p>
  */
 class PartitionPumpManager {
+
     private final ClientLogger logger = new ClientLogger(PartitionPumpManager.class);
     private final CheckpointStore checkpointStore;
     private final Map<String, EventHubConsumerAsyncClient> partitionPumps = new ConcurrentHashMap<>();
@@ -59,6 +62,9 @@ class PartitionPumpManager {
     private final TracerProvider tracerProvider;
     private final boolean trackLastEnqueuedEventProperties;
     private final Map<String, EventPosition> initialPartitionEventPosition;
+    private final Duration maxWaitTime;
+    private final int maxBatchSize;
+    private final boolean batchReceiveMode;
 
     /**
      * Creates an instance of partition pump manager.
@@ -72,17 +78,25 @@ class PartitionPumpManager {
      * will also include the last enqueued event properties for it's respective partitions.
      * @param tracerProvider The tracer implementation.
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
+     * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
+     * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
+     * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
+     * single events.
      */
     PartitionPumpManager(CheckpointStore checkpointStore,
         Supplier<PartitionProcessor> partitionProcessorFactory, EventHubClientBuilder eventHubClientBuilder,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider,
-        Map<String, EventPosition> initialPartitionEventPosition) {
+        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
+        boolean batchReceiveMode) {
         this.checkpointStore = checkpointStore;
         this.partitionProcessorFactory = partitionProcessorFactory;
         this.eventHubClientBuilder = eventHubClientBuilder;
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
         this.tracerProvider = tracerProvider;
         this.initialPartitionEventPosition = initialPartitionEventPosition;
+        this.maxBatchSize = maxBatchSize;
+        this.maxWaitTime = maxWaitTime;
+        this.batchReceiveMode = batchReceiveMode;
     }
 
     /**
@@ -146,17 +160,38 @@ class PartitionPumpManager {
                 .createConsumer(claimedOwnership.getConsumerGroup(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
             partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
-            eventHubConsumer
-                .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
-                .subscribe(partitionEvent -> processEvent(partitionContext, partitionProcessor, eventHubConsumer,
-                    partitionEvent),
-                    /* EventHubConsumer receive() returned an error */
-                    ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
-                    () -> {
-                        partitionProcessor.close(new CloseContext(partitionContext,
-                            CloseReason.EVENT_PROCESSOR_SHUTDOWN));
-                        cleanup(claimedOwnership, eventHubConsumer);
-                    });
+            if (maxWaitTime != null) {
+                eventHubConsumer
+                    .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                    .bufferTimeout(maxBatchSize, maxWaitTime)
+                    .subscribe(partitionEventBatch -> {
+                            processEventBatch(partitionContext, partitionProcessor,
+                                eventHubConsumer, partitionEventBatch);
+                        },
+                        /* EventHubConsumer receive() returned an error */
+                        ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
+                        () -> {
+                            partitionProcessor.close(new CloseContext(partitionContext,
+                                CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                            cleanup(claimedOwnership, eventHubConsumer);
+                        });
+            } else {
+                eventHubConsumer
+                    .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
+                    .buffer(maxBatchSize)
+                    .subscribe(partitionEventBatch -> {
+                            processEventBatch(partitionContext, partitionProcessor,
+                                eventHubConsumer, partitionEventBatch);
+                        },
+                        /* EventHubConsumer receive() returned an error */
+                        ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
+                        () -> {
+                            partitionProcessor.close(new CloseContext(partitionContext,
+                                CloseReason.EVENT_PROCESSOR_SHUTDOWN));
+                            cleanup(claimedOwnership, eventHubConsumer);
+                        });
+            }
+
         } catch (Exception ex) {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));
@@ -188,6 +223,32 @@ class PartitionPumpManager {
                 throwable));
         }
     }
+
+    private void processEventBatch(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
+        EventHubConsumerAsyncClient eventHubConsumer, List<PartitionEvent> partitionEventBatch) {
+        List<EventContext> eventContextBatch = partitionEventBatch.stream()
+            .map(partitionEvent -> new EventContext(partitionContext, partitionEvent.getData(), checkpointStore,
+                partitionEvent.getLastEnqueuedEventProperties()))
+            .collect(Collectors.toList());
+        try {
+            if (!batchReceiveMode && maxBatchSize == 1) {
+                EventContext eventContext;
+                if (eventContextBatch.isEmpty()) {
+                    eventContext = new EventContext(partitionContext, null, checkpointStore, null);
+                } else {
+                    eventContext = eventContextBatch.get(0);
+                }
+                partitionProcessor.processEvent(eventContext);
+            } else {
+                partitionProcessor.processEventBatch(eventContextBatch);
+            }
+        } catch (Throwable throwable) {
+            /* user code for event processing threw an exception - log and bubble up */
+            throw logger.logExceptionAsError(new PartitionProcessorException("Error in event processing callback",
+                throwable));
+        }
+    }
+
 
     Map<String, EventHubConsumerAsyncClient> getPartitionPumps() {
         return this.partitionPumps;
