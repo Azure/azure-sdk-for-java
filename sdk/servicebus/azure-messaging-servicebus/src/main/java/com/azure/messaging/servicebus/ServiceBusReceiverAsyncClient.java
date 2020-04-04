@@ -443,17 +443,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
-        UUID lockTokenUUID;
+        UUID lockTokenUuid = null;
         try {
-            lockTokenUUID = UUID.fromString(lockToken.getLockToken());
+            lockTokenUuid = UUID.fromString(lockToken.getLockToken());
         } catch (IllegalArgumentException ex) {
-            throw ex;
+            monoError(logger, ex);
         }
 
+        UUID finalLockTokenUuid = lockTokenUuid;
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockTokenUUID))
+                serviceBusManagementNode.renewMessageLock(finalLockTokenUuid))
             .map(instant -> {
                 if (lockToken instanceof ServiceBusReceivedMessage) {
                     ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);

@@ -266,13 +266,12 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     }
 
     private void next(ServiceBusReceivedMessage message) {
-        final UUID lockToken = UUID.fromString(message.getLockToken());
         final long sequenceNumber = message.getSequenceNumber();
-        final boolean isCompleteMessage = isAutoComplete && message.getLockToken() != null
-            && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
+        final UUID lockToken = UUID.fromString(message.getLockToken());
+        boolean isCompleteMessage = isAutoComplete && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
 
         final Instant initialLockedUntil;
-        if (lockToken != null && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {
+        if (!MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {
             initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
         } else {
             initialLockedUntil = message.getLockedUntil();
@@ -281,16 +280,17 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         logger.info("seq[{}]. lock[{}]. lockedUntil[{}].", sequenceNumber, initialLockedUntil, initialLockedUntil);
 
         final Disposable renewLockSubscription;
+        final UUID finalLockToken = lockToken;
         if (isAutoRenewLock) {
             logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Renewing lock every: {}", sequenceNumber, lockToken,
                 message.getLockedUntil(), maxAutoLockRenewal);
             renewLockSubscription = Flux.interval(maxAutoLockRenewal)
                 .flatMap(interval -> onRenewLock.apply(message))
                 .subscribe(lockedUntil -> {
-                    final Instant updated = messageLockContainer.addOrUpdate(lockToken, lockedUntil);
+                    final Instant updated = messageLockContainer.addOrUpdate(finalLockToken, lockedUntil);
 
                     logger.info("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
-                        sequenceNumber, lockToken, updated);
+                        sequenceNumber, finalLockToken, updated);
                 }, error -> logger.error("Error occurred while renewing lock token.", error),
                     () -> logger.info("Renewing lock token task completed."));
         } else {
@@ -306,8 +306,9 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 logger.info("Abandoning message lock: {}", lockToken);
                 onAbandon.apply(message)
                     .onErrorStop()
-                    .doOnError(error -> logger.warning("Could not abandon message with lock: {}", lockToken, error))
-                    .doFinally(signal -> logger.info("lock[{}]. Abandon status: [{}]", lockToken, signal))
+                    .doOnError(error -> logger.warning("Could not abandon message with lock: {}", finalLockToken,
+                        error))
+                    .doFinally(signal -> logger.info("lock[{}]. Abandon status: [{}]", finalLockToken, signal))
                     .block(retryOptions.getTryTimeout());
             }
 
@@ -325,7 +326,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                     .onErrorStop()
                     .doOnError(error -> logger.warning("Could not complete message with lock: {}",
                         message.getLockToken(), error))
-                    .doFinally(signal -> logger.info("lock[{}]. Complete status: [{}]", lockToken, signal))
+                    .doFinally(signal -> logger.info("lock[{}]. Complete status: [{}]", finalLockToken, signal))
                     .block(retryOptions.getTryTimeout());
             }
         } catch (Exception e) {
