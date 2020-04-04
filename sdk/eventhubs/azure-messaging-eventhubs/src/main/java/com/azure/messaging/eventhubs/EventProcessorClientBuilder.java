@@ -40,8 +40,9 @@ import java.util.function.Supplier;
  * <li>{@link #consumerGroup(String) Consumer group name}.</li>
  * <li>{@link CheckpointStore} - An implementation of CheckpointStore that stores checkpoint and
  * partition ownership information to enable load balancing and checkpointing processed events.</li>
- * <li>{@link #processEvent(Consumer) processEvent} - A callback that processes events received from the Event Hub
- * .</li>
+ * <li>{@link #processEvent(Consumer) processEvent} or
+ * {@link #processEventBatch(Consumer, int, Duration) processEventBatch} - A callback that processes events received
+ * from the Event Hub.</li>
  * <li>{@link #processError(Consumer) processError} - A callback that handles errors that may occur while running the
  * EventProcessorClient.</li>
  * <li>Credentials -
@@ -261,6 +262,9 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder processEvent(Consumer<EventContext> processEvent, Duration maxWaitTime) {
         this.processEvent = Objects.requireNonNull(processEvent, "'processEvent' cannot be null");
+        if (maxWaitTime != null && maxWaitTime.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
+        }
         this.maxWaitTime = maxWaitTime;
         return this;
     }
@@ -286,6 +290,8 @@ public class EventProcessorClientBuilder {
      * partition context and the event data. If the max wait time is set, the receive will wait for that duration to
      * receive an event and if is no event received, the consumer will be invoked with a null event data.
      *
+     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive}
+     *
      * @param processEventBatch The callback that's called when an event is received  or when the max wait duration has
      * expired.
      * @param maxBatchSize The maximum number of events that will be in the list when this callback is invoked.
@@ -298,6 +304,9 @@ public class EventProcessorClientBuilder {
         int maxBatchSize, Duration maxWaitTime) {
         if (maxBatchSize <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'maxBatchSize' should be greater than 0"));
+        }
+        if (maxWaitTime != null && maxWaitTime.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'maxWaitTime' cannot be 0"));
         }
         this.processEventBatch = Objects.requireNonNull(processEventBatch, "'processEventBatch' cannot be null");
         this.maxBatchSize = maxBatchSize;

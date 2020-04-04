@@ -39,6 +39,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Signal;
 
 /**
@@ -163,7 +164,8 @@ class PartitionPumpManager {
             if (maxWaitTime != null) {
                 eventHubConsumer
                     .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
-                    .bufferTimeout(maxBatchSize, maxWaitTime)
+                    .windowTimeout(maxBatchSize, maxWaitTime)
+                    .flatMap(Flux::collectList)
                     .subscribe(partitionEventBatch -> {
                             processEventBatch(partitionContext, partitionProcessor,
                                 eventHubConsumer, partitionEventBatch);
@@ -248,7 +250,6 @@ class PartitionPumpManager {
                 throwable));
         }
     }
-
 
     Map<String, EventHubConsumerAsyncClient> getPartitionPumps() {
         return this.partitionPumps;
