@@ -268,10 +268,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private void next(ServiceBusReceivedMessage message) {
         final long sequenceNumber = message.getSequenceNumber();
         UUID lockToken = null;
-        if (message.getLockToken() != null) {
+        if (!Objects.isNull(message.getLockToken())) {
             lockToken = UUID.fromString(message.getLockToken());
         }
-        boolean isCompleteMessage = isAutoComplete && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
+        boolean isCompleteMessage = isAutoComplete && lockToken != null
+            && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
 
         final Instant initialLockedUntil;
         if (lockToken != null && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken)) {

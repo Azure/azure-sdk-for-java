@@ -12,7 +12,6 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
@@ -512,19 +511,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
         } else if (Objects.isNull(message)) {
             return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
-        } /*else if (Objects.isNull(message.getLockToken())) {
+        } else if (Objects.isNull(message.getLockToken())) {
             return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
             return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
-        }*/
+        }
 
 
         if (receiveMode != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
-        } else if (CoreUtils.isNullOrEmpty(message.getLockToken())) {
-            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
-                "'message.lockToken' cannot be null.")));
+        } else if (Objects.isNull(message.getLockToken())) {
+            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
+        } else if (message.getLockToken().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
         final UUID lockToken = UUID.fromString(message.getLockToken());
