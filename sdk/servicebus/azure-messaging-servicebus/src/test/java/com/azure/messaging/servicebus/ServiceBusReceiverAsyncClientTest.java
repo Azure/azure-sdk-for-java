@@ -21,6 +21,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
@@ -30,7 +31,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -51,9 +54,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -251,9 +256,9 @@ class ServiceBusReceiverAsyncClientTest {
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
 
-        when(managementNode.updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
+        when(managementNode.updateDisposition(eq(lockToken1.toString()), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
             .thenReturn(Mono.empty());
-        when(managementNode.updateDisposition(eq(lockToken2), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
+        when(managementNode.updateDisposition(eq(lockToken2.toString()), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
             .thenReturn(Mono.empty());
 
         // Act and Assert
@@ -268,9 +273,8 @@ class ServiceBusReceiverAsyncClientTest {
             .verifyComplete();
 
         logger.info("Verifying assertions.");
-        verify(managementNode).updateDisposition(eq(lockToken1), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
+        verify(managementNode).updateDisposition(eq(lockToken1.toString()), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull());
     }
-
 
     /**
      * Verifies that if there is no lock token, the message is not completed.
@@ -288,6 +292,11 @@ class ServiceBusReceiverAsyncClientTest {
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
+
+        final String lockToken1 = UUID.randomUUID().toString();
+        final String lockToken2 = UUID.randomUUID().toString();
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
@@ -403,7 +412,7 @@ class ServiceBusReceiverAsyncClientTest {
      */
     @Test
     void deadLetterWithDescription() {
-        final UUID lockToken1 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
         final String description = "some-dead-letter-description";
         final String reason = "dead-letter-reason";
         final Map<String, Object> propertiesToModify = new HashMap<>();
@@ -444,8 +453,8 @@ class ServiceBusReceiverAsyncClientTest {
     @EnumSource(DispositionStatus.class)
     void settleMessage(DispositionStatus dispositionStatus) {
         // Arrange
-        final UUID lockToken1 = UUID.randomUUID();
-        final UUID lockToken2 = UUID.randomUUID();
+        final String lockToken1 = UUID.randomUUID().toString();
+        final String lockToken2 = UUID.randomUUID().toString();
         final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
@@ -563,6 +572,31 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Assert
         verify(onClientClose).run();
+    }
+
+    /**
+     * Tests that invalid options throws and null options.
+     */
+    @Test
+    void receiveIllegalOptions() {
+        // Arrange
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .connectionString("connection-string")
+            .receiver()
+            .topicName("baz").subscriptionName("bar")
+            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .buildAsyncClient();
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setMaxAutoRenewDuration(Duration.ofSeconds(-1));
+
+        // Act & Assert
+        StepVerifier.create(receiver.receive(options))
+            .expectError(IllegalArgumentException.class)
+            .verify();
+
+        StepVerifier.create(receiver.receive(null))
+            .expectError(NullPointerException.class)
+            .verify();
     }
 
     private List<Message> getMessages(int numberOfEvents) {

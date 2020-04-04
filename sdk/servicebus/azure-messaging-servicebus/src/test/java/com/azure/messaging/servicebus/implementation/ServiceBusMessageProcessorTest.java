@@ -166,8 +166,8 @@ class ServiceBusMessageProcessorTest {
     void autoRenewExpires() {
         // Arrange
         final Duration maxRenewDuration = Duration.ofSeconds(4);
-        final UUID lock1 = UUID.randomUUID();
-        final UUID lock2 = UUID.randomUUID();
+        final String lock1 = UUID.randomUUID().toString();
+        final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
         when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
 
@@ -212,8 +212,8 @@ class ServiceBusMessageProcessorTest {
     void autoRenewOperationErrors() {
         // Arrange
         final Duration maxRenewDuration = Duration.ofSeconds(10);
-        final UUID lock1 = UUID.randomUUID();
-        final UUID lock2 = UUID.randomUUID();
+        final String lock1 = UUID.randomUUID().toString();
+        final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
         when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
 
@@ -257,8 +257,8 @@ class ServiceBusMessageProcessorTest {
     void completeOperationErrors() {
         // Arrange
         final Duration maxRenewDuration = Duration.ofSeconds(10);
-        final UUID lock1 = UUID.randomUUID();
-        final UUID lock2 = UUID.randomUUID();
+        final String lock1 = UUID.randomUUID().toString();
+        final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
         when(message1.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(1));
 

@@ -206,30 +206,6 @@ class ServiceBusClientBuilderTest {
         assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
     }
 
-    private static Stream<Arguments> cannotAutoRenewLockWithInvalidDuration() {
-        return Stream.of(
-            Arguments.of(Duration.ZERO),
-            Arguments.of(Duration.ofSeconds(-1))
-        );
-    }
-
-    /**
-     * Throws when auto-renewal is set, we also need a positive duration.
-     */
-    @ParameterizedTest
-    @MethodSource
-    void cannotAutoRenewLockWithInvalidDuration(Duration duration) {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK);
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
-    }
-
     private static URI getUri(String endpointFormat, String namespace, String domainName) {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
