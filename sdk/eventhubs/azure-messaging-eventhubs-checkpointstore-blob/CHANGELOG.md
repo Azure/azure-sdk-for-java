@@ -1,24 +1,6 @@
 # Release History
 
 ## 1.1.0-beta.1 (Unreleased)
-
-
-## 1.1.0-beta.1 (Unreleased)
-
-
-## 1.1.0-beta.1 (Unreleased)
-
-
-## 1.1.0-beta.1 (Unreleased)
-
-
-## 1.1.0-beta.1 (Unreleased)
-
-
-## 1.1.0-beta.1 (Unreleased)
-
-
-## 1.0.3 (2020-03-10)
 - Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.
 
 ## 1.0.2 (2020-02-12)
