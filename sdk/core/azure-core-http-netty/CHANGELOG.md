@@ -1,5 +1,8 @@
 # Release History
 
+## 1.6.0-beta.1 (Unreleased)
+
+
 ## 1.5.0 (2020-04-03)
 
 - Generalized configuration for `NioEventLoopGroup` to `EventLoopGroup`. Deprecated `NioEventLoopGroup` setter.
