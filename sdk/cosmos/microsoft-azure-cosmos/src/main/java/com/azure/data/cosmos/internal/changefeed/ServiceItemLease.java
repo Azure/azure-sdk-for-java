@@ -62,7 +62,7 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
+    @JsonProperty("_etag")
     public String getEtag() {
         return this._etag;
     }
@@ -132,6 +132,10 @@ public class ServiceItemLease implements Lease {
         this.withTimestamp(date.toInstant().atZone(zoneId));
     }
 
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public void setId(String id) {
         this.withId(id);
@@ -191,7 +195,7 @@ public class ServiceItemLease implements Lease {
         return this.getEtag();
     }
 
-    public static ServiceItemLease fromDocument(Document document) {
+    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
         ServiceItemLease lease = new ServiceItemLease()
             .withId(document.id())
             .withEtag(document.etag())
@@ -208,20 +212,18 @@ public class ServiceItemLease implements Lease {
         }
     }
 
-    public static ServiceItemLease fromDocument(CosmosItemProperties document) {
-        ServiceItemLease lease = new ServiceItemLease()
-            .withId(document.id())
-            .withEtag(document.etag())
-            .withTs(document.getString(Constants.Properties.LAST_MODIFIED))
-            .withOwner(document.getString("Owner"))
-            .withLeaseToken(document.getString("LeaseToken"))
-            .withContinuationToken(document.getString("ContinuationToken"));
+    public void setServiceItemLease(Lease lease) {
+        this.setId(lease.getId());
+        this.setConcurrencyToken(lease.getConcurrencyToken());
+        this.setOwner(lease.getOwner());
+        this.withLeaseToken(lease.getLeaseToken());
+        this.setContinuationToken(getContinuationToken());
 
-        String leaseTimestamp = document.getString("timestamp");
+        String leaseTimestamp = lease.getTimestamp();
         if (leaseTimestamp != null) {
-            return lease.withTimestamp(ZonedDateTime.parse(leaseTimestamp));
+            this.setTimestamp(ZonedDateTime.parse(leaseTimestamp));
         } else {
-            return lease;
+            this.setTimestamp(lease.getTimestamp());
         }
     }
 
