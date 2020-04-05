@@ -531,7 +531,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Test
     void testSendReceiveMessageWithVariousPropertyTypes() {
-        // Arrange
+        // Arrange 
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
         Map<String, Object> sentProperties = messageToSend.getProperties();
