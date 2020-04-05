@@ -35,7 +35,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final String queueName = "hemant-test2";//getQueueName();
+        final String queueName = getQueueName();
         Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
         sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
@@ -123,7 +123,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can schedule and peek a message.
      */
     @Test
-    void scheduleMessage() {
+    void testSendSceduledMessageAndReceive() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
@@ -148,7 +148,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can cancel a scheduled message.
      */
     @Test
-    void cancelScheduleMessage() {
+    void testSendSceduledMessageAndCancel() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
@@ -247,7 +247,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can renew message lock.
      */
     @Test
-    void renewMessageLock() {
+    void testBasicReceiveAndRenewLock() {
         // Arrange
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, "id-1", 0);
 
@@ -365,4 +365,72 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
+    @Test
+    void testBasicReceiveAndComplete() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
+
+        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
+            .then(receiverManualComplete.receive().next())
+            .block(Duration.ofSeconds(30));
+
+        Assertions.assertNotNull(receivedMessage);
+
+        // Assert & Act
+        StepVerifier.create(receiverManualComplete.complete(receivedMessage))
+            .verifyComplete();
+    }
+
+    @Test
+    void testBasicReceiveAndCompleteMessageWithProperties() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
+
+        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
+            .then(receiverManualComplete.receive().next())
+            .block(Duration.ofSeconds(30));
+
+        Assertions.assertNotNull(receivedMessage);
+        Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+
+        // Assert & Act
+        StepVerifier.create(receiverManualComplete.complete(receivedMessage))
+            .verifyComplete();
+    }
+
+    @Test
+    void testBasicReceiveAndAbandon() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
+
+        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
+            .then(receiverManualComplete.receive().next())
+            .block(Duration.ofSeconds(30));
+
+        Assertions.assertNotNull(receivedMessage);
+
+        // Assert & Act
+        StepVerifier.create(receiverManualComplete.abandon(receivedMessage))
+            .verifyComplete();
+    }
+
+    @Test
+    void testBasicReceiveAndDeadLetter() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
+
+        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
+            .then(receiverManualComplete.receive().next())
+            .block(Duration.ofSeconds(30));
+
+        Assertions.assertNotNull(receivedMessage);
+
+        // Assert & Act
+        StepVerifier.create(receiverManualComplete.deadLetter(receivedMessage))
+            .verifyComplete();
+    }
 }
