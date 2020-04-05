@@ -594,17 +594,4 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .thenCancel()
             .verify(Duration.ofSeconds(2));
     }
-
-    @Test
-    void testReceiveDeferedDELETEME() {
-        // Arrange
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
-
-        final ServiceBusReceivedMessage receivedDeferredMessage =  receiverManualComplete
-            .receiveDeferredMessage(20).block(Duration.ofSeconds(30));
-
-        receiverManualComplete.deadLetter(receivedDeferredMessage).block(Duration.ofSeconds(30));
-        System.out.println("moved to dead lettter  seq= " + receivedDeferredMessage.getSequenceNumber());
-    }
 }
