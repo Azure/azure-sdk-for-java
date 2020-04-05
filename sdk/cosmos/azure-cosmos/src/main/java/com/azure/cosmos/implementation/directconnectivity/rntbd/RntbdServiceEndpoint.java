@@ -57,7 +57,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final AtomicBoolean closed;
     private final AtomicInteger concurrentRequests;
     private final long id;
-    private final AtomicLong lastRequestTime;
+    private final AtomicLong lastRequestNanoTime;
     private final RntbdMetrics metrics;
     private final Provider provider;
     private final SocketAddress remoteAddress;
@@ -86,7 +86,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
-        this.lastRequestTime = new AtomicLong();
+        this.lastRequestNanoTime = new AtomicLong();
         this.closed = new AtomicBoolean();
         this.requestTimer = timer;
 
@@ -126,8 +126,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         return this.closed.get();
     }
 
-    public long lastRequestTime() {
-        return this.lastRequestTime.get();
+    public long lastRequestNanoTime() {
+        return this.lastRequestNanoTime.get();
     }
 
     @Override
@@ -172,7 +172,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.throwIfClosed();
 
         this.concurrentRequests.incrementAndGet();
-        this.lastRequestTime.set(args.nanoTimeCreated());
+        this.lastRequestNanoTime.set(args.nanoTimeCreated());
 
         if (logger.isDebugEnabled()) {
             args.traceOperation(logger, null, "request");
@@ -236,7 +236,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             if (connected.isSuccess()) {
 
                 requestArgs.traceOperation(logger, null, "write");
-                final Channel channel = (Channel)connected.get();
+                final Channel channel = (Channel) connected.get();
                 this.releaseToPool(channel);
                 channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
                 return;
@@ -347,14 +347,17 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
                 this.eventLoopGroup.shutdownGracefully(QUIET_PERIOD, this.config.shutdownTimeoutInNanos(), NANOSECONDS)
                     .addListener(future -> {
+
+                        this.requestTimer.close();
+
                         if (future.isSuccess()) {
                             logger.debug("\n  [{}]\n  closed endpoints", this);
                             return;
                         }
+
                         logger.error("\n  [{}]\n  failed to close endpoints due to ", this, future.cause());
                     });
 
-                this.requestTimer.close();
                 return;
             }
 

@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
@@ -134,8 +135,9 @@ public final class RntbdTransportClient extends TransportClient {
                 request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
             }
 
-            if(response != null) {
-                response.setRequestTimeline(record.takeTimelineSnapshot());
+            if (response != null) {
+                RequestTimeline timeline = record.takeTimelineSnapshot();
+                response.setRequestTimeline(timeline);
             }
         })).doOnCancel(() -> {
             logger.debug("REQUEST CANCELLED: {}", record);
@@ -173,6 +175,9 @@ public final class RntbdTransportClient extends TransportClient {
 
         @JsonProperty()
         private final int bufferPageSize;
+
+        @JsonProperty()
+        private final Duration connectionAcquisitionTimeout;
 
         @JsonProperty()
         private final Duration connectionTimeout;
@@ -219,6 +224,7 @@ public final class RntbdTransportClient extends TransportClient {
 
         private Options() {
             this.bufferPageSize = 8192;
+            this.connectionAcquisitionTimeout = Duration.ZERO;
             this.connectionTimeout = null;
             this.idleChannelTimeout = Duration.ZERO;
             this.idleEndpointTimeout = Duration.ofSeconds(70L);
@@ -228,7 +234,7 @@ public final class RntbdTransportClient extends TransportClient {
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
             this.requestExpiryInterval = Duration.ofSeconds(5L);
             this.requestTimeout = null;
-            this.requestTimerResolution = Duration.ofMillis(5L);
+            this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
             this.shutdownTimeout = Duration.ofSeconds(15L);
             this.userAgent = new UserAgentContainer();
@@ -237,6 +243,7 @@ public final class RntbdTransportClient extends TransportClient {
         private Options(Builder builder) {
 
             this.bufferPageSize = builder.bufferPageSize;
+            this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleEndpointTimeout = builder.idleEndpointTimeout;
             this.maxBufferCapacity = builder.maxBufferCapacity;
@@ -261,6 +268,10 @@ public final class RntbdTransportClient extends TransportClient {
 
         public int bufferPageSize() {
             return this.bufferPageSize;
+        }
+
+        public Duration connectionAcquisitionTimeout() {
+            return this.connectionAcquisitionTimeout;
         }
 
         public Duration connectionTimeout() {
@@ -436,6 +447,7 @@ public final class RntbdTransportClient extends TransportClient {
             }
 
             private int bufferPageSize;
+            private Duration connectionAcquisitionTimeout;
             private Duration connectionTimeout;
             private Duration idleChannelTimeout;
             private Duration idleEndpointTimeout;
@@ -459,6 +471,7 @@ public final class RntbdTransportClient extends TransportClient {
                 this.requestTimeout(requestTimeout);
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
+                this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
                 this.connectionTimeout = DEFAULT_OPTIONS.connectionTimeout;
                 this.idleChannelTimeout = DEFAULT_OPTIONS.idleChannelTimeout;
                 this.idleEndpointTimeout = DEFAULT_OPTIONS.idleEndpointTimeout;
@@ -495,6 +508,12 @@ public final class RntbdTransportClient extends TransportClient {
                     this.bufferPageSize,
                     this.maxBufferCapacity);
                 return new Options(this);
+            }
+
+            public Builder connectionAcquisitionTimeout(final Duration value) {
+                checkNotNull(value, "expected non-null value");
+                this.connectionTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
+                return this;
             }
 
             public Builder connectionTimeout(final Duration value) {

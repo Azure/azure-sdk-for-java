@@ -25,19 +25,16 @@ public final class RntbdRequestTimer implements AutoCloseable {
         this.requestTimeoutInNanos = requestTimeoutInNanos;
     }
 
-    public long getRequestTimeout(final TimeUnit unit) {
-        return unit.convert(requestTimeoutInNanos, TimeUnit.NANOSECONDS);
-    }
-
     @Override
     public void close() {
+
         final Set<Timeout> timeouts = this.timer.stop();
-        if (logger.isDebugEnabled()) {
-            final int count = timeouts.size();
-            if (count > 0) {
-                logger.debug("request expiration tasks cancelled: {}", count);
-            }
+
+        for (Timeout timeout : timeouts) {
+            timeout.cancel();
         }
+
+        logger.debug("request expiration tasks cancelled: {}", timeouts.size());
     }
 
     public Timeout newTimeout(final TimerTask task) {

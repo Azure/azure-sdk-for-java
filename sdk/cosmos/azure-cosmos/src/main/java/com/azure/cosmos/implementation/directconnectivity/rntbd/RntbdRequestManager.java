@@ -65,9 +65,9 @@ import static com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdClientChannelHealthChecker.Timestamps;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdResponseHeader;
+import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class RntbdRequestManager implements ChannelHandler, ChannelInboundHandler, ChannelOutboundHandler {
 
@@ -542,6 +542,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     boolean isServiceable(final int demand) {
+        reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
         return this.pendingRequests.size() < limit;
     }
