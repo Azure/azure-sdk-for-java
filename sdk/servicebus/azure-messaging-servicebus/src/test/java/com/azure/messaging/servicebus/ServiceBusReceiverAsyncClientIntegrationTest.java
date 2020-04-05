@@ -25,7 +25,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
-    private ServiceBusReceiverAsyncClient receiverManual;
+    private ServiceBusReceiverAsyncClient receiverManualComplete;
+    private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
@@ -34,7 +35,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final String queueName = getQueueName();
+        final String queueName = "hemant-test2";//getQueueName();
         Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
         sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
@@ -44,16 +45,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .isAutoComplete(true)
             .buildAsyncClient();
 
-        receiverManual = createBuilder()
+        receiverManualComplete = createBuilder()
             .receiver()
             .queueName(queueName)
             .isAutoComplete(false)
+            .buildAsyncClient();
+
+        receiveDeleteModeReceiver = createBuilder()
+            .receiver()
+            .queueName(queueName)
+            .isAutoComplete(false)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .buildAsyncClient();
     }
 
     @Override
     protected void afterTest() {
-        dispose(receiver, receiverManual, sender);
+        dispose(receiver, receiverManualComplete, receiveDeleteModeReceiver, sender);
     }
 
     /**
@@ -68,7 +76,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).then(sender.send(message))
-            .thenMany(receiverManual.receive()))
+            .thenMany(receiverManualComplete.receive()))
             .assertNext(receivedMessage ->
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .assertNext(receivedMessage ->
@@ -87,7 +95,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiverManual.receive()))
+        StepVerifier.create(sender.send(message).thenMany(receiverManualComplete.receive()))
             .assertNext(receivedMessage ->
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .thenCancel()
@@ -225,13 +233,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
 
         final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManual.receive().next())
+            .then(receiverManualComplete.receive().next())
             .block(Duration.ofSeconds(30));
 
         Assertions.assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiverManual.deadLetter(receivedMessage))
+        StepVerifier.create(receiverManualComplete.deadLetter(receivedMessage))
             .verifyComplete();
     }
 
@@ -251,13 +259,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(
-            receiverManual.receive().take(1).map(m -> {
+            receiverManualComplete.receive().take(1).map(m -> {
                 Assertions.assertNotNull(m.getLockedUntil());
                 receivedMessage.set(m);
                 initialLock.set(m.getLockedUntil());
                 return m;
             }).then(Mono.delay(Duration.ofSeconds(10))
-                .then(Mono.defer(() -> receiverManual.renewMessageLock(receivedMessage.get())))))
+                .then(Mono.defer(() -> receiverManualComplete.renewMessageLock(receivedMessage.get())))))
             .assertNext(lockedUntil -> {
                 Assertions.assertTrue(lockedUntil.isAfter(initialLock.get()),
                     String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
@@ -326,4 +334,35 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             receiver.close();
         }
     }
+
+    @Test
+    void testBasicReceiveAndDeleteWithBinaryData() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64);
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message).thenMany(receiveDeleteModeReceiver.receive()))
+            .assertNext(receivedMessage ->
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
+            .expectNoEvent(Duration.ofSeconds(2))
+            .thenCancel()
+            .verify();
+    }
+
+    @Test
+    void testBasicReceiveAndCompleteWithLargeBinaryData() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessageBinary(messageTrackingId, 0, 64 * 1024);
+
+        // Assert & Act
+        StepVerifier.create(sender.send(message).thenMany(receiveDeleteModeReceiver.receive()))
+            .assertNext(receivedMessage ->
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
+            .expectNoEvent(Duration.ofSeconds(2))
+            .thenCancel()
+            .verify();
+    }
+
 }
