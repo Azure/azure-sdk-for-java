@@ -65,7 +65,8 @@ public class EventContext {
      * EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is set to {@code false}, this method will
      * return {@code null}.
      *
-     * @return The properties of the last enqueued event in this partition. If {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)}is
+     * @return The properties of the last enqueued event in this partition. If
+     * {@link EventProcessorClientBuilder#trackLastEnqueuedEventProperties(boolean)} is
      * set to {@code false}, this method will return {@code null}.
      */
     public LastEnqueuedEventProperties getLastEnqueuedEventProperties() {

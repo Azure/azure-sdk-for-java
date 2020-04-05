@@ -161,15 +161,14 @@ class PartitionPumpManager {
                 .createConsumer(claimedOwnership.getConsumerGroup(), EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
 
             partitionPumps.put(claimedOwnership.getPartitionId(), eventHubConsumer);
+            //@formatter:off
             if (maxWaitTime != null) {
                 eventHubConsumer
                     .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
                     .windowTimeout(maxBatchSize, maxWaitTime)
                     .flatMap(Flux::collectList)
-                    .subscribe(partitionEventBatch -> {
-                            processEventBatch(partitionContext, partitionProcessor,
-                                eventHubConsumer, partitionEventBatch);
-                        },
+                    .subscribe(partitionEventBatch -> processEventBatch(partitionContext, partitionProcessor,
+                        eventHubConsumer, partitionEventBatch),
                         /* EventHubConsumer receive() returned an error */
                         ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
                         () -> {
@@ -180,11 +179,12 @@ class PartitionPumpManager {
             } else {
                 eventHubConsumer
                     .receiveFromPartition(claimedOwnership.getPartitionId(), startFromEventPosition, receiveOptions)
-                    .buffer(maxBatchSize)
+                    .window(maxBatchSize)
+                    .flatMap(Flux::collectList)
                     .subscribe(partitionEventBatch -> {
-                            processEventBatch(partitionContext, partitionProcessor,
-                                eventHubConsumer, partitionEventBatch);
-                        },
+                        processEventBatch(partitionContext, partitionProcessor,
+                            eventHubConsumer, partitionEventBatch);
+                    },
                         /* EventHubConsumer receive() returned an error */
                         ex -> handleError(claimedOwnership, eventHubConsumer, partitionProcessor, ex, partitionContext),
                         () -> {
@@ -193,7 +193,7 @@ class PartitionPumpManager {
                             cleanup(claimedOwnership, eventHubConsumer);
                         });
             }
-
+            //@formatter:on
         } catch (Exception ex) {
             if (partitionPumps.containsKey(claimedOwnership.getPartitionId())) {
                 cleanup(claimedOwnership, partitionPumps.get(claimedOwnership.getPartitionId()));

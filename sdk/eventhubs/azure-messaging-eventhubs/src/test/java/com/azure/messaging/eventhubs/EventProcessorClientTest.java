@@ -356,16 +356,17 @@ public class EventProcessorClientTest {
         CountDownLatch countDownLatch = new CountDownLatch(3);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
-        // Act
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
             2, Duration.ofSeconds(1), true);
+
+        // Act
         eventProcessorClient.start();
         boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
         eventProcessorClient.stop();
-        assertTrue(completed);
 
         // Assert
+        assertTrue(completed);
         assertIterableEquals(testPartitionProcessor.receivedEventsCount, Arrays.asList(2, 1));
     }
 
@@ -384,7 +385,7 @@ public class EventProcessorClientTest {
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
-            .thenReturn(Flux.just(getEvent(eventData1)).delayElements(Duration.ofSeconds(5)));
+            .thenReturn(Flux.just(getEvent(eventData1)).delayElements(Duration.ofSeconds(3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData3.getSequenceNumber()).thenReturn(3L);
@@ -400,9 +401,13 @@ public class EventProcessorClientTest {
         final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
             2, Duration.ofSeconds(1), true);
+
+        // Act
         eventProcessorClient.start();
-        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        boolean completed = countDownLatch.await(20, TimeUnit.SECONDS);
         eventProcessorClient.stop();
+
+        // Assert
         assertTrue(completed);
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(1));
@@ -423,13 +428,11 @@ public class EventProcessorClientTest {
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
-            .thenReturn(Flux.just(getEvent(eventData1)).delayElements(Duration.ofSeconds(5)));
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
-        when(eventData2.getSequenceNumber()).thenReturn(2L);
-        when(eventData3.getSequenceNumber()).thenReturn(3L);
         when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData2.getOffset()).thenReturn(100L);
-        when(eventData3.getOffset()).thenReturn(150L);
 
         final InMemoryCheckpointStore checkpointStore = new InMemoryCheckpointStore();
         final TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
@@ -440,7 +443,7 @@ public class EventProcessorClientTest {
             () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
             1, Duration.ofSeconds(1), false);
         eventProcessorClient.start();
-        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        boolean completed = countDownLatch.await(20, TimeUnit.SECONDS);
         eventProcessorClient.stop();
         assertTrue(completed);
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
@@ -462,11 +465,11 @@ public class EventProcessorClientTest {
                 receivedEventsCount.add(1);
                 if (countDownLatch != null) {
                     countDownLatch.countDown();
+                    eventContext.updateCheckpoint();
                 }
             } else {
                 receivedEventsCount.add(0);
             }
-            eventContext.updateCheckpoint();
         }
 
         @Override
