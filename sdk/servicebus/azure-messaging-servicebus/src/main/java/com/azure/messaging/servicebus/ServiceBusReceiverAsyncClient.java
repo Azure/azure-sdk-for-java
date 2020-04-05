@@ -63,6 +63,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
+    private static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
@@ -391,7 +392,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A deferred message with the matching {@code sequenceNumber}.
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
-        final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber))
