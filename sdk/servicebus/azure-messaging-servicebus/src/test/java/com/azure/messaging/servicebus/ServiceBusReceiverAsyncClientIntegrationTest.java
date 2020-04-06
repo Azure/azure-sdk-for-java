@@ -148,7 +148,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can schedule and receive multiple messages.
      */
     @Test
-    void sendMultipleSceduledMessageAndReceive() {
+    void sendMultipleScheduledMessageAndReceive() {
         // Arrange
         final String messageId1 = UUID.randomUUID().toString();
         final String messageId2 = UUID.randomUUID().toString();
@@ -180,7 +180,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can cancel a scheduled message.
      */
     @Test
-    void sceduledMessageAndCancel() {
+    void scheduledMessageAndCancel() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
