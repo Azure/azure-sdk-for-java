@@ -6,7 +6,7 @@
 - Fixed DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to not overwrite by default 
 - Added overloads to DataLakeFileSystemClient.createFile/createDirectory, DataLakeDirectoryClient.createFile/createSubdirectory to allow overwrite behavior.
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
-- Fixed a bug where
+- Fixed a bug where rename would not work with Url encoded destinations.
 
 ## 12.0.1 (2020-03-11)
 - GA release. 
