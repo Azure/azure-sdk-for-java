@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2020-04-03)
+## 1.0.0-beta.2 (2020-04-06)
 
 Version 1.0.0-beta.2 is the consecutive beta version of 11.0.0-beta.1. The version is made because we renamed 
 the search model and namespace.
