@@ -88,12 +88,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * value will be used.
      */
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
-    /**
-     * @deprecated Use {@link #BLOB_MAX_UPLOAD_BLOCK_SIZE_LONG}.
-     */
-    @Deprecated
-    static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
-    static final long BLOB_MAX_UPLOAD_BLOCK_SIZE_LONG = 4000L * Constants.MB;
+
+    static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
     private final ClientLogger logger = new ClientLogger(BlobAsyncClient.class);
 
     /**

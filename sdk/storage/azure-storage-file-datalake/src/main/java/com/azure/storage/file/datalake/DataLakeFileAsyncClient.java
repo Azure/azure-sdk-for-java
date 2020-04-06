@@ -77,14 +77,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
-     * @deprecated Use {@link #MAX_APPEND_FILE_BYTES_LONG}
      */
-    @Deprecated
-    static final int MAX_APPEND_FILE_BYTES = 100 * Constants.MB;
-    /**
-     * Indicates the maximum number of bytes that can be sent in a call to upload.
-     */
-    static final long MAX_APPEND_FILE_BYTES_LONG = 100L * Constants.MB;
+    static final long MAX_APPEND_FILE_BYTES = 100L * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
 
@@ -300,7 +294,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         // Validation done in the constructor.
         UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
-            parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES_LONG);
+            parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
@@ -390,7 +384,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
                 if (UploadUtils.shouldUploadInChunks(filePath,
-                    DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES_LONG, logger)) {
+                    DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                         : Mono.empty());

@@ -47,7 +47,7 @@ public final class UploadBufferPool {
     // The number of buffs we have allocated. We can query the queue for how many are available.
     private int numBuffs;
 
-    private long buffSize;
+    private final long buffSize;
 
     private BufferAggregator currentBuf;
 

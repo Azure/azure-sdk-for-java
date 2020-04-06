@@ -50,13 +50,25 @@ public class ModelHelper {
                 other.getMaxSingleUploadSizeLong(), 1, MAX_APPEND_FILE_BYTES);
         }
 
+        Long blockSize = other.getBlockSizeLong();
+        if (blockSize == null) {
+            blockSize = FILE_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
+
+        Integer numBuffers = other.getNumBuffers();
+        if (numBuffers == null) {
+            numBuffers = FILE_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
+        if (maxSingleUploadSize == null) {
+            maxSingleUploadSize = MAX_APPEND_FILE_BYTES;
+        }
+
         return new ParallelTransferOptions()
-            .setBlockSize(other.getBlockSizeLong() == null ? Long.valueOf(FILE_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : other.getBlockSizeLong())
-            .setNumBuffers(other.getNumBuffers() == null ? Integer.valueOf(FILE_DEFAULT_NUMBER_OF_BUFFERS)
-                : other.getNumBuffers())
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers)
             .setProgressReceiver(other.getProgressReceiver())
-            .setMaxSingleUploadSize(other.getMaxSingleUploadSizeLong() == null ? Long.valueOf(MAX_APPEND_FILE_BYTES)
-                : other.getMaxSingleUploadSizeLong());
+            .setMaxSingleUploadSize(maxSingleUploadSize);
     }
 }

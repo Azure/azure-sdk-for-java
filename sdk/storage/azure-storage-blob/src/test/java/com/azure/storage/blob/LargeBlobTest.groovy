@@ -104,6 +104,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    @Ignore("Takes really long time")
     def "Upload Largest Input"() {
         given:
         collectSize = false
@@ -234,8 +235,7 @@ class LargeBlobTest extends APISpec {
                     })
                     putBlockPayloadSizes.add(bytesReceived)
                 }
-                def currentCount = count.incrementAndGet()
-                println(currentCount) // TODO remove this
+                count.incrementAndGet()
                 request.setBody("dummyBody")
             }
             return httpPipelineNextPolicy.process()

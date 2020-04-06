@@ -27,17 +27,27 @@ public class ModelHelper {
      */
     public static ParallelTransferOptions populateAndApplyDefaults(ParallelTransferOptions other) {
         other = other == null ? new ParallelTransferOptions() : other;
+
+        Long blockSize = other.getBlockSizeLong();
+        if (blockSize == null) {
+            blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
+
+        Integer numBuffers = other.getNumBuffers();
+        if (numBuffers == null) {
+            numBuffers = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
+        if (maxSingleUploadSize == null) {
+            maxSingleUploadSize = BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG;
+        }
+
         return new ParallelTransferOptions()
-            .setBlockSize(other.getBlockSizeLong() == null
-                ? Long.valueOf(BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)
-                : other.getBlockSizeLong())
-            .setNumBuffers(other.getNumBuffers() == null
-                ? Integer.valueOf(BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS)
-                : other.getNumBuffers())
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers)
             .setProgressReceiver(other.getProgressReceiver())
-            .setMaxSingleUploadSize(other.getMaxSingleUploadSizeLong() == null
-                ? Long.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG)
-                : other.getMaxSingleUploadSizeLong());
+            .setMaxSingleUploadSize(maxSingleUploadSize);
     }
 
     /**
