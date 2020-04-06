@@ -17,7 +17,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-file-share;current})
 ```xml

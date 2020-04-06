@@ -16,7 +16,7 @@ efficient data access.
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 Add a dependency on Azure Storage File Datalake
 
