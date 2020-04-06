@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ResourceGroupPatchable model.
- */
+/** The ResourceGroupPatchable model. */
 @Fluent
 public final class ResourceGroupPatchable {
     /*
@@ -39,82 +37,80 @@ public final class ResourceGroupPatchable {
 
     /**
      * Get the name property: The name of the resource group.
-     * 
+     *
      * @return the name value.
      */
-    public String getName() {
+    public String name() {
         return this.name;
     }
 
     /**
      * Set the name property: The name of the resource group.
-     * 
+     *
      * @param name the name value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setName(String name) {
+    public ResourceGroupPatchable withName(String name) {
         this.name = name;
         return this;
     }
 
     /**
      * Get the properties property: The resource group properties.
-     * 
+     *
      * @return the properties value.
      */
-    public ResourceGroupProperties getProperties() {
+    public ResourceGroupProperties properties() {
         return this.properties;
     }
 
     /**
      * Set the properties property: The resource group properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setProperties(ResourceGroupProperties properties) {
+    public ResourceGroupPatchable withProperties(ResourceGroupProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
-     * Get the managedBy property: The ID of the resource that manages this
-     * resource group.
-     * 
+     * Get the managedBy property: The ID of the resource that manages this resource group.
+     *
      * @return the managedBy value.
      */
-    public String getManagedBy() {
+    public String managedBy() {
         return this.managedBy;
     }
 
     /**
-     * Set the managedBy property: The ID of the resource that manages this
-     * resource group.
-     * 
+     * Set the managedBy property: The ID of the resource that manages this resource group.
+     *
      * @param managedBy the managedBy value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setManagedBy(String managedBy) {
+    public ResourceGroupPatchable withManagedBy(String managedBy) {
         this.managedBy = managedBy;
         return this;
     }
 
     /**
      * Get the tags property: The tags attached to the resource group.
-     * 
+     *
      * @return the tags value.
      */
-    public Map<String, String> getTags() {
+    public Map<String, String> tags() {
         return this.tags;
     }
 
     /**
      * Set the tags property: The tags attached to the resource group.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ResourceGroupPatchable object itself.
      */
-    public ResourceGroupPatchable setTags(Map<String, String> tags) {
+    public ResourceGroupPatchable withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }

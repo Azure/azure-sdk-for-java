@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourceGroupListResult model.
- */
+/** The ResourceGroupListResult model. */
 @Fluent
 public final class ResourceGroupListResultInner {
     /*
@@ -27,31 +25,30 @@ public final class ResourceGroupListResultInner {
 
     /**
      * Get the value property: An array of resource groups.
-     * 
+     *
      * @return the value value.
      */
-    public List<ResourceGroupInner> getValue() {
+    public List<ResourceGroupInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: An array of resource groups.
-     * 
+     *
      * @param value the value value to set.
      * @return the ResourceGroupListResultInner object itself.
      */
-    public ResourceGroupListResultInner setValue(List<ResourceGroupInner> value) {
+    public ResourceGroupListResultInner withValue(List<ResourceGroupInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

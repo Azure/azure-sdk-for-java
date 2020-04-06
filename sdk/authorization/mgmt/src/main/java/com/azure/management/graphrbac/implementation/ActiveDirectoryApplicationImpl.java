@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
@@ -44,10 +41,10 @@ class ActiveDirectoryApplicationImpl
     private Map<String, CertificateCredential> cachedCertificateCredentials;
 
     ActiveDirectoryApplicationImpl(ApplicationInner innerObject, GraphRbacManager manager) {
-        super(innerObject.getDisplayName(), innerObject);
+        super(innerObject.displayName(), innerObject);
         this.manager = manager;
-        this.createParameters = new ApplicationCreateParameters().setDisplayName(innerObject.getDisplayName());
-        this.updateParameters = new ApplicationUpdateParameters().setDisplayName(innerObject.getDisplayName());
+        this.createParameters = new ApplicationCreateParameters().withDisplayName(innerObject.displayName());
+        this.updateParameters = new ApplicationUpdateParameters().withDisplayName(innerObject.displayName());
     }
 
     @Override
@@ -57,9 +54,9 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> createResourceAsync() {
-        if (createParameters.getIdentifierUris() == null) {
-            createParameters.setIdentifierUris(new ArrayList<String>());
-            createParameters.getIdentifierUris().add(createParameters.getHomepage());
+        if (createParameters.identifierUris() == null) {
+            createParameters.withIdentifierUris(new ArrayList<String>());
+            createParameters.identifierUris().add(createParameters.homepage());
         }
         return manager.inner().applications().createAsync(createParameters)
                 .map(innerToFluentMap(this))
@@ -100,42 +97,42 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public String applicationId() {
-        return inner().getAppId();
+        return inner().appId();
     }
 
     @Override
     public List<String> applicationPermissions() {
-        if (inner().getAppPermissions() == null) {
+        if (inner().appPermissions() == null) {
             return null;
         }
-        return Collections.unmodifiableList(inner().getAppPermissions());
+        return Collections.unmodifiableList(inner().appPermissions());
     }
 
     @Override
     public boolean availableToOtherTenants() {
-        return inner().isAvailableToOtherTenants();
+        return inner().availableToOtherTenants();
     }
 
     @Override
     public Set<String> identifierUris() {
-        if (inner().getIdentifierUris() == null) {
+        if (inner().identifierUris() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet(inner().getIdentifierUris()));
+        return Collections.unmodifiableSet(new HashSet(inner().identifierUris()));
     }
 
     @Override
     public Set<String> replyUrls() {
-        if (inner().getReplyUrls() == null) {
+        if (inner().replyUrls() == null) {
             return null;
         }
-        return Collections.unmodifiableSet(new HashSet(inner().getReplyUrls()));
+        return Collections.unmodifiableSet(new HashSet(inner().replyUrls()));
     }
 
     @Override
     public URL signOnUrl() {
         try {
-            return new URL(inner().getHomepage());
+            return new URL(inner().homepage());
         } catch (MalformedURLException e) {
             return null;
         }
@@ -165,9 +162,9 @@ class ActiveDirectoryApplicationImpl
     @Override
     public ActiveDirectoryApplicationImpl withSignOnUrl(String signOnUrl) {
         if (isInCreateMode()) {
-            createParameters.setHomepage(signOnUrl);
+            createParameters.withHomepage(signOnUrl);
         } else {
-            updateParameters.setHomepage(signOnUrl);
+            updateParameters.withHomepage(signOnUrl);
         }
         return withReplyUrl(signOnUrl);
     }
@@ -175,23 +172,23 @@ class ActiveDirectoryApplicationImpl
     @Override
     public ActiveDirectoryApplicationImpl withReplyUrl(String replyUrl) {
         if (isInCreateMode()) {
-            if (createParameters.getReplyUrls() == null) {
-                createParameters.setReplyUrls(new ArrayList<>());
+            if (createParameters.replyUrls() == null) {
+                createParameters.withReplyUrls(new ArrayList<>());
             }
-            createParameters.getReplyUrls().add(replyUrl);
+            createParameters.replyUrls().add(replyUrl);
         } else {
-            if (updateParameters.getReplyUrls() == null) {
-                updateParameters.setReplyUrls(new ArrayList<>(replyUrls()));
+            if (updateParameters.replyUrls() == null) {
+                updateParameters.withReplyUrls(new ArrayList<>(replyUrls()));
             }
-            updateParameters.getReplyUrls().add(replyUrl);
+            updateParameters.replyUrls().add(replyUrl);
         }
         return this;
     }
 
     @Override
     public ActiveDirectoryApplicationImpl withoutReplyUrl(String replyUrl) {
-        if (updateParameters.getReplyUrls() != null) {
-            updateParameters.getReplyUrls().remove(replyUrl);
+        if (updateParameters.replyUrls() != null) {
+            updateParameters.replyUrls().remove(replyUrl);
         }
         return this;
     }
@@ -199,23 +196,23 @@ class ActiveDirectoryApplicationImpl
     @Override
     public ActiveDirectoryApplicationImpl withIdentifierUrl(String identifierUrl) {
         if (isInCreateMode()) {
-            if (createParameters.getIdentifierUris() == null) {
-                createParameters.setIdentifierUris(new ArrayList<>());
+            if (createParameters.identifierUris() == null) {
+                createParameters.withIdentifierUris(new ArrayList<>());
             }
-            createParameters.getIdentifierUris().add(identifierUrl);
+            createParameters.identifierUris().add(identifierUrl);
         } else {
-            if (updateParameters.getIdentifierUris() == null) {
-                updateParameters.setIdentifierUris(new ArrayList<>(identifierUris()));
+            if (updateParameters.identifierUris() == null) {
+                updateParameters.withIdentifierUris(new ArrayList<>(identifierUris()));
             }
-            updateParameters.getIdentifierUris().add(identifierUrl);
+            updateParameters.identifierUris().add(identifierUrl);
         }
         return this;
     }
 
     @Override
     public Update withoutIdentifierUrl(String identifierUrl) {
-        if (updateParameters.getIdentifierUris() != null) {
-            updateParameters.getIdentifierUris().remove(identifierUrl);
+        if (updateParameters.identifierUris() != null) {
+            updateParameters.identifierUris().remove(identifierUrl);
         }
         return this;
     }
@@ -240,14 +237,14 @@ class ActiveDirectoryApplicationImpl
             for (PasswordCredential passwordCredential: cachedPasswordCredentials.values()) {
                 updatePasswordCredentials.add(passwordCredential.inner());
             }
-            updateParameters.setPasswordCredentials(updatePasswordCredentials);
+            updateParameters.withPasswordCredentials(updatePasswordCredentials);
         } else if (cachedCertificateCredentials.containsKey(name)) {
             cachedCertificateCredentials.remove(name);
             List<KeyCredentialInner> updateCertificateCredentials = new ArrayList<>();
             for (CertificateCredential certificateCredential: cachedCertificateCredentials.values()) {
                 updateCertificateCredentials.add(certificateCredential.inner());
             }
-            updateParameters.setKeyCredentials(updateCertificateCredentials);
+            updateParameters.withKeyCredentials(updateCertificateCredentials);
         }
         return this;
     }
@@ -255,15 +252,15 @@ class ActiveDirectoryApplicationImpl
     @Override
     public ActiveDirectoryApplicationImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
         if (isInCreateMode()) {
-            if (createParameters.getKeyCredentials() == null) {
-                createParameters.setKeyCredentials(new ArrayList<>());
+            if (createParameters.keyCredentials() == null) {
+                createParameters.withKeyCredentials(new ArrayList<>());
             }
-            createParameters.getKeyCredentials().add(credential.inner());
+            createParameters.keyCredentials().add(credential.inner());
         } else {
-            if (updateParameters.getKeyCredentials() == null) {
-                updateParameters.setKeyCredentials(new ArrayList<>());
+            if (updateParameters.keyCredentials() == null) {
+                updateParameters.withKeyCredentials(new ArrayList<>());
             }
-            updateParameters.getKeyCredentials().add(credential.inner());
+            updateParameters.keyCredentials().add(credential.inner());
         }
         return this;
     }
@@ -271,15 +268,15 @@ class ActiveDirectoryApplicationImpl
     @Override
     public ActiveDirectoryApplicationImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
         if (isInCreateMode()) {
-            if (createParameters.getPasswordCredentials() == null) {
-                createParameters.setPasswordCredentials(new ArrayList<>());
+            if (createParameters.passwordCredentials() == null) {
+                createParameters.withPasswordCredentials(new ArrayList<>());
             }
-            createParameters.getPasswordCredentials().add(credential.inner());
+            createParameters.passwordCredentials().add(credential.inner());
         } else {
-            if (updateParameters.getPasswordCredentials() == null) {
-                updateParameters.setPasswordCredentials(new ArrayList<>());
+            if (updateParameters.passwordCredentials() == null) {
+                updateParameters.withPasswordCredentials(new ArrayList<>());
             }
-            updateParameters.getPasswordCredentials().add(credential.inner());
+            updateParameters.passwordCredentials().add(credential.inner());
         }
         return this;
     }
@@ -287,16 +284,16 @@ class ActiveDirectoryApplicationImpl
     @Override
     public ActiveDirectoryApplicationImpl withAvailableToOtherTenants(boolean availableToOtherTenants) {
         if (isInCreateMode()) {
-            createParameters.setAvailableToOtherTenants(availableToOtherTenants);
+            createParameters.withAvailableToOtherTenants(availableToOtherTenants);
         } else {
-            updateParameters.setAvailableToOtherTenants(availableToOtherTenants);
+            updateParameters.withAvailableToOtherTenants(availableToOtherTenants);
         }
         return this;
     }
 
     @Override
     public String id() {
-        return inner().getObjectId();
+        return inner().objectId();
     }
 
     @Override

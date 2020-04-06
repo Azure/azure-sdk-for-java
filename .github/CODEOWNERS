@@ -19,7 +19,7 @@
 /sdk/cosmos/                                        @moderakh @kushagraThapar @David-Noble-at-work @kirankumarkolli @mbhaskar
 /sdk/eventhubs/                                     @conniey @srnagar @mssfang
 /sdk/identity/                                      @schaabs @g2vinay @jianghaolu
-/sdk/keyvault/                                      @g2vinay @samvaity
+/sdk/keyvault/                                      @g2vinay @vcolin7 @samvaity
 /sdk/search/                                        @alzimmermsft @sima-zhu
 /sdk/servicebus/                                    @yvgopal @nemakam @hemanttanwar @conniey
 /sdk/storage/                                       @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @sima-zhu

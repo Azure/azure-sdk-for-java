@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 
@@ -179,7 +176,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPortRange(int from, int to);
@@ -258,7 +255,7 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithDestinationAddressOrSecurityGroup<ParentT> fromPortRange(int from, int to);
@@ -522,7 +519,7 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithDestinationAddressOrSecurityGroup<ParentT> fromPortRange(int from, int to);
@@ -602,7 +599,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             WithProtocol<ParentT> toPortRange(int from, int to);
@@ -797,7 +794,7 @@ public interface NetworkSecurityRule extends
              * Specifies the source port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             Update fromPortRange(int from, int to);
@@ -873,7 +870,7 @@ public interface NetworkSecurityRule extends
              * Specifies the destination port range to which this rule applies.
              *
              * @param from the starting port number
-             * @param to   the ending port number
+             * @param to the ending port number
              * @return the next stage of the definition
              */
             Update toPortRange(int from, int to);

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.keyvault.implementation;
 
@@ -35,7 +32,7 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
 
     AccessPolicyImpl(AccessPolicyEntry innerObject, VaultImpl parent) {
         super(innerObject, parent);
-        inner().setTenantId(UUID.fromString(parent.tenantId()));
+        inner().withTenantId(UUID.fromString(parent.tenantId()));
     }
 
     String userPrincipalName() {
@@ -48,71 +45,71 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
 
     @Override
     public String tenantId() {
-        if (inner().getTenantId() == null) {
+        if (inner().tenantId() == null) {
             return null;
         }
-        return inner().getTenantId().toString();
+        return inner().tenantId().toString();
     }
 
     @Override
     public String objectId() {
-        if (inner().getObjectId() == null) {
+        if (inner().objectId() == null) {
             return null;
         }
-        return inner().getObjectId();
+        return inner().objectId();
     }
 
     @Override
     public String applicationId() {
-        if (inner().getApplicationId() == null) {
+        if (inner().applicationId() == null) {
             return null;
         }
-        return inner().getApplicationId().toString();
+        return inner().applicationId().toString();
     }
 
     @Override
     public Permissions permissions() {
-        return inner().getPermissions();
+        return inner().permissions();
     }
 
     @Override
     public String name() {
-        return inner().getObjectId();
+        return inner().objectId();
     }
 
     private void initializeKeyPermissions() {
-        if (inner().getPermissions() == null) {
-            inner().setPermissions(new Permissions());
+        if (inner().permissions() == null) {
+            inner().withPermissions(new Permissions());
         }
-        if (inner().getPermissions().getKeys() == null) {
-            inner().getPermissions().setKeys(new ArrayList<KeyPermissions>());
+        if (inner().permissions().keys() == null) {
+            inner().permissions().withKeys(new ArrayList<KeyPermissions>());
         }
     }
 
     private void initializeSecretPermissions() {
-        if (inner().getPermissions() == null) {
-            inner().setPermissions(new Permissions());
+        if (inner().permissions() == null) {
+            inner().withPermissions(new Permissions());
         }
-        if (inner().getPermissions().getSecrets() == null) {
-            inner().getPermissions().setSecrets(new ArrayList<SecretPermissions>());
+        if (inner().permissions().secrets() == null) {
+            inner().permissions().withSecrets(new ArrayList<SecretPermissions>());
         }
     }
 
     private void initializeCertificatePermissions() {
-        if (inner().getPermissions() == null) {
-            inner().setPermissions(new Permissions());
+        if (inner().permissions() == null) {
+            inner().withPermissions(new Permissions());
         }
-        if (inner().getPermissions().getCertificates() == null) {
-            inner().getPermissions().setCertificates(new ArrayList<CertificatePermissions>());
+        if (inner().permissions().certificates() == null) {
+            inner().permissions().withCertificates(new ArrayList<CertificatePermissions>());
         }
     }
 
     private void initializeStoragePermissions() {
-        if (inner().getPermissions() == null) {
-            inner().setPermissions(new Permissions());
+        if (inner().permissions() == null) {
+            inner().withPermissions(new Permissions());
         }
-        if (inner().getPermissions().getStorage() == null) {
-            inner().getPermissions().setStorage(new ArrayList<StoragePermissions>());
+        if (inner().permissions().storage() == null) {
+            inner().permissions().withStorage(new ArrayList<StoragePermissions>());
         }
     }
 
@@ -120,8 +117,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowKeyPermissions(KeyPermissions... permissions) {
         initializeKeyPermissions();
         for (KeyPermissions permission : permissions) {
-            if (!inner().getPermissions().getKeys().contains(permission)) {
-                inner().getPermissions().getKeys().add(permission);
+            if (!inner().permissions().keys().contains(permission)) {
+                inner().permissions().keys().add(permission);
             }
         }
         return this;
@@ -131,8 +128,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowKeyPermissions(List<KeyPermissions> permissions) {
         initializeKeyPermissions();
         for (KeyPermissions permission : permissions) {
-            if (!inner().getPermissions().getKeys().contains(permission)) {
-                inner().getPermissions().getKeys().add(permission);
+            if (!inner().permissions().keys().contains(permission)) {
+                inner().permissions().keys().add(permission);
             }
         }
         return this;
@@ -142,8 +139,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowSecretPermissions(SecretPermissions... permissions) {
         initializeSecretPermissions();
         for (SecretPermissions permission : permissions) {
-            if (!inner().getPermissions().getSecrets().contains(permission)) {
-                inner().getPermissions().getSecrets().add(permission);
+            if (!inner().permissions().secrets().contains(permission)) {
+                inner().permissions().secrets().add(permission);
             }
         }
         return this;
@@ -153,8 +150,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowSecretPermissions(List<SecretPermissions> permissions) {
         initializeSecretPermissions();
         for (SecretPermissions permission : permissions) {
-            if (!inner().getPermissions().getSecrets().contains(permission)) {
-                inner().getPermissions().getSecrets().add(permission);
+            if (!inner().permissions().secrets().contains(permission)) {
+                inner().permissions().secrets().add(permission);
             }
         }
         return this;
@@ -172,8 +169,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowCertificatePermissions(CertificatePermissions... permissions) {
         initializeCertificatePermissions();
         for (CertificatePermissions permission : permissions) {
-            if (!inner().getPermissions().getCertificates().contains(permission)) {
-                inner().getPermissions().getCertificates().add(permission);
+            if (!inner().permissions().certificates().contains(permission)) {
+                inner().permissions().certificates().add(permission);
             }
         }
         return this;
@@ -183,8 +180,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowCertificatePermissions(List<CertificatePermissions> permissions) {
         initializeCertificatePermissions();
         for (CertificatePermissions permission : permissions) {
-            if (!inner().getPermissions().getCertificates().contains(permission)) {
-                inner().getPermissions().getCertificates().add(permission);
+            if (!inner().permissions().certificates().contains(permission)) {
+                inner().permissions().certificates().add(permission);
             }
         }
         return this;
@@ -202,8 +199,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowStoragePermissions(StoragePermissions... permissions) {
         initializeStoragePermissions();
         for (StoragePermissions permission : permissions) {
-            if (!inner().getPermissions().getStorage().contains(permission)) {
-                inner().getPermissions().getStorage().add(permission);
+            if (!inner().permissions().storage().contains(permission)) {
+                inner().permissions().storage().add(permission);
             }
         }
         return this;
@@ -213,8 +210,8 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     public AccessPolicyImpl allowStoragePermissions(List<StoragePermissions> permissions) {
         initializeStoragePermissions();
         for (StoragePermissions permission : permissions) {
-            if (!inner().getPermissions().getStorage().contains(permission)) {
-                inner().getPermissions().getStorage().add(permission);
+            if (!inner().permissions().storage().contains(permission)) {
+                inner().permissions().storage().add(permission);
             }
         }
         return this;
@@ -223,21 +220,21 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     @Override
     public AccessPolicyImpl disallowCertificateAllPermissions() {
         initializeCertificatePermissions();
-        inner().getPermissions().getSecrets().clear();
+        inner().permissions().secrets().clear();
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowCertificatePermissions(CertificatePermissions... permissions) {
         initializeCertificatePermissions();
-        inner().getPermissions().getCertificates().removeAll(Arrays.asList(permissions));
+        inner().permissions().certificates().removeAll(Arrays.asList(permissions));
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowCertificatePermissions(List<CertificatePermissions> permissions) {
         initializeCertificatePermissions();
-        inner().getPermissions().getCertificates().removeAll(permissions);
+        inner().permissions().certificates().removeAll(permissions);
         return this;
     }
 
@@ -249,13 +246,13 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
 
     @Override
     public AccessPolicyImpl forObjectId(String objectId) {
-        inner().setObjectId(objectId);
+        inner().withObjectId(objectId);
         return this;
     }
 
     @Override
     public AccessPolicyImpl forUser(ActiveDirectoryUser user) {
-        inner().setObjectId(user.id());
+        inner().withObjectId(user.id());
         return this;
     }
 
@@ -267,25 +264,25 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
 
     @Override
     public AccessPolicyImpl forApplicationId(String applicationId) {
-        inner().setApplicationId(UUID.fromString(applicationId));
+        inner().withApplicationId(UUID.fromString(applicationId));
         return this;
     }
 
     @Override
     public AccessPolicyImpl forTenantId(String tenantId) {
-        inner().setTenantId(UUID.fromString(tenantId));
+        inner().withTenantId(UUID.fromString(tenantId));
         return this;
     }
 
     @Override
     public AccessPolicyImpl forGroup(ActiveDirectoryGroup activeDirectoryGroup) {
-        inner().setObjectId(activeDirectoryGroup.id());
+        inner().withObjectId(activeDirectoryGroup.id());
         return this;
     }
 
     @Override
     public AccessPolicyImpl forServicePrincipal(ServicePrincipal servicePrincipal) {
-        inner().setObjectId(servicePrincipal.id());
+        inner().withObjectId(servicePrincipal.id());
         return this;
     }
 
@@ -306,21 +303,21 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     @Override
     public AccessPolicyImpl disallowKeyAllPermissions() {
         initializeKeyPermissions();
-        inner().getPermissions().getKeys().clear();
+        inner().permissions().keys().clear();
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowKeyPermissions(KeyPermissions... permissions) {
         initializeSecretPermissions();
-        inner().getPermissions().getKeys().removeAll(Arrays.asList(permissions));
+        inner().permissions().keys().removeAll(Arrays.asList(permissions));
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowKeyPermissions(List<KeyPermissions> permissions) {
         initializeSecretPermissions();
-        inner().getPermissions().getKeys().removeAll(permissions);
+        inner().permissions().keys().removeAll(permissions);
         return this;
     }
 
@@ -335,42 +332,42 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
     @Override
     public AccessPolicyImpl disallowSecretAllPermissions() {
         initializeSecretPermissions();
-        inner().getPermissions().getSecrets().clear();
+        inner().permissions().secrets().clear();
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowSecretPermissions(SecretPermissions... permissions) {
         initializeSecretPermissions();
-        inner().getPermissions().getSecrets().removeAll(Arrays.asList(permissions));
+        inner().permissions().secrets().removeAll(Arrays.asList(permissions));
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowSecretPermissions(List<SecretPermissions> permissions) {
         initializeSecretPermissions();
-        inner().getPermissions().getSecrets().removeAll(permissions);
+        inner().permissions().secrets().removeAll(permissions);
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowStorageAllPermissions() {
         initializeStoragePermissions();
-        inner().getPermissions().getStorage().clear();
+        inner().permissions().storage().clear();
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowStoragePermissions(StoragePermissions... permissions) {
         initializeStoragePermissions();
-        inner().getPermissions().getStorage().removeAll(Arrays.asList(permissions));
+        inner().permissions().storage().removeAll(Arrays.asList(permissions));
         return this;
     }
 
     @Override
     public AccessPolicyImpl disallowStoragePermissions(List<StoragePermissions> permissions) {
         initializeStoragePermissions();
-        inner().getPermissions().getStorage().removeAll(permissions);
+        inner().permissions().storage().removeAll(permissions);
         return this;
     }
 

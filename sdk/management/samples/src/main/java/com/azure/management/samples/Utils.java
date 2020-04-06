@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.samples;
 
@@ -492,13 +489,13 @@ public final class Utils {
                 .append("Name: ").append(vault.name())
                 .append("\n\tResource group: ").append(vault.resourceGroupName())
                 .append("\n\tRegion: ").append(vault.region())
-                .append("\n\tSku: ").append(vault.sku().getName()).append(" - ").append(vault.sku().getFamily())
+                .append("\n\tSku: ").append(vault.sku().name()).append(" - ").append(vault.sku().family())
                 .append("\n\tVault URI: ").append(vault.vaultUri())
                 .append("\n\tAccess policies: ");
         for (AccessPolicy accessPolicy : vault.accessPolicies()) {
             info.append("\n\t\tIdentity:").append(accessPolicy.objectId())
-                    .append("\n\t\tKey permissions: ").append(accessPolicy.permissions().getKeys().stream().map(KeyPermissions::toString).collect(Collectors.joining(", ")))
-                    .append("\n\t\tSecret permissions: ").append(accessPolicy.permissions().getSecrets().stream().map(SecretPermissions::toString).collect(Collectors.joining(", ")));
+                    .append("\n\t\tKey permissions: ").append(accessPolicy.permissions().keys().stream().map(KeyPermissions::toString).collect(Collectors.joining(", ")))
+                    .append("\n\t\tSecret permissions: ").append(accessPolicy.permissions().secrets().stream().map(SecretPermissions::toString).collect(Collectors.joining(", ")));
         }
         System.out.println(info.toString());
     }
@@ -1344,10 +1341,10 @@ public final class Utils {
      * This method creates a certificate for given password.
      *
      * @param certPath location of certificate file
-     * @param pfxPath  location of pfx file
-     * @param alias    User alias
+     * @param pfxPath location of pfx file
+     * @param alias User alias
      * @param password alias password
-     * @param cnName   domain name
+     * @param cnName domain name
      * @throws Exception exceptions from the creation
      */
     public static void createCertificate(String certPath, String pfxPath,
@@ -1406,7 +1403,7 @@ public final class Utils {
     /**
      * This method is used for invoking native commands.
      *
-     * @param command           :- command to invoke.
+     * @param command :- command to invoke.
      * @param ignoreErrorStream : Boolean which controls whether to throw exception or not
      *                          based on error stream.
      * @return result :- depending on the method invocation.
@@ -1962,9 +1959,9 @@ public final class Utils {
     /**
      * Uploads a file to an Azure web app.
      *
-     * @param profile  the publishing profile for the web app.
+     * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
-     * @param file     the local file
+     * @param file the local file
      */
     public static void uploadFileToWebApp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
@@ -1996,9 +1993,9 @@ public final class Utils {
     /**
      * Uploads a file to an Azure function app.
      *
-     * @param profile  the publishing profile for the web app.
+     * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
-     * @param file     the local file
+     * @param file the local file
      */
     public static void uploadFileToFunctionApp(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();
@@ -2030,9 +2027,9 @@ public final class Utils {
     /**
      * Uploads a file to an Azure web app.
      *
-     * @param profile  the publishing profile for the web app.
+     * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
-     * @param file     the local file
+     * @param file the local file
      */
     public static void uploadFileToWebAppWwwRoot(PublishingProfile profile, String fileName, InputStream file) {
         FTPClient ftpClient = new FTPClient();

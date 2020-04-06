@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
@@ -26,8 +23,8 @@ import java.util.Map;
  * type and are creatable.
  * (Internal use only)
  *
- * @param <T>      the individual resource type returned
- * @param <ImplT>  the individual resource implementation
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
 public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends T, InnerT>

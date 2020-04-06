@@ -707,6 +707,7 @@ class DirectoryAPITest extends APISpec {
         properties.getMetadata()
         !properties.getAccessTierChangeTime()
         !properties.getEncryptionKeySha256()
+        properties.isDirectory()
 
     }
 
@@ -1005,10 +1006,33 @@ class DirectoryAPITest extends APISpec {
 
     def "Create file min"() {
         when:
-        dc.getFileClient(generatePathName()).create()
+        dc.createFile(generatePathName())
 
         then:
         notThrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Create file overwrite"() {
+        setup:
+        def pathName = generatePathName()
+        dc.createFile(pathName)
+
+        when:
+        def exceptionThrown = false
+        try {
+            dc.createFile(pathName, overwrite)
+        } catch (DataLakeStorageException ignored) {
+            exceptionThrown = true
+        }
+
+        then:
+        exceptionThrown != overwrite
+
+        where:
+        overwrite || _
+        true      || _
+        false     || _
     }
 
     def "Create file defaults"() {
@@ -1226,11 +1250,33 @@ class DirectoryAPITest extends APISpec {
 
     def "Create sub dir min"() {
         when:
-        def subdir = dc.getSubdirectoryClient(generatePathName())
-        subdir.create()
+        dc.createSubdirectory(generatePathName())
 
         then:
         notThrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Create sub dir overwrite"() {
+        setup:
+        def pathName = generatePathName()
+        dc.createSubdirectory(pathName)
+
+        when:
+        def exceptionThrown = false
+        try {
+            dc.createSubdirectory(pathName, overwrite)
+        } catch (DataLakeStorageException ignored) {
+            exceptionThrown = true
+        }
+
+        then:
+        exceptionThrown != overwrite
+
+        where:
+        overwrite || _
+        true      || _
+        false     || _
     }
 
     def "Create sub dir defaults"() {

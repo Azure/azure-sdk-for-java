@@ -46,6 +46,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -136,7 +137,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // verify the returned updated indexer is as expected
         setSameStartTime(updatedIndexer, indexerResponse);
-        TestHelpers.assertIndexersEqual(updatedIndexer, indexerResponse);
+        assertObjectEquals(updatedIndexer, indexerResponse, true, "etag");
     }
 
     /**
@@ -154,7 +155,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         // verify the returned updated indexer is as expected
         setSameStartTime(indexer, indexerResponse);
-        TestHelpers.assertIndexersEqual(indexer, indexerResponse);
+        assertObjectEquals(indexer, indexerResponse, true, "etag");
     }
 
     @Override
@@ -188,7 +189,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             .setConfiguration(Collections.emptyMap()));
         setSameStartTime(expectedIndexer, actualIndexer);
 
-        TestHelpers.assertIndexersEqual(expectedIndexer, actualIndexer);
+        assertObjectEquals(expectedIndexer, actualIndexer, true, "etag");
     }
 
     @Test
@@ -212,8 +213,9 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         client.createIndexer(indexer2);
 
         Iterator<Indexer> indexers = client.listIndexers().iterator();
-        TestHelpers.assertIndexersEqual(indexer1, indexers.next());
-        TestHelpers.assertIndexersEqual(indexer2, indexers.next());
+
+        assertObjectEquals(indexer1, indexers.next(), true, "etag");
+        assertObjectEquals(indexer2, indexers.next(), true, "etag");
         assertFalse(indexers.hasNext());
     }
 
@@ -506,10 +508,10 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         client.createIndexer(indexer);
         Indexer indexerResult = client.getIndexer(indexerName);
-        TestHelpers.assertIndexersEqual(indexer, indexerResult);
+        assertObjectEquals(indexer, indexerResult, true, "etag");
 
         indexerResult = client.getIndexerWithResponse(indexerName, generateRequestOptions(), Context.NONE).getValue();
-        TestHelpers.assertIndexersEqual(indexer, indexerResult);
+        assertObjectEquals(indexer, indexerResult, true, "etag");
     }
 
     @Test

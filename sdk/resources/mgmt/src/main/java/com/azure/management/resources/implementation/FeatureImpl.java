@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -24,19 +21,19 @@ final class FeatureImpl extends
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override
     public String state() {
-        if (inner().getProperties() == null) {
+        if (inner().properties() == null) {
             return null;
         }
-        return inner().getProperties().getState();
+        return inner().properties().state();
     }
 }

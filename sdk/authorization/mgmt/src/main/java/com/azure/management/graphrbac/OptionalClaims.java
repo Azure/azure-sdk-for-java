@@ -39,7 +39,7 @@ public final class OptionalClaims {
      * 
      * @return the idToken value.
      */
-    public List<OptionalClaim> getIdToken() {
+    public List<OptionalClaim> idToken() {
         return this.idToken;
     }
 
@@ -50,7 +50,7 @@ public final class OptionalClaims {
      * @param idToken the idToken value to set.
      * @return the OptionalClaims object itself.
      */
-    public OptionalClaims setIdToken(List<OptionalClaim> idToken) {
+    public OptionalClaims withIdToken(List<OptionalClaim> idToken) {
         this.idToken = idToken;
         return this;
     }
@@ -61,7 +61,7 @@ public final class OptionalClaims {
      * 
      * @return the accessToken value.
      */
-    public List<OptionalClaim> getAccessToken() {
+    public List<OptionalClaim> accessToken() {
         return this.accessToken;
     }
 
@@ -72,7 +72,7 @@ public final class OptionalClaims {
      * @param accessToken the accessToken value to set.
      * @return the OptionalClaims object itself.
      */
-    public OptionalClaims setAccessToken(List<OptionalClaim> accessToken) {
+    public OptionalClaims withAccessToken(List<OptionalClaim> accessToken) {
         this.accessToken = accessToken;
         return this;
     }
@@ -83,7 +83,7 @@ public final class OptionalClaims {
      * 
      * @return the samlToken value.
      */
-    public List<OptionalClaim> getSamlToken() {
+    public List<OptionalClaim> samlToken() {
         return this.samlToken;
     }
 
@@ -94,7 +94,7 @@ public final class OptionalClaims {
      * @param samlToken the samlToken value to set.
      * @return the OptionalClaims object itself.
      */
-    public OptionalClaims setSamlToken(List<OptionalClaim> samlToken) {
+    public OptionalClaims withSamlToken(List<OptionalClaim> samlToken) {
         this.samlToken = samlToken;
         return this;
     }

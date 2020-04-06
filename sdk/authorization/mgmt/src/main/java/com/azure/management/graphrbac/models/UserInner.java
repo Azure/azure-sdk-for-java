@@ -102,7 +102,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the immutableId value.
      */
-    public String getImmutableId() {
+    public String immutableId() {
         return this.immutableId;
     }
 
@@ -115,7 +115,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param immutableId the immutableId value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setImmutableId(String immutableId) {
+    public UserInner withImmutableId(String immutableId) {
         this.immutableId = immutableId;
         return this;
     }
@@ -128,7 +128,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the usageLocation value.
      */
-    public String getUsageLocation() {
+    public String usageLocation() {
         return this.usageLocation;
     }
 
@@ -141,7 +141,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param usageLocation the usageLocation value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setUsageLocation(String usageLocation) {
+    public UserInner withUsageLocation(String usageLocation) {
         this.usageLocation = usageLocation;
         return this;
     }
@@ -151,7 +151,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the givenName value.
      */
-    public String getGivenName() {
+    public String givenName() {
         return this.givenName;
     }
 
@@ -161,7 +161,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param givenName the givenName value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setGivenName(String givenName) {
+    public UserInner withGivenName(String givenName) {
         this.givenName = givenName;
         return this;
     }
@@ -171,7 +171,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the surname value.
      */
-    public String getSurname() {
+    public String surname() {
         return this.surname;
     }
 
@@ -181,7 +181,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param surname the surname value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setSurname(String surname) {
+    public UserInner withSurname(String surname) {
         this.surname = surname;
         return this;
     }
@@ -192,7 +192,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the userType value.
      */
-    public UserType getUserType() {
+    public UserType userType() {
         return this.userType;
     }
 
@@ -203,7 +203,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param userType the userType value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setUserType(UserType userType) {
+    public UserInner withUserType(UserType userType) {
         this.userType = userType;
         return this;
     }
@@ -213,7 +213,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the accountEnabled value.
      */
-    public Boolean isAccountEnabled() {
+    public Boolean accountEnabled() {
         return this.accountEnabled;
     }
 
@@ -223,7 +223,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param accountEnabled the accountEnabled value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setAccountEnabled(Boolean accountEnabled) {
+    public UserInner withAccountEnabled(Boolean accountEnabled) {
         this.accountEnabled = accountEnabled;
         return this;
     }
@@ -233,7 +233,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the displayName value.
      */
-    public String getDisplayName() {
+    public String displayName() {
         return this.displayName;
     }
 
@@ -243,7 +243,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param displayName the displayName value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setDisplayName(String displayName) {
+    public UserInner withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -253,7 +253,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the userPrincipalName value.
      */
-    public String getUserPrincipalName() {
+    public String userPrincipalName() {
         return this.userPrincipalName;
     }
 
@@ -263,7 +263,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setUserPrincipalName(String userPrincipalName) {
+    public UserInner withUserPrincipalName(String userPrincipalName) {
         this.userPrincipalName = userPrincipalName;
         return this;
     }
@@ -273,7 +273,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the mailNickname value.
      */
-    public String getMailNickname() {
+    public String mailNickname() {
         return this.mailNickname;
     }
 
@@ -283,7 +283,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param mailNickname the mailNickname value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setMailNickname(String mailNickname) {
+    public UserInner withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
         return this;
     }
@@ -293,7 +293,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the mail value.
      */
-    public String getMail() {
+    public String mail() {
         return this.mail;
     }
 
@@ -303,7 +303,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param mail the mail value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setMail(String mail) {
+    public UserInner withMail(String mail) {
         this.mail = mail;
         return this;
     }
@@ -313,7 +313,7 @@ public final class UserInner extends DirectoryObjectInner {
      * 
      * @return the signInNames value.
      */
-    public List<SignInName> getSignInNames() {
+    public List<SignInName> signInNames() {
         return this.signInNames;
     }
 
@@ -323,7 +323,7 @@ public final class UserInner extends DirectoryObjectInner {
      * @param signInNames the signInNames value to set.
      * @return the UserInner object itself.
      */
-    public UserInner setSignInNames(List<SignInName> signInNames) {
+    public UserInner withSignInNames(List<SignInName> signInNames) {
         this.signInNames = signInNames;
         return this;
     }

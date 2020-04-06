@@ -20,8 +20,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
     private final ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
         .connectionString("fake-string")
-        .buildReceiverClientBuilder()
-        .queueName("<QUEUE-NAME>")
+        .receiver()
+        .queueName("<< QUEUE NAME >>")
         .buildAsyncClient();
 
     public void initialization() {
@@ -30,8 +30,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
             .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
                 + "SharedAccessKey={key};EntityPath={eh-name}")
-            .buildReceiverClientBuilder()
-            .queueName("<QUEUE-NAME>")
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation
 
@@ -44,8 +44,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>",
                 new DefaultAzureCredentialBuilder().build())
-            .buildReceiverClientBuilder()
-            .queueName("<QUEUE-NAME>")
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential
 
@@ -58,9 +58,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     public void receiveWithReceiveAndDeleteMode() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
-            .buildReceiverClientBuilder()
+            .receiver()
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-            .queueName("<QUEUE-NAME>")
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode
 
@@ -88,8 +88,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
 
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
-            .buildReceiverClientBuilder()
-            .queueName("<QUEUE-NAME>")
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#basesubscriber
@@ -125,8 +125,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     public void receiveAll() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString("fake-string")
-            .buildReceiverClientBuilder()
-            .queueName("<QUEUE-NAME>")
+            .receiver()
+            .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all

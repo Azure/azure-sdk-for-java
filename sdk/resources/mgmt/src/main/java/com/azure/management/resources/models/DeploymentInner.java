@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.DeploymentProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Deployment model.
- */
+/** The Deployment model. */
 @Fluent
 public final class DeploymentInner {
     /*
@@ -27,40 +25,40 @@ public final class DeploymentInner {
 
     /**
      * Get the location property: The location to store the deployment data.
-     * 
+     *
      * @return the location value.
      */
-    public String getLocation() {
+    public String location() {
         return this.location;
     }
 
     /**
      * Set the location property: The location to store the deployment data.
-     * 
+     *
      * @param location the location value to set.
      * @return the DeploymentInner object itself.
      */
-    public DeploymentInner setLocation(String location) {
+    public DeploymentInner withLocation(String location) {
         this.location = location;
         return this;
     }
 
     /**
      * Get the properties property: The deployment properties.
-     * 
+     *
      * @return the properties value.
      */
-    public DeploymentProperties getProperties() {
+    public DeploymentProperties properties() {
         return this.properties;
     }
 
     /**
      * Set the properties property: The deployment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the DeploymentInner object itself.
      */
-    public DeploymentInner setProperties(DeploymentProperties properties) {
+    public DeploymentInner withProperties(DeploymentProperties properties) {
         this.properties = properties;
         return this;
     }

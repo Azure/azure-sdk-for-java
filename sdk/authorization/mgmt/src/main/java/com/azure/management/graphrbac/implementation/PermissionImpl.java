@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
@@ -24,21 +21,21 @@ class PermissionImpl
 
     @Override
     public List<String> actions() {
-        return inner().getActions();
+        return inner().actions();
     }
 
     @Override
     public List<String> notActions() {
-        return inner().getNotActions();
+        return inner().notActions();
     }
 
     @Override
     public List<String> dataActions() {
-        return inner().getDataActions();
+        return inner().dataActions();
     }
 
     @Override
     public List<String> notDataActions() {
-        return inner().getNotDataActions();
+        return inner().notDataActions();
     }
 }

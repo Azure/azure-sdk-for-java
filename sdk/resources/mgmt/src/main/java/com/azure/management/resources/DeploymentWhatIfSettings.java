@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentWhatIfSettings model.
- */
+/** The DeploymentWhatIfSettings model. */
 @Fluent
 public final class DeploymentWhatIfSettings {
     /*
@@ -20,20 +18,20 @@ public final class DeploymentWhatIfSettings {
 
     /**
      * Get the resultFormat property: The format of the What-If results.
-     * 
+     *
      * @return the resultFormat value.
      */
-    public WhatIfResultFormat getResultFormat() {
+    public WhatIfResultFormat resultFormat() {
         return this.resultFormat;
     }
 
     /**
      * Set the resultFormat property: The format of the What-If results.
-     * 
+     *
      * @param resultFormat the resultFormat value to set.
      * @return the DeploymentWhatIfSettings object itself.
      */
-    public DeploymentWhatIfSettings setResultFormat(WhatIfResultFormat resultFormat) {
+    public DeploymentWhatIfSettings withResultFormat(WhatIfResultFormat resultFormat) {
         this.resultFormat = resultFormat;
         return this;
     }

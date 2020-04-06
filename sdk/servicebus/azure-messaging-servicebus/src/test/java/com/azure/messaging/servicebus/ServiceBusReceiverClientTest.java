@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusReceiverClientTest {
     private static final String NAMESPACE = "test-namespace";
     private static final String ENTITY_PATH = "test-entity-path";
-    private static final UUID LOCK_TOKEN = UUID.randomUUID();
+    private static final String LOCK_TOKEN = UUID.randomUUID().toString();
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);

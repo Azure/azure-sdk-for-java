@@ -33,7 +33,7 @@ public final class PreAuthorizedApplicationPermission {
      * 
      * @return the directAccessGrant value.
      */
-    public Boolean isDirectAccessGrant() {
+    public Boolean directAccessGrant() {
         return this.directAccessGrant;
     }
 
@@ -44,7 +44,7 @@ public final class PreAuthorizedApplicationPermission {
      * @param directAccessGrant the directAccessGrant value to set.
      * @return the PreAuthorizedApplicationPermission object itself.
      */
-    public PreAuthorizedApplicationPermission setDirectAccessGrant(Boolean directAccessGrant) {
+    public PreAuthorizedApplicationPermission withDirectAccessGrant(Boolean directAccessGrant) {
         this.directAccessGrant = directAccessGrant;
         return this;
     }
@@ -54,7 +54,7 @@ public final class PreAuthorizedApplicationPermission {
      * 
      * @return the accessGrants value.
      */
-    public List<String> getAccessGrants() {
+    public List<String> accessGrants() {
         return this.accessGrants;
     }
 
@@ -64,7 +64,7 @@ public final class PreAuthorizedApplicationPermission {
      * @param accessGrants the accessGrants value to set.
      * @return the PreAuthorizedApplicationPermission object itself.
      */
-    public PreAuthorizedApplicationPermission setAccessGrants(List<String> accessGrants) {
+    public PreAuthorizedApplicationPermission withAccessGrants(List<String> accessGrants) {
         this.accessGrants = accessGrants;
         return this;
     }

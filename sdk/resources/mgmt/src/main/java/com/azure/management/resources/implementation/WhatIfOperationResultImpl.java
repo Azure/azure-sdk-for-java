@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -25,12 +22,12 @@ public class WhatIfOperationResultImpl extends
 
     @Override
     public String status() {
-        return this.inner().getStatus();
+        return this.inner().status();
     }
 
 
     @Override
     public ErrorResponse error() {
-        return this.inner().getError();
+        return this.inner().error();
     }
 }

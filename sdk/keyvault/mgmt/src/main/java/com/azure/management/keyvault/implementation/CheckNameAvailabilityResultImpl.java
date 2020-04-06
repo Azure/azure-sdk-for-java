@@ -1,9 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- *
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.keyvault.implementation;
 
@@ -24,17 +20,17 @@ public class CheckNameAvailabilityResultImpl extends WrapperImpl<CheckNameAvaila
 
     @Override
     public Boolean nameAvailable() {
-        return inner().isNameAvailable();
+        return inner().nameAvailable();
     }
 
     @Override
     public Reason reason() {
-        return inner().getReason();
+        return inner().reason();
     }
 
     @Override
     public String message() {
-        return inner().getMessage();
+        return inner().message();
     }
 
 }

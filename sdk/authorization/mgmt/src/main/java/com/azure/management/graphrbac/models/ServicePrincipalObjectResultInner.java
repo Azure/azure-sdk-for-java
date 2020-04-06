@@ -25,7 +25,7 @@ public final class ServicePrincipalObjectResultInner {
      * The URL representing edm equivalent.
      */
     @JsonProperty(value = "odata.metadata")
-    private String odatametadata;
+    private String odataMetadata;
 
     /**
      * Get the value property: The Object ID of the service principal with the
@@ -33,7 +33,7 @@ public final class ServicePrincipalObjectResultInner {
      * 
      * @return the value value.
      */
-    public String getValue() {
+    public String value() {
         return this.value;
     }
 
@@ -44,28 +44,28 @@ public final class ServicePrincipalObjectResultInner {
      * @param value the value value to set.
      * @return the ServicePrincipalObjectResultInner object itself.
      */
-    public ServicePrincipalObjectResultInner setValue(String value) {
+    public ServicePrincipalObjectResultInner withValue(String value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the odatametadata property: The URL representing edm equivalent.
+     * Get the odataMetadata property: The URL representing edm equivalent.
      * 
-     * @return the odatametadata value.
+     * @return the odataMetadata value.
      */
-    public String getOdatametadata() {
-        return this.odatametadata;
+    public String odataMetadata() {
+        return this.odataMetadata;
     }
 
     /**
-     * Set the odatametadata property: The URL representing edm equivalent.
+     * Set the odataMetadata property: The URL representing edm equivalent.
      * 
-     * @param odatametadata the odatametadata value to set.
+     * @param odataMetadata the odataMetadata value to set.
      * @return the ServicePrincipalObjectResultInner object itself.
      */
-    public ServicePrincipalObjectResultInner setOdatametadata(String odatametadata) {
-        this.odatametadata = odatametadata;
+    public ServicePrincipalObjectResultInner withOdataMetadata(String odataMetadata) {
+        this.odataMetadata = odataMetadata;
         return this;
     }
 }

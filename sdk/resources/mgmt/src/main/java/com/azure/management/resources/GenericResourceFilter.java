@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The GenericResourceFilter model.
- */
+/** The GenericResourceFilter model. */
 @Fluent
 public final class GenericResourceFilter {
     /*
@@ -32,60 +30,60 @@ public final class GenericResourceFilter {
 
     /**
      * Get the resourceType property: The resource type.
-     * 
+     *
      * @return the resourceType value.
      */
-    public String getResourceType() {
+    public String resourceType() {
         return this.resourceType;
     }
 
     /**
      * Set the resourceType property: The resource type.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter setResourceType(String resourceType) {
+    public GenericResourceFilter withResourceType(String resourceType) {
         this.resourceType = resourceType;
         return this;
     }
 
     /**
      * Get the tagname property: The tag name.
-     * 
+     *
      * @return the tagname value.
      */
-    public String getTagname() {
+    public String tagname() {
         return this.tagname;
     }
 
     /**
      * Set the tagname property: The tag name.
-     * 
+     *
      * @param tagname the tagname value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter setTagname(String tagname) {
+    public GenericResourceFilter withTagname(String tagname) {
         this.tagname = tagname;
         return this;
     }
 
     /**
      * Get the tagvalue property: The tag value.
-     * 
+     *
      * @return the tagvalue value.
      */
-    public String getTagvalue() {
+    public String tagvalue() {
         return this.tagvalue;
     }
 
     /**
      * Set the tagvalue property: The tag value.
-     * 
+     *
      * @param tagvalue the tagvalue value to set.
      * @return the GenericResourceFilter object itself.
      */
-    public GenericResourceFilter setTagvalue(String tagvalue) {
+    public GenericResourceFilter withTagvalue(String tagvalue) {
         this.tagvalue = tagvalue;
         return this;
     }

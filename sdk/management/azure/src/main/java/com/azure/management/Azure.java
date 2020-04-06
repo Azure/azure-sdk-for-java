@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management;
 
@@ -173,7 +170,7 @@ public final class Azure {
      * Authenticates API access using a RestClient instance.
      *
      * @param restClient the RestClient configured with Azure authentication credentials
-     * @param tenantId   the tenantId in Active Directory
+     * @param tenantId the tenantId in Active Directory
      * @return authenticated Azure client
      */
     public static Authenticated authenticate(RestClient restClient, String tenantId) {
@@ -183,8 +180,8 @@ public final class Azure {
     /**
      * Authenticates API access using a RestClient instance.
      *
-     * @param restClient     the RestClient configured with Azure authentication credentials
-     * @param tenantId       the tenantId in Active Directory
+     * @param restClient the RestClient configured with Azure authentication credentials
+     * @param tenantId the tenantId in Active Directory
      * @param subscriptionId the ID of the subscription
      * @return authenticated Azure client
      */

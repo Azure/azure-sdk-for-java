@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -24,27 +21,27 @@ final class LocationImpl extends
 
     @Override
     public String subscriptionId() {
-        return this.inner().getSubscriptionId();
+        return this.inner().subscriptionId();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String displayName() {
-        return this.inner().getDisplayName();
+        return this.inner().displayName();
     }
 
     @Override
     public String latitude() {
-        return this.inner().getLatitude();
+        return this.inner().latitude();
     }
 
     @Override
     public String longitude() {
-        return this.inner().getLongitude();
+        return this.inner().longitude();
     }
 
     @Override

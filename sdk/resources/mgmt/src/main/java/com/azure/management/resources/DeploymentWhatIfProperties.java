@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeploymentWhatIfProperties model.
- */
+/** The DeploymentWhatIfProperties model. */
 @Fluent
 public final class DeploymentWhatIfProperties extends DeploymentProperties {
     /*
@@ -20,20 +18,20 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
 
     /**
      * Get the whatIfSettings property: Optional What-If operation settings.
-     * 
+     *
      * @return the whatIfSettings value.
      */
-    public DeploymentWhatIfSettings getWhatIfSettings() {
+    public DeploymentWhatIfSettings whatIfSettings() {
         return this.whatIfSettings;
     }
 
     /**
      * Set the whatIfSettings property: Optional What-If operation settings.
-     * 
+     *
      * @param whatIfSettings the whatIfSettings value to set.
      * @return the DeploymentWhatIfProperties object itself.
      */
-    public DeploymentWhatIfProperties setWhatIfSettings(DeploymentWhatIfSettings whatIfSettings) {
+    public DeploymentWhatIfProperties withWhatIfSettings(DeploymentWhatIfSettings whatIfSettings) {
         this.whatIfSettings = whatIfSettings;
         return this;
     }

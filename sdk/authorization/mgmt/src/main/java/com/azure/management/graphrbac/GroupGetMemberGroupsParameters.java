@@ -35,7 +35,7 @@ public final class GroupGetMemberGroupsParameters {
      * 
      * @return the securityEnabledOnly value.
      */
-    public boolean isSecurityEnabledOnly() {
+    public boolean securityEnabledOnly() {
         return this.securityEnabledOnly;
     }
 
@@ -47,7 +47,7 @@ public final class GroupGetMemberGroupsParameters {
      * @param securityEnabledOnly the securityEnabledOnly value to set.
      * @return the GroupGetMemberGroupsParameters object itself.
      */
-    public GroupGetMemberGroupsParameters setSecurityEnabledOnly(boolean securityEnabledOnly) {
+    public GroupGetMemberGroupsParameters withSecurityEnabledOnly(boolean securityEnabledOnly) {
         this.securityEnabledOnly = securityEnabledOnly;
         return this;
     }
@@ -58,7 +58,7 @@ public final class GroupGetMemberGroupsParameters {
      * 
      * @return the additionalProperties value.
      */
-    public Map<String, Object> getAdditionalProperties() {
+    public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
@@ -69,7 +69,7 @@ public final class GroupGetMemberGroupsParameters {
      * @param additionalProperties the additionalProperties value to set.
      * @return the GroupGetMemberGroupsParameters object itself.
      */
-    public GroupGetMemberGroupsParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
+    public GroupGetMemberGroupsParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopic
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
-import java.util.List;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventSubscriptionFullUrl;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PartnerTopicEventSubscription;
 
@@ -56,13 +56,13 @@ class PartnerTopicEventSubscriptionsImpl extends WrapperImpl<PartnerTopicEventSu
     }
 
     @Override
-    public Observable<PartnerTopicEventSubscription> listByPartnerTopicAsync(String resourceGroupName, String partnerTopicName) {
+    public Observable<PartnerTopicEventSubscription> listByPartnerTopicAsync(final String resourceGroupName, final String partnerTopicName) {
         PartnerTopicEventSubscriptionsInner client = this.inner();
         return client.listByPartnerTopicAsync(resourceGroupName, partnerTopicName)
-        .flatMap(new Func1<List<EventSubscriptionInner>, Observable<EventSubscriptionInner>>() {
+        .flatMapIterable(new Func1<Page<EventSubscriptionInner>, Iterable<EventSubscriptionInner>>() {
             @Override
-            public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
-                return Observable.from(innerList);
+            public Iterable<EventSubscriptionInner> call(Page<EventSubscriptionInner> page) {
+                return page.items();
             }
         })
         .map(new Func1<EventSubscriptionInner, PartnerTopicEventSubscription>() {

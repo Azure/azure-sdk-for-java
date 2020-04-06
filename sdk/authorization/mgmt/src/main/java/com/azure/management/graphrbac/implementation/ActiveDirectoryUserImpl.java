@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
@@ -30,21 +27,21 @@ class ActiveDirectoryUserImpl
     private String emailAlias;
 
     ActiveDirectoryUserImpl(UserInner innerObject, GraphRbacManager manager) {
-        super(innerObject.getDisplayName(), innerObject);
+        super(innerObject.displayName(), innerObject);
         this.manager = manager;
-        this.createParameters = new UserCreateParameters().setDisplayName(name()).setAccountEnabled(true);
-        this.updateParameters = new UserUpdateParameters().setDisplayName(name());
+        this.createParameters = new UserCreateParameters().withDisplayName(name()).withAccountEnabled(true);
+        this.updateParameters = new UserUpdateParameters().withDisplayName(name());
     }
 
     @Override
     public String userPrincipalName() {
-        return inner().getUserPrincipalName();
+        return inner().userPrincipalName();
     }
 
     @Override
     public String signInName() {
-        if (inner().getSignInNames() != null && !inner().getSignInNames().isEmpty()) {
-            return inner().getSignInNames().get(0).getValue();
+        if (inner().signInNames() != null && !inner().signInNames().isEmpty()) {
+            return inner().signInNames().get(0).value();
         } else {
             return null;
         }
@@ -52,23 +49,23 @@ class ActiveDirectoryUserImpl
 
     @Override
     public String mail() {
-        return inner().getMail();
+        return inner().mail();
     }
 
     @Override
     public String mailNickname() {
-        return inner().getMailNickname();
+        return inner().mailNickname();
     }
 
     @Override
     public CountryIsoCode usageLocation() {
-        return CountryIsoCode.fromString(inner().getUsageLocation());
+        return CountryIsoCode.fromString(inner().usageLocation());
     }
 
     @Override
     public ActiveDirectoryUserImpl withUserPrincipalName(String userPrincipalName) {
-        createParameters.setUserPrincipalName(userPrincipalName);
-        if (isInCreateMode() || updateParameters.getMailNickname() != null) {
+        createParameters.withUserPrincipalName(userPrincipalName);
+        if (isInCreateMode() || updateParameters.mailNickname() != null) {
             withMailNickname(userPrincipalName.replaceAll("@.+$", ""));
         }
         return this;
@@ -82,7 +79,7 @@ class ActiveDirectoryUserImpl
 
     @Override
     public ActiveDirectoryUserImpl withPassword(String password) {
-        createParameters.setPasswordProfile(new PasswordProfile().setPassword(password));
+        createParameters.withPasswordProfile(new PasswordProfile().withPassword(password));
         return this;
     }
 
@@ -104,7 +101,7 @@ class ActiveDirectoryUserImpl
                     .map(domainInner -> {
                         if (domainInner.isVerified() && domainInner.isDefault()) {
                             if (emailAlias != null) {
-                                withUserPrincipalName(emailAlias + "@" + domainInner.getName());
+                                withUserPrincipalName(emailAlias + "@" + domainInner.name());
                             }
                         }
                         return Mono.just(ActiveDirectoryUserImpl.this);
@@ -122,13 +119,13 @@ class ActiveDirectoryUserImpl
     }
 
     private void withMailNickname(String mailNickname) {
-        createParameters.setMailNickname(mailNickname);
-        updateParameters.setMailNickname(mailNickname);
+        createParameters.withMailNickname(mailNickname);
+        updateParameters.withMailNickname(mailNickname);
     }
 
     @Override
     public ActiveDirectoryUserImpl withPromptToChangePasswordOnLogin(boolean promptToChangePasswordOnLogin) {
-        createParameters.getPasswordProfile().setForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
+        createParameters.passwordProfile().withForceChangePasswordNextLogin(promptToChangePasswordOnLogin);
         return this;
     }
 
@@ -139,21 +136,21 @@ class ActiveDirectoryUserImpl
 
     @Override
     public ActiveDirectoryUserImpl withAccountEnabled(boolean accountEnabled) {
-        createParameters.setAccountEnabled(accountEnabled);
-        updateParameters.setAccountEnabled(accountEnabled);
+        createParameters.withAccountEnabled(accountEnabled);
+        updateParameters.withAccountEnabled(accountEnabled);
         return this;
     }
 
     @Override
     public ActiveDirectoryUserImpl withUsageLocation(CountryIsoCode usageLocation) {
-        createParameters.setUsageLocation(usageLocation.toString());
-        updateParameters.setUsageLocation(usageLocation.toString());
+        createParameters.withUsageLocation(usageLocation.toString());
+        updateParameters.withUsageLocation(usageLocation.toString());
         return this;
     }
 
     @Override
     public String id() {
-        return inner().getObjectId();
+        return inner().objectId();
     }
 
     @Override

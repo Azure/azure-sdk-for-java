@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.core;
 
@@ -164,6 +161,23 @@ public abstract class TestBase {
         final String skipMessage = shouldCancelTest(isPlaybackMode());
         Assumptions.assumeTrue(skipMessage == null, skipMessage);
 
+        String skipOutput = System.getProperty("skipOutput");
+        if (isPlaybackMode() && skipOutput != null && skipOutput.equalsIgnoreCase("true")) {
+            System.setOut(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+
+                }
+            }));
+
+            System.setErr(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) throws IOException {
+
+                }
+            }));
+        }
+
         interceptorManager = InterceptorManager.create(testMothodName, testMode);
         sdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
 
@@ -176,7 +190,7 @@ public abstract class TestBase {
             restClient = buildRestClient(new RestClientBuilder()
                     .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE))
+                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .withPolicy(interceptorManager.initInterceptor())
                     .withPolicy(new HostPolicy(playbackUri + "/"))
                     .withPolicy(new ResourceGroupTaggingPolicy())
@@ -185,12 +199,6 @@ public abstract class TestBase {
             defaultSubscription = ZERO_SUBSCRIPTION;
             interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", playbackUri);
             System.out.println(playbackUri);
-            out = System.out;
-            System.setOut(new PrintStream(new OutputStream() {
-                public void write(int b) {
-                    //DO NOTHING
-                }
-            }));
         } else {
             if (System.getenv("AZURE_AUTH_LOCATION") != null) { // Record mode
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));

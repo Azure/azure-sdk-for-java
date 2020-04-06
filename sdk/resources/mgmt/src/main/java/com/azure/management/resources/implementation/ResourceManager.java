@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -127,7 +124,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
 
         /**
          * Specifies sdk context for resource manager.
-         * 
+         *
          * @param sdkContext the sdk context
          * @return the authenticated itself for chaining
          */
@@ -159,7 +156,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
             this.subscriptionClient = (new SubscriptionClientBuilder())
                     .pipeline(restClient.getHttpPipeline())
                     .host(restClient.getBaseUrl().toString())
-                    .build();
+                    .buildClient();
         }
 
         public Subscriptions subscriptions() {
@@ -195,24 +192,24 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
                 .subscriptionId(subscriptionId)
-                .build();
+                .buildClient();
 
         this.featureClient = new FeatureClientBuilder()
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
                 .subscriptionId(subscriptionId)
-                .build();
+                .buildClient();
 
         this.subscriptionClientClient = new SubscriptionClientBuilder()
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
-                .build();
+                .buildClient();
 
         this.policyClient = new PolicyClientBuilder()
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
                 .subscriptionId(subscriptionId)
-                .build();
+                .buildClient();
     }
 
     /**

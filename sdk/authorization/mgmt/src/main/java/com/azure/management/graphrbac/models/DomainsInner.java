@@ -8,6 +8,7 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -23,6 +24,8 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /**
@@ -45,7 +48,7 @@ public final class DomainsInner {
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    public DomainsInner(GraphRbacManagementClientImpl client) {
+    DomainsInner(GraphRbacManagementClientImpl client) {
         this.service = RestProxy.create(DomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
@@ -58,40 +61,44 @@ public final class DomainsInner {
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementClientDomains")
     private interface DomainsService {
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/domains")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DomainListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DomainListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
 
+        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/domains/{domainName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DomainInner>> get(@HostParam("$host") String host, @PathParam("domainName") String domainName, @PathParam("tenantID") String tenantID, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DomainInner>> get(@HostParam("$host") String host, @PathParam("domainName") String domainName, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantID, Context context);
     }
 
     /**
      * Gets a list of domains for the current tenant.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter) {
-        return service.list(this.client.getHost(), filter, this.client.getTenantID(), this.client.getApiVersion()).map(res -> new PagedResponseBase<>(
-            res.getRequest(),
-            res.getStatusCode(),
-            res.getHeaders(),
-            res.getValue().getValue(),
-            null,
-            null));
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .<PagedResponse<DomainInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().value(),
+                null,
+                null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of domains for the current tenant.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -105,7 +112,21 @@ public final class DomainsInner {
     /**
      * Gets a list of domains for the current tenant.
      * 
-     * @param filter MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DomainInner> listAsync() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter));
+    }
+
+    /**
+     * Gets a list of domains for the current tenant.
+     * 
+     * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,22 +137,36 @@ public final class DomainsInner {
     }
 
     /**
+     * Gets a list of domains for the current tenant.
+     * 
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DomainInner> list() {
+        final String filter = null;
+        final Context context = null;
+        return new PagedIterable<>(listAsync(filter));
+    }
+
+    /**
      * Gets a specific domain in the current tenant.
      * 
-     * @param domainName MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param domainName name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainInner>> getWithResponseAsync(String domainName) {
-        return service.get(this.client.getHost(), domainName, this.client.getTenantID(), this.client.getApiVersion());
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), domainName, this.client.getApiVersion(), this.client.getTenantID(), context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a specific domain in the current tenant.
      * 
-     * @param domainName MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param domainName name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -151,7 +186,7 @@ public final class DomainsInner {
     /**
      * Gets a specific domain in the current tenant.
      * 
-     * @param domainName MISSING·SCHEMA-DESCRIPTION-STRING.
+     * @param domainName name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
