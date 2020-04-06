@@ -49,7 +49,7 @@ public class DocumentInputTest {
     public void detectLanguagesNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.detectLanguage(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -60,7 +60,7 @@ public class DocumentInputTest {
     public void detectLanguagesNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.detectLanguage(null, "US"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class DocumentInputTest {
     public void detectLanguagesBatchNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.detectLanguageBatch(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -82,7 +82,7 @@ public class DocumentInputTest {
     public void detectLanguagesBatchNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.detectLanguageBatch(null, "US"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -93,7 +93,7 @@ public class DocumentInputTest {
     public void detectLanguagesBatchNullInputWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.detectLanguageBatch(null, "US", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -104,7 +104,7 @@ public class DocumentInputTest {
     public void detectLanguagesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.detectLanguageBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -115,7 +115,7 @@ public class DocumentInputTest {
     public void detectLanguageEmptyInputList() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.detectLanguageBatch(Collections.emptyList()));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -126,7 +126,7 @@ public class DocumentInputTest {
     public void detectLanguageEmptyInputListWithCountryHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.detectLanguageBatch(Collections.emptyList(), "US"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -137,7 +137,7 @@ public class DocumentInputTest {
     public void detectLanguageEmptyInputListWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.detectLanguageBatch(Collections.emptyList(), "US", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -149,7 +149,7 @@ public class DocumentInputTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.detectLanguageBatch(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     // Recognize Entity
@@ -162,7 +162,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntities(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -173,7 +173,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntities(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -184,7 +184,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesBatchNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntitiesBatch(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -195,7 +195,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesBatchNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntitiesBatch(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -206,7 +206,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesBatchNullInputWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntitiesBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -217,7 +217,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeEntitiesBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -228,7 +228,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesEmptyInputList() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeEntitiesBatch(Collections.emptyList()));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -239,7 +239,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesEmptyInputListWithCountryHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeEntitiesBatch(Collections.emptyList(), "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -250,7 +250,7 @@ public class DocumentInputTest {
     public void recognizeEntitiesEmptyInputListWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeEntitiesBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -262,7 +262,7 @@ public class DocumentInputTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeEntitiesBatch(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     // Recognize linked entity
@@ -275,7 +275,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntities(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -286,7 +286,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntities(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -297,7 +297,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesBatchNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntitiesBatch(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -308,7 +308,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesBatchNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntitiesBatch(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -319,7 +319,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesBatchNullInputWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntitiesBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -330,7 +330,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.recognizeLinkedEntitiesBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -341,7 +341,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesEmptyInputList() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeLinkedEntitiesBatch(Collections.emptyList()));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -352,7 +352,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesEmptyInputListWithCountryHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -363,7 +363,7 @@ public class DocumentInputTest {
     public void recognizeLinkedEntitiesEmptyInputListWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeLinkedEntitiesBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -375,7 +375,7 @@ public class DocumentInputTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.recognizeLinkedEntitiesBatch(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     // Extract key phrase
@@ -388,7 +388,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrases(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -399,7 +399,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrases(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -410,7 +410,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesBatchNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrasesBatch(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -421,7 +421,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesBatchNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrasesBatch(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -432,7 +432,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesBatchNullInputWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrasesBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -443,7 +443,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.extractKeyPhrasesBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -454,7 +454,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesEmptyInputList() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.extractKeyPhrasesBatch(Collections.emptyList()));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -465,7 +465,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesEmptyInputListWithCountryHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.extractKeyPhrasesBatch(Collections.emptyList(), "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -476,7 +476,7 @@ public class DocumentInputTest {
     public void extractKeyPhrasesEmptyInputListWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.extractKeyPhrasesBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -488,7 +488,7 @@ public class DocumentInputTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.extractKeyPhrasesBatch(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     // Sentiment
@@ -501,7 +501,7 @@ public class DocumentInputTest {
     public void analyseSentimentNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentiment(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -512,7 +512,7 @@ public class DocumentInputTest {
     public void analyseSentimentNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentiment(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -523,7 +523,7 @@ public class DocumentInputTest {
     public void analyseSentimentBatchNullInput() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -534,7 +534,7 @@ public class DocumentInputTest {
     public void analyseSentimentBatchNullInputWithCountryHint() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null, "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -545,7 +545,7 @@ public class DocumentInputTest {
     public void analyseSentimentBatchNullInputWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null, "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -556,7 +556,7 @@ public class DocumentInputTest {
     public void analyseSentimentBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.analyzeSentimentBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_BATCH_NPE_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -567,7 +567,7 @@ public class DocumentInputTest {
     public void analyseSentimentEmptyInputList() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(Collections.emptyList()));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -578,7 +578,7 @@ public class DocumentInputTest {
     public void analyseSentimentEmptyInputListWithCountryHint() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(Collections.emptyList(), "en"));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -589,7 +589,7 @@ public class DocumentInputTest {
     public void analyseSentimentEmptyInputListWithCountryHintAndRequestOptions() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(Collections.emptyList(), "en", new TextAnalyticsRequestOptions().setIncludeStatistics(true)));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
@@ -601,6 +601,6 @@ public class DocumentInputTest {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
             client.analyzeSentimentBatch(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE));
+        assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
 }
