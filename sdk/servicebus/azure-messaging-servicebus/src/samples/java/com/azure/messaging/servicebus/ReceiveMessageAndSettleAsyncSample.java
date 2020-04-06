@@ -28,7 +28,7 @@ public class ReceiveMessageAndSettleAsyncSample {
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
         String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
             + "SharedAccessKey={key}";
-        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=";
+
         // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
