@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.azure.core.util.ServiceVersion;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
