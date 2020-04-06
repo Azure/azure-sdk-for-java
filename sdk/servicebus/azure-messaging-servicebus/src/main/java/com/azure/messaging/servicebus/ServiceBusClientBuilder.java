@@ -39,7 +39,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -474,10 +473,7 @@ public final class ServiceBusClientBuilder {
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
 
-        private boolean isAutoComplete;
-        private Duration maxAutoLockRenewalDuration;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
-        private boolean isLockAutoRenewed;
         private String queueName;
         private String subscriptionName;
         private String topicName;
@@ -562,8 +558,8 @@ public final class ServiceBusClientBuilder {
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String) queueName()}
-         *     or {@link #topicName(String) topicName()}, respectively.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
             final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
@@ -592,17 +588,6 @@ public final class ServiceBusClientBuilder {
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
             }
 
-            if (isLockAutoRenewed) {
-                if (maxAutoLockRenewalDuration == null) {
-                    throw logger.logExceptionAsError(new IllegalStateException(
-                        "'maxAutoLockRenewalDuration' is required when 'isLockAutoRenewed' is enabled."));
-                } else if (maxAutoLockRenewalDuration.isZero() || maxAutoLockRenewalDuration.isNegative()) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                        "maxAutoLockRenewalDuration (%s) cannot be less than or equal to a duration of zero.",
-                        maxAutoLockRenewalDuration)));
-                }
-            }
-
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
@@ -622,21 +607,11 @@ public final class ServiceBusClientBuilder {
          *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
          *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
          *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
-         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String) queueName()}
-         *     or {@link #topicName(String) topicName()}, respectively.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            final ServiceBusReceiverAsyncClient client = buildAsyncClient();
-
-            if (isLockAutoRenewed) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Cannot use 'isLockAutoRenewed' when using synchronous client."));
-            } else if (isAutoComplete) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Cannot use 'isAutoComplete' when using synchronous client."));
-            }
-
-            return new ServiceBusReceiverClient(client, retryOptions.getTryTimeout());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 }
