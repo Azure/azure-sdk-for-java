@@ -63,6 +63,7 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
@@ -206,6 +207,8 @@ public class IdentityClient {
             }
             String processOutput = output.toString();
 
+            process.waitFor(10, TimeUnit.SECONDS);
+
             if (process.exitValue() != 0) {
                 if (processOutput.length() > 0) {
                     String redactedOutput = redactInfo("\"accessToken\": \"(.*?)(\"|$)", processOutput);
@@ -225,7 +228,7 @@ public class IdentityClient {
                                            .atZone(ZoneId.systemDefault())
                                            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
             token = new IdentityToken(accessToken, expiresOn, options);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw logger.logExceptionAsError(new IllegalStateException(e));
         } catch (RuntimeException e) {
             return Mono.error(logger.logExceptionAsError(e));
