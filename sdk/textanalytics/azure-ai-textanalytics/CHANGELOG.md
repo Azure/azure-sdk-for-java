@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2020-04-06)
 - Throws an illegal argument exception when the given list of documents is an empty list.
 
 **Breaking changes**
