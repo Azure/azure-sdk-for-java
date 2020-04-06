@@ -67,7 +67,5 @@ public class ReceiveMessageAndSettleAsyncSample {
 
         // Close the receiver.
         receiverAsyncClient.close();
-
-        try { Thread.sleep(30000); } catch (Exception ee )  {}
     }
 }

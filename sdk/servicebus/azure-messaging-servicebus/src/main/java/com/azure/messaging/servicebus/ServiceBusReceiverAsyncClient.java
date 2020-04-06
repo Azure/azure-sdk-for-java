@@ -67,7 +67,6 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
-    private static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
