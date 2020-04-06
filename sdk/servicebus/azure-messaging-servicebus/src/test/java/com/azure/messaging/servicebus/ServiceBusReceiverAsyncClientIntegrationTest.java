@@ -158,7 +158,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(1);
 
         sender.scheduleMessage(message1, scheduledEnqueueTime)
-            .block();
+            .block(TIMEOUT);
         sender.scheduleMessage(message2, scheduledEnqueueTime)
             .block(TIMEOUT);
 
@@ -399,24 +399,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(receiverManualComplete.abandon(receivedMessage))
             .verifyComplete();
     }
-
-    @Test
-    void receiveAndDeadLetter() {
-        // Arrange
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-
-        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive().next())
-            .block(TIMEOUT);
-
-        Assertions.assertNotNull(receivedMessage);
-
-        // Assert & Act
-        StepVerifier.create(receiverManualComplete.deadLetter(receivedMessage))
-            .verifyComplete();
-    }
-
 
     @Test
     void receiveBySequenceNumberAndDeadletter() {
