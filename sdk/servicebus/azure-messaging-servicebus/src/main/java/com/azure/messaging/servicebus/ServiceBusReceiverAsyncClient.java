@@ -428,7 +428,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code lockToken} is null.
      * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
      *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
+     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns an empty value.
      */
     public Mono<Instant> renewMessageLock(MessageLockToken lockToken) {
         if (isDisposed.get()) {
@@ -436,12 +436,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         } else if (Objects.isNull(lockToken)) {
             return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
+        } else if (Objects.isNull(lockToken.getLockToken())) {
+            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
+        } else if (lockToken.getLockToken().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
+        UUID lockTokenUuid = null;
+        try {
+            lockTokenUuid = UUID.fromString(lockToken.getLockToken());
+        } catch (IllegalArgumentException ex) {
+            monoError(logger, ex);
+        }
+
+        UUID finalLockTokenUuid = lockTokenUuid;
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(serviceBusManagementNode ->
-                serviceBusManagementNode.renewMessageLock(lockToken.getLockToken()))
+                serviceBusManagementNode.renewMessageLock(finalLockTokenUuid))
             .map(instant -> {
                 if (lockToken instanceof ServiceBusReceivedMessage) {
                     ((ServiceBusReceivedMessage) lockToken).setLockedUntil(instant);
@@ -498,18 +510,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
         } else if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(logger, new NullPointerException("'receivedMessage' cannot be null."));
+        } else if (Objects.isNull(message.getLockToken())) {
+            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
+        } else if (message.getLockToken().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
-        final UUID lockToken = message.getLockToken();
+
         if (receiveMode != ReceiveMode.PEEK_LOCK) {
             return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
-        } else if (lockToken == null) {
-            return Mono.error(logger.logExceptionAsError(new IllegalArgumentException(
-                "'message.getLockToken()' cannot be null.")));
+        } else if (Objects.isNull(message.getLockToken())) {
+            return monoError(logger, new NullPointerException("'receivedMessage.lockToken' cannot be null."));
+        } else if (message.getLockToken().isEmpty()) {
+            return monoError(logger, new IllegalArgumentException("'message.lockToken' cannot be empty."));
         }
 
+        final UUID lockToken = UUID.fromString(message.getLockToken());
         final Instant instant = messageLockContainer.getLockTokenExpiration(lockToken);
         logger.info("{}: Update started. Disposition: {}. Lock: {}. Expiration: {}",
             entityPath, dispositionStatus, lockToken, instant);

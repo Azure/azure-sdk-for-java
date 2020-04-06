@@ -3,6 +3,7 @@
 com.fasterxml.jackson.core:jackson-annotations;2.10.1
 com.fasterxml.jackson.core:jackson-core;2.10.1
 com.fasterxml.jackson.core:jackson-databind;2.10.1
+com.fasterxml.jsckson.dataformat:jackson-dataformat-avro;2.10.1
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
 com.github.spotbugs:spotbugs;4.0.0-beta3
@@ -36,6 +37,7 @@ io.netty:netty-transport-native-unix-common;4.1.45.Final
 io.projectreactor.netty:reactor-netty;0.9.5.RELEASE
 io.projectreactor:reactor-core;3.3.3.RELEASE
 io.reactivex:rxjava;1.2.4
+org.apache.avro:avro;1.9.2
 org.apache.httpcomponents:httpclient;4.3.6
 org.apache.logging.log4j:log4j-api;2.11.1
 org.apache.logging.log4j:log4j-core;2.11.1

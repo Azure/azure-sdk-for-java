@@ -9,49 +9,75 @@ jobs:
 
     strategy:
       matrix:
-        Java 8 Windows (Public):
+        Java 8 Windows (AzureCloud):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          CloudType: public
-        Java LTS Windows (Public):
+          CloudType: AzureCloud
+          ArmTemplateParameters: $(azureCloudArmParameters)
+        Java LTS Windows (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
-          CloudType: public
-        Java 8 Linux (Public):
+          CloudType: AzureCloud
+          ArmTemplateParameters: $(azureCloudArmParameters)
+        Java 8 Linux (AzureCloud):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: ubuntu-18.04
-          CloudType: public
-        Java LTS Linux (Public):
+          CloudType: AzureCloud
+          ArmTemplateParameters: $(azureCloudArmParameters)
+        Java LTS Linux (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: ubuntu-18.04
-          CloudType: public
-        Java 8 MacOS (Public):
+          CloudType: AzureCloud
+          ArmTemplateParameters: $(azureCloudArmParameters)
+        Java 8 MacOS (AzureCloud):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: macOS-10.15
-          CloudType: public
-        Java LTS MacOS (Public):
+          CloudType: AzureCloud
+          ArmTemplateParameters: $(azureCloudArmParameters)
+        Java LTS MacOS (AzureCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: macOS-10.15
-          CloudType: public
-        Java 8 Windows (Gov):
+          CloudType: AzureCloud
+          ArmTemplateParameters: $(azureCloudArmParameters)
+        Java 8 Windows (AzureUSGovernment):
           ProfileFlag: ''
           JavaVersion: '1.8'
           OSVmImage: windows-2019
-          CloudType: gov
-        Java LTS Windows (Gov):
+          CloudType: AzureUSGovernment
+          ArmTemplateParameters: $(azureUSGovernmentArmParameters)
+        Java LTS Windows (AzureUSGovernment):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
-          CloudType: gov
+          CloudType: AzureUSGovernment
+          ArmTemplateParameters: $(azureUSGovernmentArmParameters)
+        Java 8 Windows (AzureChinaCloud):
+          ProfileFlag: ''
+          JavaVersion: '1.8'
+          OSVmImage: windows-2019
+          CloudType: AzureChinaCloud
+          ArmTemplateParameters: $(azureChinaCloudArmParameters)
+        Java LTS Windows (AzureChinaCloud):
+          ProfileFlag: '-Pjava-lts'
+          JavaVersion: '1.11'
+          OSVmImage: windows-2019
+          CloudType: AzureChinaCloud
+          ArmTemplateParameters: $(azureChinaCloudArmParameters)
 
     pool:
       vmImage: $(OSVmImage)
+
+    variables:
+      azureCloudArmParameters: "@{ storageEndpointSuffix = 'core.windows.net'; azureCloud = 'AzureCloud'; }"
+      azureUSGovernmentArmParameters: "@{ storageEndpointSuffix = 'core.usgovcloudapi.net'; azureCloud = 'AzureUSGovernment'; }"
+      azureChinaCloudArmParameters: "@{ storageEndpointSuffix = 'core.chinacloudapi.cn'; azureCloud = 'AzureChinaCloud'; }"
+
 
     steps:
       - task: Maven@3
@@ -102,46 +128,11 @@ jobs:
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      # Set secret environment variables for different clouds
-      - pwsh: |
-          $variables = @{
-            AZURE_CLIENT_SECRET='$(aad-azure-sdk-test-client-secret)'
-            AZURE_TENANT_ID='$(aad-azure-sdk-test-tenant-id)'
-            AZURE_CLIENT_ID='$(aad-azure-sdk-test-client-id)'
-            AZURE_AUTHORITY_HOST='$(aad-azure-sdk-test-authority-uri)'
-            AZURE_PROJECT_URL='$(smoke-tests-key-vault-project-url)'
-            AZURE_EVENT_HUBS_CONNECTION_STRING='$(smoke-tests-event-hubs-connection-string)'
-            AZURE_STORAGE_CONNECTION_STRING='$(smoke-tests-storage-connection-string)'
-            AZURE_COSMOS_KEY='$(smoke-tests-cosmos-key)'
-            AZURE_COSMOS_ENDPOINT='$(smoke-tests-cosmos-endpoint)'
-          };
-          foreach ($key in $variables.Keys) {
-            Write-Host "Setting variable '$key'"
-            Write-Host "##vso[task.setvariable variable=_$key;issecret=true;]$($variables[$key])"
-            Write-Host "##vso[task.setvariable variable=$key;]$($variables[$key])"
-          }
-        displayName: Set secrets for public cloud
-        condition: and(succeeded(), eq(variables['CloudType'], 'public'))
-
-      - pwsh: |
-          $variables = @{
-            AZURE_CLIENT_SECRET='$(aad-azure-sdk-test-client-secret-gov)'
-            AZURE_TENANT_ID='$(aad-azure-sdk-test-tenant-id-gov)'
-            AZURE_CLIENT_ID='$(aad-azure-sdk-test-client-id-gov)'
-            AZURE_AUTHORITY_HOST='$(aad-azure-sdk-test-authority-uri-gov)'
-            AZURE_PROJECT_URL='$(smoke-tests-key-vault-project-url-gov)'
-            AZURE_EVENT_HUBS_CONNECTION_STRING='$(smoke-tests-event-hubs-connection-string-gov)'
-            AZURE_STORAGE_CONNECTION_STRING='$(smoke-tests-storage-connection-string-gov)'
-            AZURE_COSMOS_KEY='$(smoke-tests-cosmos-key-gov)'
-            AZURE_COSMOS_ENDPOINT='$(smoke-tests-cosmos-endpoint-gov)'
-          };
-          foreach ($key in $variables.Keys) {
-            Write-Host "Setting variable '$key'"
-            Write-Host "##vso[task.setvariable variable=_$key;issecret=true;]$($variables[$key])"
-            Write-Host "##vso[task.setvariable variable=$key;]$($variables[$key])"
-          }
-        displayName: Set secrets for government cloud
-        condition: and(succeeded(), eq(variables['CloudType'], 'gov'))
+      - template: /eng/common/TestResources/deploy-test-resources.yml
+        parameters:
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+          CloudType: $(CloudType)
+          ArmTemplateParameters: $(ArmTemplateParameters)
 
       - task: Maven@3
         displayName: 'Run Smoke Tests'
@@ -155,3 +146,5 @@ jobs:
           publishJUnitResults: false
         env:
           AZURE_LOG_LEVEL: 2
+
+      - template: /eng/common/TestResources/remove-test-resources.yml

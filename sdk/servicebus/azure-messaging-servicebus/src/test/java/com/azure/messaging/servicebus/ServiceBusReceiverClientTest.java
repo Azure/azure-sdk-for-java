@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 class ServiceBusReceiverClientTest {
     private static final String NAMESPACE = "test-namespace";
     private static final String ENTITY_PATH = "test-entity-path";
-    private static final UUID LOCK_TOKEN = UUID.randomUUID();
+    private static final String LOCK_TOKEN = UUID.randomUUID().toString();
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
@@ -310,6 +310,78 @@ class ServiceBusReceiverClientTest {
 
         final List<ServiceBusReceivedMessage> collected = actual.stream().collect(Collectors.toList());
         assertEquals(maxMessages, collected.size());
+    }
+
+
+    /**
+     * Verifies we cannot pass null value for maxWaitTime while receiving.
+     */
+    @Test
+    void receiveMessageNullWaitTime() {
+        // Arrange
+        final int maxMessages = 10;
+
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> client.receive(maxMessages, null));
+    }
+
+    /**
+     * Verifies we cannot pass negative value for maxWaitTime while receiving.
+     */
+    @Test
+    void receiveMessageNegativeWaitTime() {
+        // Arrange
+        final int maxMessages = 10;
+        Duration negativeReceiveWaitTime =  Duration.ofSeconds(-10);
+
+        // Act & Assert
+        assertThrows(IllegalArgumentException.class, () -> client.receive(maxMessages, negativeReceiveWaitTime));
+    }
+
+    /**
+     * Verifies that all requested messages are returned when we can satisfy them all.
+     */
+    @Test
+    void receiveMessagesWithUserSpecifiedTimeout() {
+        // Arrange
+        final int maxMessages = 10;
+        final int numberToEmit = 5;
+        final Duration receiveTimeout = Duration.ofSeconds(2);
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
+            sink.onRequest(e -> {
+                final AtomicInteger emittedMessages = new AtomicInteger();
+                if (emittedMessages.get() >= numberToEmit) {
+                    logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
+                        emittedMessages.get(), numberToEmit);
+                    return;
+                }
+
+                for (int i = 0; i < numberToEmit; i++) {
+                    sink.next(mock(ServiceBusReceivedMessage.class));
+
+                    final int emit = emittedMessages.incrementAndGet();
+                    if (emit >= numberToEmit) {
+                        logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}", emit, maxMessages);
+                        break;
+                    }
+                }
+            });
+
+            sink.onCancel(() -> {
+                logger.info("Cancelled. Completing sink.");
+                sink.complete();
+            });
+        });
+        when(asyncClient.receive()).thenReturn(messageSink);
+
+        // Act
+        final IterableStream<ServiceBusReceivedMessage> actual = client.receive(maxMessages, receiveTimeout);
+
+        // Assert
+        assertNotNull(actual);
+
+        final List<ServiceBusReceivedMessage> collected = actual.stream().collect(Collectors.toList());
+        assertEquals(numberToEmit, collected.size());
     }
 
     /**

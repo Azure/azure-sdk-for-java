@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
 ## 1.0.0-beta.4 (2020-04-02)
 
 - Added az namespace info attribute to all outgoing spans for Http Libraries.
