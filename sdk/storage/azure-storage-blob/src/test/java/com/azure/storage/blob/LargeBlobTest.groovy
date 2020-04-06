@@ -90,9 +90,10 @@ class LargeBlobTest extends APISpec {
         given:
         def length = maxBlockSize * 2
         def flux = createLargeBuffer(length)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSize(maxBlockSize);
 
         when:
-        blobAsyncClient.upload(flux, new ParallelTransferOptions(maxBlockSize, null, null, null))
+        blobAsyncClient.upload(flux, parallelTransferOptions)
         .block()
 
         then:
@@ -109,9 +110,10 @@ class LargeBlobTest extends APISpec {
         long blocks = 50 * 1000
         long length = maxBlockSize * blocks
         def flux = createLargeBuffer(length, Constants.MB)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSize(maxBlockSize);
 
         when:
-        blobAsyncClient.upload(flux, new ParallelTransferOptions(maxBlockSize, null, null, null))
+        blobAsyncClient.upload(flux, parallelTransferOptions)
             .block()
 
         then:
@@ -124,10 +126,11 @@ class LargeBlobTest extends APISpec {
         long blocks = 2
         long length = maxBlockSize * blocks
         def stream = createLargeInputStream(length, Constants.MB)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSize(maxBlockSize);
 
         when:
         blobClient.uploadWithResponse(
-            stream, length, new ParallelTransferOptions(maxBlockSize, null, null, null),
+            stream, length, parallelTransferOptions,
             null, null, null, null, null, Context.NONE);
 
         then:
@@ -145,14 +148,31 @@ class LargeBlobTest extends APISpec {
         long blocks = 50 * 1000
         long length = maxBlockSize * blocks
         def stream = createLargeInputStream(length, 100 * Constants.MB)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSize(maxBlockSize);
 
         when:
         blobClient.uploadWithResponse(
-            stream, length, new ParallelTransferOptions(maxBlockSize, null, null, null),
+            stream, length, parallelTransferOptions,
             null, null, null, null, null, Context.NONE);
 
         then:
         count.get() == blocks
+    }
+
+    @Requires({ liveMode() })
+    @Ignore("Takes really long time")
+    def "Upload Large File"() {
+        given:
+        def file = getRandomLargeFile(maxBlockSize)
+        def client = cc.getBlobClient(blobName)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSize(maxBlockSize);
+
+        when:
+        client.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null, null, null)
+
+        then:
+        true
     }
 
     private InputStream createLargeInputStream(long size) {
@@ -179,6 +199,24 @@ class LargeBlobTest extends APISpec {
         return Flux.just(ByteBuffer.wrap(bytes))
             .map{buffer -> buffer.duplicate()}
             .repeat(numberOfSubBuffers - 1)
+    }
+
+    File getRandomLargeFile(long size) {
+        File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
+        file.deleteOnExit()
+        FileOutputStream fos = new FileOutputStream(file)
+
+        if (size > Constants.MB) {
+            for (def i = 0; i < size / Constants.MB; i++) {
+                def dataSize = (int) Math.min(Constants.MB, size - i * Constants.MB)
+                fos.write(getRandomByteArray(dataSize))
+            }
+        } else {
+            fos.write(getRandomByteArray((int) size))
+        }
+
+        fos.close()
+        return file
     }
 
     private class PayloadDroppingPolicy implements HttpPipelinePolicy {

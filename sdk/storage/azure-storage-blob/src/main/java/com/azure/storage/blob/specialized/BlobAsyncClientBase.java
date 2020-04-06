@@ -770,7 +770,7 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob properties and metadata.
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
@@ -803,8 +803,7 @@ public class BlobAsyncClientBase {
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
      * @return A reactive response containing the blob properties and metadata.
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
-     * // TODO (kasobol-msft) Jumbo blob
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,

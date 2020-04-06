@@ -9,34 +9,62 @@ import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class provides ability buffer data chunks that are larger than single {@link ByteBuffer} size.
+ *
+ * RESERVED FOR INTERNAL USE.
+ */
 public final class BufferAggregator {
     private final long limit;
-    private long size = 0;
+    private long length = 0;
     private List<ByteBuffer> buffers = new LinkedList<>();
 
-    public BufferAggregator(long limit) {
+    /**
+     * Creates new BufferAggregator instance.
+     * @param limit Capacity in number of bytes.
+     */
+    BufferAggregator(long limit) {
         this.limit = limit;
     }
 
+    /**
+     * @return Remaining number of bytes this instance can store.
+     */
     public long remaining() {
-        return limit - size;
+        return limit - length;
     }
 
-    public long size() {
-        return this.size;
+    /**
+     * @return Number of bytes this instance already stores.
+     */
+    public long length() {
+        return this.length;
     }
 
-    public void add(ByteBuffer byteBuffer) {
+    /**
+     * Appends additional ByteBuffer to existing data set.
+     *
+     * @param byteBuffer A buffer with additional data.
+     */
+    void append(ByteBuffer byteBuffer) {
         buffers.add(byteBuffer);
-        size += byteBuffer.remaining();
+        length += byteBuffer.remaining();
     }
 
-    public void reset() {
-        this.size = 0;
+    /**
+     * Removes data already store by this instance.
+     */
+    void reset() {
+        this.length = 0;
         this.buffers = new LinkedList<>();
     }
 
-    public Flux<ByteBuffer> getBuffers() {
+    /**
+     * Converts accumulated data into {@link Flux<ByteBuffer>}.
+     *
+     * @return A {@link Flux<ByteBuffer>} of accumulated data.
+     */
+    public Flux<ByteBuffer> asFlux() {
         return Flux.fromIterable(this.buffers);
     }
 }

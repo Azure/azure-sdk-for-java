@@ -84,7 +84,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    static final long MAX_APPEND_FILE_BYTES_LONG = 4000L * Constants.MB;
+    static final long MAX_APPEND_FILE_BYTES_LONG = 100L * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
 
@@ -332,7 +332,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 long currentOffset = tuple3.getT3() + fileOffset;
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    buffer.getBuffers(), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                    buffer.asFlux(), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
                     .doFinally(x -> pool.returnBuffer(buffer))

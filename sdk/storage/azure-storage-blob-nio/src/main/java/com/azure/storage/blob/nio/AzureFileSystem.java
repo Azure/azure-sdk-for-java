@@ -142,7 +142,12 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-            this.blockSize = (Long) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            Object blockSize = config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            if(blockSize instanceof Integer) {
+                this.blockSize = Long.valueOf((Integer) blockSize);
+            } else {
+                this.blockSize = (Long) blockSize;
+            }
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
 
             // Initialize and ensure access to FileStores.

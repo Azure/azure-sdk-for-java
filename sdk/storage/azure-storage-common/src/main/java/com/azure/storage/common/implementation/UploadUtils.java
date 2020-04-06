@@ -45,7 +45,7 @@ public class UploadUtils {
             .concatMap(gate::write)
             .concatWith(Flux.defer(gate::flush))
             .switchOnFirst((signal, flux) -> {
-                if (gate.isThresholdBroken()) {
+                if (gate.isThresholdBreached()) {
                     return uploadInChunks.apply(flux);
                 } else {
                     return uploadFull.apply(flux, gate.size());

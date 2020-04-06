@@ -62,7 +62,7 @@ public final class ParallelTransferOptions {
      * @deprecated Use {@link #getBlockSizeLong()}.
      */
     @Deprecated
-    public Integer getBlockSize() { // TODO (kasobol-msft) Jumbo Blob
+    public Integer getBlockSize() {
         return this.blockSize == null ? null : Math.toIntExact(this.blockSize);
     }
 
@@ -144,7 +144,7 @@ public final class ParallelTransferOptions {
      * @deprecated Use {@link #getMaxSingleUploadSizeLong()}.
      */
     @Deprecated
-    public Integer getMaxSingleUploadSize() { // TODO (kasobol-msft) Jumbo Blob
+    public Integer getMaxSingleUploadSize() {
         return this.maxSingleUploadSize == null ? null : Math.toIntExact(this.maxSingleUploadSize);
     }
 

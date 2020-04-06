@@ -88,6 +88,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * value will be used.
      */
     public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
+    /**
+     * @deprecated Use {@link #BLOB_MAX_UPLOAD_BLOCK_SIZE_LONG}.
+     */
     @Deprecated
     static final int BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
     static final long BLOB_MAX_UPLOAD_BLOCK_SIZE_LONG = 4000L * Constants.MB;
@@ -379,10 +382,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
          */
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
-            .flatMapSequential(buffer -> {
+            .flatMapSequential(bufferAggregator -> {
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    buffer.getBuffers(),
+                    bufferAggregator.asFlux(),
                     parallelTransferOptions.getProgressReceiver(),
                     progressLock,
                     totalProgress);
@@ -390,12 +393,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                 final String blockId = Base64.getEncoder().encodeToString(
                     UUID.randomUUID().toString().getBytes(UTF_8));
 
-                return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, buffer.size(),
+                return blockBlobAsyncClient.stageBlockWithResponse(blockId, progressData, bufferAggregator.length(),
                     null, requestConditions.getLeaseId())
                     // We only care about the stageBlock insofar as it was successful,
                     // but we need to collect the ids.
                     .map(x -> blockId)
-                    .doFinally(x -> pool.returnBuffer(buffer))
+                    .doFinally(x -> pool.returnBuffer(bufferAggregator))
                     .flux();
             }) // TODO: parallelism?
             .collect(Collectors.toList())

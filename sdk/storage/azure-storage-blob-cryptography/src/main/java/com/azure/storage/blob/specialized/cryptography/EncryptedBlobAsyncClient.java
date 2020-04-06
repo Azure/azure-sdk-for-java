@@ -71,7 +71,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
-    private static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 100 * Constants.MB;
+    private static final long BLOB_MAX_UPLOAD_BLOCK_SIZE = 4000L * Constants.MB;
     private final ClientLogger logger = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**
@@ -313,7 +313,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @return An empty response
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB
      * @throws UncheckedIOException If an I/O error occurs
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,

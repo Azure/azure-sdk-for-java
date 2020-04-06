@@ -9,22 +9,45 @@ import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * This class provides ability to measure if incoming Flux of ByteBuffers is larger than a threshold.
+ * This answers question if volume of data in bytes is larger than threshold.
+ *
+ * The {@link #write(ByteBuffer)} operation buffers incoming ByteBuffers until threshold is crossed.
+ * After that it's pass-through as fact that data volume exceeds threshold is already determined.
+ *
+ * It is incumbent upon the caller to return the buffers after measurement is completed. It is also the caller's
+ * responsibility to call flush to return any data still sitting in the gate.
+ *
+ * RESERVED FOR INTERNAL USE.
+ */
 final class PayloadSizeGate {
     private final long threshold;
     private long size = 0;
     private Queue<ByteBuffer> byteBuffers = new LinkedList<>();
 
+    /**
+     * Creates a new instance of PayloadSizeGate
+     * @param threshold Number of bytes up to which data is buffered.
+     */
     PayloadSizeGate(long threshold) {
         this.threshold = threshold;
     }
 
+    /**
+     * Keeps buffering buffers until threshold is breached.
+     * Then it acts as pass-through.
+     * @param buf Incoming data.
+     * @return Buffered data or incoming data depending on threshold condition.
+     */
     Flux<ByteBuffer> write(ByteBuffer buf) {
-        if (isThresholdBroken()) {
+        if (isThresholdBreached()) {
+            size += buf.remaining();
             return Flux.just(buf);
         } else {
             size += buf.remaining();
             byteBuffers.add(buf);
-            if (isThresholdBroken()) {
+            if (isThresholdBreached()) {
                 Flux<ByteBuffer> result = dequeuingFlux(byteBuffers);
                 byteBuffers = null;
                 return result;
@@ -34,6 +57,10 @@ final class PayloadSizeGate {
         }
     }
 
+    /**
+     * Flushes the gate. If threshold has not been broken then invoking this method pushes any lingering data forward.
+     * @return Buffered data if threshold has not been broken. Otherwise empty.
+     */
     Flux<ByteBuffer> flush() {
         if (byteBuffers != null) {
             Flux<ByteBuffer> result = dequeuingFlux(byteBuffers);
@@ -44,11 +71,17 @@ final class PayloadSizeGate {
         }
     }
 
+    /**
+     * @return Size of data observed by the gate.
+     */
     long size() {
         return size;
     }
 
-    boolean isThresholdBroken() {
+    /**
+     * @return A flag indicating if observed data has breached the threshold.
+     */
+    boolean isThresholdBreached() {
         return size > threshold;
     }
 

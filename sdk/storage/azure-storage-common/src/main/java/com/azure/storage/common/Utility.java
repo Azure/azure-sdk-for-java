@@ -202,7 +202,6 @@ public final class Utility {
      * @throws RuntimeException When I/O error occurs.
      */
     public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data, long length, int blockSize) {
-        // TODO (kasobol-msft) Jumbo blob
         final long[] currentTotalLength = new long[1];
         return Flux.range(0, (int) Math.ceil((double) length / (double) blockSize))
             .map(i -> i * blockSize)
