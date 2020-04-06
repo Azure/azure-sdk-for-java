@@ -24,6 +24,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -66,6 +67,11 @@ class AnalyzeSentimentAsyncClient {
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(Iterable<TextDocumentInput> documents,
         TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getAnalyzedSentimentResponseInPage(documents, options, context)).flux());
@@ -87,8 +93,11 @@ class AnalyzeSentimentAsyncClient {
      */
     TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
 
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             getAnalyzedSentimentResponseInPage(documents, options, context).flux());
