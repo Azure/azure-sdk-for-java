@@ -438,9 +438,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber))
             .map(receivedMessage -> {
                 if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
-                    if (!ZERO_LOCK_TOKEN.equals(UUID.fromString(receivedMessage.getLockToken()))) {
-                        messageLockContainer.addOrUpdate(receivedMessage.getLockToken(), receivedMessage.getLockedUntil());
-                    }
+                    receivedMessage.setLockedUntil(messageLockContainer.addOrUpdate(receivedMessage.getLockToken(),
+                        receivedMessage.getLockedUntil()));
                 }
                 return receivedMessage;
             });

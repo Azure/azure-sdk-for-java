@@ -445,9 +445,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
         final Duration timeout = Duration.ofSeconds(2);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive().next())
+            .then(receiverManualComplete.receive(options).next())
             .block(TIMEOUT);
 
         Assertions.assertNotNull(receivedMessage);
@@ -515,9 +516,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
         final Duration timeout = Duration.ofSeconds(2);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive().next())
+            .then(receiverManualComplete.receive(options).next())
             .block(TIMEOUT);
 
         Assertions.assertNotNull(receivedMessage);
