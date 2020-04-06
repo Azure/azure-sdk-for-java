@@ -1,6 +1,6 @@
 # Release History
 
-## 7.0.0-beta.1 (2020-04-04)
+## 7.0.0-beta.1 (2020-04-06)
 
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic
 to the Java ecosystem, and as consistent across different languages and platforms as possible. The principles that guide
