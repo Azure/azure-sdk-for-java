@@ -207,8 +207,8 @@ class PartitionPumpManager {
     }
 
     private void processEvent(PartitionContext partitionContext, PartitionProcessor partitionProcessor,
-        EventHubConsumerAsyncClient eventHubConsumer, PartitionEvent partitionEvent) {
-        EventData eventData = partitionEvent.getData();
+        EventHubConsumerAsyncClient eventHubConsumer, EventContext eventContext) {
+        EventData eventData = eventContext.getEventData();
         Context processSpanContext = startProcessTracingSpan(eventData, eventHubConsumer.getEventHubName(),
             eventHubConsumer.getFullyQualifiedNamespace());
         if (processSpanContext.getData(SPAN_CONTEXT_KEY).isPresent()) {
@@ -216,7 +216,7 @@ class PartitionPumpManager {
         }
         try {
             partitionProcessor.processEvent(new EventContext(partitionContext, eventData, checkpointStore,
-                partitionEvent.getLastEnqueuedEventProperties()));
+                eventContext.getLastEnqueuedEventProperties()));
             endProcessTracingSpan(processSpanContext, Signal.complete());
         } catch (Throwable throwable) {
             /* user code for event processing threw an exception - log and bubble up */
@@ -237,10 +237,10 @@ class PartitionPumpManager {
                 EventContext eventContext;
                 if (eventContextBatch.isEmpty()) {
                     eventContext = new EventContext(partitionContext, null, checkpointStore, null);
+                    partitionProcessor.processEvent(eventContext);
                 } else {
-                    eventContext = eventContextBatch.get(0);
+                    processEvent(partitionContext, partitionProcessor, eventHubConsumer, eventContextBatch.get(0));
                 }
-                partitionProcessor.processEvent(eventContext);
             } else {
                 partitionProcessor.processEventBatch(eventContextBatch);
             }

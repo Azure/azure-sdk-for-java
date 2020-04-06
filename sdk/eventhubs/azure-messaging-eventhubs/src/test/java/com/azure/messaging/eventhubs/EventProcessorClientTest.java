@@ -385,7 +385,7 @@ public class EventProcessorClientTest {
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
         when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
-            .thenReturn(Flux.just(getEvent(eventData1)).delayElements(Duration.ofSeconds(3)));
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2)).delayElements(Duration.ofSeconds(3)));
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData2.getSequenceNumber()).thenReturn(2L);
         when(eventData3.getSequenceNumber()).thenReturn(3L);
