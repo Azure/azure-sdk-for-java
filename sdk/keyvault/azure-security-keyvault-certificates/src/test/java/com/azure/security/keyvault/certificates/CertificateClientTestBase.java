@@ -37,7 +37,7 @@ import com.azure.security.keyvault.certificates.models.CertificatePolicyAction;
 import com.azure.security.keyvault.certificates.models.WellKnownIssuerNames;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -615,9 +615,8 @@ public abstract class CertificateClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<ServiceVersion> serviceVersions = Arrays.stream(CertificateServiceVersion.values())
-            .filter(CertificateClientTestBase::shouldServiceVersionBeTested).collect(Collectors.toList());
-        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
+        return getArgumentsFromServiceVersion(CertificateServiceVersion.values(), shouldServiceVersionBeTested,
+            SERVICE_VERSION_FROM_ENV);
     }
 
     /**
@@ -636,7 +635,7 @@ public abstract class CertificateClientTestBase extends TestBase {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(CertificateServiceVersion serviceVersion) {
+    private static Predicate<? super ServiceVersion> shouldServiceVersionBeTested = (serviceVersion) -> {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return CertificateServiceVersion.getLatest().equals(serviceVersion);
         }
@@ -647,6 +646,6 @@ public abstract class CertificateClientTestBase extends TestBase {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
-    }
+    };
 }
 

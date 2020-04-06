@@ -6,8 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.azure.core.util.ServiceVersion;
@@ -32,9 +31,8 @@ class TestHelper {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<ServiceVersion> serviceVersions = Arrays.stream(ConfigurationServiceVersion.values())
-            .filter(TestHelper::shouldServiceVersionBeTested).collect(Collectors.toList());
-        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
+        return getArgumentsFromServiceVersion(ConfigurationServiceVersion.values(), shouldServiceVersionBeTested,
+            SERVICE_VERSION_FROM_ENV);
     }
 
     /**
@@ -53,7 +51,7 @@ class TestHelper {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(ConfigurationServiceVersion serviceVersion) {
+    private static Predicate<? super ServiceVersion> shouldServiceVersionBeTested = (serviceVersion) -> {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return ConfigurationServiceVersion.getLatest().equals(serviceVersion);
         }
@@ -64,5 +62,5 @@ class TestHelper {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
-    }
+    };
 }

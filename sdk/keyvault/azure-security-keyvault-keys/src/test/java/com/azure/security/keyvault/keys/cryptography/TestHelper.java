@@ -7,11 +7,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.azure.core.util.ServiceVersion;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
@@ -35,9 +35,8 @@ public class TestHelper {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<ServiceVersion> serviceVersions = Arrays.stream(CryptographyServiceVersion.values())
-            .filter(TestHelper::shouldServiceVersionBeTested).collect(Collectors.toList());
-        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
+        return getArgumentsFromServiceVersion(KeyServiceVersion.values(), shouldServiceVersionBeTested,
+            SERVICE_VERSION_FROM_ENV);
     }
 
     /**
@@ -56,9 +55,9 @@ public class TestHelper {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(CryptographyServiceVersion serviceVersion) {
+    private static Predicate<? super ServiceVersion> shouldServiceVersionBeTested = (serviceVersion) -> {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-            return CryptographyServiceVersion.getLatest().equals(serviceVersion);
+            return KeyServiceVersion.getLatest().equals(serviceVersion);
         }
         if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)
             || AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
@@ -67,5 +66,5 @@ public class TestHelper {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
-    }
+    };
 }

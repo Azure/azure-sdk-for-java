@@ -27,6 +27,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.util.Locale;
+import java.util.function.Predicate;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -149,12 +150,15 @@ public abstract class TestBase implements BeforeEachCallback {
     /**
      * Get test arguments need to run for the test framework based on the service version.
      *
-     * @param serviceVersionList The service version argument for the parameterized tests.
+     * @param serviceVersions The service version values.
+     * @param shouldVersionBeTested The service version filter based on the env variable {@code HTTP_CLIENT_FROM_ENV}.
      * @param serviceVersionEnv Indicates whether the service version parameters need to rolling.
      * @return Stream of arguments for parameterized test framework.
      */
-    public static Stream<Arguments> getArgumentsFromServiceVersion(List<ServiceVersion> serviceVersionList,
-        String serviceVersionEnv) {
+    public static Stream<Arguments> getArgumentsFromServiceVersion(ServiceVersion[] serviceVersions,
+        Predicate<? super ServiceVersion> shouldVersionBeTested, String serviceVersionEnv) {
+        List<ServiceVersion> serviceVersionList =
+            Arrays.stream(serviceVersions).filter(shouldVersionBeTested).collect(toList());
         int serviceVersionCount = serviceVersionList.size();
         List<HttpClient> httpClientList = getHttpClients();
         int httpClientCount = httpClientList.size();

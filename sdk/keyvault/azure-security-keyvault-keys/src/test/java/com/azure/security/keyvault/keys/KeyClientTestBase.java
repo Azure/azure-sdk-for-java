@@ -26,7 +26,7 @@ import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
-import java.util.stream.Collectors;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
@@ -421,9 +421,8 @@ public abstract class KeyClientTestBase extends TestBase {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        List<ServiceVersion> serviceVersions = Arrays.stream(KeyServiceVersion.values())
-            .filter(KeyClientTestBase::shouldServiceVersionBeTested).collect(Collectors.toList());
-        return getArgumentsFromServiceVersion(serviceVersions, SERVICE_VERSION_FROM_ENV);
+        return getArgumentsFromServiceVersion(KeyServiceVersion.values(), shouldServiceVersionBeTested,
+            SERVICE_VERSION_FROM_ENV);
     }
 
     /**
@@ -442,7 +441,7 @@ public abstract class KeyClientTestBase extends TestBase {
      * @param serviceVersion ServiceVersion needs to check
      * @return Boolean indicates whether filters out the service version or not.
      */
-    private static boolean shouldServiceVersionBeTested(KeyServiceVersion serviceVersion) {
+    private static Predicate<? super ServiceVersion> shouldServiceVersionBeTested = (serviceVersion) -> {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
             return KeyServiceVersion.getLatest().equals(serviceVersion);
         }
@@ -453,5 +452,5 @@ public abstract class KeyClientTestBase extends TestBase {
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
-    }
+    };
 }
