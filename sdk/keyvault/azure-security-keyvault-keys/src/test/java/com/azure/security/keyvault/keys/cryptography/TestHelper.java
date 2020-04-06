@@ -35,7 +35,7 @@ public class TestHelper {
     static Stream<Arguments> getTestParameters() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
-        return getArgumentsFromServiceVersion(KeyServiceVersion.values(), shouldServiceVersionBeTested,
+        return getArgumentsFromServiceVersion(CryptographyServiceVersion.values(), shouldServiceVersionBeTested,
             SERVICE_VERSION_FROM_ENV);
     }
 
@@ -57,7 +57,7 @@ public class TestHelper {
      */
     private static Predicate<? super ServiceVersion> shouldServiceVersionBeTested = (serviceVersion) -> {
         if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
-            return KeyServiceVersion.getLatest().equals(serviceVersion);
+            return CryptographyServiceVersion.getLatest().equals(serviceVersion);
         }
         if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)
             || AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
