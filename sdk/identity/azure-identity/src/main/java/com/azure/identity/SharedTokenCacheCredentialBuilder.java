@@ -3,10 +3,6 @@
 
 package com.azure.identity;
 
-import com.azure.identity.implementation.util.ValidationUtil;
-
-import java.util.HashMap;
-
 /**
  * Fluent credential builder for instantiating a {@link SharedTokenCacheCredential}.
  *
@@ -33,13 +29,6 @@ public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<
      * @return a {@link SharedTokenCacheCredentialBuilder} with the current configurations.
      */
     public SharedTokenCacheCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(), new HashMap<String, Object>() {{
-                put("cacheFileLocation", cacheFileLocation);
-            }});
-        if (cacheFileLocation != null) {
-            identityClientOptions.setPersistenceSettings(cacheFileLocation, keychainService, keychainAccount,
-                    keyringName, keyringItemSchema, keyringItemName, attributes, useUnprotectedFileOnLinux);
-        }
         return new SharedTokenCacheCredential(username, clientId, tenantId, identityClientOptions);
     }
 }

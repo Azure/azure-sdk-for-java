@@ -3,10 +3,7 @@
 
 package com.azure.identity;
 
-import com.azure.core.util.logging.ClientLogger;
-
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -15,17 +12,8 @@ import java.util.concurrent.ForkJoinPool;
  * @param <T> the type of the credential builder
  */
 public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBase<T>> extends CredentialBuilderBase<T> {
-    private final ClientLogger logger = new ClientLogger(AadCredentialBuilderBase.class);
     String clientId;
     String tenantId;
-    Path cacheFileLocation;
-    String keychainService;
-    String keychainAccount;
-    String keyringName;
-    KeyringItemSchema keyringItemSchema;
-    String keyringItemName;
-    final LinkedHashMap<String, String> attributes = new LinkedHashMap<>(); // preserve order
-    boolean useUnprotectedFileOnLinux = false;
 
     /**
      * Specifies the Azure Active Directory endpoint to acquire tokens.
@@ -95,7 +83,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T cacheFileLocation(Path cacheFileLocation) {
-        this.cacheFileLocation = cacheFileLocation;
+        this.identityClientOptions.setCacheFileLocation(cacheFileLocation);
         return (T) this;
     }
 
@@ -109,7 +97,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T keychainService(String serviceName) {
-        this.keychainService = serviceName;
+        this.identityClientOptions.setKeychainService(serviceName);
         return (T) this;
     }
 
@@ -123,7 +111,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T keychainAccount(String accountName) {
-        this.keychainAccount = accountName;
+        this.identityClientOptions.setKeychainAccount(accountName);
         return (T) this;
     }
 
@@ -137,7 +125,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T keyringName(String keyringName) {
-        this.keyringName = keyringName;
+        this.identityClientOptions.setKeyringName(keyringName);
         return (T) this;
     }
 
@@ -151,7 +139,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T keyringItemSchema(KeyringItemSchema keyringItemSchema) {
-        this.keyringItemSchema = keyringItemSchema;
+        this.identityClientOptions.setKeyringItemSchema(keyringItemSchema);
         return (T) this;
     }
 
@@ -165,7 +153,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T keyringItemName(String keyringItemName) {
-        this.keyringItemName = keyringItemName;
+        this.identityClientOptions.setKeyringItemName(keyringItemName);
         return (T) this;
     }
 
@@ -181,12 +169,7 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T addKeyringItemAttribute(String attributeName, String attributeValue) {
-        if (this.attributes.size() < 2) {
-            this.attributes.put(attributeName, attributeValue);
-        } else {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                    "Currently does not support more than 2 attributes for linux Keyring"));
-        }
+        this.identityClientOptions.addKeyringItemAttribute(attributeName, attributeValue);
         return (T) this;
     }
 
@@ -200,7 +183,20 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T useUnprotectedFileOnLinux(boolean useUnprotectedFileOnLinux) {
-        this.useUnprotectedFileOnLinux = useUnprotectedFileOnLinux;
+        this.identityClientOptions.setUseUnprotectedFileOnLinux(useUnprotectedFileOnLinux);
+        return (T) this;
+    }
+
+    /**
+     * Disable using the shared token cache.
+     *
+     * @param disabled whether to disable using the shared token cache.
+     *
+     * @return The updated identity client options.
+     */
+    @SuppressWarnings("unchecked")
+    public T disableSharedTokenCache(boolean disabled) {
+        this.identityClientOptions.disableSharedTokenCache(disabled);
         return (T) this;
     }
 }
