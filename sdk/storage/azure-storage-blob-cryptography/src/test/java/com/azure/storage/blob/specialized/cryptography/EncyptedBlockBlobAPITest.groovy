@@ -1369,6 +1369,10 @@ class EncyptedBlockBlobAPITest extends APISpec {
     @Unroll
     def "Encryption uploadIS numBlocks"() {
         setup:
+        // Tests requiring block-level uploads cannot be recorded because of randomly generated block-ids.
+        if (numBlocks > 0 && !liveMode()) {
+            return
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 

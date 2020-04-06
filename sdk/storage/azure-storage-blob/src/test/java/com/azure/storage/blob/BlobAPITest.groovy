@@ -100,6 +100,10 @@ class BlobAPITest extends APISpec {
     @Unroll
     def "Upload numBlocks"() {
         setup:
+        // Tests requiring block-level uploads cannot be recorded because of randomly generated block-ids.
+        if (numBlocks > 0 && !liveMode()) {
+            return
+        }
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
