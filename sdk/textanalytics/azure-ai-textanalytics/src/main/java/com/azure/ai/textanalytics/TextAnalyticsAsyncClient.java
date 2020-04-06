@@ -259,10 +259,7 @@ public final class TextAnalyticsAsyncClient {
         }
         final String finalCountryHint = countryHint;
         return detectLanguageBatch(
-            mapByIndex(documents, (index, value) -> {
-                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
-                return new DetectLanguageInput(index, value, finalCountryHint);
-            }), options);
+            mapByIndex(documents, (index, value) -> new DetectLanguageInput(index, value, finalCountryHint)), options);
     }
 
     /**
@@ -434,10 +431,7 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeEntitiesBatch(
-            mapByIndex(documents, (index, value) -> {
-                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
-                return new TextDocumentInput(index, value, language);
-            }), options);
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -606,10 +600,7 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeLinkedEntitiesBatch(
-            mapByIndex(documents, (index, value) -> {
-                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
-                return new TextDocumentInput(index, value, language);
-            }), options);
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -777,10 +768,7 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return extractKeyPhrasesBatch(
-            mapByIndex(documents, (index, value) -> {
-                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
-                return new TextDocumentInput(index, value, language);
-            }), options);
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
@@ -955,10 +943,7 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return analyzeSentimentBatch(
-            mapByIndex(documents, (index, value) -> {
-                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
-                return new TextDocumentInput(index, value, language);
-            }), options);
+            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
     }
 
     /**
