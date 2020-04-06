@@ -133,17 +133,6 @@ public class TestUtils {
         return message;
     }
 
-    public static ServiceBusMessage getServiceBusMessageBinary(String messageTrackingValue, int position, int messageSize) {
-        byte[] binaryData = new byte[messageSize];
-        for (int i = 0; i < binaryData.length; i++) {
-            binaryData[i] = (byte) i;
-        }
-        final ServiceBusMessage message = new ServiceBusMessage(binaryData);
-        message.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
-        message.getProperties().put(MESSAGE_POSITION_ID, position);
-        return message;
-    }
-
     /**
      * Given a set of messages, will create a FluxSink that emits them. When there are no more messages to emit, a
      * completion signal is emitted.
