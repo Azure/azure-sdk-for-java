@@ -60,9 +60,9 @@ public final class BufferAggregator {
     }
 
     /**
-     * Converts accumulated data into {@link Flux<ByteBuffer>}.
+     * Converts accumulated data into {@link Flux} of {@link ByteBuffer}.
      *
-     * @return A {@link Flux<ByteBuffer>} of accumulated data.
+     * @return A {@link Flux} of {@link ByteBuffer} of accumulated data.
      */
     public Flux<ByteBuffer> asFlux() {
         return Flux.fromIterable(this.buffers);

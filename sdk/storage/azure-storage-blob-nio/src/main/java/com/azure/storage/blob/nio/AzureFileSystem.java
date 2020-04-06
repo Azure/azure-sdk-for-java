@@ -143,7 +143,7 @@ public final class AzureFileSystem extends FileSystem {
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
             Object blockSize = config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
-            if(blockSize instanceof Integer) {
+            if (blockSize instanceof Integer) {
                 this.blockSize = Long.valueOf((Integer) blockSize);
             } else {
                 this.blockSize = (Long) blockSize;
