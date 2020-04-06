@@ -27,6 +27,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -161,6 +162,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String document, String countryHint) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
             .map(detectLanguageResult -> {
                 if (detectLanguageResult.isError()) {
@@ -257,8 +259,10 @@ public final class TextAnalyticsAsyncClient {
         }
         final String finalCountryHint = countryHint;
         return detectLanguageBatch(
-            mapByIndex(documents, (index, value) ->
-                new DetectLanguageInput(index, value, finalCountryHint)), options);
+            mapByIndex(documents, (index, value) -> {
+                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
+                return new DetectLanguageInput(index, value, finalCountryHint);
+            }), options);
     }
 
     /**
@@ -345,6 +349,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return recognizeEntityAsyncClient.recognizeEntities(document, language);
     }
 
@@ -429,7 +434,10 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeEntitiesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
+                return new TextDocumentInput(index, value, language);
+            }), options);
     }
 
     /**
@@ -510,6 +518,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(document, language);
     }
 
@@ -597,7 +606,10 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeLinkedEntitiesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
+                return new TextDocumentInput(index, value, language);
+            }), options);
     }
 
     /**
@@ -680,6 +692,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(document, language);
     }
 
@@ -764,7 +777,10 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return extractKeyPhrasesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
+                return new TextDocumentInput(index, value, language);
+            }), options);
     }
 
     /**
@@ -849,6 +865,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return analyzeSentimentBatch(Collections.singletonList(document), language, null)
             .map(sentimentResult -> {
                 if (sentimentResult.isError()) {
@@ -938,7 +955,10 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return analyzeSentimentBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                Objects.requireNonNull(value, String.format("id=%s, document text cannot be null.", index));
+                return new TextDocumentInput(index, value, language);
+            }), options);
     }
 
     /**
