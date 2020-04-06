@@ -120,6 +120,7 @@ class BlobAPITest extends APISpec {
         3 * Constants.MB| Constants.MB  || 3
     }
 
+    @Requires( {liveMode()} ) // Recordings will not introduce sufficient network latency.
     def "Upload timeout"() {
         setup:
         def size = 1024
