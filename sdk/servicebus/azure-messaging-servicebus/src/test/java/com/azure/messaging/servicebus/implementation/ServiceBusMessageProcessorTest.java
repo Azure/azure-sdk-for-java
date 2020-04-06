@@ -148,7 +148,7 @@ class ServiceBusMessageProcessorTest {
     void emitsDoesNotAutoCompleteOrRenew() {
         // Arrange
         final ServiceBusMessageProcessor processor = createMessageSink(message1, message2, message3, message4)
-            .subscribeWith(new ServiceBusMessageProcessor(true, false, Duration.ZERO,
+            .subscribeWith(new ServiceBusMessageProcessor(false, false, Duration.ZERO,
                 retryOptions, messageContainer, errorContext, onComplete, onAbandon, onRenewLock));
 
         // Act & Assert

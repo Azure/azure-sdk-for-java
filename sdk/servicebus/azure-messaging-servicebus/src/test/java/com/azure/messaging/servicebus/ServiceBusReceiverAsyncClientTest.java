@@ -70,9 +70,12 @@ class ServiceBusReceiverAsyncClientTest {
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
     private static final int PREFETCH = 5;
-    private static final String NAMESPACE = "my-namespace-foo";
+    private static final String NAMESPACE = "my-namespace-foo.net";
     private static final String ENTITY_PATH = "queue-name";
     private static final MessagingEntityType ENTITY_TYPE = MessagingEntityType.QUEUE;
+    private static final String NAMESPACE_CONNECTION_STRING = String.format(
+        "Endpoint=sb://%s;SharedAccessKeyName=%s;SharedAccessKey=%s",
+        NAMESPACE, "some-name", "something-else");
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientTest.class);
     private final String messageTrackingUUID = UUID.randomUUID().toString();
@@ -312,60 +315,8 @@ class ServiceBusReceiverAsyncClientTest {
                 .then(() -> {
                     messageSink.next(message);
                 })
-                .expectNext(receivedMessage)
-                .verifyComplete();
-        } finally {
-            consumer2.close();
-        }
-
-        verifyZeroInteractions(managementNode);
-    }
-
-    /**
-     * Verifies that if there is no lock token, the message is not completed.
-     */
-    @Test
-    void receivesAndAutoCompleteWithoutLockToken() {
-        // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH);
-        final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, options, connectionProcessor,
-            tracerProvider, messageSerializer, messageContainer, onClientClose);
-
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
-        final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
-
-        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
-        when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
-
-        final String lockToken1 = UUID.randomUUID().toString();
-        final String lockToken2 = UUID.randomUUID().toString();
-
-        final Instant lockedUntil = Instant.now().plusSeconds(30);
-        final Instant lockedUntil2 = Instant.now().plusSeconds(30);
-
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
-        when(receivedMessage.getLockedUntil()).thenReturn(lockedUntil);
-
-        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
-        when(receivedMessage2.getLockedUntil()).thenReturn(lockedUntil2);
-
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
-            .thenReturn(Mono.just(managementNode));
-
-        when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-
-        // Act and Assert
-        try {
-            StepVerifier.create(consumer2.receive().take(2))
-                .then(() -> {
-                    messageSink.next(message);
-                    messageSink.next(message2);
-                })
-                .expectNext(receivedMessage)
-                .expectNext(receivedMessage2)
-                .verifyComplete();
+                .expectError(IllegalStateException.class)
+                .verify();
         } finally {
             consumer2.close();
         }
@@ -508,6 +459,9 @@ class ServiceBusReceiverAsyncClientTest {
         final String lockToken1 = UUID.randomUUID().toString();
         final String lockToken2 = UUID.randomUUID().toString();
         final Instant expiration = Instant.now().plus(Duration.ofMinutes(5));
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ZERO);
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
         final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
@@ -515,9 +469,9 @@ class ServiceBusReceiverAsyncClientTest {
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
 
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1.toString());
+        when(receivedMessage.getLockToken()).thenReturn(lockToken1);
         when(receivedMessage.getLockedUntil()).thenReturn(expiration);
-        when(receivedMessage2.getLockToken()).thenReturn(lockToken2.toString());
+        when(receivedMessage2.getLockToken()).thenReturn(lockToken2);
         when(receivedMessage2.getLockedUntil()).thenReturn(expiration);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
@@ -530,7 +484,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         // Pretend we receive these before. This is to simulate that so that the receiver keeps track of them in
         // the lock map.
-        StepVerifier.create(consumer.receive().take(2))
+        StepVerifier.create(consumer.receive(options).take(2))
             .then(() -> {
                 messageSink.next(message);
                 messageSink.next(message2);
@@ -633,7 +587,7 @@ class ServiceBusReceiverAsyncClientTest {
     void receiveIllegalOptions() {
         // Arrange
         final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .connectionString("connection-string")
+            .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
             .receiveMode(ReceiveMode.PEEK_LOCK)

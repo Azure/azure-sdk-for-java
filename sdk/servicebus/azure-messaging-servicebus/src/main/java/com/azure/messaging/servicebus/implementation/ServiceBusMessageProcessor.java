@@ -324,16 +324,17 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     private void next(ServiceBusReceivedMessage message) {
         final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
+        final Instant initialLockedUntil = !CoreUtils.isNullOrEmpty(lockToken)
+            ? messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil())
+            : message.getLockedUntil();
 
-        final boolean isCompleteMessage = isAutoComplete && lockToken != null && !lockToken.isEmpty();
-
-        if (isCompleteMessage && CoreUtils.isNullOrEmpty(lockToken)) {
+        if (isAutoComplete && CoreUtils.isNullOrEmpty(lockToken)) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Cannot auto-complete message without a lock token on message. Sequence number: " + sequenceNumber));
         }
 
         final AtomicBoolean hasError = new AtomicBoolean();
-        final Disposable renewLockOperation = getRenewLockOperation(message, hasError);
+        final Disposable renewLockOperation = getRenewLockOperation(message, initialLockedUntil, hasError);
 
         try {
             downstream.onNext(message);
@@ -341,7 +342,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             hasError.set(true);
             logger.error("Exception occurred while handling downstream onNext operation.", e);
 
-            if (isCompleteMessage) {
+            if (isAutoComplete) {
                 logger.info("Abandoning message lock: {}", lockToken);
                 onAbandon.apply(message)
                     .onErrorContinue((error, item) -> {
@@ -363,8 +364,7 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             return;
         }
 
-        // check that the pending operation is in the queue and not running yet.
-        if (isCompleteMessage) {
+        if (isAutoComplete) {
             logger.info("sequenceNumber[{}]. lock[{}]. Completing message.", sequenceNumber, lockToken);
 
             completeFunction.apply(message)
@@ -378,21 +378,17 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         }
     }
 
-    private Disposable getRenewLockOperation(ServiceBusReceivedMessage message, AtomicBoolean hasError) {
+    private Disposable getRenewLockOperation(ServiceBusReceivedMessage message, Instant initialLockedUntil,
+        AtomicBoolean hasError) {
+
         if (!isAutoRenewLock) {
             return Disposables.disposed();
         }
 
         final long sequenceNumber = message.getSequenceNumber();
         final String lockToken = message.getLockToken();
-        final Instant initialLockedUntil;
-        if (!CoreUtils.isNullOrEmpty(lockToken)) {
-            initialLockedUntil = messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil());
-        } else {
-            initialLockedUntil = message.getLockedUntil();
-        }
 
-        if (initialLockedUntil == null) {
+        if (isAutoComplete && initialLockedUntil == null) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
         }

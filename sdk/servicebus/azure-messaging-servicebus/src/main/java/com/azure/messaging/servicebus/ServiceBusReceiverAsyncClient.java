@@ -378,6 +378,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * options. To disable lock auto-renewal, set {@link ReceiveAsyncOptions#setMaxAutoRenewDuration(Duration)
      * setMaxAutoRenewDuration} to {@link Duration#ZERO} or {@code null}.
      *
+     * @param options Set of options to set when receiving messages.
      * @return A stream of messages from the Service Bus entity.
      * @throws NullPointerException if {@code options} is null.
      * @throws IllegalArgumentException if {@link ReceiveAsyncOptions#getMaxAutoRenewDuration() max auto-renew

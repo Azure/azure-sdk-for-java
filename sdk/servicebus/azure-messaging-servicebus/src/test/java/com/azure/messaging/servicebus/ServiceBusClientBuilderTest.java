@@ -149,46 +149,6 @@ class ServiceBusClientBuilderTest {
         assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
     }
 
-    private static Stream<Arguments> cannotCreateAutoSyncReceivers() {
-        return Stream.of(
-            Arguments.of(true, false),
-            Arguments.of(false, true)
-        );
-    }
-
-    /**
-     * Throws when auto-renewal or auto-complete is set on the sync receiver.
-     */
-    @ParameterizedTest
-    @MethodSource
-    void cannotCreateAutoSyncReceivers(boolean isAutoComplete, boolean isAutoRenew) {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, receiverBuilder::buildClient);
-    }
-
-    /**
-     * Throws when auto-renewal is set, we also need a duration.
-     */
-    @Test
-    void cannotAutoRenewLockWithoutDuration() {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
-    }
-
     /**
      * Throws when the prefetch is less than 1.
      */
