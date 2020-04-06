@@ -593,4 +593,32 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .thenCancel()
             .verify(Duration.ofSeconds(2));
     }
+
+    /**
+     * Verifies that we can send multiple scheduled message, cancel one and receive  all other scheduled messages .
+     */
+    @Test
+    void testSendMultipleSceduledMessageAndCancel() {
+        // Arrange
+        final String trackingId1 = UUID.randomUUID().toString();
+        final String trackingId2 = UUID.randomUUID().toString();
+        final String contents = "Some-contents";
+        final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(contents, trackingId1, 0);
+        final ServiceBusMessage message2 = TestUtils.getServiceBusMessage(contents, trackingId2, 0);
+
+        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
+        final Duration subscriptionDelayDuration = Duration.ofSeconds(3);
+
+        sender.scheduleMessage(message1, scheduledEnqueueTime).block();
+        final Long sequenceNumber2 = sender.scheduleMessage(message2, scheduledEnqueueTime).block();
+
+        sender.cancelScheduledMessage(sequenceNumber2.longValue()).block();
+
+        // Assert & Act
+        StepVerifier.create(receiveDeleteModeReceiver.receive().delaySubscription(subscriptionDelayDuration).take(1))
+            .assertNext(receivedMessage ->
+                Assertions.assertEquals(receivedMessage.getProperties().get(MESSAGE_TRACKING_ID).toString(), trackingId1))
+            .thenCancel()
+            .verify();
+    }
 }
