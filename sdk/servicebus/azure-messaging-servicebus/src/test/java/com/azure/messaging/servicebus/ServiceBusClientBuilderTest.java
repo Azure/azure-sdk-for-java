@@ -18,7 +18,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.stream.Stream;
 

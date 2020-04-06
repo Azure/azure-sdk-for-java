@@ -27,7 +27,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Deque;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -424,9 +423,9 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 return updated;
             })
             .subscribe(lockedUntil -> {
-                    logger.verbose("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
-                        sequenceNumber, lockToken, lockedUntil);
-                },
+                logger.verbose("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
+                    sequenceNumber, lockToken, lockedUntil);
+            },
                 error -> {
                     logger.error("Error occurred while renewing lock token.", error);
                     hasError.set(true);

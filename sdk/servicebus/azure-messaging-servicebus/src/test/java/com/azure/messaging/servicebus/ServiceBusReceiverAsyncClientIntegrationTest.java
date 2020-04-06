@@ -259,12 +259,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
                 .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
             .assertNext(lockedUntil -> {
-            Assertions.assertTrue(lockedUntil.isAfter(initialLock.get()),
-                String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
+                Assertions.assertTrue(lockedUntil.isAfter(initialLock.get()),
+                    String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
                     lockedUntil, initialLock.get()));
 
-            Assertions.assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
-        })
+                Assertions.assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
+            })
             .verifyComplete();
     }
 

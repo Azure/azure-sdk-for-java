@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus.implementation;
 
 import java.time.Instant;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
