@@ -66,12 +66,12 @@ and authorize with it.
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
