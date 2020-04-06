@@ -3,4 +3,5 @@
 
 module com.azure.core.serializer.avro.apache {
     requires transitive com.azure.core;
+    requires transitive org.apache.avro;
 }
