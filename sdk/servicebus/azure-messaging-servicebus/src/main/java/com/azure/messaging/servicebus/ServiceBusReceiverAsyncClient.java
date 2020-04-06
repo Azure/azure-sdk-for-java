@@ -396,7 +396,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber))
             .map(receivedMessage -> {
-                if (receivedMessage.getLockToken() != null && !ZERO_LOCK_TOKEN.equals(receivedMessage.getLockToken())) {
+                if (receiveOptions.isLockAutoRenewed() && receivedMessage.getLockToken() != null
+                    && !ZERO_LOCK_TOKEN.equals(receivedMessage.getLockToken())) {
                     messageLockContainer.addOrUpdate(UUID.fromString(receivedMessage.getLockToken()),
                         receivedMessage.getLockedUntil());
                 }

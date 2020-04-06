@@ -13,7 +13,6 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -173,10 +172,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertEquals(messageId1, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
             })
              .assertNext(receivedMessage -> {
-                Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                Assertions.assertEquals(messageId2, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
-            })
+                 Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
+                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                 Assertions.assertEquals(messageId2, receivedMessage.getProperties().get(MESSAGE_TRACKING_ID));
+             })
             .verifyComplete();
     }
 
