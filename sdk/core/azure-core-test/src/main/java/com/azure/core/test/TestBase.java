@@ -195,7 +195,7 @@ public abstract class TestBase implements BeforeEachCallback {
      *
      * @return A list of {@link HttpClient HttpClients} to be tested.
      */
-    private static List<HttpClient> getHttpClients() {
+    public static List<HttpClient> getHttpClients() {
         if (testMode == TestMode.PLAYBACK) {
             // Call to @MethodSource method happens @BeforeEach call, so the interceptorManager is
             // not yet initialized. So, playbackClient will not be available until later.
