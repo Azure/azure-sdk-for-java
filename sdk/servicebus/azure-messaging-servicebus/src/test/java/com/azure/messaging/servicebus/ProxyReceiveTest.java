@@ -87,7 +87,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final ServiceBusReceiverAsyncClient receiver = builder.receiver()
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)
-            .isAutoComplete(false)
             .buildAsyncClient();
 
         // Act & Assert
