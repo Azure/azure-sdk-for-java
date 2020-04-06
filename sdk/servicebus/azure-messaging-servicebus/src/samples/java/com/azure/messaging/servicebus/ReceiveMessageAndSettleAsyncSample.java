@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 
@@ -38,11 +39,13 @@ public class ReceiveMessageAndSettleAsyncSample {
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
 
-        Disposable subscription = receiverAsyncClient.receive()
+        Disposable subscription = receiverAsyncClient.receive(options)
             .flatMap(message -> {
-                boolean messageProcessed = false;
-
+                boolean messageProcessed =  false;
                 // Process the message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.

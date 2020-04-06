@@ -14,6 +14,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
@@ -433,7 +434,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber));
+            .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber))
+            .map(receivedMessage -> {
+                if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
+                    receivedMessage.setLockedUntil(messageLockContainer.addOrUpdate(receivedMessage.getLockToken(),
+                        receivedMessage.getLockedUntil()));
+                }
+                return receivedMessage;
+            });
     }
 
     /**
