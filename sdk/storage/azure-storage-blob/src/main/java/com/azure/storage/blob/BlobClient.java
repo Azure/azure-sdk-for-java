@@ -171,6 +171,8 @@ public class BlobClient extends BlobClientBase {
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout, Context context) {
+        // Passing Context.NONE to toReactorContext will throw NPE.
+        context = context == null || context.equals(Context.NONE) ? null : context;
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
         Flux<ByteBuffer> dataFlux = Utility.convertStreamToByteBuffer(data, length,
