@@ -63,8 +63,21 @@ and authorize with it.
 
 #### Create an Service Bus client using Microsoft identity platform (formerly Azure Active Directory)
 
-The sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with 
-Azure Service Bus.
+Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
+platform. First, add the package:
+
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.0.4</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The
+sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Service Bus.
 
 #### Authorizing with AAD application client secret
 
