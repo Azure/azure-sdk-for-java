@@ -2159,7 +2159,7 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Upload from file options"() {
         setup:
-        def file = getRandomFile(dataSize)
+        def file = getRandomFile((int) dataSize)
 
         when:
         fc.uploadFromFile(file.toPath().toString(),
