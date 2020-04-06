@@ -132,7 +132,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         receivedDocuments.clear();
      }
 
-    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsStartFromCustomDate() {
         ChangeFeedProcessor changeFeedProcessor = ChangeFeedProcessor.changeFeedProcessorBuilder()
             .hostName(hostName)
@@ -161,7 +161,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
         try {
             changeFeedProcessor.start().subscribeOn(Schedulers.elastic())
-                .timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                 .subscribe();
         } catch (Exception ex) {
             log.error("Change feed processor did not start in the expected time", ex);
@@ -242,12 +242,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                         .subscribeOn(Schedulers.elastic())
                         .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                     ))
-                .then(Mono.just(changeFeedProcessorFirst)
-                    .delayElement(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
-                )
                 .doOnSuccess(aVoid -> {
                     try {
-                        Thread.sleep(CHANGE_FEED_PROCESSOR_TIMEOUT / 2);
+                        Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
                     } catch (InterruptedException e) {
                         log.error(e.getMessage());
                     }
@@ -262,7 +259,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                     FeedOptions feedOptions = new FeedOptions();
 
                     createdLeaseCollection.queryItems(querySpec, feedOptions, CosmosItemProperties.class).byPage()
-                        .delayElements(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))
                         .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
                         .flatMap(doc -> {
                             BridgeInternal.setProperty(doc, "Owner", "TEMP_OWNER");
@@ -276,7 +272,6 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                             return leaseDocument;
                         })
                         .last()
-                        .delayElement(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT / 2))
                         .flatMap(leaseDocument -> {
                             ChangeFeedProcessorTest.log.info("Start creating documents");
                             List<CosmosItemProperties> docDefList = new ArrayList<>();
@@ -301,8 +296,18 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             log.error("First change feed processor did not start in the expected time", ex);
         }
 
+        long remainingWork = 10 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+        while (remainingWork > 0 && changeFeedProcessorFirst.isStarted() && !changeFeedProcessorSecond.isStarted()) {
+            remainingWork -= 100;
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                log.error(e.getMessage());
+            }
+        }
+
         // Wait for the feed processor to receive and process the documents.
-        waitToReceiveDocuments(40 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+        waitToReceiveDocuments(10 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
         changeFeedProcessorSecond.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
