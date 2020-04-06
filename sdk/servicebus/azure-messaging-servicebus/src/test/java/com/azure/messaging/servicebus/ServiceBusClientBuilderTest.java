@@ -18,7 +18,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Duration;
 import java.util.Locale;
 import java.util.stream.Stream;
 
@@ -149,51 +148,6 @@ class ServiceBusClientBuilderTest {
         assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
     }
 
-    private static Stream<Arguments> cannotCreateAutoSyncReceivers() {
-        return Stream.of(
-            Arguments.of(true, false),
-            Arguments.of(false, true)
-        );
-    }
-
-    /**
-     * Throws when auto-renewal or auto-complete is set on the sync receiver.
-     */
-    @ParameterizedTest
-    @MethodSource
-    void cannotCreateAutoSyncReceivers(boolean isAutoComplete, boolean isAutoRenew) {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(isAutoComplete)
-            .isLockAutoRenewed(isAutoRenew)
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(10));
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, receiverBuilder::buildClient);
-    }
-
-    /**
-     * Throws when auto-renewal is set, we also need a duration.
-     */
-    @Test
-    void cannotAutoRenewLockWithoutDuration() {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(false)
-            .isLockAutoRenewed(true);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, receiverBuilder::buildAsyncClient);
-    }
-
     /**
      * Throws when the prefetch is less than 1.
      */
@@ -205,35 +159,7 @@ class ServiceBusClientBuilderTest {
             .receiver()
             .topicName("baz").subscriptionName("bar")
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(true)
             .prefetchCount(0);
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
-    }
-
-    private static Stream<Arguments> cannotAutoRenewLockWithInvalidDuration() {
-        return Stream.of(
-            Arguments.of(Duration.ZERO),
-            Arguments.of(Duration.ofSeconds(-1))
-        );
-    }
-
-    /**
-     * Throws when auto-renewal is set, we also need a positive duration.
-     */
-    @ParameterizedTest
-    @MethodSource
-    void cannotAutoRenewLockWithInvalidDuration(Duration duration) {
-        // Arrange
-        final ServiceBusReceiverClientBuilder receiverBuilder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .receiver()
-            .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isAutoComplete(false)
-            .isLockAutoRenewed(true)
-            .maxAutoLockRenewalDuration(duration);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, receiverBuilder::buildAsyncClient);
