@@ -174,41 +174,25 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <searchTransitive>false</searchTransitive>
-                  <excludes>
-                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
-                    dependencies when they are used for test scope or otherwise) -->
-                    <exclude>*:*:*:*:runtime</exclude>
-                    <exclude>*:*:*:*:compile</exclude>
-                    <exclude>*:*:*:*:provided</exclude>
-                  </excludes>
-                  <includes>
-                    <include>com.azure:*</include>
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
 
-                    <include>io.projectreactor.netty</include>
+                <include>io.projectreactor.netty</include>
 
-                    <include>io.netty:netty-buffer</include>
-                    <include>io.netty:netty-codec-http</include>
-                    <include>io.netty:netty-codec-http2</include>
-                    <include>io.netty:netty-handler</include>
-                    <include>io.netty:netty-handler-proxy</include>
-                    <include>io.netty:netty-transport-native-unix-common</include>
-                    <include>io.netty:netty-transport-native-epoll</include>
-                  </includes>
-                </bannedDependencies>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
+                <include>io.netty:netty-buffer</include>
+                <include>io.netty:netty-codec-http</include>
+                <include>io.netty:netty-codec-http2</include>
+                <include>io.netty:netty-handler</include>
+                <include>io.netty:netty-handler-proxy</include>
+                <include>io.netty:netty-transport-native-unix-common</include>
+                <include>io.netty:netty-transport-native-epoll</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>

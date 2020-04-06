@@ -2,7 +2,8 @@
   ~ Copyright (c) Microsoft Corporation. All rights reserved.
   ~ Licensed under the MIT License.
   -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
@@ -108,34 +109,19 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <bannedDependencies>
-                  <searchTransitive>false</searchTransitive>
-                  <excludes>
-                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
-                    dependencies when they are used for test scope or otherwise) -->
-                    <exclude>*:*:*:*:runtime</exclude>
-                    <exclude>*:*:*:*:compile</exclude>
-                    <exclude>*:*:*:*:provided</exclude>
-                  </excludes>
-                  <includes>
-                    <include>com.azure:*</include>
-                    <include>org.apache.qpid:proton-j</include>
-                    <include>com.microsoft.azure:qpid-proton-j-extensions</include>
-                  </includes>
-                </bannedDependencies>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
+        <version>3.0.0-M3
+        </version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.azure:*</include>
+                <include>org.apache.qpid:proton-j</include>
+                <include>com.microsoft.azure:qpid-proton-j-extensions</include>
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
       </plugin>
     </plugins>
   </build>
