@@ -1,6 +1,6 @@
 # Release History
-## 1.2.0-beta.1 (Unreleased)
-
+## 1.1.1 (2020-04-06)
+- Update dependency version, `azure-core` to 1.4.0 and `azure-core-http-netty` to 1.5.0.
 
 ## 1.1.0 (2020-03-11)
 - Updated javadoc to support the changes that App Configuration service no longer support `*a` and `*a*` suffix and full text search.
