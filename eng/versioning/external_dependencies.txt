@@ -138,7 +138,7 @@ org.codehaus.mojo:build-helper-maven-plugin;3.0.0
 org.codehaus.mojo:exec-maven-plugin;1.2.1
 org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0
-org.eclipse.jetty:jetty-maven-plugin;9.3.22.v20171030
+org.eclipse.jetty:jetty-maven-plugin;9.4.27.v20200227
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5

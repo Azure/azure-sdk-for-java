@@ -107,7 +107,7 @@
     <maven-javadoc.version>3.1.1</maven-javadoc.version>
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <jetty-maven-plugin.version>9.3.22.v20171030</jetty-maven-plugin.version>
+    <jetty-maven-plugin.version>9.4.27.v20200227</jetty-maven-plugin.version>
     <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
     <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
     <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
