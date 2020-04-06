@@ -170,10 +170,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
-             .assertNext(receivedMessage -> {
-                 Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
-                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-             })
+            .assertNext(receivedMessage -> {
+                Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+            })
             .verifyComplete();
     }
 
@@ -303,11 +303,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
-                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
+            .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
             .assertNext(lockedUntil -> {
                 Assertions.assertTrue(lockedUntil.isAfter(initialLock.get()),
                     String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
-                    lockedUntil, initialLock.get()));
+                        lockedUntil, initialLock.get()));
 
                 Assertions.assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
             })
@@ -424,7 +424,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         receiverManualComplete.defer(receivedMessage).block(TIMEOUT);
 
-        final ServiceBusReceivedMessage receivedDeferredMessage =  receiverManualComplete
+        final ServiceBusReceivedMessage receivedDeferredMessage = receiverManualComplete
             .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
 
         Assertions.assertNotNull(receivedDeferredMessage);
@@ -455,7 +455,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         receiverManualComplete.defer(receivedMessage).block(TIMEOUT);
 
-        final ServiceBusReceivedMessage receivedDeferredMessage =  receiverManualComplete
+        final ServiceBusReceivedMessage receivedDeferredMessage = receiverManualComplete
             .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
 
         Assertions.assertNotNull(receivedDeferredMessage);
@@ -526,7 +526,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         receiverManualComplete.defer(receivedMessage).block(Duration.ofSeconds(30));
 
-        final ServiceBusReceivedMessage receivedDeferredMessage =  receiverManualComplete
+        final ServiceBusReceivedMessage receivedDeferredMessage = receiverManualComplete
             .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
 
         Assertions.assertNotNull(receivedDeferredMessage);
