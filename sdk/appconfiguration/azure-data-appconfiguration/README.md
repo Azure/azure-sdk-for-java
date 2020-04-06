@@ -16,14 +16,14 @@ Use the client library for App Configuration to create and manage application co
 - [Azure Subscription][azure_subscription]
 - [App Configuration Store][app_config_store]
 
-### Adding the package to your product
+### Include the Package
 
 [//]: # ({x-version-update-start;com.azure:azure-data-appconfiguration;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

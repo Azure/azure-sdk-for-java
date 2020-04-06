@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 
@@ -15,8 +16,7 @@ import java.time.Duration;
 public class ReceiveMessageAndSettleAsyncSample {
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
-     * Queue
+     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus Queue
      *
      * @param args Unused arguments to the program.
      */
@@ -28,23 +28,22 @@ public class ReceiveMessageAndSettleAsyncSample {
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
         String connectionString = "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
             + "SharedAccessKey={key}";
-
+        connectionString = "Endpoint=sb://sbtrack2-hemanttest-prototype.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=7uJdC9utZi6pxJ2trk4MmiiEyuHltIz1Oyejp1jZRgM=";
         // Create a receiver.
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isLockAutoRenewed(true)
             .queueName("<<queue-name>>")
-            .isAutoComplete(false)
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
 
-        Disposable subscription = receiverAsyncClient.receive()
+        Disposable subscription = receiverAsyncClient.receive(options)
             .flatMap(message -> {
                 boolean messageProcessed =  false;
                 // Process the message here.
@@ -68,5 +67,7 @@ public class ReceiveMessageAndSettleAsyncSample {
 
         // Close the receiver.
         receiverAsyncClient.close();
+
+        try { Thread.sleep(30000); } catch (Exception ee )  {}
     }
 }

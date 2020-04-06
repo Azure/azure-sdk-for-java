@@ -1,9 +1,12 @@
 # Release History
 
-## 1.0.0-beta.2 (2020-04-03)
+## 1.0.0-beta.3 (Unreleased)
+
+
+## 1.0.0-beta.2 (2020-04-06)
 
 Version 1.0.0-beta.2 is the consecutive beta version of 11.0.0-beta.1. The version is made because we renamed 
-the search model and namespace.
+the search client library module name and namespace.
 
 - Renamed the azure-search module to azure-search-documents.
 - Changed the namespace com.azure.search to com.azure.search.documents.
