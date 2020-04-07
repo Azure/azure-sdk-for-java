@@ -7,8 +7,8 @@ import com.azure.core.serializer.JsonSerializer;
 import com.google.gson.Gson;
 import reactor.core.publisher.Mono;
 
-import java.io.Reader;
-import java.io.Writer;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 public final class GsonJsonSerializer implements JsonSerializer {
     public final Gson gson;
@@ -18,62 +18,27 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T read(String input, Class<T> clazz) {
-        return gson.fromJson(input, clazz);
+    public <T> Mono<T> read(String input, Class<T> clazz) {
+        return Mono.defer(() -> Mono.just(gson.fromJson(input, clazz)));
     }
 
     @Override
-    public <T> T read(Reader reader, Class<T> clazz) {
-        return gson.fromJson(reader, clazz);
+    public Mono<String> write(Object value) {
+        return Mono.defer(() -> Mono.just(gson.toJson(value)));
     }
 
     @Override
-    public <T> Mono<T> readAsync(String input, Class<T> clazz) {
-        return Mono.fromCallable(() -> read(input, clazz));
+    public Mono<String> write(Object value, Class<?> clazz) {
+        return Mono.defer(() -> Mono.just(gson.toJson(value, clazz)));
     }
 
     @Override
-    public <T> Mono<T> readAsync(Reader reader, Class<T> clazz) {
-        return Mono.fromCallable(() -> read(reader, clazz));
+    public Mono<Void> write(Object value, OutputStream stream) {
+        return Mono.defer(() -> Mono.fromRunnable(() -> gson.toJson(value, new OutputStreamWriter(stream))));
     }
 
     @Override
-    public String write(Object value) {
-        return gson.toJson(value);
-    }
-
-    @Override
-    public String write(Object value, Class<?> clazz) {
-        return gson.toJson(value, clazz);
-    }
-
-    @Override
-    public Mono<String> writeAsync(Object value) {
-        return Mono.fromCallable(() -> write(value));
-    }
-
-    @Override
-    public Mono<String> writeAsync(Object value, Class<?> clazz) {
-        return Mono.fromCallable(() -> write(value, clazz));
-    }
-
-    @Override
-    public void write(Object value, Writer writer) {
-        gson.toJson(value, writer);
-    }
-
-    @Override
-    public void write(Object value, Writer writer, Class<?> clazz) {
-        gson.toJson(value, clazz, writer);
-    }
-
-    @Override
-    public Mono<Void> writeAsync(Object value, Writer writer) {
-        return Mono.fromRunnable(() -> write(value, writer));
-    }
-
-    @Override
-    public Mono<Void> writeAsync(Object value, Writer writer, Class<?> clazz) {
-        return Mono.fromRunnable(() -> write(value, writer, clazz));
+    public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
+        return Mono.defer(() -> Mono.fromRunnable(() -> gson.toJson(value, clazz, new OutputStreamWriter(stream))));
     }
 }

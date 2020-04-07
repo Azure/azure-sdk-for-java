@@ -4,14 +4,12 @@
 package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.serializer.JsonSerializer;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.UncheckedIOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 public final class JacksonJsonSerializer implements JsonSerializer {
     private final ObjectMapper mapper;
@@ -21,86 +19,57 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T read(String input, Class<T> clazz) {
-        try {
-            return mapper.readValue(input, clazz);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
+    public <T> Mono<T> read(String input, Class<T> clazz) {
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(mapper.readValue(input, clazz));
+            } catch (IOException ex) {
+                return Mono.error(ex);
+            }
+        });
     }
 
     @Override
-    public <T> T read(Reader reader, Class<T> clazz) {
-        try {
-            return mapper.readValue(reader, clazz);
-        } catch (IOException e) {
-            throw new IllegalStateException(e);
-        }
+    public Mono<String> write(Object value) {
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(mapper.writeValueAsString(value));
+            } catch (IOException ex) {
+                return Mono.error(ex);
+            }
+        });
     }
 
     @Override
-    public <T> Mono<T> readAsync(String input, Class<T> clazz) {
-        return Mono.fromCallable(() -> read(input, clazz));
+    public Mono<String> write(Object value, Class<?> clazz) {
+        return Mono.defer(() -> {
+            try {
+                return Mono.just(mapper.writerFor(clazz).writeValueAsString(value));
+            } catch (IOException ex) {
+                return Mono.error(ex);
+            }
+        });
     }
 
     @Override
-    public <T> Mono<T> readAsync(Reader reader, Class<T> clazz) {
-        return Mono.fromCallable(() -> read(reader, clazz));
+    public Mono<Void> write(Object value, OutputStream stream) {
+        return Mono.defer(() -> Mono.fromRunnable(() -> {
+            try {
+                mapper.writeValue(stream, value);
+            } catch (IOException ex) {
+                throw Exceptions.propagate(ex);
+            }
+        }));
     }
 
     @Override
-    public String write(Object value) {
-        try {
-            return mapper.writeValueAsString(value);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @Override
-    public String write(Object value, Class<?> clazz) {
-        try {
-            return mapper.writerFor(clazz).writeValueAsString(value);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
-    }
-
-    @Override
-    public Mono<String> writeAsync(Object value) {
-        return Mono.fromCallable(() -> write(value));
-    }
-
-    @Override
-    public Mono<String> writeAsync(Object value, Class<?> clazz) {
-        return Mono.fromCallable(() -> write(value, clazz));
-    }
-
-    @Override
-    public void write(Object value, Writer writer) {
-        try {
-            mapper.writeValue(writer, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public void write(Object value, Writer writer, Class<?> clazz) {
-        try {
-            mapper.writerFor(clazz).writeValue(writer, value);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
-    public Mono<Void> writeAsync(Object value, Writer writer) {
-        return Mono.fromRunnable(() -> write(value, writer));
-    }
-
-    @Override
-    public Mono<Void> writeAsync(Object value, Writer writer, Class<?> clazz) {
-        return Mono.fromRunnable(() -> write(value, writer, clazz));
+    public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
+        return Mono.defer(() -> Mono.fromRunnable(() -> {
+            try {
+                mapper.writerFor(clazz).writeValue(stream, value);
+            } catch (IOException ex) {
+                throw Exceptions.propagate(ex);
+            }
+        }));
     }
 }

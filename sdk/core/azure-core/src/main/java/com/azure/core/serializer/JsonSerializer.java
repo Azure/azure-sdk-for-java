@@ -5,25 +5,14 @@ package com.azure.core.serializer;
 
 import reactor.core.publisher.Mono;
 
-import java.io.Reader;
-import java.io.Writer;
+import java.io.OutputStream;
 
 public interface JsonSerializer {
-    <T> T read(String input, Class<T> clazz);
-    <T> T read(Reader reader, Class<T> clazz);
+    <T> Mono<T> read(String input, Class<T> clazz);
 
-    <T> Mono<T> readAsync(String input, Class<T> clazz);
-    <T> Mono<T> readAsync(Reader reader, Class<T> clazz);
+    Mono<String> write(Object value);
+    Mono<String> write(Object value, Class<?> clazz);
 
-    String write(Object value);
-    String write(Object value, Class<?> clazz);
-
-    Mono<String> writeAsync(Object value);
-    Mono<String> writeAsync(Object value, Class<?> clazz);
-
-    void write(Object value, Writer writer);
-    void write(Object value, Writer writer, Class<?> clazz);
-
-    Mono<Void> writeAsync(Object value, Writer writer);
-    Mono<Void> writeAsync(Object value, Writer writer, Class<?> clazz);
+    Mono<Void> write(Object value, OutputStream stream);
+    Mono<Void> write(Object value, OutputStream stream, Class<?> clazz);
 }
