@@ -59,12 +59,6 @@
       <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-      <scope>test</scope>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/org.spockframework/spock-core -->
     <dependency>
       <groupId>org.spockframework</groupId>

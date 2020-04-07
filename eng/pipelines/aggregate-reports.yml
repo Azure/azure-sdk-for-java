@@ -7,50 +7,27 @@ jobs:
     timeoutInMinutes: 180
     variables:
       - template: templates/variables/globals.yml
+      - track2ProjectList: com.azure:azure-data-appconfiguration,com.azure:azure-core,com.azure:azure-core-amqp,com.azure:azure-core-http-jdk-httpclient,com.azure:azure-core-http-netty,com.azure:azure-core-http-okhttp,com.azure:azure-core-test,com.azure:azure-core-tracing-opentelemetry,com.azure:azure-cosmos,com.azure:azure-messaging-eventhubs,com.azure:azure-messaging-eventhubs-checkpointstore-blob,com.azure:azure-identity,com.azure:azure-security-keyvault-certificates,com.azure:azure-security-keyvault-keys,com.azure:azure-security-keyvault-secrets,com.azure:azure-storage-blob,com.azure:azure-storage-blob-cryptography,com.azure:azure-storage-blob-nio,com.azure:azure-storage-common,com.azure:azure-storage-file-datalake,com.azure:azure-storage-file-share,com.azure:azure-storage-queue,com.azure:azure-sdk-template,com.azure:azure-ai-textanalytics
     pool:
       vmImage: 'ubuntu-16.04'
     steps:
     - task: Maven@3
-      displayName: 'Install azure-sdk-parent'
-      inputs:
-        mavenPomFile: parent/pom.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
-        mavenOptions: '$(MemoryOptions)  $(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@3
-      displayName: 'Install Module'
-      inputs:
-        mavenPomFile: pom.client.xml
-        options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dcheckstyle.skip=true -Dspotbugs.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true'
-        mavenOptions: '$(MemoryOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@3
       displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
       inputs:
-        mavenPomFile: pom.client.xml
-        options: '$(DefaultOptions) -DskipTests -Dgpg.skip'
+        mavenPomFile: pom.xml
+        options: '$(DefaultOptions) -DskipTests -Dgpg.skip -pl $(track2ProjectList) -am'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'site:site site:stage'
+        goals: 'install site:site site:stage'
 
     - task: Maven@3
       displayName: 'Generate aggregate code coverage and dependency reports'
       inputs:
-        mavenPomFile: pom.client.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true'
+        mavenPomFile: pom.xml
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(track2ProjectList) -am'
         mavenOptions: '-Xmx3072m $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
