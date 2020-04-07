@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
@@ -77,7 +78,7 @@ public final class CryptographyClientBuilder {
     private String keyId;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private CryptographyServiceVersion version;
 
@@ -312,6 +313,19 @@ public final class CryptographyClientBuilder {
      */
     CryptographyClientBuilder key(KeyVaultKey key) {
         this.keyVaultKey = key;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated CryptographyClientBuilder object.
+     */
+    public CryptographyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        this.retryPolicy = retryPolicy;
         return this;
     }
 }

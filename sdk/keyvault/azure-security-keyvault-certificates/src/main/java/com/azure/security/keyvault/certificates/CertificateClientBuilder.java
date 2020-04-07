@@ -69,7 +69,7 @@ public final class CertificateClientBuilder {
     private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private HttpPipelinePolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private CertificateServiceVersion version;
 
@@ -272,14 +272,14 @@ public final class CertificateClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      *
      * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated CertificateClientBuilder object.
      */
-    public CertificateClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+    public CertificateClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }

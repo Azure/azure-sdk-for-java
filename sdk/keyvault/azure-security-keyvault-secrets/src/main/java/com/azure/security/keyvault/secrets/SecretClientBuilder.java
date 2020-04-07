@@ -71,7 +71,7 @@ public final class SecretClientBuilder {
     private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private HttpPipelinePolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private SecretServiceVersion version;
 
@@ -278,14 +278,14 @@ public final class SecretClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpPipelinePolicy} that is used when each request is sent.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      *
      * The default retry policy will be used in the pipeline, if not provided.
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated SecretClientBuilder object.
      */
-    public SecretClientBuilder retryPolicy(HttpPipelinePolicy retryPolicy) {
+    public SecretClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
         return this;
     }
