@@ -24,6 +24,7 @@ steps:
       -TestApplicationSecret '$(aad-azure-sdk-test-client-secret)'
       -ProvisionerApplicationId '$(aad-azure-sdk-test-client-id)'
       -ProvisionerApplicationSecret '$(aad-azure-sdk-test-client-secret)'
+      -SubscriptionId '$(subscription-id)'
       -AdditionalParameters ${{ parameters.ArmTemplateParameters }}
       -DeleteAfterHours ${{ parameters.DeleteAfterHours }}
       -Location '${{ parameters.Location }}'
@@ -43,6 +44,7 @@ steps:
       -TestApplicationSecret '$(aad-azure-sdk-test-client-secret-gov)'
       -ProvisionerApplicationId '$(aad-azure-sdk-test-client-id-gov)'
       -ProvisionerApplicationSecret '$(aad-azure-sdk-test-client-secret-gov)'
+      -SubscriptionId '$(subscription-id-gov)'
       -AdditionalParameters ${{ parameters.ArmTemplateParameters }}
       -DeleteAfterHours ${{ parameters.DeleteAfterHours }}
       -Location '${{ parameters.Location }}'
@@ -62,6 +64,7 @@ steps:
       -TestApplicationSecret '$(aad-azure-sdk-test-client-secret-cn)'
       -ProvisionerApplicationId '$(aad-azure-sdk-test-client-id-cn)'
       -ProvisionerApplicationSecret '$(aad-azure-sdk-test-client-secret-cn)'
+      -SubscriptionId '$(subscription-id-cn)'
       -AdditionalParameters ${{ parameters.ArmTemplateParameters }}
       -DeleteAfterHours ${{ parameters.DeleteAfterHours }}
       -Location '${{ parameters.Location }}'
