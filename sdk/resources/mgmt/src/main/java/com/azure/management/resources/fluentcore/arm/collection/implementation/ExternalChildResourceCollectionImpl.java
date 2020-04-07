@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -21,15 +18,16 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
- * Base class for cached {@link ExternalChildResourcesCachedImpl} and non-cached {@link ExternalChildResourcesNonCachedImpl}
+ * Base class for cached {@link ExternalChildResourcesCachedImpl}
+ * and non-cached {@link ExternalChildResourcesNonCachedImpl}
  * externalized child resource collection.
  * (Internal use only)
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
- * @param <FluentModelT>     the fluent model type of the child resource
- * @param <InnerModelT>      Azure inner resource class type representing the child resource
- * @param <ParentImplT>      <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
- * @param <ParentT>          the parent interface
+ * @param <FluentModelT> the fluent model type of the child resource
+ * @param <InnerModelT> Azure inner resource class type representing the child resource
+ * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentT> the parent interface
  */
 public abstract class ExternalChildResourceCollectionImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
@@ -65,11 +63,12 @@ public abstract class ExternalChildResourceCollectionImpl<
     /**
      * Creates a new ExternalChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
-     * @param parentTaskGroup   the TaskGroup the parent Azure resource belongs to
+     * @param parent the parent Azure resource
+     * @param parentTaskGroup the TaskGroup the parent Azure resource belongs to
      * @param childResourceName the child resource name
      */
-    protected ExternalChildResourceCollectionImpl(ParentImplT parent, TaskGroup parentTaskGroup, String childResourceName) {
+    protected ExternalChildResourceCollectionImpl(ParentImplT parent,
+                                                  TaskGroup parentTaskGroup, String childResourceName) {
         this.parent = parent;
         this.parentTaskGroup = parentTaskGroup;
         this.childResourceName = childResourceName;
@@ -120,17 +119,19 @@ public abstract class ExternalChildResourceCollectionImpl<
      * <p/>
      * This method returns a Flux stream, its Flux's onNext will be called for each successfully
      * committed resource followed by one call to 'onCompleted' or one call to 'onError' with a
-     * {@link } containing the list of exceptions where each exception describes the reason
+     * {@link RuntimeException} containing the list of exceptions where each exception describes the reason
      * for failure of a resource commit.
      *
      * @return the Flux stream
      */
     public Flux<FluentModelTImpl> commitAsync() {
         if (this.isPostRunMode) {
-            return Flux.error(new IllegalStateException("commitAsync() cannot be invoked when 'post run' mode is enabled"));
+            return Flux.error(
+                new IllegalStateException("commitAsync() cannot be invoked when 'post run' mode is enabled"));
         }
 
-        final ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
+        final ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT>
+            self = this;
         List<FluentModelTImpl> items = new ArrayList<>();
         for (FluentModelTImpl item : this.childCollection.values()) {
             items.add(item);
@@ -141,7 +142,8 @@ public abstract class ExternalChildResourceCollectionImpl<
 
         ReplayProcessor<FluentModelTImpl> aggregatedErrorStream = ReplayProcessor.create();
         Flux<FluentModelTImpl> deleteStream = Flux.fromIterable(items)
-                .filter(childResource -> childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved)
+                .filter(childResource ->
+                    childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved)
                 .flatMap(childResource -> childResource.deleteResourceAsync()
                         .map(response -> childResource)
                         .doOnSuccess(fluentModelT -> {
@@ -155,10 +157,12 @@ public abstract class ExternalChildResourceCollectionImpl<
                         }));
 
         Flux<FluentModelTImpl> createStream = Flux.fromIterable(items)
-                .filter(childResource -> childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated)
+                .filter(childResource ->
+                    childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated)
                 .flatMap(childResource -> childResource.createResourceAsync()
                         .map(fluentModelT -> childResource)
-                        .doOnNext(fluentModelT -> childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None))
+                        .doOnNext(fluentModelT ->
+                            childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None))
                         .onErrorResume(throwable -> {
                             self.childCollection.remove(childResource.name());
                             exceptionsList.add(throwable);
@@ -166,10 +170,12 @@ public abstract class ExternalChildResourceCollectionImpl<
                         }));
 
         Flux<FluentModelTImpl> updateStream = Flux.fromIterable(items)
-                .filter(childResource -> childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeUpdated)
+                .filter(childResource ->
+                    childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeUpdated)
                 .flatMap(childResource -> childResource.updateResourceAsync()
                         .map(e -> childResource)
-                        .doOnNext(resource -> resource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None))
+                        .doOnNext(resource ->
+                            resource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None))
                         .onErrorResume(throwable -> {
                             exceptionsList.add(throwable);
                             return Mono.empty();
@@ -205,7 +211,7 @@ public abstract class ExternalChildResourceCollectionImpl<
      */
     public Mono<List<FluentModelTImpl>> commitAndGetAllAsync() {
         return commitAsync().collect(() -> new ArrayList<FluentModelTImpl>(),
-                (state, item) -> state.add(item));
+            (state, item) -> state.add(item));
     }
 
 

@@ -295,6 +295,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificateWithPolicy>> getCertificateWithResponse(String certificateName, String version, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return service.getCertificateWithPolicy(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving certificate - {}",  certificateName))
@@ -303,6 +305,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificate>> getCertificateVersionWithResponse(String certificateName, String version, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return service.getCertificate(vaultUrl, certificateName, version, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE, context)
             .doOnRequest(ignored -> logger.info("Retrieving certificate - {}",  certificateName))
             .doOnSuccess(response -> logger.info("Retrieved the certificate - {}", response.getValue().getProperties().getName()))
@@ -411,6 +415,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificate>> updateCertificatePropertiesWithResponse(CertificateProperties properties, Context context) {
+        context = context == null ? Context.NONE : context;
+
         Objects.requireNonNull(properties, "properties' cannot be null.");
         CertificateUpdateParameters parameters = new CertificateUpdateParameters()
             .tags(properties.getTags())
@@ -536,6 +542,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<DeletedCertificate>> getDeletedCertificateWithResponse(String certificateName, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return service.getDeletedCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving deleted certificate - {}",  certificateName))
@@ -592,6 +600,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<Void>> purgeDeletedCertificateWithResponse(String certificateName, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return service.purgeDeletedcertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Purging certificate - {}",  certificateName))
@@ -712,6 +722,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<byte[]>> backupCertificateWithResponse(String certificateName, Context context) {
+        context = context == null ? Context.NONE : context;
+
         return service.backupCertificate(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Backing up certificate - {}",  certificateName))
@@ -768,6 +780,8 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificateWithPolicy>> restoreCertificateBackupWithResponse(byte[] backup, Context context) {
+        context = context == null ? Context.NONE : context;
+
         CertificateRestoreParameters parameters = new CertificateRestoreParameters().certificateBundleBackup(backup);
         return service.restoreCertificate(vaultUrl, apiVersion, ACCEPT_LANGUAGE, parameters, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -1075,6 +1089,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificateWithPolicy>> mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, Context context) {
+        context = context == null ? Context.NONE : context;
         Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
         CertificateMergeParameters mergeParameters = new CertificateMergeParameters().x509Certificates(mergeCertificateOptions.getX509Certificates())
             .tags(mergeCertificateOptions.getTags())
@@ -1133,6 +1148,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificatePolicy>> getCertificatePolicyWithResponse(String certificateName, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.getCertificatePolicy(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving certificate policy - {}",  certificateName))
@@ -1193,6 +1209,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificatePolicy>> updateCertificatePolicyWithResponse(String certificateName, CertificatePolicy policy, Context context) {
+        context = context == null ? Context.NONE : context;
         CertificatePolicyRequest policyRequest = new CertificatePolicyRequest(policy);
         return service.updateCertificatePolicy(vaultUrl, apiVersion, ACCEPT_LANGUAGE, certificateName, policyRequest, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -1252,6 +1269,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificateIssuer>> createIssuerWithResponse(CertificateIssuer issuer, Context context) {
+        context = context == null ? Context.NONE : context;
         CertificateIssuerSetParameters parameters = new CertificateIssuerSetParameters()
             .provider(issuer.getProvider())
             .credentials(new IssuerCredentials().accountId(issuer.getAccountId()).password(issuer.getPassword()))
@@ -1312,6 +1330,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificateIssuer>> getIssuerWithResponse(String issuerName, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.getCertificateIssuer(vaultUrl, apiVersion, ACCEPT_LANGUAGE, issuerName, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Retrieving certificate issuer - {}",  issuerName))
@@ -1369,6 +1388,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificateIssuer>> deleteIssuerWithResponse(String issuerName, Context context) {
+        context = context == null ? Context.NONE : context;
         return service.deleteCertificateIssuer(vaultUrl, issuerName, apiVersion, ACCEPT_LANGUAGE, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Deleting certificate issuer - {}",  issuerName))
@@ -1490,6 +1510,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificateIssuer>> updateIssuerWithResponse(CertificateIssuer issuer, Context context) {
+        context = context == null ? Context.NONE : context;
         CertificateIssuerUpdateParameters updateParameters = new CertificateIssuerUpdateParameters()
             .provider(issuer.getProvider())
             .organizationDetails(new OrganizationDetails().adminDetails(issuer.getAdministratorContacts()))
@@ -1669,6 +1690,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<CertificateOperation>> cancelCertificateOperationWithResponse(String certificateName, Context context) {
+        context = context == null ? Context.NONE : context;
         CertificateOperationUpdateParameter parameter = new CertificateOperationUpdateParameter().cancellationRequested(true);
         return service.updateCertificateOperation(vaultUrl, certificateName, apiVersion, ACCEPT_LANGUAGE, parameter, CONTENT_TYPE_HEADER_VALUE,
             context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
@@ -1768,6 +1790,7 @@ public final class CertificateAsyncClient {
     }
 
     Mono<Response<KeyVaultCertificateWithPolicy>> importCertificateWithResponse(ImportCertificateOptions importCertificateOptions, Context context) {
+        context = context == null ? Context.NONE : context;
 
         CertificateImportParameters parameters = new CertificateImportParameters()
             .base64EncodedCertificate(transformCertificateForImport(importCertificateOptions))

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.appservice;
 
@@ -15,7 +12,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
-import java.util.concurrent.TimeUnit;
 
 public class HostnameSslTests extends AppServiceTest {
     private String WEBAPP_NAME = "";

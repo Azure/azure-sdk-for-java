@@ -1,13 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.GenericResource;
 import com.azure.management.resources.GenericResources;
 import com.azure.management.resources.ResourceGroup;
@@ -21,7 +19,6 @@ import com.azure.management.resources.models.ResourcesInner;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Implementation of the {@link GenericResources}.
@@ -34,6 +31,7 @@ final class GenericResourcesImpl
         ResourcesInner,
         ResourceManager>
         implements GenericResources {
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     GenericResourcesImpl(ResourceManager resourceManager) {
         super(resourceManager.inner().resources(), resourceManager);
@@ -74,7 +72,8 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+    public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace,
+            String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         return this.inner().checkExistence(
                 resourceGroupName,
                 resourceProviderNamespace,
@@ -124,7 +123,8 @@ final class GenericResourcesImpl
             String resourceName,
             String apiVersion) {
 
-        // Correct for auto-gen'd API's treatment parent path as required even though it makes sense only for child resources
+        // Correct for auto-gen'd API's treatment parent path as required
+        // even though it makes sense only for child resources
         if (parentResourcePath == null) {
             parentResourcePath = "";
         }
@@ -149,25 +149,31 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public void moveResources(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) {
+    public void moveResources(String sourceResourceGroupName,
+            ResourceGroup targetResourceGroup, List<String> resources) {
         this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resources).block();
     }
 
     @Override
-    public Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources) {
+    public Mono<Void> moveResourcesAsync(String sourceResourceGroupName,
+            ResourceGroup targetResourceGroup, List<String> resources) {
         ResourcesMoveInfo moveInfo = new ResourcesMoveInfo();
         moveInfo.withTargetResourceGroup(targetResourceGroup.id());
         moveInfo.withResources(resources);
         return this.inner().moveResourcesAsync(sourceResourceGroupName, moveInfo);
     }
 
-    public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).block();
+    public void delete(String resourceGroupName, String resourceProviderNamespace,
+            String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+        deleteAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, apiVersion).block();
     }
 
     @Override
-    public Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return this.inner().deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
+    public Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace,
+            String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+        return this.inner().deleteAsync(resourceGroupName, resourceProviderNamespace,
+            parentResourcePath, resourceType, resourceName, apiVersion);
     }
 
 
@@ -195,13 +201,15 @@ final class GenericResourcesImpl
     @Override
     public Mono<GenericResourceInner> getInnerAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
-        throw new UnsupportedOperationException("Get just by resource group and name is not supported. Please use other overloads.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Get just by resource group and name is not supported. Please use other overloads."));
     }
 
     @Override
     protected Mono<Void> deleteInnerAsync(String resourceGroupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
-        throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException(
+            "Delete just by resource group and name is not supported. Please use other overloads."));
     }
 
     @Override

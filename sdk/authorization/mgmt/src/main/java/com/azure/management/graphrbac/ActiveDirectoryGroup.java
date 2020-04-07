@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac;
 
@@ -13,7 +10,6 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Mono;
 
 import java.util.Set;
 

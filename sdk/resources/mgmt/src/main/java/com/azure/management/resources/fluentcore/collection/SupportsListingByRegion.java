@@ -1,15 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.collection;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.fluentcore.arm.Region;
-import reactor.core.publisher.Flux;
 
 /**
  * Provides access to listing Azure resources of a specific type based on their region.

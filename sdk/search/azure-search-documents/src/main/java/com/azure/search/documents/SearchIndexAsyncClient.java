@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.models.IndexBatchException;
@@ -50,7 +51,6 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
-
     /*
      * Representation of the Multi-Status HTTP response code.
      */
@@ -392,27 +392,27 @@ public final class SearchIndexAsyncClient {
      */
     public SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-
-        return new SearchPagedFlux(() -> (continuationToken, pageSize) -> withContext(context ->
-            search(request, requestOptions, continuationToken, context)).flux());
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
+            search(request, requestOptions, continuationToken, context));
+        return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     SearchPagedFlux search(String searchText, SearchOptions searchOptions, RequestOptions requestOptions,
         Context context) {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
-
-        return new SearchPagedFlux(() -> (continuationToken, pageSize) ->
-            search(request, requestOptions, continuationToken, context).flux());
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
+            search(request, requestOptions, continuationToken, context);
+        return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, RequestOptions requestOptions,
-        SearchRequest nextPageRequest, Context context) {
-        SearchRequest requestToUse = (nextPageRequest == null) ? request : nextPageRequest;
+        String continuationToken, Context context) {
+        SearchRequest requestToUse = (continuationToken == null) ? request
+            : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
-            .map(SearchPagedResponse::new);
+            .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
     }
-
     /**
      * Retrieves a document from the Azure Cognitive Search index.
      * <p>
@@ -472,8 +472,7 @@ public final class SearchIndexAsyncClient {
      * {@link SuggestPagedResponse} object for each page containing HTTP response and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Suggestions">Suggestions</a>
      */
-    public SuggestPagedFlux suggest(String searchText,
-        String suggesterName) {
+    public SuggestPagedFlux suggest(String searchText, String suggesterName) {
         return suggest(searchText, suggesterName, null, null);
     }
 

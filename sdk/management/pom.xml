@@ -164,25 +164,39 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
                 <dependencies>
                     <dependency>
-                        <groupId>com.microsoft.azure</groupId>
-                        <artifactId>autorest-build-tools</artifactId>
-                        <version>[1.0.0,2.0.0)</version>
+                        <groupId>com.azure</groupId>
+                        <artifactId>sdk-build-tools</artifactId>
+                        <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
                     </dependency>
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>8.24</version>
+                        <version>8.29</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
                     </dependency>
                 </dependencies>
                 <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                    <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>
-                    <suppressionsLocation>suppressions.xml</suppressionsLocation>
+                    <configLocation>checkstyle/checkstyle.xml</configLocation>
+                    <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+                    <headerLocation>checkstyle/java.header</headerLocation>
+                    <propertyExpansion>samedir=</propertyExpansion>
+                    <encoding>UTF-8</encoding>
                     <consoleOutput>true</consoleOutput>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <linkXRef>true</linkXRef>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
                 </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                        <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

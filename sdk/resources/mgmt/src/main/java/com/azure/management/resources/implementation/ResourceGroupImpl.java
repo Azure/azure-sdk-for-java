@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -34,7 +31,8 @@ class ResourceGroupImpl extends
 
     private final ResourceGroupsInner client;
 
-    protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name, final ResourceManagementClientImpl serviceClient) {
+    protected ResourceGroupImpl(final ResourceGroupInner innerModel, String name,
+            final ResourceManagementClientImpl serviceClient) {
         super(name, innerModel);
         this.client = serviceClient.resourceGroups();
     }
@@ -83,7 +81,8 @@ class ResourceGroupImpl extends
         ExportTemplateRequest inner = new ExportTemplateRequest()
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
-        return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner -> new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
+        return client.exportTemplateAsync(name(), inner).map(resourceGroupExportResultInner ->
+            new ResourceGroupExportResultImpl(resourceGroupExportResultInner));
     }
 
     @Override

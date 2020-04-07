@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Defines a few utilities.
  */
-public class Utils {
+public final class Utils {
 
     private Utils() {
     }

@@ -22,6 +22,9 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
@@ -154,12 +157,17 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private FluxSink<ByteBuffer> sink;
 
+        private final Lock lock;
+        private final Condition transferComplete;
+
         boolean complete;
 
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+            this.lock = new ReentrantLock();
+            this.transferComplete = lock.newCondition();
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
 
@@ -174,23 +182,36 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     this.lastError = new IOException(e);
                     return Mono.empty();
                 })
-                .doOnTerminate(() -> complete = true)
+                .doOnTerminate(() -> {
+                    lock.lock();
+                    try {
+                        complete = true;
+                        transferComplete.signal();
+                    } finally {
+                        lock.unlock();
+                    }
+                })
                 .subscribe();
         }
 
         @Override
         void commit() {
-            sink.complete();
 
             // Need to wait until the uploadTask completes
-            while (!complete) {
-                try {
-                    Thread.sleep(100L);
-                } catch (InterruptedException e) {
-                    // Does this need to be caught by logger?
-                    e.printStackTrace();
+            lock.lock();
+            try {
+                sink.complete(); /* Allow upload task to try to complete. */
+            
+                while (!complete) {
+                    transferComplete.await();
                 }
+            } catch (InterruptedException e) {
+                this.lastError = new IOException(e.getMessage());
+            } finally {
+                lock.unlock();
             }
+
+
         }
 
         @Override

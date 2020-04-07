@@ -27,7 +27,7 @@ public class DataSourcesTest {
         DataSource actual = DataSources.createFromAzureSql(
             "sql", "connectionString", "table");
 
-        TestHelpers.assertDataSourcesEqual(expected, actual);
+        TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
 
     @Test
@@ -43,7 +43,7 @@ public class DataSourcesTest {
         DataSource actual = DataSources.createFromAzureBlobStorage(
             "storageBlob", "connectionString", "container");
 
-        TestHelpers.assertDataSourcesEqual(expected, actual);
+        TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
 
     @Test
@@ -59,7 +59,7 @@ public class DataSourcesTest {
         DataSource actual = DataSources.createFromAzureTableStorage(
             "storageTable", "connectionString", "table");
 
-        TestHelpers.assertDataSourcesEqual(expected, actual);
+        TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
 
     @Test
@@ -75,7 +75,7 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
 
-        TestHelpers.assertDataSourcesEqual(expected, actual);
+        TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
 
     @Test
@@ -92,6 +92,6 @@ public class DataSourcesTest {
 
         DataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection");
 
-        TestHelpers.assertDataSourcesEqual(expected, actual);
+        TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
 }

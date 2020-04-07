@@ -1,12 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.management.resources.fluentcore.utils.ETagState;
 import com.azure.management.storage.ImmutabilityPolicy;
 import com.azure.management.storage.ImmutabilityPolicyState;
 import com.azure.management.storage.models.BlobContainersInner;
@@ -20,10 +18,9 @@ class ImmutabilityPolicyImpl
     private String resourceGroupName;
     private String accountName;
     private String containerName;
-    private String cifMatch;
-    private int cimmutabilityPeriodSinceCreationInDays;
-    private String uifMatch;
-    private int uimmutabilityPeriodSinceCreationInDays;
+    private int cImmutabilityPeriodSinceCreationInDays;
+    private int uImmutabilityPeriodSinceCreationInDays;
+    private final ETagState eTagState = new ETagState();
 
     ImmutabilityPolicyImpl(String name, StorageManager manager) {
         super(name, new ImmutabilityPolicyInner());
@@ -53,21 +50,25 @@ class ImmutabilityPolicyImpl
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.cifMatch, this.cimmutabilityPeriodSinceCreationInDays, null)
+        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null, this.cImmutabilityPeriodSinceCreationInDays, null)
                 .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.uifMatch, this.uimmutabilityPeriodSinceCreationInDays, null)
-                .map(innerToFluentMap(this));
+        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.eTagState.ifMatchValueOnUpdate(this.inner().etag()), this.uImmutabilityPeriodSinceCreationInDays, null)
+                .map(innerToFluentMap(this))
+                .map(self -> {
+                    eTagState.clear();
+                    return self;
+                });
     }
 
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.uifMatch);
+        return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
     }
 
     @Override
@@ -115,21 +116,23 @@ class ImmutabilityPolicyImpl
     }
 
     @Override
-    public ImmutabilityPolicyImpl withIfMatch(String ifMatch) {
-        if (isInCreateMode()) {
-            this.cifMatch = ifMatch;
-        } else {
-            this.uifMatch = ifMatch;
-        }
+    public ImmutabilityPolicyImpl withETagCheck() {
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
+        return this;
+    }
+
+    @Override
+    public ImmutabilityPolicyImpl withETagCheck(String eTagValue) {
+        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
         return this;
     }
 
     @Override
     public ImmutabilityPolicyImpl withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays) {
         if (isInCreateMode()) {
-            this.cimmutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
+            this.cImmutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         } else {
-            this.uimmutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
+            this.uImmutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         }
         return this;
     }

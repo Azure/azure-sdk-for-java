@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm;
 
@@ -137,7 +134,7 @@ public final class Region {
     /**
      * Creates a region from a name and a label.
      *
-     * @param name  the uniquely identifiable name of the region
+     * @param name the uniquely identifiable name of the region
      * @param label the label of the region
      * @return the newly created region
      */

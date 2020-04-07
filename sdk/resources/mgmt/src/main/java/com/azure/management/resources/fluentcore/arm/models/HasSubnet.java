@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.resources.fluentcore.arm.models;
 
 import com.azure.core.annotation.Fluent;
@@ -36,7 +33,7 @@ public interface HasSubnet {
              * Assigns the specified subnet to this resource.
              *
              * @param parentNetworkResourceId the resource ID of the virtual network the subnet is part of
-             * @param subnetName              the name of the subnet
+             * @param subnetName the name of the subnet
              * @return the next stage of the definition
              */
             ReturnT withExistingSubnet(String parentNetworkResourceId, String subnetName);
@@ -57,7 +54,7 @@ public interface HasSubnet {
              * Assigns the specified subnet to this resource.
              *
              * @param parentNetworkResourceId the resource ID of the virtual network the subnet is part of
-             * @param subnetName              the name of the subnet
+             * @param subnetName the name of the subnet
              * @return the next stage of the definition
              */
             ReturnT withExistingSubnet(String parentNetworkResourceId, String subnetName);
@@ -65,7 +62,8 @@ public interface HasSubnet {
     }
 
     /**
-     * Grouping of definition stages applicable as part of a parent resource update, involving associating a subnet with a resource.
+     * Grouping of definition stages applicable as part of a parent resource update,
+     * involving associating a subnet with a resource.
      */
     interface UpdateDefinitionStages {
         /**
@@ -78,7 +76,7 @@ public interface HasSubnet {
              * Assigns the specified subnet to this resource.
              *
              * @param parentNetworkResourceId the resource ID of the virtual network the subnet is part of
-             * @param subnetName              the name of the subnet
+             * @param subnetName the name of the subnet
              * @return the next stage of the definition
              */
             ReturnT withExistingSubnet(String parentNetworkResourceId, String subnetName);

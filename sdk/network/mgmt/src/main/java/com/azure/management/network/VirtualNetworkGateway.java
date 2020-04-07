@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 
@@ -19,7 +16,6 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Collection;
@@ -200,8 +196,8 @@ public interface VirtualNetworkGateway extends
              * the virtual network will be created in the same resource group and region as of parent
              * virtual network gateway, it will be created with the specified address space and a subnet for virtual network gateway.
              *
-             * @param name                   the name of the new virtual network
-             * @param addressSpace           the address space for the virtual network
+             * @param name the name of the new virtual network
+             * @param addressSpace the address space for the virtual network
              * @param subnetAddressSpaceCidr the address space for the subnet
              * @return the next stage of the definition
              */
@@ -212,7 +208,7 @@ public interface VirtualNetworkGateway extends
              * the virtual network will be created in the same resource group and region as of parent virtual network gateway,
              * it will be created with the specified address space and a default subnet for virtual network gateway.
              *
-             * @param addressSpaceCidr       the address space for the virtual network
+             * @param addressSpaceCidr the address space for the virtual network
              * @param subnetAddressSpaceCidr the address space for the subnet
              * @return the next stage of the definition
              */
@@ -246,7 +242,7 @@ public interface VirtualNetworkGateway extends
          */
         interface WithBgp {
             /**
-             * @param asn               the BGP speaker's ASN
+             * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              * @return the next stage of the definition
              */
@@ -285,7 +281,7 @@ public interface VirtualNetworkGateway extends
             /**
              * Enables BGP.
              *
-             * @param asn               the BGP speaker's ASN
+             * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              * @return the next stage of the update
              */

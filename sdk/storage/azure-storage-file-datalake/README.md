@@ -16,7 +16,7 @@ efficient data access.
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 Add a dependency on Azure Storage File Datalake
 
@@ -25,7 +25,7 @@ Add a dependency on Azure Storage File Datalake
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-storage-file-datalake</artifactId>
-    <version>12.0.1</version>
+    <version>12.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

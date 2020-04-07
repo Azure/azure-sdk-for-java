@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.policy;
 
@@ -33,7 +30,7 @@ import java.util.regex.Pattern;
  * A Http Pipeline Policy for automatic provider registration in Azure.
  */
 public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
-    private final static String MISSING_SUBSCRIPTION_REGISTRATION = "MissingSubscriptionRegistration";
+    private static final String MISSING_SUBSCRIPTION_REGISTRATION = "MissingSubscriptionRegistration";
     private final AzureTokenCredential credential;
 
     /**
@@ -63,15 +60,18 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                             AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
                             CloudError cloudError;
                             try {
-                                cloudError = jacksonAdapter.deserialize(bodyStr, CloudError.class, SerializerEncoding.JSON);
+                                cloudError = jacksonAdapter.deserialize(
+                                    bodyStr, CloudError.class, SerializerEncoding.JSON);
                             } catch (IOException e) {
                                 return Mono.just(bufferedResponse);
                             }
 
                             if (cloudError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(cloudError.getCode())) {
-                                String subscriptionId = ResourceUtils.extractFromResourceId(request.getUrl().getPath(), "subscriptions");
+                                String subscriptionId = ResourceUtils.extractFromResourceId(
+                                    request.getUrl().getPath(), "subscriptions");
                                 RestClient restClient = new RestClientBuilder()
-                                        .withBaseUrl(String.format("%s://%s", request.getUrl().getProtocol(), request.getUrl().getHost()))
+                                        .withBaseUrl(String.format("%s://%s",
+                                            request.getUrl().getProtocol(), request.getUrl().getHost()))
                                         .withCredential(credential)
                                         .withSerializerAdapter(jacksonAdapter).buildClient();
                                 // TODO: add proxy in rest client
@@ -98,18 +98,22 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         return resourceManager.providers().registerAsync(namespace)
             .flatMap(
                 provider -> {
-                    if (isProviderRegistered(provider)) return Mono.empty();
+                    if (isProviderRegistered(provider)) {
+                        return Mono.empty();
+                    }
                     return resourceManager.providers().getByNameAsync(namespace)
-                            .map(providerGet -> checkProviderRegistered(providerGet))
+                            .flatMap(providerGet -> checkProviderRegistered(providerGet))
                             .retry(60, ProviderUnregisteredException.class::isInstance);
                 }
             );
     }
 
-    private Void checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {
-        if (isProviderRegistered(provider)) return null;
+    private Mono<Void> checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {
+        if (isProviderRegistered(provider)) {
+            return Mono.empty();
+        }
         SdkContext.sleep(5 * 1000);
-        throw new ProviderUnregisteredException();
+        return Mono.error(new ProviderUnregisteredException());
     }
 
     private boolean isProviderRegistered(Provider provider) {

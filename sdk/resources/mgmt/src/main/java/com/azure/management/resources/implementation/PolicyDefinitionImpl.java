@@ -1,11 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.PolicyDefinition;
 import com.azure.management.resources.PolicyType;
 import com.azure.management.resources.models.PolicyDefinitionInner;
@@ -26,6 +24,7 @@ final class PolicyDefinitionImpl extends
         PolicyDefinition.Definition,
         PolicyDefinition.Update {
     private final PolicyDefinitionsInner innerCollection;
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     PolicyDefinitionImpl(String name, PolicyDefinitionInner innerModel, PolicyDefinitionsInner innerCollection) {
         super(name, innerModel);
@@ -85,7 +84,7 @@ final class PolicyDefinitionImpl extends
         try {
             inner().withPolicyRule(new ObjectMapper().readTree(policyRuleJson));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
         return this;
     }

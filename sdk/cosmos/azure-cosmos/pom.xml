@@ -119,7 +119,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -154,19 +154,6 @@ Licensed under the MIT License.
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-afterburner</artifactId>
       <version>2.10.1</version> <!-- {x-version-update;cosmos_com.fasterxml.jackson.module:jackson-module-afterburner;external_dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.uuid</groupId>
-      <artifactId>java-uuid-generator</artifactId>
-      <version>3.2.0</version> <!-- {x-version-update;com.fasterxml.uuid:java-uuid-generator;external_dependency} -->
-    </dependency>
-
-    <dependency> <!-- log4j is needed by uuid module -->
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version> <!-- {x-version-update;cosmos_log4j:log4j;external_dependency} -->
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -246,7 +233,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -301,6 +288,57 @@ Licensed under the MIT License.
             </property>
           </properties>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <bannedDependencies>
+                  <searchTransitive>false</searchTransitive>
+                  <excludes>
+                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                    dependencies when they are used for test scope or otherwise) -->
+                    <exclude>*:*:*:*:runtime</exclude>
+                    <exclude>*:*:*:*:compile</exclude>
+                    <exclude>*:*:*:*:provided</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.azure:*</include>
+                    <include>org.slf4j:slf4j-api</include>
+                    <include>io.projectreactor:reactor-core</include>
+
+                    <include>com.fasterxml.jackson.core:jackson-core</include>
+                    <include>com.fasterxml.jackson.core:jackson-annotations</include>
+                    <include>com.fasterxml.jackson.core:jackson-databind</include>
+                    <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310</include>
+                    <include>com.fasterxml.jackson.module:jackson-module-afterburner</include>
+
+                    <include>io.micrometer:micrometer-core</include>
+                    <include>io.dropwizard.metrics:metrics-core</include>
+                    <include>com.fasterxml.uuid:java-uuid-generator</include>
+                    <include>io.projectreactor.netty</include>
+                    <include>io.netty:netty-codec-http</include>
+                    <include>io.netty:netty-codec-http2</include>
+                    <include>io.netty:netty-handler</include>
+                    <include>io.netty:netty-handler-proxy</include>
+                    <include>io.netty:netty-transport-native-epoll</include>
+
+                    <include>com.google.code.findbugs:jsr305</include>
+                  </includes>
+                </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>

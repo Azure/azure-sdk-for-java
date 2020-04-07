@@ -1,17 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.CertificateCredential;
-import com.azure.management.graphrbac.KeyCredentialsUpdateParameters;
 import com.azure.management.graphrbac.PasswordCredential;
-import com.azure.management.graphrbac.PasswordCredentialsUpdateParameters;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.graphrbac.ServicePrincipalCreateParameters;

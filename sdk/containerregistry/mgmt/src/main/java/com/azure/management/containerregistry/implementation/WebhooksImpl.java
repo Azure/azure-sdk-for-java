@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.management.containerregistry.Registry;
@@ -23,7 +20,7 @@ public class WebhooksImpl
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected WebhooksImpl(RegistryImpl parent, String childResourceName) {

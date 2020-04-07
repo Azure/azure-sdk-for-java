@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.compute;
 
@@ -15,7 +12,7 @@ public class WindowsVMDiskEncryptionConfiguration
      * Creates WindowsVMDiskEncryptionConfiguration.
      *
      * @param keyVaultId the resource ID of the key vault to store the disk encryption key
-     * @param aadClientId  client ID of an AAD application which has permission to the key vault
+     * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      */
     public WindowsVMDiskEncryptionConfiguration(String keyVaultId,

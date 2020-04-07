@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -14,7 +11,6 @@ import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
-import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /**

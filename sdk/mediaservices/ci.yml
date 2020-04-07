@@ -21,8 +21,11 @@ trigger:
     include:
       - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/mgmt-
-
+      - sdk/mediaservices/mgmt-v2015_10_01
+      - sdk/mediaservices/mgmt-v2018_03_30_preview
+      - sdk/mediaservices/mgmt-v2018_06_01_preview
+      - sdk/mediaservices/mgmt-v2018_07_01
+      - sdk/mediaservices/mgmt-v2019_05_01_preview
 pr:
   branches:
     include:
@@ -34,7 +37,11 @@ pr:
     include:
       - sdk/mediaservices/
     exclude:
-      - sdk/mediaservices/mgmt-
+      - sdk/mediaservices/mgmt-v2015_10_01
+      - sdk/mediaservices/mgmt-v2018_03_30_preview
+      - sdk/mediaservices/mgmt-v2018_06_01_preview
+      - sdk/mediaservices/mgmt-v2018_07_01
+      - sdk/mediaservices/mgmt-v2019_05_01_preview
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml

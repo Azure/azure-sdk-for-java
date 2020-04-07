@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -105,7 +102,12 @@ final class GenericResourceImpl
     }
 
     public GenericResourceImpl withPlan(String name, String publisher, String product, String promotionCode) {
-        inner().withPlan(new Plan().withName(name).withPublisher(publisher).withProduct(product).withPromotionCode(promotionCode));
+        inner().withPlan(
+            new Plan()
+                .withName(name)
+                .withPublisher(publisher)
+                .withProduct(product)
+                .withPromotionCode(promotionCode));
         return this;
     }
 

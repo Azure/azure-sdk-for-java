@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -17,7 +14,6 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
@@ -25,7 +21,7 @@ import java.io.IOException;
 /**
  * Base class for CRUD test cases for top level Azure resource models.
  *
- * @param <ResourceT>   Top level resource type
+ * @param <ResourceT> Top level resource type
  * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
@@ -113,7 +109,7 @@ public abstract class TestTemplate<
     /**
      * Runs the test.
      *
-     * @param collection     collection of resources to test
+     * @param collection collection of resources to test
      * @param resourceGroups the resource groups collection
      * @throws Exception if anything goes wrong
      */
@@ -168,7 +164,7 @@ public abstract class TestTemplate<
     /**
      * Runs the test.
      *
-     * @param collection     collection of resources to test
+     * @param collection collection of resources to test
      * @param resourceGroups the resource groups collection
      * @throws Exception if anything goes wrong
      */

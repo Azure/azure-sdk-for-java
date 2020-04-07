@@ -9,9 +9,12 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 import java.net.URL;
 
+/**
+ * A rest client.
+ */
 public class RestClient {
 
-    private HttpPipeline pipeline;
+    private final HttpPipeline pipeline;
 
     private final URL baseUrl;
 
@@ -20,6 +23,13 @@ public class RestClient {
      */
     private final RestClientBuilder builder;
 
+    /**
+     * Creae RestClient.
+     *
+     * @param baseUrl baseUrl
+     * @param pipeline http pipeline
+     * @param builder rest client builder
+     */
     public RestClient(URL baseUrl, HttpPipeline pipeline, RestClientBuilder builder) {
         this.baseUrl = baseUrl;
         this.pipeline = pipeline;
@@ -33,6 +43,9 @@ public class RestClient {
         return builder.getSerializerAdapter();
     }
 
+    /**
+     * @return the http pipeline.
+     */
     public HttpPipeline getHttpPipeline() {
         return this.pipeline;
     }
@@ -44,10 +57,16 @@ public class RestClient {
         return builder.getCredential();
     }
 
+    /**
+     * @return the base url
+     */
     public URL getBaseUrl() {
         return this.baseUrl;
     }
 
+    /**
+     * @return a new rest client builder with same parameter
+     */
     public RestClientBuilder newBuilder() {
         return builder.clone();
     }

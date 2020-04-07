@@ -20,7 +20,7 @@ import java.nio.file.attribute.FileAttribute
 import java.security.MessageDigest
 
 class AzureFileSystemProviderTest extends APISpec {
-    def config = new HashMap<String, String>()
+    def config = new HashMap<String, Object>()
     AzureFileSystemProvider provider
 
     // The following are are common among a large number of copy tests
@@ -34,7 +34,7 @@ class AzureFileSystemProviderTest extends APISpec {
         provider = new AzureFileSystemProvider()
     }
 
-    def "FileSystemProvider createFileSystem"() {
+    def "CreateFileSystem"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
@@ -49,7 +49,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider createFileSystem invalid uri"() {
+    def "CreateFileSystem invalid uri"() {
         when:
         provider.newFileSystem(uri, config)
 
@@ -64,7 +64,7 @@ class AzureFileSystemProviderTest extends APISpec {
         new URI("azb://?account=") | _
     }
 
-    def "FileSystemProvider createFileSystem duplicate"() {
+    def "CreateFileSystem duplicate"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
@@ -77,7 +77,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(FileSystemAlreadyExistsException)
     }
 
-    def "FileSystemProvider createFileSystem initial check fail"() {
+    def "CreateFileSystem initial check fail"() {
         when:
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
         def badKey = getAccountKey(PRIMARY_STORAGE).getBytes()
@@ -95,7 +95,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(FileSystemNotFoundException)
     }
 
-    def "FileSystemProvider getFileSystem not found"() {
+    def "GetFileSystem not found"() {
         when:
         provider.getFileSystem(getAccountUri())
 
@@ -104,7 +104,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider getFileSystem IA"() {
+    def "GetFileSystem IA"() {
         when:
         provider.getFileSystem(uri)
 
@@ -119,18 +119,16 @@ class AzureFileSystemProviderTest extends APISpec {
         new URI("azb://?account=") | _
     }
 
-    // TODO: Be sure to test directories
     // TODO: Be sure to test operating on containers that already have data
-
     // all apis should have a test that tries them after the FileSystem is closed to ensure they throw.
 
-    def "FileSystemProvider getScheme"() {
+    def "GetScheme"() {
         expect:
         provider.getScheme() == "azb"
     }
 
     @Unroll
-    def "FileSystemProvider createDir parent exists"() {
+    def "CreateDir parent exists"() {
         setup:
         def fs = createFS(config)
 
@@ -168,7 +166,7 @@ class AzureFileSystemProviderTest extends APISpec {
         2     | _
     }
 
-    def "FileSystemProvider createDir relativePath"() {
+    def "CreateDir relativePath"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -182,7 +180,7 @@ class AzureFileSystemProviderTest extends APISpec {
         checkBlobIsDir(blobClient)
     }
 
-    def "FileSystemProvider createDir file already exists"() {
+    def "CreateDir file already exists"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -197,7 +195,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(FileAlreadyExistsException)
     }
 
-    def "FileSystemProvider createDir concrete dir already exists"() {
+    def "CreateDir concrete dir already exists"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -212,7 +210,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(FileAlreadyExistsException)
     }
 
-    def "FileSystemProvider createDir virtual dir already exists"() {
+    def "CreateDir virtual dir already exists"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -232,7 +230,7 @@ class AzureFileSystemProviderTest extends APISpec {
         checkBlobIsDir(blobClient)
     }
 
-    def "FileSystemProvider createDir root"() {
+    def "CreateDir root"() {
         setup:
         def fs = createFS(config)
 
@@ -243,7 +241,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "FileSystemProvider createDir no parent"() {
+    def "CreateDir no parent"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -256,7 +254,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
-    def "FileSystemProvider createDir invalid root"() {
+    def "CreateDir invalid root"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -268,7 +266,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
-    def "FileSystemProvider createDir attributes"() {
+    def "CreateDir attributes"() {
         setup:
         def fs = createFS(config)
         def fileName = generateBlobName()
@@ -306,7 +304,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider copy source"() {
+    def "Copy source"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -370,7 +368,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider copy destination"() {
+    def "Copy destination"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -404,7 +402,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider copy non empty dest"() {
+    def "Copy non empty dest"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -434,7 +432,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider copy replace existing fail"() {
+    def "Copy replace existing fail"() {
         // The success case is tested by the "copy destination" test.
         // Testing replacing a virtual directory is in the "non empty dest" test as there can be no empty virtual dir.
         setup:
@@ -470,7 +468,7 @@ class AzureFileSystemProviderTest extends APISpec {
         // See above.
     }
 
-    def "FileSystemProvider copy options fail"() {
+    def "Copy options fail"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -489,7 +487,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider copy depth"() {
+    def "Copy depth"() {
         setup:
         def fs = createFS(config)
 
@@ -531,7 +529,7 @@ class AzureFileSystemProviderTest extends APISpec {
         3           | 3
     }
 
-    def "FileSystemProvider copy no parent for dest"() {
+    def "Copy no parent for dest"() {
         setup:
         def fs = createFS(config)
         // Generate resource names.
@@ -555,7 +553,7 @@ class AzureFileSystemProviderTest extends APISpec {
         !destinationClient.exists()
     }
 
-    def "FileSystemProvider copy source does not exist"() {
+    def "Copy source does not exist"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -567,7 +565,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
-    def "FileSystemProvider copy no root dir"() {
+    def "Copy no root dir"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -585,7 +583,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    def "FileSystemProvider copy same file no op"() {
+    def "Copy same file no op"() {
         setup:
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
@@ -598,7 +596,7 @@ class AzureFileSystemProviderTest extends APISpec {
         notThrown(Exception)
     }
 
-    def "FileSystemProvider copy across containers"() {
+    def "Copy across containers"() {
         setup:
         def fs = createFS(config)
 
@@ -624,7 +622,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider delete"() {
+    def "Delete"() {
         setup:
         def fs = createFS(config)
 
@@ -650,7 +648,7 @@ class AzureFileSystemProviderTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystemProvider delete nonempty dir"() {
+    def "Delete nonempty dir"() {
         setup:
         def fs = createFS(config)
 
@@ -676,7 +674,7 @@ class AzureFileSystemProviderTest extends APISpec {
         true    | _
     }
 
-    def "FileSystemProvider delete no target"() {
+    def "Delete no target"() {
         setup:
         def fs = createFS(config)
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
@@ -688,7 +686,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(NoSuchFileException)
     }
 
-    def "FileSystemProvider delete default dir"() {
+    def "Delete default dir"() {
         setup:
         def fs = createFS(config)
         def path = ((AzurePath) fs.getPath(generateBlobName()))
@@ -701,6 +699,35 @@ class AzureFileSystemProviderTest extends APISpec {
 
         then:
         !client.exists()
+    }
+
+    def "DirectoryStream"() {
+        setup:
+        def fs = createFS(config)
+        def resource = new AzureResource(fs.getPath("a" + generateBlobName()))
+        resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+        resource = new AzureResource(fs.getPath("b" + generateBlobName()))
+        resource.getBlobClient().getBlockBlobClient().commitBlockList(Collections.emptyList())
+
+        when:
+        def it = fs.provider().newDirectoryStream(fs.getPath(getDefaultDir(fs)),
+            {path -> path.getFileName().toString().startsWith("a")}).iterator()
+
+        then:
+        it.hasNext()
+        it.next().getFileName().toString().startsWith("a")
+        !it.hasNext()
+    }
+
+    def "DirectoryStream invalid root"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newDirectoryStream(fs.getPath("fakeRoot:"), {path -> true})
+
+        then:
+        thrown(IOException)
     }
 
     def basicSetupForCopyTest(FileSystem fs) {

@@ -33,18 +33,12 @@ import com.azure.core.util.FluxUtil;
 import com.azure.management.AzureServiceClient;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the FeatureClientImpl type.
- */
+/** Initializes a new instance of the FeatureClientImpl type. */
 public final class FeatureClientImpl extends AzureServiceClient {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private FeatureClientService service;
+    /** The proxy service used to perform REST calls. */
+    private final FeatureClientService service;
 
-    /**
-     * The ID of the target subscription.
-     */
+    /** The ID of the target subscription. */
     private String subscriptionId;
 
     /**
@@ -67,9 +61,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
@@ -92,9 +84,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * Api Version.
-     */
+    /** Api Version. */
     private String apiVersion;
 
     /**
@@ -117,10 +107,8 @@ public final class FeatureClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -131,10 +119,8 @@ public final class FeatureClientImpl extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /**
-     * The FeaturesInner object to access its operations.
-     */
-    private FeaturesInner features;
+    /** The FeaturesInner object to access its operations. */
+    private final FeaturesInner features;
 
     /**
      * Gets the FeaturesInner object to access its operations.
@@ -145,11 +131,11 @@ public final class FeatureClientImpl extends AzureServiceClient {
         return this.features;
     }
 
-    /**
-     * Initializes an instance of FeatureClient client.
-     */
+    /** Initializes an instance of FeatureClient client. */
     public FeatureClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
@@ -175,23 +161,24 @@ public final class FeatureClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The interface defining all the services for FeatureClient to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for FeatureClient to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "FeatureClient")
     private interface FeatureClientService {
-        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Features/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OperationListResultInner>> listOperations(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<OperationListResultInner>> listOperations(
+            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OperationListResultInner>> listOperationsNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<OperationListResultInner>> listOperationsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -199,17 +186,21 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationInner>> listOperationsSinglePageAsync() {
-        return FluxUtil.withContext(context -> service.listOperations(this.getHost(), this.getApiVersion(), context))
-            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listOperations(this.getHost(), this.getApiVersion(), context))
+            .<PagedResponse<OperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
 
@@ -218,12 +209,12 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listOperationsAsync() {
         return new PagedFlux<>(
-            () -> listOperationsSinglePageAsync(),
-            nextLink -> listOperationsNextSinglePageAsync(nextLink));
+            () -> listOperationsSinglePageAsync(), nextLink -> listOperationsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -231,6 +222,7 @@ public final class FeatureClientImpl extends AzureServiceClient {
      *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> listOperations() {
@@ -244,17 +236,21 @@ public final class FeatureClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list Microsoft.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationInner>> listOperationsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listOperationsNext(nextLink, context))
-            .<PagedResponse<OperationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listOperationsNext(nextLink, context))
+            .<PagedResponse<OperationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
     }
 }

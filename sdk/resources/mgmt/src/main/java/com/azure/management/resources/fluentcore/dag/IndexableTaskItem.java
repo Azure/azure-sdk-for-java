@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.dag;
 
@@ -53,6 +50,11 @@ public abstract class IndexableTaskItem
         this(UUID.randomUUID().toString());
     }
 
+    /**
+     * Creates a TaskItem which is index-able using a random UUID.
+     *
+     * @param sdkContext the sdkcontext
+     */
     public IndexableTaskItem(SdkContext sdkContext) {
         this(sdkContext.randomUuid());
     }
@@ -74,6 +76,13 @@ public abstract class IndexableTaskItem
         };
     }
 
+    /**
+     * Creates an IndexableTaskItem from provided FunctionalTaskItem.
+     *
+     * @param taskItem functional TaskItem
+     * @param sdkContext the sdkcontext
+     * @return IndexableTaskItem
+     */
     public static IndexableTaskItem create(final FunctionalTaskItem taskItem, SdkContext sdkContext) {
         return new IndexableTaskItem(sdkContext) {
             @Override

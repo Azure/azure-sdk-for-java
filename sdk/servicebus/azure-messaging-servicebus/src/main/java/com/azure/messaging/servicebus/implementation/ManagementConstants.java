@@ -18,6 +18,9 @@ class ManagementConstants {
     static final String RENEW_LOCK_OPERATION = AmqpConstants.VENDOR + ":renew-lock";
     static final String RECEIVE_BY_SEQUENCE_NUMBER_OPERATION = AmqpConstants.VENDOR
         + ":receive-by-sequence-number";
+    static final String CANCEL_SCHEDULED_MESSAGE_OPERATION = AmqpConstants.VENDOR
+        + ":cancel-scheduled-message";
+    static final String SCHEDULE_MESSAGE_OPERATION = AmqpConstants.VENDOR + ":schedule-message";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
@@ -34,4 +37,9 @@ class ManagementConstants {
     static final String ASSOCIATED_LINK_NAME_KEY = "associated-link-name";
     static final String SEQUENCE_NUMBERS = "sequence-numbers";
     static final String RECEIVER_SETTLE_MODE = "receiver-settle-mode";
+    static final String MESSAGES = "messages";
+    static final String MESSAGE = "message";
+    static final String MESSAGE_ID = "message-id";
+
+    static final int MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES = 512;
 }

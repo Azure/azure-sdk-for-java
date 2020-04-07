@@ -15,6 +15,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -76,6 +77,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
+    private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
@@ -83,9 +85,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
-    ServiceBusSenderAsyncClient(String entityName, ServiceBusConnectionProcessor connectionProcessor,
-        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer,
-        Runnable onClientClose) {
+    ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
+        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -95,6 +97,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             "'connectionProcessor' cannot be null.");
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
+        this.entityType = entityType;
+
         this.onClientClose = onClientClose;
     }
 
@@ -275,12 +279,20 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
 
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return getSendLink()
+            .flatMap(link -> link.getLinkSize().flatMap(size -> {
+                int maxSize =  size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize));
+            }));
     }
 
     /**
@@ -291,8 +303,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return The {@link Mono} that finishes this operation on service bus resource.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber));
     }
 
     /**

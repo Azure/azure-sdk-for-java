@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -11,6 +8,7 @@ import com.azure.core.management.SubResource;
 import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.models.ZoneInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.management.resources.fluentcore.utils.ETagState;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.dns.ARecordSets;
@@ -56,7 +54,7 @@ public class DnsZoneImpl
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
     private DnsRecordSetsImpl recordSets;
-    private String dnsZoneETag;
+    private final ETagState eTagState = new ETagState();
 
     DnsZoneImpl(String name, final ZoneInner innerModel, final DnsZoneManager manager) {
         super(name, innerModel, manager);
@@ -397,34 +395,24 @@ public class DnsZoneImpl
 
     @Override
     public DnsZoneImpl withETagCheck() {
-        if (isInCreateMode()) {
-            this.dnsZoneETag = "*";
-            return this;
-        }
-        return this.withETagCheck(this.inner().etag());
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
+        return this;
     }
 
     @Override
     public DnsZoneImpl withETagCheck(String eTagValue) {
-        this.dnsZoneETag = eTagValue;
+        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
         return this;
     }
 
     @Override
     public Mono<DnsZone> createResourceAsync() {
         return Mono.just(this)
-                .flatMap(self -> {
-                    if (self.isInCreateMode()) {
-                        return self.manager().inner().zones().createOrUpdateAsync(self.resourceGroupName(),
-                                self.name(), self.inner(), null/*IfMatch*/, self.dnsZoneETag/*IfNoneMatch*/);
-                    } else {
-                        return self.manager().inner().zones().createOrUpdateAsync(self.resourceGroupName(),
-                                self.name(), self.inner(), self.dnsZoneETag/*IfMatch*/, null/*IfNoneMatch*/);
-                    }
-                })
+                .flatMap(self -> self.manager().inner().zones().createOrUpdateAsync(self.resourceGroupName(),
+                    self.name(), self.inner(), eTagState.ifMatchValueOnUpdate(self.inner().etag()), eTagState.ifNonMatchValueOnCreate()))
                 .map(innerToFluentMap(this))
                 .map(dnsZone -> {
-                    this.dnsZoneETag = null;
+                    this.eTagState.clear();
                     return dnsZone;
                 });
     }

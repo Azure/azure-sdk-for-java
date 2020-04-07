@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.storage.implementation;
 
@@ -11,7 +8,6 @@ import com.azure.management.storage.CheckNameAvailabilityResult;
 import com.azure.management.storage.ServiceSasParameters;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountCheckNameAvailabilityParameters;
 import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.models.StorageAccountInner;
 import com.azure.management.storage.models.StorageAccountsInner;

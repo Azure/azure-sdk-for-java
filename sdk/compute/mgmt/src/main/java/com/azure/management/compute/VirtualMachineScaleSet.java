@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.compute;
 
@@ -562,7 +559,7 @@ public interface VirtualMachineScaleSet extends
             /**
              * Set information about the proximity placement group that the virtual machine scale set should
              * be assigned to.
-             * @param proximityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param proximityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */

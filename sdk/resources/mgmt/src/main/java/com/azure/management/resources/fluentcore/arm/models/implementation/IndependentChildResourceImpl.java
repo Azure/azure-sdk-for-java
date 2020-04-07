@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.models.implementation;
 
@@ -20,17 +17,18 @@ import java.util.TreeMap;
  * Implementation for the child resource which can be CRUDed independently from the parent resource.
  * (internal use only)
  *
- * @param <FluentModelT>       The fluent model type
+ * @param <FluentModelT> The fluent model type
  * @param <FluentParentModelT> the fluent model for parent resource
- * @param <InnerModelT>        Azure inner resource class type
- * @param <FluentModelImplT>   the implementation type of the fluent model type
- * @param <ManagerT>           the client manager type representing the service
+ * @param <InnerModelT> Azure inner resource class type
+ * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the client manager type representing the service
  */
 public abstract class IndependentChildResourceImpl<
         FluentModelT extends IndependentChildResource<ManagerT, InnerModelT>,
         FluentParentModelT extends Resource & HasResourceGroup,
         InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT,
+                                                              InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT>
         extends
         IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>
@@ -39,7 +37,7 @@ public abstract class IndependentChildResourceImpl<
     /**
      * Creates a new instance of CreatableUpdatableImpl.
      *
-     * @param name        the name of the resource
+     * @param name the name of the resource
      * @param innerObject the inner object
      */
     protected IndependentChildResourceImpl(String name, InnerModelT innerObject, ManagerT manager) {
@@ -111,7 +109,7 @@ public abstract class IndependentChildResourceImpl<
     /**
      * Adds a tag to the resource.
      *
-     * @param key   the key for the tag
+     * @param key the key for the tag
      * @param value the value for the tag
      * @return the next stage of the definition/update
      */

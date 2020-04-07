@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -75,7 +72,6 @@ import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;

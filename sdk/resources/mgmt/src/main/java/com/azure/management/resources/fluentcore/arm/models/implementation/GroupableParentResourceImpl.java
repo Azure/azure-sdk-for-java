@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.models.implementation;
 
@@ -15,10 +12,10 @@ import reactor.core.publisher.Mono;
  * The implementation for GroupableResource.
  * (Internal use only)
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
- * @param <ManagerT>         the service manager type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableParentResourceImpl<
         FluentModelT extends Resource,
@@ -42,9 +39,9 @@ public abstract class GroupableParentResourceImpl<
 
     protected abstract void initializeChildrenFromInner();
 
-    protected void beforeCreating() {}
+    protected void beforeCreating() { }
 
-    protected void afterCreating() {}
+    protected void afterCreating() { }
 
     @Override
     public Mono<FluentModelT> createResourceAsync() {

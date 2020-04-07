@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -110,7 +107,7 @@ public interface SqlFirewallRule
              * Sets the starting IP address of SQL server's Firewall Rule.
              *
              * @param startIPAddress starting IP address in IPv4 format.
-             * @param endIPAddress   starting IP address in IPv4 format.
+             * @param endIPAddress starting IP address in IPv4 format.
              * @return The next stage of the definition.
              */
             WithAttach<ParentT> withIPAddressRange(String startIPAddress, String endIPAddress);
