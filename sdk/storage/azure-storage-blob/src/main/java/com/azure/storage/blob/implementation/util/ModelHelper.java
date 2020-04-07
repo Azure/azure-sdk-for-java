@@ -46,4 +46,22 @@ public class ModelHelper {
             other.getMaxSingleUploadSize() == null ? Integer.valueOf(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES)
                 : other.getMaxSingleUploadSize());
     }
+
+    /**
+     * Transforms a blob type into a common type.
+     * @param blobOptions {@link ParallelTransferOptions}
+     * @return {@link com.azure.storage.common.ParallelTransferOptions}
+     */
+    public static com.azure.storage.common.ParallelTransferOptions wrapBlobOptions(
+        ParallelTransferOptions blobOptions) {
+        Integer blockSize = blobOptions.getBlockSize();
+        Integer numBuffers = blobOptions.getNumBuffers();
+        com.azure.storage.common.ProgressReceiver wrappedReceiver = blobOptions.getProgressReceiver() == null
+            ? null
+            : blobOptions.getProgressReceiver()::reportProgress;
+        Integer maxSingleUploadSize = blobOptions.getMaxSingleUploadSize();
+
+        return new com.azure.storage.common.ParallelTransferOptions(blockSize, numBuffers, wrappedReceiver,
+            maxSingleUploadSize);
+    }
 }

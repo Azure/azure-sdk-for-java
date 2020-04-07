@@ -7,6 +7,10 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;
+import com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,6 +23,8 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternAnalyzer")
 @Fluent
+@JsonSerialize(using = CustomPatternAnalyzerSerializer.class)
+@JsonDeserialize(using = CustomPatternAnalyzerDeserializer.class)
 public final class PatternAnalyzer extends Analyzer {
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
@@ -34,12 +40,10 @@ public final class PatternAnalyzer extends Analyzer {
     private String pattern;
 
     /*
-     * Regular expression flags. Possible values include: 'CANON_EQ',
-     * 'CASE_INSENSITIVE', 'COMMENTS', 'DOTALL', 'LITERAL', 'MULTILINE',
-     * 'UNICODE_CASE', 'UNIX_LINES'
+     * Regular expression flags.
      */
     @JsonProperty(value = "flags")
-    private RegexFlags flags;
+    private List<RegexFlags> flags;
 
     /*
      * A list of stopwords.
@@ -94,25 +98,21 @@ public final class PatternAnalyzer extends Analyzer {
     }
 
     /**
-     * Get the flags property: Regular expression flags. Possible values
-     * include: 'CANON_EQ', 'CASE_INSENSITIVE', 'COMMENTS', 'DOTALL',
-     * 'LITERAL', 'MULTILINE', 'UNICODE_CASE', 'UNIX_LINES'.
+     * Get the flags property: Regular expression flags.
      *
      * @return the flags value.
      */
-    public RegexFlags getFlags() {
+    public List<RegexFlags> getFlags() {
         return this.flags;
     }
 
     /**
-     * Set the flags property: Regular expression flags. Possible values
-     * include: 'CANON_EQ', 'CASE_INSENSITIVE', 'COMMENTS', 'DOTALL',
-     * 'LITERAL', 'MULTILINE', 'UNICODE_CASE', 'UNIX_LINES'.
+     * Set the flags property: Regular expression flags.
      *
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer setFlags(RegexFlags flags) {
+    public PatternAnalyzer setFlags(List<RegexFlags> flags) {
         this.flags = flags;
         return this;
     }

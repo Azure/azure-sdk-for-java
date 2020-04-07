@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
 /**
@@ -23,7 +24,7 @@ public class GetSingleDocumentExample {
     public static void main(String[] args) {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 

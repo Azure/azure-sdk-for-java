@@ -3,12 +3,14 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.models.Field;
+import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.Index;
+import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.ServiceCounters;
 import com.azure.search.documents.models.ServiceLimits;
@@ -17,7 +19,6 @@ import com.azure.search.documents.models.Skill;
 import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.WebApiSkill;
-import com.azure.search.documents.models.Hotel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,14 +141,14 @@ public class RefineSearchCapabilitiesExample {
     private static SearchServiceClient createServiceClient() {
         return new SearchServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(ADMIN_KEY))
+            .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
     }
 
     private static SearchIndexClient createIndexClient() {
         return new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(ADMIN_KEY))
+            .credential(new AzureKeyCredential(ADMIN_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
     }

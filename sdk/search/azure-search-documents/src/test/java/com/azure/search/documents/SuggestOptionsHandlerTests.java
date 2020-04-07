@@ -41,7 +41,7 @@ public class SuggestOptionsHandlerTests {
         assertEquals(suggestOptions.getOrderBy(), ensuredSuggestOptions.getOrderBy());
         assertEquals(suggestOptions.getSearchFields(), ensuredSuggestOptions.getSearchFields());
         assertEquals(suggestOptions.getTop(), ensuredSuggestOptions.getTop());
-        assertEquals(suggestOptions.isUseFuzzyMatching(), ensuredSuggestOptions.isUseFuzzyMatching());
+        assertEquals(suggestOptions.useFuzzyMatching(), ensuredSuggestOptions.useFuzzyMatching());
 
     }
 

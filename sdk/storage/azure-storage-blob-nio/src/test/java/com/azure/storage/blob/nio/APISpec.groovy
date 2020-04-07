@@ -408,7 +408,7 @@ class APISpec extends Specification {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 
-    def createFS(Map<String,String> config) {
+    def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
 
@@ -556,7 +556,7 @@ class APISpec extends Specification {
 
     def checkBlobIsDir(BlobClient blobClient) {
          String isDir = blobClient.getPropertiesWithResponse(null, null, null)
-             .getValue().getMetadata().get(AzureFileSystemProvider.DIR_METADATA_MARKER)
+             .getValue().getMetadata().get(AzureResource.DIR_METADATA_MARKER)
         return isDir != null && isDir == "true"
     }
 

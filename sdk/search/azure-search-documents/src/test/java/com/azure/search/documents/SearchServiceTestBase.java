@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -44,10 +45,8 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.Rule;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.rules.TestName;
 import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
@@ -103,13 +102,11 @@ public abstract class SearchServiceTestBase extends TestBase {
     private String searchServiceName;
     private String searchDnsSuffix;
     protected String endpoint;
-    SearchApiKeyCredential searchApiKeyCredential;
+    AzureKeyCredential searchApiKeyCredential;
+    private static final boolean IS_DEBUG = false;
 
     private static String testEnvironment;
     private static AzureSearchResources azureSearchResources;
-
-    @Rule
-    public TestName testName = new TestName();
 
     @BeforeAll
     public static void beforeAll() {
@@ -122,6 +119,9 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     @AfterAll
     public static void afterAll() {
+        if (IS_DEBUG) {
+            azureSearchResources.deleteResourceGroup();
+        }
     }
 
     @Override
@@ -130,7 +130,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
         if (!interceptorManager.isPlaybackMode()) {
             azureSearchResources.createService(testResourceNamer);
-            searchApiKeyCredential = new SearchApiKeyCredential(azureSearchResources.getSearchAdminKey());
+            searchApiKeyCredential = new AzureKeyCredential(azureSearchResources.getSearchAdminKey());
         }
         searchServiceName = azureSearchResources.getSearchServiceName();
         endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);

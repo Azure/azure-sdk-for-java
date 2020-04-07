@@ -3,10 +3,11 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import reactor.core.publisher.Flux;
 
@@ -39,7 +40,7 @@ public class SearchForDynamicDocumentsExample {
     private static void searchWithSyncClient() {
         SearchIndexClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildClient();
 
@@ -63,7 +64,7 @@ public class SearchForDynamicDocumentsExample {
     private static void searchWithAsyncClient() {
         SearchIndexAsyncClient client = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(new SearchApiKeyCredential(API_KEY))
+            .credential(new AzureKeyCredential(API_KEY))
             .indexName(INDEX_NAME)
             .buildAsyncClient();
 
