@@ -106,7 +106,7 @@ class BlobAPITest extends APISpec {
         def pto = new ParallelTransferOptions((Integer) maxUploadSize, null, null, (Integer) maxUploadSize)
 
         when:
-        bc.uploadWithResponse(input, size, pto, null, null, null, null, null)
+        bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
 
         then:
         def blocksUploaded = bc.getBlockBlobClient().listBlocks(BlockListType.ALL).getCommittedBlocks()
@@ -128,7 +128,7 @@ class BlobAPITest extends APISpec {
         def input = new ByteArrayInputStream(randomData)
 
         when:
-        bc.uploadWithResponse(input, size, null, null, null, null, null, Duration.ofNanos(5L))
+        bc.uploadWithResponse(input, size, null, null, null, null, null, Duration.ofNanos(5L), null)
 
         then:
         thrown(IllegalStateException)
