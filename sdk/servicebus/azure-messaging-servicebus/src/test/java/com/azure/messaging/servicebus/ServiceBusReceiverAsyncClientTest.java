@@ -26,6 +26,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -602,6 +603,29 @@ class ServiceBusReceiverAsyncClientTest {
         StepVerifier.create(receiver.receive(null))
             .expectError(NullPointerException.class)
             .verify();
+    }
+
+    @Test
+    void topicCorrectEntityPath() {
+        // Arrange
+        final String topicName = "foo";
+        final String subscriptionName = "bar";
+        final String entityPath = String.join("/", topicName, "subscriptions", subscriptionName);
+        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .connectionString(NAMESPACE_CONNECTION_STRING)
+            .receiver()
+            .topicName(topicName)
+            .subscriptionName(subscriptionName)
+            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .buildAsyncClient();
+
+        // Act
+        final String actual = receiver.getEntityPath();
+        final String actualNamespace = receiver.getFullyQualifiedNamespace();
+
+        // Assert
+        Assertions.assertEquals(entityPath, actual);
+        Assertions.assertEquals(NAMESPACE, actualNamespace);
     }
 
     private List<Message> getMessages(int numberOfEvents) {
