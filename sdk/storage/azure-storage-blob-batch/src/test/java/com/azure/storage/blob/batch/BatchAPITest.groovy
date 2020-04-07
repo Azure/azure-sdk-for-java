@@ -2,6 +2,8 @@ package com.azure.storage.blob.batch
 
 import com.azure.core.http.HttpPipelineBuilder
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.rest.Response
+import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.BlobServiceAsyncClient
 import com.azure.storage.blob.models.AccessTier
@@ -24,6 +26,23 @@ class BatchAPITest extends APISpec {
             .policies(policies)
             .httpClient(clientPipeline.getHttpClient())
             .build())
+    }
+
+    /*
+     * Helper method for tests where some operations fail, but not all fail. This is needed as the underlying request
+     * generation is non-deterministic in the ordering of request. This is fine when running against the live service
+     * as these requests will be properly associated to the response by their `Content-ID` but this causes issues in
+     * playback as we are using a static response that cannot handle changes in operation order.
+     */
+    static def assertExpectedOrException(Response<?> response, int expectedStatusCode) {
+        try {
+            def statusCode = response.getStatusCode()
+            assert statusCode == expectedStatusCode
+            return 1
+        } catch (def exception) {
+            assert exception instanceof BlobStorageException
+            return 0
+        }
     }
 
     BlobBatchClient batchClient
@@ -101,13 +120,18 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobBatchStorageException)
-        response1.getStatusCode() == 200
 
-        when:
-        response2.getStatusCode()
-
-        then:
-        thrown(BlobStorageException)
+        // In PLAYBACK check responses in an order invariant fashion.
+        if (testMode == TestMode.PLAYBACK) {
+            assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
+        } else {
+            assert response1.getStatusCode() == 200
+            try {
+                response2.getStatusCode()
+            } catch (def exception) {
+                assert exception instanceof BlobStorageException
+            }
+        }
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
@@ -128,14 +152,19 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatchWithResponse(batch, false, null, Context.NONE)
 
         then:
-        notThrown(BlobStorageException)
-        response1.getStatusCode() == 200
+        notThrown(BlobBatchStorageException)
 
-        when:
-        response2.getStatusCode()
-
-        then:
-        thrown(BlobStorageException)
+        // In PLAYBACK check responses in an order invariant fashion.
+        if (testMode == TestMode.PLAYBACK) {
+            assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
+        } else {
+            assert response1.getStatusCode() == 200
+            try {
+                response2.getStatusCode()
+            } catch (def exception) {
+                assert exception instanceof BlobStorageException
+            }
+        }
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
@@ -246,13 +275,18 @@ class BatchAPITest extends APISpec {
 
         then:
         thrown(BlobBatchStorageException)
-        response1.getStatusCode() == 202
 
-        when:
-        response2.getStatusCode()
-
-        then:
-        thrown(BlobStorageException)
+        // In PLAYBACK check responses in an order invariant fashion.
+        if (testMode == TestMode.PLAYBACK) {
+            assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
+        } else {
+            assert response1.getStatusCode() == 202
+            try {
+                response2.getStatusCode()
+            } catch (def exception) {
+                assert exception instanceof BlobStorageException
+            }
+        }
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
@@ -274,13 +308,18 @@ class BatchAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        response1.getStatusCode() == 202
 
-        when:
-        response2.getStatusCode()
-
-        then:
-        thrown(BlobStorageException)
+        // In PLAYBACK check responses in an order invariant fashion.
+        if (testMode == TestMode.PLAYBACK) {
+            assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
+        } else {
+            assert response1.getStatusCode() == 202
+            try {
+                response2.getStatusCode()
+            } catch (def exception) {
+                assert exception instanceof BlobStorageException
+            }
+        }
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
