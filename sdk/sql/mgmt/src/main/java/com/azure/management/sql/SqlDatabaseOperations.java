@@ -488,7 +488,6 @@ public interface SqlDatabaseOperations
              *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the definition.
              */
-            @Deprecated
             SqlDatabaseOperations.DefinitionStages.WithCreateAllOptions withMaxSizeBytes(long maxSizeBytes);
         }
 

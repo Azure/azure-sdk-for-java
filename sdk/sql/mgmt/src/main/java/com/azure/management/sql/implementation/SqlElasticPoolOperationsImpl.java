@@ -181,8 +181,8 @@ public class SqlElasticPoolOperationsImpl
     @Override
     public List<SqlElasticPool> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlElasticPool> elasticPoolSet = new ArrayList<>();
-        for (ElasticPoolInner inner :
-            this.manager.inner().elasticPools().listByServer(resourceGroupName, sqlServerName)) {
+        for (ElasticPoolInner inner
+            : this.manager.inner().elasticPools().listByServer(resourceGroupName, sqlServerName)) {
             elasticPoolSet
                 .add(
                     new SqlElasticPoolImpl(
@@ -208,8 +208,8 @@ public class SqlElasticPoolOperationsImpl
     public List<SqlElasticPool> listBySqlServer(SqlServer sqlServer) {
         List<SqlElasticPool> elasticPoolSet = new ArrayList<>();
         if (sqlServer != null) {
-            for (ElasticPoolInner inner :
-                this.manager.inner().elasticPools().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+            for (ElasticPoolInner inner
+                : this.manager.inner().elasticPools().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 elasticPoolSet.add(new SqlElasticPoolImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }

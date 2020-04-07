@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
@@ -24,6 +25,7 @@ import reactor.core.publisher.Mono;
 public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImportExportResponse>
     implements SqlDatabaseExportRequest, SqlDatabaseExportRequest.SqlDatabaseExportRequestDefinition {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
     private ExportRequest inner;
@@ -94,9 +96,9 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                                 .buildClient();
                         blobServiceClient.createBlobContainer(containerName);
                     } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                        throw Exceptions.propagate(indexOutOfBoundsException);
+                        throw logger.logExceptionAsError(Exceptions.propagate(indexOutOfBoundsException));
                     } catch (StorageErrorException stgException) {
-                        throw Exceptions.propagate(stgException);
+                        throw logger.logExceptionAsError(Exceptions.propagate(stgException));
                     }
                     return context.voidMono();
                 });

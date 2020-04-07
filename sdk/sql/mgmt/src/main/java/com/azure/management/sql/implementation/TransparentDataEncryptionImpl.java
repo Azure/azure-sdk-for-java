@@ -110,8 +110,8 @@ class TransparentDataEncryptionImpl
                 .transparentDataEncryptionActivities()
                 .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName());
         if (transparentDataEncryptionActivityInners != null) {
-            for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner :
-                transparentDataEncryptionActivityInners) {
+            for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
+                : transparentDataEncryptionActivityInners) {
                 transparentDataEncryptionActivities
                     .add(new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
             }

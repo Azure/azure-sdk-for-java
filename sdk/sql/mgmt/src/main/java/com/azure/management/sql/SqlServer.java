@@ -244,6 +244,7 @@ public interface SqlServer
             /**
              * Creates new elastic pool in the SQL Server.
              *
+             * @deprecated use {@link #defineElasticPool}
              * @param elasticPoolName name of the elastic pool to be created
              * @param elasticPoolEdition edition of the elastic pool
              * @param databaseNames names of the database to be included in the elastic pool
@@ -256,6 +257,7 @@ public interface SqlServer
             /**
              * Creates new elastic pool in the SQL Server.
              *
+             * @deprecated use {@link #defineElasticPool}
              * @param elasticPoolName name of the elastic pool to be created
              * @param elasticPoolEdition edition of the elastic pool
              * @return Next stage of the SQL Server definition
@@ -277,6 +279,7 @@ public interface SqlServer
             /**
              * Creates new database in the SQL Server.
              *
+             * @deprecated use {@link #defineDatabase}
              * @param databaseName name of the database to be created
              * @return Next stage of the SQL Server definition
              */
@@ -307,6 +310,7 @@ public interface SqlServer
             /**
              * Creates new firewall rule in the SQL Server.
              *
+             * @deprecated use {@link #defineFirewallRule}
              * @param ipAddress ipAddress for the firewall rule
              * @return Next stage of the SQL Server definition
              */
@@ -316,6 +320,7 @@ public interface SqlServer
             /**
              * Creates new firewall rule in the SQL Server.
              *
+             * @deprecated use {@link #defineFirewallRule}
              * @param startIPAddress start IP address for the firewall rule
              * @param endIPAddress end IP address for the firewall rule
              * @return Next stage of the SQL Server definition
@@ -326,6 +331,7 @@ public interface SqlServer
             /**
              * Creates new firewall rule in the SQL Server.
              *
+             * @deprecated use {@link #defineFirewallRule}
              * @param startIPAddress start IP address for the firewall rule
              * @param endIPAddress end IP address for the firewall rule
              * @param firewallRuleName name for the firewall rule
@@ -400,8 +406,17 @@ public interface SqlServer
         /** A SQL Server definition for specifying elastic pool. */
         interface WithElasticPool {
             /**
+             * Begins the definition of a new SQL Elastic Pool to be added to this server.
+             *
+             * @param elasticPoolName the name of the new SQL Elastic Pool
+             * @return the first stage of the new SQL Elastic Pool definition
+             */
+            SqlElasticPool.DefinitionStages.Blank<DefinitionStages.WithCreate> defineElasticPool(String elasticPoolName);
+
+            /**
              * Create new elastic pool in the SQL Server.
              *
+             * @deprecated use {@link #defineElasticPool}
              * @param elasticPoolName name of the elastic pool to be created
              * @param elasticPoolEdition edition of the elastic pool
              * @param databaseNames names of the database to be included in the elastic pool
@@ -414,6 +429,7 @@ public interface SqlServer
             /**
              * Create new elastic pool in the SQL Server.
              *
+             * @deprecated use {@link #defineElasticPool}
              * @param elasticPoolName name of the elastic pool to be created
              * @param elasticPoolEdition edition of the elastic pool
              * @return Next stage of the SQL Server update
@@ -427,15 +443,23 @@ public interface SqlServer
              * @param elasticPoolName name of the elastic pool to be removed
              * @return Next stage of the SQL Server update
              */
-            @Deprecated
             Update withoutElasticPool(String elasticPoolName);
         }
 
         /** A SQL Server definition for specifying the databases. */
         interface WithDatabase {
             /**
+             * Begins the definition of a new SQL Database to be added to this server.
+             *
+             * @param databaseName the name of the new SQL Database
+             * @return the first stage of the new SQL Database definition
+             */
+            SqlDatabase.DefinitionStages.Blank<DefinitionStages.WithCreate> defineDatabase(String databaseName);
+            
+            /**
              * Create new database in the SQL Server.
              *
+             * @deprecated use {@link #defineDatabase}
              * @param databaseName name of the database to be created
              * @return Next stage of the SQL Server update
              */
@@ -448,15 +472,23 @@ public interface SqlServer
              * @param databaseName name of the database to be removed
              * @return Next stage of the SQL Server update
              */
-            @Deprecated
             Update withoutDatabase(String databaseName);
         }
 
         /** The stage of the SQL Server update definition allowing to specify the SQL Firewall rules. */
         interface WithFirewallRule {
             /**
+             * Begins the definition of a new SQL Firewall rule to be added to this server.
+             *
+             * @param firewallRuleName the name of the new SQL Firewall rule
+             * @return the first stage of the new SQL Firewall rule definition
+             */
+            SqlFirewallRule.DefinitionStages.Blank<DefinitionStages.WithCreate> defineFirewallRule(String firewallRuleName);
+
+            /**
              * Create new firewall rule in the SQL Server.
              *
+             * @deprecated use {@link #defineFirewallRule}
              * @param ipAddress IP address for the firewall rule
              * @return Next stage of the SQL Server update
              */
@@ -466,6 +498,7 @@ public interface SqlServer
             /**
              * Create new firewall rule in the SQL Server.
              *
+             * @deprecated use {@link #defineFirewallRule}
              * @param startIPAddress Start IP address for the firewall rule
              * @param endIPAddress IP address for the firewall rule
              * @return Next stage of the SQL Server update
@@ -476,6 +509,7 @@ public interface SqlServer
             /**
              * Creates new firewall rule in the SQL Server.
              *
+             * @deprecated use {@link #defineFirewallRule}
              * @param startIPAddress start IP address for the firewall rule
              * @param endIPAddress end IP address for the firewall rule
              * @param firewallRuleName name for the firewall rule
@@ -490,7 +524,6 @@ public interface SqlServer
              * @param firewallRuleName name of the firewall rule to be removed
              * @return Next stage of the SQL Server update
              */
-            @Deprecated
             Update withoutFirewallRule(String firewallRuleName);
         }
     }

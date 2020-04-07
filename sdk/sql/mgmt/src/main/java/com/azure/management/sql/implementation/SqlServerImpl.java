@@ -6,11 +6,11 @@ package com.azure.management.sql.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
-import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.sql.ElasticPoolEdition;
 import com.azure.management.sql.IdentityType;
 import com.azure.management.sql.RecommendedElasticPool;
@@ -44,13 +44,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 import reactor.core.publisher.Mono;
 
 /** Implementation for SqlServer and its parent interfaces. */
 public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner, SqlServerImpl, SqlServerManager>
     implements SqlServer, SqlServer.Definition, SqlServer.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private FunctionalTaskItem sqlADAdminCreator;
     private boolean allowAzureServicesAccess;
     private SqlFirewallRulesAsExternalChildResourcesImpl sqlFirewallRules;
@@ -283,7 +283,9 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .firewallRules()
                     .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
         } catch (CloudException e) {
-            if (e.getResponse().getStatusCode() != 404) throw e;
+            if (e.getResponse().getStatusCode() != 404) {
+                throw logger.logExceptionAsError(e);
+            }
         }
 
         if (firewallRule == null) {
@@ -410,8 +412,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .serverAzureADAdministrators()
                     .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
                     .flatMap(
-                        (Function<ServerAzureADAdministratorInner, Mono<Indexable>>)
-                            serverAzureADAdministratorInner1 -> context.voidMono());
+                        serverAzureADAdministratorInner1 -> context.voidMono());
             };
         return this;
     }

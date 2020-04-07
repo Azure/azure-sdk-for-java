@@ -16,7 +16,6 @@ import com.azure.management.sql.models.ServiceObjectiveInner;
 public interface ServiceObjective
     extends HasInner<ServiceObjectiveInner>, Refreshable<ServiceObjective>, HasResourceGroup, HasName, HasId {
     /** @return name of the SQL Server to which this service objective belongs */
-    @Deprecated
     String sqlServerName();
 
     /** @return the name for the service objective. */

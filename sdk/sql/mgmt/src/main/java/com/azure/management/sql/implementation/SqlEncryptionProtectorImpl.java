@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -18,6 +19,7 @@ public class SqlEncryptionProtectorImpl
     extends ExternalChildResourceImpl<SqlEncryptionProtector, EncryptionProtectorInner, SqlServerImpl, SqlServer>
     implements SqlEncryptionProtector, SqlEncryptionProtector.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
     private String sqlServerName;
@@ -181,7 +183,7 @@ public class SqlEncryptionProtectorImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        throw new UnsupportedOperationException("Delete operation not supported");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Delete operation not supported"));
     }
 
     @Override

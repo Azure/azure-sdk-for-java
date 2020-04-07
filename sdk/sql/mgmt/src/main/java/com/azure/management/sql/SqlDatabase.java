@@ -702,6 +702,7 @@ public interface SqlDatabase
             /**
              * Sets the edition for the SQL Database.
              *
+             * @deprecated use {@link WithEditionDefaults}
              * @param edition edition to be set for database
              * @return The next stage of the definition
              */
@@ -813,6 +814,7 @@ public interface SqlDatabase
             /**
              * Sets the max size in bytes for SQL Database.
              *
+             * @deprecated use {@link WithEditionDefaults}
              * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
              *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
              *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
@@ -831,6 +833,7 @@ public interface SqlDatabase
             /**
              * Sets the service level objective for the SQL Database.
              *
+             * @deprecated use {@link WithEditionDefaults}
              * @param serviceLevelObjective service level objected for the SQL Database
              * @return The next stage of the definition.
              */
@@ -883,6 +886,7 @@ public interface SqlDatabase
             /**
              * Sets the edition for the SQL Database.
              *
+             * @deprecated use specific edition instead
              * @param edition edition to be set for database
              * @return The next stage of the update.
              */
@@ -963,6 +967,7 @@ public interface SqlDatabase
             /**
              * Sets the max size in bytes for SQL Database.
              *
+             * @deprecated use specific edition instead
              * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
              *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
              *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
@@ -977,6 +982,7 @@ public interface SqlDatabase
             /**
              * Sets the service level objective for the SQL Database.
              *
+             * @deprecated use specific edition instead
              * @param serviceLevelObjective service level objected for the SQL Database
              * @return The next stage of the update.
              */

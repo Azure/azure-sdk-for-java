@@ -190,8 +190,8 @@ public class SqlDatabaseOperationsImpl
     public List<SqlDatabase> listBySqlServer(SqlServer sqlServer) {
         List<SqlDatabase> firewallRuleSet = new ArrayList<>();
         if (sqlServer != null) {
-            for (DatabaseInner inner :
-                this.manager.inner().databases().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+            for (DatabaseInner inner
+                : this.manager.inner().databases().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
                 firewallRuleSet.add(new SqlDatabaseImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }

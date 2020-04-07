@@ -28,7 +28,6 @@ public interface RecommendedElasticPool
         HasManager<SqlServerManager> {
 
     /** @return name of the SQL Server to which this database belongs */
-    @Deprecated
     String sqlServerName();
 
     /**

@@ -51,6 +51,7 @@ public interface SqlElasticPoolOperations
             /**
              * Sets the edition for the SQL Elastic Pool.
              *
+             * @deprecated use specific edition instead
              * @param edition edition to be set for Elastic Pool.
              * @return The next stage of the definition.
              */
@@ -191,6 +192,7 @@ public interface SqlElasticPoolOperations
             /**
              * Sets the minimum DTU all SQL Azure Databases are guaranteed.
              *
+             * @deprecated use specific edition instead
              * @param databaseDtuMin minimum DTU for all SQL Azure databases
              * @return The next stage of the definition.
              */
@@ -203,6 +205,7 @@ public interface SqlElasticPoolOperations
             /**
              * Sets the maximum DTU any one SQL Azure Database can consume.
              *
+             * @deprecated use specific edition instead
              * @param databaseDtuMax maximum DTU any one SQL Azure Database can consume
              * @return The next stage of the definition.
              */
@@ -215,6 +218,7 @@ public interface SqlElasticPoolOperations
             /**
              * Sets the total shared DTU for the SQL Azure Database Elastic Pool.
              *
+             * @deprecated use specific edition instead
              * @param dtu total shared DTU for the SQL Azure Database Elastic Pool
              * @return The next stage of the definition.
              */
@@ -229,6 +233,7 @@ public interface SqlElasticPoolOperations
             /**
              * Sets the storage limit for the SQL Azure Database Elastic Pool in Bytes.
              *
+             * @deprecated use specific edition instead
              * @param storageCapacity storage limit for the SQL Azure Database Elastic Pool in Bytes
              * @return The next stage of the definition.
              */

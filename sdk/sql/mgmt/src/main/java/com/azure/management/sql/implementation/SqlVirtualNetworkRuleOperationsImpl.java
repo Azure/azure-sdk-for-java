@@ -98,8 +98,8 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
     @Override
     public List<SqlVirtualNetworkRule> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlVirtualNetworkRule> virtualNetworkRuleSet = new ArrayList<>();
-        for (VirtualNetworkRuleInner inner :
-            this.sqlServerManager.inner().virtualNetworkRules().listByServer(resourceGroupName, sqlServerName)) {
+        for (VirtualNetworkRuleInner inner
+            : this.sqlServerManager.inner().virtualNetworkRules().listByServer(resourceGroupName, sqlServerName)) {
             virtualNetworkRuleSet
                 .add(
                     new SqlVirtualNetworkRuleImpl(
@@ -126,8 +126,8 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
     public List<SqlVirtualNetworkRule> listBySqlServer(SqlServer sqlServer) {
         List<SqlVirtualNetworkRule> virtualNetworkRuleSet = new ArrayList<>();
         if (sqlServer != null) {
-            for (VirtualNetworkRuleInner inner :
-                this
+            for (VirtualNetworkRuleInner inner
+                : this
                     .sqlServerManager
                     .inner()
                     .virtualNetworkRules()

@@ -46,10 +46,6 @@ public interface ServiceTierAdvisor
     /** @return the maximum size in GB for the service tier advisor */
     double maxSizeInGB();
 
-    /** @return the service level objective usage metrics for the service tier advisor */
-    @Deprecated
-    List<SloUsageMetricInterface> serviceLevelObjectiveUsageMetrics();
-
     /** @return the service level objective usage metric for the service tier advisor. */
     List<ServiceLevelObjectiveUsageMetric> serviceLevelObjectiveUsageMetric();
 

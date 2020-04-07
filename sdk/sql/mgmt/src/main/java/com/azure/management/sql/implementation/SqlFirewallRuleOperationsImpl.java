@@ -194,8 +194,8 @@ public class SqlFirewallRuleOperationsImpl
     public List<SqlFirewallRule> listBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
-        for (FirewallRuleInner inner :
-            sqlServer.manager().inner().firewallRules().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+        for (FirewallRuleInner inner : sqlServer.manager().inner()
+            .firewallRules().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
             firewallRuleSet
                 .add(new SqlFirewallRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }

@@ -99,17 +99,6 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
     }
 
     @Override
-    public List<SloUsageMetricInterface> serviceLevelObjectiveUsageMetrics() {
-        if (this.sloUsageMetrics == null) {
-            this.sloUsageMetrics = new ArrayList<>();
-            for (SloUsageMetric sloUsageMetricInner : this.inner().serviceLevelObjectiveUsageMetrics()) {
-                this.sloUsageMetrics.add(new SloUsageMetricImpl(sloUsageMetricInner));
-            }
-        }
-        return sloUsageMetrics;
-    }
-
-    @Override
     public List<ServiceLevelObjectiveUsageMetric> serviceLevelObjectiveUsageMetric() {
         if (this.serviceLevelObjectiveUsageMetrics == null) {
             this.serviceLevelObjectiveUsageMetrics = new ArrayList<>();
