@@ -665,8 +665,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
-
-        String sqlServerName = sqlServerName;
         String sqlServerAdminName = "sqladmin";
         String id = sdkContext.randomUuid();
 
@@ -698,13 +696,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(sqlADAdmin);
         Assertions.assertEquals("DSEng", sqlADAdmin.signInName());
         Assertions.assertNotNull(sqlADAdmin.id());
-        Assertions.assertEquals("ActiveDirectory", sqlADAdmin.administratorType());
+        Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
 
         sqlADAdmin = sqlServer.setActiveDirectoryAdministrator("DSEngAll", id);
         Assertions.assertNotNull(sqlADAdmin);
         Assertions.assertEquals("DSEngAll", sqlADAdmin.signInName());
         Assertions.assertNotNull(sqlADAdmin.id());
-        Assertions.assertEquals("ActiveDirectory", sqlADAdmin.administratorType());
+        Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, sqlADAdmin.administratorType());
         sqlServer.removeActiveDirectoryAdministrator();
 
         final SqlServer finalSqlServer = sqlServer;
@@ -782,7 +780,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .values()
             .iterator()
             .next()
-            .serviceLevelObjectiveUsageMetrics();
+            .serviceLevelObjectiveUsageMetric();
         Map<String, RecommendedElasticPool> recommendedElasticPools = sqlServer.listRecommendedElasticPools();
         Assertions.assertNotNull(recommendedElasticPools);
     }
@@ -966,11 +964,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Test Service tier advisors.
         Map<String, ServiceTierAdvisor> serviceTierAdvisors = sqlDatabase.listServiceTierAdvisors();
         Assertions.assertNotNull(serviceTierAdvisors);
-        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
+        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetric());
         Assertions.assertNotEquals(serviceTierAdvisors.size(), 0);
 
         Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().refresh());
-        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
+        Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetric());
         // End of testing service tier advisors.
 
         sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
