@@ -52,7 +52,7 @@ public interface SqlServer
     String systemAssignedManagedServiceIdentityPrincipalId();
 
     /** @return the type of Managed Service Identity used for the SQL server. */
-    String managedServiceIdentityType();
+    IdentityType managedServiceIdentityType();
 
     // Actions
 

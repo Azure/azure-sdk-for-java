@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.management.sql.Enum15;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlSyncFullSchemaProperty;
 import com.azure.management.sql.SqlSyncGroup;
@@ -17,6 +16,7 @@ import com.azure.management.sql.SqlSyncMemberOperations;
 import com.azure.management.sql.SyncConflictResolutionPolicy;
 import com.azure.management.sql.SyncGroupSchema;
 import com.azure.management.sql.SyncGroupState;
+import com.azure.management.sql.SyncGroupsType;
 import com.azure.management.sql.models.SyncGroupInner;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -212,7 +212,7 @@ public class SqlSyncGroupImpl
                 this.name(),
                 startTime,
                 endTime,
-                Enum15.fromString(type))
+                SyncGroupsType.fromString(type))
             .mapPage(inner -> new SqlSyncGroupLogPropertyImpl(inner));
     }
 
@@ -229,7 +229,7 @@ public class SqlSyncGroupImpl
                 this.name(),
                 startTime,
                 endTime,
-                Enum15.fromString(type))
+                SyncGroupsType.fromString(type))
             .mapPage(syncGroupLogPropertiesInner -> new SqlSyncGroupLogPropertyImpl(syncGroupLogPropertiesInner));
     }
 

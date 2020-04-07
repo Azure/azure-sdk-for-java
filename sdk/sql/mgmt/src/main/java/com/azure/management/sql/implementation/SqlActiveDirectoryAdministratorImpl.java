@@ -3,6 +3,7 @@
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.management.sql.AdministratorType;
 import com.azure.management.sql.SqlActiveDirectoryAdministrator;
 import com.azure.management.sql.models.ServerAzureADAdministratorInner;
 
@@ -15,7 +16,7 @@ public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzure
     }
 
     @Override
-    public String administratorType() {
+    public AdministratorType administratorType() {
         return this.inner().administratorType();
     }
 

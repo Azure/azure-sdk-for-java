@@ -12,6 +12,7 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.sql.ElasticPoolEdition;
+import com.azure.management.sql.IdentityType;
 import com.azure.management.sql.RecommendedElasticPool;
 import com.azure.management.sql.ResourceIdentity;
 import com.azure.management.sql.ServerMetric;
@@ -171,7 +172,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public boolean isManagedServiceIdentityEnabled() {
-        return this.inner().identity() != null && this.inner().identity().type().equalsIgnoreCase("SystemAssigned");
+        return this.inner().identity() != null && this.inner().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
     }
 
     @Override
@@ -185,7 +186,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
     }
 
     @Override
-    public String managedServiceIdentityType() {
+    public IdentityType managedServiceIdentityType() {
         return this.inner().identity() != null ? this.inner().identity().type() : null;
     }
 
@@ -556,7 +557,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
-        this.inner().withIdentity(new ResourceIdentity().withType("SystemAssigned"));
+        this.inner().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
         return this;
     }
 }
