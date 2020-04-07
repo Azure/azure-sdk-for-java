@@ -21,15 +21,16 @@ import java.io.OutputStream;
 /**
  * Apache based implementation of the {@link AvroSerializer} interface.
  */
-public class ApacheAvroSerializer implements AvroSerializer<Schema> {
+public class ApacheAvroSerializer implements AvroSerializer {
+    private static final Schema.Parser PARSER = new Schema.Parser();
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
     @Override
-    public <T> Mono<T> read(byte[] input, Schema schema) {
+    public <T> Mono<T> read(byte[] input, String schema) {
         return Mono.defer(() -> {
             try {
-                DatumReader<T> reader = new GenericDatumReader<>(schema);
+                DatumReader<T> reader = new GenericDatumReader<>(PARSER.parse(schema));
                 return Mono.just(reader.read(null, DECODER_FACTORY.binaryDecoder(input, null)));
             } catch (IOException ex) {
                 return Mono.error(ex);
@@ -38,9 +39,9 @@ public class ApacheAvroSerializer implements AvroSerializer<Schema> {
     }
 
     @Override
-    public Mono<byte[]> write(Object value, Schema schema) {
+    public Mono<byte[]> write(Object value, String schema) {
         return Mono.defer(() -> {
-            DatumWriter<Object> writer = new GenericDatumWriter<>(schema);
+            DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
             try {
@@ -53,10 +54,10 @@ public class ApacheAvroSerializer implements AvroSerializer<Schema> {
     }
 
     @Override
-    public Mono<Void> write(Object value, Schema schema, OutputStream stream) {
+    public Mono<Void> write(Object value, String schema, OutputStream stream) {
         return Mono.defer(() -> Mono.fromRunnable(() -> {
             try {
-                DatumWriter<Object> writer = new GenericDatumWriter<>(schema);
+                DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
                 writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
             } catch (IOException ex) {
                 throw Exceptions.propagate(ex);

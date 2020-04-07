@@ -5,7 +5,6 @@ package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.serializer.AvroSerializer;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
-import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -15,7 +14,7 @@ import java.io.OutputStream;
 /**
  * Jackson based implementation of the {@link AvroSerializer} interface.
  */
-public final class JacksonAvroSerializer implements AvroSerializer<AvroSchema> {
+public final class JacksonAvroSerializer implements AvroSerializer {
     private final AvroMapper mapper;
 
     /**
@@ -35,10 +34,10 @@ public final class JacksonAvroSerializer implements AvroSerializer<AvroSchema> {
     }
 
     @Override
-    public <T> Mono<T> read(byte[] input, AvroSchema schema) {
+    public <T> Mono<T> read(byte[] input, String schema) {
         return Mono.defer(() -> {
             try {
-                return Mono.just(mapper.reader().with(schema).readValue(input));
+                return Mono.just(mapper.reader().with(mapper.schemaFrom(schema)).readValue(input));
             } catch (IOException ex) {
                 return Mono.error(ex);
             }
@@ -46,10 +45,10 @@ public final class JacksonAvroSerializer implements AvroSerializer<AvroSchema> {
     }
 
     @Override
-    public Mono<byte[]> write(Object value, AvroSchema schema) {
+    public Mono<byte[]> write(Object value, String schema) {
         return Mono.defer(() -> {
             try {
-                return Mono.just(mapper.writer().with(schema).writeValueAsBytes(value));
+                return Mono.just(mapper.writer().with(mapper.schemaFrom(schema)).writeValueAsBytes(value));
             } catch (IOException ex) {
                 return Mono.error(ex);
             }
@@ -57,10 +56,10 @@ public final class JacksonAvroSerializer implements AvroSerializer<AvroSchema> {
     }
 
     @Override
-    public Mono<Void> write(Object value, AvroSchema schema, OutputStream stream) {
+    public Mono<Void> write(Object value, String schema, OutputStream stream) {
         return Mono.defer(() -> Mono.fromRunnable(() -> {
             try {
-                mapper.writer().with(schema).writeValue(stream, value);
+                mapper.writer().with(mapper.schemaFrom(schema)).writeValue(stream, value);
             } catch (IOException ex) {
                 throw Exceptions.propagate(ex);
             }
