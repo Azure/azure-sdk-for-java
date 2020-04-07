@@ -185,7 +185,7 @@ class ActiveClientTokenManagerTest {
             .thenAwait(DEFAULT_DURATION)
             .expectErrorSatisfies(throwable -> {
                 Assertions.assertTrue(throwable instanceof AmqpException);
-                Assertions.assertFalse(((AmqpException)throwable).isTransient());
+                Assertions.assertFalse(((AmqpException) throwable).isTransient());
             })
             .verify();
     }
