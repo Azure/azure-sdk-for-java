@@ -1,4 +1,4 @@
-# Azure Storage Blob implementation of Java NIO
+# Azure Storage Java NIO Blob implementation library for Java
 ## This README is not yet updated for this project and is a skeleton copied from blobs
 
 [Source code][source] | [API reference documentation][docs] | [REST API documentation][rest_docs] | [Product documentation][product_docs] | [Samples][samples]

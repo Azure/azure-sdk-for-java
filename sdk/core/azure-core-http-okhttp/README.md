@@ -1,4 +1,4 @@
-# Azure Core OkHttp HTTP client library for Java
+# Azure Core OkHttp HTTP implementation library for Java
 
 Azure Core OkHttp HTTP client is a plugin for the `azure-core` HTTP client API.
 
