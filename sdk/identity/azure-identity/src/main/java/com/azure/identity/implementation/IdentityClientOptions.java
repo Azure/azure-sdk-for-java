@@ -243,8 +243,8 @@ public final class IdentityClientOptions {
                 .flatMap(entry -> Arrays.asList(entry.getKey(), entry.getValue()).stream())
                 .collect(Collectors.toList());
         if (args.size() == 2) {
-            args.set(2, null);
-            args.set(3, null);
+            args.add(null);
+            args.add(null);
         }
         return PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
                 .setMacKeychain(keychainService, keychainAccount)
