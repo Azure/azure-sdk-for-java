@@ -4,6 +4,7 @@
 module com.azure.identity {
     requires transitive com.azure.core;
 
+    requires osx-keychain-java;
     requires msal4j;
     requires com.sun.jna;
     requires com.sun.jna.platform;

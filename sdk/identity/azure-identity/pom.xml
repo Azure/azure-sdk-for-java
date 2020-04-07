@@ -23,6 +23,30 @@
     <relativePath>../../../pom.client.xml</relativePath>
   </parent>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>3.1.12</version>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>Low</threshold>
+          <failOnError>true</failOnError>
+<!--          <includeFilterFile>${session.executionRootDirectory}/spotbugs-security-include.xml</includeFilterFile>-->
+<!--          <excludeFilterFile>${session.executionRootDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>-->
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.9.0</version>
+            </plugin>
+          </plugins>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -98,5 +122,15 @@
       <version>2.8.5</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>us.physion</groupId>
+      <artifactId>osx-keychain-java</artifactId>
+      <version>1.1-SNAPSHOT</version>
+    </dependency>
+
+
+
+
   </dependencies>
 </project>

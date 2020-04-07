@@ -22,12 +22,18 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mcdermottroe.apple.OSXKeychain;
+import com.mcdermottroe.apple.OSXKeychainException;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
 import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
@@ -50,12 +56,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.List;
@@ -142,6 +150,53 @@ public class IdentityClient {
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
         }
+    }
+
+
+    public Mono<MsalToken> authenticateWithIntelliJ(TokenRequestContext request) {
+        try {
+            JsonNode intelliJCredentials = getIntelliJCredentials();
+            String refreshToken = intelliJCredentials.get("refreshToken").textValue();
+            long expiresOnDate = intelliJCredentials.get("expiresOnDate").longValue();
+
+
+
+            OffsetDateTime expires = OffsetDateTime.ofInstant(Instant.ofEpochMilli(expiresOnDate),
+                ZoneOffset.UTC);
+
+            RefreshTokenParameters parameters = RefreshTokenParameters
+                                                    .builder(new HashSet<>(request.getScopes()), refreshToken)
+                                                    .build();
+
+            return Mono.defer(() -> {
+                try {
+                    return Mono.fromFuture(publicClientApplication.acquireToken(parameters))
+                               .map(ar -> new MsalToken(ar, options));
+                } catch (Exception e) {
+                    return Mono.error(e);
+                }
+            });
+
+
+
+        } catch (OSXKeychainException | JsonProcessingException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Credential is not available", e));
+        }
+    }
+
+    private JsonNode getIntelliJCredentials() throws OSXKeychainException, JsonProcessingException {
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+
+        if (os.contains("mac")) {
+            OSXKeychain keychain = OSXKeychain.getInstance();
+
+            String jsonCred =  keychain.findGenericPassword("ADAuthManager",
+                "cachedAuthResult");
+
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readTree(jsonCred);
+        }
+        return null;
     }
 
     /**
@@ -388,6 +443,7 @@ public class IdentityClient {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes()), msalToken.getAccount()).build();
         } else {
             parameters = SilentParameters.builder(new HashSet<>(request.getScopes())).build();
+
         }
         return Mono.defer(() -> {
             try {
