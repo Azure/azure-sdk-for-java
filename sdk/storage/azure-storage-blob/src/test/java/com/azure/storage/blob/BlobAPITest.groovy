@@ -120,6 +120,7 @@ class BlobAPITest extends APISpec {
         3 * Constants.MB| Constants.MB  || 3
     }
 
+    @Requires({ liveMode() }) // Reading from recordings will not allow for the timing of the test to work correctly.
     def "Upload timeout"() {
         setup:
         def size = 1024
