@@ -36,7 +36,8 @@ class BatchAPITest extends APISpec {
      */
     static def assertExpectedOrException(Response<?> response, int expectedStatusCode) {
         try {
-            assert response.getStatusCode() == expectedStatusCode
+            def statusCode = response.getStatusCode()
+            assert statusCode == expectedStatusCode
             return true
         } catch (def exception) {
             assert exception instanceof BlobStorageException
