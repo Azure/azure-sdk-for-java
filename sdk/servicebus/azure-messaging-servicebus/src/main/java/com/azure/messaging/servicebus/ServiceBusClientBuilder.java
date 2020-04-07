@@ -39,6 +39,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
@@ -472,6 +473,7 @@ public final class ServiceBusClientBuilder {
         // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
+        private static final String SUBSCRIPTION_ENTITY_PATH_FORMAT = "%s/subscriptions/%s";
 
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
         private String queueName;
@@ -589,7 +591,9 @@ public final class ServiceBusClientBuilder {
                             "topicName (%s) must have a subscriptionName associated with it.", topicName)));
                     }
 
-                    entityPath = topicName;
+                    entityPath = String.format(Locale.ROOT,
+                        SUBSCRIPTION_ENTITY_PATH_FORMAT, topicName, subscriptionName);
+
                     break;
                 default:
                     throw logger.logExceptionAsError(
