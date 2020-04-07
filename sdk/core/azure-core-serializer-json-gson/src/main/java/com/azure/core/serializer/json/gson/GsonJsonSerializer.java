@@ -10,9 +10,17 @@ import reactor.core.publisher.Mono;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+/**
+ * GSON based implementation of the {@link JsonSerializer} interface.
+ */
 public final class GsonJsonSerializer implements JsonSerializer {
     public final Gson gson;
 
+    /**
+     * Constructs a {@link JsonSerializer} using the passed {@link Gson} serializer.
+     *
+     * @param gson Configured {@link Gson} serializer.
+     */
     public GsonJsonSerializer(Gson gson) {
         this.gson = gson;
     }

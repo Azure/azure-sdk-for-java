@@ -11,9 +11,24 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Jackson based implementation of the {@link JsonSerializer} interface.
+ */
 public final class JacksonJsonSerializer implements JsonSerializer {
     private final ObjectMapper mapper;
 
+    /**
+     * Constructs a {@link JsonSerializer} using the default Jackson serializer.
+     */
+    public JacksonJsonSerializer() {
+        this.mapper = new ObjectMapper();
+    }
+
+    /**
+     * Constructs a {@link JsonSerializer} using the passed Jackson serializer.
+     *
+     * @param mapper Configured Jackson serializer.
+     */
     public JacksonJsonSerializer(ObjectMapper mapper) {
         this.mapper = mapper;
     }

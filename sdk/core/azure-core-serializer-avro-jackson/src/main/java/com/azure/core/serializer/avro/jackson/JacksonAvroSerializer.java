@@ -12,13 +12,24 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * Jackson based implementation of the {@link AvroSerializer} interface.
+ */
 public final class JacksonAvroSerializer implements AvroSerializer<AvroSchema> {
     private final AvroMapper mapper;
 
+    /**
+     * Constructs a {@link AvroSerializer} using the default Jackson serializer.
+     */
     public JacksonAvroSerializer() {
         this.mapper = new AvroMapper();
     }
 
+    /**
+     * Constructs a {@link AvroSerializer} using the passed Jackson serializer.
+     *
+     * @param mapper Configured Jackson serializer.
+     */
     public JacksonAvroSerializer(AvroMapper mapper) {
         this.mapper = mapper.copy();
     }

@@ -79,7 +79,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:2.10.1</include>
+                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-avro:[2.10.1]</include>
               </includes>
             </bannedDependencies>
           </rules>

@@ -79,7 +79,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>org.apache.avro:avro:1.9.2</include>
+                <include>org.apache.avro:avro:[1.9.2]</include>
               </includes>
             </bannedDependencies>
           </rules>
