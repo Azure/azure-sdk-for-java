@@ -69,23 +69,23 @@ public final class ResourceId {
             }
 
             // Ensure "subscriptions"
-            if (!splits[0].equalsIgnoreCase("subscriptions")) {
+            if (splits.length > 0 && !splits[0].equalsIgnoreCase("subscriptions")) {
                 throw new InvalidParameterException(badIdErrorText(id));
             }
             // Extract subscription ID
-            this.subscriptionId = splits[1];
+            this.subscriptionId = splits.length > 1 ? splits[1] : null;
             // Ensure "resourceGroups"
-            if (!splits[2].equalsIgnoreCase("resourceGroups")) {
+            if (splits.length > 2 && !splits[2].equalsIgnoreCase("resourceGroups")) {
                 throw new InvalidParameterException(badIdErrorText(id));
             }
             // Extract resource group name
-            this.resourceGroupName = splits[3];
+            this.resourceGroupName = splits.length > 3 ? splits[3] : null;
             // Ensure "providers"
-            if (!splits[4].equalsIgnoreCase("providers")) {
+            if (splits.length > 4 && !splits[4].equalsIgnoreCase("providers")) {
                 throw new InvalidParameterException(badIdErrorText(id));
             }
             // Extract provider namespace
-            this.providerNamespace = splits[5];
+            this.providerNamespace = splits.length > 5 ? splits[5] : null;
         }
     }
 
