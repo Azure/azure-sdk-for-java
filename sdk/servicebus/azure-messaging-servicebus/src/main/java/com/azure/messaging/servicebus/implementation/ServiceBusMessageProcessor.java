@@ -2,21 +2,31 @@
 // Licensed under the MIT License.
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.MessageLockToken;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
+import reactor.core.Disposable;
+import reactor.core.Disposables;
+import reactor.core.Exceptions;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxProcessor;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Deque;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -31,18 +41,35 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     implements Subscription {
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageProcessor.class);
     private final boolean isAutoComplete;
-    private final Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction;
-    private final Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon;
+    private final AmqpRetryOptions retryOptions;
+    private final AmqpErrorContext errorContext;
+    private final Function<MessageLockToken, Mono<Void>> completeFunction;
+    private final Function<MessageLockToken, Mono<Void>> onAbandon;
+    private final Function<MessageLockToken, Mono<Instant>> onRenewLock;
     private final Deque<ServiceBusReceivedMessage> messageQueue = new ConcurrentLinkedDeque<>();
-    private final Map<UUID, PendingComplete> pendingCompletes = new HashMap<>();
+    private final boolean isAutoRenewLock;
+    private final Duration maxAutoLockRenewal;
+    private final MessageLockContainer messageLockContainer;
 
-    ServiceBusMessageProcessor(boolean isAutoComplete,
-        Function<ServiceBusReceivedMessage, Mono<Void>> completeFunction,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon) {
+    ServiceBusMessageProcessor(boolean isAutoComplete, boolean isAutoRenewLock, Duration maxAutoLockRenewal,
+        AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer, AmqpErrorContext errorContext,
+        Function<MessageLockToken, Mono<Void>> onComplete,
+        Function<MessageLockToken, Mono<Void>> onAbandon,
+        Function<MessageLockToken, Mono<Instant>> onRenewLock) {
+
         super();
+
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+        this.errorContext = Objects.requireNonNull(errorContext, "'errorContext' cannot be null.");
+        this.completeFunction = Objects.requireNonNull(onComplete, "'onComplete' cannot be null.");
+        this.onAbandon = Objects.requireNonNull(onAbandon, "'onAbandon' cannot be null.");
+        this.onRenewLock = Objects.requireNonNull(onRenewLock, "'onRenewLock' cannot be null.");
+        this.messageLockContainer = Objects.requireNonNull(messageLockContainer,
+            "'messageLockContainer' cannot be null.");
+
         this.isAutoComplete = isAutoComplete;
-        this.completeFunction = Objects.requireNonNull(completeFunction, "'completeFunction' cannot be null.");
-        this.onAbandon = onAbandon;
+        this.isAutoRenewLock = isAutoRenewLock;
+        this.maxAutoLockRenewal = maxAutoLockRenewal;
     }
 
     private volatile boolean isDone;
@@ -66,7 +93,9 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
     static final AtomicLongFieldUpdater<ServiceBusMessageProcessor> REQUESTED =
         AtomicLongFieldUpdater.newUpdater(ServiceBusMessageProcessor.class, "requested");
 
-    private volatile Throwable error;
+    volatile Throwable error;
+    static final AtomicReferenceFieldUpdater<ServiceBusMessageProcessor, Throwable> ERROR =
+        AtomicReferenceFieldUpdater.newUpdater(ServiceBusMessageProcessor.class, Throwable.class, "error");
 
     /**
      * Invoked when this subscribes to an upstream publisher.
@@ -80,12 +109,27 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             subscription.request(1);
         } else {
-            logger.warning("This processor cannot be subscribed to with multiple upstreams.");
+            final Throwable error = logger.logExceptionAsError(new IllegalStateException(
+                "Processor cannot be subscribed to with multiple upstreams."));
+
+            onError(Operators.onOperatorError(subscription, error, Context.empty()));
         }
     }
 
     @Override
+    public boolean isTerminated() {
+        return isDone || isCancelled;
+    }
+
+    @Override
     public void onNext(ServiceBusReceivedMessage message) {
+        if (isTerminated()) {
+            final Context context = downstream == null ? currentContext() : downstream.currentContext();
+            Operators.onNextDropped(message, context);
+
+            return;
+        }
+
         messageQueue.add(message);
         drain();
     }
@@ -103,8 +147,11 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             return;
         }
 
-        error = throwable;
-        isDone = true;
+        if (Exceptions.addThrowable(ERROR, this, throwable)) {
+            isDone = true;
+        } else {
+            Operators.onErrorDropped(throwable, currentContext());
+        }
 
         drain();
     }
@@ -131,24 +178,44 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             if (upstream != null) {
                 upstream.request(request);
             }
+
             drain();
         }
     }
 
     @Override
     public void cancel() {
+        if (isCancelled) {
+            return;
+        }
+
+        logger.info("Cancelling subscription.");
         isCancelled = true;
         drain();
+    }
 
-        completePendingMessages().block();
+    @Override
+    public void dispose() {
+        if (isDone) {
+            return;
+        }
+
+        logger.info("Disposing subscription.");
+        isDone = true;
+        drain();
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return isDone || isCancelled;
     }
 
     @Override
     public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> downstream) {
         Objects.requireNonNull(downstream, "'downstream' cannot be null.");
         if (once == 0 && ONCE.compareAndSet(this, 0, 1)) {
-            downstream.onSubscribe(this);
             this.downstream = downstream;
+            downstream.onSubscribe(this);
             if (isCancelled) {
                 this.downstream = null;
             } else {
@@ -180,162 +247,200 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
             return;
         }
 
-        final ServiceBusReceivedMessage lastMessage = messageQueue.peekLast();
-        if (lastMessage == null) {
+        while (true) {
+            if (messageQueue.isEmpty()) {
+                break;
+            }
+
+            long amountRequested = REQUESTED.get(this);
+            long emitted = drainRequested(amountRequested);
+
+            // We emitted the correct number that was requested.
+            // Nothing more requested since.
+            if (REQUESTED.addAndGet(this, -emitted) == 0) {
+                break;
+            }
+
             if (isDone) {
-                downstream.onComplete();
+                break;
             }
-            return;
         }
-
-        ServiceBusReceivedMessage message = messageQueue.poll();
-        while (message != lastMessage) {
-            if (message == null) {
-                logger.warning("The last message is not null, but the head node is null. lastMessage: {}", lastMessage);
-                message = messageQueue.poll();
-                continue;
-            }
-
-            if (isCancelled) {
-                Operators.onDiscard(message, downstream.currentContext());
-                Operators.onDiscardQueueWithClear(messageQueue, downstream.currentContext(), null);
-                return;
-            }
-
-            next(message);
-
-            message = messageQueue.poll();
-        }
-
-        // Emit the message which is equal to lastMessage.
-        next(message);
 
         if (isDone) {
             if (error != null) {
                 downstream.onError(error);
             } else if (messageQueue.peekLast() == null) {
                 downstream.onComplete();
+            } else {
+                Operators.onDiscardQueueWithClear(messageQueue, downstream.currentContext(), null);
             }
+
+            downstream = null;
         }
     }
 
-    private Mono<Void> completePendingMessages() {
-        final PendingComplete[] pending = pendingCompletes.values().toArray(new PendingComplete[0]);
-        pendingCompletes.clear();
+    /**
+     * Drains the queue of the requested amount and returns the number taken.
+     *
+     * @param numberRequested Number of items requested.
+     *
+     * @return The number of items emitted.
+     */
+    private long drainRequested(long numberRequested) {
+        long numberEmitted = 0L;
 
-        if (pending.length == 0) {
-            return Mono.empty();
+        if (numberRequested == 0L) {
+            return numberEmitted;
         }
 
-        return Mono.when(Flux.fromArray(pending)
-            .flatMap(receive -> {
-                if (receive.isRunningGetAndSet()) {
-                    return receive.getOnComplete();
-                } else {
-                    return completeFunction.apply(receive.getMessage());
-                }
-            }));
+        for (; numberEmitted < numberRequested; numberEmitted++) {
+            if (isDone) {
+                return numberEmitted;
+            }
+
+            final ServiceBusReceivedMessage message = messageQueue.poll();
+            if (message == null) {
+                break;
+            }
+
+            if (isCancelled) {
+                Operators.onDiscard(message, downstream.currentContext());
+                Operators.onDiscardQueueWithClear(messageQueue, downstream.currentContext(), null);
+                break;
+            }
+
+            try {
+                next(message);
+            } catch (Exception e) {
+                setInternalError(e);
+                break;
+            }
+        }
+
+        return numberEmitted;
     }
 
     private void next(ServiceBusReceivedMessage message) {
-        final UUID lockToken = message.getLockToken();
-        final boolean isCompleteMessage = isAutoComplete && lockToken != null
-            && !MessageUtils.ZERO_LOCK_TOKEN.equals(lockToken);
+        final long sequenceNumber = message.getSequenceNumber();
+        final String lockToken = message.getLockToken();
+        final Instant initialLockedUntil = !CoreUtils.isNullOrEmpty(lockToken)
+            ? messageLockContainer.addOrUpdate(lockToken, message.getLockedUntil())
+            : message.getLockedUntil();
 
-        logger.info("sequenceNumber[{}]. lock[{}]. Auto-complete message? [{}]",
-            message.getSequenceNumber(), lockToken, isCompleteMessage);
-
-        final PendingComplete pendingComplete = new PendingComplete(message);
-        if (isCompleteMessage) {
-            pendingCompletes.put(lockToken, pendingComplete);
+        if (isAutoComplete && CoreUtils.isNullOrEmpty(lockToken)) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot auto-complete message without a lock token on message. Sequence number: " + sequenceNumber));
         }
+
+        final AtomicBoolean hasError = new AtomicBoolean();
+        final Disposable renewLockOperation = getRenewLockOperation(message, initialLockedUntil, hasError);
 
         try {
             downstream.onNext(message);
         } catch (Exception e) {
+            hasError.set(true);
             logger.error("Exception occurred while handling downstream onNext operation.", e);
 
-            final PendingComplete pending = pendingCompletes.get(lockToken);
-            if (isCompleteMessage && pending != null) {
+            if (isAutoComplete) {
                 logger.info("Abandoning message lock: {}", lockToken);
                 onAbandon.apply(message)
-                    .onErrorStop()
-                    .doOnError(error -> {
+                    .onErrorContinue((error, item) -> {
                         logger.warning("Could not abandon message with lock: {}", lockToken, error);
-                        pending.error(error);
+                        setInternalError(error);
                     })
-                    .doOnSuccess(unused -> pending.complete())
-                    .doFinally(signal -> {
-                        logger.info("lock[{}]. Abandon status: [{}]", lockToken, signal);
-                        pendingCompletes.remove(lockToken);
-                    })
-                    .block();
+                    .doFinally(signal -> logger.info("lock[{}]. Abandon status: [{}]", lockToken, signal))
+                    .block(retryOptions.getTryTimeout());
+            } else {
+                setInternalError(e);
             }
-
-            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        } finally {
+            renewLockOperation.dispose();
         }
 
-        try {
-            // check that the pending operation is in the queue and not running yet.
-            final PendingComplete pending = pendingCompletes.get(lockToken);
-            if (isCompleteMessage && pending != null && !pending.isRunningGetAndSet()) {
-                logger.info("sequenceNumber[{}]. lock[{}]. Completing message.");
-                completeFunction.apply(pending.getMessage())
-                    .onErrorStop()
-                    .doOnError(error -> {
-                        logger.warning("Could not complete message with lock: {}", lockToken, error);
-                        pending.error(error);
-                    })
-                    .doOnSuccess(ignored -> pending.complete())
-                    .doFinally(signal -> {
-                        logger.info("lock[{}]. Complete status: [{}]", lockToken, signal);
-                        pendingCompletes.remove(lockToken);
-                    })
-                    .block();
-            }
-        } catch (Exception e) {
-            logger.error("Exception occurred while auto-completing message. Sequence: {}. Lock token: {}",
-                message.getSequenceNumber(), message.getLockToken(), e);
-            downstream.onError(Operators.onOperatorError(upstream, e, message, downstream.currentContext()));
+        // An error occurred in downstream.onNext, while abandoning the message,
+        // or timed out while processing. We return.
+        if (hasError.get()) {
+            return;
+        }
+
+        if (isAutoComplete) {
+            logger.info("sequenceNumber[{}]. lock[{}]. Completing message.", sequenceNumber, lockToken);
+
+            completeFunction.apply(message)
+                .onErrorResume(error -> {
+                    logger.warning("Could not complete message with lock: {}", lockToken, error);
+                    setInternalError(error);
+                    return Mono.empty();
+                })
+                .doFinally(signal -> logger.info("lock[{}]. Complete status: [{}]", lockToken, signal))
+                .block(retryOptions.getTryTimeout());
         }
     }
 
-    private static final class PendingComplete {
-        private final ServiceBusReceivedMessage message;
-        private final AtomicBoolean isRunning = new AtomicBoolean();
-        private final Mono<Void> onComplete;
-        private MonoSink<Void> sink;
+    private Disposable getRenewLockOperation(ServiceBusReceivedMessage message, Instant initialLockedUntil,
+        AtomicBoolean hasError) {
 
-        private PendingComplete(ServiceBusReceivedMessage message) {
-            this.message = message;
-            this.onComplete = Mono.create(sink -> {
-                this.sink = sink;
+        if (!isAutoRenewLock) {
+            return Disposables.disposed();
+        }
+
+        final long sequenceNumber = message.getSequenceNumber();
+        final String lockToken = message.getLockToken();
+
+        if (isAutoComplete && initialLockedUntil == null) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
+        }
+
+        final Duration initialInterval = Duration.between(Instant.now(), initialLockedUntil);
+
+        logger.info("lock[{}]. lockedUntil[{}]. interval[{}]", lockToken, initialLockedUntil, initialInterval);
+
+        final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
+        final FluxSink<Duration> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+
+        // Adjust the interval, so we can buffer time for the time it'll take to refresh.
+        sink.next(MessageUtils.adjustServerTimeout(initialInterval));
+
+        final Disposable timeoutOperation = Mono.delay(maxAutoLockRenewal)
+            .subscribe(l -> {
+                if (!sink.isCancelled()) {
+                    sink.error(new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR,
+                        "Could not complete within renewal time. Max renewal time: " + maxAutoLockRenewal,
+                        errorContext));
+                }
             });
-            onComplete.subscribe();
-        }
 
-        private Mono<Void> getOnComplete() {
-            return onComplete;
-        }
+        final Disposable renewLockSubscription = Flux.switchOnNext(emitterProcessor.map(i -> Flux.interval(i)))
+            .flatMap(delay -> onRenewLock.apply(message))
+            .map(instant -> {
+                final Instant updated = messageLockContainer.addOrUpdate(lockToken, instant);
+                final Duration next = Duration.between(Instant.now(), updated);
+                logger.info("lockToken[{}]. given[{}]. updated[{}]. Next renewal: [{}]",
+                    lockToken, instant, updated, next);
 
-        private boolean isRunningGetAndSet() {
-            return isRunning.getAndSet(true);
-        }
+                sink.next(MessageUtils.adjustServerTimeout(next));
+                return updated;
+            })
+            .subscribe(lockedUntil -> {
+                logger.verbose("seq[{}]. lockToken[{}]. lockedUntil[{}]. Lock renewal successful.",
+                    sequenceNumber, lockToken, lockedUntil);
+            },
+                error -> {
+                    logger.error("Error occurred while renewing lock token.", error);
+                    hasError.set(true);
+                    setInternalError(error);
+                },
+                () -> logger.info("Renewing lock token task completed."));
 
-        private void error(Throwable throwable) {
-            if (sink != null) {
-                sink.error(throwable);
-            }
-        }
+        return Disposables.composite(renewLockSubscription, timeoutOperation);
+    }
 
-        private void complete() {
-            if (sink != null) {
-                sink.success();
-            }
-        }
-
-        private ServiceBusReceivedMessage getMessage() {
-            return message;
+    private void setInternalError(Throwable error) {
+        if (Exceptions.addThrowable(ERROR, this, error)) {
+            isDone = true;
+        } else {
+            Operators.onErrorDropped(error, downstream.currentContext());
         }
     }
 }

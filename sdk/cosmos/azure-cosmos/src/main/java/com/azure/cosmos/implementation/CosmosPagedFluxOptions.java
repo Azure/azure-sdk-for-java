@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.

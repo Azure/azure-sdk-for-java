@@ -13,12 +13,9 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -61,7 +58,6 @@ import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -69,7 +65,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
-    private static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final String NAME = "name";
     private static final String TEXT_ANALYTICS_PROPERTIES = "azure-ai-textanalytics.properties";
@@ -81,8 +76,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeCategorizedEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
+    static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
+    static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
-    static final String INVALID_KEY = "invalid key";
+    static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         TokenCredential credential = null;
@@ -167,25 +164,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesForListLanguageHint();
-
-    // Personally Identifiable Information Entities
-    @Test
-    abstract void recognizePiiEntitiesForTextInput();
-
-    @Test
-    abstract void recognizePiiEntitiesForEmptyText();
-
-    @Test
-    abstract void recognizePiiEntitiesForFaultyText();
-
-    @Test
-    abstract void recognizePiiEntitiesForBatchInput();
-
-    @Test
-    abstract void recognizePiiEntitiesForBatchInputShowStatistics();
-
-    @Test
-    abstract void recognizePiiEntitiesForListLanguageHint();
 
     // Linked Entities
     @Test
@@ -310,32 +288,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
-    // Personally Identifiable Information Entity runner
-    void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, "en");
-    }
-
-    void recognizePiiStringInputRunner(Consumer<List<String>> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS);
-    }
-
-    void recognizeBatchPiiRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS));
-    }
-
-    void recognizeBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
-        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
-
-        testRunner.accept(textDocumentInputs, options);
-    }
-
-    void recognizeStringBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
-    }
-
     // Linked Entity runner
     void recognizeBatchStringLinkedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
@@ -412,7 +364,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-            ? "http://localhost:8080"
+            ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT");
     }
 
@@ -435,15 +387,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     static void validateCategorizedEntities(
         TextAnalyticsPagedResponse<CategorizedEntity> expected, TextAnalyticsPagedResponse<CategorizedEntity> actual) {
         validateCategorizedEntities(expected.getValue(), actual.getValue());
-    }
-
-    static void validatePiiEntityWithPagedResponse(boolean showStatistics,
-        TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> expected,
-        TextAnalyticsPagedResponse<RecognizePiiEntitiesResult> actual) {
-        validateDocumentResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validatePiiEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
     static void validateLinkedEntitiesWithPagedResponse(boolean showStatistics,
@@ -500,22 +443,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to validate a single Personally Identifiable Information entity.
-     *
-     * @param expectedPiiEntity PiiEntity returned by the service.
-     * @param actualPiiEntity PiiEntity returned by the API.
-     */
-    static void validatePiiEntity(
-        PiiEntity expectedPiiEntity, PiiEntity actualPiiEntity) {
-        assertEquals(expectedPiiEntity.getGraphemeLength() > 0, actualPiiEntity.getGraphemeLength() > 0);
-        assertEquals(expectedPiiEntity.getGraphemeOffset(), actualPiiEntity.getGraphemeOffset());
-        assertEquals(expectedPiiEntity.getSubCategory(), actualPiiEntity.getSubCategory());
-        assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
-        assertEquals(expectedPiiEntity.getCategory(), actualPiiEntity.getCategory());
-        assertNotNull(actualPiiEntity.getConfidenceScore());
-    }
-
-    /**
      * Helper method to validate a single linked entity.
      *
      * @param expectedLinkedEntity LinkedEntity returned by the service.
@@ -562,24 +489,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             CategorizedEntity expectedCategorizedEntity = expectedCategorizedEntityList.get(i);
             CategorizedEntity actualCategorizedEntity = actualCategorizedEntityList.get(i);
             validateCategorizedEntity(expectedCategorizedEntity, actualCategorizedEntity);
-        }
-    }
-
-    /**
-     * Helper method to validate the list of Personally Identifiable Information entities.
-     *
-     * @param expectedPiiEntityList piiEntities returned by the service.
-     * @param actualPiiEntityList piiEntities returned by the API.
-     */
-    static void validatePiiEntities(List<PiiEntity> expectedPiiEntityList, List<PiiEntity> actualPiiEntityList) {
-        assertEquals(expectedPiiEntityList.size(), actualPiiEntityList.size());
-        expectedPiiEntityList.sort(Comparator.comparing(PiiEntity::getText));
-        actualPiiEntityList.sort(Comparator.comparing(PiiEntity::getText));
-
-        for (int i = 0; i < expectedPiiEntityList.size(); i++) {
-            PiiEntity expectedPiiEntity = expectedPiiEntityList.get(i);
-            PiiEntity actualPiiEntity = actualPiiEntityList.get(i);
-            validatePiiEntity(expectedPiiEntity, actualPiiEntity);
         }
     }
 
@@ -741,37 +650,5 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedError.getCode(), actualError.getCode());
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
-    }
-
-    /**
-     * Create a client builder with endpoint and API key credential.
-     *
-     * @param endpoint the given endpoint
-     * @param credential the given {@link TextAnalyticsApiKeyCredential} credential
-     * @return {@link TextAnalyticsClientBuilder}
-     */
-    TextAnalyticsClientBuilder createClientBuilder(String endpoint, TextAnalyticsApiKeyCredential credential) {
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
-            .endpoint(endpoint);
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        return clientBuilder;
-    }
-
-    /**
-     * Get the string of API key value based on what running mode is on.
-     *
-     * @return the API key string
-     */
-    String getApiKey() {
-        return interceptorManager.isPlaybackMode() ? "apiKeyInPlayback"
-            : Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_API_KEY);
     }
 }

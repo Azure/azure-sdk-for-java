@@ -23,8 +23,8 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.Matchers;
@@ -770,7 +770,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     private static void assertEqual(AddressInformation actual, Address expected) {
         assertThat(actual.getPhysicalUri().getURIAsString()).isEqualTo(expected.getPhyicalUri().replaceAll("/+$", "/"));
         assertThat(actual.getProtocolScheme()).isEqualTo(expected.getProtocolScheme().toLowerCase());
-        assertThat(actual.isPrimary()).isEqualTo(expected.IsPrimary());
+        assertThat(actual.isPrimary()).isEqualTo(expected.isPrimary());
     }
 
     private static void assertEqual(AddressInformation actual, AddressInformation expected) {

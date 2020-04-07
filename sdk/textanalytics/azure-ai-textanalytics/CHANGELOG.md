@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0-beta.5 (Unreleased)
+
+
+## 1.0.0-beta.4 (2020-04-07)
+- Throws an illegal argument exception when the given list of documents is an empty list.
+
+**Breaking changes**
+- Renamed all input parameters `text` to `document`, and `inputTexts` to `documents`.
+- Removed all PII endpoints and update with related changes, such as remove related models, samples, codesnippets, docstrings, etc from this library. 
+- Replaced `TextAnalyticsApiKeyCredential` with `AzureKeyCredential`.
+
 ## 1.0.0-beta.3 (2020-03-10)
 **New features**
 - Introduced `TextAnalyticsPagedFlux`, `TextAnalyticsPagedIterable`, and `TextAnalyticsPagedResponse` type. Moved `modelVersion` amd `TextDocumentBatchStatistics` into `TextAnalyticsPagedResponse`. All collection APIs are return `TextAnalyticsPagedFlux` and `TextAnalyticsPagedIterable` in the asynchronous and synchronous client, respectively. So `DocumentResultCollection` is no longer required. Most of existing API surface are changes. Please check up `TextAnalyticsAsyncClient` and `TextAnalyticsClient` for more detail.

@@ -17,7 +17,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -189,7 +189,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             CompositeContinuationToken compositeContinuationToken,
             List<PartitionKeyRange> partitionKeyRanges) throws CosmosClientException {
         // Find the partition key range we left off on
-        int startIndex = this.FindTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
+        int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
                 compositeContinuationToken.getRange());
 
         List<PartitionKeyRange> rightHandSideRanges = new ArrayList<PartitionKeyRange>();

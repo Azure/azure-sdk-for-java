@@ -5,7 +5,8 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionPolicy;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
@@ -15,9 +16,8 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ModelBridgeUtils;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import org.apache.commons.collections4.list.UnmodifiableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -411,7 +411,7 @@ public class LocationCacheTest {
 
     private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create, resourceType);
-        request.requestContext.RouteToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
+        request.requestContext.routeToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);
     }
 

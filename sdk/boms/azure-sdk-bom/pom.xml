@@ -189,6 +189,27 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Copy the pom file to output -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>copy</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>

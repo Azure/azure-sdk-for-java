@@ -18,7 +18,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import org.apache.commons.collections4.ComparatorUtils;
+import com.azure.cosmos.implementation.apachecommons.collections.ComparatorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -147,7 +147,7 @@ public class ConsistencyWriter {
                 try {
                     primaryURI.set(primaryUri);
                     if (this.useMultipleWriteLocations &&
-                        RequestHelper.GetConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
+                        RequestHelper.getConsistencyLevelToUse(this.serviceConfigReader, request) == ConsistencyLevel.SESSION) {
                         // Set session token to ensure session consistency for write requests
                         // when writes can be issued to multiple locations
                         SessionTokenHelper.setPartitionLocalSessionToken(request, this.sessionContainer);

@@ -6,7 +6,9 @@ package com.azure.identity.implementation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Configuration;
 import com.azure.identity.KeyringItemSchema;
+import com.azure.identity.KnownAuthorityHosts;
 import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.sun.jna.Platform;
 
@@ -22,7 +24,6 @@ import java.util.function.Function;
  * Options to configure the IdentityClient.
  */
 public final class IdentityClientOptions {
-    private static final String DEFAULT_AUTHORITY_HOST = "https://login.microsoftonline.com/";
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
     private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
     private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
@@ -59,7 +60,8 @@ public final class IdentityClientOptions {
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        authorityHost = DEFAULT_AUTHORITY_HOST;
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, KnownAuthorityHosts.AZURE_CLOUD);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
         cacheFileDirectory = DEFAULT_CACHE_FILE_PATH;

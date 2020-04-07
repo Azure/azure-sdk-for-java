@@ -59,7 +59,7 @@ public class OpenTelemetryHttpPolicyTests {
     public void openTelemetryHttpPolicyTest() {
         // Arrange
         // Get the global singleton Tracer object.
-        Tracer tracer = OpenTelemetry.getTracerFactory().get("TracerSdkTest");
+        Tracer tracer = OpenTelemetry.getTracerProvider().get("TracerSdkTest");
         // Start user parent span.
         Span parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
         tracer.withSpan(parentSpan);
@@ -100,7 +100,7 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(expectedSpanContext.getTraceId(), actualSpanContext.getTraceId());
         assertNotEquals(expectedSpanContext.getSpanId(), actualSpanContext.getSpanId());
         assertEquals(expectedSpanContext.getTraceFlags(), actualSpanContext.getTraceFlags());
-        assertEquals(expectedSpanContext.getTracestate(), actualSpanContext.getTracestate());
+        assertEquals(expectedSpanContext.getTraceState(), actualSpanContext.getTraceState());
         assertEquals(expectedSpanContext.isValid(), actualSpanContext.isValid());
         assertEquals(expectedSpanContext.isRemote(), actualSpanContext.isRemote());
     }

@@ -3,20 +3,21 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+import com.azure.cosmos.implementation.guava25.collect.Maps;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
+import io.netty.util.ReferenceCounted;
 
 import java.util.stream.Collector;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
-abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
+abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
 
     final ByteBuf in;
     final ImmutableMap<Short, T> headers;
@@ -24,15 +25,17 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
 
     RntbdTokenStream(final ImmutableSet<T> headers, final ImmutableMap<Short, T> ids, final ByteBuf in) {
 
-        checkNotNull(headers, "headers");
-        checkNotNull(ids, "ids");
-        checkNotNull(in, "in");
+        checkNotNull(headers, "expected non-null headers");
+        checkNotNull(ids, "expected non-null ids");
+        checkNotNull(in, "expected non-null in");
 
         final Collector<T, ?, ImmutableMap<T, RntbdToken>> collector = Maps.toImmutableEnumMap(h -> h, RntbdToken::create);
         this.tokens = headers.stream().collect(collector);
         this.headers = ids;
-        this.in = in.retain();
+        this.in = in;
     }
+
+    // region Methods
 
     final int computeCount() {
 
@@ -96,12 +99,45 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
         return this.tokens.get(header);
     }
 
-    final void releaseBuffers() {
-        for (final RntbdToken token : this.tokens.values()) {
-            token.releaseBuffer();
-        }
-        in.release();
+    @Override
+    public final int refCnt() {
+        return this.in.refCnt();
     }
+
+    @Override
+    public final boolean release() {
+        return this.release(1);
+    }
+
+    @Override
+    public final boolean release(final int count) {
+        return this.in.release(count);
+    }
+
+    @Override
+    public final RntbdTokenStream<T> retain() {
+        return this.retain(1);
+    }
+
+    @Override
+    public final RntbdTokenStream<T> retain(final int count) {
+        this.in.retain(count);
+        return this;
+    }
+
+    @Override
+    public ReferenceCounted touch(Object hint) {
+        return this;
+    }
+
+    @Override
+    public ReferenceCounted touch() {
+        return this;
+    }
+
+    // endregion
+
+    // region Types
 
     private static final class UndefinedHeader implements RntbdHeader {
 
@@ -133,4 +169,6 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> {
             return this.type;
         }
     }
+
+    // endregion
 }

@@ -4,16 +4,16 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
-import org.apache.commons.collections4.list.UnmodifiableList;
-import org.apache.commons.collections4.map.CaseInsensitiveMap;
-import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
@@ -149,7 +151,9 @@ public class LocationCache {
      * @return Resolved getEndpoint
      */
     public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        if(request.requestContext != null && request.requestContext.locationEndpointToRoute != null) {
+        Objects.requireNonNull(request.requestContext,
+            "RxDocumentServiceRequest.requestContext is required and cannot be null.");
+        if(request.requestContext.locationEndpointToRoute != null) {
             return request.requestContext.locationEndpointToRoute;
         }
 
@@ -337,7 +341,6 @@ public class LocationCache {
                 new BiFunction<URI, LocationUnavailabilityInfo, LocationUnavailabilityInfo>() {
                     @Override
                     public LocationUnavailabilityInfo apply(URI url, LocationUnavailabilityInfo info) {
-
                         if (info == null) {
                             // not already present, add
                             return new LocationUnavailabilityInfo(currentTime, unavailableOperationType);
@@ -465,8 +468,8 @@ public class LocationCache {
         for (DatabaseAccountLocation location: locations) {
             if (!Strings.isNullOrEmpty(location.getName())) {
                 try {
-                    URI endpoint = new URI(location.getEndpoint().toLowerCase());
-                    endpointsByLocation.put(location.getName().toLowerCase(), endpoint);
+                    URI endpoint = new URI(location.getEndpoint().toLowerCase(Locale.ROOT));
+                    endpointsByLocation.put(location.getName().toLowerCase(Locale.ROOT), endpoint);
                     parsedLocations.add(location.getName());
 
                 } catch (Exception e) {
@@ -494,7 +497,7 @@ public class LocationCache {
     }
 
 
-    private class LocationUnavailabilityInfo {
+    private static class LocationUnavailabilityInfo {
         LocationUnavailabilityInfo(Instant instant, OperationType type) {
             this.LastUnavailabilityCheckTimeStamp = instant;
             this.UnavailableOperations = type;
@@ -550,7 +553,7 @@ public class LocationCache {
         return durationPassed(Instant.now(), this.lastCacheUpdateTimestamp, this.unavailableLocationsExpirationTime);
     }
 
-    class DatabaseAccountLocationsInfo {
+    static class DatabaseAccountLocationsInfo {
         private UnmodifiableList<String> preferredLocations;
         // lower-case region
         private UnmodifiableList<String> availableWriteLocations;
@@ -564,7 +567,7 @@ public class LocationCache {
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
-            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase()).collect(Collectors.toList()));
+            this.preferredLocations = new UnmodifiableList<>(preferredLocations.stream().map(loc -> loc.toLowerCase(Locale.ROOT)).collect(Collectors.toList()));
             this.availableWriteEndpointByLocation
                 = (UnmodifiableMap<String, URI>) UnmodifiableMap.<String, URI>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadEndpointByLocation

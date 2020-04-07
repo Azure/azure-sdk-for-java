@@ -120,7 +120,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         entityPath, address, linkName);
 
                     return new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer, scheduler,
+                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
                         retryOptions.getTryTimeout());
                 }));
             }));

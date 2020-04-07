@@ -4,8 +4,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.Resource;
-import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -327,7 +327,7 @@ public final class ResourceResponse<T extends Resource> {
      *
      * @return request diagnostic statistics for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
         return this.response.getCosmosResponseRequestDiagnosticStatistics();
     }
 

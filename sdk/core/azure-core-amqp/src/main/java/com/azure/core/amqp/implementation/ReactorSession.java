@@ -135,6 +135,8 @@ public class ReactorSession implements AmqpSession {
             return;
         }
 
+        logger.info("sessionId[{}]: Disposing of session.", sessionName);
+
         session.close();
         subscriptions.dispose();
 
@@ -166,6 +168,11 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+        }
+
         final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
         if (existing != null) {
             logger.verbose("linkName[{}]: Returning existing send link.", linkName);
@@ -248,6 +255,8 @@ public class ReactorSession implements AmqpSession {
      * @param receiverProperties Any properties to associate with the receive link when attaching to message
      *     broker.
      * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
+     * @param senderSettleMode Amqp {@link SenderSettleMode} mode for receiver.
+     * @param receiverSettleMode Amqp {@link ReceiverSettleMode} mode for receiver.
      *
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
@@ -255,6 +264,11 @@ public class ReactorSession implements AmqpSession {
         AmqpRetryPolicy retry, Map<Symbol, UnknownDescribedType> sourceFilters,
         Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode,
         ReceiverSettleMode receiverSettleMode) {
+
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create send link '%s' from a closed session. entityPath[%s]", linkName, entityPath))));
+        }
 
         final LinkSubscription<AmqpReceiveLink> existingLink = openReceiveLinks.get(linkName);
         if (existingLink != null) {

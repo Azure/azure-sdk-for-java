@@ -1,5 +1,8 @@
 # Release History
 
+## 4.1.0-beta.2 (Unreleased)
+
+
 ## 4.1.0-beta.1 (2020-03-10)
 - Added `recoverableDays` property to `CertificateProperties`.
 - Added support for `7.1-Preview` service version

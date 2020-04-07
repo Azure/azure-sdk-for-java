@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -127,14 +127,14 @@ public class InMemoryCollectionRoutingMapTest {
                 new ImmutablePair(new PartitionKeyRange("4", "0000000032", "FF"), null)),
             StringUtils.EMPTY);
 
-        assertThat(routingMap.IsGone("1")).isTrue();
-        assertThat(routingMap.IsGone("0")).isTrue();
-        assertThat(routingMap.IsGone("5")).isTrue();
+        assertThat(routingMap.isGone("1")).isTrue();
+        assertThat(routingMap.isGone("0")).isTrue();
+        assertThat(routingMap.isGone("5")).isTrue();
 
-        assertThat(routingMap.IsGone("2")).isFalse();
-        assertThat(routingMap.IsGone("3")).isFalse();
-        assertThat(routingMap.IsGone("4")).isFalse();
-        assertThat(routingMap.IsGone("100")).isFalse();
+        assertThat(routingMap.isGone("2")).isFalse();
+        assertThat(routingMap.isGone("3")).isFalse();
+        assertThat(routingMap.isGone("4")).isFalse();
+        assertThat(routingMap.isGone("100")).isFalse();
     }
 
     @Test(groups = {"unit"})

@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,26 +18,26 @@ public class RotateApiKeyAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
             .apiKey(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "My cat might need to see a veterinarian.";
+        // The document that needs be analyzed.
+        String document = "My cat might need to see a veterinarian.";
 
         System.out.println("Extracted phrases:");
-        client.extractKeyPhrases(text).subscribe(
+        client.extractKeyPhrases(document).subscribe(
             keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));
 
         // Update the API key
-        credential.updateCredential("{valid_api_key}");
+        credential.update("{valid_api_key}");
 
         System.out.println("Extracted phrases:");
-        client.extractKeyPhrases(text).subscribe(
+        client.extractKeyPhrases(document).subscribe(
             keyPhrase -> System.out.printf("%s.%n", keyPhrase),
             error -> System.err.println("There was an error extracting key phrases of the text." + error),
             () -> System.out.println("Key phrases extracted."));

@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.HashMap;

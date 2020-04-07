@@ -32,7 +32,9 @@ import org.apache.qpid.proton.message.Message;
 
 import java.lang.reflect.Array;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +43,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Deserializes and serializes messages to and from Azure Service Bus.
@@ -56,6 +59,9 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     private static final String DEAD_LETTER_SOURCE_NAME = "x-opt-deadletter-source";
     private static final String REQUEST_RESPONSE_MESSAGES = "messages";
     private static final String REQUEST_RESPONSE_MESSAGE = "message";
+    private static final String REQUEST_RESPONSE_EXPIRATIONS = "expirations";
+    private static final String LOCK_TOKEN_KEY = "lock-token";
+    private static final String SEQUENCE_NUMBERS = "sequence-numbers";
 
     private final ClientLogger logger = new ClientLogger(ServiceBusMessageSerializer.class);
 
@@ -184,10 +190,51 @@ class ServiceBusMessageSerializer implements MessageSerializer {
     public <T> List<T> deserializeList(Message message, Class<T> clazz) {
         if (clazz == ServiceBusReceivedMessage.class) {
             return (List<T>) deserializeListOfMessages(message);
+        } else if (clazz == Instant.class) {
+            return (List<T>) deserializeListOfInstant(message);
+        } else if (clazz == Long.class) {
+            return (List<T>) deserializeListOfLong(message);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Deserialization only supports ServiceBusReceivedMessage."));
         }
+    }
+
+    private List<Long> deserializeListOfLong(Message amqpMessage) {
+        if (amqpMessage.getBody() instanceof AmqpValue) {
+            AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
+            if (amqpValue.getValue() instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
+                Object expirationListObj = responseBody.get(SEQUENCE_NUMBERS);
+
+                if (expirationListObj instanceof long[]) {
+                    return Arrays.stream((long[]) expirationListObj)
+                        .boxed()
+                        .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
+    }
+
+    private List<Instant> deserializeListOfInstant(Message amqpMessage) {
+
+        if (amqpMessage.getBody() instanceof AmqpValue) {
+            AmqpValue amqpValue = ((AmqpValue) amqpMessage.getBody());
+            if (amqpValue.getValue() instanceof  Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> responseBody = (Map<String, Object>) amqpValue.getValue();
+                Object expirationListObj = responseBody.get(REQUEST_RESPONSE_EXPIRATIONS);
+
+                if (expirationListObj instanceof Date[]) {
+                    return Arrays.stream((Date[]) expirationListObj)
+                        .map(Date::toInstant)
+                        .collect(Collectors.toList());
+                }
+            }
+        }
+        return Collections.emptyList();
     }
 
     private List<ServiceBusReceivedMessage> deserializeListOfMessages(Message amqpMessage) {
@@ -234,6 +281,12 @@ class ServiceBusMessageSerializer implements MessageSerializer {
                 messagePayLoad.getLength());
 
             final ServiceBusReceivedMessage receivedMessage = deserializeMessage(responseMessage);
+
+            // if amqp message have lockToken
+            if (((Map) message).containsKey(LOCK_TOKEN_KEY)) {
+                receivedMessage.setLockToken((UUID) ((Map) message).get(LOCK_TOKEN_KEY));
+            }
+
             messageList.add(receivedMessage);
         }
 

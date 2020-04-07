@@ -102,7 +102,7 @@ public class StoreResult {
             throw this.exception;
         }
 
-        if (requestChargeTracker != null && this.isValid) {
+        if (requestChargeTracker != null) {
             StoreResult.setRequestCharge(this.storeResponse, this.exception, requestChargeTracker.getTotalRequestCharge());
         }
 
@@ -160,6 +160,7 @@ public class StoreResult {
                 ", exception: " + BridgeInternal.getInnerErrorMessage(this.exception);
     }
     public static class StoreResultSerializer extends StdSerializer<StoreResult> {
+        private static final long serialVersionUID = 5315472126043077905L;
 
         public StoreResultSerializer(){
             super(StoreResult.class);

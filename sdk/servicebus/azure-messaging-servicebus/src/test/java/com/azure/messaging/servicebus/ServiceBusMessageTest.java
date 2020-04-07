@@ -39,9 +39,9 @@ public class ServiceBusMessageTest {
     }
 
     @Test
-    public void stringMessagePropertiesShouldNotBeNull() {
+    public void byteBufferMessagePropertiesShouldNotBeNull() {
         // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD);
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(ByteBuffer.wrap(PAYLOAD_BYTES));
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
@@ -78,31 +78,4 @@ public class ServiceBusMessageTest {
         Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
     }
 
-    /**
-     * Verify that we can create an Message with the correct body contents.
-     */
-    @Test
-    public void canCreateWithStringPayload() {
-        // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_STRING);
-
-        // Assert
-        Assertions.assertNotNull(serviceBusMessageData.getBody());
-        Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
-    }
-
-    /**
-     * Verify that we can create an Message with the correct body contents.
-     */
-    @Test
-    public void canCreateWithStringPayloadAndContentType() {
-        // Act
-        String contentType = "contentType";
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_STRING, contentType);
-
-        // Assert
-        Assertions.assertNotNull(serviceBusMessageData.getBody());
-        Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
-        Assertions.assertEquals(contentType, serviceBusMessageData.getContentType());
-    }
 }

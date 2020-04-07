@@ -21,6 +21,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
@@ -98,8 +99,34 @@ public final class FluxUtil {
      * @return The response from service call
      */
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall) {
+        return withContext(serviceCall, Collections.emptyMap());
+    }
+
+    /**
+     * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
+     * Context} to {@link Context Azure Context}, adds the specified context attributes and calls the given lambda
+     * function with this context and returns a single entity of type {@code T}
+     * <p>
+     * If the reactor context is empty, {@link Context#NONE} will be used to call the lambda function
+     * </p>
+     *
+     * @param serviceCall serviceCall The lambda function that makes the service call into which azure context
+     * will be passed
+     * @param contextAttributes The map of attributes sent by the calling method to be set on {@link Context}.
+     * @param  <T> The type of response returned from the service call
+     * @return The response from service call
+     */
+    public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
+        Map<String, String> contextAttributes) {
         return Mono.subscriberContext()
-            .map(FluxUtil::toAzureContext)
+            .map(context -> {
+                Map<Object, Object> keyValues = context.stream()
+                    .collect(Collectors.toMap(Entry::getKey, Entry::getValue));
+                if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
+                    contextAttributes.forEach(keyValues::putIfAbsent);
+                }
+                return CoreUtils.isNullOrEmpty(keyValues) ? Context.NONE : Context.of(keyValues);
+            })
             .flatMap(serviceCall);
     }
 
@@ -291,7 +318,7 @@ public final class FluxUtil {
      * @return the Flux.
      */
     public static Flux<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset,
-                                            long length) {
+        long length) {
         return new FileReadFlux(fileChannel, chunkSize, offset, length);
     }
 
@@ -372,7 +399,7 @@ public final class FluxUtil {
             //
 
             FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
-                                 int chunkSize, long offset, long length) {
+                int chunkSize, long offset, long length) {
                 this.subscriber = subscriber;
                 //
                 this.fileChannel = fileChannel;

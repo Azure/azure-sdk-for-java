@@ -20,9 +20,11 @@ import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,11 +36,9 @@ import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -349,8 +349,8 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                     .addProgressReporting(stream, validatedParallelTransferOptions.getProgressReceiver()),
                     length, headers, metadata, tier, null, validatedRequestConditions);
 
-            return determineUploadFullOrChunked(data, validatedParallelTransferOptions, uploadInChunksFunction,
-                uploadFullBlobMethod);
+            return UploadUtils.uploadFullOrChunked(data, ModelHelper.wrapBlobOptions(validatedParallelTransferOptions),
+                uploadInChunksFunction, uploadFullBlobMethod);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -367,28 +367,10 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
 
         // Validation done in the constructor.
         UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
-            parallelTransferOptions.getBlockSize());
+            parallelTransferOptions.getBlockSize(), BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
 
-        /*
-        Break the source Flux into chunks that are <= chunk size. This makes filling the pooled buffers much easier
-        as we can guarantee we only need at most two buffers for any call to write (two in the case of one pool
-        buffer filling up with more data to write). We use flatMapSequential because we need to guarantee we
-        preserve the ordering of the buffers, but we don't really care if one is split before another.
-         */
-        Flux<ByteBuffer> chunkedSource = data
-            .flatMapSequential(buffer -> {
-                if (buffer.remaining() <= parallelTransferOptions.getBlockSize()) {
-                    return Flux.just(buffer);
-                }
-                int numSplits = (int) Math.ceil(buffer.remaining() / (double) parallelTransferOptions.getBlockSize());
-                return Flux.range(0, numSplits)
-                    .map(i -> {
-                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                        duplicate.position(i * parallelTransferOptions.getBlockSize());
-                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * parallelTransferOptions.getBlockSize()));
-                        return duplicate;
-                    });
-            });
+        Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data,
+            ModelHelper.wrapBlobOptions(parallelTransferOptions));
 
         /*
          Write to the pool and upload the output.
@@ -414,76 +396,6 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .collect(Collectors.toList())
             .flatMap(ids ->
                 blockBlobAsyncClient.commitBlockListWithResponse(ids, headers, metadata, tier, requestConditions));
-    }
-
-    private Mono<Response<BlockBlobItem>> determineUploadFullOrChunked(final Flux<ByteBuffer> data,
-        ParallelTransferOptions parallelTransferOptions,
-        final Function<Flux<ByteBuffer>, Mono<Response<BlockBlobItem>>> uploadInChunks,
-        final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<BlockBlobItem>>> uploadFullBlob) {
-        final long[] bufferedDataSize = {0};
-        final LinkedList<ByteBuffer> cachedBuffers = new LinkedList<>();
-
-        /*
-         * Window the reactive stream until either the stream completes or the windowing size is hit. If the window
-         * size is hit the next emission will be the pointer to the rest of the reactive steam.
-         *
-         * Once the windowing has completed buffer the two streams, this should create a maximum overhead of ~4MB plus
-         * the next stream emission if the window size was hit. If there are two streams buffered use Stage Blocks and
-         * Put Block List as the upload mechanism otherwise use Put Blob.
-         */
-        return data
-            .filter(ByteBuffer::hasRemaining)
-            .windowUntil(buffer -> {
-                if (bufferedDataSize[0] > parallelTransferOptions.getMaxSingleUploadSize()) {
-                    return false;
-                } else {
-                    bufferedDataSize[0] += buffer.remaining();
-
-                    if (bufferedDataSize[0] > parallelTransferOptions.getMaxSingleUploadSize()) {
-                        return true;
-                    } else {
-                        /*
-                         * Buffer until the first 4MB are emitted from the stream in case Put Blob is used. This is
-                         * done to support replayability which is required by the Put Blob code path, it doesn't buffer
-                         * the stream in a way that the Stage Blocks and Put Block List code path does, and this API
-                         * explicitly states that it supports non-replayable streams.
-                         */
-                        ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                        cachedBuffer.flip();
-                        cachedBuffers.add(cachedBuffer);
-                        return false;
-                    }
-                }
-            /*
-             * Use cutBefore = true as we want to window all data under 4MB into one window.
-             * Set the prefetch to 'Integer.MAX_VALUE' to leverage an unbounded fetch limit in case there are numerous
-             * tiny buffers, windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete
-             * which causes downstream issues.
-             */
-            }, true, Integer.MAX_VALUE)
-            .buffer(2)
-            .next()
-            .flatMap(fluxes -> {
-                if (fluxes.size() == 1) {
-                    return uploadFullBlob.apply(Flux.fromIterable(cachedBuffers), bufferedDataSize[0]);
-                } else {
-                    return uploadInChunks.apply(dequeuingFlux(cachedBuffers).concatWith(fluxes.get(1)));
-                }
-            })
-            // If nothing was emitted from the stream upload an empty blob.
-            .switchIfEmpty(uploadFullBlob.apply(Flux.empty(), 0L));
-    }
-
-    private static Flux<ByteBuffer> dequeuingFlux(Queue<ByteBuffer> queue) {
-        // Generate is used as opposed to Flux.fromIterable as it allows the buffers to be garbage collected sooner.
-        return Flux.generate(sink -> {
-            ByteBuffer buffer = queue.poll();
-            if (buffer != null) {
-                sink.next(buffer);
-            } else {
-                sink.complete();
-            }
-        });
     }
 
     /**
@@ -583,7 +495,12 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
                                 metadata, tier, requestConditions, channel, blockBlobAsyncClient);
                         } else {
                             // Otherwise we know it can be sent in a single request reducing network overhead.
-                            return blockBlobAsyncClient.uploadWithResponse(FluxUtil.readFile(channel), fileSize,
+                            Flux<ByteBuffer> data = FluxUtil.readFile(channel);
+                            if (finalParallelTransferOptions.getProgressReceiver() != null) {
+                                data = ProgressReporter.addProgressReporting(data,
+                                    finalParallelTransferOptions.getProgressReceiver());
+                            }
+                            return blockBlobAsyncClient.uploadWithResponse(data, fileSize,
                                 headers, metadata, tier, null, requestConditions)
                                 .then();
                         }
@@ -635,7 +552,9 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
      * @param filePath The path for the file
      * @return {@code AsynchronousFileChannel}
      * @throws UncheckedIOException an input output exception.
+     * @deprecated due to refactoring code to be in the common storage library.
      */
+    @Deprecated
     protected AsynchronousFileChannel uploadFileResourceSupplier(String filePath) {
         return UploadUtils.uploadFileResourceSupplier(filePath, logger);
     }
