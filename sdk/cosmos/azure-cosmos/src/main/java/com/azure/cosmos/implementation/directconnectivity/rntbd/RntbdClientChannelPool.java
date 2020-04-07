@@ -359,9 +359,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
     public void close() {
         if (this.closed.compareAndSet(false, true)) {
             if (this.executor.inEventLoop()) {
-                this.close0();
+                this.doClose();
             } else {
-                this.executor.submit(this::close0).awaitUninterruptibly(); // block until complete
+                this.executor.submit(this::doClose).awaitUninterruptibly(); // block until complete
             }
         }
     }
@@ -599,50 +599,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
     }
 
     private void assertInEventLoop() {
-        checkState(this.executor.inEventLoop());
-    }
-
-    private void close0() {
-
-        assertInEventLoop();
-        this.idleStateDetectionScheduledFuture.cancel(true);
-
-        for (;;) {
-            final AcquireTask task = this.pendingAcquisitionQueue.poll();
-            if (task == null) {
-                break;
-            }
-            final ScheduledFuture<?> timeoutFuture = task.timeoutFuture;
-            if (timeoutFuture != null) {
-                timeoutFuture.cancel(false);
-            }
-            task.promise.setFailure(new ClosedChannelException());
-        }
-
-        // Ensure we dispatch this on another Thread as close0 will be called from the EventExecutor and we need to
-        // ensure we will not block in an EventExecutor
-
-        closer.submit(() -> {
-
-            this.availableChannels.addAll(this.acquiredChannels.values());
-            this.acquiredChannels.clear();
-            for (;;) {
-                final Channel channel = this.pollChannel();
-                if (channel == null) {
-                    break;
-                }
-                channel.close().awaitUninterruptibly(); // block and ignore errors reported back from channel.close
-            }
-            assert this.acquiredChannels.isEmpty() && this.availableChannels.isEmpty();
-
-        }).addListener(closed -> {
-                if (!closed.isSuccess()) {
-                    logger.error("[{}] close failed due to ", this, closed.cause());
-                } else {
-                    logger.debug("[{}] closed", this);
-                }
-                closer.shutdownGracefully().awaitUninterruptibly();
-            });
+        checkState(this.executor.inEventLoop(), "expected to be in event loop %s, not thread %s",
+            this.executor,
+            Thread.currentThread());
     }
 
     private void closeChannel(final Channel channel) {
@@ -677,6 +636,49 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } else {
             future.addListener(ignored -> this.releaseAndOfferChannelIfHealthy(channel, promise, future));
         }
+    }
+
+    private void doClose() {
+
+        assertInEventLoop();
+        this.idleStateDetectionScheduledFuture.cancel(true);
+
+        for (;;) {
+            final AcquireTask task = this.pendingAcquisitionQueue.poll();
+            if (task == null) {
+                break;
+            }
+            final ScheduledFuture<?> timeoutFuture = task.timeoutFuture;
+            if (timeoutFuture != null) {
+                timeoutFuture.cancel(false);
+            }
+            task.promise.setFailure(new ClosedChannelException());
+        }
+
+        // Ensure we dispatch this on another Thread as close0 will be called from the EventExecutor and we need to
+        // ensure we will not block in an EventExecutor
+
+        closer.submit(() -> {
+
+            this.availableChannels.addAll(this.acquiredChannels.values());
+            this.acquiredChannels.clear();
+            for (;;) {
+                final Channel channel = this.pollChannel();
+                if (channel == null) {
+                    break;
+                }
+                channel.close().awaitUninterruptibly(); // block and ignore errors reported back from channel.close
+            }
+            assert this.acquiredChannels.isEmpty() && this.availableChannels.isEmpty();
+
+        }).addListener(closed -> {
+            if (!closed.isSuccess()) {
+                logger.error("[{}] close failed due to ", this, closed.cause());
+            } else {
+                logger.debug("[{}] closed", this);
+            }
+            closer.shutdownGracefully().awaitUninterruptibly();
+        });
     }
 
     /**
@@ -984,10 +986,31 @@ public final class RntbdClientChannelPool implements ChannelPool {
             return this;
         }
 
+        /**
+         * Ensures that a channel in the {@link RntbdClientChannelPool pool} is ready to receive requests.
+         * <p>
+         * A Direct TCP channel is ready to receive requests when it:
+         * <ul>
+         * <li>is active and</li>
+         * <li>has an {@link RntbdContext}</li>.
+         * </ul>
+         * <p>
+         * This method sends a health check request on a channel without an {@link RntbdContext} to force:
+         * <ol>
+         * <li>SSL negotiation</li>
+         * <li>RntbdContextRequest -> RntbdContext</li>
+         * <li>RntbdHealthCheckRequest -> receive acknowledgement</li>
+         * </ol>
+         *
+         * @param future a channel {@link Future future}.
+         * <p>
+         * {@link #originalPromise} is completed asynchronously when this method determines that the channel is ready to
+         * receive requests or an error is encountered.
+         */
         @Override
         public final void operationComplete(Future<Channel> future) {
 
-            checkState(this.pool.executor.inEventLoop());
+            this.pool.assertInEventLoop();
 
             if (this.pool.isClosed()) {
                 if (future.isSuccess()) {
@@ -1001,13 +1024,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (future.isSuccess()) {
 
                 // Ensure that the channel is active and ready to receive requests
-                // A Direct TCP channel is ready to receive requests when it:
-                // * is active and
-                // * has an RntbdContext
-                // We send a health check request on a channel without an RntbdContext to force:
-                // 1. SSL negotiation
-                // 2. RntbdContextRequest -> RntbdContext
-                // 3. RntbdHealthCheckRequest -> receive acknowledgement
 
                 final Channel channel = future.getNow();
 
@@ -1019,10 +1035,10 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     }
 
                     final ChannelPipeline pipeline = channel.pipeline();
-                    checkState(pipeline != null);
+                    checkState(pipeline != null, "expected non-null channel pipeline");
 
                     final RntbdRequestManager requestManager = pipeline.get(RntbdRequestManager.class);
-                    checkState(requestManager != null);
+                    checkState(requestManager != null, "expected non-null request manager");
 
                     if (requestManager.hasRequestedRntbdContext()) {
 
@@ -1065,9 +1081,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         // AcquireTask extends AcquireListener to reduce object creations and so GC pressure
 
-        final long expireNanoTime;
-        final Promise<Channel> promise;
-        ScheduledFuture<?> timeoutFuture;
+        private final long expireNanoTime;
+        private final Promise<Channel> promise;
+        private ScheduledFuture<?> timeoutFuture;
 
         AcquireTask(RntbdClientChannelPool pool, Promise<Channel> promise) {
             // We need to create a new promise to ensure the AcquireListener runs in the correct event loop
@@ -1087,19 +1103,22 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         public abstract void onTimeout(AcquireTask task);
 
+        /**
+         * Runs the {@link #onTimeout} method on each expired task in {@link #pool}'s {@link
+         * RntbdClientChannelPool#pendingAcquisitionQueue}.
+         */
         @Override
         public final void run() {
 
-            checkState(this.pool.executor.inEventLoop());
+            this.pool.assertInEventLoop();
             final long nanoTime = System.nanoTime();
 
-            for (;;) {
-                AcquireTask task = this.pool.pendingAcquisitionQueue.peek();
+            for (AcquireTask task : this.pool.pendingAcquisitionQueue) {
                 // Compare nanoTime as described in the System.nanoTime documentation
                 // See:
                 // * https://docs.oracle.com/javase/7/docs/api/java/lang/System.html#nanoTime()
                 // * https://github.com/netty/netty/issues/3705
-                if (task == null || nanoTime - task.expireNanoTime < 0) {
+                if (nanoTime - task.expireNanoTime < 0) {
                     break;
                 }
                 this.pool.pendingAcquisitionQueue.remove();

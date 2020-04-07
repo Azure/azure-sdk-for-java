@@ -224,7 +224,7 @@ public final class RntbdTransportClient extends TransportClient {
 
         private Options() {
             this.bufferPageSize = 8192;
-            this.connectionAcquisitionTimeout = Duration.ZERO;
+            this.connectionAcquisitionTimeout = Duration.ofMillis(100);
             this.connectionTimeout = null;
             this.idleChannelTimeout = Duration.ZERO;
             this.idleEndpointTimeout = Duration.ofSeconds(70L);
