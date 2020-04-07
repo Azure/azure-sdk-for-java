@@ -3,7 +3,6 @@
 
 package com.azure.identity;
 
-import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
@@ -73,107 +72,6 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     }
 
     /**
-     * Sets the location for the token cache file on Windows or Linux systems. The default
-     * location is <code>{user home}/AppData/Local/.IdentityService/msal.cache</code> on
-     * Windows and <code>~/.IdentityService/msal.cache</code> on Linux.
-     *
-     * @param cacheFileLocation The location for the token cache file.
-     *
-     * @return The updated T object.
-     */
-    @SuppressWarnings("unchecked")
-    public T cacheFileLocation(Path cacheFileLocation) {
-        this.identityClientOptions.setCacheFileLocation(cacheFileLocation);
-        return (T) this;
-    }
-
-    /**
-     * Sets the service name for the Keychain item on MacOS. The default value is
-     * "Microsoft.Developer.IdentityService".
-     *
-     * @param serviceName The service name for the Keychain item.
-     *
-     * @return The updated T object.
-     */
-    @SuppressWarnings("unchecked")
-    public T keychainService(String serviceName) {
-        this.identityClientOptions.setKeychainService(serviceName);
-        return (T) this;
-    }
-
-    /**
-     * Sets the account name for the Keychain item on MacOS. The default value is
-     * "MSALCache".
-     *
-     * @param accountName The account name for the Keychain item.
-     *
-     * @return The updated T object.
-     */
-    @SuppressWarnings("unchecked")
-    public T keychainAccount(String accountName) {
-        this.identityClientOptions.setKeychainAccount(accountName);
-        return (T) this;
-    }
-
-    /**
-     * Sets the name of the Gnome keyring to store the cache on Gnome keyring enabled
-     * Linux systems. The default value is "default".
-     *
-     * @param keyringName The name of the Gnome keyring.
-     *
-     * @return The updated T object.
-     */
-    @SuppressWarnings("unchecked")
-    public T keyringName(String keyringName) {
-        this.identityClientOptions.setKeyringName(keyringName);
-        return (T) this;
-    }
-
-    /**
-     * Sets the schema of the Gnome keyring to store the cache on Gnome keyring enabled
-     * Linux systems. The default value is <code>KeyringItemSchema.GenericSecret</code>.
-     *
-     * @param keyringItemSchema The schema of the Gnome keyring.
-     *
-     * @return The updated T object.
-     */
-    @SuppressWarnings("unchecked")
-    public T keyringItemSchema(KeyringItemSchema keyringItemSchema) {
-        this.identityClientOptions.setKeyringItemSchema(keyringItemSchema);
-        return (T) this;
-    }
-
-    /**
-     * Sets the name of the Gnome keyring item to store the cache on Gnome keyring enabled
-     * Linux systems. The default value is "MSALCache".
-     *
-     * @param keyringItemName The name of the Gnome keyring item.
-     *
-     * @return The updated T object.
-     */
-    @SuppressWarnings("unchecked")
-    public T keyringItemName(String keyringItemName) {
-        this.identityClientOptions.setKeyringItemName(keyringItemName);
-        return (T) this;
-    }
-
-    /**
-     * Adds an attribute to the Gnome keyring item to store the cache on Gnome keyring enabled
-     * Linux systems. Only 2 attributes are allowed.
-     *
-     * @param attributeName The name of the attribute.
-     * @param attributeValue The value of the attribute.
-     *
-     * @return The updated T object.
-     * @throws IllegalArgumentException if there are already 2 attributes
-     */
-    @SuppressWarnings("unchecked")
-    public T addKeyringItemAttribute(String attributeName, String attributeValue) {
-        this.identityClientOptions.addKeyringItemAttribute(attributeName, attributeValue);
-        return (T) this;
-    }
-
-    /**
      * Sets whether to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is false by default.
      *
@@ -182,8 +80,8 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * @return The updated T object.
      */
     @SuppressWarnings("unchecked")
-    public T useUnprotectedFileOnLinux(boolean useUnprotectedFileOnLinux) {
-        this.identityClientOptions.setUseUnprotectedFileOnLinux(useUnprotectedFileOnLinux);
+    public T useUnprotectedTokenCacheFileOnLinux(boolean useUnprotectedFileOnLinux) {
+        this.identityClientOptions.setUseUnprotectedTokenCacheFileOnLinux(useUnprotectedFileOnLinux);
         return (T) this;
     }
 
