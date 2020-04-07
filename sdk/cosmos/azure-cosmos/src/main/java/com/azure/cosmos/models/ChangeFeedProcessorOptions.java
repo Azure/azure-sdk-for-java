@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 /**
  * Specifies the options associated with {@link ChangeFeedProcessor}.
  */
-public class ChangeFeedProcessorOptions {
+public final class ChangeFeedProcessorOptions {
     private static final Duration DEFAULT_RENEW_INTERVAL = Duration.ofMillis(0).plusSeconds(17);
     private static final Duration DEFAULT_ACQUIRE_INTERVAL = Duration.ofMillis(0).plusSeconds(13);
     private static final Duration DEFAULT_EXPIRATION_INTERVAL = Duration.ofMillis(0).plusSeconds(60);
@@ -321,7 +321,7 @@ public class ChangeFeedProcessorOptions {
      * @return a value indicating whether on start of the host all existing leases should be deleted and the host
      * should start from scratch.
      */
-    public boolean getDiscardExistingLeases() {
+    public boolean isExistingLeasesDiscarded() {
         return this.discardExistingLeases;
     }
 
@@ -332,7 +332,7 @@ public class ChangeFeedProcessorOptions {
      * @param discardExistingLeases Indicates whether to discard all existing leases if true
      * @return the current ChangeFeedProcessorOptions instance.
      */
-    public ChangeFeedProcessorOptions setDiscardExistingLeases(boolean discardExistingLeases) {
+    public ChangeFeedProcessorOptions setExistingLeasesDiscarded(boolean discardExistingLeases) {
         this.discardExistingLeases = discardExistingLeases;
         return this;
     }

@@ -15,9 +15,9 @@ import java.util.Map;
  */
 public class CosmosResponse<T extends Resource> {
     private T properties;
-    protected final ResourceResponse resourceResponseWrapper;
+    protected final ResourceResponse<?> resourceResponseWrapper;
 
-    protected CosmosResponse(ResourceResponse resourceResponse) {
+    protected CosmosResponse(ResourceResponse<?> resourceResponse) {
         this.resourceResponseWrapper = resourceResponse;
     }
 
@@ -26,7 +26,7 @@ public class CosmosResponse<T extends Resource> {
         this.resourceResponseWrapper = null;
     }
 
-    protected CosmosResponse(ResourceResponse resourceResponse, T properties) {
+    protected CosmosResponse(ResourceResponse<?> resourceResponse, T properties) {
         this.resourceResponseWrapper = resourceResponse;
         this.properties = properties;
     }
@@ -119,8 +119,8 @@ public class CosmosResponse<T extends Resource> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return resourceResponseWrapper.getCosmosResponseDiagnostics();
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
+        return resourceResponseWrapper.getResponseDiagnostics();
     }
 
     /**

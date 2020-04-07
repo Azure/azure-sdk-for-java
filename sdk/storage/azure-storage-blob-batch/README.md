@@ -15,14 +15,14 @@ definition, such as text or binary data.
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob-batch;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.4.0-beta.1</version>
+  <version>12.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -165,9 +165,11 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
+[source]: src/main/java
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [rest_docs]: https://docs.microsoft.com/rest/api/storageservices/blob-service-rest-api
 [product_docs]: https://docs.microsoft.com/azure/storage/blobs/storage-blobs-overview
+[samples]: src/samples
 [azure_subscription]: https://azure.microsoft.com/free/
 [storage_account]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-portal
 [storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-quickstart-create-account?tabs=azure-cli

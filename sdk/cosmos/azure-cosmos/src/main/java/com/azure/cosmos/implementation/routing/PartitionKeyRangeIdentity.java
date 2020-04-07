@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * Used internally to represents the identity of a partition key range in the Azure Cosmos DB database service.

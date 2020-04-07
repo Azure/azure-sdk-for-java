@@ -24,7 +24,7 @@ public class PartitionKeyHashingTests {
             put(new String(new char[1024]).replace("\0", "a"), "05C1EB5921F706086262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626262626200");
             put(null, "05C1ED45D7475601");
             put(NullNode.getInstance(), "05C1ED45D7475601");
-            put(Undefined.Value(), "05C1D529E345DC00");
+            put(Undefined.value(), "05C1D529E345DC00");
             put(true, "05C1D7C5A903D803");
             put(false, "05C1DB857D857C02");
             put(Byte.MIN_VALUE, "05C1D73349F54C053FA0");
@@ -54,7 +54,7 @@ public class PartitionKeyHashingTests {
             put(new String(new char[1024]).replace("\0", "a"), "332BDF5512AE49615F32C7D98C2DB86C");
             put(null, "378867E4430E67857ACE5C908374FE16");
             put(NullNode.getInstance(), "378867E4430E67857ACE5C908374FE16");
-            put(Undefined.Value(), "11622DAA78F835834610ABE56EFF5CB5");
+            put(Undefined.value(), "11622DAA78F835834610ABE56EFF5CB5");
             put(true, "0E711127C5B5A8E4726AC6DD306A3E59");
             put(false, "2FE1BE91E90A3439635E0E9E37361EF2");
             put(Byte.MIN_VALUE, "01DAEDABF913540367FE219B2AD06148");

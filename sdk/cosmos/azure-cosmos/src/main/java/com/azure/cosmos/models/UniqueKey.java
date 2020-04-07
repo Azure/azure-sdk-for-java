@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @see UniqueKeyPolicy
  */
-public class UniqueKey extends JsonSerializable {
+public final class UniqueKey extends JsonSerializable {
     private List<String> paths;
 
     /**

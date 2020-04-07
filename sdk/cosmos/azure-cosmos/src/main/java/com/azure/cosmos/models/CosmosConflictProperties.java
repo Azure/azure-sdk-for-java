@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos conflict properties.
  */
-public class CosmosConflictProperties extends Resource {
+public final class CosmosConflictProperties extends Resource {
 
     /**
      * Initialize a conflict object.

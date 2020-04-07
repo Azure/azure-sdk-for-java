@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -27,7 +26,7 @@ import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.models.DatabaseAccount;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
@@ -38,7 +37,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
-import reactor.core.publisher.Flux;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -49,20 +47,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 /**
+ * DO NOT USE.
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos
  **/
-public class BridgeInternal {
+public final class BridgeInternal {
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
-        return Document.FromObject(document, mapper);
-    }
-
-    public static ByteBuffer serializeJsonToByteBuffer(Document document, ObjectMapper mapper) {
-        return document.serializeJsonToByteBuffer();
+        return Document.fromObject(document, mapper);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
@@ -141,33 +135,31 @@ public class BridgeInternal {
             headers.put(HttpConstants.HttpHeaders.CONTINUATION, options.getRequestContinuation());
         }
 
-        if (options != null) {
-            if (options.getSessionToken() != null) {
-                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
-            }
+        if (options.getSessionToken() != null) {
+            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, options.getSessionToken());
+        }
 
-            if (options.isScanInQueryEnabled() != null) {
-                headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.isScanInQueryEnabled().toString());
-            }
+        if (options.isScanInQueryEnabled() != null) {
+            headers.put(HttpConstants.HttpHeaders.ENABLE_SCAN_IN_QUERY, options.isScanInQueryEnabled().toString());
+        }
 
-            if (options.isEmitVerboseTracesInQuery() != null) {
-                headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
-                    options.isEmitVerboseTracesInQuery().toString());
-            }
+        if (options.isEmitVerboseTracesInQuery() != null) {
+            headers.put(HttpConstants.HttpHeaders.EMIT_VERBOSE_TRACES_IN_QUERY,
+                options.isEmitVerboseTracesInQuery().toString());
+        }
 
-            if (options.getMaxDegreeOfParallelism() != 0) {
-                headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
-            }
+        if (options.getMaxDegreeOfParallelism() != 0) {
+            headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
+        }
 
-            if (options.setResponseContinuationTokenLimitInKb() > 0) {
-                headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
-                    Strings.toString(options.setResponseContinuationTokenLimitInKb()));
-            }
+        if (options.setResponseContinuationTokenLimitInKb() > 0) {
+            headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
+                Strings.toString(options.setResponseContinuationTokenLimitInKb()));
+        }
 
-            if (options.isPopulateQueryMetrics()) {
-                headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
-                    String.valueOf(options.isPopulateQueryMetrics()));
-            }
+        if (options.isPopulateQueryMetrics()) {
+            headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS,
+                String.valueOf(options.isPopulateQueryMetrics()));
         }
 
         return headers;
@@ -295,11 +287,11 @@ public class BridgeInternal {
     }
 
     public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
-        return ModelBridgeInternal.getObject(jsonSerializable, propertyName);
+        return ModelBridgeInternal.getObjectNodeFromJsonSerializable(jsonSerializable, propertyName);
     }
 
     public static void remove(JsonSerializable jsonSerializable, String propertyName) {
-        ModelBridgeInternal.remove(jsonSerializable, propertyName);
+        ModelBridgeInternal.removeFromJsonSerializable(jsonSerializable, propertyName);
     }
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
@@ -313,7 +305,7 @@ public class BridgeInternal {
     public static CosmosClientException setCosmosResponseDiagnostics(
                                             CosmosClientException cosmosClientException,
                                             CosmosResponseDiagnostics cosmosResponseDiagnostics) {
-        return cosmosClientException.setCosmosResponseDiagnostics(cosmosResponseDiagnostics);
+        return cosmosClientException.setResponseDiagnostics(cosmosResponseDiagnostics);
     }
 
     public static CosmosClientException createCosmosClientException(int statusCode) {
@@ -512,7 +504,7 @@ public class BridgeInternal {
         return new CosmosUser(asyncUser, database, id);
     }
 
-    public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
-        return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
+    public static ConsistencyLevel fromServiceSerializedFormat(String consistencyLevel) {
+        return ConsistencyLevel.fromServiceSerializedFormat(consistencyLevel);
     }
 }

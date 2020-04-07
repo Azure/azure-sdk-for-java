@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -37,10 +38,13 @@ import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -48,10 +52,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * DO NOT USE.
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos.model package
  **/
-public class ModelBridgeInternal {
+public final class ModelBridgeInternal {
 
     public static CosmosAsyncConflictResponse createCosmosAsyncConflictResponse(ResourceResponse<Conflict> response,
                                                                                 CosmosAsyncContainer container) {
@@ -72,8 +77,8 @@ public class ModelBridgeInternal {
         return new CosmosAsyncItemResponse<>(response, classType);
     }
 
-    public static CosmosAsyncItemResponse createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response, Class classType) {
-        return new CosmosAsyncItemResponse(response, classType);
+    public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
+        return new CosmosAsyncItemResponse<>(response, Object.class);
     }
 
     public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
@@ -237,10 +242,6 @@ public class ModelBridgeInternal {
         return cosmosStoredProcedureRequestOptions.toRequestOptions();
     }
 
-    public static String getAddressesLink(DatabaseAccount databaseAccount) {
-        return databaseAccount.getAddressesLink();
-    }
-
     public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
         DatabaseAccount account = response.getResource(DatabaseAccount.class);
 
@@ -248,27 +249,11 @@ public class ModelBridgeInternal {
         Map<String, String> responseHeader = response.getResponseHeaders();
 
         account.setMaxMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.parseLong(responseHeader.get(HttpConstants.HttpHeaders.MAX_MEDIA_STORAGE_USAGE_IN_MB)));
         account.setMediaStorageUsageInMB(
-            Long.valueOf(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
+            Long.parseLong(responseHeader.get(HttpConstants.HttpHeaders.CURRENT_MEDIA_STORAGE_USAGE_IN_MB)));
 
         return account;
-    }
-
-    public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
-        return databaseAccount.getQueryEngineConfiguration();
-    }
-
-    public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getReplicationPolicy();
-    }
-
-    public static ReplicationPolicy getSystemReplicationPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getSystemReplicationPolicy();
-    }
-
-    public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
-        return databaseAccount.getConsistencyPolicy();
     }
 
     /**
@@ -365,6 +350,10 @@ public class ModelBridgeInternal {
         resource.setAltLink(altLink);
     }
 
+    public static void setResourceId(Resource resource, String resourceId) {
+        resource.setResourceId(resourceId);
+    }
+
     public static void setResourceSelfLink(Resource resource, String selfLink) {
         resource.setSelfLink(selfLink);
     }
@@ -381,11 +370,11 @@ public class ModelBridgeInternal {
         jsonSerializable.set(propertyName, value);
     }
 
-    public static ObjectNode getObject(JsonSerializable jsonSerializable, String propertyName) {
+    public static ObjectNode getObjectNodeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getObject(propertyName);
     }
 
-    public static void remove(JsonSerializable jsonSerializable, String propertyName) {
+    public static void removeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         jsonSerializable.remove(propertyName);
     }
 
@@ -405,7 +394,7 @@ public class ModelBridgeInternal {
         jsonSerializable.populatePropertyBag();
     }
 
-    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class klassType) {
+    public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
             if (klassType.equals(Document.class) || klassType.equals(OrderByRowResult.class) || klassType.equals(CosmosItemProperties.class)
@@ -424,4 +413,56 @@ public class ModelBridgeInternal {
             throw new IllegalArgumentException(e);
         }
     }
+
+    public static Map<String, Object> getMapFromJsonSerializable(JsonSerializable jsonSerializable) {
+        return jsonSerializable.getMap();
+    }
+
+    public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
+        return CosmosResourceType.fromServiceSerializedFormat(cosmosResourceType);
+    }
+
+    public static Boolean getBooleanFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getBoolean(propertyName);
+    }
+
+    public static Double getDoubleFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getDouble(propertyName);
+    }
+
+    public static Object getObjectByPathFromJsonSerializable(JsonSerializable jsonSerializable, List<String> propertyNames) {
+        return jsonSerializable.getObjectByPath(propertyNames);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable) {
+        return jsonSerializable.serializeJsonToByteBuffer();
+    }
+
+    public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
+        return jsonSerializable.toObject(c);
+    }
+
+    public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.get(propertyName);
+    }
+
+    public static String getStringFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getString(propertyName);
+    }
+
+    public static Integer getIntFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
+        return jsonSerializable.getInt(propertyName);
+    }
+
+    public static String toJsonFromJsonSerializable(JsonSerializable jsonSerializable) {
+        return jsonSerializable.toJson();
+    }
+
+    public static ObjectNode getPropertyBagFromJsonSerializable(JsonSerializable jsonSerializable) {
+        if (jsonSerializable == null) {
+            return null;
+        }
+        return jsonSerializable.getPropertyBag();
+    }
+
 }

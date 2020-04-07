@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Encapsulates options that can be specified for a request issued to cosmos Item.
  */
-public class CosmosItemRequestOptions {
+public final class CosmosItemRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private IndexingDirective indexingDirective;
     private List<String> preTriggerInclude;

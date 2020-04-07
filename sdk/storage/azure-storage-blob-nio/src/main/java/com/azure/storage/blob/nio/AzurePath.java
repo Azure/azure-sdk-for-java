@@ -21,6 +21,7 @@ import java.nio.file.WatchService;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
@@ -78,13 +79,13 @@ public final class AzurePath implements Path {
              */
             if (i == 0) {
                 if (element.contains(ROOT_DIR_SUFFIX) && element.indexOf(ROOT_DIR_SUFFIX) < element.length() - 1) {
-                    throw Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " may"
-                        + " only be used as the last character in the root component of a path"));
+                    throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                        + " may only be used as the last character in the root component of a path"));
                 }
             // No element besides the first may contain the ROOT_DIR_SUFFIX, as only the first element may be the root.
             } else if (element.contains(ROOT_DIR_SUFFIX)) {
-                throw Utility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX + " is an "
-                    + "invalid character except to identify the root element of this path if there is one."));
+                throw LoggingUtility.logError(logger, new InvalidPathException(this.pathString, ROOT_DIR_SUFFIX
+                    + " is an invalid character except to identify the root element of this path if there is one."));
             }
         }
     }
@@ -117,9 +118,9 @@ public final class AzurePath implements Path {
     @Override
     public Path getRoot() {
         // Check if the first element of the path is formatted like a root directory.
-        String firstElement = this.splitToElements()[0];
-        if (firstElement.endsWith(ROOT_DIR_SUFFIX)) {
-            return this.parentFileSystem.getPath(firstElement);
+        String[] elements = this.splitToElements();
+        if (elements.length > 0 && elements[0].endsWith(ROOT_DIR_SUFFIX)) {
+            return this.parentFileSystem.getPath(elements[0]);
         }
         return null;
     }
@@ -129,8 +130,10 @@ public final class AzurePath implements Path {
      */
     @Override
     public Path getFileName() {
-        if (this.withoutRoot().isEmpty()) {
+        if (this.isRoot()) {
             return null;
+        } else if (this.pathString.isEmpty()) {
+            return this;
         } else {
             List<String> elements = Arrays.asList(this.splitToElements());
             return this.parentFileSystem.getPath(elements.get(elements.size() - 1));
@@ -143,10 +146,11 @@ public final class AzurePath implements Path {
     @Override
     public Path getParent() {
         /*
-        If this path only has one element, there is no parent. Note the root is included in the parent, so we don't
-        use getNameCount here.
+        If this path only has one element or is empty, there is no parent. Note the root is included in the parent, so
+        we don't use getNameCount here.
          */
-        if (this.splitToElements().length == 1) {
+        String[] elements = this.splitToElements();
+        if (elements.length == 1 || elements.length == 0) {
             return null;
         }
 
@@ -159,6 +163,9 @@ public final class AzurePath implements Path {
      */
     @Override
     public int getNameCount() {
+        if (this.pathString.isEmpty()) {
+            return 1;
+        }
         return this.splitToElements(this.withoutRoot()).length;
     }
 
@@ -168,7 +175,16 @@ public final class AzurePath implements Path {
     @Override
     public Path getName(int i) {
         if (i < 0 || i >= this.getNameCount()) {
-            throw Utility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of bounds", i)));
+            throw LoggingUtility.logError(logger, new IllegalArgumentException(String.format("Index %d is out of "
+                + "bounds", i)));
+        }
+        // If the path is empty, the only valid option is also an empty path.
+        if (this.pathString.isEmpty()) {
+            return this;
+        }
+        // If the path is empty, the only valid option is also an empty path.
+        if (this.pathString.isEmpty()) {
+            return this;
         }
         return this.parentFileSystem.getPath(this.splitToElements(this.withoutRoot())[i]);
     }
@@ -180,7 +196,7 @@ public final class AzurePath implements Path {
     public Path subpath(int begin, int end) {
         if (begin < 0 || begin >= this.getNameCount()
             || end <= begin || end > this.getNameCount()) {
-            throw Utility.logError(logger,
+            throw LoggingUtility.logError(logger,
                 new IllegalArgumentException(String.format("Values of begin: %d and end: %d are invalid", begin, end)));
         }
 
@@ -201,6 +217,11 @@ public final class AzurePath implements Path {
     @Override
     public boolean startsWith(Path path) {
         if (!path.getFileSystem().equals(this.parentFileSystem)) {
+            return false;
+        }
+
+        // An empty path never starts with another path and is never the start of another path.
+        if (this.pathString.isEmpty() ^ ((AzurePath) path).pathString.isEmpty()) {
             return false;
         }
 
@@ -242,8 +263,13 @@ public final class AzurePath implements Path {
             return false;
         }
 
+        // An empty path never ends with another path and is never the end of another path.
+        if (this.pathString.isEmpty() ^ ((AzurePath) path).pathString.isEmpty()) {
+            return false;
+        }
+
         String[] thisPathElements = this.splitToElements();
-        String[] otherPathElements = ((AzurePath) path).pathString.split(this.parentFileSystem.getSeparator());
+        String[] otherPathElements = ((AzurePath) path).splitToElements();
         if (otherPathElements.length > thisPathElements.length) {
             return false;
         }
@@ -362,7 +388,7 @@ public final class AzurePath implements Path {
     @Override
     public Path relativize(Path path) {
         if (path.getRoot() == null ^ this.getRoot() == null) {
-            throw Utility.logError(logger,
+            throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Both paths must be absolute or neither can be"));
         }
 
@@ -398,7 +424,7 @@ public final class AzurePath implements Path {
             return new URI(this.parentFileSystem.provider().getScheme(), null, "/" + this.toAbsolutePath().toString(),
                 null, null);
         } catch (URISyntaxException e) {
-            throw Utility.logError(logger, new IllegalStateException("Unable to create valid URI from path", e));
+            throw LoggingUtility.logError(logger, new IllegalStateException("Unable to create valid URI from path", e));
         }
     }
 
@@ -459,6 +485,9 @@ public final class AzurePath implements Path {
      */
     @Override
     public Iterator<Path> iterator() {
+        if (this.pathString.isEmpty()) {
+            return Collections.singletonList((Path) this).iterator();
+        }
         return Arrays.asList(Stream.of(this.splitToElements(this.withoutRoot()))
             .map(s -> this.parentFileSystem.getPath(s))
             .toArray(Path[]::new))
@@ -473,7 +502,8 @@ public final class AzurePath implements Path {
     @Override
     public int compareTo(Path path) {
         if (!(path instanceof AzurePath)) {
-            throw Utility.logError(logger, new ClassCastException("Other path is not an instance of AzurePath."));
+            throw LoggingUtility.logError(logger, new ClassCastException("Other path is not an instance of "
+                + "AzurePath."));
         }
 
         return this.pathString.compareTo(((AzurePath) path).pathString);
@@ -521,7 +551,7 @@ public final class AzurePath implements Path {
         // Normalizing ensures the path is clean.
         Path root = this.normalize().toAbsolutePath().getRoot();
         if (root == null) {
-            throw Utility.logError(logger,
+            throw LoggingUtility.logError(logger,
                 new IllegalStateException("Root should never be null after calling toAbsolutePath."));
         }
         String fileStoreName = this.rootToFileStore(root.toString());
@@ -531,10 +561,17 @@ public final class AzurePath implements Path {
 
         String blobName = this.withoutRoot();
         if (blobName.isEmpty()) {
-            throw new IOException("Cannot get a blob client to a path that only contains the root");
+            throw new IOException("Cannot get a blob client to a path that only contains the root or is an empty path");
         }
 
         return containerClient.getBlobClient(blobName);
+    }
+
+    /**
+     * @return Whether this path consists of only a root component.
+     */
+    boolean isRoot() {
+        return this.equals(this.getRoot());
     }
 
     private String withoutRoot() {

@@ -48,7 +48,7 @@ public class PerfStressProgram {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-        
+
         String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName()))
                 .toArray(i -> new String[i]);
 
@@ -121,7 +121,7 @@ public class PerfStressProgram {
         try {
             tests[0].globalSetupAsync().block();
             try {
-                Flux.just(tests).flatMap(t -> t.setupAsync()).blockLast();
+                Flux.just(tests).flatMap(PerfStressTest::setupAsync).blockLast();
                 setupStatus.dispose();
 
                 if (options.getWarmup() > 0) {

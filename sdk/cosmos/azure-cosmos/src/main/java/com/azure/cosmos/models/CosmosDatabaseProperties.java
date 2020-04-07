@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * more cosmos items. Since databases are an an administrative resource and the Service Key will be required in
  * order to access and successfully complete any action using the User APIs.
  */
-public class CosmosDatabaseProperties extends Resource {
+public final class CosmosDatabaseProperties extends Resource {
 
     /**
      * Constructor

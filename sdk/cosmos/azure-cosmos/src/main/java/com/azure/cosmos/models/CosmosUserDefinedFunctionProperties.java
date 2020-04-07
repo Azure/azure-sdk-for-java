@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos user defined function properties.
  */
-public class CosmosUserDefinedFunctionProperties extends Resource {
+public final class CosmosUserDefinedFunctionProperties extends Resource {
 
     /**
      * Constructor

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
  * additional details, refer to the server-side JavaScript API documentation.
  */
-public class CosmosStoredProcedureProperties extends Resource {
+public final class CosmosStoredProcedureProperties extends Resource {
 
     /**
      * Constructor.

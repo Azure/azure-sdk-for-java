@@ -4,6 +4,8 @@
 
 package com.azure.cosmos.models;
 
+import java.util.Locale;
+
 /**
  * The enum RequestVerb.
  */
@@ -18,7 +20,7 @@ public enum  RequestVerb {
 
     RequestVerb(String stringValue) {
         this.stringValue = stringValue;
-        this.lowerCaseStringValue = stringValue.toLowerCase();
+        this.lowerCaseStringValue = stringValue.toLowerCase(Locale.ROOT);
     }
 
     /**

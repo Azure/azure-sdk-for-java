@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -130,14 +129,14 @@ public class ReplicatedResourceClient {
                 if (prepareRequestAsyncDelegate != null) {
                     return prepareRequestAsyncDelegate.apply(readRequestClone).flatMap(responseReq -> {
                         logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
-                        responseReq.requestContext.RouteToLocation(forceRefreshAndTimeout.getValue3(), true);
+                        responseReq.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
                         return invokeAsync(responseReq, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
                                 forceRefreshAndTimeout.getValue1(),
                                 forceRefreshAndTimeout.getValue0());
                     });
                 } else {
                     logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
-                    readRequestClone.requestContext.RouteToLocation(forceRefreshAndTimeout.getValue3(), true);
+                    readRequestClone.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
                     return invokeAsync(readRequestClone, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
                             forceRefreshAndTimeout.getValue1(),
                             forceRefreshAndTimeout.getValue0());

@@ -24,7 +24,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.time.Duration;
@@ -33,7 +32,7 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(30);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(50);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
@@ -41,7 +40,9 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_SERVICEBUS_CONNECTION_STRING = "AZURE_SERVICEBUS_CONNECTION_STRING";
 
     private static final String AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME";
-    private static final String AZURE_SERVICEBUS_RESOURCE_PATH = "AZURE_SERVICEBUS_RESOURCE_NAME";
+    private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
+    private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
 
     private ConnectionStringProperties properties;
     private String testName;
@@ -99,8 +100,16 @@ public abstract class IntegrationTestBase extends TestBase {
         return System.getenv(AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME);
     }
 
-    public String getResourcePath() {
-        return System.getenv(AZURE_SERVICEBUS_RESOURCE_PATH);
+    public String getQueueName() {
+        return System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+    }
+
+    public String getTopicName() {
+        return System.getenv(AZURE_SERVICEBUS_TOPIC_NAME);
+    }
+
+    public String getSubscriptionName() {
+        return System.getenv(AZURE_SERVICEBUS_SUBSCRIPTION_NAME);
     }
 
     /**
@@ -161,16 +170,14 @@ public abstract class IntegrationTestBase extends TestBase {
     protected ServiceBusClientBuilder createBuilder(boolean useCredentials) {
         final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retry(RETRY_OPTIONS)
+            .retryOptions(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();
-            final String eventHubName = getResourcePath();
 
             Assumptions.assumeTrue(fqdn != null && !fqdn.isEmpty(), AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME + " variable needs to be set when using credentials.");
-            Assumptions.assumeTrue(eventHubName != null && !eventHubName.isEmpty(), AZURE_SERVICEBUS_RESOURCE_PATH + " variable needs to be set when using credentials.");
 
             final ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilder()
                 .clientId(System.getenv("AZURE_CLIENT_ID"))
@@ -178,7 +185,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 .tenantId(System.getenv("AZURE_TENANT_ID"))
                 .build();
 
-            return builder.credential(fqdn, eventHubName, clientSecretCredential);
+            return builder.credential(fqdn, clientSecretCredential);
         } else {
             return builder.connectionString(getConnectionString());
         }
@@ -189,19 +196,19 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
-    protected void dispose(Closeable... closeables) {
+    protected void dispose(AutoCloseable... closeables) {
         if (closeables == null || closeables.length == 0) {
             return;
         }
 
-        for (final Closeable closeable : closeables) {
+        for (final AutoCloseable closeable : closeables) {
             if (closeable == null) {
                 continue;
             }
 
             try {
                 closeable.close();
-            } catch (IOException error) {
+            } catch (Exception error) {
                 logger.error(String.format("[%s]: %s didn't close properly.", testName,
                     closeable.getClass().getSimpleName()), error);
             }

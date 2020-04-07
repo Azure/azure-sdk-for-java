@@ -15,6 +15,8 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.credential.TokenCredential;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
@@ -119,7 +121,8 @@ class ReactorConnectionTest {
             tokenProvider, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, AmqpTransportType.AMQP, retryOptions,
             ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER);
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION);
+            tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST);
     }
 
     @AfterEach
@@ -316,7 +319,8 @@ class ReactorConnectionTest {
 
         // Act and Assert
         ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, parameters, reactorProvider,
-            provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION);
+            provider, tokenManager, messageSerializer, PRODUCT, CLIENT_VERSION, SenderSettleMode.SETTLED,
+            ReceiverSettleMode.FIRST);
 
         try {
             StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())

@@ -3,8 +3,6 @@
 
 package com.azure.storage.blob.specialized.cryptography;
 
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
-
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
@@ -29,6 +27,8 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -42,11 +42,14 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of Storage Blob clients.
@@ -101,6 +104,7 @@ public final class EncryptedBlobClientBuilder {
     private AsyncKeyEncryptionKeyResolver keyResolver;
     private String keyWrapAlgorithm;
     private BlobServiceVersion version;
+    private CpkInfo customerProvidedKey;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -148,12 +152,32 @@ public final class EncryptedBlobClientBuilder {
 
         return new EncryptedBlobAsyncClient(getHttpPipeline(),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
-            blobName, snapshot, keyWrapper, keyWrapAlgorithm);
+            blobName, snapshot, customerProvidedKey, keyWrapper, keyWrapAlgorithm);
     }
 
     private HttpPipeline getHttpPipeline() {
+        // Prefer the pipeline set by the customer.
         if (httpPipeline != null) {
-            return  httpPipeline;
+            List<HttpPipelinePolicy> policies = new ArrayList<>();
+            // Check that BlobDecryptionPolicy not already present while copying them over to a new policy list.
+            boolean decryptionPolicyPresent = false;
+            for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
+                HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
+                if (currPolicy instanceof BlobDecryptionPolicy) {
+                    throw logger.logExceptionAsError(new IllegalArgumentException("The passed pipeline was already"
+                        + " configured for encryption/decryption in a way that might conflict with the passed key "
+                        + "information. Please ensure that the passed pipeline is not already configured for "
+                        + "encryption/decryption"));
+                }
+                policies.add(currPolicy);
+            }
+            // There is guaranteed not to be a decryption policy in the provided pipeline. Add one to the front.
+            policies.add(0, new BlobDecryptionPolicy(keyWrapper, keyResolver));
+
+            return new HttpPipelineBuilder()
+                .httpClient(httpPipeline.getHttpClient())
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
         }
 
         Configuration userAgentConfiguration = (configuration == null) ? Configuration.NONE : configuration;
@@ -167,6 +191,10 @@ public final class EncryptedBlobClientBuilder {
         policies.add(new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
             userAgentConfiguration));
         policies.add(new RequestIdPolicy());
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
         policies.add(new AddDatePolicy());
 
         if (storageSharedKeyCredential != null) {
@@ -177,9 +205,6 @@ public final class EncryptedBlobClientBuilder {
         } else if (sasTokenCredential != null) {
             policies.add(new SasTokenCredentialPolicy(sasTokenCredential));
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 
@@ -203,8 +228,7 @@ public final class EncryptedBlobClientBuilder {
     /**
      * Sets the encryption key parameters for the client
      *
-     * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption
-     * key
+     * @param key An object of type {@link AsyncKeyEncryptionKey} that is used to wrap/unwrap the content encryption key
      * @param keyWrapAlgorithm The {@link String} used to wrap the key.
      * @return the updated EncryptedBlobClientBuilder object
      */
@@ -304,12 +328,12 @@ public final class EncryptedBlobClientBuilder {
      */
     public EncryptedBlobClientBuilder connectionString(String connectionString) {
         StorageConnectionString storageConnectionString
-                = StorageConnectionString.create(connectionString, logger);
+            = StorageConnectionString.create(connectionString, logger);
         StorageEndpoint endpoint = storageConnectionString.getBlobEndpoint();
         if (endpoint == null || endpoint.getPrimaryUri() == null) {
             throw logger
-                    .logExceptionAsError(new IllegalArgumentException(
-                            "connectionString missing required settings to derive blob service endpoint."));
+                .logExceptionAsError(new IllegalArgumentException(
+                    "connectionString missing required settings to derive blob service endpoint."));
         }
         this.endpoint(endpoint.getPrimaryUri());
         if (storageConnectionString.getAccountName() != null) {
@@ -318,7 +342,7 @@ public final class EncryptedBlobClientBuilder {
         StorageAuthenticationSettings authSettings = storageConnectionString.getStorageAuthSettings();
         if (authSettings.getType() == StorageAuthenticationSettings.Type.ACCOUNT_NAME_KEY) {
             this.credential(new StorageSharedKeyCredential(authSettings.getAccount().getName(),
-                    authSettings.getAccount().getAccessKey()));
+                authSettings.getAccount().getAccessKey()));
         } else if (authSettings.getType() == StorageAuthenticationSettings.Type.SAS_TOKEN) {
             this.sasToken(authSettings.getSasToken());
         }
@@ -469,9 +493,11 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpPipeline} to use for the service client.
-     *
-     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}.
+     * Sets the {@link HttpPipeline} to use for the service client, and adds a decryption policy if one is not present.
+     * Note that the underlying pipeline should not already be configured for encryption/decryption.
+     * <p>
+     * If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint}
+     * and {@link #customerProvidedKey(CustomerProvidedKey) customer provided key}.
      *
      * @param httpPipeline HttpPipeline to use for sending service requests and receiving responses.
      * @return the updated EncryptedBlobClientBuilder object
@@ -503,14 +529,35 @@ public final class EncryptedBlobClientBuilder {
     }
 
     /**
-     * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
-     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
+     * Sets the {@link CustomerProvidedKey customer provided key} that is used to encrypt blob contents on the server.
      *
-     * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
-     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
+     * @param customerProvidedKey {@link CustomerProvidedKey}
+     * @return the updated EncryptedBlobClientBuilder object
+     */
+    public EncryptedBlobClientBuilder customerProvidedKey(CustomerProvidedKey customerProvidedKey) {
+        if (customerProvidedKey == null) {
+            this.customerProvidedKey = null;
+        } else {
+            this.customerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+
+        return this;
+    }
+
+    /**
+     * Configures the builder based on the passed {@link BlobClient}. This will set the {@link HttpPipeline},
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service. Note that the underlying
+     * pipeline should not already be configured for encryption/decryption.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
+     *
+     * <p>Note that for security reasons, this method does not copy over the {@link CustomerProvidedKey} and
+     * encryption scope properties from the provided client. To set CPK, please use
+     * {@link #customerProvidedKey(CustomerProvidedKey)}.</p>
      *
      * @param blobClient BlobClient used to configure the builder.
      * @return the updated EncryptedBlobClientBuilder object
@@ -523,13 +570,15 @@ public final class EncryptedBlobClientBuilder {
 
     /**
      * Configures the builder based on the passed {@link BlobAsyncClient}. This will set the {@link HttpPipeline},
-     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service.
-     *
-     * <p>Use this method after setting the key in {@link #key(AsyncKeyEncryptionKey, String) key} and keyResolver in
-     * {@link #keyResolver(AsyncKeyEncryptionKeyResolver)}.</p>
+     * {@link URL} and {@link BlobServiceVersion} that are used to interact with the service. Note that the underlying
+     * pipeline should not already be configured for encryption/decryption.
      *
      * <p>If {@code pipeline} is set, all other settings are ignored, aside from {@link #endpoint(String) endpoint} and
      * {@link #serviceVersion(BlobServiceVersion) serviceVersion}.</p>
+     *
+     * <p>Note that for security reasons, this method does not copy over the {@link CustomerProvidedKey} and
+     * encryption scope properties from the provided client. To set CPK, please use
+     * {@link #customerProvidedKey(CustomerProvidedKey)}.</p>
      *
      * @param blobAsyncClient BlobAsyncClient used to configure the builder.
      * @return the updated EncryptedBlobClientBuilder object
@@ -543,6 +592,7 @@ public final class EncryptedBlobClientBuilder {
 
     /**
      * Helper method to transform a regular client into an encrypted client
+     *
      * @param httpPipeline {@link HttpPipeline}
      * @param endpoint The endpoint.
      * @param version {@link BlobServiceVersion} of the service to be used when making requests.
@@ -551,23 +601,6 @@ public final class EncryptedBlobClientBuilder {
     private EncryptedBlobClientBuilder client(HttpPipeline httpPipeline, String endpoint, BlobServiceVersion version) {
         this.endpoint(endpoint);
         this.serviceVersion(version);
-
-        checkValidEncryptionParameters();
-
-        HttpPipeline pipeline = null;
-        if (httpPipeline != null) {
-            List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(new BlobDecryptionPolicy(keyWrapper, keyResolver));
-            for (int i = 0; i < httpPipeline.getPolicyCount(); i++) {
-                HttpPipelinePolicy currPolicy = httpPipeline.getPolicy(i);
-                policies.add(currPolicy);
-
-            }
-            pipeline = new HttpPipelineBuilder()
-                .httpClient(httpPipeline.getHttpClient())
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .build();
-        }
-        return this.pipeline(pipeline);
+        return this.pipeline(httpPipeline);
     }
 }

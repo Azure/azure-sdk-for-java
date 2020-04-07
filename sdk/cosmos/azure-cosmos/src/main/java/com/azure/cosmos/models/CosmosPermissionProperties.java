@@ -4,15 +4,16 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos permission properties.
  */
-public class CosmosPermissionProperties extends Resource {
+public final class CosmosPermissionProperties extends Resource {
 
     static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
         return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson()))
@@ -84,7 +85,7 @@ public class CosmosPermissionProperties extends Resource {
      */
     public CosmosPermissionProperties setPermissionMode(PermissionMode permissionMode) {
         this.set(Constants.Properties.PERMISSION_MODE,
-            permissionMode.toString().toLowerCase());
+            permissionMode.toString().toLowerCase(Locale.ROOT));
         return this;
     }
 

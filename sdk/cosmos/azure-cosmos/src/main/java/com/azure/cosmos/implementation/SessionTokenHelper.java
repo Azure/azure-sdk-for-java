@@ -3,10 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BadRequestException;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.InternalServerErrorException;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;

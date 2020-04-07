@@ -5,17 +5,17 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.GoneException;
-import com.azure.cosmos.InvalidPartitionException;
-import com.azure.cosmos.PartitionIsMigratingException;
-import com.azure.cosmos.PartitionKeyRangeGoneException;
-import com.azure.cosmos.PartitionKeyRangeIsSplittingException;
-import com.azure.cosmos.RetryWithException;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.InvalidPartitionException;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
+import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import org.apache.commons.lang3.time.StopWatch;
+import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -38,7 +38,7 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics {
     private final StopWatch durationTimer = new StopWatch();
     private final int waitTimeInSeconds;
     //TODO once this is moved to IRetryPolicy, remove from here.
-    public static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
+    public final static Quadruple<Boolean, Boolean, Duration, Integer> INITIAL_ARGUMENT_VALUE_POLICY_ARG = Quadruple.with(false, false,
             Duration.ofSeconds(60), 0);
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {

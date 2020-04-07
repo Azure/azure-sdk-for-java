@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.net.URI;
 

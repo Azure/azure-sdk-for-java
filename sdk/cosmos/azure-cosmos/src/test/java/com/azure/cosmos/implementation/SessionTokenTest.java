@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.InternalServerErrorException;
 import org.testng.annotations.Test;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;

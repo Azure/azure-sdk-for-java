@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 /**
  * Represents an excluded path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public class ExcludedPath extends JsonSerializable {
+public final class ExcludedPath extends JsonSerializable {
 
     /**
      * Constructor.

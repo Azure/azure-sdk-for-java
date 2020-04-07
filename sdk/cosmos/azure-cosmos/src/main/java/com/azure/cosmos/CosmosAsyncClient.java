@@ -11,11 +11,12 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
-import com.azure.cosmos.models.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
+import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -33,7 +34,7 @@ import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxIt
 @ServiceClient(
     builder = CosmosClientBuilder.class,
     isAsync = true)
-public class CosmosAsyncClient implements Closeable {
+public final class CosmosAsyncClient implements Closeable {
 
     // Async document client wrapper
     private final Configs configs;
@@ -55,8 +56,8 @@ public class CosmosAsyncClient implements Closeable {
         this.connectionPolicy = builder.getConnectionPolicy();
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
         this.permissions = builder.getPermissions();
-        this.cosmosAuthorizationTokenResolver = builder.getCosmosAuthorizationTokenResolver();
-        this.cosmosKeyCredential = builder.getCosmosKeyCredential();
+        this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
+        this.cosmosKeyCredential = builder.getKeyCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
@@ -332,7 +333,7 @@ public class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
@@ -383,26 +384,13 @@ public class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return new CosmosPagedFlux<>(pagedFluxOptions -> {
+        return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(
                                             ModelBridgeInternal.getCosmosDatabasePropertiesFromV2Results(response.getResults()),
                                             response.getResponseHeaders()));
         });
-    }
-
-    /**
-     * Gets database account information.
-     * <p>
-     * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the database account.
-     * In case of failure the {@link Mono} will error.
-     *
-     * @return {@link Mono} containing the single resource response with the database account or an error
-     */
-    public Mono<DatabaseAccount> readDatabaseAccount() {
-        return asyncDocumentClient.getDatabaseAccount();
     }
 
     /**

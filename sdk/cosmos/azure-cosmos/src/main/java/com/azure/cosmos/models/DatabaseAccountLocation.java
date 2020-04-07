@@ -11,7 +11,7 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
 /**
  * Represents the location of a database account in the Azure Cosmos DB database service.
  */
-public class DatabaseAccountLocation extends JsonSerializable {
+public final class DatabaseAccountLocation extends JsonSerializable {
 
     /**
      * Constructor.

@@ -4,9 +4,10 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.IndexKind;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,7 @@ import java.util.Collection;
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public class IncludedPath extends JsonSerializable {
+public final class IncludedPath extends JsonSerializable {
     private Collection<Index> indexes;
 
     /**

@@ -35,7 +35,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 import static java.time.Duration.ofMillis;
@@ -170,7 +169,7 @@ public class ReactorNettyClientTests {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
+            .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
@@ -185,12 +184,10 @@ public class ReactorNettyClientTests {
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         assertTimeout(ofMillis(5000), () -> {
             CountDownLatch latch = new CountDownLatch(1);
-            AtomicReference<Socket> sock = new AtomicReference<>();
             try (ServerSocket ss = new ServerSocket(0)) {
                 Mono.fromCallable(() -> {
                     latch.countDown();
                     Socket socket = ss.accept();
-                    sock.set(socket);
                     // give the client time to get request across
                     Thread.sleep(500);
                     // respond but don't send the complete response
@@ -208,14 +205,12 @@ public class ReactorNettyClientTests {
                     // kill the socket with HTTP response body incomplete
                     socket.close();
                     return 1;
-                })
-                    .subscribeOn(Schedulers.elastic())
-                    .subscribe();
+                }).subscribeOn(Schedulers.elastic()).subscribe();
                 //
                 latch.await();
-                HttpClient client = HttpClient.createDefault();
+                HttpClient client = new NettyAsyncHttpClientBuilder().build();
                 HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/get"));
+                    new URL("http://localhost:" + ss.getLocalPort() + "/ioException"));
 
                 HttpResponse response = client.send(request).block();
 

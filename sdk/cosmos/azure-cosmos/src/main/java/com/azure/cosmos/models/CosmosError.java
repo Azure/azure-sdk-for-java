@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /**
  * Encapsulates error related details in the Azure Cosmos DB database service.
  */
-public class CosmosError extends Resource {
+public final class CosmosError extends Resource {
     /**
      * Initialize a new instance of the Error object.
      */

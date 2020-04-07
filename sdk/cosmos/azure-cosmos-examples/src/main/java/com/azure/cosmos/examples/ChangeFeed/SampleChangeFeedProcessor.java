@@ -94,10 +94,10 @@ public class SampleChangeFeedProcessor {
 
     public static ChangeFeedProcessor getChangeFeedProcessor(String hostName, CosmosAsyncContainer feedContainer, CosmosAsyncContainer leaseContainer) {
         return ChangeFeedProcessor.changeFeedProcessorBuilder()
-            .setHostName(hostName)
-            .setFeedContainer(feedContainer)
-            .setLeaseContainer(leaseContainer)
-            .setHandleChanges((List<JsonNode> docs) -> {
+            .hostName(hostName)
+            .feedContainer(feedContainer)
+            .leaseContainer(leaseContainer)
+            .handleChanges((List<JsonNode> docs) -> {
                 System.out.println("--->setHandleChanges() START");
 
                 for (JsonNode document : docs) {
@@ -117,10 +117,10 @@ public class SampleChangeFeedProcessor {
     public static CosmosAsyncClient getCosmosClient() {
 
         return new CosmosClientBuilder()
-                .setEndpoint(SampleConfigurations.HOST)
-                .setKey(SampleConfigurations.MASTER_KEY)
-                .setConnectionPolicy(ConnectionPolicy.getDefaultPolicy())
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL)
+                .endpoint(SampleConfigurations.HOST)
+                .key(SampleConfigurations.MASTER_KEY)
+                .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                .consistencyLevel(ConsistencyLevel.EVENTUAL)
                 .buildAsyncClient();
     }
 
