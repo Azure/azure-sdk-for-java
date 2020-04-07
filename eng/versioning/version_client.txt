@@ -36,7 +36,7 @@ com.azure:azure-storage-common;12.5.0;12.6.0
 com.azure:azure-storage-file-share;12.3.0;12.4.0
 com.azure:azure-storage-file-datalake;12.0.1;12.1.0
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.4.0;12.5.0
+com.azure:azure-storage-queue;12.5.0;12.6.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
