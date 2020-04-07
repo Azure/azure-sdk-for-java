@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the classes for azure app service samples.
+ * This package contains the base classes for resources http policy.
  */
-package com.azure.management.appservice.samples;
+package com.azure.management.resources.fluentcore.policy;

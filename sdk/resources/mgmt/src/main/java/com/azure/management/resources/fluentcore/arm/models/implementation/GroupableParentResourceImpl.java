@@ -39,9 +39,9 @@ public abstract class GroupableParentResourceImpl<
 
     protected abstract void initializeChildrenFromInner();
 
-    protected void beforeCreating() {}
+    protected void beforeCreating() { }
 
-    protected void afterCreating() {}
+    protected void afterCreating() { }
 
     @Override
     public Mono<FluentModelT> createResourceAsync() {

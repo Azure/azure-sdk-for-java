@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.storage.models.ImmutabilityPolicyInner;
 import com.azure.management.storage.models.ListContainerItemInner;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

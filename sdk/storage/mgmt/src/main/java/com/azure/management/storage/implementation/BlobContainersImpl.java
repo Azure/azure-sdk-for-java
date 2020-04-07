@@ -12,9 +12,7 @@ import com.azure.management.storage.LegalHold;
 import com.azure.management.storage.models.BlobContainerInner;
 import com.azure.management.storage.models.BlobContainersInner;
 import com.azure.management.storage.models.ImmutabilityPolicyInner;
-import com.azure.management.storage.models.LegalHoldInner;
 import com.azure.management.storage.models.ListContainerItemInner;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;

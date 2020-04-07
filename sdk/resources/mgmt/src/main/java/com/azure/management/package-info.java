@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the classes for azure app service samples.
+ * This package contains the base classes for management sdk.
  */
-package com.azure.management.appservice.samples;
+package com.azure.management;

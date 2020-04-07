@@ -14,7 +14,6 @@ import com.azure.management.keyvault.Secret;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.msi.Identity;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

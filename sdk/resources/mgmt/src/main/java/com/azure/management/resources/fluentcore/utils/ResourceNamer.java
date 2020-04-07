@@ -21,7 +21,8 @@ public class ResourceNamer {
      * @param name the randName
      */
     public ResourceNamer(String name) {
-        this.randName = name.toLowerCase() + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
+        this.randName = name.toLowerCase()
+            + UUID.randomUUID().toString().replace("-", "").substring(0, 3).toLowerCase();
     }
 
     /**

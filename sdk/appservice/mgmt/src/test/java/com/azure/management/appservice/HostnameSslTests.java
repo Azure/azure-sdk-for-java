@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLPeerUnverifiedException;
-import java.util.concurrent.TimeUnit;
 
 public class HostnameSslTests extends AppServiceTest {
     private String WEBAPP_NAME = "";
