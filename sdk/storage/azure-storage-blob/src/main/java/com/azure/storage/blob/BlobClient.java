@@ -5,7 +5,6 @@ package com.azure.storage.blob;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
