@@ -345,9 +345,6 @@
   <suppress checks="IllegalImport"
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
-  <!-- management sdk suppressions -->
-  <suppress checks="[a-zA-Z0-9]*" files="[/\\]mgmt[/\\]src[/\\]test[/\\]"/>
-
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]perf-test[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files=".*[/\\]perf-test[/\\].*\.java"/>
