@@ -33,6 +33,10 @@ param (
     [ValidateNotNullOrEmpty()]
     [string] $TenantId,
 
+    [Parameter(ParameterSetName = 'Provisioner')]
+    [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
+    [string] $SubscriptionId,
+
     [Parameter(ParameterSetName = 'Provisioner', Mandatory = $true)]
     [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
     [string] $ProvisionerApplicationId,
@@ -145,12 +149,17 @@ if (!$Location) {
 if ($ProvisionerApplicationId) {
     $null = Disable-AzContextAutosave -Scope Process
 
+    # Use the given subscription ID if provided.
+    $subscriptionArgs = if ($SubscriptionId) {
+        @{SubscriptionId = $SubscriptionId}
+    }
+
     Log "Logging into service principal '$ProvisionerApplicationId'"
     $provisionerSecret = ConvertTo-SecureString -String $ProvisionerApplicationSecret -AsPlainText -Force
     $provisionerCredential = [System.Management.Automation.PSCredential]::new($ProvisionerApplicationId, $provisionerSecret)
 
     $provisionerAccount = Retry {
-        Connect-AzAccount -Tenant $TenantId -Credential $provisionerCredential -ServicePrincipal -Environment $Environment
+        Connect-AzAccount -Tenant $TenantId -Credential $provisionerCredential -ServicePrincipal -Environment $Environment  @subscriptionArgs
     }
 
     $exitActions += {
@@ -385,6 +394,10 @@ The tenant ID of a service principal when a provisioner is specified. The same
 Tenant ID is used for Test Application and Provisioner Application. This value
 is passed to the ARM template as 'tenantId'.
 
+.PARAMETER SubscriptionId
+Optional subscription ID to use for new resources when logging in as a 
+provisioner. You can also use Set-AzContext if not provisioning.
+
 .PARAMETER ProvisionerApplicationId
 The AAD Application ID used to provision test resources when a provisioner is
 specified.
@@ -415,8 +428,12 @@ timestamp is less than the current time.
 This isused for CI automation.
 
 .PARAMETER Location
-Optional location where resources should be created. By default this is
-'westus2'.
+Optional location where resources should be created. If left empty, the default
+is based on the cloud to which the template is being deployed:
+
+* AzureCloud -> 'westus2'
+* AzureUSGovernment -> 'usgovvirginia'
+* AzureChinaCloud -> 'chinaeast2'
 
 .PARAMETER AdditionalParameters
 Optional key-value pairs of parameters to pass to the ARM template(s).
