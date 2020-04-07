@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test.environment.setup;
 
-import com.azure.search.documents.SearchApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchServiceClient;
 import com.azure.search.documents.SearchServiceClientBuilder;
 import com.azure.search.documents.TestHelpers;
@@ -69,7 +69,7 @@ public class SearchIndexService {
         if (searchServiceClient == null) {
             searchServiceClient = new SearchServiceClientBuilder()
                 .endpoint(endpoint)
-                .credential(new SearchApiKeyCredential(apiAdminKey))
+                .credential(new AzureKeyCredential(apiAdminKey))
                 .buildClient();
         }
     }

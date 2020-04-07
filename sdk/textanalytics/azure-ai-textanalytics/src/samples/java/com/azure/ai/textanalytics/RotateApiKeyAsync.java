@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +18,7 @@ public class RotateApiKeyAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsApiKeyCredential credential = new TextAnalyticsApiKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
             .apiKey(credential)
             .endpoint("{endpoint}")
@@ -34,7 +34,7 @@ public class RotateApiKeyAsync {
             () -> System.out.println("Key phrases extracted."));
 
         // Update the API key
-        credential.updateCredential("{valid_api_key}");
+        credential.update("{valid_api_key}");
 
         System.out.println("Extracted phrases:");
         client.extractKeyPhrases(document).subscribe(

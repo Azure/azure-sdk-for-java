@@ -115,33 +115,30 @@ public final class Field {
     private Boolean facetable;
 
     /*
-     * The name of the language analyzer to use for the field. This option can
-     * be used only with searchable fields and it can't be set together with
-     * either searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it
-     * cannot be changed for the field. Must be null for complex fields.
-     * Possible values include: 'ar.microsoft', 'ar.lucene', 'hy.lucene',
-     * 'bn.microsoft', 'eu.lucene', 'bg.microsoft', 'bg.lucene',
-     * 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft', 'zh-Hans.lucene',
-     * 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft',
-     * 'cs.lucene', 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'
+     * The name of the analyzer to use for the field. This option can be used
+     * only with searchable fields and it can't be set together with either
+     * searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it cannot
+     * be changed for the field. Must be null for complex fields. Possible
+     * values include: 'ArMicrosoft', 'ArLucene', 'HyLucene', 'BnMicrosoft',
+     * 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft', 'CaLucene',
+     * 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene',
+     * 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene',
+     * 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft',
+     * 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene',
+     * 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft',
+     * 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene',
+     * 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft',
+     * 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft',
+     * 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft',
+     * 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene',
+     * 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
+     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
+     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
+     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
+     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
+     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
+     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
+     * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "analyzer")
     private AnalyzerName analyzer;
@@ -150,30 +147,29 @@ public final class Field {
      * The name of the analyzer used at search time for the field. This option
      * can be used only with searchable fields. It must be set together with
      * indexAnalyzer and it cannot be set together with the analyzer option.
-     * This analyzer can be updated on an existing field. Must be null for
-     * complex fields. Possible values include: 'ar.microsoft', 'ar.lucene',
-     * 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft', 'bg.lucene',
-     * 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft', 'zh-Hans.lucene',
-     * 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft',
-     * 'cs.lucene', 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'
+     * This property cannot be set to the name of a language analyzer; use the
+     * analyzer property instead if you need a language analyzer. This analyzer
+     * can be updated on an existing field. Must be null for complex fields.
+     * Possible values include: 'ArMicrosoft', 'ArLucene', 'HyLucene',
+     * 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft',
+     * 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft',
+     * 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft',
+     * 'DaLucene', 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene',
+     * 'EtMicrosoft', 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene',
+     * 'GlLucene', 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene',
+     * 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft',
+     * 'HuLucene', 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene',
+     * 'ItMicrosoft', 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft',
+     * 'KoMicrosoft', 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft',
+     * 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene',
+     * 'FaLucene', 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
+     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
+     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
+     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
+     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
+     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
+     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
+     * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "searchAnalyzer")
     private AnalyzerName searchAnalyzer;
@@ -182,31 +178,30 @@ public final class Field {
      * The name of the analyzer used at indexing time for the field. This
      * option can be used only with searchable fields. It must be set together
      * with searchAnalyzer and it cannot be set together with the analyzer
-     * option. Once the analyzer is chosen, it cannot be changed for the field.
-     * Must be null for complex fields. Possible values include:
-     * 'ar.microsoft', 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene',
-     * 'bg.microsoft', 'bg.lucene', 'ca.microsoft', 'ca.lucene',
-     * 'zh-Hans.microsoft', 'zh-Hans.lucene', 'zh-Hant.microsoft',
-     * 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft', 'cs.lucene',
-     * 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'
+     * option.  This property cannot be set to the name of a language analyzer;
+     * use the analyzer property instead if you need a language analyzer. Once
+     * the analyzer is chosen, it cannot be changed for the field. Must be null
+     * for complex fields. Possible values include: 'ArMicrosoft', 'ArLucene',
+     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
+     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
+     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
+     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
+     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
+     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
+     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
+     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
+     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
+     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
+     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
+     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
+     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
+     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
+     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
+     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
+     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
+     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
+     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
+     * 'Whitespace'
      */
     @JsonProperty(value = "indexAnalyzer")
     private AnalyzerName indexAnalyzer;
@@ -498,34 +493,31 @@ public final class Field {
     }
 
     /**
-     * Get the analyzer property: The name of the language analyzer to use for
-     * the field. This option can be used only with searchable fields and it
-     * can't be set together with either searchAnalyzer or indexAnalyzer. Once
-     * the analyzer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields. Possible values include: 'ar.microsoft',
-     * 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft',
-     * 'bg.lucene', 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft',
-     * 'zh-Hans.lucene', 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft',
-     * 'cs.microsoft', 'cs.lucene', 'da.microsoft', 'da.lucene',
-     * 'nl.microsoft', 'nl.lucene', 'en.microsoft', 'en.lucene',
-     * 'et.microsoft', 'fi.microsoft', 'fi.lucene', 'fr.microsoft',
-     * 'fr.lucene', 'gl.lucene', 'de.microsoft', 'de.lucene', 'el.microsoft',
-     * 'el.lucene', 'gu.microsoft', 'he.microsoft', 'hi.microsoft',
-     * 'hi.lucene', 'hu.microsoft', 'hu.lucene', 'is.microsoft',
-     * 'id.microsoft', 'id.lucene', 'ga.lucene', 'it.microsoft', 'it.lucene',
-     * 'ja.microsoft', 'ja.lucene', 'kn.microsoft', 'ko.microsoft',
-     * 'ko.lucene', 'lv.microsoft', 'lv.lucene', 'lt.microsoft',
-     * 'ml.microsoft', 'ms.microsoft', 'mr.microsoft', 'nb.microsoft',
-     * 'no.lucene', 'fa.lucene', 'pl.microsoft', 'pl.lucene',
-     * 'pt-BR.microsoft', 'pt-BR.lucene', 'pt-PT.microsoft', 'pt-PT.lucene',
-     * 'pa.microsoft', 'ro.microsoft', 'ro.lucene', 'ru.microsoft',
-     * 'ru.lucene', 'sr-cyrillic.microsoft', 'sr-latin.microsoft',
-     * 'sk.microsoft', 'sl.microsoft', 'es.microsoft', 'es.lucene',
-     * 'sv.microsoft', 'sv.lucene', 'ta.microsoft', 'te.microsoft',
-     * 'th.microsoft', 'th.lucene', 'tr.microsoft', 'tr.lucene',
-     * 'uk.microsoft', 'ur.microsoft', 'vi.microsoft', 'standard.lucene',
-     * 'standardasciifolding.lucene', 'keyword', 'pattern', 'simple', 'stop',
-     * 'whitespace'.
+     * Get the analyzer property: The name of the analyzer to use for the
+     * field. This option can be used only with searchable fields and it can't
+     * be set together with either searchAnalyzer or indexAnalyzer. Once the
+     * analyzer is chosen, it cannot be changed for the field. Must be null for
+     * complex fields. Possible values include: 'ArMicrosoft', 'ArLucene',
+     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
+     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
+     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
+     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
+     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
+     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
+     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
+     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
+     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
+     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
+     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
+     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
+     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
+     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
+     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
+     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
+     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
+     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
+     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
+     * 'Whitespace'.
      *
      * @return the analyzer value.
      */
@@ -534,34 +526,31 @@ public final class Field {
     }
 
     /**
-     * Set the analyzer property: The name of the language analyzer to use for
-     * the field. This option can be used only with searchable fields and it
-     * can't be set together with either searchAnalyzer or indexAnalyzer. Once
-     * the analyzer is chosen, it cannot be changed for the field. Must be null
-     * for complex fields. Possible values include: 'ar.microsoft',
-     * 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft',
-     * 'bg.lucene', 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft',
-     * 'zh-Hans.lucene', 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft',
-     * 'cs.microsoft', 'cs.lucene', 'da.microsoft', 'da.lucene',
-     * 'nl.microsoft', 'nl.lucene', 'en.microsoft', 'en.lucene',
-     * 'et.microsoft', 'fi.microsoft', 'fi.lucene', 'fr.microsoft',
-     * 'fr.lucene', 'gl.lucene', 'de.microsoft', 'de.lucene', 'el.microsoft',
-     * 'el.lucene', 'gu.microsoft', 'he.microsoft', 'hi.microsoft',
-     * 'hi.lucene', 'hu.microsoft', 'hu.lucene', 'is.microsoft',
-     * 'id.microsoft', 'id.lucene', 'ga.lucene', 'it.microsoft', 'it.lucene',
-     * 'ja.microsoft', 'ja.lucene', 'kn.microsoft', 'ko.microsoft',
-     * 'ko.lucene', 'lv.microsoft', 'lv.lucene', 'lt.microsoft',
-     * 'ml.microsoft', 'ms.microsoft', 'mr.microsoft', 'nb.microsoft',
-     * 'no.lucene', 'fa.lucene', 'pl.microsoft', 'pl.lucene',
-     * 'pt-BR.microsoft', 'pt-BR.lucene', 'pt-PT.microsoft', 'pt-PT.lucene',
-     * 'pa.microsoft', 'ro.microsoft', 'ro.lucene', 'ru.microsoft',
-     * 'ru.lucene', 'sr-cyrillic.microsoft', 'sr-latin.microsoft',
-     * 'sk.microsoft', 'sl.microsoft', 'es.microsoft', 'es.lucene',
-     * 'sv.microsoft', 'sv.lucene', 'ta.microsoft', 'te.microsoft',
-     * 'th.microsoft', 'th.lucene', 'tr.microsoft', 'tr.lucene',
-     * 'uk.microsoft', 'ur.microsoft', 'vi.microsoft', 'standard.lucene',
-     * 'standardasciifolding.lucene', 'keyword', 'pattern', 'simple', 'stop',
-     * 'whitespace'.
+     * Set the analyzer property: The name of the analyzer to use for the
+     * field. This option can be used only with searchable fields and it can't
+     * be set together with either searchAnalyzer or indexAnalyzer. Once the
+     * analyzer is chosen, it cannot be changed for the field. Must be null for
+     * complex fields. Possible values include: 'ArMicrosoft', 'ArLucene',
+     * 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene',
+     * 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene',
+     * 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft',
+     * 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft', 'NlLucene',
+     * 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft', 'FiLucene',
+     * 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft', 'DeLucene',
+     * 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft',
+     * 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft', 'IdMicrosoft',
+     * 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene', 'JaMicrosoft',
+     * 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene', 'LvMicrosoft',
+     * 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft',
+     * 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft', 'PlLucene',
+     * 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft', 'PtPtLucene',
+     * 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft', 'RuLucene',
+     * 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft', 'SlMicrosoft',
+     * 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene', 'TaMicrosoft',
+     * 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft', 'TrLucene',
+     * 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft', 'StandardLucene',
+     * 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern', 'Simple', 'Stop',
+     * 'Whitespace'.
      *
      * @param analyzer the analyzer value to set.
      * @return the Field object itself.
@@ -575,31 +564,30 @@ public final class Field {
      * Get the searchAnalyzer property: The name of the analyzer used at search
      * time for the field. This option can be used only with searchable fields.
      * It must be set together with indexAnalyzer and it cannot be set together
-     * with the analyzer option. This analyzer can be updated on an existing
-     * field. Must be null for complex fields. Possible values include:
-     * 'ar.microsoft', 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene',
-     * 'bg.microsoft', 'bg.lucene', 'ca.microsoft', 'ca.lucene',
-     * 'zh-Hans.microsoft', 'zh-Hans.lucene', 'zh-Hant.microsoft',
-     * 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft', 'cs.lucene',
-     * 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'.
+     * with the analyzer option. This property cannot be set to the name of a
+     * language analyzer; use the analyzer property instead if you need a
+     * language analyzer. This analyzer can be updated on an existing field.
+     * Must be null for complex fields. Possible values include: 'ArMicrosoft',
+     * 'ArLucene', 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft',
+     * 'BgLucene', 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft',
+     * 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft',
+     * 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft',
+     * 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft',
+     * 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft',
+     * 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft',
+     * 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft',
+     * 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene',
+     * 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene',
+     * 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft',
+     * 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft',
+     * 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft',
+     * 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft',
+     * 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft',
+     * 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene',
+     * 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft',
+     * 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
+     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
+     * 'Simple', 'Stop', 'Whitespace'.
      *
      * @return the searchAnalyzer value.
      */
@@ -611,31 +599,30 @@ public final class Field {
      * Set the searchAnalyzer property: The name of the analyzer used at search
      * time for the field. This option can be used only with searchable fields.
      * It must be set together with indexAnalyzer and it cannot be set together
-     * with the analyzer option. This analyzer can be updated on an existing
-     * field. Must be null for complex fields. Possible values include:
-     * 'ar.microsoft', 'ar.lucene', 'hy.lucene', 'bn.microsoft', 'eu.lucene',
-     * 'bg.microsoft', 'bg.lucene', 'ca.microsoft', 'ca.lucene',
-     * 'zh-Hans.microsoft', 'zh-Hans.lucene', 'zh-Hant.microsoft',
-     * 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft', 'cs.lucene',
-     * 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'.
+     * with the analyzer option. This property cannot be set to the name of a
+     * language analyzer; use the analyzer property instead if you need a
+     * language analyzer. This analyzer can be updated on an existing field.
+     * Must be null for complex fields. Possible values include: 'ArMicrosoft',
+     * 'ArLucene', 'HyLucene', 'BnMicrosoft', 'EuLucene', 'BgMicrosoft',
+     * 'BgLucene', 'CaMicrosoft', 'CaLucene', 'ZhHansMicrosoft',
+     * 'ZhHansLucene', 'ZhHantMicrosoft', 'ZhHantLucene', 'HrMicrosoft',
+     * 'CsMicrosoft', 'CsLucene', 'DaMicrosoft', 'DaLucene', 'NlMicrosoft',
+     * 'NlLucene', 'EnMicrosoft', 'EnLucene', 'EtMicrosoft', 'FiMicrosoft',
+     * 'FiLucene', 'FrMicrosoft', 'FrLucene', 'GlLucene', 'DeMicrosoft',
+     * 'DeLucene', 'ElMicrosoft', 'ElLucene', 'GuMicrosoft', 'HeMicrosoft',
+     * 'HiMicrosoft', 'HiLucene', 'HuMicrosoft', 'HuLucene', 'IsMicrosoft',
+     * 'IdMicrosoft', 'IdLucene', 'GaLucene', 'ItMicrosoft', 'ItLucene',
+     * 'JaMicrosoft', 'JaLucene', 'KnMicrosoft', 'KoMicrosoft', 'KoLucene',
+     * 'LvMicrosoft', 'LvLucene', 'LtMicrosoft', 'MlMicrosoft', 'MsMicrosoft',
+     * 'MrMicrosoft', 'NbMicrosoft', 'NoLucene', 'FaLucene', 'PlMicrosoft',
+     * 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene', 'PtPtMicrosoft',
+     * 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene', 'RuMicrosoft',
+     * 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft', 'SkMicrosoft',
+     * 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft', 'SvLucene',
+     * 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene', 'TrMicrosoft',
+     * 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
+     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
+     * 'Simple', 'Stop', 'Whitespace'.
      *
      * @param searchAnalyzer the searchAnalyzer value to set.
      * @return the Field object itself.
@@ -649,31 +636,30 @@ public final class Field {
      * Get the indexAnalyzer property: The name of the analyzer used at
      * indexing time for the field. This option can be used only with
      * searchable fields. It must be set together with searchAnalyzer and it
-     * cannot be set together with the analyzer option. Once the analyzer is
-     * chosen, it cannot be changed for the field. Must be null for complex
-     * fields. Possible values include: 'ar.microsoft', 'ar.lucene',
-     * 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft', 'bg.lucene',
-     * 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft', 'zh-Hans.lucene',
-     * 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft',
-     * 'cs.lucene', 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'.
+     * cannot be set together with the analyzer option.  This property cannot
+     * be set to the name of a language analyzer; use the analyzer property
+     * instead if you need a language analyzer. Once the analyzer is chosen, it
+     * cannot be changed for the field. Must be null for complex fields.
+     * Possible values include: 'ArMicrosoft', 'ArLucene', 'HyLucene',
+     * 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft',
+     * 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft',
+     * 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft',
+     * 'DaLucene', 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene',
+     * 'EtMicrosoft', 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene',
+     * 'GlLucene', 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene',
+     * 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft',
+     * 'HuLucene', 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene',
+     * 'ItMicrosoft', 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft',
+     * 'KoMicrosoft', 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft',
+     * 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene',
+     * 'FaLucene', 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
+     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
+     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
+     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
+     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
+     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
+     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
+     * 'Simple', 'Stop', 'Whitespace'.
      *
      * @return the indexAnalyzer value.
      */
@@ -685,31 +671,30 @@ public final class Field {
      * Set the indexAnalyzer property: The name of the analyzer used at
      * indexing time for the field. This option can be used only with
      * searchable fields. It must be set together with searchAnalyzer and it
-     * cannot be set together with the analyzer option. Once the analyzer is
-     * chosen, it cannot be changed for the field. Must be null for complex
-     * fields. Possible values include: 'ar.microsoft', 'ar.lucene',
-     * 'hy.lucene', 'bn.microsoft', 'eu.lucene', 'bg.microsoft', 'bg.lucene',
-     * 'ca.microsoft', 'ca.lucene', 'zh-Hans.microsoft', 'zh-Hans.lucene',
-     * 'zh-Hant.microsoft', 'zh-Hant.lucene', 'hr.microsoft', 'cs.microsoft',
-     * 'cs.lucene', 'da.microsoft', 'da.lucene', 'nl.microsoft', 'nl.lucene',
-     * 'en.microsoft', 'en.lucene', 'et.microsoft', 'fi.microsoft',
-     * 'fi.lucene', 'fr.microsoft', 'fr.lucene', 'gl.lucene', 'de.microsoft',
-     * 'de.lucene', 'el.microsoft', 'el.lucene', 'gu.microsoft',
-     * 'he.microsoft', 'hi.microsoft', 'hi.lucene', 'hu.microsoft',
-     * 'hu.lucene', 'is.microsoft', 'id.microsoft', 'id.lucene', 'ga.lucene',
-     * 'it.microsoft', 'it.lucene', 'ja.microsoft', 'ja.lucene',
-     * 'kn.microsoft', 'ko.microsoft', 'ko.lucene', 'lv.microsoft',
-     * 'lv.lucene', 'lt.microsoft', 'ml.microsoft', 'ms.microsoft',
-     * 'mr.microsoft', 'nb.microsoft', 'no.lucene', 'fa.lucene',
-     * 'pl.microsoft', 'pl.lucene', 'pt-BR.microsoft', 'pt-BR.lucene',
-     * 'pt-PT.microsoft', 'pt-PT.lucene', 'pa.microsoft', 'ro.microsoft',
-     * 'ro.lucene', 'ru.microsoft', 'ru.lucene', 'sr-cyrillic.microsoft',
-     * 'sr-latin.microsoft', 'sk.microsoft', 'sl.microsoft', 'es.microsoft',
-     * 'es.lucene', 'sv.microsoft', 'sv.lucene', 'ta.microsoft',
-     * 'te.microsoft', 'th.microsoft', 'th.lucene', 'tr.microsoft',
-     * 'tr.lucene', 'uk.microsoft', 'ur.microsoft', 'vi.microsoft',
-     * 'standard.lucene', 'standardasciifolding.lucene', 'keyword', 'pattern',
-     * 'simple', 'stop', 'whitespace'.
+     * cannot be set together with the analyzer option.  This property cannot
+     * be set to the name of a language analyzer; use the analyzer property
+     * instead if you need a language analyzer. Once the analyzer is chosen, it
+     * cannot be changed for the field. Must be null for complex fields.
+     * Possible values include: 'ArMicrosoft', 'ArLucene', 'HyLucene',
+     * 'BnMicrosoft', 'EuLucene', 'BgMicrosoft', 'BgLucene', 'CaMicrosoft',
+     * 'CaLucene', 'ZhHansMicrosoft', 'ZhHansLucene', 'ZhHantMicrosoft',
+     * 'ZhHantLucene', 'HrMicrosoft', 'CsMicrosoft', 'CsLucene', 'DaMicrosoft',
+     * 'DaLucene', 'NlMicrosoft', 'NlLucene', 'EnMicrosoft', 'EnLucene',
+     * 'EtMicrosoft', 'FiMicrosoft', 'FiLucene', 'FrMicrosoft', 'FrLucene',
+     * 'GlLucene', 'DeMicrosoft', 'DeLucene', 'ElMicrosoft', 'ElLucene',
+     * 'GuMicrosoft', 'HeMicrosoft', 'HiMicrosoft', 'HiLucene', 'HuMicrosoft',
+     * 'HuLucene', 'IsMicrosoft', 'IdMicrosoft', 'IdLucene', 'GaLucene',
+     * 'ItMicrosoft', 'ItLucene', 'JaMicrosoft', 'JaLucene', 'KnMicrosoft',
+     * 'KoMicrosoft', 'KoLucene', 'LvMicrosoft', 'LvLucene', 'LtMicrosoft',
+     * 'MlMicrosoft', 'MsMicrosoft', 'MrMicrosoft', 'NbMicrosoft', 'NoLucene',
+     * 'FaLucene', 'PlMicrosoft', 'PlLucene', 'PtBrMicrosoft', 'PtBrLucene',
+     * 'PtPtMicrosoft', 'PtPtLucene', 'PaMicrosoft', 'RoMicrosoft', 'RoLucene',
+     * 'RuMicrosoft', 'RuLucene', 'SrCyrillicMicrosoft', 'SrLatinMicrosoft',
+     * 'SkMicrosoft', 'SlMicrosoft', 'EsMicrosoft', 'EsLucene', 'SvMicrosoft',
+     * 'SvLucene', 'TaMicrosoft', 'TeMicrosoft', 'ThMicrosoft', 'ThLucene',
+     * 'TrMicrosoft', 'TrLucene', 'UkMicrosoft', 'UrMicrosoft', 'ViMicrosoft',
+     * 'StandardLucene', 'StandardAsciiFoldingLucene', 'Keyword', 'Pattern',
+     * 'Simple', 'Stop', 'Whitespace'.
      *
      * @param indexAnalyzer the indexAnalyzer value to set.
      * @return the Field object itself.

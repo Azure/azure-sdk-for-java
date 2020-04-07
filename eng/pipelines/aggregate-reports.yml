@@ -92,9 +92,11 @@ jobs:
 
     - pwsh: |
         copy -r target/staging $(Build.ArtifactStagingDirectory)
+        copy target/dependency-whitelist.json (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/common/InterdependencyGraph.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy eng/common/dependency-whitelist.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy data.js (Join-Path $(Build.ArtifactStagingDirectory) "staging")
       displayName: 'Copy reports to artifact staging'
 

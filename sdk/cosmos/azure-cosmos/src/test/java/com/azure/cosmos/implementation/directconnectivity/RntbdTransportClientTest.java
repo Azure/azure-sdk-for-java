@@ -47,8 +47,8 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestTime
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponseDecoder;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.base.Strings;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

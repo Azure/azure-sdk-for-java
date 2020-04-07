@@ -120,4 +120,26 @@ class BlobCryptographyBuilderTest extends APISpec {
         e.getStatusCode() == 409
     }
 
+    def "Conflicting encryption info"() {
+        when:
+        new EncryptedBlobClientBuilder()
+            .blobAsyncClient(beac)
+            .key(fakeKey, "keywrapalgorithm")
+            .buildEncryptedBlobAsyncClient()
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "Key after pipeline"() {
+        when:
+        new EncryptedBlobClientBuilder()
+            .blobClient(bc)
+            .key(fakeKey, "keywrapalgorithm")
+            .buildEncryptedBlobClient()
+
+        then:
+        notThrown(IllegalArgumentException)
+
+    }
 }

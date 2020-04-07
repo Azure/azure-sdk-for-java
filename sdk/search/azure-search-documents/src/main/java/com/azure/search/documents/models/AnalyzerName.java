@@ -452,7 +452,7 @@ public final class AnalyzerName extends ExpandableStringEnum<AnalyzerName> {
     /**
      * Static value standardasciifolding.lucene for AnalyzerName.
      */
-    public static final AnalyzerName STANDARDASCIIFOLDING_LUCENE = fromString("standardasciifolding.lucene");
+    public static final AnalyzerName STANDARD_ASCII_FOLDING_LUCENE = fromString("standardasciifolding.lucene");
 
     /**
      * Static value keyword for AnalyzerName.

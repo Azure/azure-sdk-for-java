@@ -80,14 +80,13 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .connectionString(getConnectionString());
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = builder.buildSenderClientBuilder()
-            .entityName(queueName)
+        final ServiceBusSenderAsyncClient sender = builder.sender()
+            .queueName(queueName)
             .buildAsyncClient();
 
-        final ServiceBusReceiverAsyncClient receiver = builder.buildReceiverClientBuilder()
+        final ServiceBusReceiverAsyncClient receiver = builder.receiver()
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .queueName(queueName)
-            .isAutoComplete(false)
             .buildAsyncClient();
 
         // Act & Assert

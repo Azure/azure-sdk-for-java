@@ -15,14 +15,14 @@ definition, such as text or binary data.
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-blob-batch;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.4.0</version>
+  <version>12.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

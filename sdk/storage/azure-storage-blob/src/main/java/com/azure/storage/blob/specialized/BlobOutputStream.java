@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.models.AccessTier;
@@ -22,6 +24,9 @@ import reactor.core.scheduler.Schedulers;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * BlobOutputStream allows for the uploading of data to a blob using a stream-like approach.
@@ -50,7 +55,27 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
         final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
         final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
-        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions);
+        return blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions,
+            Context.NONE);
+    }
+
+    /**
+     * Creates a block blob output stream from a BlobAsyncClient
+     * @param client {@link BlobAsyncClient} The blob client.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link BlobOutputStream} associated with the blob.
+     */
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
+        final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+        final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions,
+        Context context) {
+        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions,
+            context);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -154,12 +179,21 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private FluxSink<ByteBuffer> sink;
 
+        private final Lock lock;
+        private final Condition transferComplete;
+
         boolean complete;
 
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
-            final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
+            final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions,
+            Context context) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+            // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
+            context = context == null || context.equals(Context.NONE) ? null : context;
+
+            this.lock = new ReentrantLock();
+            this.transferComplete = lock.newCondition();
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
 
@@ -174,23 +208,36 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                     this.lastError = new IOException(e);
                     return Mono.empty();
                 })
-                .doOnTerminate(() -> complete = true)
+                .doOnTerminate(() -> {
+                    lock.lock();
+                    try {
+                        complete = true;
+                        transferComplete.signal();
+                    } finally {
+                        lock.unlock();
+                    }
+                })
+                .subscriberContext(FluxUtil.toReactorContext(context))
                 .subscribe();
         }
 
         @Override
         void commit() {
-            sink.complete();
 
             // Need to wait until the uploadTask completes
-            while (!complete) {
-                try {
-                    Thread.sleep(100L);
-                } catch (InterruptedException e) {
-                    // Does this need to be caught by logger?
-                    e.printStackTrace();
+            lock.lock();
+            try {
+                sink.complete(); /* Allow upload task to try to complete. */
+
+                while (!complete) {
+                    transferComplete.await();
                 }
+            } catch (InterruptedException e) {
+                this.lastError = new IOException(e.getMessage());
+            } finally {
+                lock.unlock();
             }
+
         }
 
         @Override

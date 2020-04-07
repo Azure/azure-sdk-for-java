@@ -4,14 +4,13 @@
 package com.azure.messaging.servicebus.implementation;
 
 import java.time.Instant;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Container of Message lock and related metadata related.
  */
 public class MessageLockContainer {
-    private final ConcurrentHashMap<UUID, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Instant> lockTokenExpirationMap = new ConcurrentHashMap<>();
 
     /**
      * Adds or updates the expiration time on a lock token. If the expiration time in the container is larger than
@@ -23,7 +22,7 @@ public class MessageLockContainer {
      * @return The updated value in the container. If the expiration time in the container is larger than
      *     {@code lockTokenExpiration}, then the current container value is used.
      */
-    public Instant addOrUpdate(UUID lockToken, Instant lockTokenExpiration) {
+    public Instant addOrUpdate(String lockToken, Instant lockTokenExpiration) {
         return lockTokenExpirationMap.compute(lockToken, (key, existing) -> {
             if (existing == null) {
                 return lockTokenExpiration;
@@ -42,7 +41,7 @@ public class MessageLockContainer {
      *
      * @return An {@link Instant} for when the lock expires or {@code null} if the {@code lockToken} does not exist.
      */
-    public Instant getLockTokenExpiration(UUID lockToken) {
+    public Instant getLockTokenExpiration(String lockToken) {
         return lockTokenExpirationMap.get(lockToken);
     }
 
@@ -51,7 +50,7 @@ public class MessageLockContainer {
      *
      * @param lockToken Token to remove.
      */
-    public void remove(UUID lockToken) {
+    public void remove(String lockToken) {
         lockTokenExpirationMap.remove(lockToken);
     }
 }
