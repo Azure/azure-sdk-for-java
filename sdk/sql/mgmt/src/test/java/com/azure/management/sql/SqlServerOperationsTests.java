@@ -31,8 +31,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCRUDSqlSyncMember() throws Exception {
-        String rgName = RG_NAME;
-        String sqlServerName = SQL_SERVER_NAME;
         final String dbName = "dbSample";
         final String dbSyncName = "dbSync";
         final String dbMemberName = "dbMember";
@@ -114,8 +112,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCRUDSqlSyncGroup() throws Exception {
-        String rgName = RG_NAME;
-        String sqlServerName = SQL_SERVER_NAME;
         final String dbName = "dbSample";
         final String dbSyncName = "dbSync";
         final String syncGroupName = "groupName";
@@ -178,7 +174,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCopySqlDatabase() throws Exception {
-        String rgName = RG_NAME;
         final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
         final String sqlSecondaryServerName = sdkContext.randomResourceName("sqlsec", 22);
         final String epName = "epSample";
@@ -230,7 +225,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCRUDSqlFailoverGroup() throws Exception {
-        String rgName = RG_NAME;
         final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
         final String sqlSecondaryServerName = sdkContext.randomResourceName("sqlsec", 22);
         final String sqlOtherServerName = sdkContext.randomResourceName("sql000", 22);
@@ -372,13 +366,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canChangeSqlServerAndDatabaseAutomaticTuning() throws Exception {
-        String rgName = RG_NAME;
-        String sqlServerName = SQL_SERVER_NAME;
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = "N0t@P@ssw0rd!";
         String databaseName = "db-from-sample";
         String id = sdkContext.randomUuid();
-        String storageName = sdkContext.randomResourceName(SQL_SERVER_NAME, 22);
+        String storageName = sdkContext.randomResourceName(sqlServerName, 22);
 
         // Create
         SqlServer sqlServer =
@@ -474,9 +466,8 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canCreateAndAquireServerDnsAlias() throws Exception {
-        String rgName = RG_NAME;
-        String sqlServerName1 = SQL_SERVER_NAME + "1";
-        String sqlServerName2 = SQL_SERVER_NAME + "2";
+        String sqlServerName1 = sqlServerName + "1";
+        String sqlServerName2 = sqlServerName + "2";
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = "N0t@P@ssw0rd!";
 
@@ -492,13 +483,13 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .create();
         Assertions.assertNotNull(sqlServer1);
 
-        SqlServerDnsAlias dnsAlias = sqlServer1.dnsAliases().define(SQL_SERVER_NAME).create();
+        SqlServerDnsAlias dnsAlias = sqlServer1.dnsAliases().define(sqlServerName).create();
 
         Assertions.assertNotNull(dnsAlias);
         Assertions.assertEquals(rgName, dnsAlias.resourceGroupName());
         Assertions.assertEquals(sqlServerName1, dnsAlias.sqlServerName());
 
-        dnsAlias = sqlServerManager.sqlServers().dnsAliases().getBySqlServer(rgName, sqlServerName1, SQL_SERVER_NAME);
+        dnsAlias = sqlServerManager.sqlServers().dnsAliases().getBySqlServer(rgName, sqlServerName1, sqlServerName);
         Assertions.assertNotNull(dnsAlias);
         Assertions.assertEquals(rgName, dnsAlias.resourceGroupName());
         Assertions.assertEquals(sqlServerName1, dnsAlias.sqlServerName());
@@ -516,10 +507,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .create();
         Assertions.assertNotNull(sqlServer2);
 
-        sqlServer2.dnsAliases().acquire(SQL_SERVER_NAME, sqlServer1.id());
+        sqlServer2.dnsAliases().acquire(sqlServerName, sqlServer1.id());
         SdkContext.sleep(3 * 60 * 1000);
 
-        dnsAlias = sqlServer2.dnsAliases().get(SQL_SERVER_NAME);
+        dnsAlias = sqlServer2.dnsAliases().get(sqlServerName);
         Assertions.assertNotNull(dnsAlias);
         Assertions.assertEquals(rgName, dnsAlias.resourceGroupName());
         Assertions.assertEquals(sqlServerName2, dnsAlias.sqlServerName());
@@ -533,8 +524,6 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     @Test
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
-        String rgName = RG_NAME;
-        String sqlServerName = SQL_SERVER_NAME;
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = "N0t@P@ssw0rd!";
         String databaseName = "db-from-sample";
@@ -595,12 +584,10 @@ public class SqlServerOperationsTests extends SqlServerTest {
         }
         // Create
 
-        String rgName = RG_NAME;
-        String sqlServerName = SQL_SERVER_NAME;
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = "N0t@P@ssw0rd!";
         String id = sdkContext.randomUuid();
-        String storageName = sdkContext.randomResourceName(SQL_SERVER_NAME, 22);
+        String storageName = sdkContext.randomResourceName(sqlServerName, 22);
 
         SqlServer sqlServer =
             sqlServerManager
@@ -679,17 +666,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
     public void canCRUDSqlServerWithFirewallRule() throws Exception {
         // Create
 
-        String rgName = RG_NAME;
-        String sqlServerName = SQL_SERVER_NAME;
+        String sqlServerName = sqlServerName;
         String sqlServerAdminName = "sqladmin";
         String id = sdkContext.randomUuid();
 
         SqlServer sqlServer =
             sqlServerManager
                 .sqlServers()
-                .define(SQL_SERVER_NAME)
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withAdministratorLogin(sqlServerAdminName)
                 .withAdministratorPassword("N0t@P@ssw0rd!")
                 .withActiveDirectoryAdministrator("DSEng", id)
@@ -703,7 +689,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals("v12.0", sqlServer.kind());
         Assertions.assertEquals("12.0", sqlServer.version());
 
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         Assertions.assertEquals(sqlServerAdminName, sqlServer.administratorLogin());
         Assertions.assertEquals("v12.0", sqlServer.kind());
         Assertions.assertEquals("12.0", sqlServer.version());
@@ -725,7 +711,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateResourceNotFound(() -> finalSqlServer.getActiveDirectoryAdministrator());
 
         SqlFirewallRule firewallRule =
-            sqlServerManager.sqlServers().firewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, "somefirewallrule1");
+            sqlServerManager.sqlServers().firewallRules().getBySqlServer(rgName, sqlServerName, "somefirewallrule1");
         Assertions.assertEquals("0.0.0.1", firewallRule.startIPAddress());
         Assertions.assertEquals("0.0.0.1", firewallRule.endIPAddress());
 
@@ -734,14 +720,14 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 sqlServerManager
                     .sqlServers()
                     .firewallRules()
-                    .getBySqlServer(RG_NAME, SQL_SERVER_NAME, "AllowAllWindowsAzureIps"));
+                    .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps"));
 
         sqlServer.enableAccessFromAzureServices();
         firewallRule =
             sqlServerManager
                 .sqlServers()
                 .firewallRules()
-                .getBySqlServer(RG_NAME, SQL_SERVER_NAME, "AllowAllWindowsAzureIps");
+                .getBySqlServer(rgName, sqlServerName, "AllowAllWindowsAzureIps");
         Assertions.assertEquals("0.0.0.0", firewallRule.startIPAddress());
         Assertions.assertEquals("0.0.0.0", firewallRule.endIPAddress());
 
@@ -756,7 +742,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 .sqlServers()
                 .firewallRules()
                 .define("newFirewallRule2")
-                .withExistingSqlServer(RG_NAME, SQL_SERVER_NAME)
+                .withExistingSqlServer(rgName, sqlServerName)
                 .withIPAddress("0.0.0.3")
                 .create();
 
@@ -774,7 +760,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
                 sqlServerManager
                     .sqlServers()
                     .firewallRules()
-                    .getBySqlServer(RG_NAME, SQL_SERVER_NAME, "somefirewallrule1"));
+                    .getBySqlServer(rgName, sqlServerName, "somefirewallrule1"));
 
         firewallRule = sqlServer.firewallRules().define("somefirewallrule2").withIPAddress("0.0.0.4").create();
 
@@ -806,7 +792,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         // Check if the name is available
         CheckNameAvailabilityResult checkNameResult =
-            sqlServerManager.sqlServers().checkNameAvailability(SQL_SERVER_NAME);
+            sqlServerManager.sqlServers().checkNameAvailability(sqlServerName);
         Assertions.assertTrue(checkNameResult.isAvailable());
 
         // Create
@@ -815,7 +801,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         validateSqlServer(sqlServer);
 
         // Confirm the server name is unavailable
-        checkNameResult = sqlServerManager.sqlServers().checkNameAvailability(SQL_SERVER_NAME);
+        checkNameResult = sqlServerManager.sqlServers().checkNameAvailability(sqlServerName);
         Assertions.assertFalse(checkNameResult.isAvailable());
         Assertions
             .assertEquals(
@@ -830,16 +816,16 @@ public class SqlServerOperationsTests extends SqlServerTest {
         sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
         // List
-        PagedIterable<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(RG_NAME);
+        PagedIterable<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(rgName);
         boolean found = false;
         for (SqlServer server : sqlServers) {
-            if (server.name().equals(SQL_SERVER_NAME)) {
+            if (server.name().equals(sqlServerName)) {
                 found = true;
             }
         }
         Assertions.assertTrue(found);
         // Get
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         Assertions.assertNotNull(sqlServer);
 
         sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
@@ -859,9 +845,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlServer sqlServer =
             sqlServerManager
                 .sqlServers()
-                .define(SQL_SERVER_NAME)
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withAdministratorLogin("userName")
                 .withAdministratorPassword("Password~1")
                 .withoutAccessFromAzureServices()
@@ -920,17 +906,17 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertEquals(sqlServer.elasticPools().list().size(), 0);
 
         // List
-        PagedIterable<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(RG_NAME);
+        PagedIterable<SqlServer> sqlServers = sqlServerManager.sqlServers().listByResourceGroup(rgName);
         boolean found = false;
         for (SqlServer server : sqlServers) {
-            if (server.name().equals(SQL_SERVER_NAME)) {
+            if (server.name().equals(sqlServerName)) {
                 found = true;
             }
         }
 
         Assertions.assertTrue(found);
         // Get
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         Assertions.assertNotNull(sqlServer);
 
         sqlServerManager.sqlServers().deleteByResourceGroup(sqlServer.resourceGroupName(), sqlServer.name());
@@ -969,7 +955,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStatus.DISABLED);
         Assertions.assertNotNull(transparentDataEncryption);
         Assertions.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStatus.DISABLED);
-        Assertions.assertEquals(transparentDataEncryption.sqlServerName(), SQL_SERVER_NAME);
+        Assertions.assertEquals(transparentDataEncryption.sqlServerName(), sqlServerName);
         Assertions.assertEquals(transparentDataEncryption.databaseName(), SQL_DATABASE_NAME);
         Assertions.assertNotNull(transparentDataEncryption.name());
         Assertions.assertNotNull(transparentDataEncryption.id());
@@ -987,7 +973,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
         // End of testing service tier advisors.
 
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
         // Create another database with above created database as source database.
@@ -1040,7 +1026,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     @Test
     public void canManageReplicationLinks() throws Exception {
         // Create
-        String anotherSqlServerName = SQL_SERVER_NAME + "another";
+        String anotherSqlServerName = sqlServerName + "another";
         SqlServer sqlServer1 = createSqlServer();
         SqlServer sqlServer2 = createSqlServer(anotherSqlServerName);
 
@@ -1175,7 +1161,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
         // Get Elastic pool
@@ -1272,7 +1258,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
         Flux<Indexable> resourceStream =
@@ -1330,7 +1316,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         // Create
         SqlServer sqlServer = createSqlServer();
 
-        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer = sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName);
         validateSqlServer(sqlServer);
 
         Flux<Indexable> resourceStream =
@@ -1394,7 +1380,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
         SqlServer sqlServer,
         boolean deleteUsingUpdate) {
         validateSqlServer(sqlServer);
-        validateSqlServer(sqlServerManager.sqlServers().getByResourceGroup(RG_NAME, SQL_SERVER_NAME));
+        validateSqlServer(sqlServerManager.sqlServers().getByResourceGroup(rgName, sqlServerName));
         validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
         validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
 
@@ -1488,7 +1474,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             () ->
                 sqlServerManager
                     .sqlServers()
-                    .getByResourceGroup(RG_NAME, SQL_SERVER_NAME)
+                    .getByResourceGroup(rgName, sqlServerName)
                     .firewallRules()
                     .get(SQL_FIREWALLRULE_NAME));
     }
@@ -1502,7 +1488,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             () ->
                 sqlServerManager
                     .sqlServers()
-                    .getByResourceGroup(RG_NAME, SQL_SERVER_NAME)
+                    .getByResourceGroup(rgName, sqlServerName)
                     .databases()
                     .get(newDatabase));
     }
@@ -1521,15 +1507,15 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     private SqlServer createSqlServer() {
-        return createSqlServer(SQL_SERVER_NAME);
+        return createSqlServer(sqlServerName);
     }
 
-    private SqlServer createSqlServer(String SQL_SERVER_NAME) {
+    private SqlServer createSqlServer(String sqlServerName) {
         return sqlServerManager
             .sqlServers()
-            .define(SQL_SERVER_NAME)
+            .define(sqlServerName)
             .withRegion(Region.US_EAST)
-            .withNewResourceGroup(RG_NAME)
+            .withNewResourceGroup(rgName)
             .withAdministratorLogin("userName")
             .withAdministratorPassword("P@ssword~1")
             .create();
@@ -1548,11 +1534,11 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private void validateSqlFirewallRule(SqlFirewallRule sqlFirewallRule, String firewallName) {
         Assertions.assertNotNull(sqlFirewallRule);
         Assertions.assertEquals(firewallName, sqlFirewallRule.name());
-        Assertions.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
+        Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
         Assertions.assertEquals(START_IPADDRESS, sqlFirewallRule.startIPAddress());
         Assertions.assertEquals(END_IPADDRESS, sqlFirewallRule.endIPAddress());
-        Assertions.assertEquals(RG_NAME, sqlFirewallRule.resourceGroupName());
-        Assertions.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
+        Assertions.assertEquals(rgName, sqlFirewallRule.resourceGroupName());
+        Assertions.assertEquals(sqlServerName, sqlFirewallRule.sqlServerName());
         Assertions.assertEquals(Region.US_EAST, sqlFirewallRule.region());
     }
 
@@ -1572,9 +1558,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     private void validateSqlElasticPool(SqlElasticPool sqlElasticPool, String elasticPoolName) {
         Assertions.assertNotNull(sqlElasticPool);
-        Assertions.assertEquals(RG_NAME, sqlElasticPool.resourceGroupName());
+        Assertions.assertEquals(rgName, sqlElasticPool.resourceGroupName());
         Assertions.assertEquals(elasticPoolName, sqlElasticPool.name());
-        Assertions.assertEquals(SQL_SERVER_NAME, sqlElasticPool.sqlServerName());
+        Assertions.assertEquals(sqlServerName, sqlElasticPool.sqlServerName());
         Assertions.assertEquals(ElasticPoolEdition.STANDARD, sqlElasticPool.edition());
         Assertions.assertNotNull(sqlElasticPool.creationDate());
         Assertions.assertNotEquals(0, sqlElasticPool.databaseDtuMax());
@@ -1593,7 +1579,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
     private void validateSqlServer(SqlServer sqlServer) {
         Assertions.assertNotNull(sqlServer);
-        Assertions.assertEquals(RG_NAME, sqlServer.resourceGroupName());
+        Assertions.assertEquals(rgName, sqlServer.resourceGroupName());
         Assertions.assertNotNull(sqlServer.fullyQualifiedDomainName());
         //        Assertions.assertEquals(ServerVersion.ONE_TWO_FULL_STOP_ZERO, sqlServer.version());
         Assertions.assertEquals("userName", sqlServer.administratorLogin());
@@ -1602,7 +1588,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
     private void validateSqlDatabase(SqlDatabase sqlDatabase, String databaseName) {
         Assertions.assertNotNull(sqlDatabase);
         Assertions.assertEquals(sqlDatabase.name(), databaseName);
-        Assertions.assertEquals(SQL_SERVER_NAME, sqlDatabase.sqlServerName());
+        Assertions.assertEquals(sqlServerName, sqlDatabase.sqlServerName());
         Assertions.assertEquals(sqlDatabase.collation(), COLLATION);
         Assertions.assertEquals(sqlDatabase.edition(), DatabaseEdition.STANDARD);
     }
