@@ -27,12 +27,6 @@ public final class Block {
     @JsonProperty(value = "Size", required = true)
     private long sizeLong;
 
-    /*
-     * The size property.
-     */
-    
-    
-
     /**
      * Get the name property: The base64 encoded block ID.
      *

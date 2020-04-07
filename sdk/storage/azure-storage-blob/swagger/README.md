@@ -1343,7 +1343,8 @@ directive:
       replace('@return the sizeInt value.', '@return the size value.\n     * @deprecated Use {@link #getSizeLong()}').
       replace('@param sizeInt the sizeInt value to set.', '@param size the size value to set.\n     * @deprecated Use {@link #setSizeLong(long)}').
       replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
-      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size')
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
