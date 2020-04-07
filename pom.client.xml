@@ -422,7 +422,7 @@
       <plugin>
         <groupId>net.jonathangiles.tools</groupId>
         <artifactId>whitelistgenerator-maven-plugin</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>generateWhitelistReport</id>
