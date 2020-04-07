@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RecoverableDatabaseListResult model.
- */
+/** The RecoverableDatabaseListResult model. */
 @Fluent
 public final class RecoverableDatabaseListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class RecoverableDatabaseListResultInner {
 
     /**
      * Get the value property: A list of recoverable databases.
-     * 
+     *
      * @return the value value.
      */
     public List<RecoverableDatabaseInner> value() {
@@ -30,7 +28,7 @@ public final class RecoverableDatabaseListResultInner {
 
     /**
      * Set the value property: A list of recoverable databases.
-     * 
+     *
      * @param value the value value to set.
      * @return the RecoverableDatabaseListResultInner object itself.
      */

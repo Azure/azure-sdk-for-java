@@ -7,22 +7,20 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobStepAction model.
- */
+/** The JobStepAction model. */
 @Fluent
 public final class JobStepAction {
     /*
      * Type of action being executed by the job step.
      */
     @JsonProperty(value = "type")
-    private String type;
+    private JobStepActionType type;
 
     /*
      * The source of the action to execute.
      */
     @JsonProperty(value = "source")
-    private String source;
+    private JobStepActionSource source;
 
     /*
      * The action value, for example the text of the T-SQL script to execute.
@@ -31,57 +29,48 @@ public final class JobStepAction {
     private String value;
 
     /**
-     * Creates an instance of JobStepAction class.
-     */
-    public JobStepAction() {
-        type = "TSql";
-        source = "Inline";
-    }
-
-    /**
      * Get the type property: Type of action being executed by the job step.
-     * 
+     *
      * @return the type value.
      */
-    public String type() {
+    public JobStepActionType type() {
         return this.type;
     }
 
     /**
      * Set the type property: Type of action being executed by the job step.
-     * 
+     *
      * @param type the type value to set.
      * @return the JobStepAction object itself.
      */
-    public JobStepAction withType(String type) {
+    public JobStepAction withType(JobStepActionType type) {
         this.type = type;
         return this;
     }
 
     /**
      * Get the source property: The source of the action to execute.
-     * 
+     *
      * @return the source value.
      */
-    public String source() {
+    public JobStepActionSource source() {
         return this.source;
     }
 
     /**
      * Set the source property: The source of the action to execute.
-     * 
+     *
      * @param source the source value to set.
      * @return the JobStepAction object itself.
      */
-    public JobStepAction withSource(String source) {
+    public JobStepAction withSource(JobStepActionSource source) {
         this.source = source;
         return this;
     }
 
     /**
-     * Get the value property: The action value, for example the text of the
-     * T-SQL script to execute.
-     * 
+     * Get the value property: The action value, for example the text of the T-SQL script to execute.
+     *
      * @return the value value.
      */
     public String value() {
@@ -89,9 +78,8 @@ public final class JobStepAction {
     }
 
     /**
-     * Set the value property: The action value, for example the text of the
-     * T-SQL script to execute.
-     * 
+     * Set the value property: The action value, for example the text of the T-SQL script to execute.
+     *
      * @param value the value value to set.
      * @return the JobStepAction object itself.
      */

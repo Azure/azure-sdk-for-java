@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The JobStepListResult model.
- */
+/** The JobStepListResult model. */
 @Immutable
 public final class JobStepListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class JobStepListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<JobStepInner> value() {
@@ -36,7 +34,7 @@ public final class JobStepListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

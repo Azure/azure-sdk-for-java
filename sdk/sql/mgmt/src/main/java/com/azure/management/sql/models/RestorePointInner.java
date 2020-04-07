@@ -11,9 +11,7 @@ import com.azure.management.sql.RestorePointType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The RestorePoint model.
- */
+/** The RestorePoint model. */
 @JsonFlatten
 @Immutable
 public class RestorePointInner extends ProxyResource {
@@ -49,7 +47,7 @@ public class RestorePointInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -58,7 +56,7 @@ public class RestorePointInner extends ProxyResource {
 
     /**
      * Get the restorePointType property: The type of restore point.
-     * 
+     *
      * @return the restorePointType value.
      */
     public RestorePointType restorePointType() {
@@ -66,9 +64,8 @@ public class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the earliestRestoreDate property: The earliest time to which this
-     * database can be restored.
-     * 
+     * Get the earliestRestoreDate property: The earliest time to which this database can be restored.
+     *
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -76,9 +73,8 @@ public class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the restorePointCreationDate property: The time the backup was
-     * taken.
-     * 
+     * Get the restorePointCreationDate property: The time the backup was taken.
+     *
      * @return the restorePointCreationDate value.
      */
     public OffsetDateTime restorePointCreationDate() {
@@ -86,9 +82,8 @@ public class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the restorePointLabel property: The label of restore point for
-     * backup request by user.
-     * 
+     * Get the restorePointLabel property: The label of restore point for backup request by user.
+     *
      * @return the restorePointLabel value.
      */
     public String restorePointLabel() {

@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobStepExecutionOptions model.
- */
+/** The JobStepExecutionOptions model. */
 @Fluent
 public final class JobStepExecutionOptions {
     /*
@@ -46,7 +44,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Get the timeoutSeconds property: Execution timeout for the job step.
-     * 
+     *
      * @return the timeoutSeconds value.
      */
     public Integer timeoutSeconds() {
@@ -55,7 +53,7 @@ public final class JobStepExecutionOptions {
 
     /**
      * Set the timeoutSeconds property: Execution timeout for the job step.
-     * 
+     *
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -65,9 +63,9 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Get the retryAttempts property: Maximum number of times the job step
-     * will be reattempted if the first attempt fails.
-     * 
+     * Get the retryAttempts property: Maximum number of times the job step will be reattempted if the first attempt
+     * fails.
+     *
      * @return the retryAttempts value.
      */
     public Integer retryAttempts() {
@@ -75,9 +73,9 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Set the retryAttempts property: Maximum number of times the job step
-     * will be reattempted if the first attempt fails.
-     * 
+     * Set the retryAttempts property: Maximum number of times the job step will be reattempted if the first attempt
+     * fails.
+     *
      * @param retryAttempts the retryAttempts value to set.
      * @return the JobStepExecutionOptions object itself.
      */
@@ -87,9 +85,8 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Get the initialRetryIntervalSeconds property: Initial delay between
-     * retries for job step execution.
-     * 
+     * Get the initialRetryIntervalSeconds property: Initial delay between retries for job step execution.
+     *
      * @return the initialRetryIntervalSeconds value.
      */
     public Integer initialRetryIntervalSeconds() {
@@ -97,11 +94,9 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Set the initialRetryIntervalSeconds property: Initial delay between
-     * retries for job step execution.
-     * 
-     * @param initialRetryIntervalSeconds the initialRetryIntervalSeconds value
-     * to set.
+     * Set the initialRetryIntervalSeconds property: Initial delay between retries for job step execution.
+     *
+     * @param initialRetryIntervalSeconds the initialRetryIntervalSeconds value to set.
      * @return the JobStepExecutionOptions object itself.
      */
     public JobStepExecutionOptions withInitialRetryIntervalSeconds(Integer initialRetryIntervalSeconds) {
@@ -110,9 +105,9 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Get the maximumRetryIntervalSeconds property: The maximum amount of time
-     * to wait between retries for job step execution.
-     * 
+     * Get the maximumRetryIntervalSeconds property: The maximum amount of time to wait between retries for job step
+     * execution.
+     *
      * @return the maximumRetryIntervalSeconds value.
      */
     public Integer maximumRetryIntervalSeconds() {
@@ -120,11 +115,10 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Set the maximumRetryIntervalSeconds property: The maximum amount of time
-     * to wait between retries for job step execution.
-     * 
-     * @param maximumRetryIntervalSeconds the maximumRetryIntervalSeconds value
-     * to set.
+     * Set the maximumRetryIntervalSeconds property: The maximum amount of time to wait between retries for job step
+     * execution.
+     *
+     * @param maximumRetryIntervalSeconds the maximumRetryIntervalSeconds value to set.
      * @return the JobStepExecutionOptions object itself.
      */
     public JobStepExecutionOptions withMaximumRetryIntervalSeconds(Integer maximumRetryIntervalSeconds) {
@@ -133,9 +127,8 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Get the retryIntervalBackoffMultiplier property: The backoff multiplier
-     * for the time between retries.
-     * 
+     * Get the retryIntervalBackoffMultiplier property: The backoff multiplier for the time between retries.
+     *
      * @return the retryIntervalBackoffMultiplier value.
      */
     public Float retryIntervalBackoffMultiplier() {
@@ -143,11 +136,9 @@ public final class JobStepExecutionOptions {
     }
 
     /**
-     * Set the retryIntervalBackoffMultiplier property: The backoff multiplier
-     * for the time between retries.
-     * 
-     * @param retryIntervalBackoffMultiplier the retryIntervalBackoffMultiplier
-     * value to set.
+     * Set the retryIntervalBackoffMultiplier property: The backoff multiplier for the time between retries.
+     *
+     * @param retryIntervalBackoffMultiplier the retryIntervalBackoffMultiplier value to set.
      * @return the JobStepExecutionOptions object itself.
      */
     public JobStepExecutionOptions withRetryIntervalBackoffMultiplier(Float retryIntervalBackoffMultiplier) {

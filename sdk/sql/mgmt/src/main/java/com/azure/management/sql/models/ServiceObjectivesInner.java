@@ -22,101 +22,134 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ServiceObjectives.
- */
+/** An instance of this class provides access to all the operations defined in ServiceObjectives. */
 public final class ServiceObjectivesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ServiceObjectivesService service;
+    /** The proxy service used to perform REST calls. */
+    private final ServiceObjectivesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ServiceObjectivesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ServiceObjectivesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ServiceObjectivesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ServiceObjectivesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientServiceObjectives to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SqlManagementClientServiceObjectives to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientServiceObjectives")
+    @ServiceInterface(name = "SqlManagementClientS")
     private interface ServiceObjectivesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives/{serviceObjectiveName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/serviceObjectives/{serviceObjectiveName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ServiceObjectiveInner>> get(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("serviceObjectiveName") String serviceObjectiveName);
+        Mono<SimpleResponse<ServiceObjectiveInner>> get(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("serviceObjectiveName") String serviceObjectiveName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/serviceObjectives")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ServiceObjectiveListResultInner>> listByServer(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName);
+        Mono<SimpleResponse<ServiceObjectiveListResultInner>> listByServer(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            Context context);
     }
 
     /**
      * Gets a database service objective.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param serviceObjectiveName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param serviceObjectiveName The name of the service objective to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database service objective.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ServiceObjectiveInner>> getWithResponseAsync(String resourceGroupName, String serverName, String serviceObjectiveName) {
+    public Mono<SimpleResponse<ServiceObjectiveInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String serviceObjectiveName) {
         final String apiVersion = "2014-04-01";
-        return service.get(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName, serviceObjectiveName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            serviceObjectiveName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a database service objective.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param serviceObjectiveName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param serviceObjectiveName The name of the service objective to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database service objective.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceObjectiveInner> getAsync(String resourceGroupName, String serverName, String serviceObjectiveName) {
+    public Mono<ServiceObjectiveInner> getAsync(
+        String resourceGroupName, String serverName, String serviceObjectiveName) {
         return getWithResponseAsync(resourceGroupName, serverName, serviceObjectiveName)
-            .flatMap((SimpleResponse<ServiceObjectiveInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ServiceObjectiveInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a database service objective.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param serviceObjectiveName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param serviceObjectiveName The name of the service objective to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database service objective.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceObjectiveInner get(String resourceGroupName, String serverName, String serviceObjectiveName) {
@@ -125,49 +158,63 @@ public final class ServiceObjectivesInner {
 
     /**
      * Returns database service objectives.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a get database service objectives request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServiceObjectiveInner>> listByServerSinglePageAsync(String resourceGroupName, String serverName) {
+    public Mono<PagedResponse<ServiceObjectiveInner>> listByServerSinglePageAsync(
+        String resourceGroupName, String serverName) {
         final String apiVersion = "2014-04-01";
-        return service.listByServer(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByServer(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            context))
+            .<PagedResponse<ServiceObjectiveInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Returns database service objectives.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a get database service objectives request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceObjectiveInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName));
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName));
     }
 
     /**
      * Returns database service objectives.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a get database service objectives request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceObjectiveInner> listByServer(String resourceGroupName, String serverName) {
