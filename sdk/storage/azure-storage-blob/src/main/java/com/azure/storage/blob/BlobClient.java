@@ -165,7 +165,7 @@ public class BlobClient extends BlobClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @deprecated
+     * @deprecated Use {@link #uploadWithResponse(InputStream, long, ParallelTransferOptions, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration)}
      */
     @Deprecated
     public void uploadWithResponse(InputStream data, long length, ParallelTransferOptions parallelTransferOptions,
