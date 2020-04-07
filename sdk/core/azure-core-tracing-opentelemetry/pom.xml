@@ -95,7 +95,7 @@
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>io.opentelemetry</include>
+                    <include>io.opentelemetry:opentelemetry-api</include>
                   </includes>
                 </bannedDependencies>
               </rules>

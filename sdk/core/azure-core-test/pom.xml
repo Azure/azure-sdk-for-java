@@ -124,11 +124,9 @@
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>org.slf4j</include>
-                    <include>io.projectreactor</include>
-
+                    <include>io.projectreactor:reactor-test</include>
                     <!-- special allowance for azure-core-test as it is not a shipping library: -->
-                    <include>org.junit.jupiter</include>
+                    <include>org.junit.jupiter:junit-jupiter-api</include>
                   </includes>
                 </bannedDependencies>
               </rules>

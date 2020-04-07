@@ -132,13 +132,15 @@ Licensed under the MIT License.
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>org.slf4j</include>
+                    <include>org.slf4j:slf4j-api</include>
 
                     <!-- The cosmos examples are allowed additional dependencies as it is not a library -->
                     <include>com.google.guava:guava</include>
                     <include>commons-io:commons-io</include>
                     <include>org.apache.commons:commons-lang3</include>
-                    <include>org.apache.logging.log4j</include>
+                    <include>org.apache.logging.log4j:log4j-api</include>
+                    <include>org.apache.logging.log4j:log4j-core</include>
+                    <include>org.apache.logging.log4j:log4j-slf4j-impl</include>
                   </includes>
                 </bannedDependencies>
               </rules>

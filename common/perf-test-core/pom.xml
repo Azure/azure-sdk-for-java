@@ -66,8 +66,7 @@
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>org.slf4j</include>
-                    <include>com.fasterxml.jackson.*</include>
+                    <include>com.fasterxml.jackson.core:jackson-databind</include>
 
                     <!-- special allowance for perf-test-core as it is not a shipping library: -->
                     <include>com.beust:jcommander</include>

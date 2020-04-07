@@ -236,7 +236,7 @@ Licensed under the MIT License.
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-                    <include>org.slf4j</include>
+                    <include>org.slf4j:slf4j-api</include>
                     <include>io.dropwizard.metrics:metrics-core</include>
                     <include>com.beust:jcommander</include>
 

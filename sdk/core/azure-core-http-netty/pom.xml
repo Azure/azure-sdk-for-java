@@ -193,9 +193,6 @@
                   </excludes>
                   <includes>
                     <include>com.azure:*</include>
-
-                    <include>io.projectreactor.netty</include>
-
                     <include>io.netty:netty-buffer</include>
                     <include>io.netty:netty-codec-http</include>
                     <include>io.netty:netty-codec-http2</include>
@@ -203,6 +200,7 @@
                     <include>io.netty:netty-handler-proxy</include>
                     <include>io.netty:netty-transport-native-unix-common</include>
                     <include>io.netty:netty-transport-native-epoll</include>
+                    <include>io.projectreactor.netty:reactor-netty </include>
                   </includes>
                 </bannedDependencies>
               </rules>
