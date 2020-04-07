@@ -9,6 +9,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.ServiceVersion;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -314,12 +317,13 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private static List<String> buildPlatformList() {
         List<String> platformList = new ArrayList<>();
-        platformList.add("win,8");
-        platformList.add("win,11");
-        platformList.add("mac,8");
-        platformList.add("mac,11");
-        platformList.add("linux,8");
-        platformList.add("linux,11");
+        String fileName = "..\\..\\..\\..\\..\\..\\..\\..\\..\\..\\"
+            + "eng\\pipelines\\templates\\variables\\platform-list.cvs";
+        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+            platformList.addAll(stream.collect(toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return platformList;
     }
 }
