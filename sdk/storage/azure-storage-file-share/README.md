@@ -17,14 +17,14 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 - [Azure Subscription][azure_subscription]
 - [Create Storage Account][storage_account]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-storage-file-share;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.3.0</version>
+  <version>12.4.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

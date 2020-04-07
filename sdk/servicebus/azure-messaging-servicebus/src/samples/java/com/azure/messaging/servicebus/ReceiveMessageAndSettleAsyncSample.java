@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 
@@ -15,8 +16,7 @@ import java.time.Duration;
 public class ReceiveMessageAndSettleAsyncSample {
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus
-     * Queue
+     * Main method to invoke this demo on how to receive an {@link ServiceBusMessage} from an Azure Service Bus Queue
      *
      * @param args Unused arguments to the program.
      */
@@ -33,18 +33,17 @@ public class ReceiveMessageAndSettleAsyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-
         ServiceBusReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .isLockAutoRenewed(true)
             .queueName("<<queue-name>>")
-            .isAutoComplete(false)
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildAsyncClient();
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
 
-        Disposable subscription = receiverAsyncClient.receive()
+        Disposable subscription = receiverAsyncClient.receive(options)
             .flatMap(message -> {
                 boolean messageProcessed =  false;
                 // Process the message here.
