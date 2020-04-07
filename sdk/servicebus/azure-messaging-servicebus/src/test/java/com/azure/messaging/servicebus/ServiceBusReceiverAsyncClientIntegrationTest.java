@@ -5,6 +5,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Disabled;
@@ -23,6 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
@@ -38,8 +41,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
-    private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
-    private ServiceBusReceiverAsyncClient sessionReceiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusSenderAsyncClient sessionSender;
 
@@ -48,51 +49,35 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     @Override
-    protected void beforeTest() {
-        final String queueName = getQueueName();
-        final String sessionQueueName = getSessionQueueName();
-        assertNotNull(queueName, "'queueName' cannot be null.");
-        assertNotNull(sessionQueueName, "'sessionQueueName' cannot be null.");
-
-        sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
-        sessionSender = createBuilder().sender().queueName(sessionQueueName).buildAsyncClient();
-        receiver = createBuilder()
-            .receiver()
-            .queueName(queueName)
-            .buildAsyncClient();
-
-        receiveDeleteModeReceiver = createBuilder()
-            .receiver()
-            .queueName(queueName)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-            .buildAsyncClient();
-        sessionReceiveDeleteModeReceiver = createBuilder()
-            .receiver()
-            .queueName(sessionQueueName)
-            .sessionId(SESSION_ID)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-            .buildAsyncClient();
+    protected void afterTest() {
+        dispose(receiver, sender);
     }
 
-    @Override
-    protected void afterTest() {
-        dispose(receiver, receiveDeleteModeReceiver, sender, sessionSender);
+    static Stream<Arguments> receiverTypesProvider() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION)
+        );
     }
 
     /**
      * Verifies that we can send and receive two messages.
      */
     @Disabled("Problem when receiving two messages. Link is closed prematurely.")
-    @Test
-    void receiveTwoMessagesAutoComplete() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void receiveTwoMessagesAutoComplete(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
+        Mono.when(sender.send(message), sender.send(message)).block();
+
         // Assert & Act
-        StepVerifier.create(sender.send(message).then(sender.send(message))
-            .thenMany(receiver.receive(options)))
+        StepVerifier.create(receiver.receive(options))
             .assertNext(receivedMessage ->
                 assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .assertNext(receivedMessage ->
@@ -104,15 +89,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and receive a message.
      */
-    @Test
-    void receiveMessageAutoComplete() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void receiveMessageAutoComplete(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
+        sender.send(message).block();
+
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiver.receive(options)))
+        StepVerifier.create(receiver.receive(options))
             .assertNext(receivedMessage ->
                 assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .thenCancel()
@@ -122,14 +112,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a message.
      */
-    @Test
-    void peekMessage() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void peekMessage(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
 
+        sender.send(message).block();
+
         // Assert & Act
-        StepVerifier.create(sender.send(message).then(receiver.peek()))
+        StepVerifier.create(receiver.peek())
             .assertNext(receivedMessage -> assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .verifyComplete();
     }
@@ -137,20 +132,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can schedule and receive a message.
      */
-    @Test
-    void sendScheduledMessageAndReceive() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void sendScheduledMessageAndReceive(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
 
-        sender.scheduleMessage(message, scheduledEnqueueTime)
-            .delaySubscription(Duration.ofSeconds(3))
-            .block();
+        sender.scheduleMessage(message, scheduledEnqueueTime).block();
 
         // Assert & Act
-        StepVerifier.create(receiver.receive().take(1))
+        StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiver.receive().next())
             .assertNext(receivedMessage -> {
                 assertArrayEquals(contents.getBytes(), receivedMessage.getBody());
                 assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
@@ -161,9 +156,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can schedule and receive multiple messages.
      */
-    @Test
-    void sendMultipleScheduledMessageAndReceive() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void sendMultipleScheduledMessageAndReceive(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType, builder -> builder.receiveMode(ReceiveMode.PEEK_LOCK));
+
         final String messageId1 = UUID.randomUUID().toString();
         final String messageId2 = UUID.randomUUID().toString();
         final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(CONTENTS, messageId1, 0);
@@ -200,12 +198,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can cancel a scheduled message.
      */
-    @Test
-    void cancelScheduledMessage() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void cancelScheduledMessage(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
-        final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
         final Duration delayDuration = Duration.ofSeconds(3);
 
@@ -221,7 +221,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(receiver.receive().take(1))
-            .thenAwait(Duration.ofSeconds(2))
+            .thenAwait(Duration.ofSeconds(5))
             .thenCancel()
             .verify();
     }
@@ -229,15 +229,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a message.
      */
-    @Test
-    void peekFromSequenceNumberMessage() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void peekFromSequenceNumberMessage(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final long fromSequenceNumber = 1;
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
 
+        sender.send(message).block();
+
         // Assert & Act
-        StepVerifier.create(sender.send(message).then(receiver.peekAt(fromSequenceNumber)))
+        StepVerifier.create(receiver.peekAt(fromSequenceNumber))
             .assertNext(receivedMessage -> assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .verifyComplete();
     }
@@ -245,16 +250,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a batch of messages.
      */
-    @Test
-    void peekBatchMessages() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void peekBatchMessages(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
-        int maxMessages = 2;
+        final int maxMessages = 2;
+
+        Mono.when(sender.send(message), sender.send(message)).block();
 
         // Assert & Act
-        StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
-            .thenMany(receiver.peekBatch(maxMessages)))
+        StepVerifier.create(receiver.peekBatch(maxMessages))
             .expectNextCount(maxMessages)
             .verifyComplete();
     }
@@ -262,17 +271,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a batch of messages.
      */
-    @Test
-    void peekBatchMessagesFromSequence() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
-        int maxMessages = 2;
-        int fromSequenceNumber = 1;
+        final int maxMessages = 2;
+        final int fromSequenceNumber = 1;
+
+        Mono.when(sender.send(message), sender.send(message)).block();
 
         // Assert & Act
-        StepVerifier.create(Mono.when(sender.send(message), sender.send(message))
-            .thenMany(receiver.peekBatchAt(maxMessages, fromSequenceNumber)))
+        StepVerifier.create(receiver.peekBatchAt(maxMessages, fromSequenceNumber))
             .expectNextCount(maxMessages)
             .verifyComplete();
     }
@@ -280,9 +293,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can deadletter a message.
      */
-    @Test
-    void deadLetterMessage() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void deadLetterMessage(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
@@ -302,9 +318,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can renew message lock.
      */
-    @Test
-    void receiveAndRenewLock() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void receiveAndRenewLock(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, "id-1", 0);
 
         final AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
@@ -340,9 +359,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that the lock can be automatically renewed.
      */
-    @Test
-    void autoRenewLockOnReceiveMessage() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void autoRenewLockOnReceiveMessage(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
@@ -392,9 +414,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-    @Test
-    void receiveAndAbandon() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void receiveAndAbandon(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
@@ -414,9 +439,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     static Stream<Arguments> receiveBySequenceNumber() {
         return Stream.of(
-            Arguments.of(DispositionStatus.ABANDONED),
-            Arguments.of(DispositionStatus.SUSPENDED),
-            Arguments.of(DispositionStatus.COMPLETED)
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.COMPLETED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.ABANDONED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.SUSPENDED),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, DispositionStatus.COMPLETED)
         );
     }
 
@@ -425,8 +453,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource
     @ParameterizedTest
-    void receiveBySequenceNumber(DispositionStatus dispositionStatus) {
+    void receiveBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
@@ -441,7 +471,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         receiver.defer(receivedMessage).block(TIMEOUT);
 
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
-            .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
+            .receiveDeferredMessage(receivedMessage.getSequenceNumber())
+            .block(TIMEOUT);
 
         assertNotNull(receivedDeferredMessage);
         assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
@@ -468,9 +499,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-    @Test
-    void sendReceiveMessageWithVariousPropertyTypes() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType) {
         // Arrange
+        setSenderAndReceiver(entityType);
+
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
@@ -488,10 +522,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sentProperties.put("UUIDProperty", UUID.randomUUID());
         sentProperties.put("StringProperty", "string");
 
-        sender.send(messageToSend).block(TIMEOUT);
+        sender.send(messageToSend);
 
         // Assert & Act
-        StepVerifier.create(receiveDeleteModeReceiver.receive(options))
+        StepVerifier.create(receiver.receive(options))
             .assertNext(receivedMessage -> {
                 final Map<String, Object> received = receivedMessage.getProperties();
 
