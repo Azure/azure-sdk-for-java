@@ -20,8 +20,8 @@ public abstract class SqlServerTest extends TestBase {
 
     @Override
     protected RestClient buildRestClient(RestClientBuilder builder, boolean isMocked) {
-//        if (!isMocked) {
-//        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS) , isMocked);
+        //        if (!isMocked) {
+        //        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS) , isMocked);
         return super.buildRestClient(builder, isMocked);
     }
 
@@ -30,16 +30,12 @@ public abstract class SqlServerTest extends TestBase {
         RG_NAME = generateRandomResourceName("rgsql", 20);
         SQL_SERVER_NAME = generateRandomResourceName("javasqlserver", 20);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        sqlServerManager = SqlServerManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        sqlServerManager = SqlServerManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
 
-        storageManager = StorageManager
-            .authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
     }
 
     @Override

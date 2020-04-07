@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
-import com.azure.management.sql.SqlDatabaseMetricAvailability;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.MetricAvailability;
+import com.azure.management.sql.SqlDatabaseMetricAvailability;
 
-/**
- * Response containing the SQL database metric availability.
- */
-public class SqlDatabaseMetricAvailabilityImpl extends WrapperImpl<MetricAvailability> implements SqlDatabaseMetricAvailability {
+/** Response containing the SQL database metric availability. */
+public class SqlDatabaseMetricAvailabilityImpl extends WrapperImpl<MetricAvailability>
+    implements SqlDatabaseMetricAvailability {
     protected SqlDatabaseMetricAvailabilityImpl(MetricAvailability innerObject) {
         super(innerObject);
     }
