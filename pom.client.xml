@@ -559,19 +559,19 @@
                 <packages>com.azure.core.management*</packages>
               </group>
               <group>
-                <title>Azure Core - Serializer - Apache Avro</title>
+                <title>Azure Core - Serializer - Avro - Apache</title>
                 <packages>com.azure.core.serializer.avro.apache*</packages>
               </group>
               <group>
-                <title>Azure Core - Serializer - Jackson Avro</title>
+                <title>Azure Core - Serializer - Avro - Jackson</title>
                 <packages>com.azure.core.serializer.avro.jackson*</packages>
               </group>
               <group>
-                <title>Azure Core - Serializer - Gson JSON</title>
+                <title>Azure Core - Serializer - JSON - Gson</title>
                 <packages>com.azure.core.serializer.json.gson*</packages>
               </group>
               <group>
-                <title>Azure Core - Serializer - Jackson JSON</title>
+                <title>Azure Core - Serializer - JSON - Jackson</title>
                 <packages>com.azure.core.serializer.json.jackson*</packages>
               </group>
               <group>

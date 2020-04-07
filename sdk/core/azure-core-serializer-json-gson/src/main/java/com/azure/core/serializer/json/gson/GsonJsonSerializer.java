@@ -21,7 +21,7 @@ public final class GsonJsonSerializer implements JsonSerializer {
      *
      * @param gson Configured {@link Gson} serializer.
      */
-    public GsonJsonSerializer(Gson gson) {
+    GsonJsonSerializer(Gson gson) {
         this.gson = gson;
     }
 
