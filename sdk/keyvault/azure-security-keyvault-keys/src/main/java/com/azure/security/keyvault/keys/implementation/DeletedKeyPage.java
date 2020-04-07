@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.http.rest.Page;
+import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -38,12 +39,12 @@ public final class DeletedKeyPage implements Page<DeletedKey> {
     }
 
     /**
-     * Gets the list of {@link DeletedKey deletedSecrets} on this page.
+     * Gets the iterable stream of {@link DeletedKey deletedSecrets} on this page.
      *
-     * @return The list of items in {@link List}.
+     * @return The iterable stream of items in {@link List}.
      */
     @Override
-    public List<DeletedKey> getItems() {
-        return items;
+    public IterableStream<DeletedKey> getElements() {
+        return IterableStream.of(items);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates.implementation;
 
 import com.azure.core.http.rest.Page;
+import com.azure.core.util.IterableStream;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -22,13 +23,13 @@ public final class ContactPage implements Page<CertificateContact> {
     private List<CertificateContact> items;
 
     /**
-     * Gets the list of {@link CertificateContact contacts} on this page.
+     * Gets the iterable stream of {@link CertificateContact contacts} on this page.
      *
-     * @return The list of items in {@link List}.
+     * @return The iterable stream of items in {@link List}.
      */
     @Override
-    public List<CertificateContact> getItems() {
-        return items;
+    public IterableStream<CertificateContact> getElements() {
+        return IterableStream.of(items);
     }
 
     @Override
