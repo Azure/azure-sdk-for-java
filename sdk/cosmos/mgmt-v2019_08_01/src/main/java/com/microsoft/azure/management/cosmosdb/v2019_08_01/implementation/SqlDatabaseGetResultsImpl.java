@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlDatabaseCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlDatabaseGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlDatabaseResource;
 import rx.functions.Func1;
 
@@ -94,31 +95,6 @@ class SqlDatabaseGetResultsImpl extends CreatableUpdatableImpl<SqlDatabaseGetRes
     }
 
     @Override
-    public String _colls() {
-        return this.inner()._colls();
-    }
-
-    @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
-    public String _users() {
-        return this.inner()._users();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -134,8 +110,8 @@ class SqlDatabaseGetResultsImpl extends CreatableUpdatableImpl<SqlDatabaseGetRes
     }
 
     @Override
-    public String sqlDatabaseGetResultsId() {
-        return this.inner().sqlDatabaseGetResultsId();
+    public SqlDatabaseGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override
