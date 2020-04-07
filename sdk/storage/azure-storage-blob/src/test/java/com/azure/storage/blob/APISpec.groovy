@@ -834,6 +834,9 @@ class APISpec extends Specification {
         }
     }
 
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
     class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
 
         private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
@@ -842,27 +845,26 @@ class APISpec extends Specification {
         Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
             def request = httpPipelineCallContext.httpRequest
             def key = request.url.toString()
+            // Make sure that failure happens once per url.
             if (failureTracker.get(key, false)) {
                 return httpPipelineNextPolicy.process()
             } else {
                 failureTracker.put(key, true)
-                return request.getBody().flatMap(new Function<ByteBuffer, Publisher<ByteBuffer>>() {
-                    @Override
-                    Publisher<ByteBuffer> apply(ByteBuffer byteBuffer) {
+                return request.getBody().flatMap {
+                    byteBuffer ->
+                        // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
                         byteBuffer.get()
                         return Flux.just(byteBuffer)
-                    }
-                }).reduce(0L, new BiFunction<Long, ByteBuffer, Long>() {
-                    @Override
-                    Long apply(Long a, ByteBuffer byteBuffer) {
+                }.reduce( 0L, {
+                    // Reduce in order to force processing of all buffers.
+                    a, byteBuffer ->
                         return a + byteBuffer.remaining()
-                    }
-                }).flatMap(new Function<Long, Mono<HttpResponse>>() {
-                    @Override
-                    Mono<HttpResponse> apply(Long aLong) {
+                    } as BiFunction<Long, ByteBuffer, Long>
+                ).flatMap ({
+                    aLong ->
+                        // Throw retry-able error.
                         return Mono.error(new IOException("KABOOM!"))
-                    }
-                })
+                } as Function<Long, Mono<HttpResponse>>)
             }
         }
     }

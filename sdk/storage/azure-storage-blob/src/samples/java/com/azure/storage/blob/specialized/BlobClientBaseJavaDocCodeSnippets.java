@@ -125,7 +125,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         BlobRange range = new BlobRange(1024, 2048L);
         DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
 
-        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions(4 * Constants.MB, null, null),
+        client.downloadToFileWithResponse(file, range, new ParallelTransferOptions().setBlockSize(4L * Constants.MB),
             options, null, false, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Duration-Context
@@ -136,7 +136,7 @@ public class BlobClientBaseJavaDocCodeSnippets {
         Set<OpenOption> openOptions = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
             StandardOpenOption.WRITE, StandardOpenOption.READ)); // Default options
 
-        client.downloadToFileWithResponse(file, blobRange, new ParallelTransferOptions(4 * Constants.MB, null, null),
+        client.downloadToFileWithResponse(file, blobRange, new ParallelTransferOptions().setBlockSize(4L * Constants.MB),
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.blob.specialized.BlobClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set-Duration-Context

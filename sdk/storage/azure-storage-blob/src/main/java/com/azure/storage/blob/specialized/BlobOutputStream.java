@@ -159,7 +159,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
-            super(Integer.MAX_VALUE);
+            super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
 

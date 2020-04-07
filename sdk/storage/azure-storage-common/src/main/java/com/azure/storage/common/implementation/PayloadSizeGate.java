@@ -16,9 +16,6 @@ import java.util.Queue;
  * The {@link #write(ByteBuffer)} operation buffers incoming ByteBuffers until threshold is crossed.
  * After that it's pass-through as fact that data volume exceeds threshold is already determined.
  *
- * It is incumbent upon the caller to return the buffers after measurement is completed. It is also the caller's
- * responsibility to call flush to return any data still sitting in the gate.
- *
  * RESERVED FOR INTERNAL USE.
  */
 final class PayloadSizeGate {

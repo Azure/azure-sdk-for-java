@@ -643,8 +643,8 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         // Block length will be ignored for single shot.
-        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions((Integer)blockSize, null,
-            null), null, null, null, null))
+        StepVerifier.create(blobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions().setBlockSize(blockSize),
+            null, null, null, null))
             .verifyComplete()
 
         then:
@@ -783,8 +783,8 @@ class BlockBlobAPITest extends APISpec {
         def uploadReporter = new FileUploadReporter()
         def file = getRandomFile(size)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
-            uploadReporter, blockSize - 1)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize).setNumBuffers(bufferCount)
+            .setProgressReceiver(uploadReporter).setMaxSingleUploadSize(blockSize - 1)
 
         then:
         StepVerifier.create(blobAsyncClient.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
@@ -813,7 +813,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blobClient.uploadFromFile(file.toPath().toString(),
-            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null, null)
+            new ParallelTransferOptions().setBlockSize(blockSize).setMaxSingleUploadSize(singleUploadSize), null, null, null, null, null)
 
         then:
         blobClient.getBlockBlobClient()
@@ -1073,7 +1073,7 @@ class BlockBlobAPITest extends APISpec {
     def "Async buffered upload"() {
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null, 4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(bufferSize).setNumBuffers(numBuffs).setMaxSingleUploadSize(4 * Constants.MB)
         blobAsyncClient.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
@@ -1143,8 +1143,8 @@ class BlockBlobAPITest extends APISpec {
         when:
         def uploadReporter = new Reporter(blockSize)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
-            uploadReporter, 4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize).setNumBuffers(bufferCount)
+            .setProgressReceiver(uploadReporter).setMaxSingleUploadSize(4 * Constants.MB)
 
         then:
         StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(size)), parallelTransferOptions,
@@ -1176,7 +1176,7 @@ class BlockBlobAPITest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null, 4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(bufferSize * Constants.MB).setNumBuffers(numBuffers).setMaxSingleUploadSize(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size * Constants.MB)) }
         def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), parallelTransferOptions, true)
@@ -1205,7 +1205,7 @@ class BlockBlobAPITest extends APISpec {
         setup:
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = blobAsyncClient.upload(Flux.fromIterable(dataList), new ParallelTransferOptions().setMaxSingleUploadSize(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1261,7 +1261,8 @@ class BlockBlobAPITest extends APISpec {
 
         def dataList = [] as List<ByteBuffer>
         dataSizeList.each { size -> dataList.add(getRandomData(size)) }
-        def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions((Long)null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = clientWithFailure.upload(Flux.fromIterable(dataList).publish().autoConnect(),
+            new ParallelTransferOptions().setMaxSingleUploadSize(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(blockBlobAsyncClient.download())))
@@ -1280,7 +1281,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Buffered upload illegal arguments null"() {
         expect:
-        StepVerifier.create(blobAsyncClient.upload(null, new ParallelTransferOptions(4, 4, null), true))
+        StepVerifier.create(blobAsyncClient.upload(null, new ParallelTransferOptions().setBlockSize(4).setNumBuffers(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -1308,7 +1309,7 @@ class BlockBlobAPITest extends APISpec {
         when:
         def data = getRandomByteArray(dataSize)
         def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
-        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), new BlobHttpHeaders()
+        def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions().setMaxSingleUploadSize(4 * Constants.MB), new BlobHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -1349,7 +1350,7 @@ class BlockBlobAPITest extends APISpec {
         }
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(10).setNumBuffers(10)
         def uploadOperation = blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)),
             parallelTransferOptions, null, metadata, null, null)
 
@@ -1374,7 +1375,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         blobAsyncClient.uploadWithResponse(Flux.just(data),
-            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null).block()
+            new ParallelTransferOptions().setBlockSize(blockSize).setMaxSingleUploadSize(singleUploadSize), null, null, null, null).block()
 
         then:
         blobAsyncClient.getBlockBlobAsyncClient()
@@ -1404,7 +1405,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(10)
         StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions,
             null, null, null, requestConditions))
             .assertNext({ assert it.getStatusCode() == 201 })
@@ -1434,7 +1435,7 @@ class BlockBlobAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-        def parallelTransferOptions = new ParallelTransferOptions(10, null, null)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSize(10)
 
         expect:
         StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(10)), parallelTransferOptions, null, null, null, requestConditions))
@@ -1465,8 +1466,9 @@ class BlockBlobAPITest extends APISpec {
         def requestConditions = new BlobRequestConditions().setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize as int,
-            numBuffers as int, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSize(blockSize)
+            .setNumBuffers(numBuffers as int)
 
         then:
         StepVerifier.create(blobAsyncClient.uploadWithResponse(Flux.just(getRandomData(dataLength)),
@@ -1544,7 +1546,7 @@ class BlockBlobAPITest extends APISpec {
 
         when:
         // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(1024, 4, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(1024).setNumBuffers(4)
         // TODO: It could be that duplicates aren't getting made in the retry policy? Or before the retry policy?
 
         then:

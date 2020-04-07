@@ -53,6 +53,7 @@ class LargeBlobTest extends APISpec {
 
     @Requires({ liveMode() })
     @Ignore("Takes really long time")
+    // This test sends payload over the wire
     def "Stage Real Large Blob"() {
         given:
         def stream = createLargeInputStream(maxBlockSize)
@@ -70,6 +71,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    // This test does not send large payload over the wire
     def "Stage Large Blob"() {
         given:
         def stream = createLargeInputStream(maxBlockSize)
@@ -86,6 +88,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    // This test does not send large payload over the wire
     def "Upload Large Input"() {
         given:
         def length = maxBlockSize * 2
@@ -105,6 +108,7 @@ class LargeBlobTest extends APISpec {
 
     @Requires({ liveMode() })
     @Ignore("Takes really long time")
+    // This test does not send large payload over the wire
     def "Upload Largest Input"() {
         given:
         collectSize = false
@@ -122,6 +126,7 @@ class LargeBlobTest extends APISpec {
     }
 
     @Requires({ liveMode() })
+    // This test does not send large payload over the wire
     def "Upload Large Input Sync"() {
         given:
         long blocks = 2
@@ -143,6 +148,7 @@ class LargeBlobTest extends APISpec {
 
     @Requires({ liveMode() })
     @Ignore("Takes really long time")
+    // This test does not send large payload over the wire
     def "Upload Largest Input Sync"() {
         given:
         collectSize = false
@@ -162,6 +168,7 @@ class LargeBlobTest extends APISpec {
 
     @Requires({ liveMode() })
     @Ignore("Takes really long time")
+    // This test sends payload over the wire
     def "Upload Large File"() {
         given:
         def file = getRandomLargeFile(maxBlockSize)
