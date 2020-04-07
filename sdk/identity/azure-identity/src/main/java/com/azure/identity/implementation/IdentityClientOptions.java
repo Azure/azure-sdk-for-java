@@ -246,12 +246,15 @@ public final class IdentityClientOptions {
             args.add(null);
             args.add(null);
         }
-        return PersistenceSettings.builder(cacheFileName, cacheFileDirectory)
-                .setMacKeychain(keychainService, keychainAccount)
-                .setLinuxKeyring(keyringName, keyringItemSchema.toString(), keyringItemName,
-                        args.get(0), args.get(1), args.get(2), args.get(3))
-                .setLinuxUseUnprotectedFileAsCacheStorage(useUnprotectedFileOnLinux)
-                .build();
+        PersistenceSettings.Builder builder = PersistenceSettings.builder(cacheFileName, cacheFileDirectory);
+        if (Platform.isMac()) {
+            builder.setMacKeychain(keychainService, keychainAccount);
+        } else if (Platform.isLinux()) {
+            builder.setLinuxKeyring(keyringName, keyringItemSchema.toString(), keyringItemName,
+                    args.get(0), args.get(1), args.get(2), args.get(3))
+                    .setLinuxUseUnprotectedFileAsCacheStorage(useUnprotectedFileOnLinux);
+        }
+        return builder.build();
     }
 
     /**
