@@ -420,6 +420,31 @@
       </plugin>
 
       <plugin>
+        <groupId>net.jonathangiles.tools</groupId>
+        <artifactId>whitelistgenerator-maven-plugin</artifactId>
+        <version>1.0.1</version>
+        <executions>
+          <execution>
+            <id>generateWhitelistReport</id>
+            <phase>package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <baseDir>.</baseDir>
+              <reportFile>dependency-whitelist.json</reportFile>
+              <ignoredGA>
+                <param>com.azure:azure-cosmos-examples</param>
+                <param>com.azure:azure-cosmos-benchmark</param>
+                <param>com.azure:azure-core-test</param>
+                <param>com.azure:azure-e2e</param>
+              </ignoredGA>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
