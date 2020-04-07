@@ -241,7 +241,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -277,7 +277,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -309,7 +309,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -331,11 +331,11 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -362,11 +362,11 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String privateEndpointConnectionName) {
@@ -385,7 +385,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,7 +473,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -509,7 +509,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -540,7 +540,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param parameters A private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -563,11 +563,11 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
@@ -594,11 +594,11 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(
@@ -613,7 +613,7 @@ public final class PrivateEndpointConnectionsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
-     * @param privateEndpointConnectionName
+     * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -626,7 +626,7 @@ public final class PrivateEndpointConnectionsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

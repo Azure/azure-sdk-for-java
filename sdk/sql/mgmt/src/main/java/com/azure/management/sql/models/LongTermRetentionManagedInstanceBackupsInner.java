@@ -149,9 +149,9 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
+                + "/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ManagedInstanceLongTermRetentionBackupInner>> getByResourceGroup(
@@ -167,9 +167,9 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
+                + "/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByResourceGroup(
@@ -185,9 +185,9 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
+                + "/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ManagedInstanceLongTermRetentionBackupListResultInner>> listByResourceGroupDatabase(
@@ -204,8 +204,8 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
                 + "/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
@@ -222,8 +222,8 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstanceBackups")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionManagedInstanceBackups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ManagedInstanceLongTermRetentionBackupListResultInner>> listByResourceGroupLocation(
@@ -255,9 +255,9 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations"
-                + "/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases"
-                + "/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}"
+                + "/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups/{backupName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> beginDeleteByResourceGroup(
@@ -400,7 +400,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -432,7 +432,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -948,7 +948,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByResourceGroupWithResponseAsync(
@@ -987,7 +987,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByResourceGroupAsync(
@@ -1499,7 +1499,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
@@ -1531,7 +1531,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(
@@ -1568,7 +1568,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteByResourceGroupWithResponseAsync(
@@ -1607,7 +1607,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteByResourceGroupAsync(
@@ -1648,7 +1648,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1674,7 +1674,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1700,7 +1700,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1726,7 +1726,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1752,7 +1752,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1778,7 +1778,7 @@ public final class LongTermRetentionManagedInstanceBackupsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

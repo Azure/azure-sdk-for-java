@@ -84,7 +84,7 @@ public final class SqlManagementClientBuilder {
      *
      * @return an instance of SqlManagementClientImpl.
      */
-    public SqlManagementClientImpl build() {
+    public SqlManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }

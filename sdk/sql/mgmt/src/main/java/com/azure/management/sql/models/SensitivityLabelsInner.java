@@ -340,7 +340,7 @@ public final class SensitivityLabelsInner {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken
+     * @param skipToken The skipToken parameter.
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -391,7 +391,7 @@ public final class SensitivityLabelsInner {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken
+     * @param skipToken The skipToken parameter.
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -447,7 +447,7 @@ public final class SensitivityLabelsInner {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
-     * @param skipToken
+     * @param skipToken The skipToken parameter.
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -504,7 +504,7 @@ public final class SensitivityLabelsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> enableRecommendationWithResponseAsync(
@@ -548,7 +548,7 @@ public final class SensitivityLabelsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> enableRecommendationAsync(
@@ -602,7 +602,7 @@ public final class SensitivityLabelsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationWithResponseAsync(
@@ -646,7 +646,7 @@ public final class SensitivityLabelsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationAsync(
@@ -926,7 +926,7 @@ public final class SensitivityLabelsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -970,7 +970,7 @@ public final class SensitivityLabelsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return completion.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1012,7 +1012,7 @@ public final class SensitivityLabelsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1037,7 +1037,7 @@ public final class SensitivityLabelsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
