@@ -175,7 +175,7 @@ public class BlobClient extends BlobClientBase {
             try {
                 // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
                 BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-                    validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
+                    validatedParallelTransferOptions, headers, metadata, tier, requestConditions, context);
                 StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
                 blobOutputStream.close();
                 return null;
