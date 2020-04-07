@@ -432,7 +432,7 @@
             </goals>
             <configuration>
               <baseDir>.</baseDir>
-              <reportFile>dependency-whitelist.json</reportFile>
+              <reportFile>target/dependency-whitelist.json</reportFile>
               <ignoredGA>
                 <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
