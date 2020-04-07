@@ -25,8 +25,8 @@ import io.micrometer.core.instrument.util.HierarchicalNameMapper;
 import io.micrometer.core.lang.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.util.annotation.NonNull;
 
-import javax.annotation.Nonnull;
 import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -282,7 +282,7 @@ public final class RntbdMetrics {
         final MeterRegistry consoleLoggingRegistry = new DropwizardMeterRegistry(
             dropwizardConfig, dropwizardRegistry, HierarchicalNameMapper.DEFAULT, Clock.SYSTEM) {
             @Override
-            @Nonnull
+            @NonNull
             protected Double nullGaugeValue() {
                 return Double.NaN;
             }

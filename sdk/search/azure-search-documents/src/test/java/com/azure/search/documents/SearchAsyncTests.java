@@ -5,9 +5,11 @@ package com.azure.search.documents;
 
 import com.azure.search.documents.models.CoordinateSystem;
 import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.GeoPoint;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.ValueFacetResult;
@@ -37,6 +39,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.models.QueryType.SIMPLE;
 import static com.azure.search.documents.models.SearchMode.ALL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -190,8 +193,8 @@ public class SearchAsyncTests extends SearchTestBase {
         Flux<SearchResult> results = client.search("*", searchOptions, generateRequestOptions()).log();
         assertNotNull(results);
         StepVerifier.create(results)
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(0)))
-            .assertNext(res -> TestHelpers.assertDocumentsEqual(res.getDocument(), expectedDocsList.get(1)))
+            .assertNext(res -> assertObjectEquals(res.getDocument(), expectedDocsList.get(0), true))
+            .assertNext(res -> assertObjectEquals(res.getDocument(), expectedDocsList.get(1), true))
             .verifyComplete();
     }
 
@@ -442,7 +445,7 @@ public class SearchAsyncTests extends SearchTestBase {
 
         assertEquals(hotelsList.size(), actualResults.size());
         for (int i = 0; i < hotelsList.size(); i++) {
-            TestHelpers.assertHotelsEqual(hotelsList.get(i), actualResults.get(i));
+            assertObjectEquals(hotelsList.get(i), actualResults.get(i), true);
         }
     }
 
@@ -470,8 +473,8 @@ public class SearchAsyncTests extends SearchTestBase {
 
         StepVerifier.create(results.byPage()).assertNext(res -> {
             Iterator<SearchResult> iterator = res.getElements().iterator();
-            TestHelpers.assetNonNullableModelsEqual(doc1, convertToType(iterator.next().getDocument(), NonNullableModel.class));
-            TestHelpers.assetNonNullableModelsEqual(doc2, convertToType(iterator.next().getDocument(), NonNullableModel.class));
+            assertObjectEquals(doc1, convertToType(iterator.next().getDocument(), NonNullableModel.class), true);
+            assertObjectEquals(doc2, convertToType(iterator.next().getDocument(), NonNullableModel.class), true);
             assertFalse(iterator.hasNext());
         }).verifyComplete();
     }
@@ -611,11 +614,43 @@ public class SearchAsyncTests extends SearchTestBase {
 
         SearchOptions searchOptions = new SearchOptions()
             .setScoringProfile("nearest")
-            .setScoringParameters("myloc-'-122','49'")
+            .setScoringParameters(new ScoringParameter("myloc", GeoPoint.create(49, -122)))
             .setFilter("Rating eq 5 or Rating eq 1");
 
         Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
         assertHotelIdSequenceEqual(Arrays.asList("2", "1"), response);
+    }
+
+    @Test
+    public void searchWithScoringProfileEscaper() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
+        SearchOptions searchOptions = new SearchOptions()
+            .setScoringProfile("text")
+            .setScoringParameters(new ScoringParameter("mytag", Arrays.asList("concierge", "Hello, O''Brien")))
+            .setFilter("Rating eq 5 or Rating eq 1");
+
+        Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
+        assertHotelIdSequenceEqual(Arrays.asList("1", "2"), response);
+    }
+
+    @Test
+    public void searchWithScoringParametersEmpty() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
+
+        SearchOptions searchOptions = new SearchOptions()
+            .setScoringProfile("text")
+            .setScoringParameters(new ScoringParameter("mytag", Arrays.asList("", "concierge")))
+            .setFilter("Rating eq 5 or Rating eq 1");
+
+        Flux<SearchResult> response = client.search("hotel", searchOptions, generateRequestOptions()).log();
+        assertHotelIdSequenceEqual(Arrays.asList("1", "2"), response);
     }
 
     @Test

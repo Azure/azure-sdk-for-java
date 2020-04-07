@@ -15,9 +15,7 @@ trigger:
     include:
       - sdk/loganalytics/
     exclude:
-      - sdk/loganalytics/azure
-      - sdk/loganalytics/microsoft-azure
-      - sdk/loganalytics/ms-azure
+      - sdk/loganalytics/microsoft-azure-loganalytics
 
 pr:
   branches:
@@ -30,9 +28,7 @@ pr:
     include:
       - sdk/loganalytics/
     exclude:
-      - sdk/loganalytics/azure
-      - sdk/loganalytics/microsoft-azure
-      - sdk/loganalytics/ms-azure
+      - sdk/loganalytics/microsoft-azure-loganalytics
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

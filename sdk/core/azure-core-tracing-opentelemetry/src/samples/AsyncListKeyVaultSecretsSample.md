@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.0</version>
+    <version>4.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,7 +44,7 @@ import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.trace.TracerSdkFactory;
+import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 import reactor.util.context.Context;
@@ -61,11 +61,11 @@ public class Sample {
 
     private static final Logger LOGGER = getLogger("Sample");
     private static final Tracer TRACER;
-    private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
 
     static {
-        TRACER_SDK_FACTORY = Helper.configureOpenTelemetryAndJaegerExporter(LOGGER);
-        TRACER = TRACER_SDK_FACTORY.get("Sample");
+        TRACER_SDK_PROVIDER = Helper.configureOpenTelemetryAndLoggingExporter();
+        TRACER = TRACER_SDK_PROVIDER.get("Sample");
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -74,9 +74,17 @@ public class Sample {
         doClientWork();
         userSpan.end();
         scope.close();
-        TRACER_SDK_FACTORY.shutdown();
+        TRACER_SDK_PROVIDER.shutdown();
     }
-    
+
+    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
+        LoggingExporter exporter = new LoggingExporter();
+        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
+        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+
+        return tracerSdkProvider;
+    }
+  
     public static void doClientWork() throws InterruptedException {
         SecretAsyncClient client = new SecretClientBuilder()
             .vaultUrl("YOUR_VAULT_URL")

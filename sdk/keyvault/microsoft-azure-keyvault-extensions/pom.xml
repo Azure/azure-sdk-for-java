@@ -70,7 +70,7 @@
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>1.6.15</version> <!-- {x-version-update;com.microsoft.rest:client-runtime;external_dependency} -->
+      <version>1.7.3</version> <!-- {x-version-update;com.microsoft.rest:client-runtime;external_dependency} -->
     </dependency>
 
     <!-- Other Dependencies -->
@@ -130,6 +130,40 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.22.v20171030</version> <!-- {x-version-update;org.eclipse.jetty:jetty-maven-plugin;external_dependency} -->
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>stop-azure-keyvault-extensions</stopKey>
+          <stopWait>20</stopWait>
+          <waitForChild>false</waitForChild>
+          <jettyXml>../../../jetty.xml</jettyXml>
+        </configuration>
+        <executions>
+          <execution>
+            <id>start-jetty</id>
+            <phase>process-test-classes</phase>
+            <goals>
+              <goal>run-forked</goal>
+            </goals>
+            <configuration>
+             <scanIntervalSeconds>0</scanIntervalSeconds>
+             <daemon>true</daemon>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-jetty</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>stop</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

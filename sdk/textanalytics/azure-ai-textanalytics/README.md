@@ -17,14 +17,14 @@ and includes six main functions:
 - [Azure Subscription][azure_subscription]
 - [Cognitive Services or Text Analytics account][text_analytics_account] to use this package.
 
-### Adding the package to your product
+### Include the Package
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-textanalytics;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

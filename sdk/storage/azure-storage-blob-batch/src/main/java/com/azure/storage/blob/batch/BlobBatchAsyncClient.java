@@ -34,6 +34,8 @@ import java.util.function.BiFunction;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to Azure Storage Blob batching.
@@ -111,7 +113,8 @@ public final class BlobBatchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure) {
         try {
-            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure, context));
+            return withContext(context -> submitBatchWithResponse(batch, throwOnAnyFailure,
+                context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -121,7 +124,9 @@ public final class BlobBatchAsyncClient {
         return batch.prepareBlobBatchSubmission()
             .flatMap(batchOperationInfo -> client.services()
                 .submitBatchWithRestResponseAsync(Flux.fromIterable(batchOperationInfo.getBody()),
-                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(), context)
+                    batchOperationInfo.getContentLength(), batchOperationInfo.getContentType(),
+                    context == null ? Context.NONE.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)
+                    : context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
                 .flatMap(response ->
                     BlobBatchHelper.mapBatchResponse(batchOperationInfo, response, throwOnAnyFailure, logger)));
     }
