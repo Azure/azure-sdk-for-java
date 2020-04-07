@@ -117,21 +117,23 @@ stages:
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                      - template: tools/java-publishing/java-publishing.yml@azure-sdk-build-tools
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                           Target: MavenCentral
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                       # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
                       # this is that the azure-sdk-for-java feed will have the package available immediately
                       # whereas Maven can take several hours for the package to become available.
-                      - template: tools/java-publishing/java-publishing.yml@azure-sdk-build-tools
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
                         parameters:
                           ArtifactID: ${{artifact.name}}
                           GroupID: ${{artifact.groupId}}
                           ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                           Target: JavaDevFeed
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublishDocs
@@ -229,9 +231,10 @@ stages:
       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
 
       - ${{ each artifact in parameters.Artifacts }}:
-        - template: tools/java-publishing/java-publishing.yml@azure-sdk-build-tools
+        - template: /eng/pipelines/templates/steps/java-publishing.yml
           parameters:
             ArtifactID: ${{artifact.name}}
             GroupID: ${{artifact.groupId}}
             ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
             Target: JavaDevFeed
+            BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
