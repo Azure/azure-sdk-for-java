@@ -38,10 +38,10 @@ class BatchAPITest extends APISpec {
         try {
             def statusCode = response.getStatusCode()
             assert statusCode == expectedStatusCode
-            return true
+            return 1
         } catch (def exception) {
             assert exception instanceof BlobStorageException
-            return false
+            return 0
         }
     }
 
@@ -123,7 +123,7 @@ class BatchAPITest extends APISpec {
 
         // In PLAYBACK check responses in an order invariant fashion.
         if (testMode == TestMode.PLAYBACK) {
-            assertExpectedOrException(response1, 200) || assertExpectedOrException(response2, 200)
+            assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
             try {
@@ -156,7 +156,7 @@ class BatchAPITest extends APISpec {
 
         // In PLAYBACK check responses in an order invariant fashion.
         if (testMode == TestMode.PLAYBACK) {
-            assertExpectedOrException(response1, 200) || assertExpectedOrException(response2, 200)
+            assert (assertExpectedOrException(response1, 200) + assertExpectedOrException(response2, 200)) == 1
         } else {
             assert response1.getStatusCode() == 200
             try {
@@ -278,7 +278,7 @@ class BatchAPITest extends APISpec {
 
         // In PLAYBACK check responses in an order invariant fashion.
         if (testMode == TestMode.PLAYBACK) {
-            assertExpectedOrException(response1, 202) || assertExpectedOrException(response2, 202)
+            assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
             try {
@@ -311,7 +311,7 @@ class BatchAPITest extends APISpec {
 
         // In PLAYBACK check responses in an order invariant fashion.
         if (testMode == TestMode.PLAYBACK) {
-            assertExpectedOrException(response1, 202) || assertExpectedOrException(response2, 202)
+            assert (assertExpectedOrException(response1, 202) + assertExpectedOrException(response2, 202)) == 1
         } else {
             assert response1.getStatusCode() == 202
             try {
