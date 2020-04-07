@@ -28,7 +28,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     public Mono<Void> globalSetupAsync() {
         // Populate the token cache for tests
         return super.globalSetupAsync()
-//                .then(interactiveBrowserCredential.getToken(ARM_TOKEN_REQUEST_CONTEXT))
+                .then(interactiveBrowserCredential.getToken(ARM_TOKEN_REQUEST_CONTEXT))
                 .then();
     }
 }
