@@ -32,7 +32,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
                 .pipeline(restClient.getHttpPipeline())
                 .subscriptionId(subscriptionId)
                 .host(restClient.getBaseUrl().toString())
-                .build(),
+                .buildClient(),
             sdkContext);
         this.tenantId = tenantId;
     }
