@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ErrorResponse model.
- */
+/** The ErrorResponse model. */
 @Immutable
 public final class ErrorResponse {
     /*
@@ -45,7 +43,7 @@ public final class ErrorResponse {
 
     /**
      * Get the code property: The error code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -54,7 +52,7 @@ public final class ErrorResponse {
 
     /**
      * Get the message property: The error message.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -63,7 +61,7 @@ public final class ErrorResponse {
 
     /**
      * Get the target property: The error target.
-     * 
+     *
      * @return the target value.
      */
     public String target() {
@@ -72,7 +70,7 @@ public final class ErrorResponse {
 
     /**
      * Get the details property: The error details.
-     * 
+     *
      * @return the details value.
      */
     public List<ErrorResponse> details() {
@@ -81,7 +79,7 @@ public final class ErrorResponse {
 
     /**
      * Get the additionalInfo property: The error additional info.
-     * 
+     *
      * @return the additionalInfo value.
      */
     public List<ErrorAdditionalInfo> additionalInfo() {

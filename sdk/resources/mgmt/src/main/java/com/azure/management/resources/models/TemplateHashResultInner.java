@@ -7,9 +7,7 @@ package com.azure.management.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TemplateHashResult model.
- */
+/** The TemplateHashResult model. */
 @Fluent
 public final class TemplateHashResultInner {
     /*
@@ -26,7 +24,7 @@ public final class TemplateHashResultInner {
 
     /**
      * Get the minifiedTemplate property: The minified template string.
-     * 
+     *
      * @return the minifiedTemplate value.
      */
     public String minifiedTemplate() {
@@ -35,7 +33,7 @@ public final class TemplateHashResultInner {
 
     /**
      * Set the minifiedTemplate property: The minified template string.
-     * 
+     *
      * @param minifiedTemplate the minifiedTemplate value to set.
      * @return the TemplateHashResultInner object itself.
      */
@@ -46,7 +44,7 @@ public final class TemplateHashResultInner {
 
     /**
      * Get the templateHash property: The template hash.
-     * 
+     *
      * @return the templateHash value.
      */
     public String templateHash() {
@@ -55,7 +53,7 @@ public final class TemplateHashResultInner {
 
     /**
      * Set the templateHash property: The template hash.
-     * 
+     *
      * @param templateHash the templateHash value to set.
      * @return the TemplateHashResultInner object itself.
      */

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The DeploymentOperationProperties model.
- */
+/** The DeploymentOperationProperties model. */
 @Immutable
 public final class DeploymentOperationProperties {
     /*
@@ -69,7 +67,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the provisioningState property: The state of the provisioning.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -78,7 +76,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the timestamp property: The date and time of the operation.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -87,7 +85,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the duration property: The duration of the operation.
-     * 
+     *
      * @return the duration value.
      */
     public String duration() {
@@ -95,9 +93,8 @@ public final class DeploymentOperationProperties {
     }
 
     /**
-     * Get the serviceRequestId property: Deployment operation service request
-     * id.
-     * 
+     * Get the serviceRequestId property: Deployment operation service request id.
+     *
      * @return the serviceRequestId value.
      */
     public String serviceRequestId() {
@@ -106,7 +103,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the statusCode property: Operation status code.
-     * 
+     *
      * @return the statusCode value.
      */
     public String statusCode() {
@@ -115,7 +112,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the statusMessage property: Operation status message.
-     * 
+     *
      * @return the statusMessage value.
      */
     public Object statusMessage() {
@@ -124,7 +121,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the targetResource property: The target resource.
-     * 
+     *
      * @return the targetResource value.
      */
     public TargetResource targetResource() {
@@ -133,7 +130,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the request property: The HTTP request message.
-     * 
+     *
      * @return the request value.
      */
     public HttpMessage request() {
@@ -142,7 +139,7 @@ public final class DeploymentOperationProperties {
 
     /**
      * Get the response property: The HTTP response message.
-     * 
+     *
      * @return the response value.
      */
     public HttpMessage response() {

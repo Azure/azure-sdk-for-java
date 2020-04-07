@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BasicDependency model.
- */
+/** The BasicDependency model. */
 @Fluent
 public final class BasicDependency {
     /*
@@ -32,7 +30,7 @@ public final class BasicDependency {
 
     /**
      * Get the id property: The ID of the dependency.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -41,7 +39,7 @@ public final class BasicDependency {
 
     /**
      * Set the id property: The ID of the dependency.
-     * 
+     *
      * @param id the id value to set.
      * @return the BasicDependency object itself.
      */
@@ -52,7 +50,7 @@ public final class BasicDependency {
 
     /**
      * Get the resourceType property: The dependency resource type.
-     * 
+     *
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -61,7 +59,7 @@ public final class BasicDependency {
 
     /**
      * Set the resourceType property: The dependency resource type.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the BasicDependency object itself.
      */
@@ -72,7 +70,7 @@ public final class BasicDependency {
 
     /**
      * Get the resourceName property: The dependency resource name.
-     * 
+     *
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -81,7 +79,7 @@ public final class BasicDependency {
 
     /**
      * Set the resourceName property: The dependency resource name.
-     * 
+     *
      * @param resourceName the resourceName value to set.
      * @return the BasicDependency object itself.
      */

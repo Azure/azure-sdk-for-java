@@ -13,7 +13,6 @@ import com.azure.management.network.Network;
 import com.azure.management.network.NetworkSecurityGroup;
 import com.azure.management.network.SecurityRuleProtocol;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 
 import java.io.File;

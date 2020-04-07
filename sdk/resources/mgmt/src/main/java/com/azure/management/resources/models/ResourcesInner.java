@@ -38,221 +38,427 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Resources.
- */
+/** An instance of this class provides access to all the operations defined in Resources. */
 public final class ResourcesInner implements InnerSupportsListing<GenericResourceExpandedInner> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ResourcesService service;
+    /** The proxy service used to perform REST calls. */
+    private final ResourcesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private ResourceManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final ResourceManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourcesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ResourcesInner(ResourceManagementClientImpl client) {
-        this.service = RestProxy.create(ResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ResourceManagementClientResources to be used by the proxy service to
+     * The interface defining all the services for ResourceManagementClientResources to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementClientResources")
+    @ServiceInterface(name = "ResourceManagementCl")
     private interface ResourcesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> moveResources(@HostParam("$host") String host, @PathParam("sourceResourceGroupName") String sourceResourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourcesMoveInfo parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> moveResources(
+            @HostParam("$host") String host,
+            @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ResourcesMoveInfo parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResources(@HostParam("$host") String host, @PathParam("sourceResourceGroupName") String sourceResourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourcesMoveInfo parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResources(
+            @HostParam("$host") String host,
+            @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ResourcesMoveInfo parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> list(@HostParam("$host") String host, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<ResourceListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Head("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Head(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistence(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<Boolean>> checkExistence(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<GenericResourceInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<GenericResourceInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head("/{resourceId}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Boolean>> checkExistenceById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<Boolean>> checkExistenceById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> deleteById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> updateById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<GenericResourceInner>> getById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<GenericResourceInner>> getById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginMoveResources(@HostParam("$host") String host, @PathParam("sourceResourceGroupName") String sourceResourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourcesMoveInfo parameters, Context context);
+        Mono<Response<Void>> beginMoveResources(
+            @HostParam("$host") String host,
+            @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ResourcesMoveInfo parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginValidateMoveResources(@HostParam("$host") String host, @PathParam("sourceResourceGroupName") String sourceResourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ResourcesMoveInfo parameters, Context context);
+        Mono<Response<Void>> beginValidateMoveResources(
+            @HostParam("$host") String host,
+            @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ResourcesMoveInfo parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
+                + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<GenericResourceInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceProviderNamespace") String resourceProviderNamespace,
+            @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath,
+            @PathParam(value = "resourceType", encoded = true) String resourceType,
+            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDeleteById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<Void>> beginDeleteById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<GenericResourceInner>> beginUpdateById(@HostParam("$host") String host, @PathParam(value = "resourceId", encoded = true) String resourceId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") GenericResourceInner parameters, Context context);
+        Mono<SimpleResponse<GenericResourceInner>> beginUpdateById(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GenericResourceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ResourceListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<ResourceListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Get all the resources for a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group with the resources to get.
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String filter, String expand, Integer top) {
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), resourceGroupName, filter, expand, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
-            .<PagedResponse<GenericResourceExpandedInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, String filter, String expand, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            filter,
+                            expand,
+                            top,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<GenericResourceExpandedInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get all the resources for a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group with the resources to get.
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(String resourceGroupName, String filter, String expand, Integer top) {
+    public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
+        String resourceGroupName, String filter, String expand, Integer top) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, expand, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -260,11 +466,12 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Get all the resources for a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group with the resources to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -279,27 +486,43 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Get all the resources for a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group with the resources to get.
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName, String filter, String expand, Integer top) {
+    public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(
+        String resourceGroupName, String filter, String expand, Integer top) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, expand, top));
     }
 
     /**
      * Get all the resources for a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group with the resources to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName) {
@@ -311,40 +534,61 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-     * 
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return FluxUtil.withContext(context -> service.moveResources(this.client.getHost(), sourceResourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .moveResources(
+                            this.client.getHost(),
+                            sourceResourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-     * 
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            moveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        return this.client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-     * 
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,40 +601,67 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source resource group. The target resource group may be in a different subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
-     * 
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return FluxUtil.withContext(context -> service.validateMoveResources(this.client.getHost(), sourceResourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .validateMoveResources(
+                            this.client.getHost(),
+                            sourceResourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source resource group. The target resource group may be in a different subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
-     * 
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            validateMoveResourcesWithResponseAsync(sourceResourceGroupName, parameters);
+        return this.client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source resource group. The target resource group may be in a different subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
-     * 
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -404,49 +675,91 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Get all the resources in a subscription.
-     * 
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     *
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(String filter, String expand, Integer top) {
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), filter, expand, top, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
-            .<PagedResponse<GenericResourceExpandedInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+    public Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
+        String filter, String expand, Integer top) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getHost(),
+                            filter,
+                            expand,
+                            top,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<GenericResourceExpandedInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get all the resources in a subscription.
-     * 
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     *
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listAsync(String filter, String expand, Integer top) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, expand, top), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the resources in a subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listAsync() {
@@ -455,19 +768,32 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         final Integer top = null;
         final Context context = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, expand, top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(filter, expand, top), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get all the resources in a subscription.
-     * 
-     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals) or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan, plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For example, to filter by a resource type, use: $filter=resourceType eq 'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example, to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo', name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value, the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties together when filtering. The combinations you can use are: substringof and/or resourceType, plan and plan/publisher and plan/name, identity and identity/principalId.
-     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
+     *
+     * @param filter The filter to apply on the operation.&lt;br&gt;&lt;br&gt;The properties you can use for eq (equals)
+     *     or ne (not equals) are: location, resourceType, name, resourceGroup, identity, identity/principalId, plan,
+     *     plan/publisher, plan/product, plan/name, plan/version, and plan/promotionCode.&lt;br&gt;&lt;br&gt;For
+     *     example, to filter by a resource type, use: $filter=resourceType eq
+     *     'Microsoft.Network/virtualNetworks'&lt;br&gt;&lt;br&gt;You can use substringof(value, property) in the
+     *     filter. The properties you can use for substring are: name and resourceGroup.&lt;br&gt;&lt;br&gt;For example,
+     *     to get all resources with 'demo' anywhere in the name, use: $filter=substringof('demo',
+     *     name)&lt;br&gt;&lt;br&gt;You can link more than one substringof together by adding and/or
+     *     operators.&lt;br&gt;&lt;br&gt;You can filter by tag names and values. For example, to filter for a tag name
+     *     and value, use $filter=tagName eq 'tag1' and tagValue eq 'Value1'. When you filter by a tag name and value,
+     *     the tags for each resource are not returned in the results.&lt;br&gt;&lt;br&gt;You can use some properties
+     *     together when filtering. The combinations you can use are: substringof and/or resourceType, plan and
+     *     plan/publisher and plan/name, identity and identity/principalId.
+     * @param expand Comma-separated list of additional properties to be included in the response. Valid values include
+     *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> list(String filter, String expand, Integer top) {
@@ -476,9 +802,10 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Get all the resources in a subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the resources in a subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> list() {
@@ -491,8 +818,9 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Checks whether a resource exists.
-     * 
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The resource provider of the resource to check.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -501,17 +829,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Boolean>> checkExistenceWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return FluxUtil.withContext(context -> service.checkExistence(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), context))
+    public Mono<SimpleResponse<Boolean>> checkExistenceWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .checkExistence(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Checks whether a resource exists.
-     * 
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The resource provider of the resource to check.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -520,23 +869,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return checkExistenceWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
-            .flatMap((SimpleResponse<Boolean> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<Boolean> checkExistenceAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return checkExistenceWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
+            .flatMap(
+                (SimpleResponse<Boolean> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Checks whether a resource exists.
-     * 
-     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to check. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The resource provider of the resource to check.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -545,16 +909,108 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return checkExistenceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).block();
+    public boolean checkExistence(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return checkExistenceAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
+            .block();
     }
 
     /**
      * Deletes a resource.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
+     * @param resourceProviderNamespace The namespace of the resource provider.
+     * @param parentResourcePath The parent resource identity.
+     * @param resourceType The resource type.
+     * @param resourceName The name of the resource to delete.
+     * @param apiVersion The API version to use for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CloudException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion);
+        return this.client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -565,53 +1021,26 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Deletes a resource.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource to delete.
-     * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
-            .last()
-            .flatMap(AsyncPollResponse::getFinalResult);
-    }
-
-    /**
-     * Deletes a resource.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource to delete.
-     * @param apiVersion The API version to use for the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).block();
+    public void delete(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        deleteAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
+            .block();
     }
 
     /**
      * Creates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -622,16 +1051,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), parameters, context))
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -642,18 +1093,36 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters);
-        return this.client.<GenericResourceInner, GenericResourceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+    public Mono<GenericResourceInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters);
+        return this.client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -664,15 +1133,31 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).block();
+    public GenericResourceInner createOrUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return createOrUpdateAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters)
+            .block();
     }
 
     /**
      * Updates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -683,16 +1168,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.update(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), parameters, context))
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -703,18 +1210,36 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> updateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters);
-        return this.client.<GenericResourceInner, GenericResourceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+    public Mono<GenericResourceInner> updateAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters);
+        return this.client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -725,16 +1250,33 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner update(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return updateAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).block();
+    public GenericResourceInner update(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return updateAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters)
+            .block();
     }
 
     /**
      * Gets a resource.
-     * 
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -743,17 +1285,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> getWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return FluxUtil.withContext(context -> service.get(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), context))
+    public Mono<SimpleResponse<GenericResourceInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a resource.
-     * 
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -762,23 +1325,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return getWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
-            .flatMap((SimpleResponse<GenericResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<GenericResourceInner> getAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return getWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
+            .flatMap(
+                (SimpleResponse<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a resource.
-     * 
-     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group containing the resource to get. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type of the resource.
@@ -787,56 +1365,81 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return getAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).block();
+    public GenericResourceInner get(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return getAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
+            .block();
     }
 
     /**
      * Checks by ID whether a resource exists.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkExistenceByIdWithResponseAsync(String resourceId, String apiVersion) {
-        return FluxUtil.withContext(context -> service.checkExistenceById(this.client.getHost(), resourceId, apiVersion, context))
+        return FluxUtil
+            .withContext(context -> service.checkExistenceById(this.client.getHost(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Checks by ID whether a resource exists.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap((SimpleResponse<Boolean> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<Boolean> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Checks by ID whether a resource exists.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public boolean checkExistenceById(String resourceId, String apiVersion) {
@@ -845,40 +1448,50 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Deletes a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String resourceId, String apiVersion) {
-        return FluxUtil.withContext(context -> service.deleteById(this.client.getHost(), resourceId, apiVersion, context))
+        return FluxUtil
+            .withContext(context -> service.deleteById(this.client.getHost(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByIdAsync(String resourceId, String apiVersion) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteByIdWithResponseAsync(resourceId, apiVersion);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this.client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -891,96 +1504,129 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Create a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.createOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.createOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Create a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
-        return this.client.<GenericResourceInner, GenericResourceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+    public Mono<GenericResourceInner> createOrUpdateByIdAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters);
+        return this.client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Create a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner createOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public GenericResourceInner createOrUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
         return createOrUpdateByIdAsync(resourceId, apiVersion, parameters).block();
     }
 
     /**
      * Updates a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateByIdWithResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.updateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context -> service.updateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> updateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public Mono<GenericResourceInner> updateByIdAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateByIdWithResponseAsync(resourceId, apiVersion, parameters);
-        return this.client.<GenericResourceInner, GenericResourceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
+        return this.client
+            .<GenericResourceInner, GenericResourceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GenericResourceInner.class, GenericResourceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenericResourceInner updateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -989,48 +1635,59 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Gets a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<GenericResourceInner>> getByIdWithResponseAsync(String resourceId, String apiVersion) {
-        return FluxUtil.withContext(context -> service.getById(this.client.getHost(), resourceId, apiVersion, context))
+        return FluxUtil
+            .withContext(context -> service.getById(this.client.getHost(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
         return getByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap((SimpleResponse<GenericResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a resource by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenericResourceInner getById(String resourceId, String apiVersion) {
@@ -1038,28 +1695,45 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-     * 
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginMoveResourcesWithResponseAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return FluxUtil.withContext(context -> service.beginMoveResources(this.client.getHost(), sourceResourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+    public Mono<Response<Void>> beginMoveResourcesWithResponseAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginMoveResources(
+                            this.client.getHost(),
+                            sourceResourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-     * 
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
@@ -1068,8 +1742,10 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     }
 
     /**
-     * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
-     * 
+     * The resources to move must be in the same source resource group. The target resource group may be in a different
+     * subscription. When moving resources, both the source group and the target group are locked for the duration of
+     * the operation. Write and delete operations are blocked on the groups until the move completes.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,28 +1758,49 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source resource group. The target resource group may be in a different subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
-     * 
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginValidateMoveResourcesWithResponseAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
-        return FluxUtil.withContext(context -> service.beginValidateMoveResources(this.client.getHost(), sourceResourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, context))
+    public Mono<Response<Void>> beginValidateMoveResourcesWithResponseAsync(
+        String sourceResourceGroupName, ResourcesMoveInfo parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginValidateMoveResources(
+                            this.client.getHost(),
+                            sourceResourceGroupName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source resource group. The target resource group may be in a different subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
-     * 
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginValidateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
@@ -1112,8 +1809,12 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     }
 
     /**
-     * This operation checks whether the specified resources can be moved to the target. The resources to move must be in the same source resource group. The target resource group may be in a different subscription. If validation succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409 (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the long-running operation.
-     * 
+     * This operation checks whether the specified resources can be moved to the target. The resources to move must be
+     * in the same source resource group. The target resource group may be in a different subscription. If validation
+     * succeeds, it returns HTTP response code 204 (no content). If validation fails, it returns HTTP response code 409
+     * (Conflict) with an error message. Retrieve the URL in the Location header value to check the result of the
+     * long-running operation.
+     *
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1127,8 +1828,9 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Deletes a resource.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -1137,17 +1839,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), context))
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a resource.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -1156,17 +1879,31 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        return beginDeleteWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion)
+    public Mono<Void> beginDeleteAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        return beginDeleteWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a resource.
-     * 
-     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource to delete. The name is case
+     *     insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
      * @param resourceType The resource type.
@@ -1177,13 +1914,26 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        beginDeleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).block();
+    public void beginDelete(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion) {
+        beginDeleteAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion)
+            .block();
     }
 
     /**
      * Creates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -1194,16 +1944,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), parameters, context))
+    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -1214,22 +1986,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters)
-            .flatMap((SimpleResponse<GenericResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<GenericResourceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return beginCreateOrUpdateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters)
+            .flatMap(
+                (SimpleResponse<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -1240,15 +2028,31 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginCreateOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).block();
+    public GenericResourceInner beginCreateOrUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters)
+            .block();
     }
 
     /**
      * Updates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -1259,16 +2063,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateWithResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.beginUpdate(this.client.getHost(), resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, this.client.getSubscriptionId(), parameters, context))
+    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            resourceProviderNamespace,
+                            parentResourcePath,
+                            resourceType,
+                            resourceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -1279,22 +2105,38 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return beginUpdateWithResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters)
-            .flatMap((SimpleResponse<GenericResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+    public Mono<GenericResourceInner> beginUpdateAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return beginUpdateWithResponseAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters)
+            .flatMap(
+                (SimpleResponse<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group for the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource identity.
@@ -1305,46 +2147,70 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return beginUpdateAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).block();
+    public GenericResourceInner beginUpdate(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String apiVersion,
+        GenericResourceInner parameters) {
+        return beginUpdateAsync(
+                resourceGroupName,
+                resourceProviderNamespace,
+                parentResourcePath,
+                resourceType,
+                resourceName,
+                apiVersion,
+                parameters)
+            .block();
     }
 
     /**
      * Deletes a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteByIdWithResponseAsync(String resourceId, String apiVersion) {
-        return FluxUtil.withContext(context -> service.beginDeleteById(this.client.getHost(), resourceId, apiVersion, context))
+        return FluxUtil
+            .withContext(context -> service.beginDeleteById(this.client.getHost(), resourceId, apiVersion, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
-        return beginDeleteByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return beginDeleteByIdWithResponseAsync(resourceId, apiVersion).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1357,104 +2223,134 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Create a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateByIdWithResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.beginCreateOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+    public Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateByIdWithResponseAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.beginCreateOrUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Create a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginCreateOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public Mono<GenericResourceInner> beginCreateOrUpdateByIdAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
         return beginCreateOrUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters)
-            .flatMap((SimpleResponse<GenericResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Create a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GenericResourceInner beginCreateOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public GenericResourceInner beginCreateOrUpdateById(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
         return beginCreateOrUpdateByIdAsync(resourceId, apiVersion, parameters).block();
     }
 
     /**
      * Updates a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateByIdWithResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
-        return FluxUtil.withContext(context -> service.beginUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
+    public Mono<SimpleResponse<GenericResourceInner>> beginUpdateByIdWithResponseAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return FluxUtil
+            .withContext(
+                context -> service.beginUpdateById(this.client.getHost(), resourceId, apiVersion, parameters, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GenericResourceInner> beginUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+    public Mono<GenericResourceInner> beginUpdateByIdAsync(
+        String resourceId, String apiVersion, GenericResourceInner parameters) {
         return beginUpdateByIdWithResponseAsync(resourceId, apiVersion, parameters)
-            .flatMap((SimpleResponse<GenericResourceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<GenericResourceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a resource by ID.
-     * 
-     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
+     *
+     * @param resourceId The fully qualified ID of the resource, including the resource name and resource type. Use the
+     *     format, /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}
+     *     /{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GenericResourceInner beginUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
@@ -1463,43 +2359,51 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<GenericResourceExpandedInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<GenericResourceExpandedInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink null
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of resource groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<GenericResourceExpandedInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<GenericResourceExpandedInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

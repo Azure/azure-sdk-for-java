@@ -4,7 +4,6 @@
 package com.azure.management.graphrbac;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class RoleDefinitionTests extends GraphRbacManagementTest {

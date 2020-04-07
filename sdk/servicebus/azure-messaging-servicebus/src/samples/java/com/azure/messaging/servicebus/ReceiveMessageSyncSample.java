@@ -5,8 +5,6 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.IterableStream;
 
-import java.time.Duration;
-
 /**
  * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue
  * using sync client.
@@ -36,7 +34,6 @@ public class ReceiveMessageSyncSample {
             .connectionString(connectionString)
             .receiver()
             .queueName("<<queue-name>>")
-            .maxAutoLockRenewalDuration(Duration.ofSeconds(2))
             .buildClient();
 
         final IterableStream<ServiceBusReceivedMessage> receivedMessages =  receiverClient.receive(5);

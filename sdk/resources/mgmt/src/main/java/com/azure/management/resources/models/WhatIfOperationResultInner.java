@@ -11,9 +11,7 @@ import com.azure.management.resources.WhatIfChange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The WhatIfOperationResult model.
- */
+/** The WhatIfOperationResult model. */
 @JsonFlatten
 @Fluent
 public class WhatIfOperationResultInner {
@@ -37,7 +35,7 @@ public class WhatIfOperationResultInner {
 
     /**
      * Get the status property: Status of the What-If operation.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -46,7 +44,7 @@ public class WhatIfOperationResultInner {
 
     /**
      * Set the status property: Status of the What-If operation.
-     * 
+     *
      * @param status the status value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -57,7 +55,7 @@ public class WhatIfOperationResultInner {
 
     /**
      * Get the error property: Error when What-If operation fails.
-     * 
+     *
      * @return the error value.
      */
     public ErrorResponse error() {
@@ -66,7 +64,7 @@ public class WhatIfOperationResultInner {
 
     /**
      * Set the error property: Error when What-If operation fails.
-     * 
+     *
      * @param error the error value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -76,9 +74,8 @@ public class WhatIfOperationResultInner {
     }
 
     /**
-     * Get the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Get the changes property: List of resource changes predicted by What-If operation.
+     *
      * @return the changes value.
      */
     public List<WhatIfChange> changes() {
@@ -86,9 +83,8 @@ public class WhatIfOperationResultInner {
     }
 
     /**
-     * Set the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Set the changes property: List of resource changes predicted by What-If operation.
+     *
      * @param changes the changes value to set.
      * @return the WhatIfOperationResultInner object itself.
      */

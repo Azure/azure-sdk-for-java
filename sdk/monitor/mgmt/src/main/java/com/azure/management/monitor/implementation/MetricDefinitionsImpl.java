@@ -7,11 +7,8 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.monitor.MetricDefinition;
 import com.azure.management.monitor.MetricDefinitions;
-import com.azure.management.monitor.models.MetricDefinitionInner;
 import com.azure.management.monitor.models.MetricDefinitionsInner;
-import com.azure.management.resources.fluentcore.utils.PagedConverter;
 
-import java.util.List;
 
 /**
  * Implementation for {@link MetricDefinitions}.

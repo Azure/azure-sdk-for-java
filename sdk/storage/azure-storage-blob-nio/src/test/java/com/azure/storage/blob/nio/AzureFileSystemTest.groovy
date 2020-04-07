@@ -25,7 +25,7 @@ class AzureFileSystemTest extends APISpec {
 
     // We do not have a meaningful way of testing the configurations for the ServiceClient.
     @Unroll
-    def "FileSystem create"() {
+    def "Create"() {
         setup:
         def containerNames = Flux.range(0, numContainers).map { i -> generateContainerName() }.cache()
             .toIterable()
@@ -61,7 +61,7 @@ class AzureFileSystemTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystem create fail IA"() {
+    def "Create fail IA"() {
         setup:
         if (containers) {
             config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName()
@@ -82,7 +82,7 @@ class AzureFileSystemTest extends APISpec {
         false      | true
     }
 
-    def "FileSystem create fail container check"() {
+    def "Create fail container check"() {
         setup:
         config[AzureFileSystem.AZURE_STORAGE_SAS_TOKEN] = primaryBlobServiceClient.generateAccountSas(
             new AccountSasSignatureValues(OffsetDateTime.now().plusDays(2),
@@ -97,7 +97,7 @@ class AzureFileSystemTest extends APISpec {
         thrown(IOException)
     }
 
-    def "FileSystem close"() {
+    def "Close"() {
         setup:
         def provider = new AzureFileSystemProvider()
         def uri = getAccountUri()
@@ -133,7 +133,7 @@ class AzureFileSystemTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystem getPath"() {
+    def "GetPath"() {
         setup:
         def fs = createFS(config)
         def arr = pathArr == null ? null : Arrays.copyOf(pathArr.toArray(), pathArr.size(), String[].class)
@@ -160,7 +160,7 @@ class AzureFileSystemTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystem getPath fail"() {
+    def "GetPath fail"() {
         when:
         createFS(config).getPath(path)
 
@@ -178,7 +178,7 @@ class AzureFileSystemTest extends APISpec {
         "root1:/foo/bar/dir:" | _
     }
 
-    def "FileSystem isReadOnly getSeparator"() {
+    def "IsReadOnly getSeparator"() {
         setup:
         def fs = createFS(config)
 
@@ -187,7 +187,7 @@ class AzureFileSystemTest extends APISpec {
         fs.getSeparator() == "/"
     }
 
-    def "FileSystem getRootDirs getFileStores"() {
+    def "GetRootDirs getFileStores"() {
         setup:
         def fs = createFS(config)
         def containers = ((String) config[AzureFileSystem.AZURE_STORAGE_FILE_STORES]).split(",")
@@ -206,7 +206,7 @@ class AzureFileSystemTest extends APISpec {
     }
 
     @Unroll
-    def "FileSystem supportsFileAttributeView"() {
+    def "SupportsFileAttributeView"() {
         setup:
         def fs = createFS(config)
 
@@ -221,7 +221,7 @@ class AzureFileSystemTest extends APISpec {
         "posix"        | false
     }
 
-    def "FileSystem getDefaultDirectory"() {
+    def "GetDefaultDirectory"() {
         setup:
         def fs = createFS(config)
 

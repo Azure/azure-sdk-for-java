@@ -12,13 +12,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.management.AzureServiceClient;
 
-/**
- * Initializes a new instance of the SubscriptionClientImpl type.
- */
+/** Initializes a new instance of the SubscriptionClientImpl type. */
 public final class SubscriptionClientImpl extends AzureServiceClient {
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
@@ -41,9 +37,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * Api Version.
-     */
+    /** Api Version. */
     private String apiVersion;
 
     /**
@@ -66,10 +60,8 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -80,24 +72,8 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.httpPipeline;
     }
 
-    /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
-
-    /**
-     * Gets the OperationsInner object to access its operations.
-     *
-     * @return the OperationsInner object.
-     */
-    public OperationsInner operations() {
-        return this.operations;
-    }
-
-    /**
-     * The SubscriptionsInner object to access its operations.
-     */
-    private SubscriptionsInner subscriptions;
+    /** The SubscriptionsInner object to access its operations. */
+    private final SubscriptionsInner subscriptions;
 
     /**
      * Gets the SubscriptionsInner object to access its operations.
@@ -108,10 +84,8 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.subscriptions;
     }
 
-    /**
-     * The TenantsInner object to access its operations.
-     */
-    private TenantsInner tenants;
+    /** The TenantsInner object to access its operations. */
+    private final TenantsInner tenants;
 
     /**
      * Gets the TenantsInner object to access its operations.
@@ -122,11 +96,11 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
         return this.tenants;
     }
 
-    /**
-     * Initializes an instance of SubscriptionClient client.
-     */
+    /** Initializes an instance of SubscriptionClient client. */
     public SubscriptionClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
@@ -147,7 +121,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     public SubscriptionClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-        //this.operations = new OperationsInner(this);
+//        this.operations = new OperationsInner(this);
         this.subscriptions = new SubscriptionsInner(this);
         this.tenants = new TenantsInner(this);
     }

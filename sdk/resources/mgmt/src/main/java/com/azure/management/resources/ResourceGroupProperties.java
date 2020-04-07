@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceGroupProperties model.
- */
+/** The ResourceGroupProperties model. */
 @Immutable
 public final class ResourceGroupProperties {
     /*
@@ -20,7 +18,7 @@ public final class ResourceGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
