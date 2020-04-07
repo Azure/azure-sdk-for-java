@@ -6,7 +6,6 @@ package com.azure.management.resources.fluentcore.collection;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.fluentcore.arm.Region;
-import reactor.core.publisher.Flux;
 
 /**
  * Provides access to listing Azure resources of a specific type based on their region.

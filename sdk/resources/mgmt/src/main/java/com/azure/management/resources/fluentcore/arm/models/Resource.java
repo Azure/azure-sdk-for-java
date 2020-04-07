@@ -16,7 +16,7 @@ public interface Resource extends
         HasId,
         HasName {
 
-    static Resource DUMMY = new Resource() {
+    Resource DUMMY = new Resource() {
         @Override
         public String type() {
             return null;

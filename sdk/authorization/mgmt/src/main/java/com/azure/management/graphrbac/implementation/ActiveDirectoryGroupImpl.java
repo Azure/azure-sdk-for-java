@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryObject;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
-import com.azure.management.graphrbac.GroupAddMemberParameters;
 import com.azure.management.graphrbac.GroupCreateParameters;
 import com.azure.management.graphrbac.ServicePrincipal;
 import com.azure.management.graphrbac.models.ADGroupInner;

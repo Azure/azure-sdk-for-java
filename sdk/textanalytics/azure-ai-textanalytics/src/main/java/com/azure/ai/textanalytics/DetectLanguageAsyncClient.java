@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,6 +61,10 @@ class DetectLanguageAsyncClient {
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
         TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<DetectLanguageInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
 
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
@@ -82,6 +87,11 @@ class DetectLanguageAsyncClient {
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<DetectLanguageInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             getDetectedLanguageResponseInPage(documents, options, context).flux());
     }

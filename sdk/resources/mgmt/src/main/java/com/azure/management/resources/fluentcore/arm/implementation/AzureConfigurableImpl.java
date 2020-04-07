@@ -3,7 +3,6 @@
 
 package com.azure.management.resources.fluentcore.arm.implementation;
 
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
@@ -12,14 +11,12 @@ import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The implementation for {@link AzureConfigurable <T>} and the base class for
+ * The implementation for {@link AzureConfigurable} and the base class for
  * configurable implementations.
  *
  * @param <T> the type of the configurable interface

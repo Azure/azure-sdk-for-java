@@ -10,15 +10,12 @@ import com.azure.management.monitor.LocalizableString;
 import com.azure.management.monitor.ActivityLogs;
 import com.azure.management.monitor.EventData;
 import com.azure.management.monitor.models.ActivityLogsInner;
-import com.azure.management.monitor.models.EventDataInner;
-import com.azure.management.monitor.models.LocalizableStringInner;
 
 import java.time.OffsetDateTime;
 
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 

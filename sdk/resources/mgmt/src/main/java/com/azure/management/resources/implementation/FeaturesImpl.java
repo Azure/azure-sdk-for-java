@@ -36,7 +36,8 @@ final class FeaturesImpl
 
     @Override
     public Mono<Feature> registerAsync(String resourceProviderName, String featureName) {
-        return client.registerAsync(resourceProviderName, featureName).map(featureResultInner -> wrapModel(featureResultInner));
+        return client.registerAsync(resourceProviderName, featureName)
+            .map(featureResultInner -> wrapModel(featureResultInner));
     }
 
     @Override

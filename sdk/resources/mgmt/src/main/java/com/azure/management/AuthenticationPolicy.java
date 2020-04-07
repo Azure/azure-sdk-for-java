@@ -25,8 +25,14 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
     private final TokenCredential credential;
     private final String[] scopes;
-    private AzureEnvironment environment;
+    private final AzureEnvironment environment;
 
+    /**
+     * Creates AuthenticationPolicy.
+     *
+     * @param credential the token credential to authenticate the request
+     * @param scopes the scopes used in credential, using default scopes when empty
+     */
     public AuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
         this.credential = credential;
@@ -54,7 +60,8 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
         return tokenResult
                 .flatMap(accessToken -> {
-                    context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER_KEY, String.format(AUTHORIZATION_HEADER_VALUE_FORMAT, accessToken.getToken()));
+                    context.getHttpRequest().getHeaders().put(AUTHORIZATION_HEADER_KEY,
+                        String.format(AUTHORIZATION_HEADER_VALUE_FORMAT, accessToken.getToken()));
                     return next.process();
                 });
     }
