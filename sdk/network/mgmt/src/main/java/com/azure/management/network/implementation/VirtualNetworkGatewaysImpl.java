@@ -14,7 +14,6 @@ import com.azure.management.resources.fluentcore.arm.collection.implementation.G
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.Function;
 
 /**

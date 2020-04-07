@@ -8,7 +8,6 @@ import com.azure.management.storage.CheckNameAvailabilityResult;
 import com.azure.management.storage.ServiceSasParameters;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccountCheckNameAvailabilityParameters;
 import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.models.StorageAccountInner;
 import com.azure.management.storage.models.StorageAccountsInner;

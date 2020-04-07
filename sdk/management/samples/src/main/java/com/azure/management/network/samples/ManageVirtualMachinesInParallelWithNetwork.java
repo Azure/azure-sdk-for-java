@@ -15,7 +15,6 @@ import com.azure.management.network.SecurityRuleProtocol;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
 import org.apache.commons.lang.time.StopWatch;

@@ -19,7 +19,8 @@ public final class ReactorMapper<T> implements Function<Object, T> {
     private final T value;
 
     /**
-     * Shortcut for mapping the output of an arbitrary observable to one returning an instance of a specific type, using the IO scheduler.
+     * Shortcut for mapping the output of an arbitrary observable to one returning an instance of a specific type,
+     * using the IO scheduler.
      *
      * @param fromObservable the source observable
      * @param toValue the value to emit to the observer

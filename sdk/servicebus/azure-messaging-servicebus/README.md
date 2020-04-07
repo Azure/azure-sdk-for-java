@@ -24,8 +24,8 @@ have to be online at the same time.
   - [Authenticate the client](#authenticate-the-client)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
-  - [Send Message Examples](#send-message-examples)
-  - [Receive Message Examples](#receive-message-examples)
+  - [Sending messages](#send-message-examples)
+  - [Receiving messages](#receive-message-examples)
 - [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
@@ -51,7 +51,7 @@ have to be online at the same time.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>7.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -66,12 +66,12 @@ and authorize with it.
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

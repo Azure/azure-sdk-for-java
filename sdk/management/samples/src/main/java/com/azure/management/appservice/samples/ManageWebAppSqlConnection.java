@@ -15,7 +15,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 
 /**

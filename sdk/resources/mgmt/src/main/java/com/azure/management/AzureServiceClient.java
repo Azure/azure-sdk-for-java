@@ -90,7 +90,7 @@ public abstract class AzureServiceClient {
         JAVA_VERSION = version != null ? version : "Unknown";
     }
 
-    private SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
+    private final SerializerAdapter serializerAdapter = new AzureJacksonAdapter();
 
     private String sdkName;
 
@@ -177,9 +177,11 @@ public abstract class AzureServiceClient {
         }
 
         @Override
-        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
+        public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
+                    throws IOException, JsonProcessingException {
             String string = jsonParser.getText();
-            TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME.parseBest(string, OffsetDateTime::from, LocalDateTime::from);
+            TemporalAccessor temporal =
+                DateTimeFormatter.ISO_DATE_TIME.parseBest(string, OffsetDateTime::from, LocalDateTime::from);
             if (temporal.query(TemporalQueries.offset()) == null) {
                 return LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC);
             } else {

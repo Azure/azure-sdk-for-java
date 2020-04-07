@@ -111,7 +111,6 @@ public abstract class ResourceImpl<
             this.inner().setTags(new HashMap<String, String>());
         }
         this.inner().getTags().put(key, value);
-        System.out.println(this.inner().getTags());
         return (FluentModelImplT) this;
     }
 

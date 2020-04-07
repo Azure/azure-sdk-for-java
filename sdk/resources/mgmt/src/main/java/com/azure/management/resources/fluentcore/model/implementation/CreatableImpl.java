@@ -3,6 +3,7 @@
 
 package com.azure.management.resources.fluentcore.model.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
@@ -22,6 +23,7 @@ public abstract class CreatableImpl<
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
         implements
         Creatable<FluentModelT> {
+    private final ClientLogger logger = new ClientLogger(getClass());
     /**
      * Creates a CreatableImpl.
      *
@@ -34,12 +36,14 @@ public abstract class CreatableImpl<
 
     @Override
     public final Mono<FluentModelT> applyAsync() {
-        throw new IllegalStateException("Internal Error: applyAsync cannot be called from CreatableImpl");
+        throw logger.logExceptionAsError(
+            new IllegalStateException("Internal Error: applyAsync cannot be called from CreatableImpl"));
     }
 
     @Override
     public final Mono<FluentModelT> updateResourceAsync() {
-        throw new IllegalStateException("Internal Error: updateResourceAsync cannot be called from CreatableImpl");
+        throw logger.logExceptionAsError(
+            new IllegalStateException("Internal Error: updateResourceAsync cannot be called from CreatableImpl"));
     }
 
     @Override
