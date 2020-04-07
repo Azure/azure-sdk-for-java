@@ -63,17 +63,20 @@ jobs:
           OSVmImage: windows-2019
           CloudType: AzureChinaCloud
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
+          Location: 'chinanorth'
         Java LTS Windows (AzureChinaCloud):
           ProfileFlag: '-Pjava-lts'
           JavaVersion: '1.11'
           OSVmImage: windows-2019
           CloudType: AzureChinaCloud
           ArmTemplateParameters: $(azureChinaCloudArmParameters)
+          Location: 'chinanorth'
 
     pool:
       vmImage: $(OSVmImage)
 
     variables:
+      Location: ''
       azureCloudArmParameters: "@{ storageEndpointSuffix = 'core.windows.net'; azureCloud = 'AzureCloud'; }"
       azureUSGovernmentArmParameters: "@{ storageEndpointSuffix = 'core.usgovcloudapi.net'; azureCloud = 'AzureUSGovernment'; }"
       azureChinaCloudArmParameters: "@{ storageEndpointSuffix = 'core.chinacloudapi.cn'; azureCloud = 'AzureChinaCloud'; }"
@@ -132,6 +135,7 @@ jobs:
         parameters:
           ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
           CloudType: $(CloudType)
+          Location: $(Location)
           ArmTemplateParameters: $(ArmTemplateParameters)
 
       - task: Maven@3
