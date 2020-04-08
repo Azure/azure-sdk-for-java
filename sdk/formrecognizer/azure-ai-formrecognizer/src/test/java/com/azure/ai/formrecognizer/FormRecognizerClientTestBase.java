@@ -218,7 +218,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
      * Create a client builder with endpoint and API key credential.
      *
      * @param endpoint the given endpoint
-     * @param credential the given {@link FormRecognizerApiKeyCredential} credential
+     * @param credential the given {@link AzureKeyCredential} credential
      *
      * @return {@link FormRecognizerClientBuilder}
      */

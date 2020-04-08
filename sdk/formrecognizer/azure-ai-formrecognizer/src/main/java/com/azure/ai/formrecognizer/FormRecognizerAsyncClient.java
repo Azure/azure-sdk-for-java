@@ -5,7 +5,6 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
-import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -30,6 +29,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
+import static com.azure.ai.formrecognizer.Transforms.getContentType;
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -123,7 +123,7 @@ public final class FormRecognizerAsyncClient {
      */
     public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipts(
         Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        return beginExtractReceipts(data, length, false, formContentType, null);
+        return beginExtractReceipts(data, length, false, null);
     }
 
     /**
@@ -135,7 +135,6 @@ public final class FormRecognizerAsyncClient {
      * @param data The data of the document to be extract receipt information from.
      * @param length The exact length of the data. Size of the file must be less than 20 MB.
      * @param includeTextDetails Include text lines and element references in the result.
-     * @param formContentType Supported Media types including .pdf, .jpg, .png or .tiff type file stream.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -143,15 +142,14 @@ public final class FormRecognizerAsyncClient {
      * been cancelled.
      */
     public PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> beginExtractReceipts(
-        Flux<ByteBuffer> data, long length, boolean includeTextDetails, FormContentType formContentType,
+        Flux<ByteBuffer> data, long length, boolean includeTextDetails,
         Duration pollInterval) {
         Objects.requireNonNull(data, "'data' is required and cannot be null.");
         Objects.requireNonNull(length, "'length' is required and cannot be null.");
-        Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
 
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
-        return new PollerFlux<OperationResult, IterableStream<ExtractedReceipt>>(interval,
-            receiptStreamActivationOperation(data, length, formContentType, includeTextDetails),
+        return new PollerFlux<>(interval,
+            receiptStreamActivationOperation(data, length, includeTextDetails),
             extractReceiptPollOperation(),
             (activationResponse, context) -> monoError(logger,
                 new RuntimeException("Cancellation is not supported")),
@@ -173,11 +171,11 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> receiptStreamActivationOperation(
-        Flux<ByteBuffer> buffer, long length, FormContentType formContentType, boolean includeTextDetails) {
+        Flux<ByteBuffer> buffer, long length, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
                 return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
-                    ContentType.fromString(formContentType.toString()), buffer, length)
+                    getContentType(buffer.blockFirst()), buffer, length)
                     .map(response -> new OperationResult(
                         parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {

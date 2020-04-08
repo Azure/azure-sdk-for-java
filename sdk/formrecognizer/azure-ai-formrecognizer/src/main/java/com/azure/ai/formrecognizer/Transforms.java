@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
@@ -29,6 +30,7 @@ import com.azure.ai.formrecognizer.models.WordElement;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -181,6 +183,34 @@ final class Transforms {
     private static PageMetadata getPageInfo(ReadResult readResultItem) {
         return new PageMetadata(readResultItem.getHeight(), readResultItem.getPage(), readResultItem.getWidth(),
             readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()));
+    }
+
+    /**
+     * Automatically detect byte buffer's content type.
+     * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"/>.
+     *
+     * @param buffer The byte buffer input.
+     *
+     * @return The {@link ContentType} content type.
+     */
+    static ContentType getContentType(ByteBuffer buffer) {
+        byte[] bytes = buffer.array();
+        if (bytes.length < 4) {
+            throw new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data");
+        }
+
+        if (bytes[0] == 0x25 && bytes[1] == 0x50 && bytes[2] == 0x44 && bytes[3] == 0x46) {
+            return ContentType.APPLICATION_PDF;
+        } else if (bytes[0] == (int) 0xff && bytes[1] == 0xd8) {
+            return ContentType.IMAGE_JPEG;
+        } else if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4e && bytes[3] == 0x47) {
+            return ContentType.IMAGE_PNG;
+        } else if ((bytes[0] == 0x49 && bytes[1] == 0x49 && bytes[2] == 0x2a && bytes[3] == 0x0) // little-endian
+            || (bytes[0] == 0x4d && bytes[1] == 0x4d && bytes[2] == 0x0 && bytes[3] == 0x2a)) {  // big-endian
+            return ContentType.IMAGE_TIFF;
+        } else {
+            throw new IllegalArgumentException ("content type could not be detected");
+        }
     }
 
     /**

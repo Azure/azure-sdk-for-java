@@ -109,7 +109,7 @@ public final class FormRecognizerClient {
                          Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
-        return client.beginExtractReceipts(buffer, length, includeTextDetails, formContentType, pollInterval)
+        return client.beginExtractReceipts(buffer, length, includeTextDetails, pollInterval)
             .getSyncPoller();
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.IterableStream;
@@ -68,8 +67,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     void extractReceiptData() {
         receiptDataRunner((data) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-                client.beginExtractReceipts(getReceiptFileBufferData(), FILE_LENGTH, false,
-                    FormContentType.IMAGE_JPEG, null).getSyncPoller();
+                client.beginExtractReceipts(getReceiptFileBufferData(), FILE_LENGTH, false, null)
+                    .getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
         });
@@ -80,7 +79,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         receiptDataRunnerTextDetails((data, includeTextDetails) -> {
             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller
                 = client.beginExtractReceipts(getReceiptFileBufferData(), FILE_LENGTH, includeTextDetails,
-                FormContentType.IMAGE_JPEG, null).getSyncPoller();
+                null).getSyncPoller();
             syncPoller.waitForCompletion();
             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
         });
