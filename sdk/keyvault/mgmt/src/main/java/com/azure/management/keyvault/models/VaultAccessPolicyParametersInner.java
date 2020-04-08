@@ -9,9 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.keyvault.VaultAccessPolicyProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VaultAccessPolicyParameters model.
- */
+/** The VaultAccessPolicyParameters model. */
 @Fluent
 public final class VaultAccessPolicyParametersInner extends ProxyResource {
     /*
@@ -28,7 +26,7 @@ public final class VaultAccessPolicyParametersInner extends ProxyResource {
 
     /**
      * Get the location property: The resource type of the access policy.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -37,7 +35,7 @@ public final class VaultAccessPolicyParametersInner extends ProxyResource {
 
     /**
      * Get the properties property: Properties of the access policy.
-     * 
+     *
      * @return the properties value.
      */
     public VaultAccessPolicyProperties properties() {
@@ -46,7 +44,7 @@ public final class VaultAccessPolicyParametersInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the access policy.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the VaultAccessPolicyParametersInner object itself.
      */

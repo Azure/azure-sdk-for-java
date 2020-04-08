@@ -10,9 +10,7 @@ import com.azure.management.keyvault.OperationDisplay;
 import com.azure.management.keyvault.ServiceSpecification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Operation model.
- */
+/** The Operation model. */
 @JsonFlatten
 @Fluent
 public class OperationInner {
@@ -41,9 +39,8 @@ public class OperationInner {
     private ServiceSpecification serviceSpecification;
 
     /**
-     * Get the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Get the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @return the name value.
      */
     public String name() {
@@ -51,9 +48,8 @@ public class OperationInner {
     }
 
     /**
-     * Set the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Set the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -63,9 +59,8 @@ public class OperationInner {
     }
 
     /**
-     * Get the display property: Display metadata associated with the
-     * operation.
-     * 
+     * Get the display property: Display metadata associated with the operation.
+     *
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -73,9 +68,8 @@ public class OperationInner {
     }
 
     /**
-     * Set the display property: Display metadata associated with the
-     * operation.
-     * 
+     * Set the display property: Display metadata associated with the operation.
+     *
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -86,7 +80,7 @@ public class OperationInner {
 
     /**
      * Get the origin property: The origin of operations.
-     * 
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -95,7 +89,7 @@ public class OperationInner {
 
     /**
      * Set the origin property: The origin of operations.
-     * 
+     *
      * @param origin the origin value to set.
      * @return the OperationInner object itself.
      */
@@ -105,9 +99,8 @@ public class OperationInner {
     }
 
     /**
-     * Get the serviceSpecification property: One property of operation,
-     * include metric specifications.
-     * 
+     * Get the serviceSpecification property: One property of operation, include metric specifications.
+     *
      * @return the serviceSpecification value.
      */
     public ServiceSpecification serviceSpecification() {
@@ -115,9 +108,8 @@ public class OperationInner {
     }
 
     /**
-     * Set the serviceSpecification property: One property of operation,
-     * include metric specifications.
-     * 
+     * Set the serviceSpecification property: One property of operation, include metric specifications.
+     *
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationInner object itself.
      */

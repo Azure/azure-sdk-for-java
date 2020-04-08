@@ -12,18 +12,18 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.management.AzureServiceClient;
 
-/**
- * Initializes a new instance of the KeyVaultManagementClientImpl type.
- */
+/** Initializes a new instance of the KeyVaultManagementClientImpl type. */
 public final class KeyVaultManagementClientImpl extends AzureServiceClient {
     /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
+     * the URI for every service call.
      */
     private String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     * 
+     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -31,8 +31,9 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     * 
+     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself.
      */
@@ -41,14 +42,12 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * server parameter.
-     */
+    /** server parameter. */
     private String host;
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the host value.
      */
     public String getHost() {
@@ -57,7 +56,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the service client itself.
      */
@@ -66,14 +65,12 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * Api Version.
-     */
+    /** Api Version. */
     private String apiVersion;
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
@@ -82,7 +79,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the service client itself.
      */
@@ -91,86 +88,76 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline httpPipeline;
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The VaultsInner object to access its operations.
-     */
-    private VaultsInner vaults;
+    /** The VaultsInner object to access its operations. */
+    private final VaultsInner vaults;
 
     /**
      * Gets the VaultsInner object to access its operations.
-     * 
+     *
      * @return the VaultsInner object.
      */
     public VaultsInner vaults() {
         return this.vaults;
     }
 
-    /**
-     * The PrivateEndpointConnectionsInner object to access its operations.
-     */
-    private PrivateEndpointConnectionsInner privateEndpointConnections;
+    /** The PrivateEndpointConnectionsInner object to access its operations. */
+    private final PrivateEndpointConnectionsInner privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsInner object to access its operations.
-     * 
+     *
      * @return the PrivateEndpointConnectionsInner object.
      */
     public PrivateEndpointConnectionsInner privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /**
-     * The PrivateLinkResourcesInner object to access its operations.
-     */
-    private PrivateLinkResourcesInner privateLinkResources;
+    /** The PrivateLinkResourcesInner object to access its operations. */
+    private final PrivateLinkResourcesInner privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesInner object to access its operations.
-     * 
+     *
      * @return the PrivateLinkResourcesInner object.
      */
     public PrivateLinkResourcesInner privateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /**
-     * The OperationsInner object to access its operations.
-     */
-    private OperationsInner operations;
+    /** The OperationsInner object to access its operations. */
+    private final OperationsInner operations;
 
     /**
      * Gets the OperationsInner object to access its operations.
-     * 
+     *
      * @return the OperationsInner object.
      */
     public OperationsInner operations() {
         return this.operations;
     }
 
-    /**
-     * Initializes an instance of KeyVaultManagementClient client.
-     */
+    /** Initializes an instance of KeyVaultManagementClient client. */
     public KeyVaultManagementClientImpl() {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), AzureEnvironment.AZURE);
+        this(
+            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            AzureEnvironment.AZURE);
     }
 
     /**
      * Initializes an instance of KeyVaultManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     public KeyVaultManagementClientImpl(HttpPipeline httpPipeline) {
@@ -179,7 +166,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient {
 
     /**
      * Initializes an instance of KeyVaultManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
