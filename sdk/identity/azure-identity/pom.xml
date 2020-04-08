@@ -127,6 +127,7 @@
                     <include>com.azure:*</include>
                     <include>com.nimbusds:oauth2-oidc-sdk</include>
                     <include>com.microsoft.azure:msal4j</include>
+                    <include>com.microsoft.azure:msal4j-persistence-extension</include>
                     <include>org.nanohttpd:nanohttpd</include>
                     <include>net.java.dev.jna</include>
                   </includes>
