@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TrustPolicy model.
- */
+/** The TrustPolicy model. */
 @Fluent
 public final class TrustPolicy {
     /*
@@ -26,7 +24,7 @@ public final class TrustPolicy {
 
     /**
      * Get the type property: The type of trust policy.
-     * 
+     *
      * @return the type value.
      */
     public TrustPolicyType type() {
@@ -35,7 +33,7 @@ public final class TrustPolicy {
 
     /**
      * Set the type property: The type of trust policy.
-     * 
+     *
      * @param type the type value to set.
      * @return the TrustPolicy object itself.
      */
@@ -45,9 +43,8 @@ public final class TrustPolicy {
     }
 
     /**
-     * Get the status property: The value that indicates whether the policy is
-     * enabled or not.
-     * 
+     * Get the status property: The value that indicates whether the policy is enabled or not.
+     *
      * @return the status value.
      */
     public PolicyStatus status() {
@@ -55,9 +52,8 @@ public final class TrustPolicy {
     }
 
     /**
-     * Set the status property: The value that indicates whether the policy is
-     * enabled or not.
-     * 
+     * Set the status property: The value that indicates whether the policy is enabled or not.
+     *
      * @param status the status value to set.
      * @return the TrustPolicy object itself.
      */

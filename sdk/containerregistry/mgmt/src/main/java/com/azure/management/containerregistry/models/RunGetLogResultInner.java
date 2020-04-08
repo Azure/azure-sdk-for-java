@@ -7,9 +7,7 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RunGetLogResult model.
- */
+/** The RunGetLogResult model. */
 @Fluent
 public final class RunGetLogResultInner {
     /*
@@ -19,9 +17,8 @@ public final class RunGetLogResultInner {
     private String logLink;
 
     /**
-     * Get the logLink property: The link to logs for a run on a azure
-     * container registry.
-     * 
+     * Get the logLink property: The link to logs for a run on a azure container registry.
+     *
      * @return the logLink value.
      */
     public String logLink() {
@@ -29,9 +26,8 @@ public final class RunGetLogResultInner {
     }
 
     /**
-     * Set the logLink property: The link to logs for a run on a azure
-     * container registry.
-     * 
+     * Set the logLink property: The link to logs for a run on a azure container registry.
+     *
      * @param logLink the logLink value to set.
      * @return the RunGetLogResultInner object itself.
      */

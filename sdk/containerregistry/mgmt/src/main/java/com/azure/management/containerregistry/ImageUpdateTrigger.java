@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The ImageUpdateTrigger model.
- */
+/** The ImageUpdateTrigger model. */
 @Fluent
 public final class ImageUpdateTrigger {
     /*
@@ -34,7 +32,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Get the id property: The unique ID of the trigger.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +41,7 @@ public final class ImageUpdateTrigger {
 
     /**
      * Set the id property: The unique ID of the trigger.
-     * 
+     *
      * @param id the id value to set.
      * @return the ImageUpdateTrigger object itself.
      */
@@ -53,9 +51,8 @@ public final class ImageUpdateTrigger {
     }
 
     /**
-     * Get the timestamp property: The timestamp when the image update
-     * happened.
-     * 
+     * Get the timestamp property: The timestamp when the image update happened.
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -63,9 +60,8 @@ public final class ImageUpdateTrigger {
     }
 
     /**
-     * Set the timestamp property: The timestamp when the image update
-     * happened.
-     * 
+     * Set the timestamp property: The timestamp when the image update happened.
+     *
      * @param timestamp the timestamp value to set.
      * @return the ImageUpdateTrigger object itself.
      */
@@ -75,9 +71,8 @@ public final class ImageUpdateTrigger {
     }
 
     /**
-     * Get the images property: The list of image updates that caused the
-     * build.
-     * 
+     * Get the images property: The list of image updates that caused the build.
+     *
      * @return the images value.
      */
     public List<ImageDescriptor> images() {
@@ -85,9 +80,8 @@ public final class ImageUpdateTrigger {
     }
 
     /**
-     * Set the images property: The list of image updates that caused the
-     * build.
-     * 
+     * Set the images property: The list of image updates that caused the build.
+     *
      * @param images the images value to set.
      * @return the ImageUpdateTrigger object itself.
      */

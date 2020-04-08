@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ReplicationListResult model.
- */
+/** The ReplicationListResult model. */
 @Fluent
 public final class ReplicationListResultInner {
     /*
@@ -27,10 +25,9 @@ public final class ReplicationListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: The list of replications. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of replications.
-     * 
+     * Get the value property: The list of replications. Since this list may be incomplete, the nextLink field should be
+     * used to request the next list of replications.
+     *
      * @return the value value.
      */
     public List<ReplicationInner> value() {
@@ -38,10 +35,9 @@ public final class ReplicationListResultInner {
     }
 
     /**
-     * Set the value property: The list of replications. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of replications.
-     * 
+     * Set the value property: The list of replications. Since this list may be incomplete, the nextLink field should be
+     * used to request the next list of replications.
+     *
      * @param value the value value to set.
      * @return the ReplicationListResultInner object itself.
      */
@@ -51,9 +47,8 @@ public final class ReplicationListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URI that can be used to request the next
-     * list of replications.
-     * 
+     * Get the nextLink property: The URI that can be used to request the next list of replications.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +56,8 @@ public final class ReplicationListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URI that can be used to request the next
-     * list of replications.
-     * 
+     * Set the nextLink property: The URI that can be used to request the next list of replications.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ReplicationListResultInner object itself.
      */
