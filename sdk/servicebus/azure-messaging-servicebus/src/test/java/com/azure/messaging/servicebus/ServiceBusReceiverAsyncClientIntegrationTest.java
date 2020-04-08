@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -27,7 +28,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
-    private ServiceBusReceiverAsyncClient receiverManualComplete;
     private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
 
@@ -164,14 +164,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .block(TIMEOUT);
 
         // Assert & Act
-        String finalContents = contents;
         StepVerifier.create(receiveDeleteModeReceiver.receive(options).take(2))
             .assertNext(receivedMessage -> {
-                Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
+                final String actual = new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
+                Assertions.assertEquals(contents, actual);
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .assertNext(receivedMessage -> {
-                Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
+                final String actual = new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
+                Assertions.assertEquals(contents, actual);
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
@@ -475,7 +476,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        final Duration timeout = Duration.ofSeconds(2);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         Map<String, Object> sentProperties = messageToSend.getProperties();
@@ -496,16 +496,23 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiveDeleteModeReceiver.receive(options))
             .assertNext(receivedMessage -> {
-                Map<String, Object> receivedProperties = receivedMessage.getProperties();
+                final Map<String, Object> received = receivedMessage.getProperties();
+
+                Assertions.assertEquals(sentProperties.size(), received.size());
+
                 for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
                     if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
-                        Assertions.assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) receivedProperties.get(sentEntry.getKey()));
+                        Assertions.assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) received.get(sentEntry.getKey()));
                     } else {
-                        Assertions.assertEquals(sentEntry.getValue(), receivedProperties.get(sentEntry.getKey()));
+                        final Object expected = sentEntry.getValue();
+                        final Object actual = received.get(sentEntry.getKey());
+
+                        Assertions.assertEquals(expected, actual, String.format(
+                            "Key '%s' does not match. Expected: '%s'. Actual: '%s'", sentEntry.getKey(), expected,
+                            actual));
                     }
                 }
             })
-            .expectNoEvent(timeout)
             .thenCancel()
             .verify();
     }

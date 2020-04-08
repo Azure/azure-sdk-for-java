@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
+import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -19,6 +20,7 @@ import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.SocketAddress;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -89,6 +91,10 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .queueName(queueName)
             .buildAsyncClient();
 
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ZERO);
+
         // Act & Assert
         try {
             StepVerifier.create(sender.createBatch()
@@ -101,7 +107,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
                 }))
                 .verifyComplete();
 
-            StepVerifier.create(receiver.receive().take(NUMBER_OF_EVENTS))
+            StepVerifier.create(receiver.receive(options).take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)
                 .expectComplete()
                 .verify(TIMEOUT);
