@@ -14,8 +14,8 @@ public class KeyVaultManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
     protected GraphRbacManager graphRbacManager;
-    protected String RG_NAME = "";
-    protected String VAULT_NAME = "";
+    protected String rgName = "";
+    protected String vaultName = "";
 
     public KeyVaultManagementTest() {
         super();
@@ -27,8 +27,8 @@ public class KeyVaultManagementTest extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
-        VAULT_NAME = generateRandomResourceName("java-keyvault-", 20);
+        rgName = generateRandomResourceName("javacsmrg", 15);
+        vaultName = generateRandomResourceName("java-keyvault-", 20);
 
         resourceManager =
             ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
@@ -40,6 +40,6 @@ public class KeyVaultManagementTest extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

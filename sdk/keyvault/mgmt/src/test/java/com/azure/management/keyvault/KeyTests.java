@@ -208,7 +208,7 @@ public class KeyTests extends KeyVaultManagementTest {
                 .vaults()
                 .define(vaultName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
                 .forServicePrincipal(credentials.getClientId())
                 .allowKeyAllPermissions()

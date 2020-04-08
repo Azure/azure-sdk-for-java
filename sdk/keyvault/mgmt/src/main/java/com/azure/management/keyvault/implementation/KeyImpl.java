@@ -346,10 +346,11 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     @Override
     public KeyImpl withKeySize(int size) {
-        if (createKeyRequest instanceof CreateEcKeyOptions) {
-            // TODO
-            // ((CreateEcKeyOptions) createKeyRequest).setKeySize(size);
-        } else if (createKeyRequest instanceof CreateRsaKeyOptions) {
+        // TODO (weidxu) currently no setKeySize in CreateEcKeyOptions
+        /*if (createKeyRequest instanceof CreateEcKeyOptions) {
+            ((CreateEcKeyOptions) createKeyRequest).setKeySize(size);
+        } else */
+        if (createKeyRequest instanceof CreateRsaKeyOptions) {
             ((CreateRsaKeyOptions) createKeyRequest).setKeySize(size);
         }
         return this;

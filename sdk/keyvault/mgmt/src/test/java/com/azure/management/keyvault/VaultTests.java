@@ -29,9 +29,9 @@ public class VaultTests extends KeyVaultManagementTest {
             Vault vault =
                 keyVaultManager
                     .vaults()
-                    .define(VAULT_NAME)
+                    .define(vaultName)
                     .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(RG_NAME)
+                    .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
                     .forServicePrincipal("http://" + sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
@@ -54,7 +54,7 @@ public class VaultTests extends KeyVaultManagementTest {
             Assertions.assertEquals(vault.networkRuleSet().bypass(), NetworkRuleBypassOptions.AZURE_SERVICES);
 
             // GET
-            vault = keyVaultManager.vaults().getByResourceGroup(RG_NAME, VAULT_NAME);
+            vault = keyVaultManager.vaults().getByResourceGroup(rgName, vaultName);
             Assertions.assertNotNull(vault);
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
@@ -74,9 +74,9 @@ public class VaultTests extends KeyVaultManagementTest {
                 }
             }
             // LIST
-            PagedIterable<Vault> vaults = keyVaultManager.vaults().listByResourceGroup(RG_NAME);
+            PagedIterable<Vault> vaults = keyVaultManager.vaults().listByResourceGroup(rgName);
             for (Vault v : vaults) {
-                if (VAULT_NAME.equals(v.name())) {
+                if (vaultName.equals(v.name())) {
                     vault = v;
                     break;
                 }
@@ -105,7 +105,7 @@ public class VaultTests extends KeyVaultManagementTest {
             // DELETE
             keyVaultManager.vaults().deleteById(vault.id());
             SdkContext.sleep(20000);
-            assertVaultDeleted(VAULT_NAME, Region.US_WEST.toString());
+            assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
             graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
             //            graphRbacManager.users().deleteById(user.id());
@@ -128,9 +128,9 @@ public class VaultTests extends KeyVaultManagementTest {
             Vault vault =
                 keyVaultManager
                     .vaults()
-                    .define(VAULT_NAME)
+                    .define(vaultName)
                     .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(RG_NAME)
+                    .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
                     .forServicePrincipal("http://" + sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
@@ -148,7 +148,7 @@ public class VaultTests extends KeyVaultManagementTest {
             Assertions.assertNotNull(vault);
             Assertions.assertFalse(vault.softDeleteEnabled());
             // GET
-            vault = keyVaultManager.vaults().getByResourceGroupAsync(RG_NAME, VAULT_NAME).block();
+            vault = keyVaultManager.vaults().getByResourceGroupAsync(rgName, vaultName).block();
             Assertions.assertNotNull(vault);
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
@@ -169,9 +169,9 @@ public class VaultTests extends KeyVaultManagementTest {
             }
             // LIST
             PagedIterable<Vault> vaults =
-                new PagedIterable<>(keyVaultManager.vaults().listByResourceGroupAsync(RG_NAME));
+                new PagedIterable<>(keyVaultManager.vaults().listByResourceGroupAsync(rgName));
             for (Vault v : vaults) {
-                if (VAULT_NAME.equals(v.name())) {
+                if (vaultName.equals(v.name())) {
                     vault = v;
                     break;
                 }
@@ -200,7 +200,7 @@ public class VaultTests extends KeyVaultManagementTest {
             // DELETE
             keyVaultManager.vaults().deleteByIdAsync(vault.id()).block();
             SdkContext.sleep(20000);
-            assertVaultDeleted(VAULT_NAME, Region.US_WEST.toString());
+            assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
             graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
             //            graphRbacManager.users().deleteById(user.id());
@@ -209,7 +209,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
     @Test
     public void canEnableSoftDeleteAndPurge() throws InterruptedException {
-        String otherVaultName = VAULT_NAME + "other";
+        String otherVaultName = vaultName + "other";
         String sp = sdkContext.randomResourceName("sp", 20);
         String us = sdkContext.randomResourceName("us", 20);
 
@@ -225,7 +225,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .vaults()
                     .define(otherVaultName)
                     .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(RG_NAME)
+                    .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
                     .forServicePrincipal("http://" + sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
@@ -243,8 +243,8 @@ public class VaultTests extends KeyVaultManagementTest {
                     .create();
             Assertions.assertTrue(vault.softDeleteEnabled());
 
-            keyVaultManager.vaults().deleteByResourceGroup(RG_NAME, otherVaultName);
-            ;
+            keyVaultManager.vaults().deleteByResourceGroup(rgName, otherVaultName);
+
             SdkContext.sleep(20000);
             // Can still see deleted vault.
             Assertions.assertNotNull(keyVaultManager.vaults().getDeleted(otherVaultName, Region.US_WEST.toString()));

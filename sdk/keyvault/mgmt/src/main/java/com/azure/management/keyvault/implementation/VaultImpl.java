@@ -4,6 +4,7 @@
 package com.azure.management.keyvault.implementation;
 
 import com.azure.core.management.CloudException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.RestClient;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.AccessPolicy;
@@ -39,6 +40,9 @@ import reactor.core.publisher.Mono;
 /** Implementation for Vault and its parent interfaces. */
 class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyVaultManager>
     implements Vault, Vault.Definition, Vault.Update {
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
+
     private GraphRbacManager graphRbacManager;
     private List<AccessPolicyImpl> accessPolicies;
 
@@ -220,7 +224,8 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                 return entry;
             }
         }
-        throw new NoSuchElementException(String.format("Identity %s not found in the access policies.", objectId));
+        throw logger.logExceptionAsError(
+            new NoSuchElementException(String.format("Identity %s not found in the access policies.", objectId)));
     }
 
     @Override
@@ -320,7 +325,8 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                                                         graphRbacManager.tenantId()),
                                                 null))));
                 } else {
-                    throw new IllegalArgumentException("Access policy must specify object ID.");
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException("Access policy must specify object ID."));
                 }
             }
         }

@@ -34,7 +34,6 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, KeyVaultSecr
 
     @Override
     protected SecretImpl wrapModel(String name) {
-        // TODO value not valid
         return new SecretImpl(name, new KeyVaultSecret(name, null), vault);
     }
 

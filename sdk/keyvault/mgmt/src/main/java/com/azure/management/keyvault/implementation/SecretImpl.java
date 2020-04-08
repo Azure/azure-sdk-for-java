@@ -134,11 +134,10 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, KeyVaultSecret, SecretIm
         return this;
     }
 
-    @Override
-    public SecretImpl withVersion(String version) {
-        // TODO not supported
-        return this;
-    }
+//    @Override
+//    public SecretImpl withVersion(String version) {
+//        return this;
+//    }
 
     @Override
     public SecretImpl withValue(String value) {
