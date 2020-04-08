@@ -3,11 +3,6 @@
 
 package com.azure.management.keyvault.implementation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
-
 import com.azure.core.management.CloudException;
 import com.azure.management.RestClient;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
@@ -35,13 +30,15 @@ import com.azure.security.keyvault.keys.KeyAsyncClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Vault and its parent interfaces.
- */
+/** Implementation for Vault and its parent interfaces. */
 class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyVaultManager>
-        implements Vault, Vault.Definition, Vault.Update {
+    implements Vault, Vault.Definition, Vault.Update {
     private GraphRbacManager graphRbacManager;
     private List<AccessPolicyImpl> accessPolicies;
 
@@ -56,8 +53,9 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         super(key, innerObject, manager);
         this.graphRbacManager = graphRbacManager;
         this.accessPolicies = new ArrayList<>();
-        if (innerObject != null && innerObject.properties() != null
-                && innerObject.properties().accessPolicies() != null) {
+        if (innerObject != null
+            && innerObject.properties() != null
+            && innerObject.properties().accessPolicies() != null) {
             for (AccessPolicyEntry entry : innerObject.properties().accessPolicies()) {
                 this.accessPolicies.add(new AccessPolicyImpl(entry, this));
             }
@@ -70,11 +68,13 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     private void init() {
         if (inner().properties().vaultUri() != null) {
             final String vaultUrl = vaultUri();
-            this.secretClient = new SecretClientBuilder()
+            this.secretClient =
+                new SecretClientBuilder()
                     .vaultUrl(vaultUrl)
                     .pipeline(vaultRestClient.getHttpPipeline())
                     .buildAsyncClient();
-            this.keyClient = new KeyClientBuilder()
+            this.keyClient =
+                new KeyClientBuilder()
                     .vaultUrl(vaultUrl)
                     .pipeline(vaultRestClient.getHttpPipeline())
                     .buildAsyncClient();
@@ -285,25 +285,40 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         for (final AccessPolicyImpl accessPolicy : accessPolicies) {
             if (accessPolicy.objectId() == null) {
                 if (accessPolicy.userPrincipalName() != null) {
-                    observables.add(
-                            graphRbacManager.users().getByNameAsync(accessPolicy.userPrincipalName())
-                                    .subscribeOn(SdkContext.getReactorScheduler())
-                                    .doOnNext(user -> accessPolicy.forObjectId(user.id()))
-                                    .switchIfEmpty(Mono.error(new CloudException(String.format(
-                                            "User principal name %s is not found in tenant %s",
-                                            accessPolicy.userPrincipalName(), graphRbacManager.tenantId()),
-                                            null)))
-                    );
+                    observables
+                        .add(
+                            graphRbacManager
+                                .users()
+                                .getByNameAsync(accessPolicy.userPrincipalName())
+                                .subscribeOn(SdkContext.getReactorScheduler())
+                                .doOnNext(user -> accessPolicy.forObjectId(user.id()))
+                                .switchIfEmpty(
+                                    Mono
+                                        .error(
+                                            new CloudException(
+                                                String
+                                                    .format(
+                                                        "User principal name %s is not found in tenant %s",
+                                                        accessPolicy.userPrincipalName(), graphRbacManager.tenantId()),
+                                                null))));
                 } else if (accessPolicy.servicePrincipalName() != null) {
-                    observables.add(
-                            graphRbacManager.servicePrincipals().getByNameAsync(accessPolicy.servicePrincipalName())
-                                    .subscribeOn(SdkContext.getReactorScheduler())
-                                    .doOnNext(sp -> accessPolicy.forObjectId(sp.id()))
-                                    .switchIfEmpty(Mono.error(new CloudException(String.format(
-                                            "Service principal name %s is not found in tenant %s",
-                                            accessPolicy.servicePrincipalName(), graphRbacManager.tenantId()),
-                                            null)))
-                    );
+                    observables
+                        .add(
+                            graphRbacManager
+                                .servicePrincipals()
+                                .getByNameAsync(accessPolicy.servicePrincipalName())
+                                .subscribeOn(SdkContext.getReactorScheduler())
+                                .doOnNext(sp -> accessPolicy.forObjectId(sp.id()))
+                                .switchIfEmpty(
+                                    Mono
+                                        .error(
+                                            new CloudException(
+                                                String
+                                                    .format(
+                                                        "Service principal name %s is not found in tenant %s",
+                                                        accessPolicy.servicePrincipalName(),
+                                                        graphRbacManager.tenantId()),
+                                                null))));
                 } else {
                     throw new IllegalArgumentException("Access policy must specify object ID.");
                 }
@@ -320,17 +335,22 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     public Mono<Vault> createResourceAsync() {
         final VaultsInner client = this.manager().inner().vaults();
         return populateAccessPolicies()
-                .then(Mono.defer(() -> {
-                    VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
-                    parameters.withLocation(regionName());
-                    parameters.withProperties(inner().properties());
-                    parameters.withTags(inner().getTags());
-                    parameters.properties().withAccessPolicies(new ArrayList<>());
-                    for (AccessPolicy accessPolicy : accessPolicies) {
-                        parameters.properties().accessPolicies().add(accessPolicy.inner());
-                    }
-                    return client.createOrUpdateAsync(resourceGroupName(), this.name(), parameters);
-                })).map(inner -> {
+            .then(
+                Mono
+                    .defer(
+                        () -> {
+                            VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
+                            parameters.withLocation(regionName());
+                            parameters.withProperties(inner().properties());
+                            parameters.withTags(inner().getTags());
+                            parameters.properties().withAccessPolicies(new ArrayList<>());
+                            for (AccessPolicy accessPolicy : accessPolicies) {
+                                parameters.properties().accessPolicies().add(accessPolicy.inner());
+                            }
+                            return client.createOrUpdateAsync(resourceGroupName(), this.name(), parameters);
+                        }))
+            .map(
+                inner -> {
                     this.setInner(inner);
                     init();
                     return this;
@@ -346,7 +366,6 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     public CreateMode createMode() {
         return inner().properties().createMode();
     }
-
 
     @Override
     public NetworkRuleSet networkRuleSet() {
@@ -383,19 +402,18 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             networkRuleSet.withIpRules(new ArrayList<>());
         }
         boolean found = false;
-        for (IPRule rule: networkRuleSet.ipRules()) {
+        for (IPRule rule : networkRuleSet.ipRules()) {
             if (rule.value().equalsIgnoreCase(ipAddressOrRange)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            networkRuleSet.ipRules().add(new IPRule()
-                    .withValue(ipAddressOrRange));
+            networkRuleSet.ipRules().add(new IPRule().withValue(ipAddressOrRange));
         }
         return this;
     }
-    
+
     @Override
     public VaultImpl withAccessFromIpAddress(String ipAddress) {
         return withAccessAllowedFromIpAddressOrRange(ipAddress);
@@ -441,5 +459,4 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         inner().properties().networkAcls().withVirtualNetworkRules(virtualNetworkRules);
         return this;
     }
-
 }

@@ -9,9 +9,7 @@ import com.azure.management.keyvault.implementation.KeyVaultManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.implementation.ResourceManager;
 
-/**
- * The base for KeyVault manager tests.
- */
+/** The base for KeyVault manager tests. */
 public class KeyVaultManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
@@ -32,16 +30,12 @@ public class KeyVaultManagementTest extends TestBase {
         RG_NAME = generateRandomResourceName("javacsmrg", 15);
         VAULT_NAME = generateRandomResourceName("java-keyvault-", 20);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        graphRbacManager = GraphRbacManager
-                .authenticate(restClient, domain, sdkContext);
+        graphRbacManager = GraphRbacManager.authenticate(restClient, domain, sdkContext);
 
-        keyVaultManager = KeyVaultManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
     }
 
     @Override
