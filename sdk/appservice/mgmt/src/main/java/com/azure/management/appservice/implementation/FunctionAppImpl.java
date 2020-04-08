@@ -440,7 +440,7 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        return functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01", manager().inner().userAgent())
+        return functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01")
                 .map(ListKeysResult::getMasterKey);
     }
 
@@ -604,7 +604,7 @@ class FunctionAppImpl
     private interface FunctionAppKeyService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys" })
         @Post("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys")
-        Mono<ListKeysResult> listKeys(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("User-Agent") String userAgent);
+        Mono<ListKeysResult> listKeys(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
     }
 
     @Host("{$host}")
