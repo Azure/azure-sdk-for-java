@@ -7,15 +7,9 @@ import com.azure.management.containerregistry.Webhook;
 import com.azure.management.containerregistry.models.WebhookInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
-/**
- * Represents a webhook collection associated with a container registry.
- */
+/** Represents a webhook collection associated with a container registry. */
 public class WebhooksImpl
-    extends ExternalChildResourcesNonCachedImpl<WebhookImpl,
-            Webhook,
-            WebhookInner,
-            RegistryImpl,
-            Registry> {
+    extends ExternalChildResourcesNonCachedImpl<WebhookImpl, Webhook, WebhookInner, RegistryImpl, Registry> {
 
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
@@ -28,14 +22,20 @@ public class WebhooksImpl
     }
 
     WebhookImpl defineWebhook(String name) {
-        return prepareInlineDefine(new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager()).setCreateMode(true));
+        return prepareInlineDefine(
+            new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager())
+                .setCreateMode(true));
     }
 
     WebhookImpl updateWebhook(String name) {
-        return prepareInlineUpdate(new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager()).setCreateMode(false));
+        return prepareInlineUpdate(
+            new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager())
+                .setCreateMode(false));
     }
 
     void withoutWebhook(String name) {
-        prepareInlineRemove(new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager()).setCreateMode(false));
+        prepareInlineRemove(
+            new WebhookImpl(name, this.getParent(), new WebhookInner(), this.getParent().manager())
+                .setCreateMode(false));
     }
 }
