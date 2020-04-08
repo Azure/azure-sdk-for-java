@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractInnerException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ResourceMoveDefinition;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolPatchInfo;
 import com.microsoft.azure.Page;
@@ -319,6 +320,7 @@ public class SqlPoolsInner {
     private ServiceResponse<SqlPoolInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SqlPoolInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SqlPoolInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
