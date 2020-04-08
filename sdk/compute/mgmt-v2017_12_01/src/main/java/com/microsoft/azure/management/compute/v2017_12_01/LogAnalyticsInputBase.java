@@ -41,7 +41,7 @@ public class LogAnalyticsInputBase {
     private Boolean groupByThrottlePolicy;
 
     /**
-     * Group query result by  by Operation Name.
+     * Group query result by Operation Name.
      */
     @JsonProperty(value = "groupByOperationName")
     private Boolean groupByOperationName;
@@ -53,7 +53,7 @@ public class LogAnalyticsInputBase {
     private Boolean groupByResourceName;
 
     /**
-     * Get the blobContainerSasUri value.
+     * Get sAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
      *
      * @return the blobContainerSasUri value
      */
@@ -62,7 +62,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the blobContainerSasUri value.
+     * Set sAS Uri of the logging blob container to which LogAnalytics Api writes output logs to.
      *
      * @param blobContainerSasUri the blobContainerSasUri value to set
      * @return the LogAnalyticsInputBase object itself.
@@ -73,7 +73,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the fromTime value.
+     * Get from time of the query.
      *
      * @return the fromTime value
      */
@@ -82,7 +82,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the fromTime value.
+     * Set from time of the query.
      *
      * @param fromTime the fromTime value to set
      * @return the LogAnalyticsInputBase object itself.
@@ -93,7 +93,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the toTime value.
+     * Get to time of the query.
      *
      * @return the toTime value
      */
@@ -102,7 +102,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the toTime value.
+     * Set to time of the query.
      *
      * @param toTime the toTime value to set
      * @return the LogAnalyticsInputBase object itself.
@@ -113,7 +113,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByThrottlePolicy value.
+     * Get group query result by Throttle Policy applied.
      *
      * @return the groupByThrottlePolicy value
      */
@@ -122,7 +122,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByThrottlePolicy value.
+     * Set group query result by Throttle Policy applied.
      *
      * @param groupByThrottlePolicy the groupByThrottlePolicy value to set
      * @return the LogAnalyticsInputBase object itself.
@@ -133,7 +133,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByOperationName value.
+     * Get group query result by Operation Name.
      *
      * @return the groupByOperationName value
      */
@@ -142,7 +142,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByOperationName value.
+     * Set group query result by Operation Name.
      *
      * @param groupByOperationName the groupByOperationName value to set
      * @return the LogAnalyticsInputBase object itself.
@@ -153,7 +153,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get the groupByResourceName value.
+     * Get group query result by Resource Name.
      *
      * @return the groupByResourceName value
      */
@@ -162,7 +162,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set the groupByResourceName value.
+     * Set group query result by Resource Name.
      *
      * @param groupByResourceName the groupByResourceName value to set
      * @return the LogAnalyticsInputBase object itself.
