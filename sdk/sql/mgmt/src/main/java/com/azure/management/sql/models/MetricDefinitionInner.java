@@ -12,9 +12,7 @@ import com.azure.management.sql.UnitDefinitionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricDefinition model.
- */
+/** The MetricDefinition model. */
 @Immutable
 public final class MetricDefinitionInner {
     /*
@@ -49,7 +47,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the name property: The name information for the metric.
-     * 
+     *
      * @return the name value.
      */
     public MetricName name() {
@@ -57,9 +55,8 @@ public final class MetricDefinitionInner {
     }
 
     /**
-     * Get the primaryAggregationType property: The primary aggregation type
-     * defining how metric values are displayed.
-     * 
+     * Get the primaryAggregationType property: The primary aggregation type defining how metric values are displayed.
+     *
      * @return the primaryAggregationType value.
      */
     public PrimaryAggregationType primaryAggregationType() {
@@ -68,7 +65,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the resourceUri property: The resource uri of the database.
-     * 
+     *
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -77,7 +74,7 @@ public final class MetricDefinitionInner {
 
     /**
      * Get the unit property: The unit of the metric.
-     * 
+     *
      * @return the unit value.
      */
     public UnitDefinitionType unit() {
@@ -85,9 +82,8 @@ public final class MetricDefinitionInner {
     }
 
     /**
-     * Get the metricAvailabilities property: The list of database metric
-     * availabilities for the metric.
-     * 
+     * Get the metricAvailabilities property: The list of database metric availabilities for the metric.
+     *
      * @return the metricAvailabilities value.
      */
     public List<MetricAvailability> metricAvailabilities() {

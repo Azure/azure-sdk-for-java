@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServiceSpecification model.
- */
+/** The ServiceSpecification model. */
 @Fluent
 public final class ServiceSpecification {
     /*
@@ -21,7 +19,7 @@ public final class ServiceSpecification {
 
     /**
      * Get the logSpecifications property: Log specifications of operation.
-     * 
+     *
      * @return the logSpecifications value.
      */
     public List<LogSpecification> logSpecifications() {
@@ -30,7 +28,7 @@ public final class ServiceSpecification {
 
     /**
      * Set the logSpecifications property: Log specifications of operation.
-     * 
+     *
      * @param logSpecifications the logSpecifications value to set.
      * @return the ServiceSpecification object itself.
      */

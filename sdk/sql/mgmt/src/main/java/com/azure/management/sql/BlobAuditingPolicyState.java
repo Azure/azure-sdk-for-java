@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for BlobAuditingPolicyState.
- */
+/** Defines values for BlobAuditingPolicyState. */
 public enum BlobAuditingPolicyState {
-    /**
-     * Enum value Enabled.
-     */
+    /** Enum value Enabled. */
     ENABLED("Enabled"),
 
-    /**
-     * Enum value Disabled.
-     */
+    /** Enum value Disabled. */
     DISABLED("Disabled");
 
-    /**
-     * The actual serialized value for a BlobAuditingPolicyState instance.
-     */
+    /** The actual serialized value for a BlobAuditingPolicyState instance. */
     private final String value;
 
     BlobAuditingPolicyState(String value) {
@@ -32,7 +24,7 @@ public enum BlobAuditingPolicyState {
 
     /**
      * Parses a serialized value to a BlobAuditingPolicyState instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed BlobAuditingPolicyState object, or null if unable to parse.
      */

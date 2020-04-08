@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Name model.
- */
+/** The Name model. */
 @Fluent
 public final class Name {
     /*
@@ -26,7 +24,7 @@ public final class Name {
 
     /**
      * Get the value property: Usage name value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -35,7 +33,7 @@ public final class Name {
 
     /**
      * Set the value property: Usage name value.
-     * 
+     *
      * @param value the value value to set.
      * @return the Name object itself.
      */
@@ -46,7 +44,7 @@ public final class Name {
 
     /**
      * Get the localizedValue property: Usage name localized value.
-     * 
+     *
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -55,7 +53,7 @@ public final class Name {
 
     /**
      * Set the localizedValue property: Usage name localized value.
-     * 
+     *
      * @param localizedValue the localizedValue value to set.
      * @return the Name object itself.
      */

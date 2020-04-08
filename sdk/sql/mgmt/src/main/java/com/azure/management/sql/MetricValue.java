@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The MetricValue model.
- */
+/** The MetricValue model. */
 @Immutable
 public final class MetricValue {
     /*
@@ -51,7 +49,7 @@ public final class MetricValue {
 
     /**
      * Get the count property: The number of values for the metric.
-     * 
+     *
      * @return the count value.
      */
     public Integer count() {
@@ -60,7 +58,7 @@ public final class MetricValue {
 
     /**
      * Get the average property: The average value of the metric.
-     * 
+     *
      * @return the average value.
      */
     public Double average() {
@@ -69,7 +67,7 @@ public final class MetricValue {
 
     /**
      * Get the maximum property: The max value of the metric.
-     * 
+     *
      * @return the maximum value.
      */
     public Double maximum() {
@@ -78,7 +76,7 @@ public final class MetricValue {
 
     /**
      * Get the minimum property: The min value of the metric.
-     * 
+     *
      * @return the minimum value.
      */
     public Double minimum() {
@@ -87,7 +85,7 @@ public final class MetricValue {
 
     /**
      * Get the timestamp property: The metric timestamp (ISO-8601 format).
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -96,7 +94,7 @@ public final class MetricValue {
 
     /**
      * Get the total property: The total value of the metric.
-     * 
+     *
      * @return the total value.
      */
     public Double total() {

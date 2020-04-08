@@ -7,9 +7,7 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SyncAgentKeyProperties model.
- */
+/** The SyncAgentKeyProperties model. */
 @Immutable
 public final class SyncAgentKeyPropertiesInner {
     /*
@@ -20,7 +18,7 @@ public final class SyncAgentKeyPropertiesInner {
 
     /**
      * Get the syncAgentKey property: Key of sync agent.
-     * 
+     *
      * @return the syncAgentKey value.
      */
     public String syncAgentKey() {

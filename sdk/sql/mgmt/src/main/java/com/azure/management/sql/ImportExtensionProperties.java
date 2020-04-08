@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ImportExtensionProperties model.
- */
+/** The ImportExtensionProperties model. */
 @Fluent
 public final class ImportExtensionProperties extends ExportRequest {
     /*
@@ -18,17 +16,14 @@ public final class ImportExtensionProperties extends ExportRequest {
     @JsonProperty(value = "operationMode", required = true)
     private String operationMode;
 
-    /**
-     * Creates an instance of ImportExtensionProperties class.
-     */
+    /** Creates an instance of ImportExtensionProperties class. */
     public ImportExtensionProperties() {
         operationMode = "Import";
     }
 
     /**
-     * Get the operationMode property: The type of import operation being
-     * performed. This is always Import.
-     * 
+     * Get the operationMode property: The type of import operation being performed. This is always Import.
+     *
      * @return the operationMode value.
      */
     public String operationMode() {
@@ -36,9 +31,8 @@ public final class ImportExtensionProperties extends ExportRequest {
     }
 
     /**
-     * Set the operationMode property: The type of import operation being
-     * performed. This is always Import.
-     * 
+     * Set the operationMode property: The type of import operation being performed. This is always Import.
+     *
      * @param operationMode the operationMode value to set.
      * @return the ImportExtensionProperties object itself.
      */

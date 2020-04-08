@@ -7,28 +7,18 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for SecurityAlertPolicyState.
- */
+/** Defines values for SecurityAlertPolicyState. */
 public enum SecurityAlertPolicyState {
-    /**
-     * Enum value New.
-     */
+    /** Enum value New. */
     NEW("New"),
 
-    /**
-     * Enum value Enabled.
-     */
+    /** Enum value Enabled. */
     ENABLED("Enabled"),
 
-    /**
-     * Enum value Disabled.
-     */
+    /** Enum value Disabled. */
     DISABLED("Disabled");
 
-    /**
-     * The actual serialized value for a SecurityAlertPolicyState instance.
-     */
+    /** The actual serialized value for a SecurityAlertPolicyState instance. */
     private final String value;
 
     SecurityAlertPolicyState(String value) {
@@ -37,7 +27,7 @@ public enum SecurityAlertPolicyState {
 
     /**
      * Parses a serialized value to a SecurityAlertPolicyState instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed SecurityAlertPolicyState object, or null if unable to parse.
      */

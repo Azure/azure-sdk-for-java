@@ -15,9 +15,7 @@ import com.azure.management.sql.PartnerRegionInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The InstanceFailoverGroup model.
- */
+/** The InstanceFailoverGroup model. */
 @JsonFlatten
 @Fluent
 public class InstanceFailoverGroupInner extends ProxyResource {
@@ -58,9 +56,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     private List<ManagedInstancePairInfo> managedInstancePairs;
 
     /**
-     * Get the readWriteEndpoint property: Read-write endpoint of the failover
-     * group instance.
-     * 
+     * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
+     *
      * @return the readWriteEndpoint value.
      */
     public InstanceFailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -68,9 +65,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the readWriteEndpoint property: Read-write endpoint of the failover
-     * group instance.
-     * 
+     * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
+     *
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -80,9 +76,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the readOnlyEndpoint property: Read-only endpoint of the failover
-     * group instance.
-     * 
+     * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
+     *
      * @return the readOnlyEndpoint value.
      */
     public InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -90,9 +85,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the readOnlyEndpoint property: Read-only endpoint of the failover
-     * group instance.
-     * 
+     * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
+     *
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -102,9 +96,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the replicationRole property: Local replication role of the failover
-     * group instance.
-     * 
+     * Get the replicationRole property: Local replication role of the failover group instance.
+     *
      * @return the replicationRole value.
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {
@@ -112,9 +105,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the replicationState property: Replication state of the failover
-     * group instance.
-     * 
+     * Get the replicationState property: Replication state of the failover group instance.
+     *
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -122,9 +114,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the partnerRegions property: Partner region information for the
-     * failover group.
-     * 
+     * Get the partnerRegions property: Partner region information for the failover group.
+     *
      * @return the partnerRegions value.
      */
     public List<PartnerRegionInfo> partnerRegions() {
@@ -132,9 +123,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the partnerRegions property: Partner region information for the
-     * failover group.
-     * 
+     * Set the partnerRegions property: Partner region information for the failover group.
+     *
      * @param partnerRegions the partnerRegions value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */
@@ -144,9 +134,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Get the managedInstancePairs property: List of managed instance pairs in
-     * the failover group.
-     * 
+     * Get the managedInstancePairs property: List of managed instance pairs in the failover group.
+     *
      * @return the managedInstancePairs value.
      */
     public List<ManagedInstancePairInfo> managedInstancePairs() {
@@ -154,9 +143,8 @@ public class InstanceFailoverGroupInner extends ProxyResource {
     }
 
     /**
-     * Set the managedInstancePairs property: List of managed instance pairs in
-     * the failover group.
-     * 
+     * Set the managedInstancePairs property: List of managed instance pairs in the failover group.
+     *
      * @param managedInstancePairs the managedInstancePairs value to set.
      * @return the InstanceFailoverGroupInner object itself.
      */

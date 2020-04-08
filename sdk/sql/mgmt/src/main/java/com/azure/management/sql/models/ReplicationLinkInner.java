@@ -12,9 +12,7 @@ import com.azure.management.sql.ReplicationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ReplicationLink model.
- */
+/** The ReplicationLink model. */
 @JsonFlatten
 @Immutable
 public class ReplicationLinkInner extends ProxyResource {
@@ -92,9 +90,8 @@ public class ReplicationLinkInner extends ProxyResource {
     private ReplicationState replicationState;
 
     /**
-     * Get the location property: Location of the server that contains this
-     * firewall rule.
-     * 
+     * Get the location property: Location of the server that contains this firewall rule.
+     *
      * @return the location value.
      */
     public String location() {
@@ -103,7 +100,7 @@ public class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the type property: Type of resource this is.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -111,9 +108,9 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the isTerminationAllowed property: Legacy value indicating whether
-     * termination is allowed.  Currently always returns true.
-     * 
+     * Get the isTerminationAllowed property: Legacy value indicating whether termination is allowed. Currently always
+     * returns true.
+     *
      * @return the isTerminationAllowed value.
      */
     public Boolean isTerminationAllowed() {
@@ -121,9 +118,8 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the replicationMode property: Replication mode of this replication
-     * link.
-     * 
+     * Get the replicationMode property: Replication mode of this replication link.
+     *
      * @return the replicationMode value.
      */
     public String replicationMode() {
@@ -131,9 +127,8 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the partnerServer property: The name of the server hosting the
-     * partner database.
-     * 
+     * Get the partnerServer property: The name of the server hosting the partner database.
+     *
      * @return the partnerServer value.
      */
     public String partnerServer() {
@@ -142,7 +137,7 @@ public class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the partnerDatabase property: The name of the partner database.
-     * 
+     *
      * @return the partnerDatabase value.
      */
     public String partnerDatabase() {
@@ -150,9 +145,8 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the partnerLocation property: The Azure Region of the partner
-     * database.
-     * 
+     * Get the partnerLocation property: The Azure Region of the partner database.
+     *
      * @return the partnerLocation value.
      */
     public String partnerLocation() {
@@ -161,7 +155,7 @@ public class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the role property: The role of the database in the replication link.
-     * 
+     *
      * @return the role value.
      */
     public ReplicationRole role() {
@@ -169,9 +163,8 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the partnerRole property: The role of the partner database in the
-     * replication link.
-     * 
+     * Get the partnerRole property: The role of the partner database in the replication link.
+     *
      * @return the partnerRole value.
      */
     public ReplicationRole partnerRole() {
@@ -180,7 +173,7 @@ public class ReplicationLinkInner extends ProxyResource {
 
     /**
      * Get the startTime property: The start time for the replication link.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -188,9 +181,8 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the percentComplete property: The percentage of seeding complete for
-     * the replication link.
-     * 
+     * Get the percentComplete property: The percentage of seeding complete for the replication link.
+     *
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -198,9 +190,8 @@ public class ReplicationLinkInner extends ProxyResource {
     }
 
     /**
-     * Get the replicationState property: The replication state for the
-     * replication link.
-     * 
+     * Get the replicationState property: The replication state for the replication link.
+     *
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {

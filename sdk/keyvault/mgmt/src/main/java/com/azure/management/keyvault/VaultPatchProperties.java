@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * The VaultPatchProperties model.
- */
+/** The VaultPatchProperties model. */
 @Fluent
 public final class VaultPatchProperties {
     /*
@@ -89,9 +87,9 @@ public final class VaultPatchProperties {
     private NetworkRuleSet networkAcls;
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant ID that
-     * should be used for authenticating requests to the key vault.
-     * 
+     * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * to the key vault.
+     *
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -99,9 +97,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the tenantId property: The Azure Active Directory tenant ID that
-     * should be used for authenticating requests to the key vault.
-     * 
+     * Set the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * to the key vault.
+     *
      * @param tenantId the tenantId value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -112,7 +110,7 @@ public final class VaultPatchProperties {
 
     /**
      * Get the sku property: SKU details.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -121,7 +119,7 @@ public final class VaultPatchProperties {
 
     /**
      * Set the sku property: SKU details.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -131,10 +129,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the accessPolicies property: An array of 0 to 16 identities that
-     * have access to the key vault. All identities in the array must use the
-     * same tenant ID as the key vault's tenant ID.
-     * 
+     * Get the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
+     * in the array must use the same tenant ID as the key vault's tenant ID.
+     *
      * @return the accessPolicies value.
      */
     public List<AccessPolicyEntry> accessPolicies() {
@@ -142,10 +139,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the accessPolicies property: An array of 0 to 16 identities that
-     * have access to the key vault. All identities in the array must use the
-     * same tenant ID as the key vault's tenant ID.
-     * 
+     * Set the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
+     * in the array must use the same tenant ID as the key vault's tenant ID.
+     *
      * @param accessPolicies the accessPolicies value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -155,10 +151,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the enabledForDeployment property: Property to specify whether Azure
-     * Virtual Machines are permitted to retrieve certificates stored as
-     * secrets from the key vault.
-     * 
+     * Get the enabledForDeployment property: Property to specify whether Azure Virtual Machines are permitted to
+     * retrieve certificates stored as secrets from the key vault.
+     *
      * @return the enabledForDeployment value.
      */
     public Boolean enabledForDeployment() {
@@ -166,10 +161,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the enabledForDeployment property: Property to specify whether Azure
-     * Virtual Machines are permitted to retrieve certificates stored as
-     * secrets from the key vault.
-     * 
+     * Set the enabledForDeployment property: Property to specify whether Azure Virtual Machines are permitted to
+     * retrieve certificates stored as secrets from the key vault.
+     *
      * @param enabledForDeployment the enabledForDeployment value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -179,10 +173,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the enabledForDiskEncryption property: Property to specify whether
-     * Azure Disk Encryption is permitted to retrieve secrets from the vault
-     * and unwrap keys.
-     * 
+     * Get the enabledForDiskEncryption property: Property to specify whether Azure Disk Encryption is permitted to
+     * retrieve secrets from the vault and unwrap keys.
+     *
      * @return the enabledForDiskEncryption value.
      */
     public Boolean enabledForDiskEncryption() {
@@ -190,12 +183,10 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the enabledForDiskEncryption property: Property to specify whether
-     * Azure Disk Encryption is permitted to retrieve secrets from the vault
-     * and unwrap keys.
-     * 
-     * @param enabledForDiskEncryption the enabledForDiskEncryption value to
-     * set.
+     * Set the enabledForDiskEncryption property: Property to specify whether Azure Disk Encryption is permitted to
+     * retrieve secrets from the vault and unwrap keys.
+     *
+     * @param enabledForDiskEncryption the enabledForDiskEncryption value to set.
      * @return the VaultPatchProperties object itself.
      */
     public VaultPatchProperties withEnabledForDiskEncryption(Boolean enabledForDiskEncryption) {
@@ -204,10 +195,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the enabledForTemplateDeployment property: Property to specify
-     * whether Azure Resource Manager is permitted to retrieve secrets from the
-     * key vault.
-     * 
+     * Get the enabledForTemplateDeployment property: Property to specify whether Azure Resource Manager is permitted to
+     * retrieve secrets from the key vault.
+     *
      * @return the enabledForTemplateDeployment value.
      */
     public Boolean enabledForTemplateDeployment() {
@@ -215,12 +205,10 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the enabledForTemplateDeployment property: Property to specify
-     * whether Azure Resource Manager is permitted to retrieve secrets from the
-     * key vault.
-     * 
-     * @param enabledForTemplateDeployment the enabledForTemplateDeployment
-     * value to set.
+     * Set the enabledForTemplateDeployment property: Property to specify whether Azure Resource Manager is permitted to
+     * retrieve secrets from the key vault.
+     *
+     * @param enabledForTemplateDeployment the enabledForTemplateDeployment value to set.
      * @return the VaultPatchProperties object itself.
      */
     public VaultPatchProperties withEnabledForTemplateDeployment(Boolean enabledForTemplateDeployment) {
@@ -229,10 +217,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the enableSoftDelete property: Property to specify whether the 'soft
-     * delete' functionality is enabled for this key vault. It does not accept
-     * false value.
-     * 
+     * Get the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
+     * this key vault. It does not accept false value.
+     *
      * @return the enableSoftDelete value.
      */
     public Boolean enableSoftDelete() {
@@ -240,10 +227,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the enableSoftDelete property: Property to specify whether the 'soft
-     * delete' functionality is enabled for this key vault. It does not accept
-     * false value.
-     * 
+     * Set the enableSoftDelete property: Property to specify whether the 'soft delete' functionality is enabled for
+     * this key vault. It does not accept false value.
+     *
      * @param enableSoftDelete the enableSoftDelete value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -253,9 +239,8 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the createMode property: The vault's create mode to indicate whether
-     * the vault need to be recovered or not.
-     * 
+     * Get the createMode property: The vault's create mode to indicate whether the vault need to be recovered or not.
+     *
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -263,9 +248,8 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the createMode property: The vault's create mode to indicate whether
-     * the vault need to be recovered or not.
-     * 
+     * Set the createMode property: The vault's create mode to indicate whether the vault need to be recovered or not.
+     *
      * @param createMode the createMode value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -275,14 +259,12 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the enablePurgeProtection property: Property specifying whether
-     * protection against purge is enabled for this vault. Setting this
-     * property to true activates protection against purge for this vault and
-     * its content - only the Key Vault service may initiate a hard,
-     * irrecoverable deletion. The setting is effective only if soft delete is
-     * also enabled. Enabling this functionality is irreversible - that is, the
-     * property does not accept false as its value.
-     * 
+     * Get the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * vault. Setting this property to true activates protection against purge for this vault and its content - only the
+     * Key Vault service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is
+     * also enabled. Enabling this functionality is irreversible - that is, the property does not accept false as its
+     * value.
+     *
      * @return the enablePurgeProtection value.
      */
     public Boolean enablePurgeProtection() {
@@ -290,14 +272,12 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the enablePurgeProtection property: Property specifying whether
-     * protection against purge is enabled for this vault. Setting this
-     * property to true activates protection against purge for this vault and
-     * its content - only the Key Vault service may initiate a hard,
-     * irrecoverable deletion. The setting is effective only if soft delete is
-     * also enabled. Enabling this functionality is irreversible - that is, the
-     * property does not accept false as its value.
-     * 
+     * Set the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * vault. Setting this property to true activates protection against purge for this vault and its content - only the
+     * Key Vault service may initiate a hard, irrecoverable deletion. The setting is effective only if soft delete is
+     * also enabled. Enabling this functionality is irreversible - that is, the property does not accept false as its
+     * value.
+     *
      * @param enablePurgeProtection the enablePurgeProtection value to set.
      * @return the VaultPatchProperties object itself.
      */
@@ -307,9 +287,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Get the networkAcls property: A collection of rules governing the
-     * accessibility of the vault from specific network locations.
-     * 
+     * Get the networkAcls property: A collection of rules governing the accessibility of the vault from specific
+     * network locations.
+     *
      * @return the networkAcls value.
      */
     public NetworkRuleSet networkAcls() {
@@ -317,9 +297,9 @@ public final class VaultPatchProperties {
     }
 
     /**
-     * Set the networkAcls property: A collection of rules governing the
-     * accessibility of the vault from specific network locations.
-     * 
+     * Set the networkAcls property: A collection of rules governing the accessibility of the vault from specific
+     * network locations.
+     *
      * @param networkAcls the networkAcls value to set.
      * @return the VaultPatchProperties object itself.
      */

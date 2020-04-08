@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ElasticPoolActivityListResult model.
- */
+/** The ElasticPoolActivityListResult model. */
 @Fluent
 public final class ElasticPoolActivityListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class ElasticPoolActivityListResultInner {
 
     /**
      * Get the value property: The list of elastic pool activities.
-     * 
+     *
      * @return the value value.
      */
     public List<ElasticPoolActivityInner> value() {
@@ -30,7 +28,7 @@ public final class ElasticPoolActivityListResultInner {
 
     /**
      * Set the value property: The list of elastic pool activities.
-     * 
+     *
      * @param value the value value to set.
      * @return the ElasticPoolActivityListResultInner object itself.
      */

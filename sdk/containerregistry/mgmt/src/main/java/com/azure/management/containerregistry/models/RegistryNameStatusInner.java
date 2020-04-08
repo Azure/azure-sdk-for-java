@@ -7,9 +7,7 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RegistryNameStatus model.
- */
+/** The RegistryNameStatus model. */
 @Fluent
 public final class RegistryNameStatusInner {
     /*
@@ -32,9 +30,8 @@ public final class RegistryNameStatusInner {
     private String message;
 
     /**
-     * Get the nameAvailable property: The value that indicates whether the
-     * name is available.
-     * 
+     * Get the nameAvailable property: The value that indicates whether the name is available.
+     *
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -42,9 +39,8 @@ public final class RegistryNameStatusInner {
     }
 
     /**
-     * Set the nameAvailable property: The value that indicates whether the
-     * name is available.
-     * 
+     * Set the nameAvailable property: The value that indicates whether the name is available.
+     *
      * @param nameAvailable the nameAvailable value to set.
      * @return the RegistryNameStatusInner object itself.
      */
@@ -54,9 +50,8 @@ public final class RegistryNameStatusInner {
     }
 
     /**
-     * Get the reason property: If any, the reason that the name is not
-     * available.
-     * 
+     * Get the reason property: If any, the reason that the name is not available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -64,9 +59,8 @@ public final class RegistryNameStatusInner {
     }
 
     /**
-     * Set the reason property: If any, the reason that the name is not
-     * available.
-     * 
+     * Set the reason property: If any, the reason that the name is not available.
+     *
      * @param reason the reason value to set.
      * @return the RegistryNameStatusInner object itself.
      */
@@ -76,9 +70,9 @@ public final class RegistryNameStatusInner {
     }
 
     /**
-     * Get the message property: If any, the error message that provides more
-     * detail for the reason that the name is not available.
-     * 
+     * Get the message property: If any, the error message that provides more detail for the reason that the name is not
+     * available.
+     *
      * @return the message value.
      */
     public String message() {
@@ -86,9 +80,9 @@ public final class RegistryNameStatusInner {
     }
 
     /**
-     * Set the message property: If any, the error message that provides more
-     * detail for the reason that the name is not available.
-     * 
+     * Set the message property: If any, the error message that provides more detail for the reason that the name is not
+     * available.
+     *
      * @param message the message value to set.
      * @return the RegistryNameStatusInner object itself.
      */
