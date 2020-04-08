@@ -3,6 +3,7 @@
 
 package com.azure.management.containerregistry.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.AgentProperties;
 import com.azure.management.containerregistry.Architecture;
 import com.azure.management.containerregistry.BaseImageTrigger;
@@ -51,6 +52,7 @@ import reactor.core.publisher.Mono;
 
 class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, RegistryTask.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final TasksInner tasksInner;
     private final String taskName;
     private final String key = UUID.randomUUID().toString();
@@ -450,10 +452,10 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public RegistryFileTaskStep.Update updateFileTaskStep() {
         if (!(this.inner.step() instanceof FileTaskStep)) {
-            throw new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "Calling updateFileTaskStep on a RegistryTask that is of type "
                     + this.inner.step().getClass().getName()
-                    + ".");
+                    + "."));
         }
         return new RegistryFileTaskStepImpl(this);
     }
@@ -461,10 +463,10 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public RegistryEncodedTaskStep.Update updateEncodedTaskStep() {
         if (!(this.inner.step() instanceof EncodedTaskStep)) {
-            throw new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "Calling updateEncodedTaskStep on a RegistryTask that is of type "
                     + this.inner.step().getClass().getName()
-                    + ".");
+                    + "."));
         }
         return new RegistryEncodedTaskStepImpl(this);
     }
@@ -472,10 +474,10 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public RegistryDockerTaskStep.Update updateDockerTaskStep() {
         if (!(this.inner.step() instanceof DockerTaskStep)) {
-            throw new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "Calling updateDockerTaskStep on a RegistryTask that is of type "
                     + this.inner.step().getClass().getName()
-                    + ".");
+                    + "."));
         }
         return new RegistryDockerTaskStepImpl(this);
     }

@@ -46,8 +46,8 @@ class RegistrySourceTriggerImpl
             this.inner.withSourceRepository(new SourceProperties());
 
             boolean foundSourceTrigger = false;
-            for (SourceTriggerUpdateParameters stup :
-                registryTaskImpl.taskUpdateParameters.trigger().sourceTriggers()) {
+            for (SourceTriggerUpdateParameters stup
+                : registryTaskImpl.taskUpdateParameters.trigger().sourceTriggers()) {
                 if (stup.name().equals(sourceTriggerName)) {
                     this.sourceTriggerUpdateParameters = stup;
                     foundSourceTrigger = true;

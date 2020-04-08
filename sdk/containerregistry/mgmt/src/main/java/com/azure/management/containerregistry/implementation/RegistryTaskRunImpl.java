@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.AgentProperties;
 import com.azure.management.containerregistry.Architecture;
 import com.azure.management.containerregistry.DockerBuildRequest;
@@ -29,6 +30,7 @@ import reactor.core.publisher.Mono;
 
 class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final ContainerRegistryManager registryManager;
     private final String key = UUID.randomUUID().toString();
     private String resourceGroupName;
@@ -317,7 +319,7 @@ class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition
                         return self;
                     });
         }
-        throw new RuntimeException("Unsupported file task run request");
+        throw logger.logExceptionAsError(new RuntimeException("Unsupported file task run request"));
     }
 
     @Override
