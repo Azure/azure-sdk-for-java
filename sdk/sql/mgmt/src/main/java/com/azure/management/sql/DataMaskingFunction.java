@@ -7,43 +7,27 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for DataMaskingFunction.
- */
+/** Defines values for DataMaskingFunction. */
 public enum DataMaskingFunction {
-    /**
-     * Enum value Default.
-     */
+    /** Enum value Default. */
     DEFAULT("Default"),
 
-    /**
-     * Enum value CCN.
-     */
+    /** Enum value CCN. */
     CCN("CCN"),
 
-    /**
-     * Enum value Email.
-     */
+    /** Enum value Email. */
     EMAIL("Email"),
 
-    /**
-     * Enum value Number.
-     */
+    /** Enum value Number. */
     NUMBER("Number"),
 
-    /**
-     * Enum value SSN.
-     */
+    /** Enum value SSN. */
     SSN("SSN"),
 
-    /**
-     * Enum value Text.
-     */
+    /** Enum value Text. */
     TEXT("Text");
 
-    /**
-     * The actual serialized value for a DataMaskingFunction instance.
-     */
+    /** The actual serialized value for a DataMaskingFunction instance. */
     private final String value;
 
     DataMaskingFunction(String value) {
@@ -52,7 +36,7 @@ public enum DataMaskingFunction {
 
     /**
      * Parses a serialized value to a DataMaskingFunction instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed DataMaskingFunction object, or null if unable to parse.
      */

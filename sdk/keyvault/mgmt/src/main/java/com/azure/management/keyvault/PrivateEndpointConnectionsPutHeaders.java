@@ -7,9 +7,7 @@ package com.azure.management.keyvault;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateEndpointConnectionsPutHeaders model.
- */
+/** The PrivateEndpointConnectionsPutHeaders model. */
 @Fluent
 public final class PrivateEndpointConnectionsPutHeaders {
     /*
@@ -26,7 +24,7 @@ public final class PrivateEndpointConnectionsPutHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     * 
+     *
      * @return the retryAfter value.
      */
     public Integer retryAfter() {
@@ -35,7 +33,7 @@ public final class PrivateEndpointConnectionsPutHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     * 
+     *
      * @param retryAfter the retryAfter value to set.
      * @return the PrivateEndpointConnectionsPutHeaders object itself.
      */
@@ -46,7 +44,7 @@ public final class PrivateEndpointConnectionsPutHeaders {
 
     /**
      * Get the azureAsyncOperation property: The Azure-AsyncOperation property.
-     * 
+     *
      * @return the azureAsyncOperation value.
      */
     public String azureAsyncOperation() {
@@ -55,7 +53,7 @@ public final class PrivateEndpointConnectionsPutHeaders {
 
     /**
      * Set the azureAsyncOperation property: The Azure-AsyncOperation property.
-     * 
+     *
      * @param azureAsyncOperation the azureAsyncOperation value to set.
      * @return the PrivateEndpointConnectionsPutHeaders object itself.
      */

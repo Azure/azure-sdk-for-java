@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ReplicationLinkListResult model.
- */
+/** The ReplicationLinkListResult model. */
 @Fluent
 public final class ReplicationLinkListResultInner {
     /*
@@ -20,9 +18,8 @@ public final class ReplicationLinkListResultInner {
     private List<ReplicationLinkInner> value;
 
     /**
-     * Get the value property: The list of database replication links housed in
-     * the database.
-     * 
+     * Get the value property: The list of database replication links housed in the database.
+     *
      * @return the value value.
      */
     public List<ReplicationLinkInner> value() {
@@ -30,9 +27,8 @@ public final class ReplicationLinkListResultInner {
     }
 
     /**
-     * Set the value property: The list of database replication links housed in
-     * the database.
-     * 
+     * Set the value property: The list of database replication links housed in the database.
+     *
      * @param value the value value to set.
      * @return the ReplicationLinkListResultInner object itself.
      */

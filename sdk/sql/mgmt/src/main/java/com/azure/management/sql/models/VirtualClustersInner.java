@@ -26,6 +26,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
@@ -35,131 +37,188 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * VirtualClusters.
- */
-public final class VirtualClustersInner implements InnerSupportsGet<VirtualClusterInner>, InnerSupportsListing<VirtualClusterInner>, InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private VirtualClustersService service;
+/** An instance of this class provides access to all the operations defined in VirtualClusters. */
+public final class VirtualClustersInner
+    implements InnerSupportsGet<VirtualClusterInner>,
+        InnerSupportsListing<VirtualClusterInner>,
+        InnerSupportsDelete<Void> {
+    /** The proxy service used to perform REST calls. */
+    private final VirtualClustersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of VirtualClustersInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualClustersInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(VirtualClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(VirtualClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientVirtualClusters to be used by the proxy service to
+     * The interface defining all the services for SqlManagementClientVirtualClusters to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientVirtualClusters")
+    @ServiceInterface(name = "SqlManagementClientV")
     private interface VirtualClustersService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/virtualClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VirtualClusterListResultInner>> list(@HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<VirtualClusterListResultInner>> list(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/virtualClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VirtualClusterListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<VirtualClusterListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/virtualClusters/{virtualClusterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VirtualClusterInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualClusterName") String virtualClusterName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<VirtualClusterInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualClusterName") String virtualClusterName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/virtualClusters/{virtualClusterName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualClusterName") String virtualClusterName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualClusterName") String virtualClusterName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/virtualClusters/{virtualClusterName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualClusterName") String virtualClusterName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VirtualClusterUpdate parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualClusterName") String virtualClusterName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VirtualClusterUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/virtualClusters/{virtualClusterName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualClusterName") String virtualClusterName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualClusterName") String virtualClusterName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/virtualClusters/{virtualClusterName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/virtualClusters/{virtualClusterName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VirtualClusterInner>> beginUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualClusterName") String virtualClusterName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VirtualClusterUpdate parameters);
+        Mono<SimpleResponse<VirtualClusterInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualClusterName") String virtualClusterName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VirtualClusterUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VirtualClusterListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<VirtualClusterListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<VirtualClusterListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<VirtualClusterListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a list of all virtualClusters in the subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtualClusters in the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VirtualClusterInner>> listSinglePageAsync() {
         final String apiVersion = "2015-05-01-preview";
-        return service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context))
+            .<PagedResponse<VirtualClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of all virtualClusters in the subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtualClusters in the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualClusterInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of all virtualClusters in the subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtualClusters in the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualClusterInner> list() {
@@ -168,32 +227,48 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Gets a list of virtual clusters in a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual clusters in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VirtualClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.listByResourceGroup(this.client.getHost(), resourceGroupName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<VirtualClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of virtual clusters in a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual clusters in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualClusterInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -204,11 +279,13 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Gets a list of virtual clusters in a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual clusters in a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualClusterInner> listByResourceGroup(String resourceGroupName) {
@@ -217,48 +294,67 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VirtualClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String virtualClusterName) {
+    public Mono<SimpleResponse<VirtualClusterInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String virtualClusterName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.getByResourceGroup(this.client.getHost(), resourceGroupName, virtualClusterName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            virtualClusterName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualClusterInner> getByResourceGroupAsync(String resourceGroupName, String virtualClusterName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, virtualClusterName)
-            .flatMap((SimpleResponse<VirtualClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<VirtualClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualClusterInner getByResourceGroup(String resourceGroupName, String virtualClusterName) {
@@ -267,41 +363,60 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualClusterName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualClusterName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, virtualClusterName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            virtualClusterName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String virtualClusterName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualClusterName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -313,76 +428,116 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Updates a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @param parameters An update request for an Azure SQL Database virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
         final String apiVersion = "2015-05-01-preview";
-        return service.update(this.client.getHost(), resourceGroupName, virtualClusterName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            virtualClusterName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @param parameters An update request for an Azure SQL Database virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualClusterInner> updateAsync(String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, virtualClusterName, parameters);
-        return this.client.<VirtualClusterInner, VirtualClusterInner>getLroResultAsync(mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class)
+    public Mono<VirtualClusterInner> updateAsync(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, virtualClusterName, parameters);
+        return this
+            .client
+            .<VirtualClusterInner, VirtualClusterInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), VirtualClusterInner.class, VirtualClusterInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @param parameters An update request for an Azure SQL Database virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualClusterInner update(String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+    public VirtualClusterInner update(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
         return updateAsync(resourceGroupName, virtualClusterName, parameters).block();
     }
 
     /**
      * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String virtualClusterName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.beginDelete(this.client.getHost(), resourceGroupName, virtualClusterName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            virtualClusterName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String virtualClusterName) {
@@ -392,9 +547,10 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Deletes a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -406,94 +562,126 @@ public final class VirtualClustersInner implements InnerSupportsGet<VirtualClust
 
     /**
      * Updates a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @param parameters An update request for an Azure SQL Database virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VirtualClusterInner>> beginUpdateWithResponseAsync(String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+    public Mono<SimpleResponse<VirtualClusterInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
         final String apiVersion = "2015-05-01-preview";
-        return service.beginUpdate(this.client.getHost(), resourceGroupName, virtualClusterName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            virtualClusterName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @param parameters An update request for an Azure SQL Database virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VirtualClusterInner> beginUpdateAsync(String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+    public Mono<VirtualClusterInner> beginUpdateAsync(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
         return beginUpdateWithResponseAsync(resourceGroupName, virtualClusterName, parameters)
-            .flatMap((SimpleResponse<VirtualClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<VirtualClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a virtual cluster.
-     * 
-     * @param resourceGroupName 
-     * @param virtualClusterName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param virtualClusterName The name of the virtual cluster.
      * @param parameters An update request for an Azure SQL Database virtual cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure SQL virtual cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VirtualClusterInner beginUpdate(String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
+    public VirtualClusterInner beginUpdate(
+        String resourceGroupName, String virtualClusterName, VirtualClusterUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, virtualClusterName, parameters).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VirtualClusterInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<VirtualClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of virtual clusters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VirtualClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<VirtualClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

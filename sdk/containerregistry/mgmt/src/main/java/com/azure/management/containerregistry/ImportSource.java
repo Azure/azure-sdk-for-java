@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ImportSource model.
- */
+/** The ImportSource model. */
 @Fluent
 public final class ImportSource {
     /*
@@ -42,9 +40,8 @@ public final class ImportSource {
     private String sourceImage;
 
     /**
-     * Get the resourceId property: The resource identifier of the source Azure
-     * Container Registry.
-     * 
+     * Get the resourceId property: The resource identifier of the source Azure Container Registry.
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -52,9 +49,8 @@ public final class ImportSource {
     }
 
     /**
-     * Set the resourceId property: The resource identifier of the source Azure
-     * Container Registry.
-     * 
+     * Set the resourceId property: The resource identifier of the source Azure Container Registry.
+     *
      * @param resourceId the resourceId value to set.
      * @return the ImportSource object itself.
      */
@@ -64,9 +60,8 @@ public final class ImportSource {
     }
 
     /**
-     * Get the registryUri property: The address of the source registry (e.g.
-     * 'mcr.microsoft.com').
-     * 
+     * Get the registryUri property: The address of the source registry (e.g. 'mcr.microsoft.com').
+     *
      * @return the registryUri value.
      */
     public String registryUri() {
@@ -74,9 +69,8 @@ public final class ImportSource {
     }
 
     /**
-     * Set the registryUri property: The address of the source registry (e.g.
-     * 'mcr.microsoft.com').
-     * 
+     * Set the registryUri property: The address of the source registry (e.g. 'mcr.microsoft.com').
+     *
      * @param registryUri the registryUri value to set.
      * @return the ImportSource object itself.
      */
@@ -86,9 +80,8 @@ public final class ImportSource {
     }
 
     /**
-     * Get the credentials property: Credentials used when importing from a
-     * registry uri.
-     * 
+     * Get the credentials property: Credentials used when importing from a registry uri.
+     *
      * @return the credentials value.
      */
     public ImportSourceCredentials credentials() {
@@ -96,9 +89,8 @@ public final class ImportSource {
     }
 
     /**
-     * Set the credentials property: Credentials used when importing from a
-     * registry uri.
-     * 
+     * Set the credentials property: Credentials used when importing from a registry uri.
+     *
      * @param credentials the credentials value to set.
      * @return the ImportSource object itself.
      */
@@ -108,13 +100,10 @@ public final class ImportSource {
     }
 
     /**
-     * Get the sourceImage property: Repository name of the source image.
-     * Specify an image by repository ('hello-world'). This will use the
-     * 'latest' tag.
-     * Specify an image by tag ('hello-world:latest').
-     * Specify an image by sha256-based manifest digest
-     * ('hello-world@sha256:abc123').
-     * 
+     * Get the sourceImage property: Repository name of the source image. Specify an image by repository
+     * ('hello-world'). This will use the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an image
+     * by sha256-based manifest digest ('hello-world@sha256:abc123').
+     *
      * @return the sourceImage value.
      */
     public String sourceImage() {
@@ -122,13 +111,10 @@ public final class ImportSource {
     }
 
     /**
-     * Set the sourceImage property: Repository name of the source image.
-     * Specify an image by repository ('hello-world'). This will use the
-     * 'latest' tag.
-     * Specify an image by tag ('hello-world:latest').
-     * Specify an image by sha256-based manifest digest
-     * ('hello-world@sha256:abc123').
-     * 
+     * Set the sourceImage property: Repository name of the source image. Specify an image by repository
+     * ('hello-world'). This will use the 'latest' tag. Specify an image by tag ('hello-world:latest'). Specify an image
+     * by sha256-based manifest digest ('hello-world@sha256:abc123').
+     *
      * @param sourceImage the sourceImage value to set.
      * @return the ImportSource object itself.
      */

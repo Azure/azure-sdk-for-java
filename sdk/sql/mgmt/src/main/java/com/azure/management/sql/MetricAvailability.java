@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetricAvailability model.
- */
+/** The MetricAvailability model. */
 @Immutable
 public final class MetricAvailability {
     /*
@@ -25,9 +23,8 @@ public final class MetricAvailability {
     private String timeGrain;
 
     /**
-     * Get the retention property: The length of retention for the database
-     * metric.
-     * 
+     * Get the retention property: The length of retention for the database metric.
+     *
      * @return the retention value.
      */
     public String retention() {
@@ -36,7 +33,7 @@ public final class MetricAvailability {
 
     /**
      * Get the timeGrain property: The granularity of the database metric.
-     * 
+     *
      * @return the timeGrain value.
      */
     public String timeGrain() {

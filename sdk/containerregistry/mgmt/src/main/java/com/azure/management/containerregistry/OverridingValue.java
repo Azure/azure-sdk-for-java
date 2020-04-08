@@ -3,7 +3,8 @@
 package com.azure.management.containerregistry;
 
 /**
- * Defines an overriding value that overrides values passed in for RegistryFileTaskStep, RegistryFileTaskRunRequest, RegistryEncodedTaskStep, and RegistryEncodedTaskRunRequest.
+ * Defines an overriding value that overrides values passed in for RegistryFileTaskStep, RegistryFileTaskRunRequest,
+ * RegistryEncodedTaskStep, and RegistryEncodedTaskRunRequest.
  */
 public class OverridingValue {
     private final String value;
@@ -20,16 +21,12 @@ public class OverridingValue {
         this.isSecret = isSecret;
     }
 
-    /**
-     * @return the value of the overriding value.
-     */
+    /** @return the value of the overriding value. */
     public String value() {
         return this.value;
     }
 
-    /**
-     * @return whether the overriding value is secret or not.
-     */
+    /** @return whether the overriding value is secret or not. */
     public boolean isSecret() {
         return this.isSecret;
     }

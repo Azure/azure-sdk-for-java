@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The WorkloadClassifier model.
- */
+/** The WorkloadClassifier model. */
 @JsonFlatten
 @Fluent
 public class WorkloadClassifierInner extends ProxyResource {
@@ -53,7 +51,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the memberName property: The workload classifier member name.
-     * 
+     *
      * @return the memberName value.
      */
     public String memberName() {
@@ -62,7 +60,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the memberName property: The workload classifier member name.
-     * 
+     *
      * @param memberName the memberName value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -73,7 +71,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the label property: The workload classifier label.
-     * 
+     *
      * @return the label value.
      */
     public String label() {
@@ -82,7 +80,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the label property: The workload classifier label.
-     * 
+     *
      * @param label the label value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -93,7 +91,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the context property: The workload classifier context.
-     * 
+     *
      * @return the context value.
      */
     public String context() {
@@ -102,7 +100,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the context property: The workload classifier context.
-     * 
+     *
      * @param context the context value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -112,9 +110,8 @@ public class WorkloadClassifierInner extends ProxyResource {
     }
 
     /**
-     * Get the startTime property: The workload classifier start time for
-     * classification.
-     * 
+     * Get the startTime property: The workload classifier start time for classification.
+     *
      * @return the startTime value.
      */
     public String startTime() {
@@ -122,9 +119,8 @@ public class WorkloadClassifierInner extends ProxyResource {
     }
 
     /**
-     * Set the startTime property: The workload classifier start time for
-     * classification.
-     * 
+     * Set the startTime property: The workload classifier start time for classification.
+     *
      * @param startTime the startTime value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -134,9 +130,8 @@ public class WorkloadClassifierInner extends ProxyResource {
     }
 
     /**
-     * Get the endTime property: The workload classifier end time for
-     * classification.
-     * 
+     * Get the endTime property: The workload classifier end time for classification.
+     *
      * @return the endTime value.
      */
     public String endTime() {
@@ -144,9 +139,8 @@ public class WorkloadClassifierInner extends ProxyResource {
     }
 
     /**
-     * Set the endTime property: The workload classifier end time for
-     * classification.
-     * 
+     * Set the endTime property: The workload classifier end time for classification.
+     *
      * @param endTime the endTime value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -157,7 +151,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the importance property: The workload classifier importance.
-     * 
+     *
      * @return the importance value.
      */
     public String importance() {
@@ -166,7 +160,7 @@ public class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the importance property: The workload classifier importance.
-     * 
+     *
      * @param importance the importance value to set.
      * @return the WorkloadClassifierInner object itself.
      */

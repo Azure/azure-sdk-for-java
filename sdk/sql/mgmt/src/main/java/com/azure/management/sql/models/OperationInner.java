@@ -10,9 +10,7 @@ import com.azure.management.sql.OperationOrigin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The Operation model.
- */
+/** The Operation model. */
 @Immutable
 public final class OperationInner {
     /*
@@ -41,9 +39,8 @@ public final class OperationInner {
     private Map<String, Object> properties;
 
     /**
-     * Get the name property: The name of the operation being performed on this
-     * particular object.
-     * 
+     * Get the name property: The name of the operation being performed on this particular object.
+     *
      * @return the name value.
      */
     public String name() {
@@ -51,9 +48,8 @@ public final class OperationInner {
     }
 
     /**
-     * Get the display property: The localized display information for this
-     * particular operation / action.
-     * 
+     * Get the display property: The localized display information for this particular operation / action.
+     *
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -62,7 +58,7 @@ public final class OperationInner {
 
     /**
      * Get the origin property: The intended executor of the operation.
-     * 
+     *
      * @return the origin value.
      */
     public OperationOrigin origin() {
@@ -71,7 +67,7 @@ public final class OperationInner {
 
     /**
      * Get the properties property: Additional descriptions for the operation.
-     * 
+     *
      * @return the properties value.
      */
     public Map<String, Object> properties() {

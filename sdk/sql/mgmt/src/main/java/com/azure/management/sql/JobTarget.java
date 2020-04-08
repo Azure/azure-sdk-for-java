@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The JobTarget model.
- */
+/** The JobTarget model. */
 @Fluent
 public final class JobTarget {
     /*
@@ -57,9 +55,8 @@ public final class JobTarget {
     private String refreshCredential;
 
     /**
-     * Get the membershipType property: Whether the target is included or
-     * excluded from the group.
-     * 
+     * Get the membershipType property: Whether the target is included or excluded from the group.
+     *
      * @return the membershipType value.
      */
     public JobTargetGroupMembershipType membershipType() {
@@ -67,9 +64,8 @@ public final class JobTarget {
     }
 
     /**
-     * Set the membershipType property: Whether the target is included or
-     * excluded from the group.
-     * 
+     * Set the membershipType property: Whether the target is included or excluded from the group.
+     *
      * @param membershipType the membershipType value to set.
      * @return the JobTarget object itself.
      */
@@ -80,7 +76,7 @@ public final class JobTarget {
 
     /**
      * Get the type property: The target type.
-     * 
+     *
      * @return the type value.
      */
     public JobTargetType type() {
@@ -89,7 +85,7 @@ public final class JobTarget {
 
     /**
      * Set the type property: The target type.
-     * 
+     *
      * @param type the type value to set.
      * @return the JobTarget object itself.
      */
@@ -100,7 +96,7 @@ public final class JobTarget {
 
     /**
      * Get the serverName property: The target server name.
-     * 
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -109,7 +105,7 @@ public final class JobTarget {
 
     /**
      * Set the serverName property: The target server name.
-     * 
+     *
      * @param serverName the serverName value to set.
      * @return the JobTarget object itself.
      */
@@ -120,7 +116,7 @@ public final class JobTarget {
 
     /**
      * Get the databaseName property: The target database name.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -129,7 +125,7 @@ public final class JobTarget {
 
     /**
      * Set the databaseName property: The target database name.
-     * 
+     *
      * @param databaseName the databaseName value to set.
      * @return the JobTarget object itself.
      */
@@ -140,7 +136,7 @@ public final class JobTarget {
 
     /**
      * Get the elasticPoolName property: The target elastic pool name.
-     * 
+     *
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -149,7 +145,7 @@ public final class JobTarget {
 
     /**
      * Set the elasticPoolName property: The target elastic pool name.
-     * 
+     *
      * @param elasticPoolName the elasticPoolName value to set.
      * @return the JobTarget object itself.
      */
@@ -160,7 +156,7 @@ public final class JobTarget {
 
     /**
      * Get the shardMapName property: The target shard map.
-     * 
+     *
      * @return the shardMapName value.
      */
     public String shardMapName() {
@@ -169,7 +165,7 @@ public final class JobTarget {
 
     /**
      * Set the shardMapName property: The target shard map.
-     * 
+     *
      * @param shardMapName the shardMapName value to set.
      * @return the JobTarget object itself.
      */
@@ -179,10 +175,9 @@ public final class JobTarget {
     }
 
     /**
-     * Get the refreshCredential property: The resource ID of the credential
-     * that is used during job execution to connect to the target and determine
-     * the list of databases inside the target.
-     * 
+     * Get the refreshCredential property: The resource ID of the credential that is used during job execution to
+     * connect to the target and determine the list of databases inside the target.
+     *
      * @return the refreshCredential value.
      */
     public String refreshCredential() {
@@ -190,10 +185,9 @@ public final class JobTarget {
     }
 
     /**
-     * Set the refreshCredential property: The resource ID of the credential
-     * that is used during job execution to connect to the target and determine
-     * the list of databases inside the target.
-     * 
+     * Set the refreshCredential property: The resource ID of the credential that is used during job execution to
+     * connect to the target and determine the list of databases inside the target.
+     *
      * @param refreshCredential the refreshCredential value to set.
      * @return the JobTarget object itself.
      */
