@@ -9,7 +9,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
 import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Random;
 
@@ -30,7 +32,7 @@ public class TestUtils {
         return BaseEncoding.base16().decode(hex);
     }
 
-    public static byte[] generatePBEKeySpec(String password) throws Exception {
+    public static byte[] generatePBEKeySpec(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Random random = new Random();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
