@@ -393,7 +393,7 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request,
                                                             String username, String password) {
-        return Mono.fromFuture(getPublicClientApplication().acquireToken(
+        return Mono.fromFuture(() -> getPublicClientApplication().acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
             .map(ar -> new MsalToken(ar, options));
@@ -522,7 +522,7 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
         // find if the Public Client app with the requested username exists
-        return Mono.fromFuture(getPublicClientApplication().getAccounts())
+        return Mono.fromFuture(() -> getPublicClientApplication().getAccounts())
                 .onErrorResume(t -> Mono.error(new ClientAuthenticationException(
                         "Cannot get accounts from token cache. Error: " + t.getMessage(), null)))
                 .flatMap(set -> {

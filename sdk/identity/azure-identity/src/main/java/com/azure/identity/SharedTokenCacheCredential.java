@@ -21,7 +21,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
     private final String username;
     private final String clientId;
     private final String tenantId;
-    private final IdentityClientOptions options;
 
     private final IdentityClient identityClient;
 
@@ -52,7 +51,6 @@ public class SharedTokenCacheCredential implements TokenCredential {
         } else {
             this.tenantId = tenantId;
         }
-        this.options = identityClientOptions;
         this.identityClient = new IdentityClientBuilder()
                 .tenantId(this.tenantId)
                 .clientId(this.clientId)
