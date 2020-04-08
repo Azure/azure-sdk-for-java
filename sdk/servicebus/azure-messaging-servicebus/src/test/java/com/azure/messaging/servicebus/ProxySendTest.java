@@ -8,9 +8,9 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.jproxy.ProxyServer;
 import com.azure.messaging.servicebus.jproxy.SimpleProxy;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -35,13 +35,12 @@ public class ProxySendTest extends IntegrationTestBase {
         super(new ClientLogger(ProxySendTest.class));
     }
 
-    @BeforeAll
-    public static void initialize() throws Exception {
+    @BeforeEach
+    public void initialize() throws Exception {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         proxyServer = new SimpleProxy(PROXY_PORT);
-        proxyServer.start(t -> {
-        });
+        proxyServer.start(error -> logger.error("Exception occurred in proxy.", error));
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
@@ -57,15 +56,15 @@ public class ProxySendTest extends IntegrationTestBase {
         });
     }
 
-    @AfterAll
-    public static void cleanupClient() throws Exception {
+    @AfterEach
+    public void cleanup() throws Exception {
         StepVerifier.resetDefaultTimeout();
+
+        ProxySelector.setDefault(defaultProxySelector);
 
         if (proxyServer != null) {
             proxyServer.stop();
         }
-
-        ProxySelector.setDefault(defaultProxySelector);
     }
 
     /**
