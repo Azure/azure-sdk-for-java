@@ -18,23 +18,10 @@ import java.util.Objects;
  * An AAD credential that acquires a token with a client certificate for an AAD application.
  *
  * <p><strong>Sample: Construct a simple ClientCertificateCredential</strong></p>
- * <pre>
- * ClientCertificateCredential credential1 = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
- *     .clientId&#40;clientId&#41;
- *     .pemCertificate&#40;&quot;C:&#92;&#92;fakepath&#92;&#92;cert.pem&quot;&#41;
- *     .build&#40;&#41;;
- * </pre>
+ * {@codesnippet com.azure.identity.credential.clientcertificatecredential.construct}
  *
  * <p><strong>Sample: Construct a ClientCertificateCredential behind a proxy</strong></p>
- * <pre>
- * ClientCertificateCredential credential2 = new ClientCertificateCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
- *     .clientId&#40;clientId&#41;
- *     .pfxCertificate&#40;&quot;C:&#92;&#92;fakepath&#92;&#92;cert.pfx&quot;, &quot;P&#123;@literal @&#125;s$w0rd&quot;&#41;
- *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
- *     .build&#40;&#41;;
- * </pre>
+ * {@codesnippet com.azure.identity.credential.clientcertificatecredential.constructwithproxy}
  */
 @Immutable
 public class ClientCertificateCredential implements TokenCredential {
