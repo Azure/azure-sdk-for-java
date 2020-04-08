@@ -1460,6 +1460,7 @@
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/cosmos/azure-cosmos</module>
+    <module>sdk/cosmos/azure-cosmos-encryption</module>
     <module>sdk/cosmos/azure-cosmos-benchmark</module> <!-- CosmosSkip - Benchmark will go away, this is temporary -->
     <module>sdk/cosmos/azure-cosmos-examples</module> <!-- CosmosSkip - Examples will go away, this is temporary -->
     <module>sdk/e2e</module>

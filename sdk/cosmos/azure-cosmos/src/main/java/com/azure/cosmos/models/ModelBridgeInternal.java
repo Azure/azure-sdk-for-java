@@ -32,15 +32,15 @@ import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.ItemDeserializer;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
@@ -73,12 +73,12 @@ public final class ModelBridgeInternal {
         return new CosmosAsyncDatabaseResponse(response, client);
     }
 
-    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
-        return new CosmosAsyncItemResponse<>(response, classType);
+    public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+        return new CosmosAsyncItemResponse<>(response, classType, itemDeserializer);
     }
 
     public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosAsyncItemResponse<>(response, Object.class);
+        return new CosmosAsyncItemResponse<>(response, Object.class, null);
     }
 
     public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
@@ -465,4 +465,9 @@ public final class ModelBridgeInternal {
         return jsonSerializable.getPropertyBag();
     }
 
+    public static CosmosItemRequestOptions setEncryptionOptions(CosmosItemRequestOptions options,
+                                                                EncryptionOptions encryptionOptions) {
+        options.setEncryptionOptions(encryptionOptions);
+        return options;
+    }
 }

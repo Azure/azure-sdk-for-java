@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -38,6 +39,7 @@ public class CosmosClientBuilder {
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
+    private DataEncryptionKeyProvider dataEncryptionKeyProvider;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -288,6 +290,15 @@ public class CosmosClientBuilder {
     public CosmosClientBuilder keyCredential(CosmosKeyCredential cosmosKeyCredential) {
         this.cosmosKeyCredential = cosmosKeyCredential;
         return this;
+    }
+
+    CosmosClientBuilder dataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
+        return this;
+    }
+
+    DataEncryptionKeyProvider getDataEncryptionKeyProvider() {
+        return this.dataEncryptionKeyProvider;
     }
 
     /**

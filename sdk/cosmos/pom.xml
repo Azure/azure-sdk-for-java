@@ -10,6 +10,7 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-cosmos</module>
+    <module>azure-cosmos-encryption</module>
     <module>azure-cosmos-benchmark</module>
     <module>azure-cosmos-examples</module>
   </modules>

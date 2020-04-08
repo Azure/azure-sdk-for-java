@@ -7,8 +7,10 @@ import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ItemSerializer;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -20,13 +22,14 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
-import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.JsonSerializable;
@@ -59,8 +62,13 @@ public final class BridgeInternal {
         return Document.fromObject(document, mapper);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
+    private static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
         return CosmosItemProperties.serializeJsonToByteBuffer(document, mapper);
+    }
+
+    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper, DataEncryptionKeyProvider dataEncryptionKeyProvider, EncryptionOptions encryptionOptions) {
+        ItemSerializer.CosmosSerializer cosmosSerializer = new ItemSerializer.CosmosSerializer(dataEncryptionKeyProvider, encryptionOptions);
+        return cosmosSerializer.serializeTo(document);
     }
 
     public static void monitorTelemetry(MeterRegistry registry) {

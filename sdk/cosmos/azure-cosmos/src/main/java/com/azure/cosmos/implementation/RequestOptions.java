@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.IndexingDirective;
@@ -31,6 +32,7 @@ public class RequestOptions {
     private boolean scriptLoggingEnabled;
     private boolean populateQuotaInfo;
     private Map<String, Object> properties;
+    private EncryptionOptions encryptionOptions;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -311,4 +313,12 @@ public class RequestOptions {
         this.properties = properties;
     }
 
+
+    public void setEncryptionOptions(EncryptionOptions encryptionOptions) {
+        this.encryptionOptions = encryptionOptions;
+    }
+
+    public EncryptionOptions getEncryptionOptions() {
+        return this.encryptionOptions;
+    }
 }

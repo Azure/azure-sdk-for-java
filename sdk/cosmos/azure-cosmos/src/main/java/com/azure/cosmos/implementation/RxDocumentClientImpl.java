@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
@@ -123,6 +124,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private StoreClientFactory storeClientFactory;
 
     private GatewayServiceConfigurationReader gatewayConfigurationReader;
+    public DataEncryptionKeyProvider dataEncryptionKeyProvider;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -247,6 +249,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
         this.resetSessionTokenRetryPolicy = retryPolicy;
+    }
+
+    void registerDataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
     }
 
     private void initializeGatewayConfigurationReader() {
@@ -971,7 +977,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
-        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper, dataEncryptionKeyProvider, options.getEncryptionOptions());
 
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         Map<String, String> requestHeaders = this.getRequestHeaders(options);
@@ -3027,5 +3033,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("shutting down reactorHttpClient failed", e);
         }
         logger.info("Shutting down completed.");
+    }
+
+    @Override
+    public ItemDeserializer getItemDeserializer() {
+        if (dataEncryptionKeyProvider == null) {
+            return new ItemDeserializer.JsonDeserializer();
+        } else {
+            return new ItemDeserializer.EncryptionDeserializer(dataEncryptionKeyProvider, new ItemDeserializer.JsonDeserializer());
+        }
+    }
+
+    @Override
+    public ItemDeserializer getItemDeserializerWithoutDecryption() {
+        return new ItemDeserializer.JsonDeserializer();
     }
 }

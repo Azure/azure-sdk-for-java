@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.ItemDeserializer;
 
 import java.time.Duration;
 import java.util.Map;
@@ -19,14 +20,16 @@ import java.util.Map;
 public class CosmosAsyncItemResponse<T> {
     private final Class<T> itemClassType;
     private final byte[] responseBodyAsByteArray;
+    private final ItemDeserializer itemDeserializer;
     private T item;
     private final ResourceResponse<Document> resourceResponse;
     private CosmosItemProperties props;
 
-    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
+    CosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
         this.itemClassType = classType;
         this.responseBodyAsByteArray = response.getBodyAsByteArray();
         this.resourceResponse = response;
+        this.itemDeserializer = itemDeserializer;
     }
 
     /**
@@ -48,7 +51,7 @@ public class CosmosAsyncItemResponse<T> {
         if (item == null) {
             synchronized (this) {
                 if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
-                    item = Utils.parse(responseBodyAsByteArray, itemClassType);
+                    return itemDeserializer.parseFrom(itemClassType, responseBodyAsByteArray);
                 }
             }
         }

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+
 module com.azure.cosmos {
 
     requires transitive com.azure.core;
@@ -43,6 +44,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.aggregation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.encryption to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
 }

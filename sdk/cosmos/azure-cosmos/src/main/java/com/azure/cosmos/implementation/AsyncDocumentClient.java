@@ -6,6 +6,7 @@ import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -79,6 +80,7 @@ public interface AsyncDocumentClient {
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
+        private DataEncryptionKeyProvider dataEncryptionKeyProvider;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -152,6 +154,12 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+
+        public Builder withDataEncryptionKeyProvider(DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+            this.dataEncryptionKeyProvider = dataEncryptionKeyProvider;
+            return this;
+        }
+
         public Builder withCosmosKeyCredential(CosmosKeyCredential cosmosKeyCredential) {
             if (cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
@@ -198,6 +206,11 @@ public interface AsyncDocumentClient {
                                                                    cosmosKeyCredential,
                                                                    sessionCapturingOverride,
                                                                    transportClientSharing);
+
+            if (dataEncryptionKeyProvider != null) {
+                client.registerDataEncryptionKeyProvider(dataEncryptionKeyProvider);
+            }
+
             client.init();
             return client;
         }
@@ -1349,4 +1362,7 @@ public interface AsyncDocumentClient {
      */
     void close();
 
+    ItemDeserializer getItemDeserializer();
+
+    ItemDeserializer getItemDeserializerWithoutDecryption();
 }

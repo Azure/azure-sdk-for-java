@@ -5,7 +5,10 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.encryption.api.DataEncryptionKeyProvider;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
@@ -69,5 +72,11 @@ public final class CosmosBridgeInternal {
             .resourceToken(builder.getResourceToken());
 
         return copy;
+    }
+
+    public static CosmosClientBuilder setDateKeyProvider(CosmosClientBuilder cosmosClientBuilder,
+                                                         DataEncryptionKeyProvider dataEncryptionKeyProvider) {
+        cosmosClientBuilder.dataEncryptionKeyProvider(dataEncryptionKeyProvider);
+        return cosmosClientBuilder;
     }
 }

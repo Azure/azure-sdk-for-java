@@ -3,7 +3,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.encryption.api.EncryptionOptions;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public final class CosmosItemRequestOptions {
     private String sessionToken;
     private PartitionKey partitionKey;
     private AccessCondition accessCondition;
+    private EncryptionOptions encryptionOptions;
 
     /**
      * Constructor
@@ -187,6 +190,12 @@ public final class CosmosItemRequestOptions {
         requestOptions.setPostTriggerInclude(postTriggerInclude);
         requestOptions.setSessionToken(sessionToken);
         requestOptions.setPartitionKey(partitionKey);
+        requestOptions.setEncryptionOptions(encryptionOptions);
         return requestOptions;
+    }
+
+    CosmosItemRequestOptions setEncryptionOptions(EncryptionOptions options) {
+        this.encryptionOptions = options;
+        return this;
     }
 }
