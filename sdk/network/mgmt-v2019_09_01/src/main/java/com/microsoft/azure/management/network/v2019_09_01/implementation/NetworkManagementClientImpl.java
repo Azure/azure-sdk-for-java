@@ -11,10 +11,16 @@ package com.microsoft.azure.management.network.v2019_09_01.implementation;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.management.network.v2019_09_01.BastionShareableLinkListRequest;
+import com.microsoft.azure.management.network.v2019_09_01.SessionIds;
 import com.microsoft.azure.management.network.v2019_09_01.VirtualWanVpnProfileParameters;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
@@ -22,6 +28,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -30,6 +37,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -1445,6 +1453,38 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface NetworkManagementClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient putBastionShareableLink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/createShareableLinks")
+        Observable<Response<ResponseBody>> putBastionShareableLink(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BastionShareableLinkListRequest bslRequest, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient beginPutBastionShareableLink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/createShareableLinks")
+        Observable<Response<ResponseBody>> beginPutBastionShareableLink(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BastionShareableLinkListRequest bslRequest, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient deleteBastionShareableLink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/deleteShareableLinks")
+        Observable<Response<ResponseBody>> deleteBastionShareableLink(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BastionShareableLinkListRequest bslRequest, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient beginDeleteBastionShareableLink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/deleteShareableLinks")
+        Observable<Response<ResponseBody>> beginDeleteBastionShareableLink(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BastionShareableLinkListRequest bslRequest, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient getBastionShareableLink" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getShareableLinks")
+        Observable<Response<ResponseBody>> getBastionShareableLink(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body BastionShareableLinkListRequest bslRequest, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient getActiveSessions" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getActiveSessions")
+        Observable<Response<ResponseBody>> getActiveSessions(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient beginGetActiveSessions" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getActiveSessions")
+        Observable<Response<ResponseBody>> beginGetActiveSessions(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient disconnectActiveSessions" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/disconnectActiveSessions")
+        Observable<Response<ResponseBody>> disconnectActiveSessions(@Path("resourceGroupName") String resourceGroupName, @Path("bastionHostName") String bastionHostName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SessionIds sessionIds, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient checkDnsNameAvailability" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         Observable<Response<ResponseBody>> checkDnsNameAvailability(@Path("location") String location, @Path("subscriptionId") String subscriptionId, @Query("domainNameLabel") String domainNameLabel, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1461,6 +1501,1571 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWANName}/GenerateVpnProfile")
         Observable<Response<ResponseBody>> beginGeneratevirtualwanvpnserverconfigurationvpnprofile(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("virtualWANName") String virtualWANName, @Body VirtualWanVpnProfileParameters vpnClientParams, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient putBastionShareableLinkNext" })
+        @GET
+        Observable<Response<ResponseBody>> putBastionShareableLinkNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient beginPutBastionShareableLinkNext" })
+        @GET
+        Observable<Response<ResponseBody>> beginPutBastionShareableLinkNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient getBastionShareableLinkNext" })
+        @GET
+        Observable<Response<ResponseBody>> getBastionShareableLinkNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient getActiveSessionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> getActiveSessionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient beginGetActiveSessionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> beginGetActiveSessionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.v2019_09_01.NetworkManagementClient disconnectActiveSessionsNext" })
+        @GET
+        Observable<Response<ResponseBody>> disconnectActiveSessionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> putBastionShareableLink(final String resourceGroupName, final String bastionHostName) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return putBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> putBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return putBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> putBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName) {
+        return putBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> putBastionShareableLinkWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName) {
+        return putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(putBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> putBastionShareableLinkSinglePageAsync(final String resourceGroupName, final String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final List<BastionShareableLinkInner> vms = null;
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(null);
+        return service.putBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = putBastionShareableLinkDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> putBastionShareableLink(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return putBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> putBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return putBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> putBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        return putBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> putBastionShareableLinkWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        return putBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(putBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param bastionHostName The name of the Bastion Host.
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> putBastionShareableLinkSinglePageAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(vms);
+        final String apiVersion = "2019-09-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service.putBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = putBastionShareableLinkDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionShareableLinkInner>> putBastionShareableLinkDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionShareableLinkInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionShareableLinkInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> beginPutBastionShareableLink(final String resourceGroupName, final String bastionHostName) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = beginPutBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> beginPutBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginPutBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> beginPutBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName) {
+        return beginPutBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> beginPutBastionShareableLinkWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName) {
+        return beginPutBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginPutBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> beginPutBastionShareableLinkSinglePageAsync(final String resourceGroupName, final String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final List<BastionShareableLinkInner> vms = null;
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(null);
+        return service.beginPutBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = beginPutBastionShareableLinkDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> beginPutBastionShareableLink(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = beginPutBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> beginPutBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginPutBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> beginPutBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        return beginPutBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> beginPutBastionShareableLinkWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        return beginPutBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginPutBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param bastionHostName The name of the Bastion Host.
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> beginPutBastionShareableLinkSinglePageAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(vms);
+        final String apiVersion = "2019-09-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service.beginPutBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = beginPutBastionShareableLinkDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionShareableLinkInner>> beginPutBastionShareableLinkDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionShareableLinkInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionShareableLinkInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostName) {
+        deleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName), serviceCallback);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName) {
+        return deleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteBastionShareableLinkWithServiceResponseAsync(String resourceGroupName, String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final String vmsConverted = null;
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(null);
+        Observable<Response<ResponseBody>> observable = service.deleteBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent());
+        return getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
+    }
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteBastionShareableLink(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms) {
+        deleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms).toBlocking().last().body();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms), serviceCallback);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms) {
+        return deleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteBastionShareableLinkWithServiceResponseAsync(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(vms);
+        final String apiVersion = "2019-09-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        Observable<Response<ResponseBody>> observable = service.deleteBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent());
+        return getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName) {
+        beginDeleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName), serviceCallback);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName) {
+        return beginDeleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteBastionShareableLinkWithServiceResponseAsync(String resourceGroupName, String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final List<BastionShareableLinkInner> vms = null;
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(null);
+        return service.beginDeleteBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteBastionShareableLinkDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDeleteBastionShareableLink(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms) {
+        beginDeleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms), serviceCallback);
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteBastionShareableLinkAsync(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms) {
+        return beginDeleteBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteBastionShareableLinkWithServiceResponseAsync(String resourceGroupName, String bastionHostName, List<BastionShareableLinkInner> vms) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(vms);
+        final String apiVersion = "2019-09-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service.beginDeleteBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteBastionShareableLinkDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteBastionShareableLinkDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> getBastionShareableLink(final String resourceGroupName, final String bastionHostName) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return getBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> getBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return getBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> getBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName) {
+        return getBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> getBastionShareableLinkWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName) {
+        return getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> getBastionShareableLinkSinglePageAsync(final String resourceGroupName, final String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final List<BastionShareableLinkInner> vms = null;
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(null);
+        return service.getBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = getBastionShareableLinkDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> getBastionShareableLink(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return getBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> getBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return getBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> getBastionShareableLinkAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        return getBastionShareableLinkWithServiceResponseAsync(resourceGroupName, bastionHostName, vms)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> getBastionShareableLinkWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        return getBastionShareableLinkSinglePageAsync(resourceGroupName, bastionHostName, vms)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param bastionHostName The name of the Bastion Host.
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param vms List of VM references.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> getBastionShareableLinkSinglePageAsync(final String resourceGroupName, final String bastionHostName, final List<BastionShareableLinkInner> vms) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(vms);
+        final String apiVersion = "2019-09-01";
+        BastionShareableLinkListRequest bslRequest = new BastionShareableLinkListRequest();
+        bslRequest.withVms(vms);
+        return service.getBastionShareableLink(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), bslRequest, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = getBastionShareableLinkDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionShareableLinkInner>> getBastionShareableLinkDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionShareableLinkInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionShareableLinkInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object if successful.
+     */
+    public PagedList<BastionActiveSessionInner> getActiveSessions(final String resourceGroupName, final String bastionHostName) {
+        ServiceResponse<Page<BastionActiveSessionInner>> response = getActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName).toBlocking().single();
+        return new PagedList<BastionActiveSessionInner>(response.body()) {
+            @Override
+            public Page<BastionActiveSessionInner> nextPage(String nextPageLink) {
+                return getActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionActiveSessionInner>> getActiveSessionsAsync(final String resourceGroupName, final String bastionHostName, final ListOperationCallback<BastionActiveSessionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            getActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName),
+            new Func1<String, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(String nextPageLink) {
+                    return getActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<Page<BastionActiveSessionInner>> getActiveSessionsAsync(final String resourceGroupName, final String bastionHostName) {
+        return getActiveSessionsWithServiceResponseAsync(resourceGroupName, bastionHostName)
+            .map(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Page<BastionActiveSessionInner>>() {
+                @Override
+                public Page<BastionActiveSessionInner> call(ServiceResponse<Page<BastionActiveSessionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> getActiveSessionsWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName) {
+        return getActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName)
+            .concatMap(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(ServiceResponse<Page<BastionActiveSessionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+    ServiceResponse<PageImpl<BastionActiveSessionInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<BastionActiveSessionInner>> * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> getActiveSessionsSinglePageAsync(final String resourceGroupName, final String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        return service.getActiveSessions(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionActiveSessionInner>> result = getActiveSessionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionActiveSessionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionActiveSessionInner>> getActiveSessionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionActiveSessionInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionActiveSessionInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object if successful.
+     */
+    public PagedList<BastionActiveSessionInner> beginGetActiveSessions(final String resourceGroupName, final String bastionHostName) {
+        ServiceResponse<Page<BastionActiveSessionInner>> response = beginGetActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName).toBlocking().single();
+        return new PagedList<BastionActiveSessionInner>(response.body()) {
+            @Override
+            public Page<BastionActiveSessionInner> nextPage(String nextPageLink) {
+                return beginGetActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionActiveSessionInner>> beginGetActiveSessionsAsync(final String resourceGroupName, final String bastionHostName, final ListOperationCallback<BastionActiveSessionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginGetActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName),
+            new Func1<String, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(String nextPageLink) {
+                    return beginGetActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<Page<BastionActiveSessionInner>> beginGetActiveSessionsAsync(final String resourceGroupName, final String bastionHostName) {
+        return beginGetActiveSessionsWithServiceResponseAsync(resourceGroupName, bastionHostName)
+            .map(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Page<BastionActiveSessionInner>>() {
+                @Override
+                public Page<BastionActiveSessionInner> call(ServiceResponse<Page<BastionActiveSessionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> beginGetActiveSessionsWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName) {
+        return beginGetActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName)
+            .concatMap(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(ServiceResponse<Page<BastionActiveSessionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginGetActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+    ServiceResponse<PageImpl<BastionActiveSessionInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<BastionActiveSessionInner>> * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> beginGetActiveSessionsSinglePageAsync(final String resourceGroupName, final String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        return service.beginGetActiveSessions(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionActiveSessionInner>> result = beginGetActiveSessionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionActiveSessionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionActiveSessionInner>> beginGetActiveSessionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionActiveSessionInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionActiveSessionInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionSessionStateInner&gt; object if successful.
+     */
+    public PagedList<BastionSessionStateInner> disconnectActiveSessions(final String resourceGroupName, final String bastionHostName) {
+        ServiceResponse<Page<BastionSessionStateInner>> response = disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName).toBlocking().single();
+        return new PagedList<BastionSessionStateInner>(response.body()) {
+            @Override
+            public Page<BastionSessionStateInner> nextPage(String nextPageLink) {
+                return disconnectActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionSessionStateInner>> disconnectActiveSessionsAsync(final String resourceGroupName, final String bastionHostName, final ListOperationCallback<BastionSessionStateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName),
+            new Func1<String, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(String nextPageLink) {
+                    return disconnectActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionSessionStateInner&gt; object
+     */
+    public Observable<Page<BastionSessionStateInner>> disconnectActiveSessionsAsync(final String resourceGroupName, final String bastionHostName) {
+        return disconnectActiveSessionsWithServiceResponseAsync(resourceGroupName, bastionHostName)
+            .map(new Func1<ServiceResponse<Page<BastionSessionStateInner>>, Page<BastionSessionStateInner>>() {
+                @Override
+                public Page<BastionSessionStateInner> call(ServiceResponse<Page<BastionSessionStateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionSessionStateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionSessionStateInner>>> disconnectActiveSessionsWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName) {
+        return disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName)
+            .concatMap(new Func1<ServiceResponse<Page<BastionSessionStateInner>>, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(ServiceResponse<Page<BastionSessionStateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(disconnectActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionSessionStateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionSessionStateInner>>> disconnectActiveSessionsSinglePageAsync(final String resourceGroupName, final String bastionHostName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2019-09-01";
+        final List<String> sessionIds = null;
+        SessionIds sessionIds1 = new SessionIds();
+        sessionIds1.withSessionIds(null);
+        return service.disconnectActiveSessions(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), sessionIds1, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionSessionStateInner>> result = disconnectActiveSessionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionSessionStateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param sessionIds List of session ids
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionSessionStateInner&gt; object if successful.
+     */
+    public PagedList<BastionSessionStateInner> disconnectActiveSessions(final String resourceGroupName, final String bastionHostName, final List<String> sessionIds) {
+        ServiceResponse<Page<BastionSessionStateInner>> response = disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName, sessionIds).toBlocking().single();
+        return new PagedList<BastionSessionStateInner>(response.body()) {
+            @Override
+            public Page<BastionSessionStateInner> nextPage(String nextPageLink) {
+                return disconnectActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param sessionIds List of session ids
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionSessionStateInner>> disconnectActiveSessionsAsync(final String resourceGroupName, final String bastionHostName, final List<String> sessionIds, final ListOperationCallback<BastionSessionStateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName, sessionIds),
+            new Func1<String, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(String nextPageLink) {
+                    return disconnectActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param sessionIds List of session ids
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionSessionStateInner&gt; object
+     */
+    public Observable<Page<BastionSessionStateInner>> disconnectActiveSessionsAsync(final String resourceGroupName, final String bastionHostName, final List<String> sessionIds) {
+        return disconnectActiveSessionsWithServiceResponseAsync(resourceGroupName, bastionHostName, sessionIds)
+            .map(new Func1<ServiceResponse<Page<BastionSessionStateInner>>, Page<BastionSessionStateInner>>() {
+                @Override
+                public Page<BastionSessionStateInner> call(ServiceResponse<Page<BastionSessionStateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostName The name of the Bastion Host.
+     * @param sessionIds List of session ids
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionSessionStateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionSessionStateInner>>> disconnectActiveSessionsWithServiceResponseAsync(final String resourceGroupName, final String bastionHostName, final List<String> sessionIds) {
+        return disconnectActiveSessionsSinglePageAsync(resourceGroupName, bastionHostName, sessionIds)
+            .concatMap(new Func1<ServiceResponse<Page<BastionSessionStateInner>>, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(ServiceResponse<Page<BastionSessionStateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(disconnectActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+    ServiceResponse<PageImpl<BastionSessionStateInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<BastionSessionStateInner>> * @param bastionHostName The name of the Bastion Host.
+    ServiceResponse<PageImpl<BastionSessionStateInner>> * @param sessionIds List of session ids
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionSessionStateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionSessionStateInner>>> disconnectActiveSessionsSinglePageAsync(final String resourceGroupName, final String bastionHostName, final List<String> sessionIds) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (bastionHostName == null) {
+            throw new IllegalArgumentException("Parameter bastionHostName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        Validator.validate(sessionIds);
+        final String apiVersion = "2019-09-01";
+        SessionIds sessionIds1 = new SessionIds();
+        sessionIds1.withSessionIds(sessionIds);
+        return service.disconnectActiveSessions(resourceGroupName, bastionHostName, this.subscriptionId(), apiVersion, this.acceptLanguage(), sessionIds1, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionSessionStateInner>> result = disconnectActiveSessionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionSessionStateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionSessionStateInner>> disconnectActiveSessionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionSessionStateInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionSessionStateInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
@@ -1795,6 +3400,676 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         return this.restClient().responseBuilderFactory().<VpnProfileResponseInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<VpnProfileResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> putBastionShareableLinkNext(final String nextPageLink) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = putBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return putBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> putBastionShareableLinkNextAsync(final String nextPageLink, final ServiceFuture<List<BastionShareableLinkInner>> serviceFuture, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            putBastionShareableLinkNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return putBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> putBastionShareableLinkNextAsync(final String nextPageLink) {
+        return putBastionShareableLinkNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> putBastionShareableLinkNextWithServiceResponseAsync(final String nextPageLink) {
+        return putBastionShareableLinkNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(putBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> putBastionShareableLinkNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.putBastionShareableLinkNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = putBastionShareableLinkNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionShareableLinkInner>> putBastionShareableLinkNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionShareableLinkInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionShareableLinkInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> beginPutBastionShareableLinkNext(final String nextPageLink) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> beginPutBastionShareableLinkNextAsync(final String nextPageLink, final ServiceFuture<List<BastionShareableLinkInner>> serviceFuture, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> beginPutBastionShareableLinkNextAsync(final String nextPageLink) {
+        return beginPutBastionShareableLinkNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> beginPutBastionShareableLinkNextWithServiceResponseAsync(final String nextPageLink) {
+        return beginPutBastionShareableLinkNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginPutBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Creates a Bastion Shareable Links for all the VMs specified in the request.
+     *
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> beginPutBastionShareableLinkNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.beginPutBastionShareableLinkNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = beginPutBastionShareableLinkNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionShareableLinkInner>> beginPutBastionShareableLinkNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionShareableLinkInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionShareableLinkInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object if successful.
+     */
+    public PagedList<BastionShareableLinkInner> getBastionShareableLinkNext(final String nextPageLink) {
+        ServiceResponse<Page<BastionShareableLinkInner>> response = getBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BastionShareableLinkInner>(response.body()) {
+            @Override
+            public Page<BastionShareableLinkInner> nextPage(String nextPageLink) {
+                return getBastionShareableLinkNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionShareableLinkInner>> getBastionShareableLinkNextAsync(final String nextPageLink, final ServiceFuture<List<BastionShareableLinkInner>> serviceFuture, final ListOperationCallback<BastionShareableLinkInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            getBastionShareableLinkNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(String nextPageLink) {
+                    return getBastionShareableLinkNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<Page<BastionShareableLinkInner>> getBastionShareableLinkNextAsync(final String nextPageLink) {
+        return getBastionShareableLinkNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Page<BastionShareableLinkInner>>() {
+                @Override
+                public Page<BastionShareableLinkInner> call(ServiceResponse<Page<BastionShareableLinkInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionShareableLinkInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> getBastionShareableLinkNextWithServiceResponseAsync(final String nextPageLink) {
+        return getBastionShareableLinkNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BastionShareableLinkInner>>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(ServiceResponse<Page<BastionShareableLinkInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getBastionShareableLinkNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Return the Bastion Shareable Links for all the VMs specified in the request.
+     *
+    ServiceResponse<PageImpl<BastionShareableLinkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionShareableLinkInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> getBastionShareableLinkNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.getBastionShareableLinkNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionShareableLinkInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionShareableLinkInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionShareableLinkInner>> result = getBastionShareableLinkNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionShareableLinkInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionShareableLinkInner>> getBastionShareableLinkNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionShareableLinkInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionShareableLinkInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object if successful.
+     */
+    public PagedList<BastionActiveSessionInner> getActiveSessionsNext(final String nextPageLink) {
+        ServiceResponse<Page<BastionActiveSessionInner>> response = getActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BastionActiveSessionInner>(response.body()) {
+            @Override
+            public Page<BastionActiveSessionInner> nextPage(String nextPageLink) {
+                return getActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionActiveSessionInner>> getActiveSessionsNextAsync(final String nextPageLink, final ServiceFuture<List<BastionActiveSessionInner>> serviceFuture, final ListOperationCallback<BastionActiveSessionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            getActiveSessionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(String nextPageLink) {
+                    return getActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<Page<BastionActiveSessionInner>> getActiveSessionsNextAsync(final String nextPageLink) {
+        return getActiveSessionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Page<BastionActiveSessionInner>>() {
+                @Override
+                public Page<BastionActiveSessionInner> call(ServiceResponse<Page<BastionActiveSessionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> getActiveSessionsNextWithServiceResponseAsync(final String nextPageLink) {
+        return getActiveSessionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(ServiceResponse<Page<BastionActiveSessionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+    ServiceResponse<PageImpl<BastionActiveSessionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> getActiveSessionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.getActiveSessionsNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionActiveSessionInner>> result = getActiveSessionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionActiveSessionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionActiveSessionInner>> getActiveSessionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionActiveSessionInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionActiveSessionInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object if successful.
+     */
+    public PagedList<BastionActiveSessionInner> beginGetActiveSessionsNext(final String nextPageLink) {
+        ServiceResponse<Page<BastionActiveSessionInner>> response = beginGetActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BastionActiveSessionInner>(response.body()) {
+            @Override
+            public Page<BastionActiveSessionInner> nextPage(String nextPageLink) {
+                return beginGetActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionActiveSessionInner>> beginGetActiveSessionsNextAsync(final String nextPageLink, final ServiceFuture<List<BastionActiveSessionInner>> serviceFuture, final ListOperationCallback<BastionActiveSessionInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            beginGetActiveSessionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(String nextPageLink) {
+                    return beginGetActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<Page<BastionActiveSessionInner>> beginGetActiveSessionsNextAsync(final String nextPageLink) {
+        return beginGetActiveSessionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Page<BastionActiveSessionInner>>() {
+                @Override
+                public Page<BastionActiveSessionInner> call(ServiceResponse<Page<BastionActiveSessionInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionActiveSessionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> beginGetActiveSessionsNextWithServiceResponseAsync(final String nextPageLink) {
+        return beginGetActiveSessionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BastionActiveSessionInner>>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(ServiceResponse<Page<BastionActiveSessionInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(beginGetActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+    ServiceResponse<PageImpl<BastionActiveSessionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionActiveSessionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> beginGetActiveSessionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.beginGetActiveSessionsNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionActiveSessionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionActiveSessionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionActiveSessionInner>> result = beginGetActiveSessionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionActiveSessionInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionActiveSessionInner>> beginGetActiveSessionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionActiveSessionInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionActiveSessionInner>>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BastionSessionStateInner&gt; object if successful.
+     */
+    public PagedList<BastionSessionStateInner> disconnectActiveSessionsNext(final String nextPageLink) {
+        ServiceResponse<Page<BastionSessionStateInner>> response = disconnectActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BastionSessionStateInner>(response.body()) {
+            @Override
+            public Page<BastionSessionStateInner> nextPage(String nextPageLink) {
+                return disconnectActiveSessionsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BastionSessionStateInner>> disconnectActiveSessionsNextAsync(final String nextPageLink, final ServiceFuture<List<BastionSessionStateInner>> serviceFuture, final ListOperationCallback<BastionSessionStateInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            disconnectActiveSessionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(String nextPageLink) {
+                    return disconnectActiveSessionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionSessionStateInner&gt; object
+     */
+    public Observable<Page<BastionSessionStateInner>> disconnectActiveSessionsNextAsync(final String nextPageLink) {
+        return disconnectActiveSessionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BastionSessionStateInner>>, Page<BastionSessionStateInner>>() {
+                @Override
+                public Page<BastionSessionStateInner> call(ServiceResponse<Page<BastionSessionStateInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BastionSessionStateInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BastionSessionStateInner>>> disconnectActiveSessionsNextWithServiceResponseAsync(final String nextPageLink) {
+        return disconnectActiveSessionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BastionSessionStateInner>>, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(ServiceResponse<Page<BastionSessionStateInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(disconnectActiveSessionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns the list of currently active sessions on the Bastion.
+     *
+    ServiceResponse<PageImpl<BastionSessionStateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BastionSessionStateInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BastionSessionStateInner>>> disconnectActiveSessionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.disconnectActiveSessionsNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BastionSessionStateInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BastionSessionStateInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BastionSessionStateInner>> result = disconnectActiveSessionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BastionSessionStateInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BastionSessionStateInner>> disconnectActiveSessionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl<BastionSessionStateInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BastionSessionStateInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
