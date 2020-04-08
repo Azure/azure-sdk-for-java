@@ -27,158 +27,267 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * InstanceFailoverGroups.
- */
+/** An instance of this class provides access to all the operations defined in InstanceFailoverGroups. */
 public final class InstanceFailoverGroupsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private InstanceFailoverGroupsService service;
+    /** The proxy service used to perform REST calls. */
+    private final InstanceFailoverGroupsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of InstanceFailoverGroupsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     InstanceFailoverGroupsInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(InstanceFailoverGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(InstanceFailoverGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientInstanceFailoverGroups to be used by the proxy
+     * The interface defining all the services for SqlManagementClientInstanceFailoverGroups to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientInstanceFailoverGroups")
+    @ServiceInterface(name = "SqlManagementClientI")
     private interface InstanceFailoverGroupsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<InstanceFailoverGroupInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<InstanceFailoverGroupInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") InstanceFailoverGroupInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") InstanceFailoverGroupInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<InstanceFailoverGroupListResultInner>> listByLocation(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<InstanceFailoverGroupListResultInner>> listByLocation(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> failover(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> failover(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> forceFailoverAllowDataLoss(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> forceFailoverAllowDataLoss(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<InstanceFailoverGroupInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") InstanceFailoverGroupInner parameters);
+        Mono<SimpleResponse<InstanceFailoverGroupInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") InstanceFailoverGroupInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/failover")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<InstanceFailoverGroupInner>> beginFailover(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<InstanceFailoverGroupInner>> beginFailover(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/locations/{locationName}/instanceFailoverGroups/{failoverGroupName}/forceFailoverAllowDataLoss")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<InstanceFailoverGroupInner>> beginForceFailoverAllowDataLoss(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("locationName") String locationName, @PathParam("failoverGroupName") String failoverGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<InstanceFailoverGroupInner>> beginForceFailoverAllowDataLoss(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("locationName") String locationName,
+            @PathParam("failoverGroupName") String failoverGroupName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<InstanceFailoverGroupListResultInner>> listByLocationNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<InstanceFailoverGroupListResultInner>> listByLocationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<InstanceFailoverGroupInner>> getWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<SimpleResponse<InstanceFailoverGroupInner>> getWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> getAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<InstanceFailoverGroupInner> getAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return getWithResponseAsync(resourceGroupName, locationName, failoverGroupName)
-            .flatMap((SimpleResponse<InstanceFailoverGroupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<InstanceFailoverGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InstanceFailoverGroupInner get(String resourceGroupName, String locationName, String failoverGroupName) {
@@ -187,96 +296,152 @@ public final class InstanceFailoverGroupsInner {
 
     /**
      * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @param parameters An instance failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String locationName,
+        String failoverGroupName,
+        InstanceFailoverGroupInner parameters) {
         final String apiVersion = "2017-10-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @param parameters An instance failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> createOrUpdateAsync(String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, locationName, failoverGroupName, parameters);
-        return this.client.<InstanceFailoverGroupInner, InstanceFailoverGroupInner>getLroResultAsync(mono, this.client.getHttpPipeline(), InstanceFailoverGroupInner.class, InstanceFailoverGroupInner.class)
+    public Mono<InstanceFailoverGroupInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String locationName,
+        String failoverGroupName,
+        InstanceFailoverGroupInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, locationName, failoverGroupName, parameters);
+        return this
+            .client
+            .<InstanceFailoverGroupInner, InstanceFailoverGroupInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), InstanceFailoverGroupInner.class, InstanceFailoverGroupInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @param parameters An instance failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceFailoverGroupInner createOrUpdate(String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters) {
+    public InstanceFailoverGroupInner createOrUpdate(
+        String resourceGroupName,
+        String locationName,
+        String failoverGroupName,
+        InstanceFailoverGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, locationName, failoverGroupName, parameters).block();
     }
 
     /**
      * Deletes a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.delete(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String locationName, String failoverGroupName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, locationName, failoverGroupName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, locationName, failoverGroupName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -288,34 +453,52 @@ public final class InstanceFailoverGroupsInner {
 
     /**
      * Lists the failover groups in a location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<InstanceFailoverGroupInner>> listByLocationSinglePageAsync(String resourceGroupName, String locationName) {
+    public Mono<PagedResponse<InstanceFailoverGroupInner>> listByLocationSinglePageAsync(
+        String resourceGroupName, String locationName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.listByLocation(this.client.getHost(), resourceGroupName, locationName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByLocation(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<InstanceFailoverGroupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the failover groups in a location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InstanceFailoverGroupInner> listByLocationAsync(String resourceGroupName, String locationName) {
@@ -326,12 +509,14 @@ public final class InstanceFailoverGroupsInner {
 
     /**
      * Lists the failover groups in a location.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<InstanceFailoverGroupInner> listByLocation(String resourceGroupName, String locationName) {
@@ -340,183 +525,285 @@ public final class InstanceFailoverGroupsInner {
 
     /**
      * Fails over from the current primary managed instance to this managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.failover(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .failover(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Fails over from the current primary managed instance to this managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> failoverAsync(String resourceGroupName, String locationName, String failoverGroupName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = failoverWithResponseAsync(resourceGroupName, locationName, failoverGroupName);
-        return this.client.<InstanceFailoverGroupInner, InstanceFailoverGroupInner>getLroResultAsync(mono, this.client.getHttpPipeline(), InstanceFailoverGroupInner.class, InstanceFailoverGroupInner.class)
+    public Mono<InstanceFailoverGroupInner> failoverAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            failoverWithResponseAsync(resourceGroupName, locationName, failoverGroupName);
+        return this
+            .client
+            .<InstanceFailoverGroupInner, InstanceFailoverGroupInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), InstanceFailoverGroupInner.class, InstanceFailoverGroupInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Fails over from the current primary managed instance to this managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceFailoverGroupInner failover(String resourceGroupName, String locationName, String failoverGroupName) {
+    public InstanceFailoverGroupInner failover(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return failoverAsync(resourceGroupName, locationName, failoverGroupName).block();
     }
 
     /**
-     * Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     * Fails over from the current primary managed instance to this managed instance. This operation might result in
+     * data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> forceFailoverAllowDataLossWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.forceFailoverAllowDataLoss(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .forceFailoverAllowDataLoss(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     * Fails over from the current primary managed instance to this managed instance. This operation might result in
+     * data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> forceFailoverAllowDataLossAsync(String resourceGroupName, String locationName, String failoverGroupName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = forceFailoverAllowDataLossWithResponseAsync(resourceGroupName, locationName, failoverGroupName);
-        return this.client.<InstanceFailoverGroupInner, InstanceFailoverGroupInner>getLroResultAsync(mono, this.client.getHttpPipeline(), InstanceFailoverGroupInner.class, InstanceFailoverGroupInner.class)
+    public Mono<InstanceFailoverGroupInner> forceFailoverAllowDataLossAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            forceFailoverAllowDataLossWithResponseAsync(resourceGroupName, locationName, failoverGroupName);
+        return this
+            .client
+            .<InstanceFailoverGroupInner, InstanceFailoverGroupInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), InstanceFailoverGroupInner.class, InstanceFailoverGroupInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
-     * Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     * Fails over from the current primary managed instance to this managed instance. This operation might result in
+     * data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceFailoverGroupInner forceFailoverAllowDataLoss(String resourceGroupName, String locationName, String failoverGroupName) {
+    public InstanceFailoverGroupInner forceFailoverAllowDataLoss(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return forceFailoverAllowDataLossAsync(resourceGroupName, locationName, failoverGroupName).block();
     }
 
     /**
      * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @param parameters An instance failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<InstanceFailoverGroupInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters) {
+    public Mono<SimpleResponse<InstanceFailoverGroupInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String locationName,
+        String failoverGroupName,
+        InstanceFailoverGroupInner parameters) {
         final String apiVersion = "2017-10-01-preview";
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @param parameters An instance failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters) {
+    public Mono<InstanceFailoverGroupInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String locationName,
+        String failoverGroupName,
+        InstanceFailoverGroupInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, locationName, failoverGroupName, parameters)
-            .flatMap((SimpleResponse<InstanceFailoverGroupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<InstanceFailoverGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @param parameters An instance failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceFailoverGroupInner beginCreateOrUpdate(String resourceGroupName, String locationName, String failoverGroupName, InstanceFailoverGroupInner parameters) {
+    public InstanceFailoverGroupInner beginCreateOrUpdate(
+        String resourceGroupName,
+        String locationName,
+        String failoverGroupName,
+        InstanceFailoverGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, locationName, failoverGroupName, parameters).block();
     }
 
     /**
      * Deletes a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.beginDelete(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String locationName, String failoverGroupName) {
@@ -526,10 +813,11 @@ public final class InstanceFailoverGroupsInner {
 
     /**
      * Deletes a failover group.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -541,127 +829,179 @@ public final class InstanceFailoverGroupsInner {
 
     /**
      * Fails over from the current primary managed instance to this managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<InstanceFailoverGroupInner>> beginFailoverWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<SimpleResponse<InstanceFailoverGroupInner>> beginFailoverWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.beginFailover(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginFailover(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Fails over from the current primary managed instance to this managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> beginFailoverAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<InstanceFailoverGroupInner> beginFailoverAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return beginFailoverWithResponseAsync(resourceGroupName, locationName, failoverGroupName)
-            .flatMap((SimpleResponse<InstanceFailoverGroupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<InstanceFailoverGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Fails over from the current primary managed instance to this managed instance.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceFailoverGroupInner beginFailover(String resourceGroupName, String locationName, String failoverGroupName) {
+    public InstanceFailoverGroupInner beginFailover(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return beginFailoverAsync(resourceGroupName, locationName, failoverGroupName).block();
     }
 
     /**
-     * Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     * Fails over from the current primary managed instance to this managed instance. This operation might result in
+     * data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<InstanceFailoverGroupInner>> beginForceFailoverAllowDataLossWithResponseAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<SimpleResponse<InstanceFailoverGroupInner>> beginForceFailoverAllowDataLossWithResponseAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.beginForceFailoverAllowDataLoss(this.client.getHost(), resourceGroupName, locationName, failoverGroupName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginForceFailoverAllowDataLoss(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            locationName,
+                            failoverGroupName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     * Fails over from the current primary managed instance to this managed instance. This operation might result in
+     * data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InstanceFailoverGroupInner> beginForceFailoverAllowDataLossAsync(String resourceGroupName, String locationName, String failoverGroupName) {
+    public Mono<InstanceFailoverGroupInner> beginForceFailoverAllowDataLossAsync(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return beginForceFailoverAllowDataLossWithResponseAsync(resourceGroupName, locationName, failoverGroupName)
-            .flatMap((SimpleResponse<InstanceFailoverGroupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<InstanceFailoverGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Fails over from the current primary managed instance to this managed instance. This operation might result in data loss.
-     * 
-     * @param resourceGroupName 
-     * @param locationName 
-     * @param failoverGroupName 
+     * Fails over from the current primary managed instance to this managed instance. This operation might result in
+     * data loss.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param locationName The name of the region where the resource is located.
+     * @param failoverGroupName The name of the failover group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an instance failover group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceFailoverGroupInner beginForceFailoverAllowDataLoss(String resourceGroupName, String locationName, String failoverGroupName) {
+    public InstanceFailoverGroupInner beginForceFailoverAllowDataLoss(
+        String resourceGroupName, String locationName, String failoverGroupName) {
         return beginForceFailoverAllowDataLossAsync(resourceGroupName, locationName, failoverGroupName).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of instance failover groups.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<InstanceFailoverGroupInner>> listByLocationNextSinglePageAsync(String nextLink) {
-        return service.listByLocationNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByLocationNext(nextLink, context))
+            .<PagedResponse<InstanceFailoverGroupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

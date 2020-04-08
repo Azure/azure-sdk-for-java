@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ServerDnsAliasAcquisition model.
- */
+/** The ServerDnsAliasAcquisition model. */
 @Fluent
 public final class ServerDnsAliasAcquisition {
     /*
@@ -20,9 +18,9 @@ public final class ServerDnsAliasAcquisition {
     private String oldServerDnsAliasId;
 
     /**
-     * Get the oldServerDnsAliasId property: The id of the server alias that
-     * will be acquired to point to this server instead.
-     * 
+     * Get the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
+     * instead.
+     *
      * @return the oldServerDnsAliasId value.
      */
     public String oldServerDnsAliasId() {
@@ -30,9 +28,9 @@ public final class ServerDnsAliasAcquisition {
     }
 
     /**
-     * Set the oldServerDnsAliasId property: The id of the server alias that
-     * will be acquired to point to this server instead.
-     * 
+     * Set the oldServerDnsAliasId property: The id of the server alias that will be acquired to point to this server
+     * instead.
+     *
      * @param oldServerDnsAliasId the oldServerDnsAliasId value to set.
      * @return the ServerDnsAliasAcquisition object itself.
      */

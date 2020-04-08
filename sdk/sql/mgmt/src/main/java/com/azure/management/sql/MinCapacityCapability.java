@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MinCapacityCapability model.
- */
+/** The MinCapacityCapability model. */
 @Fluent
 public final class MinCapacityCapability {
     /*
@@ -32,7 +30,7 @@ public final class MinCapacityCapability {
 
     /**
      * Get the value property: Min capacity value.
-     * 
+     *
      * @return the value value.
      */
     public Double value() {
@@ -41,7 +39,7 @@ public final class MinCapacityCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -49,9 +47,8 @@ public final class MinCapacityCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -59,9 +56,8 @@ public final class MinCapacityCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the MinCapacityCapability object itself.
      */

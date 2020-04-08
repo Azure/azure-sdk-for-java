@@ -8,38 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for VirtualNetworkRuleState.
- */
+/** Defines values for VirtualNetworkRuleState. */
 public final class VirtualNetworkRuleState extends ExpandableStringEnum<VirtualNetworkRuleState> {
-    /**
-     * Static value Initializing for VirtualNetworkRuleState.
-     */
+    /** Static value Initializing for VirtualNetworkRuleState. */
     public static final VirtualNetworkRuleState INITIALIZING = fromString("Initializing");
 
-    /**
-     * Static value InProgress for VirtualNetworkRuleState.
-     */
+    /** Static value InProgress for VirtualNetworkRuleState. */
     public static final VirtualNetworkRuleState IN_PROGRESS = fromString("InProgress");
 
-    /**
-     * Static value Ready for VirtualNetworkRuleState.
-     */
+    /** Static value Ready for VirtualNetworkRuleState. */
     public static final VirtualNetworkRuleState READY = fromString("Ready");
 
-    /**
-     * Static value Deleting for VirtualNetworkRuleState.
-     */
+    /** Static value Deleting for VirtualNetworkRuleState. */
     public static final VirtualNetworkRuleState DELETING = fromString("Deleting");
 
-    /**
-     * Static value Unknown for VirtualNetworkRuleState.
-     */
+    /** Static value Unknown for VirtualNetworkRuleState. */
     public static final VirtualNetworkRuleState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates or finds a VirtualNetworkRuleState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkRuleState.
      */
@@ -48,9 +36,7 @@ public final class VirtualNetworkRuleState extends ExpandableStringEnum<VirtualN
         return fromString(name, VirtualNetworkRuleState.class);
     }
 
-    /**
-     * @return known VirtualNetworkRuleState values.
-     */
+    /** @return known VirtualNetworkRuleState values. */
     public static Collection<VirtualNetworkRuleState> values() {
         return values(VirtualNetworkRuleState.class);
     }

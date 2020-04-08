@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PartnerInfo model.
- */
+/** The PartnerInfo model. */
 @Fluent
 public final class PartnerInfo {
     /*
@@ -32,7 +30,7 @@ public final class PartnerInfo {
 
     /**
      * Get the id property: Resource identifier of the partner server.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -41,7 +39,7 @@ public final class PartnerInfo {
 
     /**
      * Set the id property: Resource identifier of the partner server.
-     * 
+     *
      * @param id the id value to set.
      * @return the PartnerInfo object itself.
      */
@@ -52,7 +50,7 @@ public final class PartnerInfo {
 
     /**
      * Get the location property: Geo location of the partner server.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -60,9 +58,8 @@ public final class PartnerInfo {
     }
 
     /**
-     * Get the replicationRole property: Replication role of the partner
-     * server.
-     * 
+     * Get the replicationRole property: Replication role of the partner server.
+     *
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {

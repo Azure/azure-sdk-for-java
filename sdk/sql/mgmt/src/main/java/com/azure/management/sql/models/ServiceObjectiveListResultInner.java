@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServiceObjectiveListResult model.
- */
+/** The ServiceObjectiveListResult model. */
 @Fluent
 public final class ServiceObjectiveListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class ServiceObjectiveListResultInner {
 
     /**
      * Get the value property: The list of database service objectives.
-     * 
+     *
      * @return the value value.
      */
     public List<ServiceObjectiveInner> value() {
@@ -30,7 +28,7 @@ public final class ServiceObjectiveListResultInner {
 
     /**
      * Set the value property: The list of database service objectives.
-     * 
+     *
      * @param value the value value to set.
      * @return the ServiceObjectiveListResultInner object itself.
      */

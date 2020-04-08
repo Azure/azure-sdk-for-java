@@ -7,28 +7,18 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ServerConnectionType.
- */
+/** Defines values for ServerConnectionType. */
 public enum ServerConnectionType {
-    /**
-     * Enum value Default.
-     */
+    /** Enum value Default. */
     DEFAULT("Default"),
 
-    /**
-     * Enum value Proxy.
-     */
+    /** Enum value Proxy. */
     PROXY("Proxy"),
 
-    /**
-     * Enum value Redirect.
-     */
+    /** Enum value Redirect. */
     REDIRECT("Redirect");
 
-    /**
-     * The actual serialized value for a ServerConnectionType instance.
-     */
+    /** The actual serialized value for a ServerConnectionType instance. */
     private final String value;
 
     ServerConnectionType(String value) {
@@ -37,7 +27,7 @@ public enum ServerConnectionType {
 
     /**
      * Parses a serialized value to a ServerConnectionType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ServerConnectionType object, or null if unable to parse.
      */

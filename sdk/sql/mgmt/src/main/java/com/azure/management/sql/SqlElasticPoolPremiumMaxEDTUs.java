@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.management.sql;
 
-
 import com.azure.core.annotation.Fluent;
 
-/**
- * The maximum limit of the reserved eDTUs value range for a "Premium" edition of an Azure SQL Elastic Pool.
- */
+/** The maximum limit of the reserved eDTUs value range for a "Premium" edition of an Azure SQL Elastic Pool. */
 @Fluent
 public enum SqlElasticPoolPremiumMaxEDTUs {
     /** Maximum 25 eDTUs available per each database. */
@@ -44,9 +41,7 @@ public enum SqlElasticPoolPremiumMaxEDTUs {
         this.value = eDTU;
     }
 
-    /**
-     * @return the maximum eDTUs available per each database for the SQL Elastic Pool
-     */
+    /** @return the maximum eDTUs available per each database for the SQL Elastic Pool */
     public int value() {
         return this.value;
     }

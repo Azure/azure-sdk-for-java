@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServerKeyListResult model.
- */
+/** The ServerKeyListResult model. */
 @Immutable
 public final class ServerKeyListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class ServerKeyListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<ServerKeyInner> value() {
@@ -36,7 +34,7 @@ public final class ServerKeyListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

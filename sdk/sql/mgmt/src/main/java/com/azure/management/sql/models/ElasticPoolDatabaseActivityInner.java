@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * The ElasticPoolDatabaseActivity model.
- */
+/** The ElasticPoolDatabaseActivity model. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolDatabaseActivityInner extends ProxyResource {
@@ -115,7 +113,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -124,7 +122,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     * 
+     *
      * @param location the location value to set.
      * @return the ElasticPoolDatabaseActivityInner object itself.
      */
@@ -135,7 +133,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the databaseName property: The database name.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -143,9 +141,8 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the endTime property: The time the operation finished (ISO8601
-     * format).
-     * 
+     * Get the endTime property: The time the operation finished (ISO8601 format).
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -154,7 +151,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the errorCode property: The error code if available.
-     * 
+     *
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -163,7 +160,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the errorMessage property: The error message if available.
-     * 
+     *
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -172,7 +169,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the errorSeverity property: The error severity if available.
-     * 
+     *
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -181,7 +178,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the operation property: The operation name.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -190,7 +187,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the operationId property: The unique operation ID.
-     * 
+     *
      * @return the operationId value.
      */
     public UUID operationId() {
@@ -199,7 +196,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the percentComplete property: The percentage complete if available.
-     * 
+     *
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -207,9 +204,9 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedElasticPoolName property: The name for the elastic pool
-     * the database is moving into if available.
-     * 
+     * Get the requestedElasticPoolName property: The name for the elastic pool the database is moving into if
+     * available.
+     *
      * @return the requestedElasticPoolName value.
      */
     public String requestedElasticPoolName() {
@@ -217,9 +214,8 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the currentElasticPoolName property: The name of the current elastic
-     * pool the database is in if available.
-     * 
+     * Get the currentElasticPoolName property: The name of the current elastic pool the database is in if available.
+     *
      * @return the currentElasticPoolName value.
      */
     public String currentElasticPoolName() {
@@ -227,9 +223,8 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the currentServiceObjective property: The name of the current
-     * service objective if available.
-     * 
+     * Get the currentServiceObjective property: The name of the current service objective if available.
+     *
      * @return the currentServiceObjective value.
      */
     public String currentServiceObjective() {
@@ -237,9 +232,8 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the requestedServiceObjective property: The name of the requested
-     * service objective if available.
-     * 
+     * Get the requestedServiceObjective property: The name of the requested service objective if available.
+     *
      * @return the requestedServiceObjective value.
      */
     public String requestedServiceObjective() {
@@ -247,9 +241,8 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the serverName property: The name of the server the elastic pool is
-     * in.
-     * 
+     * Get the serverName property: The name of the server the elastic pool is in.
+     *
      * @return the serverName value.
      */
     public String serverName() {
@@ -257,9 +250,8 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
     }
 
     /**
-     * Get the startTime property: The time the operation started (ISO8601
-     * format).
-     * 
+     * Get the startTime property: The time the operation started (ISO8601 format).
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -268,7 +260,7 @@ public class ElasticPoolDatabaseActivityInner extends ProxyResource {
 
     /**
      * Get the state property: The current state of the operation.
-     * 
+     *
      * @return the state value.
      */
     public String state() {

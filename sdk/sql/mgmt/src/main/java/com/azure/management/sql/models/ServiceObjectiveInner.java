@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ServiceObjective model.
- */
+/** The ServiceObjective model. */
 @JsonFlatten
 @Immutable
 public class ServiceObjectiveInner extends ProxyResource {
@@ -47,9 +45,8 @@ public class ServiceObjectiveInner extends ProxyResource {
     private Boolean enabled;
 
     /**
-     * Get the serviceObjectiveName property: The name for the service
-     * objective.
-     * 
+     * Get the serviceObjectiveName property: The name for the service objective.
+     *
      * @return the serviceObjectiveName value.
      */
     public String serviceObjectiveName() {
@@ -57,9 +54,8 @@ public class ServiceObjectiveInner extends ProxyResource {
     }
 
     /**
-     * Get the isDefault property: Gets whether the service level objective is
-     * the default service objective.
-     * 
+     * Get the isDefault property: Gets whether the service level objective is the default service objective.
+     *
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -67,9 +63,8 @@ public class ServiceObjectiveInner extends ProxyResource {
     }
 
     /**
-     * Get the isSystem property: Gets whether the service level objective is a
-     * system service objective.
-     * 
+     * Get the isSystem property: Gets whether the service level objective is a system service objective.
+     *
      * @return the isSystem value.
      */
     public Boolean isSystem() {
@@ -77,9 +72,8 @@ public class ServiceObjectiveInner extends ProxyResource {
     }
 
     /**
-     * Get the description property: The description for the service level
-     * objective.
-     * 
+     * Get the description property: The description for the service level objective.
+     *
      * @return the description value.
      */
     public String description() {
@@ -87,9 +81,8 @@ public class ServiceObjectiveInner extends ProxyResource {
     }
 
     /**
-     * Get the enabled property: Gets whether the service level objective is
-     * enabled.
-     * 
+     * Get the enabled property: Gets whether the service level objective is enabled.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {

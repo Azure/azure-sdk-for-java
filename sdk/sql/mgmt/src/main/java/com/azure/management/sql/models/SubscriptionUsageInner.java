@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SubscriptionUsage model.
- */
+/** The SubscriptionUsage model. */
 @JsonFlatten
 @Immutable
 public class SubscriptionUsageInner extends ProxyResource {
@@ -41,7 +39,7 @@ public class SubscriptionUsageInner extends ProxyResource {
 
     /**
      * Get the displayName property: User-readable name of the metric.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +48,7 @@ public class SubscriptionUsageInner extends ProxyResource {
 
     /**
      * Get the currentValue property: Current value of the metric.
-     * 
+     *
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -59,7 +57,7 @@ public class SubscriptionUsageInner extends ProxyResource {
 
     /**
      * Get the limit property: Boundary value of the metric.
-     * 
+     *
      * @return the limit value.
      */
     public Double limit() {
@@ -68,7 +66,7 @@ public class SubscriptionUsageInner extends ProxyResource {
 
     /**
      * Get the unit property: Unit of the metric.
-     * 
+     *
      * @return the unit value.
      */
     public String unit() {
