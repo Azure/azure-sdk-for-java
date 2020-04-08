@@ -3,12 +3,9 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.Map;
 
-/**
- * Response containing the login credentials for a container registry.
- */
+/** Response containing the login credentials for a container registry. */
 @Fluent
 public interface RegistryCredentials {
     /**

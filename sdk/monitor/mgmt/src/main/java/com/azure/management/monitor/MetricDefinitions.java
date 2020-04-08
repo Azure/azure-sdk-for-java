@@ -10,7 +10,6 @@ import com.azure.management.monitor.implementation.MonitorManager;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-import java.util.List;
 
 
 /**

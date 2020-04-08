@@ -9,9 +9,7 @@ import com.azure.core.management.Resource;
 import com.azure.management.keyvault.VaultProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Vault model.
- */
+/** The Vault model. */
 @Fluent
 public final class VaultInner extends Resource {
     /*
@@ -22,7 +20,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Get the properties property: Properties of the vault.
-     * 
+     *
      * @return the properties value.
      */
     public VaultProperties properties() {
@@ -31,7 +29,7 @@ public final class VaultInner extends Resource {
 
     /**
      * Set the properties property: Properties of the vault.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the VaultInner object itself.
      */

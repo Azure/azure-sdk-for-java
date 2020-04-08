@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedInstanceEditionCapability model.
- */
+/** The ManagedInstanceEditionCapability model. */
 @Fluent
 public final class ManagedInstanceEditionCapability {
     /*
@@ -39,7 +37,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the name property: The managed server version name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -48,7 +46,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the supportedFamilies property: The supported families.
-     * 
+     *
      * @return the supportedFamilies value.
      */
     public List<ManagedInstanceFamilyCapability> supportedFamilies() {
@@ -57,7 +55,7 @@ public final class ManagedInstanceEditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -65,9 +63,8 @@ public final class ManagedInstanceEditionCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -75,9 +72,8 @@ public final class ManagedInstanceEditionCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ManagedInstanceEditionCapability object itself.
      */

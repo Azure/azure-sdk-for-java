@@ -88,7 +88,7 @@ public interface PCFilter extends Indexable,
              * Set local IP addresses range to be filtered on.
              *
              * @param startIPAddress range start IP address
-             * @param endIPAddress   range end IP address
+             * @param endIPAddress range end IP address
              * @return the next stage
              */
             Definition<ParentT> withLocalIPAddressesRange(String startIPAddress, String endIPAddress);
@@ -120,7 +120,7 @@ public interface PCFilter extends Indexable,
              * Set remote IP addresses range to be filtered on.
              *
              * @param startIPAddress range start IP address
-             * @param endIPAddress   range end IP address
+             * @param endIPAddress range end IP address
              * @return the next stage
              */
             Definition<ParentT> withRemoteIPAddressesRange(String startIPAddress, String endIPAddress);
@@ -151,7 +151,7 @@ public interface PCFilter extends Indexable,
              * Set the local port range to be filtered on.
              *
              * @param startPort range start port number
-             * @param endPort   range end port number
+             * @param endPort range end port number
              * @return the next stage
              */
             Definition<ParentT> withLocalPortRange(int startPort, int endPort);
@@ -182,7 +182,7 @@ public interface PCFilter extends Indexable,
              * Set the remote port range to be filtered on.
              *
              * @param startPort range start port number
-             * @param endPort   range end port number
+             * @param endPort range end port number
              * @return the next stage
              */
             Definition<ParentT> withRemotePortRange(int startPort, int endPort);

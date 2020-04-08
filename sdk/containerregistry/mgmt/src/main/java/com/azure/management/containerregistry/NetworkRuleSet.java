@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The NetworkRuleSet model.
- */
+/** The NetworkRuleSet model. */
 @Fluent
 public final class NetworkRuleSet {
     /*
@@ -32,9 +30,8 @@ public final class NetworkRuleSet {
     private List<IPRule> ipRules;
 
     /**
-     * Get the defaultAction property: The default action of allow or deny when
-     * no other rules match.
-     * 
+     * Get the defaultAction property: The default action of allow or deny when no other rules match.
+     *
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -42,9 +39,8 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Set the defaultAction property: The default action of allow or deny when
-     * no other rules match.
-     * 
+     * Set the defaultAction property: The default action of allow or deny when no other rules match.
+     *
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -55,7 +51,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the virtualNetworkRules property: The virtual network rules.
-     * 
+     *
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -64,7 +60,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the virtualNetworkRules property: The virtual network rules.
-     * 
+     *
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -75,7 +71,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the ipRules property: The IP ACL rules.
-     * 
+     *
      * @return the ipRules value.
      */
     public List<IPRule> ipRules() {
@@ -84,7 +80,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the ipRules property: The IP ACL rules.
-     * 
+     *
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */

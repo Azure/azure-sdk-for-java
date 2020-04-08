@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Source model.
- */
+/** The Source model. */
 @Fluent
 public final class Source {
     /*
@@ -27,10 +25,9 @@ public final class Source {
     private String instanceID;
 
     /**
-     * Get the addr property: The IP or hostname and the port of the registry
-     * node that generated the event. Generally, this will be resolved by
-     * os.Hostname() along with the running port.
-     * 
+     * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
+     * this will be resolved by os.Hostname() along with the running port.
+     *
      * @return the addr value.
      */
     public String addr() {
@@ -38,10 +35,9 @@ public final class Source {
     }
 
     /**
-     * Set the addr property: The IP or hostname and the port of the registry
-     * node that generated the event. Generally, this will be resolved by
-     * os.Hostname() along with the running port.
-     * 
+     * Set the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
+     * this will be resolved by os.Hostname() along with the running port.
+     *
      * @param addr the addr value to set.
      * @return the Source object itself.
      */
@@ -51,9 +47,8 @@ public final class Source {
     }
 
     /**
-     * Get the instanceID property: The running instance of an application.
-     * Changes after each restart.
-     * 
+     * Get the instanceID property: The running instance of an application. Changes after each restart.
+     *
      * @return the instanceID value.
      */
     public String instanceID() {
@@ -61,9 +56,8 @@ public final class Source {
     }
 
     /**
-     * Set the instanceID property: The running instance of an application.
-     * Changes after each restart.
-     * 
+     * Set the instanceID property: The running instance of an application. Changes after each restart.
+     *
      * @param instanceID the instanceID value to set.
      * @return the Source object itself.
      */

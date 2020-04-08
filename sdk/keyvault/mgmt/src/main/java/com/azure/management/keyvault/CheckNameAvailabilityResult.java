@@ -7,10 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.keyvault.models.CheckNameAvailabilityResultInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * The CheckNameAvailability operation response wrapper.
- *
- */
+/** The CheckNameAvailability operation response wrapper. */
 @Fluent
 public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityResultInner> {
 

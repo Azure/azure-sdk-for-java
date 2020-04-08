@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DeploymentListResult model.
- */
+/** The DeploymentListResult model. */
 @Fluent
 public final class DeploymentListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class DeploymentListResultInner {
 
     /**
      * Get the value property: An array of deployments.
-     * 
+     *
      * @return the value value.
      */
     public List<DeploymentExtendedInner> value() {
@@ -36,7 +34,7 @@ public final class DeploymentListResultInner {
 
     /**
      * Set the value property: An array of deployments.
-     * 
+     *
      * @param value the value value to set.
      * @return the DeploymentListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class DeploymentListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

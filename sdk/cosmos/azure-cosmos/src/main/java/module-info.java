@@ -17,7 +17,6 @@ module com.azure.cosmos {
     requires io.netty.transport.epoll;
     requires io.netty.handler.proxy;
     requires reactor.netty;
-    requires com.fasterxml.uuid;
     requires org.slf4j;
     requires com.codahale.metrics;
     requires com.fasterxml.jackson.module.afterburner;

@@ -12,7 +12,7 @@ public class LinuxVMDiskEncryptionConfiguration
      * Creates LinuxVMDiskEncryptionSettings.
      *
      * @param keyVaultId the resource ID of the KeyVault to store the disk encryption key
-     * @param aadClientId  client ID of an AAD application which has permission to the KeyVault
+     * @param aadClientId client ID of an AAD application which has permission to the KeyVault
      * @param aadSecret client secret corresponding to the client ID
      */
     public LinuxVMDiskEncryptionConfiguration(String keyVaultId,

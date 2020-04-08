@@ -10,9 +10,7 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The PrivateLinkResource model.
- */
+/** The PrivateLinkResource model. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkResource extends Resource {
@@ -36,7 +34,7 @@ public class PrivateLinkResource extends Resource {
 
     /**
      * Get the groupId property: Group identifier of private link resource.
-     * 
+     *
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,9 +42,8 @@ public class PrivateLinkResource extends Resource {
     }
 
     /**
-     * Get the requiredMembers property: Required member names of private link
-     * resource.
-     * 
+     * Get the requiredMembers property: Required member names of private link resource.
+     *
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -54,9 +51,8 @@ public class PrivateLinkResource extends Resource {
     }
 
     /**
-     * Get the requiredZoneNames property: Required DNS zone names of the the
-     * private link resource.
-     * 
+     * Get the requiredZoneNames property: Required DNS zone names of the the private link resource.
+     *
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -64,9 +60,8 @@ public class PrivateLinkResource extends Resource {
     }
 
     /**
-     * Set the requiredZoneNames property: Required DNS zone names of the the
-     * private link resource.
-     * 
+     * Set the requiredZoneNames property: Required DNS zone names of the the private link resource.
+     *
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */

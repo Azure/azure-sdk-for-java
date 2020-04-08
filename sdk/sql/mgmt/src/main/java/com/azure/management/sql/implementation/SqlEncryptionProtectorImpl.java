@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -10,20 +11,15 @@ import com.azure.management.sql.ServerKeyType;
 import com.azure.management.sql.SqlEncryptionProtector;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.EncryptionProtectorInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SqlEncryptionProtector interface.
- */
+/** Implementation for SqlEncryptionProtector interface. */
 public class SqlEncryptionProtectorImpl
-    extends
-        ExternalChildResourceImpl<SqlEncryptionProtector, EncryptionProtectorInner, SqlServerImpl, SqlServer>
-    implements
-        SqlEncryptionProtector,
-        SqlEncryptionProtector.Update {
+    extends ExternalChildResourceImpl<SqlEncryptionProtector, EncryptionProtectorInner, SqlServerImpl, SqlServer>
+    implements SqlEncryptionProtector, SqlEncryptionProtector.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
     private String sqlServerName;
@@ -32,11 +28,12 @@ public class SqlEncryptionProtectorImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param parent      reference to the parent of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlEncryptionProtectorImpl(SqlServerImpl parent, EncryptionProtectorInner innerObject, SqlServerManager sqlServerManager) {
+    SqlEncryptionProtectorImpl(
+        SqlServerImpl parent, EncryptionProtectorInner innerObject, SqlServerManager sqlServerManager) {
         super("", parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -53,11 +50,15 @@ public class SqlEncryptionProtectorImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param resourceGroupName the resource group name
-     * @param sqlServerName     the parent SQL server name
-     * @param innerObject       reference to the inner object representing this external child resource
-     * @param sqlServerManager  reference to the SQL server manager that accesses firewall rule operations
+     * @param sqlServerName the parent SQL server name
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlEncryptionProtectorImpl(String resourceGroupName, String sqlServerName, EncryptionProtectorInner innerObject, SqlServerManager sqlServerManager) {
+    SqlEncryptionProtectorImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        EncryptionProtectorInner innerObject,
+        SqlServerManager sqlServerManager) {
         super("", null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -71,7 +72,7 @@ public class SqlEncryptionProtectorImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param innerObject      reference to the inner object representing this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
     SqlEncryptionProtectorImpl(EncryptionProtectorInner innerObject, SqlServerManager sqlServerManager) {
@@ -158,12 +159,16 @@ public class SqlEncryptionProtectorImpl
     @Override
     public Mono<SqlEncryptionProtector> createResourceAsync() {
         final SqlEncryptionProtectorImpl self = this;
-        return this.sqlServerManager.inner().encryptionProtectors()
+        return this
+            .sqlServerManager
+            .inner()
+            .encryptionProtectors()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
-            .map(encryptionProtectorInner -> {
-                self.setInner(encryptionProtectorInner);
-                return self;
-            });
+            .map(
+                encryptionProtectorInner -> {
+                    self.setInner(encryptionProtectorInner);
+                    return self;
+                });
     }
 
     @Override
@@ -178,12 +183,15 @@ public class SqlEncryptionProtectorImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        throw new UnsupportedOperationException("Delete operation not supported");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Delete operation not supported"));
     }
 
     @Override
     protected Mono<EncryptionProtectorInner> getInnerAsync() {
-        return this.sqlServerManager.inner().encryptionProtectors()
+        return this
+            .sqlServerManager
+            .inner()
+            .encryptionProtectors()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
 }

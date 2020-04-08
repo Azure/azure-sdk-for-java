@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for Variant.
- */
+/** Defines values for Variant. */
 public final class Variant extends ExpandableStringEnum<Variant> {
-    /**
-     * Static value v6 for Variant.
-     */
+    /** Static value v6 for Variant. */
     public static final Variant V6 = fromString("v6");
 
-    /**
-     * Static value v7 for Variant.
-     */
+    /** Static value v7 for Variant. */
     public static final Variant V7 = fromString("v7");
 
-    /**
-     * Static value v8 for Variant.
-     */
+    /** Static value v8 for Variant. */
     public static final Variant V8 = fromString("v8");
 
     /**
      * Creates or finds a Variant from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding Variant.
      */
@@ -38,9 +30,7 @@ public final class Variant extends ExpandableStringEnum<Variant> {
         return fromString(name, Variant.class);
     }
 
-    /**
-     * @return known Variant values.
-     */
+    /** @return known Variant values. */
     public static Collection<Variant> values() {
         return values(Variant.class);
     }

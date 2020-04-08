@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The RestorableDroppedDatabase model.
- */
+/** The RestorableDroppedDatabase model. */
 @JsonFlatten
 @Immutable
 public class RestorableDroppedDatabaseInner extends ProxyResource {
@@ -72,7 +70,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -81,7 +79,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the databaseName property: The name of the database.
-     * 
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -90,7 +88,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the edition property: The edition of the database.
-     * 
+     *
      * @return the edition value.
      */
     public String edition() {
@@ -99,7 +97,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the maxSizeBytes property: The max size in bytes of the database.
-     * 
+     *
      * @return the maxSizeBytes value.
      */
     public String maxSizeBytes() {
@@ -107,9 +105,8 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the serviceLevelObjective property: The service level objective name
-     * of the database.
-     * 
+     * Get the serviceLevelObjective property: The service level objective name of the database.
+     *
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
@@ -118,7 +115,7 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
 
     /**
      * Get the elasticPoolName property: The elastic pool name of the database.
-     * 
+     *
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -126,9 +123,8 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the creationDate property: The creation date of the database
-     * (ISO8601 format).
-     * 
+     * Get the creationDate property: The creation date of the database (ISO8601 format).
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -136,9 +132,8 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the deletionDate property: The deletion date of the database
-     * (ISO8601 format).
-     * 
+     * Get the deletionDate property: The deletion date of the database (ISO8601 format).
+     *
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -146,9 +141,8 @@ public class RestorableDroppedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the earliestRestoreDate property: The earliest restore date of the
-     * database (ISO8601 format).
-     * 
+     * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
+     *
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {

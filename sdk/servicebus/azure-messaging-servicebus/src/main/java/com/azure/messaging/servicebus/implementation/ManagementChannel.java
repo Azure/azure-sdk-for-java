@@ -89,10 +89,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     @Override
-    public Mono<Void> updateDisposition(UUID lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
+    public Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
         String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+
+        final UUID token = UUID.fromString(lockToken);
         return isAuthorized(UPDATE_DISPOSITION_OPERATION).then(createRequestResponse.flatMap(channel -> {
-            final Message message = createDispositionMessage(new UUID[] {lockToken}, dispositionStatus,
+            final Message message = createDispositionMessage(new UUID[] {token}, dispositionStatus,
                 null, null, null, channel.getReceiveLinkName());
             return channel.sendWithAck(message);
         }).flatMap(response -> {

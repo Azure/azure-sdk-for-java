@@ -8,9 +8,17 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
+import com.azure.search.documents.models.DataType;
+import com.azure.search.documents.models.Field;
+import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -81,6 +89,44 @@ public class ReadmeSamples {
             HttpResponse response = ex.getResponse();
             System.out.println("Status Code: " + response.getStatusCode());
             System.out.println("Message: " + response.getBodyAsString().block());
+        }
+    }
+
+    public void createIndexWithSyncClient() {
+        Index newIndex = new Index()
+            .setName("index_name")
+            .setFields(
+                Arrays.asList(new Field()
+                        .setName("Name")
+                        .setType(DataType.EDM_STRING)
+                        .setKey(Boolean.TRUE),
+                    new Field()
+                        .setName("Cuisine")
+                        .setType(DataType.EDM_STRING)));
+        // Create index.
+        searchClient.createIndex(newIndex);
+    }
+
+    public void uploadDocumentWithSyncClient() {
+        List<Hotel> hotels = new ArrayList<>();
+        hotels.add(new Hotel().setHotelId("100"));
+        hotels.add(new Hotel().setHotelId("200"));
+        hotels.add(new Hotel().setHotelId("300"));
+        // Upload hotel.
+        indexClient.uploadDocuments(hotels);
+    }
+
+    public void searchTextWithSyncClient() {
+        // Perform a text-based search
+        for (SearchResult result : indexClient.search("luxury hotel",
+            new SearchOptions(), new RequestOptions(), Context.NONE)) {
+
+            // Each result is a dynamic Map
+            SearchDocument doc = result.getDocument();
+            String hotelName = (String) doc.get("HotelName");
+            Double rating = (Double) doc.get("Rating");
+
+            System.out.printf("%s: %s%n", hotelName, rating);
         }
     }
 }

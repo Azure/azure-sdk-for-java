@@ -20,6 +20,6 @@
     <module>azure-storage-file-share</module>
     <module>azure-storage-file-datalake</module>
     <module>azure-storage-queue</module>
-    <module>perf-test</module>
+    <module>azure-storage-perf</module>
   </modules>
 </project>

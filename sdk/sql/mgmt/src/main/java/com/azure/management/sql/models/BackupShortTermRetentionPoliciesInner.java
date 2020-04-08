@@ -25,135 +25,220 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * BackupShortTermRetentionPolicies.
- */
+/** An instance of this class provides access to all the operations defined in BackupShortTermRetentionPolicies. */
 public final class BackupShortTermRetentionPoliciesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private BackupShortTermRetentionPoliciesService service;
+    /** The proxy service used to perform REST calls. */
+    private final BackupShortTermRetentionPoliciesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of BackupShortTermRetentionPoliciesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     BackupShortTermRetentionPoliciesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(BackupShortTermRetentionPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    BackupShortTermRetentionPoliciesService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientBackupShortTermRetentionPolicies to be used by the
+     * The interface defining all the services for SqlManagementClientBackupShortTermRetentionPolicies to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientBackupShortTermRetentionPolicies")
+    @ServiceInterface(name = "SqlManagementClientB")
     private interface BackupShortTermRetentionPoliciesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("policyName") String policyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("policyName") String policyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("policyName") String policyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BackupShortTermRetentionPolicyListResultInner>> listByDatabase(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<BackupShortTermRetentionPolicyListResultInner>> listByDatabase(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("policyName") String policyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters);
+        Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/backupShortTermRetentionPolicies/{policyName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("policyName") String policyName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters);
+        Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BackupShortTermRetentionPolicyInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<BackupShortTermRetentionPolicyListResultInner>> listByDatabaseNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<BackupShortTermRetentionPolicyListResultInner>> listByDatabaseNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         final String policyName = "default";
         final String apiVersion = "2017-10-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, serverName, databaseName, policyName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            policyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<BackupShortTermRetentionPolicyInner> getAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap((SimpleResponse<BackupShortTermRetentionPolicyInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<BackupShortTermRetentionPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupShortTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName) {
@@ -162,149 +247,235 @@ public final class BackupShortTermRetentionPoliciesInner {
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         final String policyName = "default";
         final String apiVersion = "2017-10-01-preview";
         BackupShortTermRetentionPolicyInner parameters = new BackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, serverName, databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            policyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, retentionDays);
-        return this.client.<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResultAsync(mono, this.client.getHttpPipeline(), BackupShortTermRetentionPolicyInner.class, BackupShortTermRetentionPolicyInner.class)
+    public Mono<BackupShortTermRetentionPolicyInner> createOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, retentionDays);
+        return this
+            .client
+            .<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupShortTermRetentionPolicyInner.class,
+                BackupShortTermRetentionPolicyInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public BackupShortTermRetentionPolicyInner createOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         return createOrUpdateAsync(resourceGroupName, serverName, databaseName, retentionDays).block();
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         final String policyName = "default";
         final String apiVersion = "2017-10-01-preview";
         BackupShortTermRetentionPolicyInner parameters = new BackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
-        return service.update(this.client.getHost(), resourceGroupName, serverName, databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            policyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> updateAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, serverName, databaseName, retentionDays);
-        return this.client.<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResultAsync(mono, this.client.getHttpPipeline(), BackupShortTermRetentionPolicyInner.class, BackupShortTermRetentionPolicyInner.class)
+    public Mono<BackupShortTermRetentionPolicyInner> updateAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, serverName, databaseName, retentionDays);
+        return this
+            .client
+            .<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicyInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupShortTermRetentionPolicyInner.class,
+                BackupShortTermRetentionPolicyInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner update(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public BackupShortTermRetentionPolicyInner update(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         return updateAsync(resourceGroupName, serverName, databaseName, retentionDays).block();
     }
 
     /**
      * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.listByDatabase(this.client.getHost(), resourceGroupName, serverName, databaseName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByDatabase(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<BackupShortTermRetentionPolicyInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public PagedFlux<BackupShortTermRetentionPolicyInner> listByDatabaseAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         return new PagedFlux<>(
             () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
@@ -312,154 +483,216 @@ public final class BackupShortTermRetentionPoliciesInner {
 
     /**
      * Gets a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName, String databaseName) {
+    public PagedIterable<BackupShortTermRetentionPolicyInner> listByDatabase(
+        String resourceGroupName, String serverName, String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         final String policyName = "default";
         final String apiVersion = "2017-10-01-preview";
         BackupShortTermRetentionPolicyInner parameters = new BackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, serverName, databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            policyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public Mono<BackupShortTermRetentionPolicyInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, retentionDays)
-            .flatMap((SimpleResponse<BackupShortTermRetentionPolicyInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<BackupShortTermRetentionPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public BackupShortTermRetentionPolicyInner beginCreateOrUpdate(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         return beginCreateOrUpdateAsync(resourceGroupName, serverName, databaseName, retentionDays).block();
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginUpdateWithResponseAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public Mono<SimpleResponse<BackupShortTermRetentionPolicyInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         final String policyName = "default";
         final String apiVersion = "2017-10-01-preview";
         BackupShortTermRetentionPolicyInner parameters = new BackupShortTermRetentionPolicyInner();
         parameters.withRetentionDays(retentionDays);
-        return service.beginUpdate(this.client.getHost(), resourceGroupName, serverName, databaseName, policyName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            policyName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BackupShortTermRetentionPolicyInner> beginUpdateAsync(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public Mono<BackupShortTermRetentionPolicyInner> beginUpdateAsync(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         return beginUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, retentionDays)
-            .flatMap((SimpleResponse<BackupShortTermRetentionPolicyInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<BackupShortTermRetentionPolicyInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a database's short term retention policy.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
-     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupShortTermRetentionPolicyInner beginUpdate(String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
+    public BackupShortTermRetentionPolicyInner beginUpdate(
+        String resourceGroupName, String serverName, String databaseName, Integer retentionDays) {
         return beginUpdateAsync(resourceGroupName, serverName, databaseName, retentionDays).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of short term retention policies.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BackupShortTermRetentionPolicyInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
-        return service.listByDatabaseNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByDatabaseNext(nextLink, context))
+            .<PagedResponse<BackupShortTermRetentionPolicyInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

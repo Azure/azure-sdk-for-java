@@ -17,7 +17,7 @@ public interface SupportsGettingByResourceGroup<T> {
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
      *
      * @param resourceGroupName the name of the resource group the resource is in
-     * @param name              the name of the resource. (Note, this is not the ID)
+     * @param name the name of the resource. (Note, this is not the ID)
      * @return an immutable representation of the resource
      */
     T getByResourceGroup(String resourceGroupName, String name);
@@ -26,7 +26,7 @@ public interface SupportsGettingByResourceGroup<T> {
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
      *
      * @param resourceGroupName the name of the resource group the resource is in
-     * @param name              the name of the resource. (Note, this is not the ID)
+     * @param name the name of the resource. (Note, this is not the ID)
      * @return a {@link Mono} that emits the found resource asynchronously.
      */
     Mono<T> getByResourceGroupAsync(String resourceGroupName, String name);

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedInstanceVcoresCapability model.
- */
+/** The ManagedInstanceVcoresCapability model. */
 @Fluent
 public final class ManagedInstanceVcoresCapability {
     /*
@@ -65,7 +63,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the name property: The virtual cores identifier.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -74,7 +72,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the value property: The virtual cores value.
-     * 
+     *
      * @return the value value.
      */
     public Integer value() {
@@ -83,7 +81,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the includedMaxSize property: Included size.
-     * 
+     *
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -92,7 +90,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the supportedStorageSizes property: Storage size ranges.
-     * 
+     *
      * @return the supportedStorageSizes value.
      */
     public List<MaxSizeRangeCapability> supportedStorageSizes() {
@@ -100,9 +98,9 @@ public final class ManagedInstanceVcoresCapability {
     }
 
     /**
-     * Get the instancePoolSupported property: True if this service objective
-     * is supported for managed instances in an instance pool.
-     * 
+     * Get the instancePoolSupported property: True if this service objective is supported for managed instances in an
+     * instance pool.
+     *
      * @return the instancePoolSupported value.
      */
     public Boolean instancePoolSupported() {
@@ -110,9 +108,9 @@ public final class ManagedInstanceVcoresCapability {
     }
 
     /**
-     * Get the standaloneSupported property: True if this service objective is
-     * supported for standalone managed instances.
-     * 
+     * Get the standaloneSupported property: True if this service objective is supported for standalone managed
+     * instances.
+     *
      * @return the standaloneSupported value.
      */
     public Boolean standaloneSupported() {
@@ -121,7 +119,7 @@ public final class ManagedInstanceVcoresCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -129,9 +127,8 @@ public final class ManagedInstanceVcoresCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -139,9 +136,8 @@ public final class ManagedInstanceVcoresCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ManagedInstanceVcoresCapability object itself.
      */

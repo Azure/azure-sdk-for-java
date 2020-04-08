@@ -40,7 +40,8 @@ final class DeploymentOperationsImpl
 
     @Override
     public Mono<DeploymentOperation> getByIdAsync(String operationId) {
-        return client.getAsync(deployment.resourceGroupName(), deployment.name(), operationId).map(deploymentOperationInner -> wrapModel(deploymentOperationInner));
+        return client.getAsync(deployment.resourceGroupName(), deployment.name(), operationId)
+            .map(deploymentOperationInner -> wrapModel(deploymentOperationInner));
     }
 
     @Override
@@ -53,6 +54,7 @@ final class DeploymentOperationsImpl
 
     @Override
     public PagedFlux<DeploymentOperation> listAsync() {
-        return wrapPageAsync(this.client.listAtManagementGroupScopeAsync(deployment.resourceGroupName(), deployment.name()));
+        return wrapPageAsync(this.client
+            .listAtManagementGroupScopeAsync(deployment.resourceGroupName(), deployment.name()));
     }
 }

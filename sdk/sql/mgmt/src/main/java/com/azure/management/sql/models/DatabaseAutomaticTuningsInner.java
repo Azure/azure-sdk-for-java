@@ -20,101 +20,137 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DatabaseAutomaticTunings.
- */
+/** An instance of this class provides access to all the operations defined in DatabaseAutomaticTunings. */
 public final class DatabaseAutomaticTuningsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private DatabaseAutomaticTuningsService service;
+    /** The proxy service used to perform REST calls. */
+    private final DatabaseAutomaticTuningsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabaseAutomaticTuningsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DatabaseAutomaticTuningsInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(DatabaseAutomaticTuningsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(DatabaseAutomaticTuningsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientDatabaseAutomaticTunings to be used by the proxy
+     * The interface defining all the services for SqlManagementClientDatabaseAutomaticTunings to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientDatabaseAutomaticTunings")
+    @ServiceInterface(name = "SqlManagementClientD")
     private interface DatabaseAutomaticTuningsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/automaticTuning/current")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/automaticTuning/current")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DatabaseAutomaticTuningInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<DatabaseAutomaticTuningInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/automaticTuning/current")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/databases/{databaseName}/automaticTuning/current")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<DatabaseAutomaticTuningInner>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DatabaseAutomaticTuningInner parameters);
+        Mono<SimpleResponse<DatabaseAutomaticTuningInner>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatabaseAutomaticTuningInner parameters,
+            Context context);
     }
 
     /**
      * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's automatic tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DatabaseAutomaticTuningInner>> getWithResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<SimpleResponse<DatabaseAutomaticTuningInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         final String apiVersion = "2015-05-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, serverName, databaseName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's automatic tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseAutomaticTuningInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Mono<DatabaseAutomaticTuningInner> getAsync(
+        String resourceGroupName, String serverName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName)
-            .flatMap((SimpleResponse<DatabaseAutomaticTuningInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DatabaseAutomaticTuningInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a database's automatic tuning.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a database's automatic tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseAutomaticTuningInner get(String resourceGroupName, String serverName, String databaseName) {
@@ -123,57 +159,80 @@ public final class DatabaseAutomaticTuningsInner {
 
     /**
      * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @param parameters Database-level Automatic Tuning.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database-level Automatic Tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<DatabaseAutomaticTuningInner>> updateWithResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
+    public Mono<SimpleResponse<DatabaseAutomaticTuningInner>> updateWithResponseAsync(
+        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
         final String apiVersion = "2015-05-01-preview";
-        return service.update(this.client.getHost(), resourceGroupName, serverName, databaseName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            serverName,
+                            databaseName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @param parameters Database-level Automatic Tuning.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database-level Automatic Tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseAutomaticTuningInner> updateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
+    public Mono<DatabaseAutomaticTuningInner> updateAsync(
+        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
         return updateWithResponseAsync(resourceGroupName, serverName, databaseName, parameters)
-            .flatMap((SimpleResponse<DatabaseAutomaticTuningInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<DatabaseAutomaticTuningInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Update automatic tuning properties for target database.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param databaseName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
      * @param parameters Database-level Automatic Tuning.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return database-level Automatic Tuning.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseAutomaticTuningInner update(String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
+    public DatabaseAutomaticTuningInner update(
+        String resourceGroupName, String serverName, String databaseName, DatabaseAutomaticTuningInner parameters) {
         return updateAsync(resourceGroupName, serverName, databaseName, parameters).block();
     }
 }

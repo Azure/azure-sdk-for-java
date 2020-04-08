@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SyncGroupLogListResult model.
- */
+/** The SyncGroupLogListResult model. */
 @Immutable
 public final class SyncGroupLogListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class SyncGroupLogListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<SyncGroupLogPropertiesInner> value() {
@@ -36,7 +34,7 @@ public final class SyncGroupLogListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

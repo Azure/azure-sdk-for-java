@@ -15,10 +15,10 @@ import com.azure.management.resources.fluentcore.model.Creatable;
  * The implementation for {@link GroupableResource}.
  * (Internal use only)
  *
- * @param <FluentModelT>     The fluent model type
- * @param <InnerModelT>      Azure inner resource class type
+ * @param <FluentModelT> The fluent model type
+ * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
- * @param <ManagerT>         the service manager type
+ * @param <ManagerT> the service manager type
  */
 public abstract class GroupableResourceImpl<
         FluentModelT extends Resource,
@@ -92,7 +92,7 @@ public abstract class GroupableResourceImpl<
      * The group will be created in the same location as the resource.
      *
      * @param groupName the name of the new group
-     * @param region    the region where resource group needs to be created
+     * @param region the region where resource group needs to be created
      * @return the next stage of the definition
      */
     public final FluentModelImplT withNewResourceGroup(String groupName, Region region) {

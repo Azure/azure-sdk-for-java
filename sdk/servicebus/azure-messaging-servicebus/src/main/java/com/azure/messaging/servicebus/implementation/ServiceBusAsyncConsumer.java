@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.messaging.servicebus.MessageLockToken;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import reactor.core.publisher.Flux;
@@ -27,18 +28,20 @@ public class ServiceBusAsyncConsumer implements AutoCloseable {
 
     public ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, boolean isAutoComplete, boolean autoLockRenewal,
-        Duration autoLockRenewalDuration, AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onComplete,
-        Function<ServiceBusReceivedMessage, Mono<Void>> onAbandon,
-        Function<ServiceBusReceivedMessage, Mono<Instant>> onRenewLock) {
+        Duration maxAutoLockRenewDuration, AmqpRetryOptions retryOptions, MessageLockContainer messageLockContainer,
+        Function<MessageLockToken, Mono<Void>> onComplete,
+        Function<MessageLockToken, Mono<Void>> onAbandon,
+        Function<MessageLockToken, Mono<Instant>> onRenewLock) {
 
         this.linkName = linkName;
         this.amqpReceiveLinkProcessor = amqpReceiveLinkProcessor;
         this.messageSerializer = messageSerializer;
+
         this.processor = amqpReceiveLinkProcessor
             .map(message -> this.messageSerializer.deserialize(message, ServiceBusReceivedMessage.class))
-            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, autoLockRenewalDuration,
-                retryOptions, messageLockContainer, onComplete, onAbandon, onRenewLock));
+            .subscribeWith(new ServiceBusMessageProcessor(isAutoComplete, autoLockRenewal, maxAutoLockRenewDuration,
+                retryOptions, messageLockContainer, amqpReceiveLinkProcessor.getErrorContext(),
+                onComplete, onAbandon, onRenewLock));
     }
 
     public String getLinkName() {

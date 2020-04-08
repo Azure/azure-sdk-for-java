@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The RecoverableDatabase model.
- */
+/** The RecoverableDatabase model. */
 @JsonFlatten
 @Immutable
 public class RecoverableDatabaseInner extends ProxyResource {
@@ -42,7 +40,7 @@ public class RecoverableDatabaseInner extends ProxyResource {
 
     /**
      * Get the edition property: The edition of the database.
-     * 
+     *
      * @return the edition value.
      */
     public String edition() {
@@ -50,9 +48,8 @@ public class RecoverableDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the serviceLevelObjective property: The service level objective name
-     * of the database.
-     * 
+     * Get the serviceLevelObjective property: The service level objective name of the database.
+     *
      * @return the serviceLevelObjective value.
      */
     public String serviceLevelObjective() {
@@ -61,7 +58,7 @@ public class RecoverableDatabaseInner extends ProxyResource {
 
     /**
      * Get the elasticPoolName property: The elastic pool name of the database.
-     * 
+     *
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -69,9 +66,8 @@ public class RecoverableDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the lastAvailableBackupDate property: The last available backup date
-     * of the database (ISO8601 format).
-     * 
+     * Get the lastAvailableBackupDate property: The last available backup date of the database (ISO8601 format).
+     *
      * @return the lastAvailableBackupDate value.
      */
     public OffsetDateTime lastAvailableBackupDate() {

@@ -4,7 +4,6 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.compute.models.VirtualMachineInner;
 import com.azure.management.network.models.HasNetworkInterfaces;
@@ -656,7 +655,7 @@ public interface VirtualMachine extends
             /**
              * Set information about the proximity placement group that the virtual machine scale set should
              * be assigned to.
-             * @param promixityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param promixityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */
@@ -1785,7 +1784,7 @@ public interface VirtualMachine extends
             /**
              * Set information about the proximity placement group that the virtual machineshould
              * be assigned to.
-             * @param proximityPlacementGroupId  The Id of the proximity placement group subResource.
+             * @param proximityPlacementGroupId The Id of the proximity placement group subResource.
              *
              * @return the next stage of the definition.
              */

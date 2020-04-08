@@ -77,8 +77,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * Specifies the existing source VHD of the disk.
              *
              * @param storageAccountName the storage account name
-             * @param containerName      the name of the container holding VHD file
-             * @param vhdName            the name of the VHD file to attach
+             * @param containerName the name of the container holding VHD file
+             * @param vhdName the name of the VHD file to attach
              * @return the next stage of data disk definition
              */
             WithVhdAttachedDiskSettings<ParentT> withExistingVhd(String storageAccountName,
@@ -158,8 +158,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * Specifies where the VHD associated with the new blank data disk needs to be stored.
              *
              * @param storageAccountName the storage account name
-             * @param containerName      the name of the container to hold the new VHD file
-             * @param vhdName            the name for the new VHD file
+             * @param containerName the name of the container to hold the new VHD file
+             * @param vhdName the name for the new VHD file
              * @return the next stage of data disk definition
              */
             WithNewVhdDiskSettings<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);
@@ -191,8 +191,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * Specifies where the VHD associated with the new blank data disk needs to be stored.
              *
              * @param storageAccountName the storage account name
-             * @param containerName      the name of the container to hold the new VHD file
-             * @param vhdName            the name for the new VHD file
+             * @param containerName the name of the container to hold the new VHD file
+             * @param vhdName the name for the new VHD file
              * @return the next stage of data disk definition
              */
             WithFromImageDiskSettings<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);
@@ -260,8 +260,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * Specifies the existing source VHD of the disk.
              *
              * @param storageAccountName the storage account name
-             * @param containerName      the name of the container holding VHD file
-             * @param vhdName            the name of the VHD file to attach
+             * @param containerName the name of the container holding VHD file
+             * @param vhdName the name of the VHD file to attach
              * @return the next stage of data disk definition
              */
             WithVhdAttachedDiskSettings<ParentT> withExistingVhd(String storageAccountName,
@@ -334,8 +334,8 @@ public interface VirtualMachineUnmanagedDataDisk extends
              * Specifies where the VHD associated with the new blank data disk needs to be stored.
              *
              * @param storageAccountName the storage account name
-             * @param containerName      the name of the container to hold the new VHD file
-             * @param vhdName            the name for the new VHD file
+             * @param containerName the name of the container to hold the new VHD file
+             * @param vhdName the name for the new VHD file
              * @return the next stage of data disk definition
              */
             WithNewVhdDiskSettings<ParentT> storeAt(String storageAccountName, String containerName, String vhdName);

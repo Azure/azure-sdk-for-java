@@ -3,8 +3,6 @@
 
 package com.azure.management.resources.fluentcore.utils;
 
-import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
@@ -29,6 +27,11 @@ public class DelayProvider {
         this.longRunningOperationRetryTimeout = lroRetryTimeout;
     }
 
+    /**
+     * Thread sleep.
+     *
+     * @param milliseconds time for sleep
+     */
     public void sleep(int milliseconds) {
         try {
             Thread.sleep(milliseconds);

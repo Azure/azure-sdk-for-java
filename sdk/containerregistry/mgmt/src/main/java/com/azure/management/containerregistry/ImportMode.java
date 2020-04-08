@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ImportMode.
- */
+/** Defines values for ImportMode. */
 public final class ImportMode extends ExpandableStringEnum<ImportMode> {
-    /**
-     * Static value NoForce for ImportMode.
-     */
+    /** Static value NoForce for ImportMode. */
     public static final ImportMode NO_FORCE = fromString("NoForce");
 
-    /**
-     * Static value Force for ImportMode.
-     */
+    /** Static value Force for ImportMode. */
     public static final ImportMode FORCE = fromString("Force");
 
     /**
      * Creates or finds a ImportMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ImportMode.
      */
@@ -33,9 +27,7 @@ public final class ImportMode extends ExpandableStringEnum<ImportMode> {
         return fromString(name, ImportMode.class);
     }
 
-    /**
-     * @return known ImportMode values.
-     */
+    /** @return known ImportMode values. */
     public static Collection<ImportMode> values() {
         return values(ImportMode.class);
     }

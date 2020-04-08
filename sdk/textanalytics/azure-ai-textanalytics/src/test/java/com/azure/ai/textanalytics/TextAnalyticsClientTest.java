@@ -107,15 +107,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     /**
-     * Verifies that an exception is thrown when null text is passed.
-     */
-    @Test
-    public void detectLanguagesNullInput() {
-        assertThrows(NullPointerException.class, () -> client.detectLanguageBatch(null, null,
-            Context.NONE).streamByPage().findFirst().get());
-    }
-
-    /**
      * Verifies that a TextAnalyticsException is thrown for an empty document.
      */
     @Test

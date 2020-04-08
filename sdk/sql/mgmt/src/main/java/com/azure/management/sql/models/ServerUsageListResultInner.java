@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServerUsageListResult model.
- */
+/** The ServerUsageListResult model. */
 @Fluent
 public final class ServerUsageListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class ServerUsageListResultInner {
 
     /**
      * Get the value property: The list of server metrics for the server.
-     * 
+     *
      * @return the value value.
      */
     public List<ServerUsageInner> value() {
@@ -30,7 +28,7 @@ public final class ServerUsageListResultInner {
 
     /**
      * Set the value property: The list of server metrics for the server.
-     * 
+     *
      * @param value the value value to set.
      * @return the ServerUsageListResultInner object itself.
      */

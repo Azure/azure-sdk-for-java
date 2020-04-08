@@ -5,12 +5,9 @@ package com.azure.management.sql.implementation;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.models.ImportExportResponseInner;
-
 import java.util.UUID;
 
-/**
- * Implementation for SqlDatabaseImportExportResponse.
- */
+/** Implementation for SqlDatabaseImportExportResponse. */
 public class SqlDatabaseImportExportResponseImpl extends WrapperImpl<ImportExportResponseInner>
     implements SqlDatabaseImportExportResponse {
 

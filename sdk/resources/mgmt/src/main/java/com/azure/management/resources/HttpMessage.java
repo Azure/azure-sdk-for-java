@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The HttpMessage model.
- */
+/** The HttpMessage model. */
 @Fluent
 public final class HttpMessage {
     /*
@@ -20,7 +18,7 @@ public final class HttpMessage {
 
     /**
      * Get the content property: HTTP message content.
-     * 
+     *
      * @return the content value.
      */
     public Object content() {
@@ -29,7 +27,7 @@ public final class HttpMessage {
 
     /**
      * Set the content property: HTTP message content.
-     * 
+     *
      * @param content the content value to set.
      * @return the HttpMessage object itself.
      */

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RestorableDroppedDatabaseListResult model.
- */
+/** The RestorableDroppedDatabaseListResult model. */
 @Fluent
 public final class RestorableDroppedDatabaseListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class RestorableDroppedDatabaseListResultInner {
 
     /**
      * Get the value property: A list of restorable dropped databases.
-     * 
+     *
      * @return the value value.
      */
     public List<RestorableDroppedDatabaseInner> value() {
@@ -30,7 +28,7 @@ public final class RestorableDroppedDatabaseListResultInner {
 
     /**
      * Set the value property: A list of restorable dropped databases.
-     * 
+     *
      * @param value the value value to set.
      * @return the RestorableDroppedDatabaseListResultInner object itself.
      */

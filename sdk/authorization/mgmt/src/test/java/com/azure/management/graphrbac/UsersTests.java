@@ -4,7 +4,6 @@
 package com.azure.management.graphrbac;
 
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
