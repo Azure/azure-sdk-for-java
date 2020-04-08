@@ -14,12 +14,11 @@ import com.azure.management.network.models.PrivateEndpointInner;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.implementation.ResourceManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class CosmosDBTests extends TestBase {
 
@@ -27,18 +26,17 @@ public class CosmosDBTests extends TestBase {
     protected ResourceManager resourceManager;
     protected CosmosDBManager cosmosDBManager;
     protected NetworkManager networkManager;
-//    final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
+    //    final String sqlPrimaryServerName = sdkContext.randomResourceName("sqlpri", 22);
 
     public CosmosDBTests() {
         super(TestBase.RunCondition.BOTH);
     }
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) throws IOException {
+    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain)
+        throws IOException {
         RG_NAME = generateRandomResourceName("rgcosmosdb", 20);
-        resourceManager = ResourceManager
-            .authenticate(restClient)
-            .withSubscription(defaultSubscription);
+        resourceManager = ResourceManager.authenticate(restClient).withSubscription(defaultSubscription);
 
         cosmosDBManager = CosmosDBManager.authenticate(restClient, defaultSubscription);
 
@@ -54,18 +52,20 @@ public class CosmosDBTests extends TestBase {
     public void CanCreateCosmosDbSqlAccount() {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount = cosmosDBManager.databaseAccounts()
-            .define(cosmosDbAccountName)
-            .withRegion(Region.US_WEST_CENTRAL)
-            .withNewResourceGroup(RG_NAME)
-            .withDataModelSql()
-            .withEventualConsistency()
-            .withWriteReplication(Region.US_EAST)
-            .withReadReplication(Region.US_CENTRAL)
-            .withIpRangeFilter("")
-            .withMultipleWriteLocationsEnabled(true)
-            .withTag("tag1", "value1")
-            .create();
+        CosmosDBAccount cosmosDBAccount =
+            cosmosDBManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withDataModelSql()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .withIpRangeFilter("")
+                .withMultipleWriteLocationsEnabled(true)
+                .withTag("tag1", "value1")
+                .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
@@ -73,8 +73,6 @@ public class CosmosDBTests extends TestBase {
         Assertions.assertEquals(cosmosDBAccount.readableReplications().size(), 2);
         Assertions.assertEquals(cosmosDBAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
         Assertions.assertTrue(cosmosDBAccount.multipleWriteLocationsEnabled());
-
-
     }
 
     @Test
@@ -86,31 +84,29 @@ public class CosmosDBTests extends TestBase {
         final String pedName = sdkContext.randomResourceName("ped", 22);
         final Region region = Region.US_WEST;
 
-        cosmosDBManager.getResourceManager().resourceGroups()
-                .define(RG_NAME)
-                .withRegion(region)
-                .create();
+        cosmosDBManager.getResourceManager().resourceGroups().define(RG_NAME).withRegion(region).create();
 
-        Network network = networkManager.networks()
+        Network network =
+            networkManager
+                .networks()
                 .define(networkName)
                 .withRegion(region)
                 .withExistingResourceGroup(RG_NAME)
                 .withAddressSpace("10.0.0.0/16")
                 .defineSubnet(subnetName)
-                    .withAddressPrefix("10.0.0.0/24")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
-                    .attach()
+                .withAddressPrefix("10.0.0.0/24")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_AZURECOSMOSDB)
+                .attach()
                 .create();
 
         network.subnets().get(subnetName).inner().withPrivateEndpointNetworkPolicies("Disabled");
         network.subnets().get(subnetName).inner().withPrivateLinkServiceNetworkPolicies("Disabled");
 
-        network.update()
-                .updateSubnet(subnetName)
-                .parent()
-                .apply();
+        network.update().updateSubnet(subnetName).parent().apply();
 
-        CosmosDBAccount cosmosDBAccount = cosmosDBManager.databaseAccounts()
+        CosmosDBAccount cosmosDBAccount =
+            cosmosDBManager
+                .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
@@ -122,27 +118,28 @@ public class CosmosDBTests extends TestBase {
         Assertions.assertTrue(cosmosDBAccount.keyBasedMetadataWriteAccessDisabled());
 
         // create network private endpoint.
-        PrivateLinkServiceConnection privateLinkServiceConnection = new PrivateLinkServiceConnection()
+        PrivateLinkServiceConnection privateLinkServiceConnection =
+            new PrivateLinkServiceConnection()
                 .withName(plsConnectionName)
                 .withPrivateLinkServiceId(cosmosDBAccount.id())
-                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                    .withStatus("Approved"))
+                .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState().withStatus("Approved"))
                 .withGroupIds(Arrays.asList("Sql"));
 
-        PrivateEndpointInner privateEndpoint = new PrivateEndpointInner()
+        PrivateEndpointInner privateEndpoint =
+            new PrivateEndpointInner()
                 .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
                 .withSubnet(network.subnets().get(subnetName).inner());
 
         privateEndpoint.setLocation(region.toString());
-        privateEndpoint = networkManager.inner().privateEndpoints()
-                .createOrUpdate(RG_NAME, pedName, privateEndpoint);
+        privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(RG_NAME, pedName, privateEndpoint);
 
-        cosmosDBAccount.update()
-                .defineNewPrivateEndpointConnection(pedName)
-                    .withStatus("Rejected")
-                    .withDescription("Rej")
-                    .attach()
-                .apply();
+        cosmosDBAccount
+            .update()
+            .defineNewPrivateEndpointConnection(pedName)
+            .withStatus("Rejected")
+            .withDescription("Rej")
+            .attach()
+            .apply();
 
         Map<String, PrivateEndpointConnection> connections = cosmosDBAccount.listPrivateEndpointConnection();
         Assertions.assertTrue(connections.containsKey(pedName));
@@ -150,29 +147,38 @@ public class CosmosDBTests extends TestBase {
 
         Assertions.assertEquals(1, cosmosDBAccount.listPrivateLinkResources().size());
 
-        cosmosDBAccount.update()
-                .updatePrivateEndpointConnection(pedName)
-                    .withDescription("Test Update")
-                    .parent()
-                .apply();
-        Assertions.assertEquals("Test Update", cosmosDBAccount.getPrivateEndpointConnection(pedName).privateLinkServiceConnectionState().description());
+        cosmosDBAccount
+            .update()
+            .updatePrivateEndpointConnection(pedName)
+            .withDescription("Test Update")
+            .parent()
+            .apply();
+        Assertions
+            .assertEquals(
+                "Test Update",
+                cosmosDBAccount
+                    .getPrivateEndpointConnection(pedName)
+                    .privateLinkServiceConnectionState()
+                    .description());
     }
 
     @Test
     public void CanCreateCosmosDbMongoDBAccount() {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount = cosmosDBManager.databaseAccounts()
-            .define(cosmosDbAccountName)
-            .withRegion(Region.US_WEST_CENTRAL)
-            .withNewResourceGroup(RG_NAME)
-            .withDataModelMongoDB()
-            .withEventualConsistency()
-            .withWriteReplication(Region.US_EAST)
-            .withReadReplication(Region.US_CENTRAL)
-            .withIpRangeFilter("")
-            .withTag("tag1", "value1")
-            .create();
+        CosmosDBAccount cosmosDBAccount =
+            cosmosDBManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withDataModelMongoDB()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .withIpRangeFilter("")
+                .withTag("tag1", "value1")
+                .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.MONGO_DB);
@@ -185,17 +191,19 @@ public class CosmosDBTests extends TestBase {
     public void CanCreateCosmosDbCassandraAccount() {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount = cosmosDBManager.databaseAccounts()
-            .define(cosmosDbAccountName)
-            .withRegion(Region.US_WEST_CENTRAL)
-            .withNewResourceGroup(RG_NAME)
-            .withDataModelCassandra()
-            .withEventualConsistency()
-            .withWriteReplication(Region.US_EAST)
-            .withReadReplication(Region.US_CENTRAL)
-            .withIpRangeFilter("")
-            .withTag("tag1", "value1")
-            .create();
+        CosmosDBAccount cosmosDBAccount =
+            cosmosDBManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withDataModelCassandra()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .withIpRangeFilter("")
+                .withTag("tag1", "value1")
+                .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
@@ -210,7 +218,9 @@ public class CosmosDBTests extends TestBase {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
         // CassandraConnector could only be used in West US and South Central US.
-        CosmosDBAccount cosmosDBAccount = cosmosDBManager.databaseAccounts()
+        CosmosDBAccount cosmosDBAccount =
+            cosmosDBManager
+                .databaseAccounts()
                 .define(cosmosDbAccountName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
@@ -224,9 +234,7 @@ public class CosmosDBTests extends TestBase {
         Assertions.assertTrue(cosmosDBAccount.cassandraConnectorEnabled());
         Assertions.assertEquals(ConnectorOffer.SMALL, cosmosDBAccount.cassandraConnectorOffer());
 
-        cosmosDBAccount = cosmosDBAccount.update()
-                .withoutCassandraConnector()
-                .apply();
+        cosmosDBAccount = cosmosDBAccount.update().withoutCassandraConnector().apply();
 
         Assertions.assertFalse(cosmosDBAccount.cassandraConnectorEnabled());
     }
@@ -235,17 +243,19 @@ public class CosmosDBTests extends TestBase {
     public void CanCreateCosmosDbAzureTableAccount() {
         final String cosmosDbAccountName = sdkContext.randomResourceName("cosmosdb", 22);
 
-        CosmosDBAccount cosmosDBAccount = cosmosDBManager.databaseAccounts()
-            .define(cosmosDbAccountName)
-            .withRegion(Region.US_WEST_CENTRAL)
-            .withNewResourceGroup(RG_NAME)
-            .withDataModelAzureTable()
-            .withEventualConsistency()
-            .withWriteReplication(Region.US_EAST)
-            .withReadReplication(Region.US_CENTRAL)
-            .withIpRangeFilter("")
-            .withTag("tag1", "value1")
-            .create();
+        CosmosDBAccount cosmosDBAccount =
+            cosmosDBManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withDataModelAzureTable()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_CENTRAL)
+                .withIpRangeFilter("")
+                .withTag("tag1", "value1")
+                .create();
 
         Assertions.assertEquals(cosmosDBAccount.name(), cosmosDbAccountName.toLowerCase());
         Assertions.assertEquals(cosmosDBAccount.kind(), DatabaseAccountKind.GLOBAL_DOCUMENT_DB);
@@ -254,5 +264,4 @@ public class CosmosDBTests extends TestBase {
         Assertions.assertEquals(cosmosDBAccount.readableReplications().size(), 2);
         Assertions.assertEquals(cosmosDBAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
     }
-
 }

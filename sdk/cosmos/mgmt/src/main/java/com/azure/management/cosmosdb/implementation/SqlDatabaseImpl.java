@@ -6,12 +6,8 @@ import com.azure.management.cosmosdb.SqlDatabase;
 import com.azure.management.cosmosdb.models.SqlDatabaseGetResultsInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * An Azure Cosmos DB SQL database.
- */
-public class SqlDatabaseImpl
-        extends WrapperImpl<SqlDatabaseGetResultsInner>
-        implements SqlDatabase {
+/** An Azure Cosmos DB SQL database. */
+public class SqlDatabaseImpl extends WrapperImpl<SqlDatabaseGetResultsInner> implements SqlDatabase {
 
     SqlDatabaseImpl(SqlDatabaseGetResultsInner innerObject) {
         super(innerObject);
