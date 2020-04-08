@@ -52,6 +52,8 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final List<String> PLATFORM_LIST = buildPlatformList();
     private static final String HTTP_CLIENT_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
+    private static final String PLATFORM_LIST_CONFIG_FILE_PATH
+        = "..\\..\\..\\eng\\pipelines\\templates\\variables\\platform-list.cvs";
 
     private static TestMode testMode;
 
@@ -305,9 +307,9 @@ public abstract class TestBase implements BeforeEachCallback {
         System.out.println("It is using jdk: " + currentJdk);
 
         for (int i = 0; i < PLATFORM_LIST.size(); i++) {
-            if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].toLowerCase(Locale.ROOT))
-                && currentJdk.toLowerCase(Locale.ROOT).contains(
-                    PLATFORM_LIST.get(i).split(",")[1].toLowerCase(Locale.ROOT))) {
+            if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].trim()
+                .toLowerCase(Locale.ROOT)) && currentJdk.toLowerCase(Locale.ROOT).contains(
+                    PLATFORM_LIST.get(i).split(",")[1].trim().toLowerCase(Locale.ROOT))) {
                 return i;
             }
         }
@@ -317,9 +319,7 @@ public abstract class TestBase implements BeforeEachCallback {
 
     private static List<String> buildPlatformList() {
         List<String> platformList = new ArrayList<>();
-        String fileName = "..\\..\\..\\..\\..\\..\\..\\..\\..\\..\\"
-            + "eng\\pipelines\\templates\\variables\\platform-list.cvs";
-        try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+        try (Stream<String> stream = Files.lines(Paths.get(PLATFORM_LIST_CONFIG_FILE_PATH))) {
             platformList.addAll(stream.collect(toList()));
         } catch (IOException e) {
             e.printStackTrace();
