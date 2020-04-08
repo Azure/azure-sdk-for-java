@@ -116,6 +116,9 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithIntegrationAccount {
            /**
             * Specifies resourceGroupName, integrationAccountName.
+            * @param resourceGroupName The resource group name
+            * @param integrationAccountName The integration account name
+            * @return the next definition stage
             */
             WithAgreementType withExistingIntegrationAccount(String resourceGroupName, String integrationAccountName);
         }
@@ -126,6 +129,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithAgreementType {
            /**
             * Specifies agreementType.
+            * @param agreementType The agreement type. Possible values include: 'NotSpecified', 'AS2', 'X12', 'Edifact'
+            * @return the next definition stage
             */
             WithContent withAgreementType(AgreementType agreementType);
         }
@@ -136,6 +141,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithContent {
            /**
             * Specifies content.
+            * @param content The agreement content
+            * @return the next definition stage
             */
             WithGuestIdentity withContent(AgreementContent content);
         }
@@ -146,6 +153,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithGuestIdentity {
            /**
             * Specifies guestIdentity.
+            * @param guestIdentity The business identity of the guest partner
+            * @return the next definition stage
             */
             WithGuestPartner withGuestIdentity(BusinessIdentity guestIdentity);
         }
@@ -156,6 +165,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithGuestPartner {
            /**
             * Specifies guestPartner.
+            * @param guestPartner The integration account partner that is set as guest partner for this agreement
+            * @return the next definition stage
             */
             WithHostIdentity withGuestPartner(String guestPartner);
         }
@@ -166,6 +177,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithHostIdentity {
            /**
             * Specifies hostIdentity.
+            * @param hostIdentity The business identity of the host partner
+            * @return the next definition stage
             */
             WithHostPartner withHostIdentity(BusinessIdentity hostIdentity);
         }
@@ -176,6 +189,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithHostPartner {
            /**
             * Specifies hostPartner.
+            * @param hostPartner The integration account partner that is set as host partner for this agreement
+            * @return the next definition stage
             */
             WithCreate withHostPartner(String hostPartner);
         }
@@ -186,6 +201,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -196,6 +213,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -206,6 +225,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -234,6 +255,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -244,6 +267,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -254,6 +279,8 @@ public interface IntegrationAccountAgreement extends HasInner<IntegrationAccount
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
