@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for TokenType.
- */
+/** Defines values for TokenType. */
 public final class TokenType extends ExpandableStringEnum<TokenType> {
-    /**
-     * Static value PAT for TokenType.
-     */
+    /** Static value PAT for TokenType. */
     public static final TokenType PAT = fromString("PAT");
 
-    /**
-     * Static value OAuth for TokenType.
-     */
+    /** Static value OAuth for TokenType. */
     public static final TokenType OAUTH = fromString("OAuth");
 
     /**
      * Creates or finds a TokenType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TokenType.
      */
@@ -33,9 +27,7 @@ public final class TokenType extends ExpandableStringEnum<TokenType> {
         return fromString(name, TokenType.class);
     }
 
-    /**
-     * @return known TokenType values.
-     */
+    /** @return known TokenType values. */
     public static Collection<TokenType> values() {
         return values(TokenType.class);
     }

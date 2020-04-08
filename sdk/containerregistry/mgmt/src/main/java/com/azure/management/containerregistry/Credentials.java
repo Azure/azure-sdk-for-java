@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The Credentials model.
- */
+/** The Credentials model. */
 @Fluent
 public final class Credentials {
     /*
@@ -31,9 +29,8 @@ public final class Credentials {
     private Map<String, CustomRegistryCredentials> customRegistries;
 
     /**
-     * Get the sourceRegistry property: Describes the credential parameters for
-     * accessing the source registry.
-     * 
+     * Get the sourceRegistry property: Describes the credential parameters for accessing the source registry.
+     *
      * @return the sourceRegistry value.
      */
     public SourceRegistryCredentials sourceRegistry() {
@@ -41,9 +38,8 @@ public final class Credentials {
     }
 
     /**
-     * Set the sourceRegistry property: Describes the credential parameters for
-     * accessing the source registry.
-     * 
+     * Set the sourceRegistry property: Describes the credential parameters for accessing the source registry.
+     *
      * @param sourceRegistry the sourceRegistry value to set.
      * @return the Credentials object itself.
      */
@@ -53,13 +49,10 @@ public final class Credentials {
     }
 
     /**
-     * Get the customRegistries property: Describes the credential parameters
-     * for accessing other custom registries. The key
-     * for the dictionary item will be the registry login server
-     * (myregistry.azurecr.io) and
-     * the value of the item will be the registry credentials for accessing the
-     * registry.
-     * 
+     * Get the customRegistries property: Describes the credential parameters for accessing other custom registries. The
+     * key for the dictionary item will be the registry login server (myregistry.azurecr.io) and the value of the item
+     * will be the registry credentials for accessing the registry.
+     *
      * @return the customRegistries value.
      */
     public Map<String, CustomRegistryCredentials> customRegistries() {
@@ -67,13 +60,10 @@ public final class Credentials {
     }
 
     /**
-     * Set the customRegistries property: Describes the credential parameters
-     * for accessing other custom registries. The key
-     * for the dictionary item will be the registry login server
-     * (myregistry.azurecr.io) and
-     * the value of the item will be the registry credentials for accessing the
-     * registry.
-     * 
+     * Set the customRegistries property: Describes the credential parameters for accessing other custom registries. The
+     * key for the dictionary item will be the registry login server (myregistry.azurecr.io) and the value of the item
+     * will be the registry credentials for accessing the registry.
+     *
      * @param customRegistries the customRegistries value to set.
      * @return the Credentials object itself.
      */

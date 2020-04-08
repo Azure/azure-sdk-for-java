@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Actor model.
- */
+/** The Actor model. */
 @Fluent
 public final class Actor {
     /*
@@ -20,9 +18,8 @@ public final class Actor {
     private String name;
 
     /**
-     * Get the name property: The subject or username associated with the
-     * request context that generated the event.
-     * 
+     * Get the name property: The subject or username associated with the request context that generated the event.
+     *
      * @return the name value.
      */
     public String name() {
@@ -30,9 +27,8 @@ public final class Actor {
     }
 
     /**
-     * Set the name property: The subject or username associated with the
-     * request context that generated the event.
-     * 
+     * Set the name property: The subject or username associated with the request context that generated the event.
+     *
      * @param name the name value to set.
      * @return the Actor object itself.
      */

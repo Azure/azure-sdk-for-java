@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OperationServiceSpecificationDefinition model.
- */
+/** The OperationServiceSpecificationDefinition model. */
 @Fluent
 public final class OperationServiceSpecificationDefinition {
     /*
@@ -20,9 +18,8 @@ public final class OperationServiceSpecificationDefinition {
     private List<OperationMetricSpecificationDefinition> metricSpecifications;
 
     /**
-     * Get the metricSpecifications property: A list of Azure Monitoring
-     * metrics definition.
-     * 
+     * Get the metricSpecifications property: A list of Azure Monitoring metrics definition.
+     *
      * @return the metricSpecifications value.
      */
     public List<OperationMetricSpecificationDefinition> metricSpecifications() {
@@ -30,13 +27,13 @@ public final class OperationServiceSpecificationDefinition {
     }
 
     /**
-     * Set the metricSpecifications property: A list of Azure Monitoring
-     * metrics definition.
-     * 
+     * Set the metricSpecifications property: A list of Azure Monitoring metrics definition.
+     *
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the OperationServiceSpecificationDefinition object itself.
      */
-    public OperationServiceSpecificationDefinition withMetricSpecifications(List<OperationMetricSpecificationDefinition> metricSpecifications) {
+    public OperationServiceSpecificationDefinition withMetricSpecifications(
+        List<OperationMetricSpecificationDefinition> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }

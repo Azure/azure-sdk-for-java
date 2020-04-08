@@ -9,9 +9,7 @@ import com.azure.management.containerregistry.EventRequestMessage;
 import com.azure.management.containerregistry.EventResponseMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Event model.
- */
+/** The Event model. */
 @Fluent
 public final class EventInner extends EventInfoInner {
     /*
@@ -27,9 +25,8 @@ public final class EventInner extends EventInfoInner {
     private EventResponseMessage eventResponseMessage;
 
     /**
-     * Get the eventRequestMessage property: The event request message sent to
-     * the service URI.
-     * 
+     * Get the eventRequestMessage property: The event request message sent to the service URI.
+     *
      * @return the eventRequestMessage value.
      */
     public EventRequestMessage eventRequestMessage() {
@@ -37,9 +34,8 @@ public final class EventInner extends EventInfoInner {
     }
 
     /**
-     * Set the eventRequestMessage property: The event request message sent to
-     * the service URI.
-     * 
+     * Set the eventRequestMessage property: The event request message sent to the service URI.
+     *
      * @param eventRequestMessage the eventRequestMessage value to set.
      * @return the EventInner object itself.
      */
@@ -49,9 +45,8 @@ public final class EventInner extends EventInfoInner {
     }
 
     /**
-     * Get the eventResponseMessage property: The event response message
-     * received from the service URI.
-     * 
+     * Get the eventResponseMessage property: The event response message received from the service URI.
+     *
      * @return the eventResponseMessage value.
      */
     public EventResponseMessage eventResponseMessage() {
@@ -59,9 +54,8 @@ public final class EventInner extends EventInfoInner {
     }
 
     /**
-     * Set the eventResponseMessage property: The event response message
-     * received from the service URI.
-     * 
+     * Set the eventResponseMessage property: The event response message received from the service URI.
+     *
      * @param eventResponseMessage the eventResponseMessage value to set.
      * @return the EventInner object itself.
      */

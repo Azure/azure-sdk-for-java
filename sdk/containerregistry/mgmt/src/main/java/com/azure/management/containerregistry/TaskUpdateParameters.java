@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The TaskUpdateParameters model.
- */
+/** The TaskUpdateParameters model. */
 @JsonFlatten
 @Fluent
 public class TaskUpdateParameters {
@@ -66,7 +64,7 @@ public class TaskUpdateParameters {
 
     /**
      * Get the tags property: The ARM resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -75,7 +73,7 @@ public class TaskUpdateParameters {
 
     /**
      * Set the tags property: The ARM resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -86,7 +84,7 @@ public class TaskUpdateParameters {
 
     /**
      * Get the status property: The current status of task.
-     * 
+     *
      * @return the status value.
      */
     public TaskStatus status() {
@@ -95,7 +93,7 @@ public class TaskUpdateParameters {
 
     /**
      * Set the status property: The current status of task.
-     * 
+     *
      * @param status the status value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -105,9 +103,8 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Get the platform property: The platform properties against which the run
-     * has to happen.
-     * 
+     * Get the platform property: The platform properties against which the run has to happen.
+     *
      * @return the platform value.
      */
     public PlatformUpdateParameters platform() {
@@ -115,9 +112,8 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Set the platform property: The platform properties against which the run
-     * has to happen.
-     * 
+     * Set the platform property: The platform properties against which the run has to happen.
+     *
      * @param platform the platform value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -127,9 +123,8 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Get the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Get the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -137,9 +132,8 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Set the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Set the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -150,7 +144,7 @@ public class TaskUpdateParameters {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     * 
+     *
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -159,7 +153,7 @@ public class TaskUpdateParameters {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     * 
+     *
      * @param timeout the timeout value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -170,7 +164,7 @@ public class TaskUpdateParameters {
 
     /**
      * Get the step property: The properties for updating a task step.
-     * 
+     *
      * @return the step value.
      */
     public TaskStepUpdateParameters step() {
@@ -179,7 +173,7 @@ public class TaskUpdateParameters {
 
     /**
      * Set the step property: The properties for updating a task step.
-     * 
+     *
      * @param step the step value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -189,9 +183,8 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Get the trigger property: The properties for updating trigger
-     * properties.
-     * 
+     * Get the trigger property: The properties for updating trigger properties.
+     *
      * @return the trigger value.
      */
     public TriggerUpdateParameters trigger() {
@@ -199,9 +192,8 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Set the trigger property: The properties for updating trigger
-     * properties.
-     * 
+     * Set the trigger property: The properties for updating trigger properties.
+     *
      * @param trigger the trigger value to set.
      * @return the TaskUpdateParameters object itself.
      */
@@ -211,9 +203,9 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Get the credentials property: The parameters that describes a set of
-     * credentials that will be used when this run is invoked.
-     * 
+     * Get the credentials property: The parameters that describes a set of credentials that will be used when this run
+     * is invoked.
+     *
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -221,9 +213,9 @@ public class TaskUpdateParameters {
     }
 
     /**
-     * Set the credentials property: The parameters that describes a set of
-     * credentials that will be used when this run is invoked.
-     * 
+     * Set the credentials property: The parameters that describes a set of credentials that will be used when this run
+     * is invoked.
+     *
      * @param credentials the credentials value to set.
      * @return the TaskUpdateParameters object itself.
      */
