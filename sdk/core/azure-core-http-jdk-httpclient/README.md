@@ -1,4 +1,4 @@
-# Azure Core JDK HTTP implementation library for Java
+# Azure Core JDK HTTP plugin library for Java
 
 This is an azure-core HTTP client that makes use of the asynchronous HttpClient that was made generally available as 
 part of JDK 11. 

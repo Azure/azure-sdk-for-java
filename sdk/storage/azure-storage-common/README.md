@@ -1,4 +1,4 @@
-# Azure Storage Common client library for Java
+# Azure Storage Common shared library for Java
 Azure Storage Common is a library that has common dependencies for all Azure Storage packages.
 
 [Source code][source] | [API reference documentation][docs] 
