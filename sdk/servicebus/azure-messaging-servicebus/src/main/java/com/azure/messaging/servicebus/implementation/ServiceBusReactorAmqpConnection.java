@@ -159,8 +159,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        boolean isSession, String transferEntityPath, MessagingEntityType entityType) {
-        return createReceiveLink(linkName, entityPath, receiveMode, isSession, null,
+        String transferEntityPath, MessagingEntityType entityType) {
+        return createReceiveLink(linkName, entityPath, receiveMode, null,
             transferEntityPath, entityType);
     }
 
@@ -171,7 +171,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param linkName The name of the link.
      * @param entityPath The remote address to connect to for the message broker.
      * @param receiveMode Consumer options to use when creating the link.
-     * @param isSession to use when creating the link.
      * @param sessionId to use when creating the link.
      * @param transferEntityPath to use when creating the link.
      * @param entityType {@link MessagingEntityType} to use when creating the link.
@@ -180,14 +179,14 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        boolean isSession, String sessionId, String transferEntityPath, MessagingEntityType entityType) {
+        String sessionId, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode, isSession, sessionId);
+                    retryPolicy, receiveMode, sessionId);
             });
     }
 
