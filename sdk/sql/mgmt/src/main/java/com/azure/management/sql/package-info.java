@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * This package contains the base classes for management sql sdk.
+ * This package contains the base classes for sql management sdk.
  */
 package com.azure.management.sql;
