@@ -11,10 +11,10 @@ package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRuns;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import rx.Completable;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowWorkflowRun;
 
 class WorkflowRunsImpl extends WrapperImpl<WorkflowRunsInner> implements WorkflowRuns {
@@ -61,12 +61,22 @@ class WorkflowRunsImpl extends WrapperImpl<WorkflowRunsInner> implements Workflo
     public Observable<WorkflowWorkflowRun> getAsync(String resourceGroupName, String workflowName, String runName) {
         WorkflowRunsInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, runName)
-        .map(new Func1<WorkflowRunInner, WorkflowWorkflowRun>() {
+        .flatMap(new Func1<WorkflowRunInner, Observable<WorkflowWorkflowRun>>() {
             @Override
-            public WorkflowWorkflowRun call(WorkflowRunInner inner) {
-                return wrapModel(inner);
+            public Observable<WorkflowWorkflowRun> call(WorkflowRunInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkflowWorkflowRun)wrapModel(inner));
+                }
             }
        });
+    }
+
+    @Override
+    public Completable deleteAsync(String resourceGroupName, String workflowName, String runName) {
+        WorkflowRunsInner client = this.inner();
+        return client.deleteAsync(resourceGroupName, workflowName, runName).toCompletable();
     }
 
 }
