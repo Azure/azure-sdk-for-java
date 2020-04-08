@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.models.CloseReason;
 import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
+import java.util.List;
 
 /**
  * An abstract class defining all the operations that a partition processor can perform. Users of {@link
@@ -50,6 +51,10 @@ public abstract class PartitionProcessor {
      * @param eventContext The partition information and the next event data from this partition.
      */
     public abstract void processEvent(EventContext eventContext);
+
+    public void processEventBatch(List<EventContext> eventContextBatch) {
+        eventContextBatch.forEach(this::processEvent);
+    }
 
     /**
      * This method is called when an error occurs while receiving events from Event Hub. An error also marks the end of
