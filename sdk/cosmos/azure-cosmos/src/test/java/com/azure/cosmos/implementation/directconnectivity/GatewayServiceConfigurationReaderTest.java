@@ -98,5 +98,6 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
         assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        globalEndpointManager.close();
     }
 }
