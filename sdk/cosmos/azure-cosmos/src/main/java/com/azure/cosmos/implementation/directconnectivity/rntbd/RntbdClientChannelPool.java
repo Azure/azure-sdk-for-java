@@ -1048,13 +1048,9 @@ public final class RntbdClientChannelPool implements ChannelPool {
                     checkState(requestManager != null, "expected non-null request manager");
 
                     if (requestManager.hasRequestedRntbdContext()) {
-
                         this.originalPromise.setSuccess(channel);
-
                     } else {
-
                         channel.writeAndFlush(RntbdHealthCheckRequest.MESSAGE).addListener(completed -> {
-
                             if (completed.isSuccess()) {
                                 reportIssueUnless(logger, this.acquired && requestManager.hasRntbdContext(),
                                     channel, "acquired: {}, rntbdContext: {}", this.acquired,
