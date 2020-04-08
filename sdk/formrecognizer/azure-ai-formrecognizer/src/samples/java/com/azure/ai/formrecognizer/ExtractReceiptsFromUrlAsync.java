@@ -1,48 +1,31 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.file.Files;
-import java.time.Duration;
-
 /**
- * Sample for extracting receipt information using input stream.
+ * Sample for extracting receipt information using file source URL.
  */
-public class ExtractPrebuiltReceiptAsync {
+public class ExtractReceiptsFromUrlAsync {
     /**
-     * Sample for extracting receipt information using input stream.
+     * Sample for extracting receipt information using file source URL.
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        File sourceFile = new File("azure-ai-formrecognizer/src/test/resources/sample-files/contoso-allinone.jpg");
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
-            new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
-
+        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceipts(buffer, sourceFile.length(), true, FormContentType.IMAGE_PNG,
-                Duration.ofSeconds(5));
+            client.beginExtractReceiptsFromUrl(receiptUrl);
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller
             .last()

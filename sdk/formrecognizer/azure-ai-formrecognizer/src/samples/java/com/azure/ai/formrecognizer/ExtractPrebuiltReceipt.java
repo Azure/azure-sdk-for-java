@@ -3,70 +3,63 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.PollerFlux;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import com.azure.core.util.polling.SyncPoller;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.time.Duration;
 
 /**
  * Sample for extracting receipt information using input stream.
  */
-public class ExtractPrebuiltReceiptAsync {
+public class ExtractPrebuiltReceipt {
+
     /**
      * Sample for extracting receipt information using input stream.
      *
      * @param args Unused. Arguments to the program.
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.
-        FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
+        FormRecognizerClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
-            .buildAsyncClient();
+            .buildClient();
 
         File sourceFile = new File("azure-ai-formrecognizer/src/test/resources/sample-files/contoso-allinone.jpg");
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(
-            new ByteArrayInputStream(Files.readAllBytes(sourceFile.toPath())));
+        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
+        InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        PollerFlux<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceipts(buffer, sourceFile.length(), true, FormContentType.IMAGE_PNG,
+        SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
+            client.beginExtractReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
                 Duration.ofSeconds(5));
 
-        IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller
-            .last()
-            .flatMap(trainingOperationResponse -> {
-                if (trainingOperationResponse.getStatus().isComplete()) {
-                    System.out.println("Polling completed successfully");
-                    // training completed successfully, retrieving final result.
-                    return trainingOperationResponse.getFinalResult();
-                } else {
-                    System.out.printf("polling completed unsuccessfully with status: %s.", trainingOperationResponse.getStatus());
-                    return Mono.empty();
-                }
-            }).block();
+        IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 
         receiptPageResults.forEach(extractedReceiptItem -> {
             System.out.printf("Page Number %s%n", extractedReceiptItem.getPageMetadata().getPageNumber());
             System.out.printf("Merchant Name %s%n", extractedReceiptItem.getMerchantName().getText());
+            System.out.printf("Merchant Name Value: %s%n", extractedReceiptItem.getMerchantName().getValue());
             System.out.printf("Merchant Address %s%n", extractedReceiptItem.getMerchantAddress().getText());
+            System.out.printf("Merchant Address Value: %s%n", extractedReceiptItem.getMerchantAddress().getValue());
             System.out.printf("Merchant Phone Number %s%n", extractedReceiptItem.getMerchantPhoneNumber().getText());
+            System.out.printf("Merchant Phone Number Value: %s%n", extractedReceiptItem.getMerchantPhoneNumber().getValue());
             System.out.printf("Total: %s%n", extractedReceiptItem.getTotal().getText());
+            System.out.printf("Total Value: %s%n", extractedReceiptItem.getTotal().getValue());
             System.out.printf("Receipt Items: %n");
             extractedReceiptItem.getReceiptItems().forEach(receiptItem -> {
                 System.out.printf("Name: %s%n", receiptItem.getName().getText());
-                System.out.printf("Quantity: %s%n", receiptItem.getQuantity().getText());
+                System.out.printf("Quantity: %s%n", receiptItem.getQuantity() == null
+                    ? "N/A" : receiptItem.getQuantity().getText());
                 System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getText());
                 System.out.println();
             });

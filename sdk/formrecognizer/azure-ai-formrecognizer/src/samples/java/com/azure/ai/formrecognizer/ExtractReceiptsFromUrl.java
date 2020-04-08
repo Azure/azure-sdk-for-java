@@ -4,45 +4,29 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
-import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.time.Duration;
-
 /**
- * Sample for extracting receipt information using input stream.
+ * Sample for extracting receipt information using file source URL.
  */
-public class ExtractPrebuiltReceiptSync {
-
+public class ExtractReceiptsFromUrl {
     /**
-     * Sample for extracting receipt information using input stream.
+     * Sample for extracting receipt information using file source URL.
      *
      * @param args Unused. Arguments to the program.
-     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public static void main(final String[] args) throws IOException {
-        // Instantiate a client that will be used to call the service.
-
+    public static void main(String[] args) {
         FormRecognizerClient client = new FormRecognizerClientBuilder()
             .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        File sourceFile = new File("///contoso-allinone.jpg");
-        byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
-        InputStream targetStream = new ByteArrayInputStream(fileContent);
-
+        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_PNG, true,
-                Duration.ofSeconds(5));
+            client.beginExtractReceiptsFromUrl(receiptUrl);
 
         IterableStream<ExtractedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
 
