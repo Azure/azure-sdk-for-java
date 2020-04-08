@@ -365,11 +365,7 @@ public class ReactorSession implements AmqpSession {
         source.setAddress(entityPath);
 
         if (sourceFilters != null && sourceFilters.size() > 0) {
-            HashMap<Symbol, Object> filterMap = new HashMap<>();
-            //filterMap.put(Symbol.getSymbol("apache.org" + ":session-filter"), "seattle-id1");
-            filterMap.put(Symbol.getSymbol(AmqpConstants.VENDOR + ":session-filter"), "seattle-id1");
-            //source.setFilter(filterMap);
-            source.setFilter(filterMap);
+            source.setFilter(sourceFilters);
         }
 
         receiver.setSource(source);

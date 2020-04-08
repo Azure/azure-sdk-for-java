@@ -550,34 +550,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    void sessionReceiveAndDeleteWithBinaryData() throws InterruptedException {
+    void sessionReceiveAndDeleteWithBinaryData() {
         // Arrange
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
         message.setSessionId(SESSION_ID);
-        final Duration timeout = Duration.ofSeconds(2);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-        sender.send(message).block();
-        sender.send(message).block();
-        sender.send(message).block();
 
-        sessionReceiveDeleteModeReceiver.receive(options)
-            .map(receivedMessage -> {
-                System.out.println("Sequence number " + receivedMessage.getSequenceNumber()  + " : " + new String(receivedMessage.getBody()));
-                return receivedMessage;
-            })
-            .subscribe();
-        System.out.println(" before sleep ...  ..");
+        sender.send(message).block(TIMEOUT);
 
-        Thread.sleep(30000);
-        System.out.println(" Exit ..");
         // Assert & Act
-        /*StepVerifier.create(sender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
+        StepVerifier.create(sender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
             .assertNext(receivedMessage ->
                 Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
-           // .expectNoEvent(timeout)
             .thenCancel()
             .verify();
-        */
     }
 }
