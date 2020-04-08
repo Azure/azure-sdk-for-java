@@ -62,7 +62,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .receiver()
             .queueName(queueName)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
-            .sessionId(SESSION_ID)
             .buildAsyncClient();
     }
 

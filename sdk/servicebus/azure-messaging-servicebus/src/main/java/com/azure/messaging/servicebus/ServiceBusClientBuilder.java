@@ -603,7 +603,8 @@ public final class ServiceBusClientBuilder {
 
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount)
+                .setSessionId(sessionId);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor,
