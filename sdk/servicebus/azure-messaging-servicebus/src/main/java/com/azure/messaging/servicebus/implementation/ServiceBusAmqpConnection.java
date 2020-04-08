@@ -44,5 +44,5 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        boolean isSession, String transferEntityPath, MessagingEntityType entityType);
+        boolean isSession, String sessionId, String transferEntityPath, MessagingEntityType entityType);
 }

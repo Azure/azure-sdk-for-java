@@ -24,11 +24,13 @@ import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String CONTENTS = "Test-contents";
+    private static final String SESSION_ID = "seattle-id1";
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiverManualComplete;
     private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
+    private ServiceBusReceiverAsyncClient sessionReceiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
@@ -55,6 +57,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .receiver()
             .queueName(queueName)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
+        sessionReceiveDeleteModeReceiver = createBuilder()
+            .receiver()
+            .queueName(queueName)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .sessionId(SESSION_ID)
             .buildAsyncClient();
     }
 
@@ -539,5 +547,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .expectNextCount(0)
             .thenCancel()
             .verify(timeout);
+    }
+
+    @Test
+    void sessionReceiveAndDeleteWithBinaryData() throws InterruptedException {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
+        message.setSessionId(SESSION_ID);
+        final Duration timeout = Duration.ofSeconds(2);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
+        sender.send(message).block();
+        sender.send(message).block();
+        sender.send(message).block();
+
+        sessionReceiveDeleteModeReceiver.receive(options)
+            .map(receivedMessage -> {
+                System.out.println("Sequence number " + receivedMessage.getSequenceNumber()  + " : " + new String(receivedMessage.getBody()));
+                return receivedMessage;
+            })
+            .subscribe();
+        System.out.println(" before sleep ...  ..");
+
+        Thread.sleep(30000);
+        System.out.println(" Exit ..");
+        // Assert & Act
+        /*StepVerifier.create(sender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
+            .assertNext(receivedMessage ->
+                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
+           // .expectNoEvent(timeout)
+            .thenCancel()
+            .verify();
+        */
     }
 }

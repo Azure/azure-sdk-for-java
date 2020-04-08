@@ -74,6 +74,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final boolean isSessionEnabled;
+    private final String sessionId;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final TracerProvider tracerProvider;
@@ -105,7 +106,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        boolean isSessionEnabled, ReceiverOptions receiverOptions,
+        boolean isSessionEnabled, String sessionId, ReceiverOptions receiverOptions,
         ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
         MessageSerializer messageSerializer, MessageLockContainer messageLockContainer, Runnable onClientClose) {
 
@@ -122,6 +123,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.entityType = entityType;
         this.isSessionEnabled = isSessionEnabled;
+        this.sessionId = sessionId;
         this.messageLockContainer = messageLockContainer;
         this.onClientClose = onClientClose;
 
@@ -605,7 +607,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
             final Flux<AmqpReceiveLink> receiveLink =
                 connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
-                    receiveMode, isSessionEnabled, null, entityType))
+                    receiveMode, isSessionEnabled, sessionId, null, entityType))
                     .doOnNext(next -> {
                         final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
                             + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";

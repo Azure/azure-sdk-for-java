@@ -34,5 +34,5 @@ public interface ServiceBusSession extends AmqpSession {
      * @return A newly created AMQP link.
      */
     Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, MessagingEntityType entityType,
-        Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode, boolean isSession);
+        Duration timeout, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode, boolean isSession, String sessionId);
 }
