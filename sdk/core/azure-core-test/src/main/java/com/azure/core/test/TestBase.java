@@ -52,7 +52,7 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final String HTTP_CLIENT_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
     private static final String PLATFORM_LIST_CONFIG_FILE_PATH =
-        "../../../eng/pipelines/templates/variables/platform-list.cvs";
+        "../../../eng/pipelines/templates/variables/platform-list.csv";
 
     private static TestMode testMode;
 
