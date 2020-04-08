@@ -90,7 +90,7 @@ public class IdentityClient {
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
-    private final PublicClientApplication publicClientApplication;
+    private PublicClientApplication publicClientApplication;
     private final String tenantId;
     private final String clientId;
     private HttpPipelineAdapter httpPipelineAdapter;
@@ -112,8 +112,13 @@ public class IdentityClient {
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.options = options;
-        if (clientId == null) {
-            this.publicClientApplication = null;
+    }
+
+    private PublicClientApplication getPublicClientApplication() {
+        if (publicClientApplication != null) {
+            return publicClientApplication;
+        } else if (clientId == null) {
+            return null;
         } else {
             String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/organizations/" + tenantId;
             PublicClientApplication.Builder publicClientApplicationBuilder = PublicClientApplication.builder(clientId);
@@ -156,6 +161,7 @@ public class IdentityClient {
                 }
             }
             this.publicClientApplication = publicClientApplicationBuilder.build();
+            return this.publicClientApplication;
         }
     }
 
@@ -387,7 +393,7 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithUsernamePassword(TokenRequestContext request,
                                                             String username, String password) {
-        return Mono.fromFuture(publicClientApplication.acquireToken(
+        return Mono.fromFuture(getPublicClientApplication().acquireToken(
             UserNamePasswordParameters.builder(new HashSet<>(request.getScopes()), username, password.toCharArray())
                 .build()))
             .map(ar -> new MsalToken(ar, options));
@@ -412,12 +418,12 @@ public class IdentityClient {
         }
         return Mono.defer(() -> {
             try {
-                return Mono.fromFuture(publicClientApplication.acquireTokenSilently(parameters))
+                return Mono.fromFuture(getPublicClientApplication().acquireTokenSilently(parameters))
                         .map(ar -> new MsalToken(ar, options))
                         .filter(t -> !t.isExpired())
                         .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
                                     try {
-                                        return publicClientApplication.acquireTokenSilently(forceParameters);
+                                        return getPublicClientApplication().acquireTokenSilently(forceParameters);
                                     } catch (MalformedURLException e) {
                                         throw logger.logExceptionAsWarning(new RuntimeException(e));
                                     }
@@ -445,7 +451,7 @@ public class IdentityClient {
             DeviceCodeFlowParameters parameters = DeviceCodeFlowParameters.builder(new HashSet<>(request.getScopes()),
                 dc -> deviceCodeConsumer.accept(new DeviceCodeInfo(dc.userCode(), dc.deviceCode(),
                     dc.verificationUri(), OffsetDateTime.now().plusSeconds(dc.expiresIn()), dc.message()))).build();
-            return publicClientApplication.acquireToken(parameters);
+            return getPublicClientApplication().acquireToken(parameters);
         }).map(ar -> new MsalToken(ar, options));
     }
 
@@ -459,7 +465,7 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithAuthorizationCode(TokenRequestContext request, String authorizationCode,
                                                              URI redirectUrl) {
-        return Mono.fromFuture(() -> publicClientApplication.acquireToken(
+        return Mono.fromFuture(() -> getPublicClientApplication().acquireToken(
             AuthorizationCodeParameters.builder(authorizationCode, redirectUrl)
                 .scopes(new HashSet<>(request.getScopes()))
                 .build()))
@@ -516,7 +522,7 @@ public class IdentityClient {
     public Mono<AccessToken> authenticateWithSharedTokenCache(TokenRequestContext request, String username) {
         String authorityUrl = options.getAuthorityHost().replaceAll("/+$", "") + "/" + tenantId + "/";
         // find if the Public Client app with the requested username exists
-        return Mono.fromFuture(publicClientApplication.getAccounts())
+        return Mono.fromFuture(getPublicClientApplication().getAccounts())
                 .onErrorResume(t -> Mono.error(new ClientAuthenticationException(
                         "Cannot get accounts from token cache. Error: " + t.getMessage(), null)))
                 .flatMap(set -> {
@@ -568,13 +574,13 @@ public class IdentityClient {
 
                     CompletableFuture<IAuthenticationResult> future;
                     try {
-                        future = publicClientApplication.acquireTokenSilently(params);
+                        future = getPublicClientApplication().acquireTokenSilently(params);
                         return Mono.fromFuture(() -> future).map(result ->
                                     new MsalToken(result, options))
                                 .filter(t -> !t.isExpired())
                                 .switchIfEmpty(Mono.defer(() -> Mono.fromFuture(() -> {
                                         try {
-                                            return publicClientApplication.acquireTokenSilently(forceParams);
+                                            return getPublicClientApplication().acquireTokenSilently(forceParams);
                                         } catch (MalformedURLException e) {
                                             throw logger.logExceptionAsWarning(new RuntimeException(e));
                                         }
