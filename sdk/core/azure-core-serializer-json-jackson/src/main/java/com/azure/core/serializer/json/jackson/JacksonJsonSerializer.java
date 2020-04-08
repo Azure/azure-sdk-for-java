@@ -4,6 +4,8 @@
 package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.serializer.JsonSerializer;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
@@ -15,6 +17,8 @@ import java.io.OutputStream;
  * Jackson based implementation of the {@link JsonSerializer} interface.
  */
 public final class JacksonJsonSerializer implements JsonSerializer {
+    private final ClientLogger logger = new ClientLogger(JacksonJsonSerializer.class);
+
     private final ObjectMapper mapper;
 
     /**
@@ -32,7 +36,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
             try {
                 return Mono.just(mapper.readValue(input, clazz));
             } catch (IOException ex) {
-                return Mono.error(ex);
+                return FluxUtil.throwableMonoError(logger, ex);
             }
         });
     }
@@ -43,7 +47,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
             try {
                 return Mono.just(mapper.writeValueAsString(value));
             } catch (IOException ex) {
-                return Mono.error(ex);
+                return FluxUtil.throwableMonoError(logger, ex);
             }
         });
     }
@@ -54,20 +58,20 @@ public final class JacksonJsonSerializer implements JsonSerializer {
             try {
                 return Mono.just(mapper.writerFor(clazz).writeValueAsString(value));
             } catch (IOException ex) {
-                return Mono.error(ex);
+                return FluxUtil.throwableMonoError(logger, ex);
             }
         });
     }
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream) {
-        return Mono.defer(() -> Mono.fromRunnable(() -> {
+        return Mono.fromRunnable(() -> {
             try {
                 mapper.writeValue(stream, value);
             } catch (IOException ex) {
-                throw Exceptions.propagate(ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
-        }));
+        });
     }
 
     @Override
@@ -76,7 +80,7 @@ public final class JacksonJsonSerializer implements JsonSerializer {
             try {
                 mapper.writerFor(clazz).writeValue(stream, value);
             } catch (IOException ex) {
-                throw Exceptions.propagate(ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }));
     }

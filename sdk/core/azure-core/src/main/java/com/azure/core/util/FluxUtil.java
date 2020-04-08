@@ -154,6 +154,18 @@ public final class FluxUtil {
     }
 
     /**
+     * Propagates a {@link Throwable} through the error channel of {@link Mono}.
+     *
+     * @param logger The {@link ClientLogger} to log the exception.
+     * @param throwable The {@link Throwable}.
+     * @param <T> The return type.
+     * @return A {@link Mono} that terminates with error wrapping the {@link Throwable}.
+     */
+    public static <T> Mono<T> throwableMonoError(ClientLogger logger, Throwable throwable) {
+        return Mono.error(logger.logThrowableAsError(Exceptions.propagate(throwable)));
+    }
+
+    /**
      * Propagates a {@link RuntimeException} through the error channel of {@link Flux}.
      *
      * @param logger The {@link ClientLogger} to log the exception.

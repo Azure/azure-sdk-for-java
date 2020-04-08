@@ -4,6 +4,8 @@
 package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.serializer.AvroSerializer;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -26,6 +28,8 @@ public class ApacheAvroSerializer implements AvroSerializer {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
+    private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
+
     @Override
     public <T> Mono<T> read(byte[] input, String schema) {
         return Mono.defer(() -> {
@@ -33,7 +37,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
                 DatumReader<T> reader = new GenericDatumReader<>(PARSER.parse(schema));
                 return Mono.just(reader.read(null, DECODER_FACTORY.binaryDecoder(input, null)));
             } catch (IOException ex) {
-                return Mono.error(ex);
+                return FluxUtil.throwableMonoError(logger, ex);
             }
         });
     }
@@ -48,7 +52,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
                 writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
                 return Mono.just(stream.toByteArray());
             } catch (IOException ex) {
-                return Mono.error(ex);
+                return FluxUtil.throwableMonoError(logger, ex);
             }
         });
     }
@@ -60,7 +64,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
                 DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
                 writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
             } catch (IOException ex) {
-                throw Exceptions.propagate(ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         }));
     }

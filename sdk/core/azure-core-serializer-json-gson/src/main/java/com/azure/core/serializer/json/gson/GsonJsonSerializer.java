@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter;
  * GSON based implementation of the {@link JsonSerializer} interface.
  */
 public final class GsonJsonSerializer implements JsonSerializer {
-    public final Gson gson;
+    private final Gson gson;
 
     /**
      * Constructs a {@link JsonSerializer} using the passed {@link Gson} serializer.
@@ -42,11 +42,11 @@ public final class GsonJsonSerializer implements JsonSerializer {
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream) {
-        return Mono.defer(() -> Mono.fromRunnable(() -> gson.toJson(value, new OutputStreamWriter(stream))));
+        return Mono.fromRunnable(() -> gson.toJson(value, new OutputStreamWriter(stream)));
     }
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
-        return Mono.defer(() -> Mono.fromRunnable(() -> gson.toJson(value, clazz, new OutputStreamWriter(stream))));
+        return Mono.fromRunnable(() -> gson.toJson(value, clazz, new OutputStreamWriter(stream)));
     }
 }
