@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The Status model.
- */
+/** The Status model. */
 @Immutable
 public final class Status {
     /*
@@ -34,7 +32,7 @@ public final class Status {
 
     /**
      * Get the displayStatus property: The short label for the status.
-     * 
+     *
      * @return the displayStatus value.
      */
     public String displayStatus() {
@@ -42,9 +40,8 @@ public final class Status {
     }
 
     /**
-     * Get the message property: The detailed message for the status, including
-     * alerts and error messages.
-     * 
+     * Get the message property: The detailed message for the status, including alerts and error messages.
+     *
      * @return the message value.
      */
     public String message() {
@@ -52,9 +49,8 @@ public final class Status {
     }
 
     /**
-     * Get the timestamp property: The timestamp when the status was changed to
-     * the current value.
-     * 
+     * Get the timestamp property: The timestamp when the status was changed to the current value.
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {

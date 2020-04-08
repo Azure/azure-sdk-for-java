@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The CustomRegistryCredentials model.
- */
+/** The CustomRegistryCredentials model. */
 @Fluent
 public final class CustomRegistryCredentials {
     /*
@@ -27,9 +25,8 @@ public final class CustomRegistryCredentials {
     private SecretObject password;
 
     /**
-     * Get the userName property: The username for logging into the custom
-     * registry.
-     * 
+     * Get the userName property: The username for logging into the custom registry.
+     *
      * @return the userName value.
      */
     public SecretObject userName() {
@@ -37,9 +34,8 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Set the userName property: The username for logging into the custom
-     * registry.
-     * 
+     * Set the userName property: The username for logging into the custom registry.
+     *
      * @param userName the userName value to set.
      * @return the CustomRegistryCredentials object itself.
      */
@@ -49,10 +45,9 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Get the password property: The password for logging into the custom
-     * registry. The password is a secret
-     * object that allows multiple ways of providing the value for it.
-     * 
+     * Get the password property: The password for logging into the custom registry. The password is a secret object
+     * that allows multiple ways of providing the value for it.
+     *
      * @return the password value.
      */
     public SecretObject password() {
@@ -60,10 +55,9 @@ public final class CustomRegistryCredentials {
     }
 
     /**
-     * Set the password property: The password for logging into the custom
-     * registry. The password is a secret
-     * object that allows multiple ways of providing the value for it.
-     * 
+     * Set the password property: The password for logging into the custom registry. The password is a secret object
+     * that allows multiple ways of providing the value for it.
+     *
      * @param password the password value to set.
      * @return the CustomRegistryCredentials object itself.
      */

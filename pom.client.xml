@@ -432,7 +432,7 @@
             </goals>
             <configuration>
               <baseDir>.</baseDir>
-              <reportFile>dependency-whitelist.json</reportFile>
+              <reportFile>target/dependency-whitelist.json</reportFile>
               <ignoredGA>
                 <param>com.azure:azure-cosmos-examples</param>
                 <param>com.azure:azure-cosmos-benchmark</param>
@@ -1162,19 +1162,19 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>--rf</argument>
+                    <argument>${project.basedir}/README.md</argument>
+                    <argument>--v</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <executable>python</executable>
-              <workingDirectory>${project.basedir}</workingDirectory>
-              <arguments>
-                <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
-                <argument>--rf</argument>
-                <argument>${project.basedir}/README.md</argument>
-                <argument>--v</argument>
-                <argument>${project.version}</argument>
-              </arguments>
-            </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
           <plugin>
@@ -1218,17 +1218,17 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                    <argument>--project-dir</argument>
+                    <argument>${project.basedir}</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <executable>python</executable>
-              <workingDirectory>${project.basedir}</workingDirectory>
-              <arguments>
-                <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
-                <argument>--project-dir</argument>
-                <argument>${project.basedir}</argument>
-              </arguments>
-            </configuration>
           </plugin>
         </plugins>
       </build>
@@ -1479,8 +1479,8 @@
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
+    <module>sdk/storage/azure-storage-perf</module>
     <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

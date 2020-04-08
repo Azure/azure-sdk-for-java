@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The StorageAccountProperties model.
- */
+/** The StorageAccountProperties model. */
 @Fluent
 public final class StorageAccountProperties {
     /*
@@ -20,7 +18,7 @@ public final class StorageAccountProperties {
 
     /**
      * Get the id property: The resource ID of the storage account.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -29,7 +27,7 @@ public final class StorageAccountProperties {
 
     /**
      * Set the id property: The resource ID of the storage account.
-     * 
+     *
      * @param id the id value to set.
      * @return the StorageAccountProperties object itself.
      */

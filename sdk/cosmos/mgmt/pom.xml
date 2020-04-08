@@ -133,29 +133,6 @@
                   </compilerArguments>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--                <version>3.1.0</version>-->
-<!--                <dependencies>-->
-<!--                    <dependency>-->
-<!--                        <groupId>com.microsoft.azure</groupId>-->
-<!--                        <artifactId>autorest-build-tools</artifactId>-->
-<!--                        <version>[1.0.0,2.0.0)</version>-->
-<!--                    </dependency>-->
-<!--                    <dependency>-->
-<!--                        <groupId>com.puppycrawl.tools</groupId>-->
-<!--                        <artifactId>checkstyle</artifactId>-->
-<!--                        <version>8.24</version>-->
-<!--                    </dependency>-->
-<!--                </dependencies>-->
-<!--                <configuration>-->
-<!--                    <configLocation>checkstyle.xml</configLocation>-->
-<!--                    <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>-->
-<!--                    <suppressionsLocation>${project.basedir}/suppressions.xml</suppressionsLocation>-->
-<!--                    <consoleOutput>true</consoleOutput>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>

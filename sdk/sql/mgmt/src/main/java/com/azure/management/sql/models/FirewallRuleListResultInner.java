@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The FirewallRuleListResult model.
- */
+/** The FirewallRuleListResult model. */
 @Fluent
 public final class FirewallRuleListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class FirewallRuleListResultInner {
 
     /**
      * Get the value property: The list of server firewall rules.
-     * 
+     *
      * @return the value value.
      */
     public List<FirewallRuleInner> value() {
@@ -30,7 +28,7 @@ public final class FirewallRuleListResultInner {
 
     /**
      * Set the value property: The list of server firewall rules.
-     * 
+     *
      * @param value the value value to set.
      * @return the FirewallRuleListResultInner object itself.
      */

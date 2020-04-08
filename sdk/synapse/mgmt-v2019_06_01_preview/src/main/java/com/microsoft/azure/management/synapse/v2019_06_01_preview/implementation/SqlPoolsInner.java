@@ -319,6 +319,7 @@ public class SqlPoolsInner {
     private ServiceResponse<SqlPoolInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SqlPoolInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SqlPoolInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

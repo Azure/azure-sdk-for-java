@@ -26,125 +26,201 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ManagedInstanceEncryptionProtectors.
- */
+/** An instance of this class provides access to all the operations defined in ManagedInstanceEncryptionProtectors. */
 public final class ManagedInstanceEncryptionProtectorsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ManagedInstanceEncryptionProtectorsService service;
+    /** The proxy service used to perform REST calls. */
+    private final ManagedInstanceEncryptionProtectorsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedInstanceEncryptionProtectorsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagedInstanceEncryptionProtectorsInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedInstanceEncryptionProtectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    ManagedInstanceEncryptionProtectorsService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientManagedInstanceEncryptionProtectors to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for SqlManagementClientManagedInstanceEncryptionProtectors to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientManagedInstanceEncryptionProtectors")
+    @ServiceInterface(name = "SqlManagementClientM")
     private interface ManagedInstanceEncryptionProtectorsService {
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> revalidate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("encryptionProtectorName") String encryptionProtectorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> revalidate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/encryptionProtector")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorListResultInner>> listByInstance(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorListResultInner>> listByInstance(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> get(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("encryptionProtectorName") String encryptionProtectorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("encryptionProtectorName") String encryptionProtectorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceEncryptionProtectorInner parameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceEncryptionProtectorInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}/revalidate")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginRevalidate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("encryptionProtectorName") String encryptionProtectorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<Response<Void>> beginRevalidate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/managedInstances/{managedInstanceName}/encryptionProtector/{encryptionProtectorName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("managedInstanceName") String managedInstanceName, @PathParam("encryptionProtectorName") String encryptionProtectorName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ManagedInstanceEncryptionProtectorInner parameters);
+        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("managedInstanceName") String managedInstanceName,
+            @PathParam("encryptionProtectorName") String encryptionProtectorName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedInstanceEncryptionProtectorInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorListResultInner>> listByInstanceNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ManagedInstanceEncryptionProtectorListResultInner>> listByInstanceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> revalidateWithResponseAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> revalidateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String encryptionProtectorName = "current";
         final String apiVersion = "2017-10-01-preview";
-        return service.revalidate(this.client.getHost(), resourceGroupName, managedInstanceName, encryptionProtectorName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .revalidate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            encryptionProtectorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> revalidateAsync(String resourceGroupName, String managedInstanceName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = revalidateWithResponseAsync(resourceGroupName, managedInstanceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            revalidateWithResponseAsync(resourceGroupName, managedInstanceName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -156,37 +232,56 @@ public final class ManagedInstanceEncryptionProtectorsInner {
 
     /**
      * Gets a list of managed instance encryption protectors.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance encryption protectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceSinglePageAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String apiVersion = "2017-10-01-preview";
-        return service.listByInstance(this.client.getHost(), resourceGroupName, managedInstanceName, this.client.getSubscriptionId(), apiVersion)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByInstance(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .<PagedResponse<ManagedInstanceEncryptionProtectorInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of managed instance encryption protectors.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance encryption protectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(String resourceGroupName, String managedInstanceName) {
+    public PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(
+        String resourceGroupName, String managedInstanceName) {
         return new PagedFlux<>(
             () -> listByInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listByInstanceNextSinglePageAsync(nextLink));
@@ -194,63 +289,87 @@ public final class ManagedInstanceEncryptionProtectorsInner {
 
     /**
      * Gets a list of managed instance encryption protectors.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance encryption protectors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(
+        String resourceGroupName, String managedInstanceName) {
         return new PagedIterable<>(listByInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(
+        String resourceGroupName, String managedInstanceName) {
         final String encryptionProtectorName = "current";
         final String apiVersion = "2017-10-01-preview";
-        return service.get(this.client.getHost(), resourceGroupName, managedInstanceName, encryptionProtectorName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            encryptionProtectorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceEncryptionProtectorInner> getAsync(String resourceGroupName, String managedInstanceName) {
+    public Mono<ManagedInstanceEncryptionProtectorInner> getAsync(
+        String resourceGroupName, String managedInstanceName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName)
-            .flatMap((SimpleResponse<ManagedInstanceEncryptionProtectorInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceEncryptionProtectorInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a managed instance encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ManagedInstanceEncryptionProtectorInner get(String resourceGroupName, String managedInstanceName) {
@@ -259,78 +378,123 @@ public final class ManagedInstanceEncryptionProtectorsInner {
 
     /**
      * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters The managed instance encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
         final String encryptionProtectorName = "current";
         final String apiVersion = "2017-10-01-preview";
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, encryptionProtectorName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            encryptionProtectorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters The managed instance encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
-        return this.client.<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedInstanceEncryptionProtectorInner.class, ManagedInstanceEncryptionProtectorInner.class)
+    public Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters);
+        return this
+            .client
+            .<ManagedInstanceEncryptionProtectorInner, ManagedInstanceEncryptionProtectorInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedInstanceEncryptionProtectorInner.class,
+                ManagedInstanceEncryptionProtectorInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters The managed instance encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner createOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
+    public ManagedInstanceEncryptionProtectorInner createOrUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginRevalidateWithResponseAsync(String resourceGroupName, String managedInstanceName) {
         final String encryptionProtectorName = "current";
         final String apiVersion = "2017-10-01-preview";
-        return service.beginRevalidate(this.client.getHost(), resourceGroupName, managedInstanceName, encryptionProtectorName, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginRevalidate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            encryptionProtectorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginRevalidateAsync(String resourceGroupName, String managedInstanceName) {
@@ -340,9 +504,10 @@ public final class ManagedInstanceEncryptionProtectorsInner {
 
     /**
      * Revalidates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -354,75 +519,104 @@ public final class ManagedInstanceEncryptionProtectorsInner {
 
     /**
      * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters The managed instance encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
+    public Mono<SimpleResponse<ManagedInstanceEncryptionProtectorInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
         final String encryptionProtectorName = "current";
         final String apiVersion = "2017-10-01-preview";
-        return service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, managedInstanceName, encryptionProtectorName, this.client.getSubscriptionId(), apiVersion, parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            managedInstanceName,
+                            encryptionProtectorName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters The managed instance encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstanceEncryptionProtectorInner> beginCreateOrUpdateAsync(String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
+    public Mono<ManagedInstanceEncryptionProtectorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters)
-            .flatMap((SimpleResponse<ManagedInstanceEncryptionProtectorInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedInstanceEncryptionProtectorInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates an existing encryption protector.
-     * 
-     * @param resourceGroupName 
-     * @param managedInstanceName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
      * @param parameters The managed instance encryption protector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the managed instance encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedInstanceEncryptionProtectorInner beginCreateOrUpdate(String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
+    public ManagedInstanceEncryptionProtectorInner beginCreateOrUpdate(
+        String resourceGroupName, String managedInstanceName, ManagedInstanceEncryptionProtectorInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, managedInstanceName, parameters).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of managed instance encryption protectors.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextSinglePageAsync(String nextLink) {
-        return service.listByInstanceNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+    public Mono<PagedResponse<ManagedInstanceEncryptionProtectorInner>> listByInstanceNextSinglePageAsync(
+        String nextLink) {
+        return FluxUtil
+            .withContext(context -> service.listByInstanceNext(nextLink, context))
+            .<PagedResponse<ManagedInstanceEncryptionProtectorInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

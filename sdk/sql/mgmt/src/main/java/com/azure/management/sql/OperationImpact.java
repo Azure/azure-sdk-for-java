@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OperationImpact model.
- */
+/** The OperationImpact model. */
 @Immutable
 public final class OperationImpact {
     /*
@@ -38,7 +36,7 @@ public final class OperationImpact {
 
     /**
      * Get the name property: The name of the impact dimension.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -46,9 +44,8 @@ public final class OperationImpact {
     }
 
     /**
-     * Get the unit property: The unit in which estimated impact to dimension
-     * is measured.
-     * 
+     * Get the unit property: The unit in which estimated impact to dimension is measured.
+     *
      * @return the unit value.
      */
     public String unit() {
@@ -57,7 +54,7 @@ public final class OperationImpact {
 
     /**
      * Get the changeValueAbsolute property: The absolute impact to dimension.
-     * 
+     *
      * @return the changeValueAbsolute value.
      */
     public Double changeValueAbsolute() {
@@ -65,9 +62,8 @@ public final class OperationImpact {
     }
 
     /**
-     * Get the changeValueRelative property: The relative impact to dimension
-     * (null if not applicable).
-     * 
+     * Get the changeValueRelative property: The relative impact to dimension (null if not applicable).
+     *
      * @return the changeValueRelative value.
      */
     public Double changeValueRelative() {

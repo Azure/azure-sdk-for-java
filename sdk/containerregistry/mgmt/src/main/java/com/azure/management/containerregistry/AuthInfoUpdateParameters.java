@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AuthInfoUpdateParameters model.
- */
+/** The AuthInfoUpdateParameters model. */
 @Fluent
 public final class AuthInfoUpdateParameters {
     /*
@@ -44,7 +42,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Get the tokenType property: The type of Auth token.
-     * 
+     *
      * @return the tokenType value.
      */
     public TokenType tokenType() {
@@ -53,7 +51,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the tokenType property: The type of Auth token.
-     * 
+     *
      * @param tokenType the tokenType value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -63,9 +61,8 @@ public final class AuthInfoUpdateParameters {
     }
 
     /**
-     * Get the token property: The access token used to access the source
-     * control provider.
-     * 
+     * Get the token property: The access token used to access the source control provider.
+     *
      * @return the token value.
      */
     public String token() {
@@ -73,9 +70,8 @@ public final class AuthInfoUpdateParameters {
     }
 
     /**
-     * Set the token property: The access token used to access the source
-     * control provider.
-     * 
+     * Set the token property: The access token used to access the source control provider.
+     *
      * @param token the token value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -85,9 +81,8 @@ public final class AuthInfoUpdateParameters {
     }
 
     /**
-     * Get the refreshToken property: The refresh token used to refresh the
-     * access token.
-     * 
+     * Get the refreshToken property: The refresh token used to refresh the access token.
+     *
      * @return the refreshToken value.
      */
     public String refreshToken() {
@@ -95,9 +90,8 @@ public final class AuthInfoUpdateParameters {
     }
 
     /**
-     * Set the refreshToken property: The refresh token used to refresh the
-     * access token.
-     * 
+     * Set the refreshToken property: The refresh token used to refresh the access token.
+     *
      * @param refreshToken the refreshToken value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -108,7 +102,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Get the scope property: The scope of the access token.
-     * 
+     *
      * @return the scope value.
      */
     public String scope() {
@@ -117,7 +111,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the scope property: The scope of the access token.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -127,9 +121,8 @@ public final class AuthInfoUpdateParameters {
     }
 
     /**
-     * Get the expiresIn property: Time in seconds that the token remains
-     * valid.
-     * 
+     * Get the expiresIn property: Time in seconds that the token remains valid.
+     *
      * @return the expiresIn value.
      */
     public Integer expiresIn() {
@@ -137,9 +130,8 @@ public final class AuthInfoUpdateParameters {
     }
 
     /**
-     * Set the expiresIn property: Time in seconds that the token remains
-     * valid.
-     * 
+     * Set the expiresIn property: Time in seconds that the token remains valid.
+     *
      * @param expiresIn the expiresIn value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */

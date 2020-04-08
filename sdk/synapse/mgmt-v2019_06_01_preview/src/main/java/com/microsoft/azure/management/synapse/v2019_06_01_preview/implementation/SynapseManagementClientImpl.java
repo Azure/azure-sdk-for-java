@@ -473,6 +473,149 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The IntegrationRuntimesInner object to access its operations.
+     */
+    private IntegrationRuntimesInner integrationRuntimes;
+
+    /**
+     * Gets the IntegrationRuntimesInner object to access its operations.
+     * @return the IntegrationRuntimesInner object.
+     */
+    public IntegrationRuntimesInner integrationRuntimes() {
+        return this.integrationRuntimes;
+    }
+
+    /**
+     * The IntegrationRuntimeNodeIpAddressOperationsInner object to access its operations.
+     */
+    private IntegrationRuntimeNodeIpAddressOperationsInner integrationRuntimeNodeIpAddressOperations;
+
+    /**
+     * Gets the IntegrationRuntimeNodeIpAddressOperationsInner object to access its operations.
+     * @return the IntegrationRuntimeNodeIpAddressOperationsInner object.
+     */
+    public IntegrationRuntimeNodeIpAddressOperationsInner integrationRuntimeNodeIpAddressOperations() {
+        return this.integrationRuntimeNodeIpAddressOperations;
+    }
+
+    /**
+     * The IntegrationRuntimeObjectMetadatasInner object to access its operations.
+     */
+    private IntegrationRuntimeObjectMetadatasInner integrationRuntimeObjectMetadatas;
+
+    /**
+     * Gets the IntegrationRuntimeObjectMetadatasInner object to access its operations.
+     * @return the IntegrationRuntimeObjectMetadatasInner object.
+     */
+    public IntegrationRuntimeObjectMetadatasInner integrationRuntimeObjectMetadatas() {
+        return this.integrationRuntimeObjectMetadatas;
+    }
+
+    /**
+     * The IntegrationRuntimeNodesInner object to access its operations.
+     */
+    private IntegrationRuntimeNodesInner integrationRuntimeNodes;
+
+    /**
+     * Gets the IntegrationRuntimeNodesInner object to access its operations.
+     * @return the IntegrationRuntimeNodesInner object.
+     */
+    public IntegrationRuntimeNodesInner integrationRuntimeNodes() {
+        return this.integrationRuntimeNodes;
+    }
+
+    /**
+     * The IntegrationRuntimeCredentialsInner object to access its operations.
+     */
+    private IntegrationRuntimeCredentialsInner integrationRuntimeCredentials;
+
+    /**
+     * Gets the IntegrationRuntimeCredentialsInner object to access its operations.
+     * @return the IntegrationRuntimeCredentialsInner object.
+     */
+    public IntegrationRuntimeCredentialsInner integrationRuntimeCredentials() {
+        return this.integrationRuntimeCredentials;
+    }
+
+    /**
+     * The IntegrationRuntimeConnectionInfosInner object to access its operations.
+     */
+    private IntegrationRuntimeConnectionInfosInner integrationRuntimeConnectionInfos;
+
+    /**
+     * Gets the IntegrationRuntimeConnectionInfosInner object to access its operations.
+     * @return the IntegrationRuntimeConnectionInfosInner object.
+     */
+    public IntegrationRuntimeConnectionInfosInner integrationRuntimeConnectionInfos() {
+        return this.integrationRuntimeConnectionInfos;
+    }
+
+    /**
+     * The IntegrationRuntimeAuthKeysOperationsInner object to access its operations.
+     */
+    private IntegrationRuntimeAuthKeysOperationsInner integrationRuntimeAuthKeysOperations;
+
+    /**
+     * Gets the IntegrationRuntimeAuthKeysOperationsInner object to access its operations.
+     * @return the IntegrationRuntimeAuthKeysOperationsInner object.
+     */
+    public IntegrationRuntimeAuthKeysOperationsInner integrationRuntimeAuthKeysOperations() {
+        return this.integrationRuntimeAuthKeysOperations;
+    }
+
+    /**
+     * The IntegrationRuntimeMonitoringDatasInner object to access its operations.
+     */
+    private IntegrationRuntimeMonitoringDatasInner integrationRuntimeMonitoringDatas;
+
+    /**
+     * Gets the IntegrationRuntimeMonitoringDatasInner object to access its operations.
+     * @return the IntegrationRuntimeMonitoringDatasInner object.
+     */
+    public IntegrationRuntimeMonitoringDatasInner integrationRuntimeMonitoringDatas() {
+        return this.integrationRuntimeMonitoringDatas;
+    }
+
+    /**
+     * The IntegrationRuntimeStatusOperationsInner object to access its operations.
+     */
+    private IntegrationRuntimeStatusOperationsInner integrationRuntimeStatusOperations;
+
+    /**
+     * Gets the IntegrationRuntimeStatusOperationsInner object to access its operations.
+     * @return the IntegrationRuntimeStatusOperationsInner object.
+     */
+    public IntegrationRuntimeStatusOperationsInner integrationRuntimeStatusOperations() {
+        return this.integrationRuntimeStatusOperations;
+    }
+
+    /**
+     * The PrivateLinkResourcesInner object to access its operations.
+     */
+    private PrivateLinkResourcesInner privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesInner object to access its operations.
+     * @return the PrivateLinkResourcesInner object.
+     */
+    public PrivateLinkResourcesInner privateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsInner object to access its operations.
+     */
+    private PrivateEndpointConnectionsInner privateEndpointConnections;
+
+    /**
+     * Gets the PrivateEndpointConnectionsInner object to access its operations.
+     * @return the PrivateEndpointConnectionsInner object.
+     */
+    public PrivateEndpointConnectionsInner privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Initializes an instance of SynapseManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -533,6 +676,17 @@ public class SynapseManagementClientImpl extends AzureServiceClient {
         this.workspaces = new WorkspacesInner(restClient().retrofit(), this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsInner(restClient().retrofit(), this);
         this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsInner(restClient().retrofit(), this);
+        this.integrationRuntimes = new IntegrationRuntimesInner(restClient().retrofit(), this);
+        this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsInner(restClient().retrofit(), this);
+        this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasInner(restClient().retrofit(), this);
+        this.integrationRuntimeNodes = new IntegrationRuntimeNodesInner(restClient().retrofit(), this);
+        this.integrationRuntimeCredentials = new IntegrationRuntimeCredentialsInner(restClient().retrofit(), this);
+        this.integrationRuntimeConnectionInfos = new IntegrationRuntimeConnectionInfosInner(restClient().retrofit(), this);
+        this.integrationRuntimeAuthKeysOperations = new IntegrationRuntimeAuthKeysOperationsInner(restClient().retrofit(), this);
+        this.integrationRuntimeMonitoringDatas = new IntegrationRuntimeMonitoringDatasInner(restClient().retrofit(), this);
+        this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsInner(restClient().retrofit(), this);
+        this.privateLinkResources = new PrivateLinkResourcesInner(restClient().retrofit(), this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

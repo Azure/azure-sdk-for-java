@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DatabaseUsageListResult model.
- */
+/** The DatabaseUsageListResult model. */
 @Fluent
 public final class DatabaseUsageListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class DatabaseUsageListResultInner {
 
     /**
      * Get the value property: The list of database usages for the database.
-     * 
+     *
      * @return the value value.
      */
     public List<DatabaseUsageInner> value() {
@@ -30,7 +28,7 @@ public final class DatabaseUsageListResultInner {
 
     /**
      * Set the value property: The list of database usages for the database.
-     * 
+     *
      * @param value the value value to set.
      * @return the DatabaseUsageListResultInner object itself.
      */

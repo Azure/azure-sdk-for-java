@@ -2,6 +2,7 @@
 
 ## 1.5.0-beta.1 (Unreleased)
 
+- Fixed issue where `FluxUtil.toReactorContext` would include `null` values which aren't allowed in Reactor's `Context`.
 
 ## 1.4.0 (2020-04-03)
 

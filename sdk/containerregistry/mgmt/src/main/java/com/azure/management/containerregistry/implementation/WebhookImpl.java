@@ -18,22 +18,17 @@ import com.azure.management.containerregistry.models.WebhooksInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Webhook.
- */
-public class WebhookImpl
-    extends ExternalChildResourceImpl<Webhook, WebhookInner, RegistryImpl, Registry>
-    implements
-        Webhook,
+/** Implementation for Webhook. */
+public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner, RegistryImpl, Registry>
+    implements Webhook,
         Webhook.WebhookDefinition<Registry.DefinitionStages.WithCreate>,
         Webhook.UpdateDefinition<Registry.Update>,
         Webhook.UpdateResource<Registry.Update>,
@@ -51,7 +46,6 @@ public class WebhookImpl
     private String resourceGroupName;
     private String registryName;
 
-
     /**
      * Creates an instance of external child resource in-memory.
      *
@@ -60,7 +54,8 @@ public class WebhookImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param containerRegistryManager reference to the container registry manager that accesses web hook operations
      */
-    WebhookImpl(String name, RegistryImpl parent, WebhookInner innerObject, ContainerRegistryManager containerRegistryManager) {
+    WebhookImpl(
+        String name, RegistryImpl parent, WebhookInner innerObject, ContainerRegistryManager containerRegistryManager) {
         super(name, parent, innerObject);
         this.containerRegistryManager = containerRegistryManager;
         if (parent != null) {
@@ -80,7 +75,12 @@ public class WebhookImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param containerRegistryManager reference to the container registry manager that accesses web hook operations
      */
-    WebhookImpl(String resourceGroupName, String registryName, String name, WebhookInner innerObject, ContainerRegistryManager containerRegistryManager) {
+    WebhookImpl(
+        String resourceGroupName,
+        String registryName,
+        String name,
+        WebhookInner innerObject,
+        ContainerRegistryManager containerRegistryManager) {
         super(name, null, innerObject);
         this.containerRegistryManager = containerRegistryManager;
         this.resourceGroupName = resourceGroupName;
@@ -161,43 +161,40 @@ public class WebhookImpl
 
     @Override
     public void enable() {
-        this.update()
-            .enabled(true)
-            .apply();
+        this.update().enabled(true).apply();
     }
 
     @Override
     public Mono<Void> enableAsync() {
-        return this.update()
-            .enabled(true)
-            .applyAsync()
-            .then(Mono.empty());
+        return this.update().enabled(true).applyAsync().then(Mono.empty());
     }
 
     @Override
     public void disable() {
-        this.update()
-            .enabled(false)
-            .apply();
+        this.update().enabled(false).apply();
     }
 
     @Override
     public Mono<Void> disableAsync() {
-        return this.update()
-            .enabled(false)
-            .applyAsync()
-            .then(Mono.empty());
+        return this.update().enabled(false).applyAsync().then(Mono.empty());
     }
 
     @Override
     public String ping() {
-        return this.containerRegistryManager.inner().webhooks()
-            .ping(this.resourceGroupName, this.registryName, name()).getId();
+        return this
+            .containerRegistryManager
+            .inner()
+            .webhooks()
+            .ping(this.resourceGroupName, this.registryName, name())
+            .getId();
     }
 
     @Override
     public Mono<String> pingAsync() {
-        return this.containerRegistryManager.inner().webhooks()
+        return this
+            .containerRegistryManager
+            .inner()
+            .webhooks()
             .pingAsync(this.resourceGroupName, this.registryName, name())
             .map(eventInfoInner -> eventInfoInner.getId());
     }
@@ -211,7 +208,10 @@ public class WebhookImpl
     public PagedFlux<WebhookEventInfo> listEventsAsync() {
         final WebhookImpl self = this;
 
-        return this.containerRegistryManager.inner().webhooks()
+        return this
+            .containerRegistryManager
+            .inner()
+            .webhooks()
             .listEventsAsync(self.resourceGroupName, self.registryName, self.name())
             .mapPage(inner -> new WebhookEventInfoImpl(inner));
     }
@@ -220,16 +220,17 @@ public class WebhookImpl
     public Mono<Webhook> createResourceAsync() {
         final WebhookImpl self = this;
         if (webhookCreateParametersInner != null) {
-            return this.containerRegistryManager.inner().webhooks()
-                .createAsync(self.resourceGroupName,
-                    this.registryName,
-                    this.name(),
-                    this.webhookCreateParametersInner)
-                .map(inner -> {
-                    self.webhookCreateParametersInner = null;
-                    self.setInner(inner);
-                    return self;
-                })
+            return this
+                .containerRegistryManager
+                .inner()
+                .webhooks()
+                .createAsync(self.resourceGroupName, this.registryName, this.name(), this.webhookCreateParametersInner)
+                .map(
+                    inner -> {
+                        self.webhookCreateParametersInner = null;
+                        self.setInner(inner);
+                        return self;
+                    })
                 .flatMap(webhook -> self.setCallbackConfigAsync());
         } else {
             return Mono.just(this);
@@ -238,35 +239,43 @@ public class WebhookImpl
 
     WebhookImpl setCallbackConfig(CallbackConfigInner callbackConfigInner) {
         this.serviceUri = callbackConfigInner.serviceUri();
-        this.customHeaders = callbackConfigInner.customHeaders() != null ? callbackConfigInner.customHeaders() : new HashMap<String, String>();
+        this.customHeaders =
+            callbackConfigInner.customHeaders() != null
+                ? callbackConfigInner.customHeaders()
+                : new HashMap<String, String>();
         return this;
     }
 
     Mono<Webhook> setCallbackConfigAsync() {
         final WebhookImpl self = this;
 
-        return this.containerRegistryManager.inner().webhooks()
+        return this
+            .containerRegistryManager
+            .inner()
+            .webhooks()
             .getCallbackConfigAsync(self.resourceGroupName, self.registryName, self.name())
-            .map(callbackConfigInner -> {
-                setCallbackConfig(callbackConfigInner);
-                return self;
-            });
+            .map(
+                callbackConfigInner -> {
+                    setCallbackConfig(callbackConfigInner);
+                    return self;
+                });
     }
 
     @Override
     public Mono<Webhook> updateResourceAsync() {
         final WebhookImpl self = this;
         if (webhookUpdateParametersInner != null) {
-            return this.containerRegistryManager.inner().webhooks()
-                .updateAsync(self.resourceGroupName,
-                    self.registryName,
-                    self.name(),
-                    self.webhookUpdateParametersInner)
-                .map(inner -> {
-                    self.setInner(inner);
-                    self.webhookUpdateParametersInner = null;
-                    return self;
-                })
+            return this
+                .containerRegistryManager
+                .inner()
+                .webhooks()
+                .updateAsync(self.resourceGroupName, self.registryName, self.name(), self.webhookUpdateParametersInner)
+                .map(
+                    inner -> {
+                        self.setInner(inner);
+                        self.webhookUpdateParametersInner = null;
+                        return self;
+                    })
                 .flatMap(webhook -> self.setCallbackConfigAsync());
         } else {
             return Mono.just(this);
@@ -275,23 +284,24 @@ public class WebhookImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.containerRegistryManager.inner().webhooks()
-            .deleteAsync(this.resourceGroupName,
-            this.registryName,
-            this.name());
+        return this
+            .containerRegistryManager
+            .inner()
+            .webhooks()
+            .deleteAsync(this.resourceGroupName, this.registryName, this.name());
     }
 
     @Override
     protected Mono<WebhookInner> getInnerAsync() {
         final WebhookImpl self = this;
         final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
-        return webhooksInner.getAsync(this.resourceGroupName,
-            this.registryName,
-            this.name())
-            .flatMap(webhookInner -> {
-                self.setInner(webhookInner);
-                return webhooksInner.getCallbackConfigAsync(self.resourceGroupName, self.registryName, self.name());
-            })
+        return webhooksInner
+            .getAsync(this.resourceGroupName, this.registryName, this.name())
+            .flatMap(
+                webhookInner -> {
+                    self.setInner(webhookInner);
+                    return webhooksInner.getCallbackConfigAsync(self.resourceGroupName, self.registryName, self.name());
+                })
             .map(callbackConfigInner -> setCallbackConfig(callbackConfigInner).inner());
     }
 
@@ -328,7 +338,6 @@ public class WebhookImpl
 
         return this;
     }
-
 
     @Override
     public WebhookImpl withTags(Map<String, String> tags) {

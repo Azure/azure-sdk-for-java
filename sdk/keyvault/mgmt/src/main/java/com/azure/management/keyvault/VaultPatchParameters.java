@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The VaultPatchParameters model.
- */
+/** The VaultPatchParameters model. */
 @Fluent
 public final class VaultPatchParameters {
     /*
@@ -27,7 +25,7 @@ public final class VaultPatchParameters {
 
     /**
      * Get the tags property: The tags that will be assigned to the key vault.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -36,7 +34,7 @@ public final class VaultPatchParameters {
 
     /**
      * Set the tags property: The tags that will be assigned to the key vault.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the VaultPatchParameters object itself.
      */
@@ -47,7 +45,7 @@ public final class VaultPatchParameters {
 
     /**
      * Get the properties property: Properties of the vault.
-     * 
+     *
      * @return the properties value.
      */
     public VaultPatchProperties properties() {
@@ -56,7 +54,7 @@ public final class VaultPatchParameters {
 
     /**
      * Set the properties property: Properties of the vault.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the VaultPatchParameters object itself.
      */
