@@ -21,7 +21,7 @@ public interface Workbooks extends SupportsCreating<Workbook.DefinitionStages.Bl
     /**
      * Get a single workbook by its resourceName.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -31,7 +31,7 @@ public interface Workbooks extends SupportsCreating<Workbook.DefinitionStages.Bl
     /**
      * Delete a workbook.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -41,7 +41,7 @@ public interface Workbooks extends SupportsCreating<Workbook.DefinitionStages.Bl
     /**
      * Get all Workbooks defined within a specified resource group and category.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param category Category of workbook to return. Possible values include: 'workbook', 'TSG', 'performance', 'retention'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
