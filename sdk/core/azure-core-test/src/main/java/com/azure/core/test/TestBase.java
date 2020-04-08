@@ -48,12 +48,11 @@ public abstract class TestBase implements BeforeEachCallback {
     private static final String AZURE_TEST_HTTP_CLIENTS_VALUE_NETTY = "netty";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL = "ALL";
     public static final String AZURE_TEST_SERVICE_VERSIONS_VALUE_ROLLING = "rolling";
-    public static final int PLATFORM_COUNT = 6;
     private static final List<String> PLATFORM_LIST = buildPlatformList();
     private static final String HTTP_CLIENT_FROM_ENV =
         Configuration.getGlobalConfiguration().get(AZURE_TEST_HTTP_CLIENTS, "netty");
-    private static final String PLATFORM_LIST_CONFIG_FILE_PATH
-        = "..\\..\\..\\eng\\pipelines\\templates\\variables\\platform-list.cvs";
+    private static final String PLATFORM_LIST_CONFIG_FILE_PATH =
+        "../../../eng/pipelines/templates/variables/platform-list.cvs";
 
     private static TestMode testMode;
 
@@ -177,19 +176,20 @@ public abstract class TestBase implements BeforeEachCallback {
             }
         }
         int offset = getOffset();
+        int platformCount = PLATFORM_LIST.size();
         if (rollingServiceVersion && rollingHttpClient) {
             return IntStream.range(0, argumentsList.size())
-                .filter(n -> n % PLATFORM_COUNT == offset % argumentsList.size())
+                .filter(n -> n % platformCount == offset % argumentsList.size())
                 .mapToObj(argumentsList::get)
                 .map(TestBase::printout);
         } else if (rollingServiceVersion) {
             return IntStream.range(0, argumentsList.size())
-                .filter(n -> (n / httpClientCount) % PLATFORM_COUNT == offset % serviceVersionCount)
+                .filter(n -> (n / httpClientCount) % platformCount == offset % serviceVersionCount)
                 .mapToObj(argumentsList::get)
                 .map(TestBase::printout);
         } else if (rollingHttpClient) {
             return IntStream.range(0, argumentsList.size())
-                .filter(n -> n % httpClientCount % PLATFORM_COUNT  == offset % httpClientCount)
+                .filter(n -> n % httpClientCount % platformCount  == offset % httpClientCount)
                 .mapToObj(argumentsList::get)
                 .map(TestBase::printout);
         }
@@ -297,24 +297,32 @@ public abstract class TestBase implements BeforeEachCallback {
             return 0;
         }
         LocalDate today = LocalDate.now(ZoneId.systemDefault());
-        return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_COUNT;
+        return (today.getDayOfWeek().getValue() + getPlatFormOffset()) % PLATFORM_LIST.size();
     }
 
     private static Integer getPlatFormOffset() {
+        ClientLogger logger = new ClientLogger(TestBase.class);
         String currentOs = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        System.out.println("It is currently running on os: " + currentOs);
+        logger.info("It is currently running on os: " + currentOs);
         String currentJdk = System.getProperty("java.version").toLowerCase(Locale.ROOT);
-        System.out.println("It is using jdk: " + currentJdk);
+        logger.info("It is using jdk: " + currentJdk);
 
         for (int i = 0; i < PLATFORM_LIST.size(); i++) {
-            if (currentOs.toLowerCase(Locale.ROOT).contains(PLATFORM_LIST.get(i).split(",")[0].trim()
-                .toLowerCase(Locale.ROOT)) && currentJdk.toLowerCase(Locale.ROOT).contains(
-                    PLATFORM_LIST.get(i).split(",")[1].trim().toLowerCase(Locale.ROOT))) {
+            if (isCurrentPlatformIncluded(currentOs, currentJdk, i)) {
                 return i;
             }
         }
         throw new RuntimeException(String.format("Not running on the expected platform. os: %s, jdk: %s",
             currentOs, currentJdk));
+    }
+
+    private static boolean isCurrentPlatformIncluded(String currentOs, String currentJdk, int pos) {
+        boolean flag = currentOs.toLowerCase(Locale.ROOT).startsWith(PLATFORM_LIST.get(pos).split(",")[0].trim()
+            .toLowerCase(Locale.ROOT));
+        flag = flag && Arrays.stream(PLATFORM_LIST.get(pos).split(",")[1].trim().split("\\|")).anyMatch(
+            comparedJdk -> currentJdk.toLowerCase(Locale.ROOT).startsWith(comparedJdk.trim().toLowerCase(Locale.ROOT))
+        );
+        return  flag;
     }
 
     private static List<String> buildPlatformList() {
