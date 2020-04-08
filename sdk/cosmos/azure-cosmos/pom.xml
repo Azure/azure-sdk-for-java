@@ -82,7 +82,26 @@ Licensed under the MIT License.
         </exclusion>
       </exclusions>
     </dependency>
-
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporters-jaeger</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-okhttp</artifactId>
+      <version>1.23.0</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>0.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <version>1.0.0-beta.4</version>
+    </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -119,7 +138,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -333,6 +352,9 @@ Licensed under the MIT License.
                     <include>io.netty:netty-transport-native-epoll</include>
 
                     <include>com.google.code.findbugs:jsr305</include>
+                    <include>io.opentelemetry:opentelemetry-sdk</include>
+                    <include>io.opentelemetry:opentelemetry-exporters-jaeger</include>
+                    <include>io.grpc:grpc-okhttp</include>
                   </includes>
                 </bannedDependencies>
               </rules>

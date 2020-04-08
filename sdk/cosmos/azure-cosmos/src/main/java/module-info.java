@@ -3,8 +3,7 @@
 
 module com.azure.cosmos {
 
-    requires transitive com.azure.core;
-
+    requires transitive azure.core;
     requires com.fasterxml.jackson.datatype.jsr310;
     requires io.netty.transport;
     requires io.netty.handler;
@@ -24,13 +23,16 @@ module com.azure.cosmos {
     requires jdk.management;
     requires micrometer.core;
     requires java.logging;
+    requires reactor.core;
+    requires org.reactivestreams;
+    requires com.fasterxml.jackson.databind;
 
     // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
 
     // exporting some packages specifically for Jackson
-    opens com.azure.cosmos to com.fasterxml.jackson.databind;
+   // opens com.azure.cosmos to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation to com.fasterxml.jackson.databind, java.logging;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;

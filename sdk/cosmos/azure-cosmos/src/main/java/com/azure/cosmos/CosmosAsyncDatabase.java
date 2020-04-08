@@ -2,10 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
+import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncUserResponse;
@@ -16,12 +21,19 @@ import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -76,8 +88,48 @@ public class CosmosAsyncDatabase {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        return getDocClientWrapper().readDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+        final CosmosDatabaseRequestOptions  requestOptions = options;
+        return withContext(context -> read(requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
+    }
+
+    private Mono<CosmosAsyncDatabaseResponse> read(CosmosDatabaseRequestOptions options, Context context) {
+        final boolean isTracingEnabled = client.getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "read." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, client.getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return getDocClientWrapper().readDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options)).doOnSubscribe(ignoredValue -> {
+            if (isTracingEnabled) {
+                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                if (!callerFunc.isPresent()) {
+                    parentContext.set(client.getTracerProvider().startSpan(spanName,
+                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                }
+            }
+        }).doOnSuccess(signal -> {
+            if (isTracingEnabled) {
+                client.getTracerProvider().endSpan(parentContext.get(), Signal.complete());
+            }
+        }).doOnError(throwable -> {
+            if (isTracingEnabled) {
+                client.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable));
+            }
+        }).map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
     }
 
     /**
@@ -107,8 +159,49 @@ public class CosmosAsyncDatabase {
         if (options == null) {
             options = new CosmosDatabaseRequestOptions();
         }
-        return getDocClientWrapper().deleteDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
+
+        final CosmosDatabaseRequestOptions requestOptions = options;
+        return withContext(context -> delete(requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
+    }
+
+    public Mono<CosmosAsyncDatabaseResponse> delete(CosmosDatabaseRequestOptions options, Context context) {
+        final boolean isTracingEnabled = client.getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "delete." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, client.getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return getDocClientWrapper().deleteDatabase(getLink(), ModelBridgeInternal.toRequestOptions(options)).doOnSubscribe(ignoredValue -> {
+            if (isTracingEnabled) {
+                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                if (!callerFunc.isPresent()) {
+                    parentContext.set(client.getTracerProvider().startSpan(spanName,
+                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                }
+            }
+        }).doOnSuccess(signal -> {
+            if (isTracingEnabled) {
+                client.getTracerProvider().endSpan(parentContext.get(), Signal.complete());
+            }
+        }).doOnError(throwable -> {
+            if (isTracingEnabled) {
+                client.getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable));
+            }
+        }).map(response -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(response, getClient())).single();
     }
 
     /* CosmosAsyncContainer operations */
@@ -177,10 +270,21 @@ public class CosmosAsyncDatabase {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
+
         return getDocClientWrapper()
                    .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
+    }
+
+    private Mono<CosmosAsyncContainerResponse> createContainer(
+        CosmosContainerProperties containerProperties,
+        CosmosContainerRequestOptions options,
+        Context Context) {
+        return getDocClientWrapper()
+            .createCollection(this.getLink(), ModelBridgeInternal.getV2Collection(containerProperties),
+                ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, this)).single();
     }
 
     /**
