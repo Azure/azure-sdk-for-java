@@ -19,6 +19,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetStatisticsResponse;
@@ -100,6 +101,11 @@ public final class ServicesImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ServicesSubmitBatchResponse> submitBatch(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+
+        @Get("")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<ServicesFilterBlobsResponse> filterBlobs(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("where") String where, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -320,5 +326,41 @@ public final class ServicesImpl {
     public Mono<ServicesSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
         final String comp = "batch";
         return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, comp, context);
+    }
+
+    /**
+     * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search expression.  Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServicesFilterBlobsResponse> filterBlobsWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String where = null;
+        final String marker = null;
+        final Integer maxresults = null;
+        final String comp = "blobs";
+        return service.filterBlobs(this.client.getUrl(), timeout, this.client.getVersion(), requestId, where, marker, maxresults, comp, context);
+    }
+
+    /**
+     * The Filter Blobs operation enables callers to list blobs across all containers whose tags match a given search expression.  Filter blobs searches across all containers within a storage account but can be scoped within the expression to a single container.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param where Filters the results to return only to return only blobs whose tags match the specified expression.
+     * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ServicesFilterBlobsResponse> filterBlobsWithRestResponseAsync(Integer timeout, String requestId, String where, String marker, Integer maxresults, Context context) {
+        final String comp = "blobs";
+        return service.filterBlobs(this.client.getUrl(), timeout, this.client.getVersion(), requestId, where, marker, maxresults, comp, context);
     }
 }

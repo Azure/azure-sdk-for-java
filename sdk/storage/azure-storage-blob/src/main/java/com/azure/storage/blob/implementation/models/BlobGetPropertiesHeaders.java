@@ -316,6 +316,27 @@ public final class BlobGetPropertiesHeaders {
     private DateTimeRfc1123 accessTierChangeTime;
 
     /*
+     * A DateTime value returned by the service that uniquely identifies the
+     * blob. The value of this header indicates the blob version, and may be
+     * used in subsequent requests to access this version of the blob.
+     */
+    @JsonProperty(value = "x-ms-version-id")
+    private String versionId;
+
+    /*
+     * The value of this header indicates whether version of this blob is a
+     * current version, see also x-ms-version-id header.
+     */
+    @JsonProperty(value = "x-ms-is-current-version")
+    private Boolean isCurrentVersion;
+
+    /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -1265,6 +1286,76 @@ public final class BlobGetPropertiesHeaders {
         } else {
             this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The value of this header indicates
+     * whether version of this blob is a current version, see also
+     * x-ms-version-id header.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     * Set the isCurrentVersion property: The value of this header indicates
+     * whether version of this blob is a current version, see also
+     * x-ms-version-id header.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobGetPropertiesHeaders object itself.
+     */
+    public BlobGetPropertiesHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 

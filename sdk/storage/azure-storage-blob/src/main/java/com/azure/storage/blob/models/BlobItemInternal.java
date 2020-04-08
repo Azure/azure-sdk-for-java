@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
-public final class BlobItem {
+public final class BlobItemInternal {
     /*
      * The name property.
      */
@@ -34,10 +34,22 @@ public final class BlobItem {
     private String snapshot;
 
     /*
+     * The versionId property.
+     */
+    @JsonProperty(value = "VersionId", required = true)
+    private String versionId;
+
+    /*
+     * The isCurrentVersion property.
+     */
+    @JsonProperty(value = "IsCurrentVersion")
+    private Boolean isCurrentVersion;
+
+    /*
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
-    private BlobItemProperties properties;
+    private BlobItemInternalProperties properties;
 
     /*
      * The metadata property.
@@ -46,10 +58,10 @@ public final class BlobItem {
     private Map<String, String> metadata;
 
     /*
-     * The versionId property.
+     * The blobTags property.
      */
-    @JsonProperty(value = "VersionId", required = true)
-    private String versionId;
+    @JsonProperty(value = "Tags")
+    private BlobTags blobTags;
 
     /*
      * The isPrefix property.
@@ -70,9 +82,9 @@ public final class BlobItem {
      * Set the name property: The name property.
      *
      * @param name the name value to set.
-     * @return the BlobItem object itself.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setName(String name) {
+    public BlobItemInternal setName(String name) {
         this.name = name;
         return this;
     }
@@ -90,9 +102,9 @@ public final class BlobItem {
      * Set the deleted property: The deleted property.
      *
      * @param deleted the deleted value to set.
-     * @return the BlobItem object itself.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setDeleted(boolean deleted) {
+    public BlobItemInternal setDeleted(boolean deleted) {
         this.deleted = deleted;
         return this;
     }
@@ -110,10 +122,50 @@ public final class BlobItem {
      * Set the snapshot property: The snapshot property.
      *
      * @param snapshot the snapshot value to set.
-     * @return the BlobItem object itself.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setSnapshot(String snapshot) {
+    public BlobItemInternal setSnapshot(String snapshot) {
         this.snapshot = snapshot;
+        return this;
+    }
+
+    /**
+     * Get the versionId property: The versionId property.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: The versionId property.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
+     * Get the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @return the isCurrentVersion value.
+     */
+    public Boolean isCurrentVersion() {
+        return this.isCurrentVersion;
+    }
+
+    /**
+     * Set the isCurrentVersion property: The isCurrentVersion property.
+     *
+     * @param isCurrentVersion the isCurrentVersion value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setIsCurrentVersion(Boolean isCurrentVersion) {
+        this.isCurrentVersion = isCurrentVersion;
         return this;
     }
 
@@ -122,7 +174,7 @@ public final class BlobItem {
      *
      * @return the properties value.
      */
-    public BlobItemProperties getProperties() {
+    public BlobItemInternalProperties getProperties() {
         return this.properties;
     }
 
@@ -130,9 +182,9 @@ public final class BlobItem {
      * Set the properties property: The properties property.
      *
      * @param properties the properties value to set.
-     * @return the BlobItem object itself.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setProperties(BlobItemProperties properties) {
+    public BlobItemInternal setProperties(BlobItemInternalProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -150,30 +202,30 @@ public final class BlobItem {
      * Set the metadata property: The metadata property.
      *
      * @param metadata the metadata value to set.
-     * @return the BlobItem object itself.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setMetadata(Map<String, String> metadata) {
+    public BlobItemInternal setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
 
     /**
-     * Get the versionId property: The versionId property.
+     * Get the blobTags property: The blobTags property.
      *
-     * @return the versionId value.
+     * @return the blobTags value.
      */
-    public String getVersionId() {
-        return this.versionId;
+    public BlobTags getBlobTags() {
+        return this.blobTags;
     }
 
     /**
-     * Set the versionId property: The versionId property.
+     * Set the blobTags property: The blobTags property.
      *
-     * @param versionId the versionId value to set.
-     * @return the BlobItem object itself.
+     * @param blobTags the blobTags value to set.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setVersionId(String versionId) {
-        this.versionId = versionId;
+    public BlobItemInternal setBlobTags(BlobTags blobTags) {
+        this.blobTags = blobTags;
         return this;
     }
 
@@ -190,9 +242,9 @@ public final class BlobItem {
      * Set the isPrefix property: The isPrefix property.
      *
      * @param isPrefix the isPrefix value to set.
-     * @return the BlobItem object itself.
+     * @return the BlobItemInternal object itself.
      */
-    public BlobItem setIsPrefix(Boolean isPrefix) {
+    public BlobItemInternal setIsPrefix(Boolean isPrefix) {
         this.isPrefix = isPrefix;
         return this;
     }

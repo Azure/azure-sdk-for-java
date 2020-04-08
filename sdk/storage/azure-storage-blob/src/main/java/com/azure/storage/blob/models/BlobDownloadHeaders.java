@@ -219,6 +219,14 @@ public final class BlobDownloadHeaders {
     private String version;
 
     /*
+     * A DateTime value returned by the service that uniquely identifies the
+     * blob. The value of this header indicates the blob version, and may be
+     * used in subsequent requests to access this version of the blob.
+     */
+    @JsonProperty(value = "x-ms-version-id")
+    private String versionId;
+
+    /*
      * Indicates that the service supports requests for partial blob content.
      */
     @JsonProperty(value = "Accept-Ranges")
@@ -272,6 +280,12 @@ public final class BlobDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
     private byte[] blobContentMD5;
+
+    /*
+     * The number of tags associated with the blob
+     */
+    @JsonProperty(value = "x-ms-tag-count")
+    private Long tagCount;
 
     /*
      * If the request is to read a specified range and the
@@ -920,6 +934,32 @@ public final class BlobDownloadHeaders {
     }
 
     /**
+     * Get the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @return the versionId value.
+     */
+    public String getVersionId() {
+        return this.versionId;
+    }
+
+    /**
+     * Set the versionId property: A DateTime value returned by the service
+     * that uniquely identifies the blob. The value of this header indicates
+     * the blob version, and may be used in subsequent requests to access this
+     * version of the blob.
+     *
+     * @param versionId the versionId value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
      * Get the acceptRanges property: Indicates that the service supports
      * requests for partial blob content.
      *
@@ -1095,6 +1135,26 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = CoreUtils.clone(blobContentMD5);
+        return this;
+    }
+
+    /**
+     * Get the tagCount property: The number of tags associated with the blob.
+     *
+     * @return the tagCount value.
+     */
+    public Long getTagCount() {
+        return this.tagCount;
+    }
+
+    /**
+     * Set the tagCount property: The number of tags associated with the blob.
+     *
+     * @param tagCount the tagCount value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setTagCount(Long tagCount) {
+        this.tagCount = tagCount;
         return this;
     }
 
