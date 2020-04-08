@@ -97,7 +97,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param fullyQualifiedNamespace The fully qualified domain name for the Service Bus resource.
      * @param entityPath The name of the topic or queue.
      * @param entityType The type of the Service Bus resource.
-     * @param isSessionEnabled {@code true} if sessions are enabled; {@code false} otherwise.
      * @param receiverOptions Options when receiving messages.
      * @param connectionProcessor The AMQP connection to the Service Bus resource.
      * @param tracerProvider Tracer for telemetry.
@@ -106,9 +105,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        boolean isSessionEnabled, String sessionId, ReceiverOptions receiverOptions,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, MessageLockContainer messageLockContainer, Runnable onClientClose) {
+        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor,
+        TracerProvider tracerProvider, MessageSerializer messageSerializer, MessageLockContainer messageLockContainer,
+        Runnable onClientClose){
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
@@ -122,8 +121,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.receiveMode = receiverOptions.getReceiveMode();
 
         this.entityType = entityType;
-        this.isSessionEnabled = isSessionEnabled;
-        this.sessionId = sessionId;
+        this.isSessionEnabled = receiverOptions.isSessionEnabled();
+        this.sessionId = receiverOptions.getSessionId();
         this.messageLockContainer = messageLockContainer;
         this.onClientClose = onClientClose;
 

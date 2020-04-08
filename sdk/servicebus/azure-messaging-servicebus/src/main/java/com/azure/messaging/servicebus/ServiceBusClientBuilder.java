@@ -606,7 +606,7 @@ public final class ServiceBusClientBuilder {
             final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, !CoreUtils.isNullOrEmpty(sessionId), sessionId, receiverOptions, connectionProcessor,
+                entityType, receiverOptions, connectionProcessor,
                 tracerProvider, messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
         }
 

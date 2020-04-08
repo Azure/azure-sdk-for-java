@@ -159,6 +159,27 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+        boolean isSession, String transferEntityPath, MessagingEntityType entityType) {
+        return createReceiveLink(linkName, entityPath, receiveMode, isSession, null,
+            transferEntityPath, entityType);
+    }
+
+    /**
+     * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
+     * same {@code linkName}. Otherwise, a new link is created and returned.
+     *
+     * @param linkName The name of the link.
+     * @param entityPath The remote address to connect to for the message broker.
+     * @param receiveMode Consumer options to use when creating the link.
+     * @param isSession to use when creating the link.
+     * @param sessionId to use when creating the link.
+     * @param transferEntityPath to use when creating the link.
+     * @param entityType {@link MessagingEntityType} to use when creating the link.
+     *
+     * @return A new or existing receive link that is connected to the given {@code entityPath}.
+     */
+    @Override
+    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         boolean isSession, String sessionId, String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {

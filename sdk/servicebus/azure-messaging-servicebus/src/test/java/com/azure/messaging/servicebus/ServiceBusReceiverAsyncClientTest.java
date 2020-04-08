@@ -149,8 +149,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         messageContainer = new MessageLockContainer();
         consumer = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE,
-            false, null, receiveOptions, connectionProcessor, tracerProvider, messageSerializer,
-            messageContainer, onClientClose);
+            receiveOptions, connectionProcessor, tracerProvider, messageSerializer, messageContainer, onClientClose);
     }
 
     @AfterEach
@@ -233,8 +232,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, null, options, connectionProcessor,
-            tracerProvider, messageSerializer, messageContainer, onClientClose);
+            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor,  tracerProvider,
+            messageSerializer, messageContainer, onClientClose);
 
         final UUID lockToken1 = UUID.randomUUID();
         final UUID lockToken2 = UUID.randomUUID();
@@ -285,8 +284,8 @@ class ServiceBusReceiverAsyncClientTest {
         // Arrange
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH);
         final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, false, null, options, connectionProcessor,
-            tracerProvider, messageSerializer, messageContainer, onClientClose);
+            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, tracerProvider,
+            messageSerializer, messageContainer, onClientClose);
 
         final MessageWithLockToken message = mock(MessageWithLockToken.class);
         final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
@@ -359,8 +358,8 @@ class ServiceBusReceiverAsyncClientTest {
     void completeInReceiveAndDeleteMode() {
         final ReceiverOptions options = new ReceiverOptions(ReceiveMode.RECEIVE_AND_DELETE, PREFETCH);
         ServiceBusReceiverAsyncClient client = new ServiceBusReceiverAsyncClient(NAMESPACE, ENTITY_PATH,
-            MessagingEntityType.QUEUE, false, null, options, connectionProcessor, tracerProvider,
-            messageSerializer, messageContainer, onClientClose);
+            MessagingEntityType.QUEUE, options, connectionProcessor, tracerProvider, messageSerializer,
+            messageContainer, onClientClose);
 
         final String lockToken1 = UUID.randomUUID().toString();
 

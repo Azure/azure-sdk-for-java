@@ -557,8 +557,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         message.setSessionId(SESSION_ID);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
-        sender.send(message).block(TIMEOUT);
-
         // Assert & Act
         StepVerifier.create(sender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
             .assertNext(receivedMessage ->
