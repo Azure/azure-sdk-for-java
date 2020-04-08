@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The VaultListResult model.
- */
+/** The VaultListResult model. */
 @Fluent
 public final class VaultListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class VaultListResultInner {
 
     /**
      * Get the value property: The list of vaults.
-     * 
+     *
      * @return the value value.
      */
     public List<VaultInner> value() {
@@ -36,7 +34,7 @@ public final class VaultListResultInner {
 
     /**
      * Set the value property: The list of vaults.
-     * 
+     *
      * @param value the value value to set.
      * @return the VaultListResultInner object itself.
      */
@@ -47,7 +45,7 @@ public final class VaultListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of vaults.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,7 +54,7 @@ public final class VaultListResultInner {
 
     /**
      * Set the nextLink property: The URL to get the next set of vaults.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the VaultListResultInner object itself.
      */

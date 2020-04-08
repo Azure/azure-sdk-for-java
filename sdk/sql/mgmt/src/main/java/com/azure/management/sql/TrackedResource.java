@@ -9,9 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The TrackedResource model.
- */
+/** The TrackedResource model. */
 @Fluent
 public class TrackedResource extends ProxyResource {
     /*
@@ -28,7 +26,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -37,7 +35,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     * 
+     *
      * @param location the location value to set.
      * @return the TrackedResource object itself.
      */
@@ -48,7 +46,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -57,7 +55,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the TrackedResource object itself.
      */

@@ -10,16 +10,13 @@ import com.azure.management.containerregistry.RegistryDockerTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryDockerTaskStepImpl
-        extends RegistryTaskStepImpl
-        implements
-        RegistryDockerTaskStep,
+class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
+    implements RegistryDockerTaskStep,
         RegistryDockerTaskStep.Definition,
         RegistryDockerTaskStep.Update,
         HasInner<DockerTaskStep> {
@@ -32,7 +29,8 @@ class RegistryDockerTaskStepImpl
         super(taskImpl.inner().step());
         this.inner = new DockerTaskStep();
         if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof DockerTaskStep)) {
-            throw new IllegalArgumentException("Constructor for RegistryDockerTaskStepImpl invoked for class that is not DockerTaskStep");
+            throw new IllegalArgumentException(
+                "Constructor for RegistryDockerTaskStepImpl invoked for class that is not DockerTaskStep");
         }
         this.taskImpl = taskImpl;
         this.dockerTaskStepUpdateParameters = new DockerBuildStepUpdateParameters();
@@ -104,7 +102,6 @@ class RegistryDockerTaskStepImpl
         return this;
     }
 
-
     @Override
     public RegistryDockerTaskStepImpl withCacheEnabled(boolean enabled) {
         if (isInCreateMode()) {
@@ -152,7 +149,6 @@ class RegistryDockerTaskStepImpl
         }
         return this;
     }
-
 
     @Override
     public RegistryTask.DefinitionStages.SourceTriggerDefinition attach() {

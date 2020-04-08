@@ -18,9 +18,7 @@ import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPoli
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
-/**
- * Entry point to Azure compute resource management.
- */
+/** Entry point to Azure compute resource management. */
 public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBManagementClientImpl> {
     private CosmosDBAccountsImpl databaseAccounts;
     /**
@@ -44,10 +42,11 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
                 .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), subscriptionId);
+                .buildClient(),
+            subscriptionId);
     }
 
     /**
@@ -73,9 +72,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
         return new CosmosDBManager(restClient, subscriptionId, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
@@ -87,10 +84,8 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
         CosmosDBManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    /** The implementation for Configurable interface. */
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public CosmosDBManager authenticate(AzureTokenCredential credential, String subscriptionId) {
             return CosmosDBManager.authenticate(buildRestClient(credential), subscriptionId);
@@ -99,19 +94,17 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
 
     private CosmosDBManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new CosmosDBManagementClientBuilder()
-                    .host(restClient.getBaseUrl().toString())
-                    .pipeline(restClient.getHttpPipeline())
-                    .subscriptionId(subscriptionId)
-                    .build(),
-                sdkContext);
+            restClient,
+            subscriptionId,
+            new CosmosDBManagementClientBuilder()
+                .host(restClient.getBaseUrl().toString())
+                .pipeline(restClient.getHttpPipeline())
+                .subscriptionId(subscriptionId)
+                .buildClient(),
+            sdkContext);
     }
 
-    /**
-     * @return the cosmos db database account resource management API entry point
-     */
+    /** @return the cosmos db database account resource management API entry point */
     public CosmosDBAccounts databaseAccounts() {
         if (databaseAccounts == null) {
             databaseAccounts = new CosmosDBAccountsImpl(this);

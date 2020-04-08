@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SourceControlType.
- */
+/** Defines values for SourceControlType. */
 public final class SourceControlType extends ExpandableStringEnum<SourceControlType> {
-    /**
-     * Static value Github for SourceControlType.
-     */
+    /** Static value Github for SourceControlType. */
     public static final SourceControlType GITHUB = fromString("Github");
 
-    /**
-     * Static value VisualStudioTeamService for SourceControlType.
-     */
+    /** Static value VisualStudioTeamService for SourceControlType. */
     public static final SourceControlType VISUAL_STUDIO_TEAM_SERVICE = fromString("VisualStudioTeamService");
 
     /**
      * Creates or finds a SourceControlType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SourceControlType.
      */
@@ -33,9 +27,7 @@ public final class SourceControlType extends ExpandableStringEnum<SourceControlT
         return fromString(name, SourceControlType.class);
     }
 
-    /**
-     * @return known SourceControlType values.
-     */
+    /** @return known SourceControlType values. */
     public static Collection<SourceControlType> values() {
         return values(SourceControlType.class);
     }

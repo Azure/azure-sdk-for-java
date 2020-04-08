@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ElasticPoolEditionCapability model.
- */
+/** The ElasticPoolEditionCapability model. */
 @Fluent
 public final class ElasticPoolEditionCapability {
     /*
@@ -45,7 +43,7 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Get the name property: The elastic pool edition name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -53,9 +51,9 @@ public final class ElasticPoolEditionCapability {
     }
 
     /**
-     * Get the supportedElasticPoolPerformanceLevels property: The list of
-     * supported elastic pool DTU levels for the edition.
-     * 
+     * Get the supportedElasticPoolPerformanceLevels property: The list of supported elastic pool DTU levels for the
+     * edition.
+     *
      * @return the supportedElasticPoolPerformanceLevels value.
      */
     public List<ElasticPoolPerformanceLevelCapability> supportedElasticPoolPerformanceLevels() {
@@ -63,9 +61,8 @@ public final class ElasticPoolEditionCapability {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not zone redundancy is
-     * supported for the edition.
-     * 
+     * Get the zoneRedundant property: Whether or not zone redundancy is supported for the edition.
+     *
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -74,7 +71,7 @@ public final class ElasticPoolEditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -82,9 +79,8 @@ public final class ElasticPoolEditionCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -92,9 +88,8 @@ public final class ElasticPoolEditionCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ElasticPoolEditionCapability object itself.
      */

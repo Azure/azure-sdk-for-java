@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PartnerRegionInfo model.
- */
+/** The PartnerRegionInfo model. */
 @Fluent
 public final class PartnerRegionInfo {
     /*
@@ -25,9 +23,8 @@ public final class PartnerRegionInfo {
     private InstanceFailoverGroupReplicationRole replicationRole;
 
     /**
-     * Get the location property: Geo location of the partner managed
-     * instances.
-     * 
+     * Get the location property: Geo location of the partner managed instances.
+     *
      * @return the location value.
      */
     public String location() {
@@ -35,9 +32,8 @@ public final class PartnerRegionInfo {
     }
 
     /**
-     * Set the location property: Geo location of the partner managed
-     * instances.
-     * 
+     * Set the location property: Geo location of the partner managed instances.
+     *
      * @param location the location value to set.
      * @return the PartnerRegionInfo object itself.
      */
@@ -47,9 +43,8 @@ public final class PartnerRegionInfo {
     }
 
     /**
-     * Get the replicationRole property: Replication role of the partner
-     * managed instances.
-     * 
+     * Get the replicationRole property: Replication role of the partner managed instances.
+     *
      * @return the replicationRole value.
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {

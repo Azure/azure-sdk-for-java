@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DatabaseBlobAuditingPolicyListResult model.
- */
+/** The DatabaseBlobAuditingPolicyListResult model. */
 @Immutable
 public final class DatabaseBlobAuditingPolicyListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class DatabaseBlobAuditingPolicyListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<DatabaseBlobAuditingPolicyInner> value() {
@@ -36,7 +34,7 @@ public final class DatabaseBlobAuditingPolicyListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

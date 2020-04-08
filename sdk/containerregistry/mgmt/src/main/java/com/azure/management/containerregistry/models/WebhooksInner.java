@@ -28,6 +28,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.containerregistry.WebhookCreateParameters;
 import com.azure.management.containerregistry.WebhookUpdateParameters;
@@ -35,24 +37,17 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Webhooks.
- */
+/** An instance of this class provides access to all the operations defined in Webhooks. */
 public final class WebhooksInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private WebhooksService service;
+    /** The proxy service used to perform REST calls. */
+    private final WebhooksService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private ContainerRegistryManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final ContainerRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of WebhooksInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     WebhooksInner(ContainerRegistryManagementClientImpl client) {
@@ -61,139 +56,259 @@ public final class WebhooksInner {
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerRegistryManagementClientWebhooks to be used by the proxy
+     * The interface defining all the services for ContainerRegistryManagementClientWebhooks to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryManagementClientWebhooks")
+    @ServiceInterface(name = "ContainerRegistryMan")
     private interface WebhooksService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<WebhookInner>> get(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName);
+        Mono<SimpleResponse<WebhookInner>> get(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> create(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName, @BodyParam("application/json") WebhookCreateParameters webhookCreateParameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            @BodyParam("application/json") WebhookCreateParameters webhookCreateParameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> update(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName, @BodyParam("application/json") WebhookUpdateParameters webhookUpdateParameters);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            @BodyParam("application/json") WebhookUpdateParameters webhookUpdateParameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<WebhookListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName);
+        Mono<SimpleResponse<WebhookListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/ping")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/ping")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<EventInfoInner>> ping(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName);
+        Mono<SimpleResponse<EventInfoInner>> ping(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/getCallbackConfig")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/getCallbackConfig")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<CallbackConfigInner>> getCallbackConfig(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName);
+        Mono<SimpleResponse<CallbackConfigInner>> getCallbackConfig(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/listEvents")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/listEvents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<EventListResultInner>> listEvents(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName);
+        Mono<SimpleResponse<EventListResultInner>> listEvents(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<WebhookInner>> beginCreate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName, @BodyParam("application/json") WebhookCreateParameters webhookCreateParameters);
+        Mono<SimpleResponse<WebhookInner>> beginCreate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            @BodyParam("application/json") WebhookCreateParameters webhookCreateParameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<WebhookInner>> beginUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName, @PathParam("webhookName") String webhookName, @BodyParam("application/json") WebhookUpdateParameters webhookUpdateParameters);
+        Mono<SimpleResponse<WebhookInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("registryName") String registryName,
+            @PathParam("webhookName") String webhookName,
+            @BodyParam("application/json") WebhookUpdateParameters webhookUpdateParameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<WebhookListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<WebhookListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<EventListResultInner>> listEventsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<EventListResultInner>> listEventsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets the properties of the specified webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<WebhookInner>> getWithResponseAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<SimpleResponse<WebhookInner>> getWithResponseAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         final String apiVersion = "2017-10-01";
-        return service.get(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the properties of the specified webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebhookInner> getAsync(String resourceGroupName, String registryName, String webhookName) {
         return getWithResponseAsync(resourceGroupName, registryName, webhookName)
-            .flatMap((SimpleResponse<WebhookInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<WebhookInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the properties of the specified webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WebhookInner get(String resourceGroupName, String registryName, String webhookName) {
@@ -202,7 +317,7 @@ public final class WebhooksInner {
 
     /**
      * Creates a webhook for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -210,16 +325,34 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName, String webhookName, WebhookCreateParameters webhookCreateParameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookCreateParameters webhookCreateParameters) {
         final String apiVersion = "2017-10-01";
-        return service.create(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, webhookCreateParameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            webhookCreateParameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a webhook for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -227,18 +360,27 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WebhookInner> createAsync(String resourceGroupName, String registryName, String webhookName, WebhookCreateParameters webhookCreateParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, registryName, webhookName, webhookCreateParameters);
-        return this.client.<WebhookInner, WebhookInner>getLroResultAsync(mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class)
+    public Mono<WebhookInner> createAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookCreateParameters webhookCreateParameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, registryName, webhookName, webhookCreateParameters);
+        return this
+            .client
+            .<WebhookInner, WebhookInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates a webhook for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -246,49 +388,72 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebhookInner create(String resourceGroupName, String registryName, String webhookName, WebhookCreateParameters webhookCreateParameters) {
+    public WebhookInner create(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookCreateParameters webhookCreateParameters) {
         return createAsync(resourceGroupName, registryName, webhookName, webhookCreateParameters).block();
     }
 
     /**
      * Deletes a webhook from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         final String apiVersion = "2017-10-01";
-        return service.delete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a webhook from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String webhookName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, webhookName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, registryName, webhookName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a webhook from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -303,7 +468,7 @@ public final class WebhooksInner {
 
     /**
      * Updates a webhook with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -311,16 +476,34 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName, String webhookName, WebhookUpdateParameters webhookUpdateParameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookUpdateParameters webhookUpdateParameters) {
         final String apiVersion = "2017-10-01";
-        return service.update(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, webhookUpdateParameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            webhookUpdateParameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a webhook with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -328,18 +511,27 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WebhookInner> updateAsync(String resourceGroupName, String registryName, String webhookName, WebhookUpdateParameters webhookUpdateParameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, registryName, webhookName, webhookUpdateParameters);
-        return this.client.<WebhookInner, WebhookInner>getLroResultAsync(mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class)
+    public Mono<WebhookInner> updateAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookUpdateParameters webhookUpdateParameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, registryName, webhookName, webhookUpdateParameters);
+        return this
+            .client
+            .<WebhookInner, WebhookInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), WebhookInner.class, WebhookInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a webhook with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -347,58 +539,78 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebhookInner update(String resourceGroupName, String registryName, String webhookName, WebhookUpdateParameters webhookUpdateParameters) {
+    public WebhookInner update(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookUpdateParameters webhookUpdateParameters) {
         return updateAsync(resourceGroupName, registryName, webhookName, webhookUpdateParameters).block();
     }
 
     /**
      * Lists all the webhooks for the specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<WebhookInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
         final String apiVersion = "2017-10-01";
-        return service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            context))
+            .<PagedResponse<WebhookInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists all the webhooks for the specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<WebhookInner> listAsync(String resourceGroupName, String registryName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, registryName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, registryName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the webhooks for the specified container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WebhookInner> list(String resourceGroupName, String registryName) {
@@ -407,51 +619,68 @@ public final class WebhooksInner {
 
     /**
      * Triggers a ping event to be sent to the webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the basic information of an event.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<EventInfoInner>> pingWithResponseAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<SimpleResponse<EventInfoInner>> pingWithResponseAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         final String apiVersion = "2017-10-01";
-        return service.ping(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .ping(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Triggers a ping event to be sent to the webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the basic information of an event.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventInfoInner> pingAsync(String resourceGroupName, String registryName, String webhookName) {
         return pingWithResponseAsync(resourceGroupName, registryName, webhookName)
-            .flatMap((SimpleResponse<EventInfoInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<EventInfoInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Triggers a ping event to be sent to the webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the basic information of an event.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventInfoInner ping(String resourceGroupName, String registryName, String webhookName) {
@@ -460,51 +689,69 @@ public final class WebhooksInner {
 
     /**
      * Gets the configuration of service URI and custom headers for the webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CallbackConfigInner>> getCallbackConfigWithResponseAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<SimpleResponse<CallbackConfigInner>> getCallbackConfigWithResponseAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         final String apiVersion = "2017-10-01";
-        return service.getCallbackConfig(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getCallbackConfig(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the configuration of service URI and custom headers for the webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CallbackConfigInner> getCallbackConfigAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<CallbackConfigInner> getCallbackConfigAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         return getCallbackConfigWithResponseAsync(resourceGroupName, registryName, webhookName)
-            .flatMap((SimpleResponse<CallbackConfigInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<CallbackConfigInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the configuration of service URI and custom headers for the webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configuration of service URI and custom headers for the webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallbackConfigInner getCallbackConfig(String resourceGroupName, String registryName, String webhookName) {
@@ -513,36 +760,53 @@ public final class WebhooksInner {
 
     /**
      * Lists recent events for the specified webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<EventInner>> listEventsSinglePageAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<PagedResponse<EventInner>> listEventsSinglePageAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         final String apiVersion = "2017-10-01";
-        return service.listEvents(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listEvents(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            context))
+            .<PagedResponse<EventInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists recent events for the specified webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<EventInner> listEventsAsync(String resourceGroupName, String registryName, String webhookName) {
@@ -553,13 +817,14 @@ public final class WebhooksInner {
 
     /**
      * Lists recent events for the specified webhook.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventInner> listEvents(String resourceGroupName, String registryName, String webhookName) {
@@ -568,7 +833,7 @@ public final class WebhooksInner {
 
     /**
      * Creates a webhook for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -576,16 +841,34 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<WebhookInner>> beginCreateWithResponseAsync(String resourceGroupName, String registryName, String webhookName, WebhookCreateParameters webhookCreateParameters) {
+    public Mono<SimpleResponse<WebhookInner>> beginCreateWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookCreateParameters webhookCreateParameters) {
         final String apiVersion = "2017-10-01";
-        return service.beginCreate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, webhookCreateParameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            webhookCreateParameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates a webhook for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -593,22 +876,28 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WebhookInner> beginCreateAsync(String resourceGroupName, String registryName, String webhookName, WebhookCreateParameters webhookCreateParameters) {
+    public Mono<WebhookInner> beginCreateAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookCreateParameters webhookCreateParameters) {
         return beginCreateWithResponseAsync(resourceGroupName, registryName, webhookName, webhookCreateParameters)
-            .flatMap((SimpleResponse<WebhookInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<WebhookInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates a webhook for a container registry with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -616,37 +905,57 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebhookInner beginCreate(String resourceGroupName, String registryName, String webhookName, WebhookCreateParameters webhookCreateParameters) {
+    public WebhookInner beginCreate(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookCreateParameters webhookCreateParameters) {
         return beginCreateAsync(resourceGroupName, registryName, webhookName, webhookCreateParameters).block();
     }
 
     /**
      * Deletes a webhook from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String registryName, String webhookName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String registryName, String webhookName) {
         final String apiVersion = "2017-10-01";
-        return service.beginDelete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a webhook from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String registryName, String webhookName) {
@@ -656,7 +965,7 @@ public final class WebhooksInner {
 
     /**
      * Deletes a webhook from a container registry.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -671,7 +980,7 @@ public final class WebhooksInner {
 
     /**
      * Updates a webhook with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -679,16 +988,34 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<WebhookInner>> beginUpdateWithResponseAsync(String resourceGroupName, String registryName, String webhookName, WebhookUpdateParameters webhookUpdateParameters) {
+    public Mono<SimpleResponse<WebhookInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookUpdateParameters webhookUpdateParameters) {
         final String apiVersion = "2017-10-01";
-        return service.beginUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, registryName, webhookName, webhookUpdateParameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            registryName,
+                            webhookName,
+                            webhookUpdateParameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a webhook with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -696,22 +1023,28 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WebhookInner> beginUpdateAsync(String resourceGroupName, String registryName, String webhookName, WebhookUpdateParameters webhookUpdateParameters) {
+    public Mono<WebhookInner> beginUpdateAsync(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookUpdateParameters webhookUpdateParameters) {
         return beginUpdateWithResponseAsync(resourceGroupName, registryName, webhookName, webhookUpdateParameters)
-            .flatMap((SimpleResponse<WebhookInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<WebhookInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a webhook with the specified parameters.
-     * 
+     *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param webhookName The name of the webhook.
@@ -719,49 +1052,64 @@ public final class WebhooksInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents a webhook for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebhookInner beginUpdate(String resourceGroupName, String registryName, String webhookName, WebhookUpdateParameters webhookUpdateParameters) {
+    public WebhookInner beginUpdate(
+        String resourceGroupName,
+        String registryName,
+        String webhookName,
+        WebhookUpdateParameters webhookUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, registryName, webhookName, webhookUpdateParameters).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list webhooks for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<WebhookInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<WebhookInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list events for a webhook.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<EventInner>> listEventsNextSinglePageAsync(String nextLink) {
-        return service.listEventsNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listEventsNext(nextLink, context))
+            .<PagedResponse<EventInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.sql.TransparentDataEncryptionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TransparentDataEncryption model.
- */
+/** The TransparentDataEncryption model. */
 @JsonFlatten
 @Fluent
 public class TransparentDataEncryptionInner extends ProxyResource {
@@ -30,7 +28,7 @@ public class TransparentDataEncryptionInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -38,9 +36,8 @@ public class TransparentDataEncryptionInner extends ProxyResource {
     }
 
     /**
-     * Get the status property: The status of the database transparent data
-     * encryption.
-     * 
+     * Get the status property: The status of the database transparent data encryption.
+     *
      * @return the status value.
      */
     public TransparentDataEncryptionStatus status() {
@@ -48,9 +45,8 @@ public class TransparentDataEncryptionInner extends ProxyResource {
     }
 
     /**
-     * Set the status property: The status of the database transparent data
-     * encryption.
-     * 
+     * Set the status property: The status of the database transparent data encryption.
+     *
      * @param status the status value to set.
      * @return the TransparentDataEncryptionInner object itself.
      */

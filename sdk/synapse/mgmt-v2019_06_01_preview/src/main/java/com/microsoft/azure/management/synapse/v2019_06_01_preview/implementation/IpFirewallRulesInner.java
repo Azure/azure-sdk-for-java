@@ -87,6 +87,10 @@ public class IpFirewallRulesInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("ruleName") String ruleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRules get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}")
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("ruleName") String ruleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IpFirewallRules replaceAll" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/replaceAllIpFirewallRules")
         Observable<Response<ResponseBody>> replaceAll(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ReplaceAllIpFirewallRulesRequest request, @Header("User-Agent") String userAgent);
@@ -578,6 +582,99 @@ public class IpFirewallRulesInner {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the IpFirewallRuleInfoInner object if successful.
+     */
+    public IpFirewallRuleInfoInner get(String resourceGroupName, String workspaceName, String ruleName) {
+        return getWithServiceResponseAsync(resourceGroupName, workspaceName, ruleName).toBlocking().single().body();
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<IpFirewallRuleInfoInner> getAsync(String resourceGroupName, String workspaceName, String ruleName, final ServiceCallback<IpFirewallRuleInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, workspaceName, ruleName), serviceCallback);
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the IpFirewallRuleInfoInner object
+     */
+    public Observable<IpFirewallRuleInfoInner> getAsync(String resourceGroupName, String workspaceName, String ruleName) {
+        return getWithServiceResponseAsync(resourceGroupName, workspaceName, ruleName).map(new Func1<ServiceResponse<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner>() {
+            @Override
+            public IpFirewallRuleInfoInner call(ServiceResponse<IpFirewallRuleInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the IpFirewallRuleInfoInner object
+     */
+    public Observable<ServiceResponse<IpFirewallRuleInfoInner>> getWithServiceResponseAsync(String resourceGroupName, String workspaceName, String ruleName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (ruleName == null) {
+            throw new IllegalArgumentException("Parameter ruleName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), resourceGroupName, workspaceName, ruleName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IpFirewallRuleInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<IpFirewallRuleInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<IpFirewallRuleInfoInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<IpFirewallRuleInfoInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<IpFirewallRuleInfoInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<IpFirewallRuleInfoInner>() { }.getType())
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 

@@ -12,9 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The Metric model.
- */
+/** The Metric model. */
 @Immutable
 public final class MetricInner {
     /*
@@ -54,9 +52,8 @@ public final class MetricInner {
     private List<MetricValue> metricValues;
 
     /**
-     * Get the startTime property: The start time for the metric (ISO-8601
-     * format).
-     * 
+     * Get the startTime property: The start time for the metric (ISO-8601 format).
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -65,7 +62,7 @@ public final class MetricInner {
 
     /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -73,9 +70,8 @@ public final class MetricInner {
     }
 
     /**
-     * Get the timeGrain property: The time step to be used to summarize the
-     * metric values.
-     * 
+     * Get the timeGrain property: The time step to be used to summarize the metric values.
+     *
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -84,7 +80,7 @@ public final class MetricInner {
 
     /**
      * Get the unit property: The unit of the metric.
-     * 
+     *
      * @return the unit value.
      */
     public UnitType unit() {
@@ -93,7 +89,7 @@ public final class MetricInner {
 
     /**
      * Get the name property: The name information for the metric.
-     * 
+     *
      * @return the name value.
      */
     public MetricName name() {
@@ -101,9 +97,8 @@ public final class MetricInner {
     }
 
     /**
-     * Get the metricValues property: The metric values for the specified time
-     * window and timestep.
-     * 
+     * Get the metricValues property: The metric values for the specified time window and timestep.
+     *
      * @return the metricValues value.
      */
     public List<MetricValue> metricValues() {

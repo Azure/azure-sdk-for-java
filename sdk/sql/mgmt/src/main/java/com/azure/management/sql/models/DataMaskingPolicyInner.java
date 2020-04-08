@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.sql.DataMaskingState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DataMaskingPolicy model.
- */
+/** The DataMaskingPolicy model. */
 @JsonFlatten
 @Fluent
 public class DataMaskingPolicyInner extends ProxyResource {
@@ -58,7 +56,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
 
     /**
      * Get the location property: The location of the data masking policy.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -66,9 +64,8 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the kind property: The kind of data masking policy. Metadata, used
-     * for Azure portal.
-     * 
+     * Get the kind property: The kind of data masking policy. Metadata, used for Azure portal.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -77,7 +74,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
 
     /**
      * Get the dataMaskingState property: The state of the data masking policy.
-     * 
+     *
      * @return the dataMaskingState value.
      */
     public DataMaskingState dataMaskingState() {
@@ -86,7 +83,7 @@ public class DataMaskingPolicyInner extends ProxyResource {
 
     /**
      * Set the dataMaskingState property: The state of the data masking policy.
-     * 
+     *
      * @param dataMaskingState the dataMaskingState value to set.
      * @return the DataMaskingPolicyInner object itself.
      */
@@ -96,11 +93,10 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the exemptPrincipals property: The list of the exempt principals.
-     * Specifies the semicolon-separated list of database users for which the
-     * data masking policy does not apply. The specified users receive data
-     * results without masking for all of the database queries.
-     * 
+     * Get the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
+     * database users for which the data masking policy does not apply. The specified users receive data results without
+     * masking for all of the database queries.
+     *
      * @return the exemptPrincipals value.
      */
     public String exemptPrincipals() {
@@ -108,11 +104,10 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the exemptPrincipals property: The list of the exempt principals.
-     * Specifies the semicolon-separated list of database users for which the
-     * data masking policy does not apply. The specified users receive data
-     * results without masking for all of the database queries.
-     * 
+     * Set the exemptPrincipals property: The list of the exempt principals. Specifies the semicolon-separated list of
+     * database users for which the data masking policy does not apply. The specified users receive data results without
+     * masking for all of the database queries.
+     *
      * @param exemptPrincipals the exemptPrincipals value to set.
      * @return the DataMaskingPolicyInner object itself.
      */
@@ -122,9 +117,9 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the applicationPrincipals property: The list of the application
-     * principals. This is a legacy parameter and is no longer used.
-     * 
+     * Get the applicationPrincipals property: The list of the application principals. This is a legacy parameter and is
+     * no longer used.
+     *
      * @return the applicationPrincipals value.
      */
     public String applicationPrincipals() {
@@ -132,9 +127,8 @@ public class DataMaskingPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the maskingLevel property: The masking level. This is a legacy
-     * parameter and is no longer used.
-     * 
+     * Get the maskingLevel property: The masking level. This is a legacy parameter and is no longer used.
+     *
      * @return the maskingLevel value.
      */
     public String maskingLevel() {

@@ -11,9 +11,7 @@ import com.azure.management.sql.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ManagedInstanceKey model.
- */
+/** The ManagedInstanceKey model. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceKeyInner extends ProxyResource {
@@ -50,9 +48,8 @@ public class ManagedInstanceKeyInner extends ProxyResource {
     private OffsetDateTime creationDate;
 
     /**
-     * Get the kind property: Kind of encryption protector. This is metadata
-     * used for the Azure portal experience.
-     * 
+     * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -60,9 +57,8 @@ public class ManagedInstanceKeyInner extends ProxyResource {
     }
 
     /**
-     * Get the serverKeyType property: The key type like 'ServiceManaged',
-     * 'AzureKeyVault'.
-     * 
+     * Get the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
+     *
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -70,9 +66,8 @@ public class ManagedInstanceKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the serverKeyType property: The key type like 'ServiceManaged',
-     * 'AzureKeyVault'.
-     * 
+     * Set the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
+     *
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceKeyInner object itself.
      */
@@ -82,9 +77,8 @@ public class ManagedInstanceKeyInner extends ProxyResource {
     }
 
     /**
-     * Get the uri property: The URI of the key. If the ServerKeyType is
-     * AzureKeyVault, then the URI is required.
-     * 
+     * Get the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     *
      * @return the uri value.
      */
     public String uri() {
@@ -92,9 +86,8 @@ public class ManagedInstanceKeyInner extends ProxyResource {
     }
 
     /**
-     * Set the uri property: The URI of the key. If the ServerKeyType is
-     * AzureKeyVault, then the URI is required.
-     * 
+     * Set the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     *
      * @param uri the uri value to set.
      * @return the ManagedInstanceKeyInner object itself.
      */
@@ -105,7 +98,7 @@ public class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: Thumbprint of the key.
-     * 
+     *
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -114,7 +107,7 @@ public class ManagedInstanceKeyInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The key creation date.
-     * 
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {

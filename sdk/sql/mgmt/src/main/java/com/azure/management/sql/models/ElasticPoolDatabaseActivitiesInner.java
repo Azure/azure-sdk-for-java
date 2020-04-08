@@ -22,99 +22,124 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ElasticPoolDatabaseActivities.
- */
+/** An instance of this class provides access to all the operations defined in ElasticPoolDatabaseActivities. */
 public final class ElasticPoolDatabaseActivitiesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ElasticPoolDatabaseActivitiesService service;
+    /** The proxy service used to perform REST calls. */
+    private final ElasticPoolDatabaseActivitiesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ElasticPoolDatabaseActivitiesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ElasticPoolDatabaseActivitiesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(ElasticPoolDatabaseActivitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    ElasticPoolDatabaseActivitiesService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientElasticPoolDatabaseActivities to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for SqlManagementClientElasticPoolDatabaseActivities to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientElasticPoolDatabaseActivities")
+    @ServiceInterface(name = "SqlManagementClientE")
     private interface ElasticPoolDatabaseActivitiesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
+                + "/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ElasticPoolDatabaseActivityListResultInner>> listByElasticPool(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName, @PathParam("elasticPoolName") String elasticPoolName);
+        Mono<SimpleResponse<ElasticPoolDatabaseActivityListResultInner>> listByElasticPool(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("serverName") String serverName,
+            @PathParam("elasticPoolName") String elasticPoolName,
+            Context context);
     }
 
     /**
      * Returns activity on databases inside of an elastic pool.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param elasticPoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a list elastic pool database activity request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ElasticPoolDatabaseActivityInner>> listByElasticPoolSinglePageAsync(String resourceGroupName, String serverName, String elasticPoolName) {
+    public Mono<PagedResponse<ElasticPoolDatabaseActivityInner>> listByElasticPoolSinglePageAsync(
+        String resourceGroupName, String serverName, String elasticPoolName) {
         final String apiVersion = "2014-04-01";
-        return service.listByElasticPool(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, serverName, elasticPoolName)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByElasticPool(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            serverName,
+                            elasticPoolName,
+                            context))
+            .<PagedResponse<ElasticPoolDatabaseActivityInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Returns activity on databases inside of an elastic pool.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param elasticPoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a list elastic pool database activity request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ElasticPoolDatabaseActivityInner> listByElasticPoolAsync(String resourceGroupName, String serverName, String elasticPoolName) {
-        return new PagedFlux<>(
-            () -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName));
+    public PagedFlux<ElasticPoolDatabaseActivityInner> listByElasticPoolAsync(
+        String resourceGroupName, String serverName, String elasticPoolName) {
+        return new PagedFlux<>(() -> listByElasticPoolSinglePageAsync(resourceGroupName, serverName, elasticPoolName));
     }
 
     /**
      * Returns activity on databases inside of an elastic pool.
-     * 
-     * @param resourceGroupName 
-     * @param serverName 
-     * @param elasticPoolName 
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response to a list elastic pool database activity request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ElasticPoolDatabaseActivityInner> listByElasticPool(String resourceGroupName, String serverName, String elasticPoolName) {
+    public PagedIterable<ElasticPoolDatabaseActivityInner> listByElasticPool(
+        String resourceGroupName, String serverName, String elasticPoolName) {
         return new PagedIterable<>(listByElasticPoolAsync(resourceGroupName, serverName, elasticPoolName));
     }
 }

@@ -11,9 +11,7 @@ import com.azure.management.containerregistry.ProvisioningState;
 import com.azure.management.containerregistry.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Replication model.
- */
+/** The Replication model. */
 @JsonFlatten
 @Immutable
 public class ReplicationInner extends Resource {
@@ -31,9 +29,9 @@ public class ReplicationInner extends Resource {
     private Status status;
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * replication at the time the operation was called.
-     * 
+     * Get the provisioningState property: The provisioning state of the replication at the time the operation was
+     * called.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -41,9 +39,8 @@ public class ReplicationInner extends Resource {
     }
 
     /**
-     * Get the status property: The status of the replication at the time the
-     * operation was called.
-     * 
+     * Get the status property: The status of the replication at the time the operation was called.
+     *
      * @return the status value.
      */
     public Status status() {

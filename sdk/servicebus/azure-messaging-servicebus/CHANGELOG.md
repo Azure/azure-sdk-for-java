@@ -1,5 +1,8 @@
 # Release History
 
+## 7.0.0-beta.2 (Unreleased)
+
+
 ## 7.0.0-beta.1 (2020-04-06)
 
 Version 7.0.0-beta.1 is a beta of our efforts in creating a client library that is developer-friendly, idiomatic

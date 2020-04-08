@@ -12,9 +12,7 @@ import com.azure.management.sql.SecurityAlertPolicyState;
 import com.azure.management.sql.SecurityAlertPolicyUseServerDefault;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DatabaseSecurityAlertPolicy model.
- */
+/** The DatabaseSecurityAlertPolicy model. */
 @JsonFlatten
 @Fluent
 public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
@@ -89,7 +87,7 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -98,7 +96,7 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     * 
+     *
      * @param location the location value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -109,7 +107,7 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
 
     /**
      * Get the kind property: Resource kind.
-     * 
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -117,9 +115,9 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the state property: Specifies the state of the policy. If state is
-     * Enabled, storageEndpoint and storageAccountAccessKey are required.
-     * 
+     * Get the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint and
+     * storageAccountAccessKey are required.
+     *
      * @return the state value.
      */
     public SecurityAlertPolicyState state() {
@@ -127,9 +125,9 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the state property: Specifies the state of the policy. If state is
-     * Enabled, storageEndpoint and storageAccountAccessKey are required.
-     * 
+     * Set the state property: Specifies the state of the policy. If state is Enabled, storageEndpoint and
+     * storageAccountAccessKey are required.
+     *
      * @param state the state value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -139,11 +137,10 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the disabledAlerts property: Specifies the semicolon-separated list
-     * of alerts that are disabled, or empty string to disable no alerts.
-     * Possible values: Sql_Injection; Sql_Injection_Vulnerability;
-     * Access_Anomaly; Data_Exfiltration; Unsafe_Action.
-     * 
+     * Get the disabledAlerts property: Specifies the semicolon-separated list of alerts that are disabled, or empty
+     * string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
+     * Data_Exfiltration; Unsafe_Action.
+     *
      * @return the disabledAlerts value.
      */
     public String disabledAlerts() {
@@ -151,11 +148,10 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the disabledAlerts property: Specifies the semicolon-separated list
-     * of alerts that are disabled, or empty string to disable no alerts.
-     * Possible values: Sql_Injection; Sql_Injection_Vulnerability;
-     * Access_Anomaly; Data_Exfiltration; Unsafe_Action.
-     * 
+     * Set the disabledAlerts property: Specifies the semicolon-separated list of alerts that are disabled, or empty
+     * string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly;
+     * Data_Exfiltration; Unsafe_Action.
+     *
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -165,9 +161,9 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the emailAddresses property: Specifies the semicolon-separated list
-     * of e-mail addresses to which the alert is sent.
-     * 
+     * Get the emailAddresses property: Specifies the semicolon-separated list of e-mail addresses to which the alert is
+     * sent.
+     *
      * @return the emailAddresses value.
      */
     public String emailAddresses() {
@@ -175,9 +171,9 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the emailAddresses property: Specifies the semicolon-separated list
-     * of e-mail addresses to which the alert is sent.
-     * 
+     * Set the emailAddresses property: Specifies the semicolon-separated list of e-mail addresses to which the alert is
+     * sent.
+     *
      * @param emailAddresses the emailAddresses value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -187,9 +183,8 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the emailAccountAdmins property: Specifies that the alert is sent to
-     * the account administrators.
-     * 
+     * Get the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
+     *
      * @return the emailAccountAdmins value.
      */
     public SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins() {
@@ -197,23 +192,22 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the emailAccountAdmins property: Specifies that the alert is sent to
-     * the account administrators.
-     * 
+     * Set the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
+     *
      * @param emailAccountAdmins the emailAccountAdmins value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
-    public DatabaseSecurityAlertPolicyInner withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins) {
+    public DatabaseSecurityAlertPolicyInner withEmailAccountAdmins(
+        SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins) {
         this.emailAccountAdmins = emailAccountAdmins;
         return this;
     }
 
     /**
-     * Get the storageEndpoint property: Specifies the blob storage endpoint
-     * (e.g. https://MyAccount.blob.core.windows.net). This blob storage will
-     * hold all Threat Detection audit logs. If state is Enabled,
-     * storageEndpoint is required.
-     * 
+     * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
+     * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. If state
+     * is Enabled, storageEndpoint is required.
+     *
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -221,11 +215,10 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the storageEndpoint property: Specifies the blob storage endpoint
-     * (e.g. https://MyAccount.blob.core.windows.net). This blob storage will
-     * hold all Threat Detection audit logs. If state is Enabled,
-     * storageEndpoint is required.
-     * 
+     * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
+     * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. If state
+     * is Enabled, storageEndpoint is required.
+     *
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -235,10 +228,9 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the storageAccountAccessKey property: Specifies the identifier key
-     * of the Threat Detection audit storage account. If state is Enabled,
-     * storageAccountAccessKey is required.
-     * 
+     * Get the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
+     * account. If state is Enabled, storageAccountAccessKey is required.
+     *
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -246,10 +238,9 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the storageAccountAccessKey property: Specifies the identifier key
-     * of the Threat Detection audit storage account. If state is Enabled,
-     * storageAccountAccessKey is required.
-     * 
+     * Set the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
+     * account. If state is Enabled, storageAccountAccessKey is required.
+     *
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -259,9 +250,8 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the retentionDays property: Specifies the number of days to keep in
-     * the Threat Detection audit logs.
-     * 
+     * Get the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
+     *
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -269,9 +259,8 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the retentionDays property: Specifies the number of days to keep in
-     * the Threat Detection audit logs.
-     * 
+     * Set the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
+     *
      * @param retentionDays the retentionDays value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */
@@ -281,9 +270,8 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the useServerDefault property: Specifies whether to use the default
-     * server policy.
-     * 
+     * Get the useServerDefault property: Specifies whether to use the default server policy.
+     *
      * @return the useServerDefault value.
      */
     public SecurityAlertPolicyUseServerDefault useServerDefault() {
@@ -291,9 +279,8 @@ public class DatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the useServerDefault property: Specifies whether to use the default
-     * server policy.
-     * 
+     * Set the useServerDefault property: Specifies whether to use the default server policy.
+     *
      * @param useServerDefault the useServerDefault value to set.
      * @return the DatabaseSecurityAlertPolicyInner object itself.
      */

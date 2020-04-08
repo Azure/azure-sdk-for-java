@@ -5,7 +5,7 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-formrecognizer;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-ai-textanalytics;1.0.0-beta.3;1.0.0-beta.4
+com.azure:azure-ai-textanalytics;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-core;1.4.0;1.5.0-beta.1
 com.azure:azure-core-amqp;1.0.2;1.1.0-beta.1
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.1;1.0.0-beta.1
@@ -22,7 +22,7 @@ com.azure:azure-e2e;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity;1.0.4;1.1.0-beta.3
 com.azure:azure-messaging-eventhubs;5.0.2;5.1.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.0.2;1.1.0-beta.1
-com.azure:azure-messaging-servicebus;7.0.0-beta.1;7.0.0-beta.1
+com.azure:azure-messaging-servicebus;7.0.0-beta.1;7.0.0-beta.2
 com.azure:azure-search-documents;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-security-keyvault-certificates;4.1.0-beta.1;4.1.0-beta.2
 com.azure:azure-security-keyvault-keys;4.2.0-beta.2;4.2.0-beta.3

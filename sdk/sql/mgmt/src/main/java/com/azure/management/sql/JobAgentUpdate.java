@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The JobAgentUpdate model.
- */
+/** The JobAgentUpdate model. */
 @Fluent
 public final class JobAgentUpdate {
     /*
@@ -21,7 +19,7 @@ public final class JobAgentUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +28,7 @@ public final class JobAgentUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the JobAgentUpdate object itself.
      */

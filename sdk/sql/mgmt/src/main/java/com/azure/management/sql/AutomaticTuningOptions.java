@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AutomaticTuningOptions model.
- */
+/** The AutomaticTuningOptions model. */
 @Fluent
 public final class AutomaticTuningOptions {
     /*
@@ -38,7 +36,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Get the desiredState property: Automatic tuning option desired state.
-     * 
+     *
      * @return the desiredState value.
      */
     public AutomaticTuningOptionModeDesired desiredState() {
@@ -47,7 +45,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Set the desiredState property: Automatic tuning option desired state.
-     * 
+     *
      * @param desiredState the desiredState value to set.
      * @return the AutomaticTuningOptions object itself.
      */
@@ -58,7 +56,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Get the actualState property: Automatic tuning option actual state.
-     * 
+     *
      * @return the actualState value.
      */
     public AutomaticTuningOptionModeActual actualState() {
@@ -66,9 +64,8 @@ public final class AutomaticTuningOptions {
     }
 
     /**
-     * Get the reasonCode property: Reason code if desired and actual state are
-     * different.
-     * 
+     * Get the reasonCode property: Reason code if desired and actual state are different.
+     *
      * @return the reasonCode value.
      */
     public Integer reasonCode() {
@@ -76,9 +73,8 @@ public final class AutomaticTuningOptions {
     }
 
     /**
-     * Get the reasonDesc property: Reason description if desired and actual
-     * state are different.
-     * 
+     * Get the reasonDesc property: Reason description if desired and actual state are different.
+     *
      * @return the reasonDesc value.
      */
     public AutomaticTuningDisabledReason reasonDesc() {

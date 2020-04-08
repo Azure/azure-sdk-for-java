@@ -6,9 +6,7 @@ import com.azure.management.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
 import com.azure.management.cosmosdb.models.DatabaseAccountListReadOnlyKeysResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The implementation for DatabaseAccountListReadOnlyKeysResult.
- */
+/** The implementation for DatabaseAccountListReadOnlyKeysResult. */
 public class DatabaseAccountListReadOnlyKeysResultImpl extends WrapperImpl<DatabaseAccountListReadOnlyKeysResultInner>
     implements DatabaseAccountListReadOnlyKeysResult {
     DatabaseAccountListReadOnlyKeysResultImpl(DatabaseAccountListReadOnlyKeysResultInner innerObject) {

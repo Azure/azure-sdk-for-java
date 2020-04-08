@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The SloUsageMetric model.
- */
+/** The SloUsageMetric model. */
 @Immutable
 public final class SloUsageMetric {
     /*
@@ -32,9 +30,8 @@ public final class SloUsageMetric {
     private Double inRangeTimeRatio;
 
     /**
-     * Get the serviceLevelObjective property: The serviceLevelObjective for
-     * SLO usage metric.
-     * 
+     * Get the serviceLevelObjective property: The serviceLevelObjective for SLO usage metric.
+     *
      * @return the serviceLevelObjective value.
      */
     public ServiceObjectiveName serviceLevelObjective() {
@@ -42,9 +39,8 @@ public final class SloUsageMetric {
     }
 
     /**
-     * Get the serviceLevelObjectiveId property: The serviceLevelObjectiveId
-     * for SLO usage metric.
-     * 
+     * Get the serviceLevelObjectiveId property: The serviceLevelObjectiveId for SLO usage metric.
+     *
      * @return the serviceLevelObjectiveId value.
      */
     public UUID serviceLevelObjectiveId() {
@@ -52,9 +48,8 @@ public final class SloUsageMetric {
     }
 
     /**
-     * Get the inRangeTimeRatio property: Gets or sets inRangeTimeRatio for SLO
-     * usage metric.
-     * 
+     * Get the inRangeTimeRatio property: Gets or sets inRangeTimeRatio for SLO usage metric.
+     *
      * @return the inRangeTimeRatio value.
      */
     public Double inRangeTimeRatio() {

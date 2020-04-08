@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OperationListResult model.
- */
+/** The OperationListResult model. */
 @Fluent
 public final class OperationListResultInner {
     /*
@@ -26,9 +24,8 @@ public final class OperationListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: List of Storage operations supported by the
-     * Storage resource provider.
-     * 
+     * Get the value property: List of Storage operations supported by the Storage resource provider.
+     *
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -36,9 +33,8 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the value property: List of Storage operations supported by the
-     * Storage resource provider.
-     * 
+     * Set the value property: List of Storage operations supported by the Storage resource provider.
+     *
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
@@ -49,7 +45,7 @@ public final class OperationListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of operations.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,7 +54,7 @@ public final class OperationListResultInner {
 
     /**
      * Set the nextLink property: The URL to get the next set of operations.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the OperationListResultInner object itself.
      */
