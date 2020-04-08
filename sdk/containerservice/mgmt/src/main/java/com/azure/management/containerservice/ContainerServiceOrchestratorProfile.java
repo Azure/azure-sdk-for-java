@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServiceOrchestratorProfile model.
- */
+/** The ContainerServiceOrchestratorProfile model. */
 @Fluent
 public final class ContainerServiceOrchestratorProfile {
     /*
@@ -28,10 +26,9 @@ public final class ContainerServiceOrchestratorProfile {
     private String orchestratorVersion;
 
     /**
-     * Get the orchestratorType property: The orchestrator to use to manage
-     * container service cluster resources. Valid values are Kubernetes, Swarm,
-     * DCOS, DockerCE and Custom.
-     * 
+     * Get the orchestratorType property: The orchestrator to use to manage container service cluster resources. Valid
+     * values are Kubernetes, Swarm, DCOS, DockerCE and Custom.
+     *
      * @return the orchestratorType value.
      */
     public ContainerServiceOrchestratorTypes orchestratorType() {
@@ -39,23 +36,22 @@ public final class ContainerServiceOrchestratorProfile {
     }
 
     /**
-     * Set the orchestratorType property: The orchestrator to use to manage
-     * container service cluster resources. Valid values are Kubernetes, Swarm,
-     * DCOS, DockerCE and Custom.
-     * 
+     * Set the orchestratorType property: The orchestrator to use to manage container service cluster resources. Valid
+     * values are Kubernetes, Swarm, DCOS, DockerCE and Custom.
+     *
      * @param orchestratorType the orchestratorType value to set.
      * @return the ContainerServiceOrchestratorProfile object itself.
      */
-    public ContainerServiceOrchestratorProfile withOrchestratorType(ContainerServiceOrchestratorTypes orchestratorType) {
+    public ContainerServiceOrchestratorProfile withOrchestratorType(
+        ContainerServiceOrchestratorTypes orchestratorType) {
         this.orchestratorType = orchestratorType;
         return this;
     }
 
     /**
-     * Get the orchestratorVersion property: The version of the orchestrator to
-     * use. You can specify the major.minor.patch part of the actual
-     * version.For example, you can specify version as "1.6.11".
-     * 
+     * Get the orchestratorVersion property: The version of the orchestrator to use. You can specify the
+     * major.minor.patch part of the actual version.For example, you can specify version as "1.6.11".
+     *
      * @return the orchestratorVersion value.
      */
     public String orchestratorVersion() {
@@ -63,10 +59,9 @@ public final class ContainerServiceOrchestratorProfile {
     }
 
     /**
-     * Set the orchestratorVersion property: The version of the orchestrator to
-     * use. You can specify the major.minor.patch part of the actual
-     * version.For example, you can specify version as "1.6.11".
-     * 
+     * Set the orchestratorVersion property: The version of the orchestrator to use. You can specify the
+     * major.minor.patch part of the actual version.For example, you can specify version as "1.6.11".
+     *
      * @param orchestratorVersion the orchestratorVersion value to set.
      * @return the ContainerServiceOrchestratorProfile object itself.
      */

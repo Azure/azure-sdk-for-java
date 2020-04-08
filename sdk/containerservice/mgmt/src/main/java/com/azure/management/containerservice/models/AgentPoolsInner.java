@@ -33,97 +33,164 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * AgentPools.
- */
+/** An instance of this class provides access to all the operations defined in AgentPools. */
 public final class AgentPoolsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final AgentPoolsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of AgentPoolsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     AgentPoolsInner(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServiceManagementClientAgentPools to be used by the proxy
+     * The interface defining all the services for ContainerServiceManagementClientAgentPools to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface AgentPoolsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<AgentPoolListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<AgentPoolListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<AgentPoolInner>> get(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("agentPoolName") String agentPoolName, Context context);
+        Mono<SimpleResponse<AgentPoolInner>> get(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("agentPoolName") String agentPoolName, @BodyParam("application/json") AgentPoolInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            @BodyParam("application/json") AgentPoolInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("agentPoolName") String agentPoolName, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}" + "/upgradeProfiles/default")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}"
+                + "/upgradeProfiles/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<AgentPoolUpgradeProfileInner>> getUpgradeProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("agentPoolName") String agentPoolName, Context context);
+        Mono<SimpleResponse<AgentPoolUpgradeProfileInner>> getUpgradeProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/availableAgentPoolVersions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersions(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersions(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<AgentPoolInner>> beginCreateOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("agentPoolName") String agentPoolName, @BodyParam("application/json") AgentPoolInner parameters, Context context);
+        Mono<SimpleResponse<AgentPoolInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            @BodyParam("application/json") AgentPoolInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("agentPoolName") String agentPoolName, Context context);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("agentPoolName") String agentPoolName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<AgentPoolListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<AgentPoolListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,20 +201,32 @@ public final class AgentPoolsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AgentPoolInner>> listSinglePageAsync(String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
-            .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
+            .<PagedResponse<AgentPoolInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,13 +237,12 @@ public final class AgentPoolsInner {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AgentPoolInner> listAsync(String resourceGroupName, String resourceName) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,7 +257,7 @@ public final class AgentPoolsInner {
 
     /**
      * Gets the details of the agent pool by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -189,15 +267,27 @@ public final class AgentPoolsInner {
      * @return the details of the agent pool by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AgentPoolInner>> getWithResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Mono<SimpleResponse<AgentPoolInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String agentPoolName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.get(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            agentPoolName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the details of the agent pool by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -209,18 +299,19 @@ public final class AgentPoolsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AgentPoolInner> getAsync(String resourceGroupName, String resourceName, String agentPoolName) {
         return getWithResponseAsync(resourceGroupName, resourceName, agentPoolName)
-            .flatMap((SimpleResponse<AgentPoolInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<AgentPoolInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details of the agent pool by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -236,7 +327,7 @@ public final class AgentPoolsInner {
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -247,15 +338,28 @@ public final class AgentPoolsInner {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            agentPoolName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -266,16 +370,21 @@ public final class AgentPoolsInner {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, parameters);
-        return this.client.<AgentPoolInner, AgentPoolInner>getLroResultAsync(mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class)
+    public Mono<AgentPoolInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, parameters);
+        return this
+            .client
+            .<AgentPoolInner, AgentPoolInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -286,13 +395,14 @@ public final class AgentPoolsInner {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolInner createOrUpdate(String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
+    public AgentPoolInner createOrUpdate(
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters).block();
     }
 
     /**
      * Deletes the agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -302,15 +412,27 @@ public final class AgentPoolsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String agentPoolName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            agentPoolName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -321,15 +443,18 @@ public final class AgentPoolsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String agentPoolName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, resourceName, agentPoolName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes the agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -343,65 +468,86 @@ public final class AgentPoolsInner {
     }
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
-     * 
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Mono<SimpleResponse<AgentPoolUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, String agentPoolName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.getUpgradeProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getUpgradeProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            agentPoolName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
-     * 
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Mono<AgentPoolUpgradeProfileInner> getUpgradeProfileAsync(
+        String resourceGroupName, String resourceName, String agentPoolName) {
         return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName, agentPoolName)
-            .flatMap((SimpleResponse<AgentPoolUpgradeProfileInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<AgentPoolUpgradeProfileInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
-     * 
+     * Gets the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     * name.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster name.
+     * @return the details of the upgrade profile for an agent pool with a specified resource group and managed cluster
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName, String agentPoolName) {
+    public AgentPoolUpgradeProfileInner getUpgradeProfile(
+        String resourceGroupName, String resourceName, String agentPoolName) {
         return getUpgradeProfileAsync(resourceGroupName, resourceName, agentPoolName).block();
     }
 
     /**
      * Gets a list of supported versions for the specified agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,15 +556,26 @@ public final class AgentPoolsInner {
      * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<AgentPoolAvailableVersionsInner>> getAvailableAgentPoolVersionsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.getAvailableAgentPoolVersions(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAvailableAgentPoolVersions(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of supported versions for the specified agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,20 +584,22 @@ public final class AgentPoolsInner {
      * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(String resourceGroupName, String resourceName) {
+    public Mono<AgentPoolAvailableVersionsInner> getAvailableAgentPoolVersionsAsync(
+        String resourceGroupName, String resourceName) {
         return getAvailableAgentPoolVersionsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((SimpleResponse<AgentPoolAvailableVersionsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<AgentPoolAvailableVersionsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a list of supported versions for the specified agent pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,13 +608,14 @@ public final class AgentPoolsInner {
      * @return a list of supported versions for the specified agent pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(String resourceGroupName, String resourceName) {
+    public AgentPoolAvailableVersionsInner getAvailableAgentPoolVersions(
+        String resourceGroupName, String resourceName) {
         return getAvailableAgentPoolVersionsAsync(resourceGroupName, resourceName).block();
     }
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -466,15 +626,28 @@ public final class AgentPoolsInner {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<AgentPoolInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
+    public Mono<SimpleResponse<AgentPoolInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginCreateOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            agentPoolName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -485,20 +658,22 @@ public final class AgentPoolsInner {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
+    public Mono<AgentPoolInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, resourceName, agentPoolName, parameters)
-            .flatMap((SimpleResponse<AgentPoolInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<AgentPoolInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates an agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -509,13 +684,14 @@ public final class AgentPoolsInner {
      * @return agent Pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolInner beginCreateOrUpdate(String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
+    public AgentPoolInner beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, String agentPoolName, AgentPoolInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, agentPoolName, parameters).block();
     }
 
     /**
      * Deletes the agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -525,15 +701,27 @@ public final class AgentPoolsInner {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String resourceName, String agentPoolName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String agentPoolName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, agentPoolName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            agentPoolName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -550,7 +738,7 @@ public final class AgentPoolsInner {
 
     /**
      * Deletes the agent pool in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param agentPoolName The name of the agent pool.
@@ -565,7 +753,7 @@ public final class AgentPoolsInner {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -574,14 +762,17 @@ public final class AgentPoolsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AgentPoolInner>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<AgentPoolInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

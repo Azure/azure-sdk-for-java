@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterWindowsProfile model.
- */
+/** The ManagedClusterWindowsProfile model. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
     /*
@@ -25,9 +23,8 @@ public final class ManagedClusterWindowsProfile {
     private String adminPassword;
 
     /**
-     * Get the adminUsername property: The administrator username to use for
-     * Windows VMs.
-     * 
+     * Get the adminUsername property: The administrator username to use for Windows VMs.
+     *
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -35,9 +32,8 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the adminUsername property: The administrator username to use for
-     * Windows VMs.
-     * 
+     * Set the adminUsername property: The administrator username to use for Windows VMs.
+     *
      * @param adminUsername the adminUsername value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -47,9 +43,8 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the adminPassword property: The administrator password to use for
-     * Windows VMs.
-     * 
+     * Get the adminPassword property: The administrator password to use for Windows VMs.
+     *
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -57,9 +52,8 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the adminPassword property: The administrator password to use for
-     * Windows VMs.
-     * 
+     * Set the adminPassword property: The administrator password to use for Windows VMs.
+     *
      * @param adminPassword the adminPassword value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */

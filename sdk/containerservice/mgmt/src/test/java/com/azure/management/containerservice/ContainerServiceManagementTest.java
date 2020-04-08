@@ -3,7 +3,6 @@
 
 package com.azure.management.containerservice;
 
-
 import com.azure.management.RestClient;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
 import com.azure.management.resources.core.TestBase;
@@ -19,17 +18,11 @@ public class ContainerServiceManagementTest extends TestBase {
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         RG_NAME = generateRandomResourceName("javaacsrg", 15);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(defaultSubscription);
+        resourceManager = ResourceManager.authenticate(restClient).withSubscription(defaultSubscription);
 
-       containerServiceManager = ContainerServiceManager
-                .authenticate(restClient, defaultSubscription);
+        containerServiceManager = ContainerServiceManager.authenticate(restClient, defaultSubscription);
 
-       resourceManager.resourceGroups()
-               .define(RG_NAME)
-               .withRegion(Region.US_EAST)
-               .create();
+        resourceManager.resourceGroups().define(RG_NAME).withRegion(Region.US_EAST).create();
     }
 
     @Override

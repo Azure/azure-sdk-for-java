@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PurchasePlan model.
- */
+/** The PurchasePlan model. */
 @Fluent
 public final class PurchasePlan {
     /*
@@ -39,7 +37,7 @@ public final class PurchasePlan {
 
     /**
      * Get the name property: The plan ID.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -48,7 +46,7 @@ public final class PurchasePlan {
 
     /**
      * Set the name property: The plan ID.
-     * 
+     *
      * @param name the name value to set.
      * @return the PurchasePlan object itself.
      */
@@ -58,10 +56,9 @@ public final class PurchasePlan {
     }
 
     /**
-     * Get the product property: Specifies the product of the image from the
-     * marketplace. This is the same value as Offer under the imageReference
-     * element.
-     * 
+     * Get the product property: Specifies the product of the image from the marketplace. This is the same value as
+     * Offer under the imageReference element.
+     *
      * @return the product value.
      */
     public String product() {
@@ -69,10 +66,9 @@ public final class PurchasePlan {
     }
 
     /**
-     * Set the product property: Specifies the product of the image from the
-     * marketplace. This is the same value as Offer under the imageReference
-     * element.
-     * 
+     * Set the product property: Specifies the product of the image from the marketplace. This is the same value as
+     * Offer under the imageReference element.
+     *
      * @param product the product value to set.
      * @return the PurchasePlan object itself.
      */
@@ -83,7 +79,7 @@ public final class PurchasePlan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     * 
+     *
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -92,7 +88,7 @@ public final class PurchasePlan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     * 
+     *
      * @param promotionCode the promotionCode value to set.
      * @return the PurchasePlan object itself.
      */
@@ -103,7 +99,7 @@ public final class PurchasePlan {
 
     /**
      * Get the publisher property: The plan ID.
-     * 
+     *
      * @return the publisher value.
      */
     public String publisher() {
@@ -112,7 +108,7 @@ public final class PurchasePlan {
 
     /**
      * Set the publisher property: The plan ID.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the PurchasePlan object itself.
      */

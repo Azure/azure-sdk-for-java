@@ -18,9 +18,7 @@ import com.azure.management.containerservice.ContainerServiceWindowsProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ContainerService model.
- */
+/** The ContainerService model. */
 @JsonFlatten
 @Fluent
 public class ContainerServiceInner extends Resource {
@@ -82,9 +80,9 @@ public class ContainerServiceInner extends Resource {
     private ContainerServiceDiagnosticsProfile diagnosticsProfile;
 
     /**
-     * Get the provisioningState property: The current deployment or
-     * provisioning state, which only appears in the response.
-     * 
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -92,9 +90,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the orchestratorProfile property: Profile for the container service
-     * orchestrator.
-     * 
+     * Get the orchestratorProfile property: Profile for the container service orchestrator.
+     *
      * @return the orchestratorProfile value.
      */
     public ContainerServiceOrchestratorProfile orchestratorProfile() {
@@ -102,9 +99,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the orchestratorProfile property: Profile for the container service
-     * orchestrator.
-     * 
+     * Set the orchestratorProfile property: Profile for the container service orchestrator.
+     *
      * @param orchestratorProfile the orchestratorProfile value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -114,9 +110,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the customProfile property: Properties to configure a custom
-     * container service cluster.
-     * 
+     * Get the customProfile property: Properties to configure a custom container service cluster.
+     *
      * @return the customProfile value.
      */
     public ContainerServiceCustomProfile customProfile() {
@@ -124,9 +119,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the customProfile property: Properties to configure a custom
-     * container service cluster.
-     * 
+     * Set the customProfile property: Properties to configure a custom container service cluster.
+     *
      * @param customProfile the customProfile value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -136,10 +130,9 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the servicePrincipalProfile property: Information about a service
-     * principal identity for the cluster to use for manipulating Azure APIs.
-     * Exact one of secret or keyVaultSecretRef need to be specified.
-     * 
+     * Get the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
+     * for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified.
+     *
      * @return the servicePrincipalProfile value.
      */
     public ContainerServicePrincipalProfile servicePrincipalProfile() {
@@ -147,10 +140,9 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the servicePrincipalProfile property: Information about a service
-     * principal identity for the cluster to use for manipulating Azure APIs.
-     * Exact one of secret or keyVaultSecretRef need to be specified.
-     * 
+     * Set the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
+     * for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified.
+     *
      * @param servicePrincipalProfile the servicePrincipalProfile value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -160,9 +152,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the masterProfile property: Profile for the container service
-     * master.
-     * 
+     * Get the masterProfile property: Profile for the container service master.
+     *
      * @return the masterProfile value.
      */
     public ContainerServiceMasterProfile masterProfile() {
@@ -170,9 +161,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the masterProfile property: Profile for the container service
-     * master.
-     * 
+     * Set the masterProfile property: Profile for the container service master.
+     *
      * @param masterProfile the masterProfile value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -183,7 +173,7 @@ public class ContainerServiceInner extends Resource {
 
     /**
      * Get the agentPoolProfiles property: Properties of the agent pool.
-     * 
+     *
      * @return the agentPoolProfiles value.
      */
     public List<ContainerServiceAgentPoolProfile> agentPoolProfiles() {
@@ -192,7 +182,7 @@ public class ContainerServiceInner extends Resource {
 
     /**
      * Set the agentPoolProfiles property: Properties of the agent pool.
-     * 
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -202,9 +192,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the windowsProfile property: Profile for Windows VMs in the
-     * container service cluster.
-     * 
+     * Get the windowsProfile property: Profile for Windows VMs in the container service cluster.
+     *
      * @return the windowsProfile value.
      */
     public ContainerServiceWindowsProfile windowsProfile() {
@@ -212,9 +201,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the windowsProfile property: Profile for Windows VMs in the
-     * container service cluster.
-     * 
+     * Set the windowsProfile property: Profile for Windows VMs in the container service cluster.
+     *
      * @param windowsProfile the windowsProfile value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -224,9 +212,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the linuxProfile property: Profile for Linux VMs in the container
-     * service cluster.
-     * 
+     * Get the linuxProfile property: Profile for Linux VMs in the container service cluster.
+     *
      * @return the linuxProfile value.
      */
     public ContainerServiceLinuxProfile linuxProfile() {
@@ -234,9 +221,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the linuxProfile property: Profile for Linux VMs in the container
-     * service cluster.
-     * 
+     * Set the linuxProfile property: Profile for Linux VMs in the container service cluster.
+     *
      * @param linuxProfile the linuxProfile value to set.
      * @return the ContainerServiceInner object itself.
      */
@@ -246,9 +232,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Get the diagnosticsProfile property: Profile for diagnostics in the
-     * container service cluster.
-     * 
+     * Get the diagnosticsProfile property: Profile for diagnostics in the container service cluster.
+     *
      * @return the diagnosticsProfile value.
      */
     public ContainerServiceDiagnosticsProfile diagnosticsProfile() {
@@ -256,9 +241,8 @@ public class ContainerServiceInner extends Resource {
     }
 
     /**
-     * Set the diagnosticsProfile property: Profile for diagnostics in the
-     * container service cluster.
-     * 
+     * Set the diagnosticsProfile property: Profile for diagnostics in the container service cluster.
+     *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the ContainerServiceInner object itself.
      */

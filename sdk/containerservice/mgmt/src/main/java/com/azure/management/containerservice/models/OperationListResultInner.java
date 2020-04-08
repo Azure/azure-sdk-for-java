@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OperationListResult model.
- */
+/** The OperationListResult model. */
 @Immutable
 public final class OperationListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class OperationListResultInner {
 
     /**
      * Get the value property: The list of compute operations.
-     * 
+     *
      * @return the value value.
      */
     public List<OperationValueInner> value() {

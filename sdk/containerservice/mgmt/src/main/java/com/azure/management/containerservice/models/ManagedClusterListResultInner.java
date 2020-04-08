@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedClusterListResult model.
- */
+/** The ManagedClusterListResult model. */
 @Fluent
 public final class ManagedClusterListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class ManagedClusterListResultInner {
 
     /**
      * Get the value property: The list of managed clusters.
-     * 
+     *
      * @return the value value.
      */
     public List<ManagedClusterInner> value() {
@@ -36,7 +34,7 @@ public final class ManagedClusterListResultInner {
 
     /**
      * Set the value property: The list of managed clusters.
-     * 
+     *
      * @param value the value value to set.
      * @return the ManagedClusterListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class ManagedClusterListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of managed
-     * cluster results.
-     * 
+     * Get the nextLink property: The URL to get the next set of managed cluster results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

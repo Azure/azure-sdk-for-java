@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ContainerServiceListResult model.
- */
+/** The ContainerServiceListResult model. */
 @Fluent
 public final class ContainerServiceListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class ContainerServiceListResultInner {
 
     /**
      * Get the value property: The list of container services.
-     * 
+     *
      * @return the value value.
      */
     public List<ContainerServiceInner> value() {
@@ -36,7 +34,7 @@ public final class ContainerServiceListResultInner {
 
     /**
      * Set the value property: The list of container services.
-     * 
+     *
      * @param value the value value to set.
      * @return the ContainerServiceListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class ContainerServiceListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of container
-     * service results.
-     * 
+     * Get the nextLink property: The URL to get the next set of container service results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServicePrincipalProfile model.
- */
+/** The ContainerServicePrincipalProfile model. */
 @Fluent
 public final class ContainerServicePrincipalProfile {
     /*
@@ -32,7 +30,7 @@ public final class ContainerServicePrincipalProfile {
 
     /**
      * Get the clientId property: The ID for the service principal.
-     * 
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -41,7 +39,7 @@ public final class ContainerServicePrincipalProfile {
 
     /**
      * Set the clientId property: The ID for the service principal.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the ContainerServicePrincipalProfile object itself.
      */
@@ -51,9 +49,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Get the secret property: The secret password associated with the service
-     * principal in plain text.
-     * 
+     * Get the secret property: The secret password associated with the service principal in plain text.
+     *
      * @return the secret value.
      */
     public String secret() {
@@ -61,9 +58,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Set the secret property: The secret password associated with the service
-     * principal in plain text.
-     * 
+     * Set the secret property: The secret password associated with the service principal in plain text.
+     *
      * @param secret the secret value to set.
      * @return the ContainerServicePrincipalProfile object itself.
      */
@@ -73,9 +69,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Get the keyVaultSecretRef property: Reference to a secret stored in
-     * Azure Key Vault.
-     * 
+     * Get the keyVaultSecretRef property: Reference to a secret stored in Azure Key Vault.
+     *
      * @return the keyVaultSecretRef value.
      */
     public KeyVaultSecretRef keyVaultSecretRef() {
@@ -83,9 +78,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Set the keyVaultSecretRef property: Reference to a secret stored in
-     * Azure Key Vault.
-     * 
+     * Set the keyVaultSecretRef property: Reference to a secret stored in Azure Key Vault.
+     *
      * @param keyVaultSecretRef the keyVaultSecretRef value to set.
      * @return the ContainerServicePrincipalProfile object itself.
      */

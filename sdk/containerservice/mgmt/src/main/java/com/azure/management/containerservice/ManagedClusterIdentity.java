@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterIdentity model.
- */
+/** The ManagedClusterIdentity model. */
 @Fluent
 public final class ManagedClusterIdentity {
     /*
@@ -37,9 +35,9 @@ public final class ManagedClusterIdentity {
     private ResourceIdentityType type;
 
     /**
-     * Get the principalId property: The principal id of the system assigned
-     * identity which is used by master components.
-     * 
+     * Get the principalId property: The principal id of the system assigned identity which is used by master
+     * components.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -47,9 +45,8 @@ public final class ManagedClusterIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id of the system assigned identity
-     * which is used by master components.
-     * 
+     * Get the tenantId property: The tenant id of the system assigned identity which is used by master components.
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -57,12 +54,10 @@ public final class ManagedClusterIdentity {
     }
 
     /**
-     * Get the type property: The type of identity used for the managed
-     * cluster. Type 'SystemAssigned' will use an implicitly created identity
-     * in master components and an auto-created user assigned identity in MC_
-     * resource group in agent nodes. Type 'None' will not use MSI for the
-     * managed cluster, service principal will be used instead.
-     * 
+     * Get the type property: The type of identity used for the managed cluster. Type 'SystemAssigned' will use an
+     * implicitly created identity in master components and an auto-created user assigned identity in MC_ resource group
+     * in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead.
+     *
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -70,12 +65,10 @@ public final class ManagedClusterIdentity {
     }
 
     /**
-     * Set the type property: The type of identity used for the managed
-     * cluster. Type 'SystemAssigned' will use an implicitly created identity
-     * in master components and an auto-created user assigned identity in MC_
-     * resource group in agent nodes. Type 'None' will not use MSI for the
-     * managed cluster, service principal will be used instead.
-     * 
+     * Set the type property: The type of identity used for the managed cluster. Type 'SystemAssigned' will use an
+     * implicitly created identity in master components and an auto-created user assigned identity in MC_ resource group
+     * in agent nodes. Type 'None' will not use MSI for the managed cluster, service principal will be used instead.
+     *
      * @param type the type value to set.
      * @return the ManagedClusterIdentity object itself.
      */

@@ -10,9 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterAccessProfile model.
- */
+/** The ManagedClusterAccessProfile model. */
 @JsonFlatten
 @Fluent
 public class ManagedClusterAccessProfileInner extends Resource {
@@ -23,9 +21,8 @@ public class ManagedClusterAccessProfileInner extends Resource {
     private byte[] kubeConfig;
 
     /**
-     * Get the kubeConfig property: Base64-encoded Kubernetes configuration
-     * file.
-     * 
+     * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
+     *
      * @return the kubeConfig value.
      */
     public byte[] kubeConfig() {
@@ -33,9 +30,8 @@ public class ManagedClusterAccessProfileInner extends Resource {
     }
 
     /**
-     * Set the kubeConfig property: Base64-encoded Kubernetes configuration
-     * file.
-     * 
+     * Set the kubeConfig property: Base64-encoded Kubernetes configuration file.
+     *
      * @param kubeConfig the kubeConfig value to set.
      * @return the ManagedClusterAccessProfileInner object itself.
      */

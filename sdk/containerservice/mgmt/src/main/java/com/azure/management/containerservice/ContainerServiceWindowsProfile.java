@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServiceWindowsProfile model.
- */
+/** The ContainerServiceWindowsProfile model. */
 @Fluent
 public final class ContainerServiceWindowsProfile {
     /*
@@ -25,9 +23,8 @@ public final class ContainerServiceWindowsProfile {
     private String adminPassword;
 
     /**
-     * Get the adminUsername property: The administrator username to use for
-     * Windows VMs.
-     * 
+     * Get the adminUsername property: The administrator username to use for Windows VMs.
+     *
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -35,9 +32,8 @@ public final class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Set the adminUsername property: The administrator username to use for
-     * Windows VMs.
-     * 
+     * Set the adminUsername property: The administrator username to use for Windows VMs.
+     *
      * @param adminUsername the adminUsername value to set.
      * @return the ContainerServiceWindowsProfile object itself.
      */
@@ -47,9 +43,8 @@ public final class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Get the adminPassword property: The administrator password to use for
-     * Windows VMs.
-     * 
+     * Get the adminPassword property: The administrator password to use for Windows VMs.
+     *
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -57,9 +52,8 @@ public final class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Set the adminPassword property: The administrator password to use for
-     * Windows VMs.
-     * 
+     * Set the adminPassword property: The administrator password to use for Windows VMs.
+     *
      * @param adminPassword the adminPassword value to set.
      * @return the ContainerServiceWindowsProfile object itself.
      */

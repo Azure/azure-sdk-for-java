@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServiceVMDiagnostics model.
- */
+/** The ContainerServiceVMDiagnostics model. */
 @Fluent
 public final class ContainerServiceVMDiagnostics {
     /*
@@ -25,9 +23,8 @@ public final class ContainerServiceVMDiagnostics {
     private String storageUri;
 
     /**
-     * Get the enabled property: Whether the VM diagnostic agent is provisioned
-     * on the VM.
-     * 
+     * Get the enabled property: Whether the VM diagnostic agent is provisioned on the VM.
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -35,9 +32,8 @@ public final class ContainerServiceVMDiagnostics {
     }
 
     /**
-     * Set the enabled property: Whether the VM diagnostic agent is provisioned
-     * on the VM.
-     * 
+     * Set the enabled property: Whether the VM diagnostic agent is provisioned on the VM.
+     *
      * @param enabled the enabled value to set.
      * @return the ContainerServiceVMDiagnostics object itself.
      */
@@ -47,9 +43,8 @@ public final class ContainerServiceVMDiagnostics {
     }
 
     /**
-     * Get the storageUri property: The URI of the storage account where
-     * diagnostics are stored.
-     * 
+     * Get the storageUri property: The URI of the storage account where diagnostics are stored.
+     *
      * @return the storageUri value.
      */
     public String storageUri() {

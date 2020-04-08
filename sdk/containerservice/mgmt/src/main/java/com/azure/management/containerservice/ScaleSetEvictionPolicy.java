@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ScaleSetEvictionPolicy.
- */
+/** Defines values for ScaleSetEvictionPolicy. */
 public final class ScaleSetEvictionPolicy extends ExpandableStringEnum<ScaleSetEvictionPolicy> {
-    /**
-     * Static value Delete for ScaleSetEvictionPolicy.
-     */
+    /** Static value Delete for ScaleSetEvictionPolicy. */
     public static final ScaleSetEvictionPolicy DELETE = fromString("Delete");
 
-    /**
-     * Static value Deallocate for ScaleSetEvictionPolicy.
-     */
+    /** Static value Deallocate for ScaleSetEvictionPolicy. */
     public static final ScaleSetEvictionPolicy DEALLOCATE = fromString("Deallocate");
 
     /**
      * Creates or finds a ScaleSetEvictionPolicy from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ScaleSetEvictionPolicy.
      */
@@ -33,9 +27,7 @@ public final class ScaleSetEvictionPolicy extends ExpandableStringEnum<ScaleSetE
         return fromString(name, ScaleSetEvictionPolicy.class);
     }
 
-    /**
-     * @return known ScaleSetEvictionPolicy values.
-     */
+    /** @return known ScaleSetEvictionPolicy values. */
     public static Collection<ScaleSetEvictionPolicy> values() {
         return values(ScaleSetEvictionPolicy.class);
     }

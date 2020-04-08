@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for NetworkPlugin.
- */
+/** Defines values for NetworkPlugin. */
 public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
-    /**
-     * Static value azure for NetworkPlugin.
-     */
+    /** Static value azure for NetworkPlugin. */
     public static final NetworkPlugin AZURE = fromString("azure");
 
-    /**
-     * Static value kubenet for NetworkPlugin.
-     */
+    /** Static value kubenet for NetworkPlugin. */
     public static final NetworkPlugin KUBENET = fromString("kubenet");
 
     /**
      * Creates or finds a NetworkPlugin from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding NetworkPlugin.
      */
@@ -33,9 +27,7 @@ public final class NetworkPlugin extends ExpandableStringEnum<NetworkPlugin> {
         return fromString(name, NetworkPlugin.class);
     }
 
-    /**
-     * @return known NetworkPlugin values.
-     */
+    /** @return known NetworkPlugin values. */
     public static Collection<NetworkPlugin> values() {
         return values(NetworkPlugin.class);
     }

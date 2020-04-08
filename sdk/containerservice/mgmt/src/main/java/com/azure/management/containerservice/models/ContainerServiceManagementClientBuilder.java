@@ -12,9 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the ContainerServiceManagementClientImpl type.
- */
+/** A builder for creating a new instance of the ContainerServiceManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {ContainerServiceManagementClientImpl.class})
 public final class ContainerServiceManagementClientBuilder {
     /*
@@ -23,8 +21,9 @@ public final class ContainerServiceManagementClientBuilder {
     private String subscriptionId;
 
     /**
-     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     * 
+     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -40,7 +39,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -56,7 +55,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -72,7 +71,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -83,7 +82,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Builds an instance of ContainerServiceManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ContainerServiceManagementClientImpl.
      */
     public ContainerServiceManagementClientImpl buildClient() {
@@ -94,7 +93,10 @@ public final class ContainerServiceManagementClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         ContainerServiceManagementClientImpl client = new ContainerServiceManagementClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

@@ -25,49 +25,43 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Operations.
- */
+/** An instance of this class provides access to all the operations defined in Operations. */
 public final class OperationsInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final OperationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     OperationsInner(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServiceManagementClientOperations to be used by the proxy
+     * The interface defining all the services for ContainerServiceManagementClientOperations to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface OperationsService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.ContainerService/operations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OperationListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<SimpleResponse<OperationListResultInner>> list(
+            @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
     }
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of compute operations.
@@ -75,33 +69,30 @@ public final class OperationsInner {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OperationValueInner>> listSinglePageAsync() {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), apiVersion, context))
-            .<PagedResponse<OperationValueInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getHost(), apiVersion, context))
+            .<PagedResponse<OperationValueInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of compute operations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationValueInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync());
+        return new PagedFlux<>(() -> listSinglePageAsync());
     }
 
     /**
      * Gets a list of compute operations.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of compute operations.

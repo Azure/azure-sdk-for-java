@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OpenShiftManagedClusterListResult model.
- */
+/** The OpenShiftManagedClusterListResult model. */
 @Fluent
 public final class OpenShiftManagedClusterListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class OpenShiftManagedClusterListResultInner {
 
     /**
      * Get the value property: The list of OpenShift managed clusters.
-     * 
+     *
      * @return the value value.
      */
     public List<OpenShiftManagedClusterInner> value() {
@@ -36,7 +34,7 @@ public final class OpenShiftManagedClusterListResultInner {
 
     /**
      * Set the value property: The list of OpenShift managed clusters.
-     * 
+     *
      * @param value the value value to set.
      * @return the OpenShiftManagedClusterListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class OpenShiftManagedClusterListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of OpenShift
-     * managed cluster results.
-     * 
+     * Get the nextLink property: The URL to get the next set of OpenShift managed cluster results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

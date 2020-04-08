@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ContainerServiceSshConfiguration model.
- */
+/** The ContainerServiceSshConfiguration model. */
 @Fluent
 public final class ContainerServiceSshConfiguration {
     /*
@@ -21,9 +19,9 @@ public final class ContainerServiceSshConfiguration {
     private List<ContainerServiceSshPublicKey> publicKeys;
 
     /**
-     * Get the publicKeys property: The list of SSH public keys used to
-     * authenticate with Linux-based VMs. Only expect one key specified.
-     * 
+     * Get the publicKeys property: The list of SSH public keys used to authenticate with Linux-based VMs. Only expect
+     * one key specified.
+     *
      * @return the publicKeys value.
      */
     public List<ContainerServiceSshPublicKey> publicKeys() {
@@ -31,9 +29,9 @@ public final class ContainerServiceSshConfiguration {
     }
 
     /**
-     * Set the publicKeys property: The list of SSH public keys used to
-     * authenticate with Linux-based VMs. Only expect one key specified.
-     * 
+     * Set the publicKeys property: The list of SSH public keys used to authenticate with Linux-based VMs. Only expect
+     * one key specified.
+     *
      * @param publicKeys the publicKeys value to set.
      * @return the ContainerServiceSshConfiguration object itself.
      */

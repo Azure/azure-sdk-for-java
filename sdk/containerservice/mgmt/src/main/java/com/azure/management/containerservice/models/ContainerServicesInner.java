@@ -36,103 +36,163 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ContainerServices.
- */
-public final class ContainerServicesInner implements InnerSupportsGet<ContainerServiceInner>, InnerSupportsListing<ContainerServiceInner>, InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+/** An instance of this class provides access to all the operations defined in ContainerServices. */
+public final class ContainerServicesInner
+    implements InnerSupportsGet<ContainerServiceInner>,
+        InnerSupportsListing<ContainerServiceInner>,
+        InnerSupportsDelete<Void> {
+    /** The proxy service used to perform REST calls. */
     private final ContainerServicesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of ContainerServicesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ContainerServicesInner(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(ContainerServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ContainerServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServiceManagementClientContainerServices to be used by the
+     * The interface defining all the services for ContainerServiceManagementClientContainerServices to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface ContainerServicesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/containerServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ContainerServiceListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<ContainerServiceListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("containerServiceName") String containerServiceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ContainerServiceInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerServiceName") String containerServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ContainerServiceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("containerServiceName") String containerServiceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerServiceName") String containerServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("containerServiceName") String containerServiceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerServiceName") String containerServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/containerServices")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/containerServices")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ContainerServiceListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<ContainerServiceListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}" + "/orchestrators")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}"
+                + "/orchestrators")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestrators(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location, @QueryParam("resource-type") String resourceType, Context context);
+        Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestrators(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("resource-type") String resourceType,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("containerServiceName") String containerServiceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ContainerServiceInner parameters, Context context);
+        Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerServiceName") String containerServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ContainerServiceInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/containerServices/{containerServiceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("containerServiceName") String containerServiceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("containerServiceName") String containerServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ContainerServiceListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<ContainerServiceListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ContainerServiceListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<ContainerServiceListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
-     * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
@@ -140,34 +200,38 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listSinglePageAsync() {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
-            .<PagedResponse<ContainerServiceInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
+            .<PagedResponse<ContainerServiceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ContainerServiceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
@@ -179,7 +243,7 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
@@ -189,15 +253,27 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), resourceGroupName, containerServiceName, apiVersion, this.client.getSubscriptionId(), parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            containerServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
@@ -207,16 +283,21 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerServiceInner> createOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
-        return this.client.<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class)
+    public Mono<ContainerServiceInner> createOrUpdateAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters);
+        return this
+            .client
+            .<ContainerServiceInner, ContainerServiceInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ContainerServiceInner.class, ContainerServiceInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
@@ -226,13 +307,16 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerServiceInner createOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+    public ContainerServiceInner createOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, containerServiceName, parameters).block();
     }
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,15 +325,28 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return the properties of the specified container service in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String containerServiceName) {
+    public Mono<SimpleResponse<ContainerServiceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String containerServiceName) {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getHost(), resourceGroupName, containerServiceName, apiVersion, this.client.getSubscriptionId(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            containerServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,18 +357,21 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ContainerServiceInner> getByResourceGroupAsync(String resourceGroupName, String containerServiceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, containerServiceName)
-            .flatMap((SimpleResponse<ContainerServiceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ContainerServiceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,8 +385,11 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     }
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,15 +398,29 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerServiceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String containerServiceName) {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), resourceGroupName, containerServiceName, apiVersion, this.client.getSubscriptionId(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            containerServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,14 +431,19 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerServiceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,8 +456,10 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     }
 
     /**
-     * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -345,20 +469,33 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context))
-            .<PagedResponse<ContainerServiceInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<ContainerServiceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -373,8 +510,10 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     }
 
     /**
-     * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -387,8 +526,9 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -397,15 +537,27 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return a list of supported orchestrators in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(String location, String resourceType) {
+    public Mono<SimpleResponse<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(
+        String location, String resourceType) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.listOrchestrators(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), location, resourceType, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOrchestrators(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            location,
+                            resourceType,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,20 +566,23 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return a list of supported orchestrators in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location, String resourceType) {
+    public Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(
+        String location, String resourceType) {
         return listOrchestratorsWithResponseAsync(location, resourceType)
-            .flatMap((SimpleResponse<OrchestratorVersionProfileListResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<OrchestratorVersionProfileListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -439,18 +594,20 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
         final String resourceType = null;
         final Context context = null;
         return listOrchestratorsWithResponseAsync(location, resourceType)
-            .flatMap((SimpleResponse<OrchestratorVersionProfileListResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<OrchestratorVersionProfileListResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -464,8 +621,9 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     }
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -481,7 +639,7 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
@@ -491,15 +649,27 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+    public Mono<SimpleResponse<ContainerServiceInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.beginCreateOrUpdate(this.client.getHost(), resourceGroupName, containerServiceName, apiVersion, this.client.getSubscriptionId(), parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            containerServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
@@ -509,20 +679,22 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainerServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+    public Mono<ContainerServiceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, containerServiceName, parameters)
-            .flatMap((SimpleResponse<ContainerServiceInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ContainerServiceInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Container service.
@@ -532,13 +704,17 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContainerServiceInner beginCreateOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
+    public ContainerServiceInner beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, containerServiceName, parameters).block();
     }
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -549,13 +725,26 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String containerServiceName) {
         final String apiVersion = "2017-07-01";
-        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), resourceGroupName, containerServiceName, apiVersion, this.client.getSubscriptionId(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            containerServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,8 +759,11 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
     }
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -585,7 +777,7 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -594,20 +786,23 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<ContainerServiceInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ContainerServiceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -616,14 +811,17 @@ public final class ContainerServicesInner implements InnerSupportsGet<ContainerS
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ContainerServiceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<ContainerServiceInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<ContainerServiceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

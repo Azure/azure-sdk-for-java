@@ -10,9 +10,7 @@ import com.azure.management.containerservice.ManagedClusterPoolUpgradeProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedClusterUpgradeProfile model.
- */
+/** The ManagedClusterUpgradeProfile model. */
 @JsonFlatten
 @Fluent
 public class ManagedClusterUpgradeProfileInner {
@@ -48,7 +46,7 @@ public class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the id property: Id of upgrade profile.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -57,7 +55,7 @@ public class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the name property: Name of upgrade profile.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -66,7 +64,7 @@ public class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the type property: Type of upgrade profile.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -74,9 +72,8 @@ public class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Get the controlPlaneProfile property: The list of available upgrade
-     * versions for the control plane.
-     * 
+     * Get the controlPlaneProfile property: The list of available upgrade versions for the control plane.
+     *
      * @return the controlPlaneProfile value.
      */
     public ManagedClusterPoolUpgradeProfile controlPlaneProfile() {
@@ -84,21 +81,20 @@ public class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Set the controlPlaneProfile property: The list of available upgrade
-     * versions for the control plane.
-     * 
+     * Set the controlPlaneProfile property: The list of available upgrade versions for the control plane.
+     *
      * @param controlPlaneProfile the controlPlaneProfile value to set.
      * @return the ManagedClusterUpgradeProfileInner object itself.
      */
-    public ManagedClusterUpgradeProfileInner withControlPlaneProfile(ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
+    public ManagedClusterUpgradeProfileInner withControlPlaneProfile(
+        ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
         this.controlPlaneProfile = controlPlaneProfile;
         return this;
     }
 
     /**
-     * Get the agentPoolProfiles property: The list of available upgrade
-     * versions for agent pools.
-     * 
+     * Get the agentPoolProfiles property: The list of available upgrade versions for agent pools.
+     *
      * @return the agentPoolProfiles value.
      */
     public List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles() {
@@ -106,13 +102,13 @@ public class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Set the agentPoolProfiles property: The list of available upgrade
-     * versions for agent pools.
-     * 
+     * Set the agentPoolProfiles property: The list of available upgrade versions for agent pools.
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterUpgradeProfileInner object itself.
      */
-    public ManagedClusterUpgradeProfileInner withAgentPoolProfiles(List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
+    public ManagedClusterUpgradeProfileInner withAgentPoolProfiles(
+        List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
         this.agentPoolProfiles = agentPoolProfiles;
         return this;
     }

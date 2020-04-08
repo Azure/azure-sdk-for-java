@@ -10,9 +10,7 @@ import com.azure.management.containerservice.OrchestratorVersionProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OrchestratorVersionProfileListResult model.
- */
+/** The OrchestratorVersionProfileListResult model. */
 @JsonFlatten
 @Fluent
 public class OrchestratorVersionProfileListResultInner {
@@ -42,7 +40,7 @@ public class OrchestratorVersionProfileListResultInner {
 
     /**
      * Get the id property: Id of the orchestrator version profile list result.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -50,9 +48,8 @@ public class OrchestratorVersionProfileListResultInner {
     }
 
     /**
-     * Get the name property: Name of the orchestrator version profile list
-     * result.
-     * 
+     * Get the name property: Name of the orchestrator version profile list result.
+     *
      * @return the name value.
      */
     public String name() {
@@ -60,9 +57,8 @@ public class OrchestratorVersionProfileListResultInner {
     }
 
     /**
-     * Get the type property: Type of the orchestrator version profile list
-     * result.
-     * 
+     * Get the type property: Type of the orchestrator version profile list result.
+     *
      * @return the type value.
      */
     public String type() {
@@ -71,7 +67,7 @@ public class OrchestratorVersionProfileListResultInner {
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     * 
+     *
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -80,7 +76,7 @@ public class OrchestratorVersionProfileListResultInner {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     * 
+     *
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileListResultInner object itself.
      */

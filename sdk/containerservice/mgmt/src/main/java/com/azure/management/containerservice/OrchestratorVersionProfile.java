@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OrchestratorVersionProfile model.
- */
+/** The OrchestratorVersionProfile model. */
 @Fluent
 public final class OrchestratorVersionProfile {
     /*
@@ -45,7 +43,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Get the orchestratorType property: Orchestrator type.
-     * 
+     *
      * @return the orchestratorType value.
      */
     public String orchestratorType() {
@@ -54,7 +52,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Set the orchestratorType property: Orchestrator type.
-     * 
+     *
      * @param orchestratorType the orchestratorType value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -64,9 +62,8 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the orchestratorVersion property: Orchestrator version (major,
-     * minor, patch).
-     * 
+     * Get the orchestratorVersion property: Orchestrator version (major, minor, patch).
+     *
      * @return the orchestratorVersion value.
      */
     public String orchestratorVersion() {
@@ -74,9 +71,8 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the orchestratorVersion property: Orchestrator version (major,
-     * minor, patch).
-     * 
+     * Set the orchestratorVersion property: Orchestrator version (major, minor, patch).
+     *
      * @param orchestratorVersion the orchestratorVersion value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -86,9 +82,8 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the defaultProperty property: Installed by default if version is not
-     * specified.
-     * 
+     * Get the defaultProperty property: Installed by default if version is not specified.
+     *
      * @return the defaultProperty value.
      */
     public Boolean defaultProperty() {
@@ -96,9 +91,8 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the defaultProperty property: Installed by default if version is not
-     * specified.
-     * 
+     * Set the defaultProperty property: Installed by default if version is not specified.
+     *
      * @param defaultProperty the defaultProperty value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -108,9 +102,8 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Get the isPreview property: Whether Kubernetes version is currently in
-     * preview.
-     * 
+     * Get the isPreview property: Whether Kubernetes version is currently in preview.
+     *
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -118,9 +111,8 @@ public final class OrchestratorVersionProfile {
     }
 
     /**
-     * Set the isPreview property: Whether Kubernetes version is currently in
-     * preview.
-     * 
+     * Set the isPreview property: Whether Kubernetes version is currently in preview.
+     *
      * @param isPreview the isPreview value to set.
      * @return the OrchestratorVersionProfile object itself.
      */
@@ -131,7 +123,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Get the upgrades property: The list of available upgrade versions.
-     * 
+     *
      * @return the upgrades value.
      */
     public List<OrchestratorProfile> upgrades() {
@@ -140,7 +132,7 @@ public final class OrchestratorVersionProfile {
 
     /**
      * Set the upgrades property: The list of available upgrade versions.
-     * 
+     *
      * @param upgrades the upgrades value to set.
      * @return the OrchestratorVersionProfile object itself.
      */

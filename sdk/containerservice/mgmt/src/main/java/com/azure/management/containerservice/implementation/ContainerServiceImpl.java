@@ -21,26 +21,17 @@ import com.azure.management.containerservice.Count;
 import com.azure.management.containerservice.models.ContainerServiceInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for ContainerService and its create and update interfaces.
- */
-public class ContainerServiceImpl extends
-        GroupableResourceImpl<
-                        ContainerService,
-                        ContainerServiceInner,
-                    ContainerServiceImpl,
-                    ContainerServiceManager>
-        implements
-            ContainerService,
-            ContainerService.Definition,
-            ContainerService.Update {
+/** The implementation for ContainerService and its create and update interfaces. */
+public class ContainerServiceImpl
+    extends GroupableResourceImpl<
+        ContainerService, ContainerServiceInner, ContainerServiceImpl, ContainerServiceManager>
+    implements ContainerService, ContainerService.Definition, ContainerService.Update {
 
     private String networkId;
     private String subnetName;
@@ -62,8 +53,7 @@ public class ContainerServiceImpl extends
 
     @Override
     public int masterNodeCount() {
-        if (this.inner().masterProfile() == null
-                || this.inner().masterProfile().count() == null) {
+        if (this.inner().masterProfile() == null || this.inner().masterProfile().count() == null) {
             return 0;
         }
 
@@ -121,9 +111,9 @@ public class ContainerServiceImpl extends
     @Override
     public String sshKey() {
         if (this.inner().linuxProfile() == null
-                || this.inner().linuxProfile().ssh() == null
-                || this.inner().linuxProfile().ssh().publicKeys() == null
-                || this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
+            || this.inner().linuxProfile().ssh() == null
+            || this.inner().linuxProfile().ssh().publicKeys() == null
+            || this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
             return null;
         }
 
@@ -178,8 +168,7 @@ public class ContainerServiceImpl extends
 
     @Override
     public boolean isDiagnosticsEnabled() {
-        if (this.inner().diagnosticsProfile() == null
-                || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
+        if (this.inner().diagnosticsProfile() == null || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
             throw new RuntimeException("Diagnostic profile is missing!");
         }
 
@@ -188,7 +177,8 @@ public class ContainerServiceImpl extends
 
     @Override
     public ContainerServiceImpl withMasterNodeCount(ContainerServiceMasterProfileCount profileCount) {
-        ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile().withVmSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2);
+        ContainerServiceMasterProfile masterProfile =
+            new ContainerServiceMasterProfile().withVmSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2);
         masterProfile.withCount(Count.fromString(String.valueOf(profileCount.count())));
         this.inner().withMasterProfile(masterProfile);
         return this;
@@ -265,8 +255,7 @@ public class ContainerServiceImpl extends
 
     @Override
     public ContainerServiceImpl withServicePrincipal(String clientId, String secret) {
-        ContainerServicePrincipalProfile serviceProfile =
-                new ContainerServicePrincipalProfile();
+        ContainerServicePrincipalProfile serviceProfile = new ContainerServicePrincipalProfile();
         serviceProfile.withClientId(clientId);
         serviceProfile.withSecret(secret);
         this.inner().withServicePrincipalProfile(serviceProfile);
@@ -337,7 +326,11 @@ public class ContainerServiceImpl extends
 
     @Override
     protected Mono<ContainerServiceInner> getInnerAsync() {
-        return this.manager().inner().containerServices().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .containerServices()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -347,11 +340,15 @@ public class ContainerServiceImpl extends
             this.inner().withServicePrincipalProfile(null);
         }
 
-        return this.manager().inner().containerServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(containerServiceInner -> {
+        return this
+            .manager()
+            .inner()
+            .containerServices()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(
+                containerServiceInner -> {
                     self.setInner(containerServiceInner);
                     return self;
                 });
     }
-
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedClusterAPIServerAccessProfile model.
- */
+/** The ManagedClusterAPIServerAccessProfile model. */
 @Fluent
 public final class ManagedClusterAPIServerAccessProfile {
     /*
@@ -26,9 +24,8 @@ public final class ManagedClusterAPIServerAccessProfile {
     private Boolean enablePrivateCluster;
 
     /**
-     * Get the authorizedIPRanges property: Authorized IP Ranges to kubernetes
-     * API server.
-     * 
+     * Get the authorizedIPRanges property: Authorized IP Ranges to kubernetes API server.
+     *
      * @return the authorizedIPRanges value.
      */
     public List<String> authorizedIPRanges() {
@@ -36,9 +33,8 @@ public final class ManagedClusterAPIServerAccessProfile {
     }
 
     /**
-     * Set the authorizedIPRanges property: Authorized IP Ranges to kubernetes
-     * API server.
-     * 
+     * Set the authorizedIPRanges property: Authorized IP Ranges to kubernetes API server.
+     *
      * @param authorizedIPRanges the authorizedIPRanges value to set.
      * @return the ManagedClusterAPIServerAccessProfile object itself.
      */
@@ -48,9 +44,8 @@ public final class ManagedClusterAPIServerAccessProfile {
     }
 
     /**
-     * Get the enablePrivateCluster property: Whether to create the cluster as
-     * a private cluster or not.
-     * 
+     * Get the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
+     *
      * @return the enablePrivateCluster value.
      */
     public Boolean enablePrivateCluster() {
@@ -58,9 +53,8 @@ public final class ManagedClusterAPIServerAccessProfile {
     }
 
     /**
-     * Set the enablePrivateCluster property: Whether to create the cluster as
-     * a private cluster or not.
-     * 
+     * Set the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
+     *
      * @param enablePrivateCluster the enablePrivateCluster value to set.
      * @return the ManagedClusterAPIServerAccessProfile object itself.
      */

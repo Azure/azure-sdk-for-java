@@ -8,38 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ContainerServiceOrchestratorTypes.
- */
+/** Defines values for ContainerServiceOrchestratorTypes. */
 public final class ContainerServiceOrchestratorTypes extends ExpandableStringEnum<ContainerServiceOrchestratorTypes> {
-    /**
-     * Static value Kubernetes for ContainerServiceOrchestratorTypes.
-     */
+    /** Static value Kubernetes for ContainerServiceOrchestratorTypes. */
     public static final ContainerServiceOrchestratorTypes KUBERNETES = fromString("Kubernetes");
 
-    /**
-     * Static value Swarm for ContainerServiceOrchestratorTypes.
-     */
+    /** Static value Swarm for ContainerServiceOrchestratorTypes. */
     public static final ContainerServiceOrchestratorTypes SWARM = fromString("Swarm");
 
-    /**
-     * Static value DCOS for ContainerServiceOrchestratorTypes.
-     */
+    /** Static value DCOS for ContainerServiceOrchestratorTypes. */
     public static final ContainerServiceOrchestratorTypes DCOS = fromString("DCOS");
 
-    /**
-     * Static value DockerCE for ContainerServiceOrchestratorTypes.
-     */
+    /** Static value DockerCE for ContainerServiceOrchestratorTypes. */
     public static final ContainerServiceOrchestratorTypes DOCKER_CE = fromString("DockerCE");
 
-    /**
-     * Static value Custom for ContainerServiceOrchestratorTypes.
-     */
+    /** Static value Custom for ContainerServiceOrchestratorTypes. */
     public static final ContainerServiceOrchestratorTypes CUSTOM = fromString("Custom");
 
     /**
      * Creates or finds a ContainerServiceOrchestratorTypes from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ContainerServiceOrchestratorTypes.
      */
@@ -48,9 +36,7 @@ public final class ContainerServiceOrchestratorTypes extends ExpandableStringEnu
         return fromString(name, ContainerServiceOrchestratorTypes.class);
     }
 
-    /**
-     * @return known ContainerServiceOrchestratorTypes values.
-     */
+    /** @return known ContainerServiceOrchestratorTypes values. */
     public static Collection<ContainerServiceOrchestratorTypes> values() {
         return values(ContainerServiceOrchestratorTypes.class);
     }

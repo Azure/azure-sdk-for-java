@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterLoadBalancerProfileManagedOutboundIPs model.
- */
+/** The ManagedClusterLoadBalancerProfileManagedOutboundIPs model. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     /*
@@ -21,10 +19,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     private Integer count;
 
     /**
-     * Get the count property: Desired number of outbound IP created/managed by
-     * Azure for the cluster load balancer. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
-     * 
+     * Get the count property: Desired number of outbound IP created/managed by Azure for the cluster load balancer.
+     * Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+     *
      * @return the count value.
      */
     public Integer count() {
@@ -32,13 +29,11 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Set the count property: Desired number of outbound IP created/managed by
-     * Azure for the cluster load balancer. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
-     * 
+     * Set the count property: Desired number of outbound IP created/managed by Azure for the cluster load balancer.
+     * Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+     *
      * @param count the count value to set.
-     * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object
-     * itself.
+     * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object itself.
      */
     public ManagedClusterLoadBalancerProfileManagedOutboundIPs withCount(Integer count) {
         this.count = count;

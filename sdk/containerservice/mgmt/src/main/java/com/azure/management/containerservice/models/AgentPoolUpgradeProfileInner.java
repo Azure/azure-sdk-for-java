@@ -11,9 +11,7 @@ import com.azure.management.containerservice.OSType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AgentPoolUpgradeProfile model.
- */
+/** The AgentPoolUpgradeProfile model. */
 @JsonFlatten
 @Fluent
 public class AgentPoolUpgradeProfileInner {
@@ -56,7 +54,7 @@ public class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the id property: Id of the agent pool upgrade profile.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -65,7 +63,7 @@ public class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the name property: Name of the agent pool upgrade profile.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -74,7 +72,7 @@ public class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the type property: Type of the agent pool upgrade profile.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -82,9 +80,8 @@ public class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor,
-     * patch).
-     * 
+     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     *
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -92,9 +89,8 @@ public class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor,
-     * patch).
-     * 
+     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */
@@ -104,9 +100,8 @@ public class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @return the osType value.
      */
     public OSType osType() {
@@ -114,9 +109,8 @@ public class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @param osType the osType value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */
@@ -126,9 +120,8 @@ public class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Get the upgrades property: List of orchestrator types and versions
-     * available for upgrade.
-     * 
+     * Get the upgrades property: List of orchestrator types and versions available for upgrade.
+     *
      * @return the upgrades value.
      */
     public List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades() {
@@ -136,9 +129,8 @@ public class AgentPoolUpgradeProfileInner {
     }
 
     /**
-     * Set the upgrades property: List of orchestrator types and versions
-     * available for upgrade.
-     * 
+     * Set the upgrades property: List of orchestrator types and versions available for upgrade.
+     *
      * @param upgrades the upgrades value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */

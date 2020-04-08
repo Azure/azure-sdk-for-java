@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedClusterPoolUpgradeProfile model.
- */
+/** The ManagedClusterPoolUpgradeProfile model. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
     /*
@@ -39,9 +37,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor,
-     * patch).
-     * 
+     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     *
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -49,9 +46,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor,
-     * patch).
-     * 
+     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -62,7 +58,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Get the name property: Pool name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -71,7 +67,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Set the name property: Pool name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -81,9 +77,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @return the osType value.
      */
     public OSType osType() {
@@ -91,9 +86,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @param osType the osType value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -103,9 +97,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the upgrades property: List of orchestrator types and versions
-     * available for upgrade.
-     * 
+     * Get the upgrades property: List of orchestrator types and versions available for upgrade.
+     *
      * @return the upgrades value.
      */
     public List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades() {
@@ -113,9 +106,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the upgrades property: List of orchestrator types and versions
-     * available for upgrade.
-     * 
+     * Set the upgrades property: List of orchestrator types and versions available for upgrade.
+     *
      * @param upgrades the upgrades value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */

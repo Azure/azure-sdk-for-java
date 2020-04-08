@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OpenShiftRouterProfile model.
- */
+/** The OpenShiftRouterProfile model. */
 @Fluent
 public final class OpenShiftRouterProfile {
     /*
@@ -32,7 +30,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the name property: Name of the router profile.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -41,7 +39,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Set the name property: Name of the router profile.
-     * 
+     *
      * @param name the name value to set.
      * @return the OpenShiftRouterProfile object itself.
      */
@@ -52,7 +50,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the publicSubdomain property: DNS subdomain for OpenShift router.
-     * 
+     *
      * @return the publicSubdomain value.
      */
     public String publicSubdomain() {
@@ -61,7 +59,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the fqdn property: Auto-allocated FQDN for the OpenShift router.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {

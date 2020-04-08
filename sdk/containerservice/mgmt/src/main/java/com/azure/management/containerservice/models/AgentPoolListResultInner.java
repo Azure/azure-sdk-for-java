@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AgentPoolListResult model.
- */
+/** The AgentPoolListResult model. */
 @Fluent
 public final class AgentPoolListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class AgentPoolListResultInner {
 
     /**
      * Get the value property: The list of agent pools.
-     * 
+     *
      * @return the value value.
      */
     public List<AgentPoolInner> value() {
@@ -36,7 +34,7 @@ public final class AgentPoolListResultInner {
 
     /**
      * Set the value property: The list of agent pools.
-     * 
+     *
      * @param value the value value to set.
      * @return the AgentPoolListResultInner object itself.
      */
@@ -46,9 +44,8 @@ public final class AgentPoolListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of agent pool
-     * results.
-     * 
+     * Get the nextLink property: The URL to get the next set of agent pool results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

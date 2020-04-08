@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedClusterLoadBalancerProfileOutboundIPPrefixes model.
- */
+/** The ManagedClusterLoadBalancerProfileOutboundIPPrefixes model. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileOutboundIPPrefixes {
     /*
@@ -21,7 +19,7 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPPrefixes {
 
     /**
      * Get the publicIPPrefixes property: A list of public IP prefix resources.
-     * 
+     *
      * @return the publicIPPrefixes value.
      */
     public List<ResourceReference> publicIPPrefixes() {
@@ -30,12 +28,12 @@ public final class ManagedClusterLoadBalancerProfileOutboundIPPrefixes {
 
     /**
      * Set the publicIPPrefixes property: A list of public IP prefix resources.
-     * 
+     *
      * @param publicIPPrefixes the publicIPPrefixes value to set.
-     * @return the ManagedClusterLoadBalancerProfileOutboundIPPrefixes object
-     * itself.
+     * @return the ManagedClusterLoadBalancerProfileOutboundIPPrefixes object itself.
      */
-    public ManagedClusterLoadBalancerProfileOutboundIPPrefixes withPublicIPPrefixes(List<ResourceReference> publicIPPrefixes) {
+    public ManagedClusterLoadBalancerProfileOutboundIPPrefixes withPublicIPPrefixes(
+        List<ResourceReference> publicIPPrefixes) {
         this.publicIPPrefixes = publicIPPrefixes;
         return this;
     }

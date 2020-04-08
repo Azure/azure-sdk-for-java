@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServiceDiagnosticsProfile model.
- */
+/** The ContainerServiceDiagnosticsProfile model. */
 @Fluent
 public final class ContainerServiceDiagnosticsProfile {
     /*
@@ -19,9 +17,8 @@ public final class ContainerServiceDiagnosticsProfile {
     private ContainerServiceVMDiagnostics vmDiagnostics;
 
     /**
-     * Get the vmDiagnostics property: Profile for diagnostics on the container
-     * service VMs.
-     * 
+     * Get the vmDiagnostics property: Profile for diagnostics on the container service VMs.
+     *
      * @return the vmDiagnostics value.
      */
     public ContainerServiceVMDiagnostics vmDiagnostics() {
@@ -29,9 +26,8 @@ public final class ContainerServiceDiagnosticsProfile {
     }
 
     /**
-     * Set the vmDiagnostics property: Profile for diagnostics on the container
-     * service VMs.
-     * 
+     * Set the vmDiagnostics property: Profile for diagnostics on the container service VMs.
+     *
      * @param vmDiagnostics the vmDiagnostics value to set.
      * @return the ContainerServiceDiagnosticsProfile object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServiceSshPublicKey model.
- */
+/** The ContainerServiceSshPublicKey model. */
 @Fluent
 public final class ContainerServiceSshPublicKey {
     /*
@@ -20,10 +18,9 @@ public final class ContainerServiceSshPublicKey {
     private String keyData;
 
     /**
-     * Get the keyData property: Certificate public key used to authenticate
-     * with VMs through SSH. The certificate must be in PEM format with or
-     * without headers.
-     * 
+     * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
+     * be in PEM format with or without headers.
+     *
      * @return the keyData value.
      */
     public String keyData() {
@@ -31,10 +28,9 @@ public final class ContainerServiceSshPublicKey {
     }
 
     /**
-     * Set the keyData property: Certificate public key used to authenticate
-     * with VMs through SSH. The certificate must be in PEM format with or
-     * without headers.
-     * 
+     * Set the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
+     * be in PEM format with or without headers.
+     *
      * @param keyData the keyData value to set.
      * @return the ContainerServiceSshPublicKey object itself.
      */

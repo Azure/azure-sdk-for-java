@@ -9,9 +9,7 @@ import com.azure.management.containerservice.CredentialResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The CredentialResults model.
- */
+/** The CredentialResults model. */
 @Immutable
 public final class CredentialResultsInner {
     /*
@@ -21,9 +19,8 @@ public final class CredentialResultsInner {
     private List<CredentialResult> kubeconfigs;
 
     /**
-     * Get the kubeconfigs property: Base64-encoded Kubernetes configuration
-     * file.
-     * 
+     * Get the kubeconfigs property: Base64-encoded Kubernetes configuration file.
+     *
      * @return the kubeconfigs value.
      */
     public List<CredentialResult> kubeconfigs() {

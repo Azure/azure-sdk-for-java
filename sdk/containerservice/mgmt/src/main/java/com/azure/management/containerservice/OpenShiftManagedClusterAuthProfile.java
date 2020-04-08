@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OpenShiftManagedClusterAuthProfile model.
- */
+/** The OpenShiftManagedClusterAuthProfile model. */
 @Fluent
 public final class OpenShiftManagedClusterAuthProfile {
     /*
@@ -20,9 +18,8 @@ public final class OpenShiftManagedClusterAuthProfile {
     private List<OpenShiftManagedClusterIdentityProvider> identityProviders;
 
     /**
-     * Get the identityProviders property: Type of authentication profile to
-     * use.
-     * 
+     * Get the identityProviders property: Type of authentication profile to use.
+     *
      * @return the identityProviders value.
      */
     public List<OpenShiftManagedClusterIdentityProvider> identityProviders() {
@@ -30,13 +27,13 @@ public final class OpenShiftManagedClusterAuthProfile {
     }
 
     /**
-     * Set the identityProviders property: Type of authentication profile to
-     * use.
-     * 
+     * Set the identityProviders property: Type of authentication profile to use.
+     *
      * @param identityProviders the identityProviders value to set.
      * @return the OpenShiftManagedClusterAuthProfile object itself.
      */
-    public OpenShiftManagedClusterAuthProfile withIdentityProviders(List<OpenShiftManagedClusterIdentityProvider> identityProviders) {
+    public OpenShiftManagedClusterAuthProfile withIdentityProviders(
+        List<OpenShiftManagedClusterIdentityProvider> identityProviders) {
         this.identityProviders = identityProviders;
         return this;
     }

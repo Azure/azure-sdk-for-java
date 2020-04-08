@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OpenShiftManagedClusterMasterPoolProfile model.
- */
+/** The OpenShiftManagedClusterMasterPoolProfile model. */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
     /*
@@ -46,9 +44,9 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     private OSType osType;
 
     /**
-     * Get the name property: Unique name of the master pool profile in the
-     * context of the subscription and resource group.
-     * 
+     * Get the name property: Unique name of the master pool profile in the context of the subscription and resource
+     * group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -56,9 +54,9 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     }
 
     /**
-     * Set the name property: Unique name of the master pool profile in the
-     * context of the subscription and resource group.
-     * 
+     * Set the name property: Unique name of the master pool profile in the context of the subscription and resource
+     * group.
+     *
      * @param name the name value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -68,9 +66,8 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     }
 
     /**
-     * Get the count property: Number of masters (VMs) to host docker
-     * containers. The default value is 3.
-     * 
+     * Get the count property: Number of masters (VMs) to host docker containers. The default value is 3.
+     *
      * @return the count value.
      */
     public int count() {
@@ -78,9 +75,8 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     }
 
     /**
-     * Set the count property: Number of masters (VMs) to host docker
-     * containers. The default value is 3.
-     * 
+     * Set the count property: Number of masters (VMs) to host docker containers. The default value is 3.
+     *
      * @param count the count value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -91,7 +87,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Get the vmSize property: Size of agent VMs.
-     * 
+     *
      * @return the vmSize value.
      */
     public OpenShiftContainerServiceVMSize vmSize() {
@@ -100,7 +96,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Set the vmSize property: Size of agent VMs.
-     * 
+     *
      * @param vmSize the vmSize value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -111,7 +107,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Get the subnetCidr property: Subnet CIDR for the peering.
-     * 
+     *
      * @return the subnetCidr value.
      */
     public String subnetCidr() {
@@ -120,7 +116,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Set the subnetCidr property: Subnet CIDR for the peering.
-     * 
+     *
      * @param subnetCidr the subnetCidr value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -130,9 +126,8 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @return the osType value.
      */
     public OSType osType() {
@@ -140,9 +135,8 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @param osType the osType value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */

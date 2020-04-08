@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterAADProfile model.
- */
+/** The ManagedClusterAADProfile model. */
 @Fluent
 public final class ManagedClusterAADProfile {
     /*
@@ -39,7 +37,7 @@ public final class ManagedClusterAADProfile {
 
     /**
      * Get the clientAppID property: The client AAD application ID.
-     * 
+     *
      * @return the clientAppID value.
      */
     public String clientAppID() {
@@ -48,7 +46,7 @@ public final class ManagedClusterAADProfile {
 
     /**
      * Set the clientAppID property: The client AAD application ID.
-     * 
+     *
      * @param clientAppID the clientAppID value to set.
      * @return the ManagedClusterAADProfile object itself.
      */
@@ -59,7 +57,7 @@ public final class ManagedClusterAADProfile {
 
     /**
      * Get the serverAppID property: The server AAD application ID.
-     * 
+     *
      * @return the serverAppID value.
      */
     public String serverAppID() {
@@ -68,7 +66,7 @@ public final class ManagedClusterAADProfile {
 
     /**
      * Set the serverAppID property: The server AAD application ID.
-     * 
+     *
      * @param serverAppID the serverAppID value to set.
      * @return the ManagedClusterAADProfile object itself.
      */
@@ -79,7 +77,7 @@ public final class ManagedClusterAADProfile {
 
     /**
      * Get the serverAppSecret property: The server AAD application secret.
-     * 
+     *
      * @return the serverAppSecret value.
      */
     public String serverAppSecret() {
@@ -88,7 +86,7 @@ public final class ManagedClusterAADProfile {
 
     /**
      * Set the serverAppSecret property: The server AAD application secret.
-     * 
+     *
      * @param serverAppSecret the serverAppSecret value to set.
      * @return the ManagedClusterAADProfile object itself.
      */
@@ -98,9 +96,9 @@ public final class ManagedClusterAADProfile {
     }
 
     /**
-     * Get the tenantID property: The AAD tenant ID to use for authentication.
-     * If not specified, will use the tenant of the deployment subscription.
-     * 
+     * Get the tenantID property: The AAD tenant ID to use for authentication. If not specified, will use the tenant of
+     * the deployment subscription.
+     *
      * @return the tenantID value.
      */
     public String tenantID() {
@@ -108,9 +106,9 @@ public final class ManagedClusterAADProfile {
     }
 
     /**
-     * Set the tenantID property: The AAD tenant ID to use for authentication.
-     * If not specified, will use the tenant of the deployment subscription.
-     * 
+     * Set the tenantID property: The AAD tenant ID to use for authentication. If not specified, will use the tenant of
+     * the deployment subscription.
+     *
      * @param tenantID the tenantID value to set.
      * @return the ManagedClusterAADProfile object itself.
      */

@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The OpenShiftManagedClusterAADIdentityProvider model.
- */
+/** The OpenShiftManagedClusterAADIdentityProvider model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("AADIdentityProvider")
 @Fluent
@@ -41,9 +39,8 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
     private String customerAdminGroupId;
 
     /**
-     * Get the clientId property: The clientId password associated with the
-     * provider.
-     * 
+     * Get the clientId property: The clientId password associated with the provider.
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -51,9 +48,8 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
     }
 
     /**
-     * Set the clientId property: The clientId password associated with the
-     * provider.
-     * 
+     * Set the clientId property: The clientId password associated with the provider.
+     *
      * @param clientId the clientId value to set.
      * @return the OpenShiftManagedClusterAADIdentityProvider object itself.
      */
@@ -63,9 +59,8 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
     }
 
     /**
-     * Get the secret property: The secret password associated with the
-     * provider.
-     * 
+     * Get the secret property: The secret password associated with the provider.
+     *
      * @return the secret value.
      */
     public String secret() {
@@ -73,9 +68,8 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
     }
 
     /**
-     * Set the secret property: The secret password associated with the
-     * provider.
-     * 
+     * Set the secret property: The secret password associated with the provider.
+     *
      * @param secret the secret value to set.
      * @return the OpenShiftManagedClusterAADIdentityProvider object itself.
      */
@@ -86,7 +80,7 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
 
     /**
      * Get the tenantId property: The tenantId associated with the provider.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -95,7 +89,7 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
 
     /**
      * Set the tenantId property: The tenantId associated with the provider.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the OpenShiftManagedClusterAADIdentityProvider object itself.
      */
@@ -105,9 +99,8 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
     }
 
     /**
-     * Get the customerAdminGroupId property: The groupId to be granted cluster
-     * admin role.
-     * 
+     * Get the customerAdminGroupId property: The groupId to be granted cluster admin role.
+     *
      * @return the customerAdminGroupId value.
      */
     public String customerAdminGroupId() {
@@ -115,9 +108,8 @@ public final class OpenShiftManagedClusterAADIdentityProvider extends OpenShiftM
     }
 
     /**
-     * Set the customerAdminGroupId property: The groupId to be granted cluster
-     * admin role.
-     * 
+     * Set the customerAdminGroupId property: The groupId to be granted cluster admin role.
+     *
      * @param customerAdminGroupId the customerAdminGroupId value to set.
      * @return the OpenShiftManagedClusterAADIdentityProvider object itself.
      */

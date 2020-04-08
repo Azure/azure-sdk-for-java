@@ -42,169 +42,325 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ManagedClusters.
- */
-public final class ManagedClustersInner implements InnerSupportsGet<ManagedClusterInner>, InnerSupportsListing<ManagedClusterInner>, InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+/** An instance of this class provides access to all the operations defined in ManagedClusters. */
+public final class ManagedClustersInner
+    implements InnerSupportsGet<ManagedClusterInner>,
+        InnerSupportsListing<ManagedClusterInner>,
+        InnerSupportsDelete<Void> {
+    /** The proxy service used to perform REST calls. */
     private final ManagedClustersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedClustersInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagedClustersInner(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServiceManagementClientManagedClusters to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ContainerServiceManagementClientManagedClusters to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface ManagedClustersService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<ManagedClusterListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterListResultInner>> listByResourceGroup(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, Context context);
+        Mono<SimpleResponse<ManagedClusterListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/upgradeProfiles/default")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/upgradeProfiles/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterUpgradeProfileInner>> getUpgradeProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<ManagedClusterUpgradeProfileInner>> getUpgradeProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/accessProfiles/{roleName}" + "/listCredential")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/accessProfiles/{roleName}"
+                + "/listCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterAccessProfileInner>> getAccessProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("roleName") String roleName, Context context);
+        Mono<SimpleResponse<ManagedClusterAccessProfileInner>> getAccessProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("roleName") String roleName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterAdminCredential")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterAdminCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<CredentialResultsInner>> listClusterAdminCredentials(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<CredentialResultsInner>> listClusterAdminCredentials(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterUserCredential")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterUserCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<CredentialResultsInner>> listClusterUserCredentials(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<CredentialResultsInner>> listClusterUserCredentials(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterInner>> getByResourceGroup(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<ManagedClusterInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateTags(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") TagsObject parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> updateTags(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") TagsObject parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> resetServicePrincipalProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterServicePrincipalProfile parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> resetServicePrincipalProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterServicePrincipalProfile parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> resetAADProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterAADProfile parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> resetAADProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterAADProfile parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> rotateClusterCertificates(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> rotateClusterCertificates(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterInner>> beginCreateOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterInner parameters, Context context);
+        Mono<SimpleResponse<ManagedClusterInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterInner>> beginUpdateTags(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") TagsObject parameters, Context context);
+        Mono<SimpleResponse<ManagedClusterInner>> beginUpdateTags(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") TagsObject parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginResetServicePrincipalProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterServicePrincipalProfile parameters, Context context);
+        Mono<Response<Void>> beginResetServicePrincipalProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterServicePrincipalProfile parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginResetAADProfile(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterAADProfile parameters, Context context);
+        Mono<Response<Void>> beginResetAADProfile(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterAADProfile parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginRotateClusterCertificates(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<Response<Void>> beginRotateClusterCertificates(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<ManagedClusterListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ManagedClusterListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<ManagedClusterListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription.
@@ -212,34 +368,38 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedClusterInner>> listSinglePageAsync() {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedClusterInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription.
@@ -250,8 +410,9 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -261,20 +422,32 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -289,8 +462,9 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -304,7 +478,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,15 +487,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the details of the upgrade profile for a managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.getUpgradeProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getUpgradeProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,20 +515,22 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the details of the upgrade profile for a managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterUpgradeProfileInner> getUpgradeProfileAsync(String resourceGroupName, String resourceName) {
+    public Mono<ManagedClusterUpgradeProfileInner> getUpgradeProfileAsync(
+        String resourceGroupName, String resourceName) {
         return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((SimpleResponse<ManagedClusterUpgradeProfileInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedClusterUpgradeProfileInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -357,65 +544,86 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(String resourceGroupName, String resourceName, String roleName) {
+    public Mono<SimpleResponse<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, String roleName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.getAccessProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, roleName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAccessProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            roleName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterAccessProfileInner> getAccessProfileAsync(String resourceGroupName, String resourceName, String roleName) {
+    public Mono<ManagedClusterAccessProfileInner> getAccessProfileAsync(
+        String resourceGroupName, String resourceName, String roleName) {
         return getAccessProfileWithResponseAsync(resourceGroupName, resourceName, roleName)
-            .flatMap((SimpleResponse<ManagedClusterAccessProfileInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedClusterAccessProfileInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterAccessProfileInner getAccessProfile(String resourceGroupName, String resourceName, String roleName) {
+    public ManagedClusterAccessProfileInner getAccessProfile(
+        String resourceGroupName, String resourceName, String roleName) {
         return getAccessProfileAsync(resourceGroupName, resourceName, roleName).block();
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,15 +632,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return cluster admin credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.listClusterAdminCredentials(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClusterAdminCredentials(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,20 +660,22 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return cluster admin credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(String resourceGroupName, String resourceName) {
+    public Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(
+        String resourceGroupName, String resourceName) {
         return listClusterAdminCredentialsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((SimpleResponse<CredentialResultsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<CredentialResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,7 +690,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,15 +699,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return cluster user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.listClusterUserCredentials(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClusterUserCredentials(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -497,18 +729,19 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CredentialResultsInner> listClusterUserCredentialsAsync(String resourceGroupName, String resourceName) {
         return listClusterUserCredentialsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((SimpleResponse<CredentialResultsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<CredentialResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -523,7 +756,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,15 +765,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the details of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<ManagedClusterInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -551,18 +795,19 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedClusterInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((SimpleResponse<ManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -577,7 +822,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Managed cluster.
@@ -587,15 +832,27 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Managed cluster.
@@ -605,16 +862,21 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterInner> createOrUpdateAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class)
+    public Mono<ManagedClusterInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<ManagedClusterInner, ManagedClusterInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Managed cluster.
@@ -624,13 +886,14 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner createOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public ManagedClusterInner createOrUpdate(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param tags Resource tags.
@@ -640,17 +903,29 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         final String apiVersion = "2019-08-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
-        return FluxUtil.withContext(context -> service.updateTags(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateTags(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param tags Resource tags.
@@ -660,16 +935,21 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterInner> updateTagsAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, resourceName, tags);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResultAsync(mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class)
+    public Mono<ManagedClusterInner> updateTagsAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, resourceName, tags);
+        return this
+            .client
+            .<ManagedClusterInner, ManagedClusterInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param tags Resource tags.
@@ -685,7 +965,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -694,15 +974,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -713,14 +1004,16 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -734,59 +1027,79 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure
+     *     APIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.resetServicePrincipalProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .resetServicePrincipalProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure
+     *     APIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetServicePrincipalProfileAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+    public Mono<Void> resetServicePrincipalProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure
+     *     APIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetServicePrincipalProfile(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public void resetServicePrincipalProfile(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         resetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters AADProfile specifies attributes for Azure Active Directory integration.
@@ -796,15 +1109,27 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> resetAADProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> resetAADProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.resetAADProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .resetAADProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters AADProfile specifies attributes for Azure Active Directory integration.
@@ -814,16 +1139,20 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAADProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = resetAADProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+    public Mono<Void> resetAADProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            resetAADProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters AADProfile specifies attributes for Azure Active Directory integration.
@@ -838,7 +1167,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -847,15 +1176,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.rotateClusterCertificates(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .rotateClusterCertificates(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -865,15 +1205,18 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rotateClusterCertificatesAsync(String resourceGroupName, String resourceName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName);
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -887,7 +1230,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Managed cluster.
@@ -897,15 +1240,27 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedClusterInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public Mono<SimpleResponse<ManagedClusterInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginCreateOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Managed cluster.
@@ -915,20 +1270,22 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public Mono<ManagedClusterInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap((SimpleResponse<ManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Managed cluster.
@@ -938,13 +1295,14 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner beginCreateOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public ManagedClusterInner beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param tags Resource tags.
@@ -954,17 +1312,29 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ManagedClusterInner>> beginUpdateTagsWithResponseAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public Mono<SimpleResponse<ManagedClusterInner>> beginUpdateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         final String apiVersion = "2019-08-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
-        return FluxUtil.withContext(context -> service.beginUpdateTags(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdateTags(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param tags Resource tags.
@@ -974,20 +1344,22 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterInner> beginUpdateTagsAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public Mono<ManagedClusterInner> beginUpdateTagsAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         return beginUpdateTagsWithResponseAsync(resourceGroupName, resourceName, tags)
-            .flatMap((SimpleResponse<ManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param tags Resource tags.
@@ -997,13 +1369,14 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner beginUpdateTags(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public ManagedClusterInner beginUpdateTags(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, tags).block();
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1014,13 +1387,23 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1036,7 +1419,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1050,57 +1433,74 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure
+     *     APIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginResetServicePrincipalProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public Mono<Response<Void>> beginResetServicePrincipalProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginResetServicePrincipalProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginResetServicePrincipalProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure
+     *     APIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginResetServicePrincipalProfileAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public Mono<Void> beginResetServicePrincipalProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         return beginResetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
-     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure APIs.
+     * @param parameters Information about a service principal identity for the cluster to use for manipulating Azure
+     *     APIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginResetServicePrincipalProfile(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public void beginResetServicePrincipalProfile(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters AADProfile specifies attributes for Azure Active Directory integration.
@@ -1110,15 +1510,27 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginResetAADProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
+    public Mono<Response<Void>> beginResetAADProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginResetAADProfile(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginResetAADProfile(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters AADProfile specifies attributes for Azure Active Directory integration.
@@ -1128,14 +1540,15 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginResetAADProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
+    public Mono<Void> beginResetAADProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
         return beginResetAADProfileWithResponseAsync(resourceGroupName, resourceName, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters AADProfile specifies attributes for Azure Active Directory integration.
@@ -1144,13 +1557,14 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginResetAADProfile(String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
+    public void beginResetAADProfile(
+        String resourceGroupName, String resourceName, ManagedClusterAADProfile parameters) {
         beginResetAADProfileAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1159,15 +1573,26 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginRotateClusterCertificatesWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<Void>> beginRotateClusterCertificatesWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-08-01";
-        return FluxUtil.withContext(context -> service.beginRotateClusterCertificates(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginRotateClusterCertificates(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1183,7 +1608,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,7 +1622,7 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1206,20 +1631,23 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedClusterInner>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -1228,14 +1656,17 @@ public final class ManagedClustersInner implements InnerSupportsGet<ManagedClust
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

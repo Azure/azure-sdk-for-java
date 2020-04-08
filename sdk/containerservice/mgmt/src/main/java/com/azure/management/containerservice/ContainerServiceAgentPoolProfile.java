@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ContainerServiceAgentPoolProfile model.
- */
+/** The ContainerServiceAgentPoolProfile model. */
 @Fluent
 public final class ContainerServiceAgentPoolProfile {
     /*
@@ -82,9 +80,9 @@ public final class ContainerServiceAgentPoolProfile {
     private OSType osType;
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the
-     * context of the subscription and resource group.
-     * 
+     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
+     * group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -92,9 +90,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the
-     * context of the subscription and resource group.
-     * 
+     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
+     * group.
+     *
      * @param name the name value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -104,10 +102,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the count property: Number of agents (VMs) to host docker
-     * containers. Allowed values must be in the range of 1 to 100 (inclusive).
-     * The default value is 1.
-     * 
+     * Get the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
+     * 1 to 100 (inclusive). The default value is 1.
+     *
      * @return the count value.
      */
     public Integer count() {
@@ -115,10 +112,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the count property: Number of agents (VMs) to host docker
-     * containers. Allowed values must be in the range of 1 to 100 (inclusive).
-     * The default value is 1.
-     * 
+     * Set the count property: Number of agents (VMs) to host docker containers. Allowed values must be in the range of
+     * 1 to 100 (inclusive). The default value is 1.
+     *
      * @param count the count value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -129,7 +125,7 @@ public final class ContainerServiceAgentPoolProfile {
 
     /**
      * Get the vmSize property: Size of agent VMs.
-     * 
+     *
      * @return the vmSize value.
      */
     public ContainerServiceVMSizeTypes vmSize() {
@@ -138,7 +134,7 @@ public final class ContainerServiceAgentPoolProfile {
 
     /**
      * Set the vmSize property: Size of agent VMs.
-     * 
+     *
      * @param vmSize the vmSize value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -148,11 +144,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the osDiskSizeGB property: OS Disk Size in GB to be used to specify
-     * the disk size for every machine in this master/agent pool. If you
-     * specify 0, it will apply the default osDisk size according to the vmSize
-     * specified.
-     * 
+     * Get the osDiskSizeGB property: OS Disk Size in GB to be used to specify the disk size for every machine in this
+     * master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
+     *
      * @return the osDiskSizeGB value.
      */
     public Integer osDiskSizeGB() {
@@ -160,11 +154,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the osDiskSizeGB property: OS Disk Size in GB to be used to specify
-     * the disk size for every machine in this master/agent pool. If you
-     * specify 0, it will apply the default osDisk size according to the vmSize
-     * specified.
-     * 
+     * Set the osDiskSizeGB property: OS Disk Size in GB to be used to specify the disk size for every machine in this
+     * master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
+     *
      * @param osDiskSizeGB the osDiskSizeGB value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -174,9 +166,8 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the dnsPrefix property: DNS prefix to be used to create the FQDN for
-     * the agent pool.
-     * 
+     * Get the dnsPrefix property: DNS prefix to be used to create the FQDN for the agent pool.
+     *
      * @return the dnsPrefix value.
      */
     public String dnsPrefix() {
@@ -184,9 +175,8 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the dnsPrefix property: DNS prefix to be used to create the FQDN for
-     * the agent pool.
-     * 
+     * Set the dnsPrefix property: DNS prefix to be used to create the FQDN for the agent pool.
+     *
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -197,7 +187,7 @@ public final class ContainerServiceAgentPoolProfile {
 
     /**
      * Get the fqdn property: FQDN for the agent pool.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -205,10 +195,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the ports property: Ports number array used to expose on this agent
-     * pool. The default opened ports are different based on your choice of
-     * orchestrator.
-     * 
+     * Get the ports property: Ports number array used to expose on this agent pool. The default opened ports are
+     * different based on your choice of orchestrator.
+     *
      * @return the ports value.
      */
     public List<Integer> ports() {
@@ -216,10 +205,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the ports property: Ports number array used to expose on this agent
-     * pool. The default opened ports are different based on your choice of
-     * orchestrator.
-     * 
+     * Set the ports property: Ports number array used to expose on this agent pool. The default opened ports are
+     * different based on your choice of orchestrator.
+     *
      * @param ports the ports value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -229,10 +217,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the storageProfile property: Storage profile specifies what kind of
-     * storage used. Choose from StorageAccount and ManagedDisks. Leave it
-     * empty, we will choose for you based on the orchestrator choice.
-     * 
+     * Get the storageProfile property: Storage profile specifies what kind of storage used. Choose from StorageAccount
+     * and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice.
+     *
      * @return the storageProfile value.
      */
     public ContainerServiceStorageProfileTypes storageProfile() {
@@ -240,10 +227,9 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the storageProfile property: Storage profile specifies what kind of
-     * storage used. Choose from StorageAccount and ManagedDisks. Leave it
-     * empty, we will choose for you based on the orchestrator choice.
-     * 
+     * Set the storageProfile property: Storage profile specifies what kind of storage used. Choose from StorageAccount
+     * and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice.
+     *
      * @param storageProfile the storageProfile value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -253,9 +239,8 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet
-     * identifier.
-     * 
+     * Get the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     *
      * @return the vnetSubnetID value.
      */
     public String vnetSubnetID() {
@@ -263,9 +248,8 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet
-     * identifier.
-     * 
+     * Set the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     *
      * @param vnetSubnetID the vnetSubnetID value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */
@@ -275,9 +259,8 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @return the osType value.
      */
     public OSType osType() {
@@ -285,9 +268,8 @@ public final class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @param osType the osType value to set.
      * @return the ContainerServiceAgentPoolProfile object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The KeyVaultSecretRef model.
- */
+/** The KeyVaultSecretRef model. */
 @Fluent
 public final class KeyVaultSecretRef {
     /*
@@ -32,7 +30,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Get the vaultID property: Key vault identifier.
-     * 
+     *
      * @return the vaultID value.
      */
     public String vaultID() {
@@ -41,7 +39,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Set the vaultID property: Key vault identifier.
-     * 
+     *
      * @param vaultID the vaultID value to set.
      * @return the KeyVaultSecretRef object itself.
      */
@@ -52,7 +50,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Get the secretName property: The secret name.
-     * 
+     *
      * @return the secretName value.
      */
     public String secretName() {
@@ -61,7 +59,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Set the secretName property: The secret name.
-     * 
+     *
      * @param secretName the secretName value to set.
      * @return the KeyVaultSecretRef object itself.
      */
@@ -72,7 +70,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Get the version property: The secret version.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -81,7 +79,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Set the version property: The secret version.
-     * 
+     *
      * @param version the version value to set.
      * @return the KeyVaultSecretRef object itself.
      */

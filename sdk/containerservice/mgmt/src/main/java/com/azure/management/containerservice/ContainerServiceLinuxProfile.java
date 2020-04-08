@@ -7,9 +7,7 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ContainerServiceLinuxProfile model.
- */
+/** The ContainerServiceLinuxProfile model. */
 @Fluent
 public final class ContainerServiceLinuxProfile {
     /*
@@ -25,9 +23,8 @@ public final class ContainerServiceLinuxProfile {
     private ContainerServiceSshConfiguration ssh;
 
     /**
-     * Get the adminUsername property: The administrator username to use for
-     * Linux VMs.
-     * 
+     * Get the adminUsername property: The administrator username to use for Linux VMs.
+     *
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -35,9 +32,8 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Set the adminUsername property: The administrator username to use for
-     * Linux VMs.
-     * 
+     * Set the adminUsername property: The administrator username to use for Linux VMs.
+     *
      * @param adminUsername the adminUsername value to set.
      * @return the ContainerServiceLinuxProfile object itself.
      */
@@ -47,9 +43,8 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Get the ssh property: SSH configuration for Linux-based VMs running on
-     * Azure.
-     * 
+     * Get the ssh property: SSH configuration for Linux-based VMs running on Azure.
+     *
      * @return the ssh value.
      */
     public ContainerServiceSshConfiguration ssh() {
@@ -57,9 +52,8 @@ public final class ContainerServiceLinuxProfile {
     }
 
     /**
-     * Set the ssh property: SSH configuration for Linux-based VMs running on
-     * Azure.
-     * 
+     * Set the ssh property: SSH configuration for Linux-based VMs running on Azure.
+     *
      * @param ssh the ssh value to set.
      * @return the ContainerServiceLinuxProfile object itself.
      */

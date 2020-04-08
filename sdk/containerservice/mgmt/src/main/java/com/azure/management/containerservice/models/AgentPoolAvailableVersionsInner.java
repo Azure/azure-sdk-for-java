@@ -10,9 +10,7 @@ import com.azure.management.containerservice.AgentPoolAvailableVersionsPropertie
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AgentPoolAvailableVersions model.
- */
+/** The AgentPoolAvailableVersions model. */
 @JsonFlatten
 @Fluent
 public class AgentPoolAvailableVersionsInner {
@@ -42,7 +40,7 @@ public class AgentPoolAvailableVersionsInner {
 
     /**
      * Get the id property: Id of the agent pool available versions.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -51,7 +49,7 @@ public class AgentPoolAvailableVersionsInner {
 
     /**
      * Get the name property: Name of the agent pool available versions.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -59,8 +57,8 @@ public class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Get the type property: Type of the agent pool  available versions.
-     * 
+     * Get the type property: Type of the agent pool available versions.
+     *
      * @return the type value.
      */
     public String type() {
@@ -68,9 +66,8 @@ public class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Get the agentPoolVersions property: List of versions available for agent
-     * pool.
-     * 
+     * Get the agentPoolVersions property: List of versions available for agent pool.
+     *
      * @return the agentPoolVersions value.
      */
     public List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions() {
@@ -78,13 +75,13 @@ public class AgentPoolAvailableVersionsInner {
     }
 
     /**
-     * Set the agentPoolVersions property: List of versions available for agent
-     * pool.
-     * 
+     * Set the agentPoolVersions property: List of versions available for agent pool.
+     *
      * @param agentPoolVersions the agentPoolVersions value to set.
      * @return the AgentPoolAvailableVersionsInner object itself.
      */
-    public AgentPoolAvailableVersionsInner withAgentPoolVersions(List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
+    public AgentPoolAvailableVersionsInner withAgentPoolVersions(
+        List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
         this.agentPoolVersions = agentPoolVersions;
         return this;
     }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OperationValue model.
- */
+/** The OperationValue model. */
 @JsonFlatten
 @Immutable
 public class OperationValueInner {
@@ -52,7 +50,7 @@ public class OperationValueInner {
 
     /**
      * Get the origin property: The origin of the compute operation.
-     * 
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -61,7 +59,7 @@ public class OperationValueInner {
 
     /**
      * Get the name property: The name of the compute operation.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -70,7 +68,7 @@ public class OperationValueInner {
 
     /**
      * Get the operation property: The display name of the compute operation.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -78,9 +76,8 @@ public class OperationValueInner {
     }
 
     /**
-     * Get the resource property: The display name of the resource the
-     * operation applies to.
-     * 
+     * Get the resource property: The display name of the resource the operation applies to.
+     *
      * @return the resource value.
      */
     public String resource() {
@@ -89,7 +86,7 @@ public class OperationValueInner {
 
     /**
      * Get the description property: The description of the operation.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -98,7 +95,7 @@ public class OperationValueInner {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     * 
+     *
      * @return the provider value.
      */
     public String provider() {

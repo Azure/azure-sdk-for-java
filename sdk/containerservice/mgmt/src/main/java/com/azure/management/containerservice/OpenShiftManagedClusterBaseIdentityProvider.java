@@ -9,10 +9,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The OpenShiftManagedClusterBaseIdentityProvider model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind", defaultImpl = OpenShiftManagedClusterBaseIdentityProvider.class)
+/** The OpenShiftManagedClusterBaseIdentityProvider model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = OpenShiftManagedClusterBaseIdentityProvider.class)
 @JsonTypeName("OpenShiftManagedClusterBaseIdentityProvider")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AADIdentityProvider", value = OpenShiftManagedClusterAADIdentityProvider.class)

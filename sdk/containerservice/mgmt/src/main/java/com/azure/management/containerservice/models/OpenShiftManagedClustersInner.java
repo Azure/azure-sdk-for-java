@@ -39,109 +39,180 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * OpenShiftManagedClusters.
- */
-public final class OpenShiftManagedClustersInner implements InnerSupportsGet<OpenShiftManagedClusterInner>, InnerSupportsListing<OpenShiftManagedClusterInner>, InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+/** An instance of this class provides access to all the operations defined in OpenShiftManagedClusters. */
+public final class OpenShiftManagedClustersInner
+    implements InnerSupportsGet<OpenShiftManagedClusterInner>,
+        InnerSupportsListing<OpenShiftManagedClusterInner>,
+        InnerSupportsDelete<Void> {
+    /** The proxy service used to perform REST calls. */
     private final OpenShiftManagedClustersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of OpenShiftManagedClustersInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     OpenShiftManagedClustersInner(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(OpenShiftManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(OpenShiftManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServiceManagementClientOpenShiftManagedClusters to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for ContainerServiceManagementClientOpenShiftManagedClusters to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface OpenShiftManagedClustersService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/openShiftManagedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> list(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> listByResourceGroup(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterInner>> getByResourceGroup(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") OpenShiftManagedClusterInner parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") OpenShiftManagedClusterInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> updateTags(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") TagsObject parameters, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> updateTags(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") TagsObject parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginCreateOrUpdate(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") OpenShiftManagedClusterInner parameters, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginCreateOrUpdate(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") OpenShiftManagedClusterInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginUpdateTags(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") TagsObject parameters, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginUpdateTags(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") TagsObject parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
+                + "/Microsoft.ContainerService/openShiftManagedClusters/{resourceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, Context context);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<SimpleResponse<OpenShiftManagedClusterListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
-     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each OpenShift managed cluster.
-     * 
+     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
+     * OpenShift managed cluster.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of OpenShift managed clusters in the specified subscription.
@@ -149,34 +220,38 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OpenShiftManagedClusterInner>> listSinglePageAsync() {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
-            .<PagedResponse<OpenShiftManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context))
+            .<PagedResponse<OpenShiftManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each OpenShift managed cluster.
-     * 
+     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
+     * OpenShift managed cluster.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of OpenShift managed clusters in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OpenShiftManagedClusterInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each OpenShift managed cluster.
-     * 
+     * Gets a list of OpenShift managed clusters in the specified subscription. The operation returns properties of each
+     * OpenShift managed cluster.
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of OpenShift managed clusters in the specified subscription.
@@ -187,8 +262,9 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
     }
 
     /**
-     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns properties of each OpenShift managed cluster.
-     * 
+     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
+     * properties of each OpenShift managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -196,22 +272,35 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return the response from the List OpenShift Managed Clusters operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<OpenShiftManagedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    public Mono<PagedResponse<OpenShiftManagedClusterInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName) {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, context))
-            .<PagedResponse<OpenShiftManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            context))
+            .<PagedResponse<OpenShiftManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns properties of each OpenShift managed cluster.
-     * 
+     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
+     * properties of each OpenShift managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -226,8 +315,9 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
     }
 
     /**
-     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns properties of each OpenShift managed cluster.
-     * 
+     * Lists OpenShift managed clusters in the specified subscription and resource group. The operation returns
+     * properties of each OpenShift managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -241,7 +331,7 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
 
     /**
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,15 +340,26 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return the details of the managed OpenShift cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OpenShiftManagedClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<OpenShiftManagedClusterInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,18 +370,19 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenShiftManagedClusterInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((SimpleResponse<OpenShiftManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<OpenShiftManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details of the managed OpenShift cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,7 +397,7 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
 
     /**
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters OpenShift Managed cluster.
@@ -305,15 +407,27 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters OpenShift Managed cluster.
@@ -323,16 +437,24 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenShiftManagedClusterInner> createOrUpdateAsync(String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<OpenShiftManagedClusterInner, OpenShiftManagedClusterInner>getLroResultAsync(mono, this.client.getHttpPipeline(), OpenShiftManagedClusterInner.class, OpenShiftManagedClusterInner.class)
+    public Mono<OpenShiftManagedClusterInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<OpenShiftManagedClusterInner, OpenShiftManagedClusterInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                OpenShiftManagedClusterInner.class,
+                OpenShiftManagedClusterInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters OpenShift Managed cluster.
@@ -342,13 +464,14 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner createOrUpdate(String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
+    public OpenShiftManagedClusterInner createOrUpdate(
+        String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
@@ -358,17 +481,29 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         final String apiVersion = "2019-04-30";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
-        return FluxUtil.withContext(context -> service.updateTags(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateTags(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
@@ -378,16 +513,24 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenShiftManagedClusterInner> updateTagsAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, resourceName, tags);
-        return this.client.<OpenShiftManagedClusterInner, OpenShiftManagedClusterInner>getLroResultAsync(mono, this.client.getHttpPipeline(), OpenShiftManagedClusterInner.class, OpenShiftManagedClusterInner.class)
+    public Mono<OpenShiftManagedClusterInner> updateTagsAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, resourceName, tags);
+        return this
+            .client
+            .<OpenShiftManagedClusterInner, OpenShiftManagedClusterInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                OpenShiftManagedClusterInner.class,
+                OpenShiftManagedClusterInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
@@ -397,13 +540,14 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner updateTags(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public OpenShiftManagedClusterInner updateTags(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         return updateTagsAsync(resourceGroupName, resourceName, tags).block();
     }
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -412,15 +556,26 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -431,14 +586,16 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,7 +609,7 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
 
     /**
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters OpenShift Managed cluster.
@@ -462,15 +619,27 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginCreateOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
+    public Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.beginCreateOrUpdate(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginCreateOrUpdate(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters OpenShift Managed cluster.
@@ -480,20 +649,22 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenShiftManagedClusterInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
+    public Mono<OpenShiftManagedClusterInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         return beginCreateOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters)
-            .flatMap((SimpleResponse<OpenShiftManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<OpenShiftManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a OpenShift managed cluster with the specified configuration for agents and OpenShift version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param parameters OpenShift Managed cluster.
@@ -503,13 +674,14 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner beginCreateOrUpdate(String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
+    public OpenShiftManagedClusterInner beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, OpenShiftManagedClusterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
@@ -519,17 +691,29 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginUpdateTagsWithResponseAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public Mono<SimpleResponse<OpenShiftManagedClusterInner>> beginUpdateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         final String apiVersion = "2019-04-30";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
-        return FluxUtil.withContext(context -> service.beginUpdateTags(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdateTags(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
@@ -539,20 +723,22 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenShiftManagedClusterInner> beginUpdateTagsAsync(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public Mono<OpenShiftManagedClusterInner> beginUpdateTagsAsync(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         return beginUpdateTagsWithResponseAsync(resourceGroupName, resourceName, tags)
-            .flatMap((SimpleResponse<OpenShiftManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<OpenShiftManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates an OpenShift managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @param tags Resource tags.
@@ -562,13 +748,14 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      * @return openShift Managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenShiftManagedClusterInner beginUpdateTags(String resourceGroupName, String resourceName, Map<String, String> tags) {
+    public OpenShiftManagedClusterInner beginUpdateTags(
+        String resourceGroupName, String resourceName, Map<String, String> tags) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, tags).block();
     }
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -579,13 +766,23 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String resourceName) {
         final String apiVersion = "2019-04-30";
-        return FluxUtil.withContext(context -> service.beginDelete(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,7 +798,7 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
 
     /**
      * Deletes the OpenShift managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the OpenShift managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -615,7 +812,7 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -624,20 +821,23 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OpenShiftManagedClusterInner>> listNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listNext(nextLink, context))
-            .<PagedResponse<OpenShiftManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<OpenShiftManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
@@ -646,14 +846,17 @@ public final class OpenShiftManagedClustersInner implements InnerSupportsGet<Ope
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OpenShiftManagedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, context))
-            .<PagedResponse<OpenShiftManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<OpenShiftManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }
