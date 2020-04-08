@@ -137,7 +137,7 @@ class ServiceBusReceiverAsyncClientTest {
         endpointSink.next(AmqpEndpointState.ACTIVE);
 
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE)).thenReturn(Mono.just(managementNode));
-        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), anyBoolean(), anyString(), any(),
+        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), anyBoolean(), isNull(), any(),
             any(MessagingEntityType.class))).thenReturn(Mono.just(amqpReceiveLink));
 
         connectionProcessor =
