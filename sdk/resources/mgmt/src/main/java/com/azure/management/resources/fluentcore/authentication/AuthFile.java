@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.management;
+package com.azure.management.resources.fluentcore.authentication;
 
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.management.AzureEnvironment;
@@ -9,6 +9,9 @@ import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.File;
@@ -36,8 +39,6 @@ final class AuthFile {
     private final AzureEnvironment environment;
     @JsonIgnore
     private static final SerializerAdapter ADAPTER = new AzureJacksonAdapter();
-    @JsonIgnore
-    private String authFilePath;
 
     private AuthFile() {
         environment = new AzureEnvironment(new HashMap<String, String>());
@@ -99,8 +100,6 @@ final class AuthFile {
             authFile.environment.endpoints().put(AzureEnvironment.Endpoint.KEYVAULT.identifier(),
                 authSettings.getProperty(CredentialSettings.VAULT_SUFFIX.toString()));
         }
-        authFile.authFilePath = file.getParent();
-
         return authFile;
     }
 
@@ -109,29 +108,48 @@ final class AuthFile {
     }
 
     /**
-     * @return an ApplicationTokenCredentials object from the information in this class
+     * @return an AzureTokenCredential object from the information in this class
      */
-    ApplicationTokenCredential generateCredential() throws IOException {
+    AzureTokenCredential generateCredential() throws IOException {
         if (clientSecret != null) {
-            return (ApplicationTokenCredential) new ApplicationTokenCredential(
-                    clientId,
-                    tenantId,
-                    clientSecret,
-                    environment).defaultSubscriptionId(subscriptionId);
+            ClientSecretCredential secretCredential = new ClientSecretCredentialBuilder()
+                .tenantId(tenantId)
+                .clientId(clientId)
+                .clientSecret(clientSecret)
+                .authorityHost(environment.getActiveDirectoryEndpoint())
+                .build();
+            return new AzureTokenCredentialBuilder()
+                .withDomain(tenantId)
+                .withDefaultSubscriptionId(subscriptionId)
+                .withClientId(clientId)
+                .withEnvironment(environment)
+                .withValue(secretCredential)
+                .build();
         } else if (clientCertificate != null) {
-            byte[] certData;
-            File f = new File(clientCertificate);
-            if (!f.exists()) {
-                f = new File(authFilePath, clientCertificate);
+            AzureTokenCredentialBuilder azureTokenCredentialBuilder = new AzureTokenCredentialBuilder()
+                .withDomain(tenantId)
+                .withDefaultSubscriptionId(subscriptionId)
+                .withClientId(clientId)
+                .withEnvironment(environment);
+            ClientCertificateCredentialBuilder clientCertificateCredentialBuilder = new ClientCertificateCredentialBuilder()
+                .tenantId(tenantId)
+                .clientId(clientId)
+                .authorityHost(environment.getActiveDirectoryEndpoint());
+            // verify it is pfx certificate or pem certificate by clientCertificatePassword
+            // TODO check with CLI team if it make sense or it's required to Azure Identity to modify the APIs about certificate authentication
+            if (clientCertificatePassword != null) {
+                return azureTokenCredentialBuilder
+                    .withValue(clientCertificateCredentialBuilder
+                        .pfxCertificate(clientCertificate, clientCertificatePassword)
+                        .build())
+                    .build();
+            } else {
+                return azureTokenCredentialBuilder
+                    .withValue(clientCertificateCredentialBuilder
+                        .pemCertificate(clientCertificate)
+                        .build())
+                    .build();
             }
-            certData = Files.readAllBytes(f.toPath());
-
-            return (ApplicationTokenCredential) new ApplicationTokenCredential(
-                    clientId,
-                    tenantId,
-                    certData,
-                    clientCertificatePassword,
-                    environment).defaultSubscriptionId(subscriptionId);
         } else {
             ClientLogger logger = new ClientLogger(this.getClass());
             throw logger.logExceptionAsError(

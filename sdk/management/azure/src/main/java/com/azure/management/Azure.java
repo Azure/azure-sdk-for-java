@@ -75,6 +75,8 @@ import com.azure.management.resources.Subscriptions;
 import com.azure.management.resources.Tenants;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -156,7 +158,7 @@ public final class Azure {
      * @throws IOException exception thrown from file access
      */
     public static Authenticated authenticate(File credentialsFile) throws IOException {
-        ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credentialsFile);
+        AzureTokenCredential credential = AzureCredentialFactory.fromFile(credentialsFile);
         return new AuthenticatedImpl(new RestClientBuilder()
                 .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credential)
@@ -234,7 +236,7 @@ public final class Azure {
 
         @Override
         public Authenticated authenticate(File credentialsFile) throws IOException {
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credentialsFile);
+            AzureTokenCredential credentials = AzureCredentialFactory.fromFile(credentialsFile);
             return Azure.authenticate(buildRestClient(credentials), credentials.getDomain(), credentials.getDefaultSubscriptionId());
         }
     }
@@ -389,7 +391,7 @@ public final class Azure {
         }
 
         @Override
-        public Azure withDefaultSubscription() throws CloudException, IOException {
+        public Azure withDefaultSubscription() throws CloudException {
             if (this.defaultSubscription != null) {
                 return withSubscription(this.defaultSubscription);
             } else {

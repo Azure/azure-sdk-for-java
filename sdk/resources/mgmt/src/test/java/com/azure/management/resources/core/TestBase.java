@@ -15,9 +15,12 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredentialBuilder;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -36,6 +39,7 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
@@ -181,12 +185,26 @@ public abstract class TestBase {
         interceptorManager = InterceptorManager.create(testMothodName, testMode);
         sdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
 
-        ApplicationTokenCredential credentials;
+        AzureTokenCredential credential;
         RestClient restClient;
         String defaultSubscription;
 
         if (isPlaybackMode()) {
-            credentials = new AzureTestCredential(playbackUri, ZERO_TENANT, true);
+            credential = new AzureTokenCredentialBuilder()
+                .withDomain(ZERO_TENANT)
+                .withDefaultSubscriptionId(ZERO_SUBSCRIPTION)
+                .withClientId("")
+                .withEnvironment(new AzureEnvironment(new HashMap<String, String>() {{
+                    put("managementEndpointUrl", playbackUri);
+                    put("resourceManagerEndpointUrl", playbackUri);
+                    put("sqlManagementEndpointUrl", playbackUri);
+                    put("galleryEndpointUrl", playbackUri);
+                    put("activeDirectoryEndpointUrl", playbackUri);
+                    put("activeDirectoryResourceId", playbackUri);
+                    put("activeDirectoryGraphResourceId", playbackUri);
+                }}))
+                .withValue(new EnvironmentCredentialBuilder().build())
+                .build();
             restClient = buildRestClient(new RestClientBuilder()
                     .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
@@ -202,7 +220,7 @@ public abstract class TestBase {
         } else {
             if (System.getenv("AZURE_AUTH_LOCATION") != null) { // Record mode
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-                credentials = ApplicationTokenCredential.fromFile(credFile);
+                credential = AzureCredentialFactory.fromFile(credFile);
             } else {
                 String clientId = System.getenv("AZURE_CLIENT_ID");
                 String tenantId = System.getenv("AZURE_TENANT_ID");
@@ -211,14 +229,12 @@ public abstract class TestBase {
                 if (clientId == null || tenantId == null || clientSecret == null || subscriptionId == null) {
                     throw new IllegalArgumentException("When running tests in record mode either 'AZURE_AUTH_LOCATION' or 'AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET and AZURE_SUBSCRIPTION_ID' needs to be set");
                 }
-
-                credentials = new ApplicationTokenCredential(clientId, tenantId, clientSecret, AzureEnvironment.AZURE);
-                credentials.defaultSubscriptionId(subscriptionId);
+                credential = AzureCredentialFactory.fromEnvironment();
             }
             RestClientBuilder builder = new RestClientBuilder()
                     .withBaseUrl(this.baseUri())
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withCredential(credentials)
+                    .withCredential(credential)
                     .withHttpClient(generateHttpClientWithProxy(null))
                     .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .withPolicy(new ResourceGroupTaggingPolicy())
@@ -229,13 +245,13 @@ public abstract class TestBase {
             }
 
             restClient = buildRestClient(builder, false);
-            defaultSubscription = credentials.getDefaultSubscriptionId();
+            defaultSubscription = credential.getDefaultSubscriptionId();
             interceptorManager.addTextReplacementRule(defaultSubscription, ZERO_SUBSCRIPTION);
-            interceptorManager.addTextReplacementRule(credentials.getDomain(), ZERO_TENANT);
+            interceptorManager.addTextReplacementRule(credential.getDomain(), ZERO_TENANT);
             interceptorManager.addTextReplacementRule(baseUri(), playbackUri + "/");
             interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
         }
-        initializeClients(restClient, defaultSubscription, credentials.getDomain());
+        initializeClients(restClient, defaultSubscription, credential.getDomain());
     }
 
     @AfterEach

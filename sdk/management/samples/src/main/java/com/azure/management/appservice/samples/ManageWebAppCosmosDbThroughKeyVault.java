@@ -3,7 +3,6 @@
 
 package com.azure.management.appservice.samples;
 
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
 import com.azure.management.appservice.JavaVersion;
 import com.azure.management.appservice.PricingTier;
@@ -13,6 +12,8 @@ import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountKind;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -67,7 +68,7 @@ public final class ManageWebAppCosmosDbThroughKeyVault {
             // Create a key vault
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-            final ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
+            final AzureTokenCredential credentials = AzureCredentialFactory.fromFile(credFile);
 
             Vault vault = azure.vaults()
                     .define(vaultName)

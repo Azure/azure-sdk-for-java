@@ -3,7 +3,8 @@
 
 package com.azure.management.appservice.samples;
 
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -70,7 +71,7 @@ public final class ManageWebAppCosmosDbByMsi {
             // Create a key vault
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-            final ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credFile);
+            final AzureTokenCredential credential = AzureCredentialFactory.fromFile(credFile);
 
             Vault vault = azure.vaults()
                     .define(vaultName)
@@ -86,7 +87,7 @@ public final class ManageWebAppCosmosDbByMsi {
 
             SecretClient client = new SecretClientBuilder()
                     .vaultUrl(vault.vaultUri())
-                    .credential(credential)
+                    .credential(credential.getValue())
                     .buildClient();
 
             //============================================================

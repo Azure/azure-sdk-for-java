@@ -5,7 +5,6 @@ package com.azure.management.cosmosdb.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.cosmosdb.CosmosDBAccounts;
@@ -14,6 +13,7 @@ import com.azure.management.cosmosdb.models.CosmosDBManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -35,17 +35,17 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param credentials the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
+    public static CosmosDBManager authenticate(AzureTokenCredential credential, String subscriptionId) {
         return authenticate(new RestClientBuilder()
-                .withBaseUrl(credentials.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credentials)
+                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
 //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withPolicy(new ProviderRegistrationPolicy(credentials))
+                .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
                 .buildClient(), subscriptionId);
     }
@@ -80,11 +80,11 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription
          * @return the ComputeManager
          */
-        CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        CosmosDBManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
     /**
@@ -92,8 +92,8 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
         @Override
-        public CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-            return CosmosDBManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public CosmosDBManager authenticate(AzureTokenCredential credential, String subscriptionId) {
+            return CosmosDBManager.authenticate(buildRestClient(credential), subscriptionId);
         }
     }
 

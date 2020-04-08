@@ -4,7 +4,6 @@
 package com.azure.management;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -18,6 +17,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,7 +34,7 @@ public final class RestClientBuilder {
     private final ClientLogger logger = new ClientLogger(RestClientBuilder.class);
 
     private final List<HttpPipelinePolicy> policies;
-    private TokenCredential credential;
+    private AzureTokenCredential credential;
     private HttpPipeline pipeline;
     private URL baseUrl;
     private HttpClient httpClient;
@@ -117,8 +117,9 @@ public final class RestClientBuilder {
      * @param credential the credential.
      * @return builder
      */
-    public RestClientBuilder withCredential(TokenCredential credential) {
+    public RestClientBuilder withCredential(AzureTokenCredential credential) {
         Objects.requireNonNull(credential);
+        Objects.requireNonNull(credential.getValue());
         this.credential = credential;
         return this;
     }
@@ -214,7 +215,7 @@ public final class RestClientBuilder {
     /**
      * @return the credentials attached to this REST client
      */
-    public TokenCredential getCredential() {
+    public AzureTokenCredential getCredential() {
         return this.credential;
     }
 

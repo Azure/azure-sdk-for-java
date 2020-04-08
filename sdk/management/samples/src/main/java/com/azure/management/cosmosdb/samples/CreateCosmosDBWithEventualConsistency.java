@@ -14,12 +14,12 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountKind;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
 import com.azure.management.samples.Utils;
 
 import java.io.File;
@@ -146,7 +146,7 @@ public final class CreateCosmosDBWithEventualConsistency {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, ApplicationTokenCredential.fromFile(credFile).getClientId());
+            runSample(azure, AzureCredentialFactory.fromFile(credFile).getClientId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

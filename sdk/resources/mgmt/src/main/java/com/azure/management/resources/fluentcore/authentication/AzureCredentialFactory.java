@@ -1,107 +1,42 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.authentication;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.AuthorizationCodeCredentialBuilder;
-import com.azure.identity.ClientCertificateCredentialBuilder;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DeviceCodeCredentialBuilder;
-import com.azure.identity.DeviceCodeInfo;
-import com.azure.identity.EnvironmentCredentialBuilder;
-import com.azure.identity.InteractiveBrowserCredentialBuilder;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
-
 import java.io.File;
-import java.util.function.Consumer;
+import java.io.IOException;
 
+/**
+ * Utility class for authentication.
+ */
 public class AzureCredentialFactory {
 
     private AzureCredentialFactory() {
     }
 
-    public static TokenCredential fromUser(String username, String password, AzureEnvironment environment) {
-        return new UsernamePasswordCredentialBuilder()
-            .username(username)
-            .password(password)
-            .authorityHost(environment.getActiveDirectoryEndpoint())
+    /**
+     * Creates the credential by environment variables
+     * @return the credential.
+     */
+    public static AzureTokenCredential fromEnvironment() {
+        return new AzureTokenCredentialBuilder()
             .build();
     }
 
-    public static TokenCredential fromServicePrincipal(String tenantId, String clientId, String clientSecret, AzureEnvironment environment) {
-        return new ClientSecretCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .clientSecret(clientSecret)
-            .authorityHost(environment.getActiveDirectoryEndpoint())
-            .build();
-    }
-
-    public static TokenCredential fromServicePrincipalWithPemCertificate(String tenantId, String clientId, String pemCertificatePath, AzureEnvironment environment) {
-        return new ClientCertificateCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .pemCertificate(pemCertificatePath)
-            .authorityHost(environment.getActiveDirectoryEndpoint())
-            .build();
-    }
-
-    public static TokenCredential fromServicePrincipalWithPfxCertificate(String tenantId, String clientId, String pfxCertificatePath, String pfxCertificatePassword, AzureEnvironment environment) {
-        return new ClientCertificateCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .pfxCertificate(pfxCertificatePath, pfxCertificatePassword)
-            .authorityHost(environment.getActiveDirectoryEndpoint())
-            .build();
-    }
-
-    public static TokenCredential fromDevice(String clientId, Consumer<DeviceCodeInfo> deviceCodeInfoConsumer, AzureEnvironment environment) {
-        return new DeviceCodeCredentialBuilder()
-            .clientId(clientId)
-            .challengeConsumer(deviceCodeInfoConsumer)
-            .authorityHost(environment.getActiveDirectoryEndpoint())
-            .build();
-    }
-
-    public static TokenCredential fromManagedIdentity(String clientId) {
-        return new ManagedIdentityCredentialBuilder()
-            .clientId(clientId)
-            .build();
-    }
-
-    public static TokenCredential fromEnvironment(AzureEnvironment environment) {
-        return new EnvironmentCredentialBuilder()
-            .authorityHost(environment.getActiveDirectoryEndpoint())
-            .build();
-    }
-
-    public static TokenCredential fromAuthorizationCode(String tenantId, String clientId, String authorizationCode, String redirectUrl, AzureEnvironment environment) {
-        return new AuthorizationCodeCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .authorizationCode(authorizationCode)
-            .redirectUrl(redirectUrl)
-            .authorityHost(authorizationCode)
-            .build();
-    }
-
-    public static TokenCredential fromInteractiveBrowser(String tenantId, String clientId, int port, AzureEnvironment environment) {
-        return new InteractiveBrowserCredentialBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .port(port)
-            .authorityHost(environment.getActiveDirectoryEndpoint())
-            .build();
-    }
-
-    public static TokenCredential fromFile(File credentialFile) {
-        //TODO migrate from ApplicationTokenCredential
+    /**
+     * Creates the credential by running the installed Azure CLI
+     * @return the credential.
+     */
+    public static AzureTokenCredential fromAzureCLI() {
+        //TODO check if it is required to override AzureCliCredential
         return null;
+    }
+
+    /**
+     * Creates the credential by the authentication file
+     * @return the credential.
+     */
+    public static AzureTokenCredential fromFile(File authFile) throws IOException {
+        return AuthFile.parse(authFile).generateCredential();
     }
 }

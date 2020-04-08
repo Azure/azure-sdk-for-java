@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
 
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -30,18 +31,14 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
     /**
      * Creates AuthenticationPolicy.
      *
-     * @param credential the token credential to authenticate the request
+     * @param credential the Azure token credential to authenticate the request
      * @param scopes the scopes used in credential, using default scopes when empty
      */
-    public AuthenticationPolicy(TokenCredential credential, String... scopes) {
+    public AuthenticationPolicy(AzureTokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
-        this.credential = credential;
+        this.credential = credential.getValue();
         this.scopes = scopes;
-        if (credential instanceof AzureTokenCredential) {
-            this.environment = ((AzureTokenCredential) credential).getEnvironment();
-        } else {
-            this.environment = AzureEnvironment.AZURE;
-        }
+        this.environment = credential.getEnvironment();
     }
 
     @Override

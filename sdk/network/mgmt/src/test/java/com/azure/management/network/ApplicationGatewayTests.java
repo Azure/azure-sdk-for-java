@@ -9,11 +9,12 @@ package com.azure.management.network;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.keyvault.Secret;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.msi.Identity;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -118,7 +119,7 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withStaticIP()
                 .create();
 
-        ApplicationTokenCredential credentials = ApplicationTokenCredential
+        AzureTokenCredential credentials = AzureCredentialFactory
                 .fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
 
         Identity identity = msiManager.identities()

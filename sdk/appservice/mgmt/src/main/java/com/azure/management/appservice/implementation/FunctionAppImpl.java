@@ -40,6 +40,7 @@ import com.azure.management.appservice.SkuName;
 import com.azure.management.appservice.models.SiteConfigResourceInner;
 import com.azure.management.appservice.models.SiteInner;
 import com.azure.management.appservice.models.SiteLogsConfigInner;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredentialBuilder;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.storage.StorageAccount;
@@ -121,7 +122,9 @@ class FunctionAppImpl
             RestClient client = manager().restClient().newBuilder()
 //            RestClient client = new RestClientBuilder()
                     .withBaseUrl(baseUrl)
-                    .withCredential(new FunctionCredential(this))
+                    .withCredential(new AzureTokenCredentialBuilder()
+                        .withValue(new FunctionCredential(this))
+                        .build())
 //                    .withPolicy(new FunctionAuthenticationPolicy(this))
                     .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .buildClient();

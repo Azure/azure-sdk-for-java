@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.graphrbac.BuiltInRole;
@@ -32,6 +31,8 @@ import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.StorageAccountKey;
 import com.microsoft.azure.storage.CloudStorageAccount;
@@ -433,7 +434,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         }
         Assertions.assertTrue(backends.size() == 2);
 
-        ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
+        AzureTokenCredential credentials = AzureCredentialFactory.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
         Vault vault = this.keyVaultManager.vaults().define(vaultName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)

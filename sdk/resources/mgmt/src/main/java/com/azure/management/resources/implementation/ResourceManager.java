@@ -5,7 +5,6 @@ package com.azure.management.resources.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.Deployments;
@@ -20,6 +19,7 @@ import com.azure.management.resources.Tenants;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
@@ -54,7 +54,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @return the ResourceManager instance
      */
     public static ResourceManager.Authenticated authenticate(AzureTokenCredential credential) {
@@ -93,10 +93,10 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         /**
          * Creates an instance of ResourceManager that exposes resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
-        ResourceManager.Authenticated authenticate(AzureTokenCredential credentials);
+        ResourceManager.Authenticated authenticate(AzureTokenCredential credential);
     }
 
     /**

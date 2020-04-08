@@ -3,8 +3,8 @@
 
 package com.azure.management.samples;
 
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.keyvault.samples.ManageKeyVault;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Disabled;
@@ -20,7 +20,7 @@ public class KeyVaultSampleTests extends SamplesTestBase {
         if (!isPlaybackMode()) {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
             try {
-                clientId = ApplicationTokenCredential.fromFile(credFile).getClientId();
+                clientId = AzureCredentialFactory.fromFile(credFile).getClientId();
             } catch (IOException e) {
                 e.printStackTrace();
             }

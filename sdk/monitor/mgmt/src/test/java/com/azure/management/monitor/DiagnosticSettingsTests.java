@@ -3,10 +3,7 @@
 
 package com.azure.management.monitor;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.RestClient;
-import com.azure.management.compute.VirtualMachine;
-import com.azure.management.storage.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 
 public class DiagnosticSettingsTests extends MonitorManagementTest {

@@ -4,10 +4,11 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -193,7 +194,7 @@ public class KeyTests extends KeyVaultManagementTest {
     private Vault createVault() throws Exception {
         String vaultName = sdkContext.randomResourceName("vault", 20);
 
-        ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
+        AzureTokenCredential credentials = AzureCredentialFactory.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
 
         Vault vault = keyVaultManager.vaults().define(vaultName)
                 .withRegion(Region.US_WEST)

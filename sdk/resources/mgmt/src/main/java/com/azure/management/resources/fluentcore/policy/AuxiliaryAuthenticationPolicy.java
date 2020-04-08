@@ -12,8 +12,8 @@ import com.azure.core.management.CloudError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.Utils;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -74,7 +74,7 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
                                         credential -> {
                                             String defaultScope = Utils.getDefaultScopeFromRequest(
                                                 context.getHttpRequest(), credential.getEnvironment());
-                                            return credential.getToken(
+                                            return credential.getValue().getToken(
                                                 new TokenRequestContext().addScopes(defaultScope))
                                                     .map(accessToken ->
                                                         String.format(SCHEMA_FORMAT, accessToken.getToken()));

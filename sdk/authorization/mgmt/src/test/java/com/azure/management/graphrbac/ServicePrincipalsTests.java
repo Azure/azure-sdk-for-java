@@ -3,9 +3,9 @@
 
 package com.azure.management.graphrbac;
 
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
 import org.junit.jupiter.api.Assertions;
@@ -101,7 +101,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
             SdkContext.sleep(10000);
             ResourceManager resourceManager = ResourceManager.authenticate(
-                    ApplicationTokenCredential.fromFile(new File(authFile))).withSubscription(subscription);
+                    AzureCredentialFactory.fromFile(new File(authFile))).withSubscription(subscription);
             ResourceGroup group = resourceManager.resourceGroups().define(rgName)
                     .withRegion(Region.US_WEST).create();
 

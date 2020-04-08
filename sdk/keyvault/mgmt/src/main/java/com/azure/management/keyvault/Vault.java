@@ -90,28 +90,28 @@ public interface Vault extends
      * retrieve secrets from the key vault.
      */
     boolean enabledForTemplateDeployment();
-    
+
     /**
      * @return whether soft delete is enabled for this key vault.
      */
     boolean softDeleteEnabled();
-    
+
     /**
      * @return whether purge protection is enabled for this key vault.
      * Purge protection can only be enabled if soft delete is enabled.
      */
     boolean purgeProtectionEnabled();
-    
+
     /**
      * Get the createMode value.
-     * 
+     *
      * @return the createMode value
      */
     CreateMode createMode();
-    
+
     /**
      * Get the networkAcls value.
-     * 
+     *
      * @return the networkAcls value
      */
     NetworkRuleSet networkRuleSet();
@@ -185,51 +185,51 @@ public interface Vault extends
              */
             AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
         }
-        
+
         /**
          * A key vault definition allowing the networkAcl to be set.
          */
         interface WithNetworkRuleSet {
-        
+
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
              *
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromAllNetworks();
-            
+
             /**
              * Specifies that by default access to key vault should be denied from all networks.
-             * except from those networks specified via withVirtualNetworkRules, 
+             * except from those networks specified via withVirtualNetworkRules,
              * withAccessFromIpAddressRange, withAccessFromIpAddress
-             * 
+             *
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromSelectedNetworks();
-            
+
             /**
              * Specifies that access to the key vault from the specific ip address should be allowed.
-             * 
+             *
              * @param ipAddress the ip address
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromIpAddress(String ipAddress);
-            
+
             /**
              * Specifies that access to the key vault from the specific ip range should be allowed.
              * @param ipAddressCidr
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromIpAddressRange(String ipAddressCidr);
-            
+
             /**
-             * Specifies that access to the key vault should be allowed from applications running on 
+             * Specifies that access to the key vault should be allowed from applications running on
              * Microsoft azure services.
-             * 
+             *
              * @return the next stage of key vault definition.
              */
             WithCreate withAccessFromAzureServices();
-            
+
             /**
              * Set the bypass value.
              *
@@ -237,7 +237,7 @@ public interface Vault extends
              * @return the next stage of key vault definition.
              */
             WithCreate withBypass(NetworkRuleBypassOptions bypass);
-            
+
             /**
              * Set the defaultAction value.
              *
@@ -245,14 +245,14 @@ public interface Vault extends
              * @return the next stage of key vault definition.
              */
             WithCreate withDefaultAction(NetworkRuleAction defaultAction);
-            
+
             /**
              * Get the virtualNetworkRules value.
              *
              * @return the next stage of key vault definition.
              */
             WithCreate withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);
-        
+
         }
 
         /**
@@ -279,17 +279,17 @@ public interface Vault extends
              * @return the next stage of key vault definition
              */
             WithCreate withTemplateDeploymentEnabled();
-            
+
             /**
              * Enable soft delete for the key vault.
-             * 
+             *
              * @return the next stage of key vault definition
              */
             WithCreate withSoftDeleteEnabled();
-            
+
             /**
              * Enable purge protection for the key vault; valid only if soft delete is also enabled.
-             * 
+             *
              * @return the next stage of key vault definition.
              */
             WithCreate withPurgeProtectionEnabled();
@@ -375,46 +375,46 @@ public interface Vault extends
          * A key vault update allowing the NetworkRuleSet to be set.
          */
         interface WithNetworkRuleSet {
-            
+
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
              *
              * @return the next stage of key vault definition
              */
             Update withAccessFromAllNetworks();
-            
+
             /**
              * Specifies that by default access to key vault should be denied from all networks.
              * except from those networks specified via withVirtualNetworkRules, withAccessFromIpAddressRange
              * withAccesFromIpAddress
-             * 
+             *
              * @return the update stage of key vault definition
              */
             Update withAccessFromSelectedNetworks();
-            
+
             /**
              * Specifies that access to the key vault from the specific ip address should be allowed.
-             * 
+             *
              * @param ipAddress the ip address
              * @return the update stage of key vault definition
              */
             Update withAccessFromIpAddress(String ipAddress);
-            
+
             /**
              * Specifies that access to the key vault from the specific ip range should be allowed.
              * @param ipAddressCidr the idAddress range in Cidr format
              * @return the update stage of key vault definition
              */
             Update withAccessFromIpAddressRange(String ipAddressCidr);
-            
+
             /**
-             * Specifies that access to the key vault should be allowed from applications running on 
+             * Specifies that access to the key vault should be allowed from applications running on
              * Microsoft azure services.
-             * 
+             *
              * @return the update stage of key vault definition.
              */
             Update withAccessFromAzureServices();
-            
+
             /**
              * Set the bypass value.
              *
@@ -422,7 +422,7 @@ public interface Vault extends
              * @return the update stage of key vault definition.
              */
             Update withBypass(NetworkRuleBypassOptions bypass);
-            
+
             /**
              * Set the defaultAction value.
              *
@@ -430,16 +430,16 @@ public interface Vault extends
              * @return the update stage of key vault definition.
              */
             Update withDefaultAction(NetworkRuleAction defaultAction);
-            
+
             /**
              * Get the virtualNetworkRules value.
-             * 
+             *
              * @param virtualNetworkRules virtual network rules
              * @return the update stage of key vault definition.
              */
             Update withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);
         }
-        
+
         /**
          * A key vault update allowing various configurations to be set.
          */
@@ -464,17 +464,17 @@ public interface Vault extends
              * @return the key vault update stage
              */
             Update withTemplateDeploymentEnabled();
-            
+
             /**
              * Enable soft delete for the key vault.
-             * 
+             *
              * @return the next stage of key vault definition
              */
             Update withSoftDeleteEnabled();
-            
+
             /**
              * Enable purge protection for the key vault; valid only if soft delete is also enabled.
-             * 
+             *
              * @return the next stage of key vault definition.
              */
             Update withPurgeProtectionEnabled();

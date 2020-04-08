@@ -170,7 +170,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // function app with consumption plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewLinuxConsumptionPlan()
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
@@ -182,7 +182,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
-        Assertions.assertEquals(Region.US_EAST, plan1.region());
+        Assertions.assertEquals(Region.US_WEST, plan1.region());
         Assertions.assertEquals(new PricingTier(SkuName.DYNAMIC.toString(), "Y1"), plan1.pricingTier());
         Assertions.assertTrue(plan1.inner().reserved());
         Assertions.assertTrue(Arrays.asList(functionApp1.inner().kind().split(",")).containsAll(Arrays.asList("linux", "functionapp")));
@@ -192,7 +192,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // function app with app service plan
         FunctionApp functionApp2 = appServiceManager.functionApps().define(WEBAPP_NAME_2)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME_1)
                 .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
@@ -243,7 +243,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         // function app with premium plan
         FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewLinuxAppServicePlan(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"))
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
@@ -272,7 +272,7 @@ public class FunctionAppsTests extends AppServiceTest {
     public void canCRUDLinuxFunctionAppPremiumDocker() {
         // function app with premium plan with private docker
         FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewLinuxAppServicePlan(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"))
                 .withPrivateRegistryImage("weidxuregistry.azurecr.io/az-func-java:v1", "https://weidxuregistry.azurecr.io")

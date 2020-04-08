@@ -5,7 +5,6 @@ package com.azure.management.dns.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.dns.models.DnsManagementClientBuilder;
@@ -13,6 +12,7 @@ import com.azure.management.dns.models.DnsManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.dns.DnsZones;
 
@@ -36,7 +36,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
     /**
      * Creates an instance of DnsZoneManager that exposes DNS zone management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription UUID
      * @return the DnsZoneManager
      */
@@ -78,7 +78,7 @@ public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementC
         /**
          * Creates an instance of DnsZoneManager that exposes DNS zone API entry points.
          *
-         * @param credential the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription UUID
          * @return the interface exposing DNS zone management API entry points that work across subscriptions
          */

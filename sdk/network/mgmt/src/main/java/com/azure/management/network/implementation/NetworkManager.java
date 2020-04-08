@@ -5,7 +5,6 @@ package com.azure.management.network.implementation;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.network.ApplicationGateway;
@@ -36,6 +35,7 @@ import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -83,7 +83,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * Creates an instance of NetworkManager that exposes network resource management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription UUID
      * @return the NetworkManager
      */
@@ -120,11 +120,11 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         /**
          * Creates an instance of NetworkManager that exposes network management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription UUID
          * @return the interface exposing network management API entry points that work across subscriptions
          */
-        NetworkManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        NetworkManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
     /**
@@ -134,8 +134,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             extends AzureConfigurableImpl<Configurable>
             implements Configurable {
 
-        public NetworkManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-            return NetworkManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public NetworkManager authenticate(AzureTokenCredential credential, String subscriptionId) {
+            return NetworkManager.authenticate(buildRestClient(credential), subscriptionId);
         }
     }
 

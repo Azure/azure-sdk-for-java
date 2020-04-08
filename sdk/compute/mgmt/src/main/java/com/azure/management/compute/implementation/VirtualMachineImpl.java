@@ -5,8 +5,6 @@ package com.azure.management.compute.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.SubResource;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
 import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.compute.models.VirtualMachineInner;
 import com.azure.management.compute.models.VirtualMachineUpdateInner;
@@ -1758,22 +1756,10 @@ class VirtualMachineImpl
     }
 
     AzureEnvironment environment() {
-        RestClient restClient = this.manager().getRestClient();
-        AzureEnvironment environment = null;
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            environment = ((AzureTokenCredential) restClient.getCredential()).getEnvironment();
+        if (this.manager().getRestClient().getCredential() == null) {
+            return AzureEnvironment.AZURE;
         }
-        String baseUrl = restClient.getBaseUrl().toString();
-        for (AzureEnvironment env : AzureEnvironment.knownEnvironments()) {
-            if (env.getResourceManagerEndpoint().toLowerCase().contains(baseUrl.toLowerCase())) {
-                environment = env;
-                break;
-            }
-        }
-        if (environment != null) {
-            return environment;
-        }
-        return environment == null ? AzureEnvironment.AZURE : environment;
+        return this.manager().getRestClient().getCredential().getEnvironment();
     }
 
     private void setOSDiskDefaults() {

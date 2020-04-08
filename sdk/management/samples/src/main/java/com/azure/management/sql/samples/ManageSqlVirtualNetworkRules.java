@@ -7,13 +7,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.network.Network;
 import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlVirtualNetworkRule;
@@ -156,7 +157,7 @@ public class ManageSqlVirtualNetworkRules {
         try {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
+            AzureTokenCredential credentials = AzureCredentialFactory.fromFile(credFile);
             RestClient restClient = new RestClientBuilder()
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                     .withSerializerAdapter(new AzureJacksonAdapter())

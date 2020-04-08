@@ -395,7 +395,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
         }
         return this;
     }
-    
+
     @Override
     public VaultImpl withAccessFromIpAddress(String ipAddress) {
         return withAccessAllowedFromIpAddressOrRange(ipAddress);

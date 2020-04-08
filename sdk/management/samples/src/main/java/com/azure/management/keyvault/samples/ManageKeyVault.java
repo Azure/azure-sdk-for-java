@@ -5,12 +5,12 @@ package com.azure.management.keyvault.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
 import com.azure.management.keyvault.KeyPermissions;
 import com.azure.management.keyvault.SecretPermissions;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.authentication.AzureCredentialFactory;
 import com.azure.management.samples.Utils;
 
 import java.io.File;
@@ -163,7 +163,7 @@ public final class ManageKeyVault {
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
-            runSample(azure, ApplicationTokenCredential.fromFile(credFile).getClientId());
+            runSample(azure, AzureCredentialFactory.fromFile(credFile).getClientId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -5,7 +5,6 @@ package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.Utils;
@@ -21,6 +20,7 @@ import com.azure.management.graphrbac.models.GraphRbacManagementClientBuilder;
 import com.azure.management.graphrbac.models.GraphRbacManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
@@ -46,7 +46,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     /**
      * Creates an instance of GraphRbacManager that exposes Graph RBAC management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @return the GraphRbacManager instance
      */
     public static GraphRbacManager authenticate(AzureTokenCredential credential) {
@@ -105,10 +105,10 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         /**
          * Creates an instance of GraphRbacManager that exposes resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
-        GraphRbacManager authenticate(AzureTokenCredential credentials);
+        GraphRbacManager authenticate(AzureTokenCredential credential);
     }
 
     /**
@@ -125,9 +125,9 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     private GraphRbacManager(RestClient restClient, String tenantId, SdkContext sdkContext) {
         String graphEndpoint = AzureEnvironment.AZURE.getGraphEndpoint();
         String resourceManagerEndpoint = restClient.getBaseUrl().toString();
-        if (restClient.getCredential() instanceof AzureTokenCredential) {
-            graphEndpoint = ((AzureTokenCredential) restClient.getCredential()).getEnvironment().getGraphEndpoint();
-            resourceManagerEndpoint = ((AzureTokenCredential) restClient.getCredential()).getEnvironment().getResourceManagerEndpoint();
+        if (restClient.getCredential() != null) {
+            graphEndpoint = restClient.getCredential().getEnvironment().getGraphEndpoint();
+            resourceManagerEndpoint = restClient.getCredential().getEnvironment().getResourceManagerEndpoint();
         }
         RestClient graphRestClient = restClient.newBuilder()
                 .withBaseUrl(graphEndpoint)

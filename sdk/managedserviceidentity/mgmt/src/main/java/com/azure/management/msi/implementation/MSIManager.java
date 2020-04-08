@@ -5,7 +5,6 @@ package com.azure.management.msi.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.Utils;
@@ -16,6 +15,7 @@ import com.azure.management.msi.models.ManagedServiceIdentityClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -40,7 +40,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
     /**
      * Creates an instance of MSIManager that exposes Managed Service Identity (MSI) resource management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription UUID
      * @return the MSIManager
      */
@@ -85,7 +85,7 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
         /**
          * Creates an instance of MSIManager that exposes EventHub management API entry points.
          *
-         * @param credential the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription UUID
          * @return the interface exposing Managed Service Identity (MSI) resource management API entry points that work across subscriptions
          */

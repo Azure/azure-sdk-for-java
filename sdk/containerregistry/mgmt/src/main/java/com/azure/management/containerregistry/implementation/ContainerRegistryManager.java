@@ -6,7 +6,6 @@ package com.azure.management.containerregistry.implementation;
 import com.azure.core.implementation.annotation.Beta;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.containerregistry.Registries;
@@ -17,6 +16,7 @@ import com.azure.management.containerregistry.models.ContainerRegistryManagement
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -44,17 +44,17 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
     /**
      * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
      *
-     * @param credentials the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription
      * @return the ContainerRegistryManager
      */
-    public static ContainerRegistryManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
+    public static ContainerRegistryManager authenticate(AzureTokenCredential credential, String subscriptionId) {
         return authenticate(new RestClientBuilder()
-                .withBaseUrl(credentials.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credentials)
+                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
 //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withPolicy(new ProviderRegistrationPolicy(credentials))
+                .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
                 .buildClient(), subscriptionId);
     }
@@ -89,11 +89,11 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
         /**
          * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription
          * @return the ContainerRegistryManager
          */
-        ContainerRegistryManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        ContainerRegistryManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
     /**
@@ -101,8 +101,8 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
         @Override
-        public ContainerRegistryManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-            return ContainerRegistryManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public ContainerRegistryManager authenticate(AzureTokenCredential credential, String subscriptionId) {
+            return ContainerRegistryManager.authenticate(buildRestClient(credential), subscriptionId);
         }
     }
 

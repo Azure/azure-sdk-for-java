@@ -5,7 +5,6 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.Utils;
@@ -29,6 +28,7 @@ import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.implementation.StorageManager;
 
@@ -68,7 +68,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param credential the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription
      * @return the ComputeManager
      */
@@ -110,11 +110,11 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription
          * @return the ComputeManager
          */
-        ComputeManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        ComputeManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
     /**

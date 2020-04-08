@@ -6,7 +6,6 @@ package com.azure.management.containerservice.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.RestClientBuilder;
 import com.azure.management.containerservice.ContainerServices;
@@ -16,6 +15,7 @@ import com.azure.management.containerservice.models.ContainerServiceManagementCl
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.azure.management.resources.fluentcore.authentication.AzureTokenCredential;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
@@ -40,17 +40,17 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
     /**
      * Creates an instance of ContainerServiceManager that exposes Azure Container Service resource management API entry points.
      *
-     * @param credentials the credentials to use
+     * @param credential the credential to use
      * @param subscriptionId the subscription
      * @return the ContainerServiceManager
      */
-    public static ContainerServiceManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
+    public static ContainerServiceManager authenticate(AzureTokenCredential credential, String subscriptionId) {
         return authenticate(new RestClientBuilder()
-                .withBaseUrl(credentials.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credentials)
+                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
 //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withPolicy(new ProviderRegistrationPolicy(credentials))
+                .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
                 .buildClient(), subscriptionId);
     }
@@ -85,11 +85,11 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
         /**
          * Creates an instance of ContainerServiceManager that exposes Service resource management API entry points.
          *
-         * @param credentials the credentials to use
+         * @param credential the credential to use
          * @param subscriptionId the subscription
          * @return the ContainerServiceManager
          */
-        ContainerServiceManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        ContainerServiceManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
     /**
@@ -97,8 +97,8 @@ public final class ContainerServiceManager extends Manager<ContainerServiceManag
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
         @Override
-        public ContainerServiceManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-            return ContainerServiceManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public ContainerServiceManager authenticate(AzureTokenCredential credential, String subscriptionId) {
+            return ContainerServiceManager.authenticate(buildRestClient(credential), subscriptionId);
         }
     }
 
