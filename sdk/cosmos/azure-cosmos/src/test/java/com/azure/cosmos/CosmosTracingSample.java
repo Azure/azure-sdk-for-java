@@ -20,8 +20,8 @@
 //import static java.util.logging.Logger.getLogger;
 //
 //public class CosmosTracingSample {
-//    final static String ENDPOINT = "https://naveencosmosdb.documents.azure.com:443/";
-//    final static String KEY = "IWlgE5b53sHJW8jVmtX7xQ3xN7TMAYyG2cIAzicS6ZKT24GLRPR1oImiIxWAUvsjn0BtuDoygGjX3TsEK6yc0A==";
+//    final static String ENDPOINT = "";
+//    final static String KEY = "";
 //    private static final Logger LOGGER = getLogger("Sample");
 //    private static final Tracer TRACER;
 //    private static final TracerSdkFactory TRACER_SDK_PROVIDER;
