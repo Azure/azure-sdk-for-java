@@ -119,10 +119,9 @@ class FunctionAppImpl
                 throw new IllegalStateException(e);
             }
             RestClient client = manager().restClient().newBuilder()
-//            RestClient client = new RestClientBuilder()
                     .withBaseUrl(baseUrl)
-                    .withCredential(new FunctionCredential(this))
-//                    .withPolicy(new FunctionAuthenticationPolicy(this))
+//                    .withCredential(new FunctionCredential(this))
+                    .withPolicy(new FunctionAuthenticationPolicy(this))
                     .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .buildClient();
             functionServiceHost = client.getBaseUrl().toString();
@@ -488,6 +487,16 @@ class FunctionAppImpl
     }
 
     @Override
+    public void triggerFunction(String functionName, Object payload) {
+        triggerFunctionAsync(functionName, payload).block();
+    }
+
+    @Override
+    public Mono<Void> triggerFunctionAsync(String functionName, Object payload) {
+        return functionService.triggerFunction(functionServiceHost, functionName, payload);
+    }
+
+    @Override
     public void syncTriggers() {
         syncTriggersAsync().block();
     }
@@ -633,6 +642,10 @@ class FunctionAppImpl
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostStatus" })
         @Get("admin/host/status")
         Mono<Void> getHostStatus(@HostParam("$host") String host);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps triggerFunction" })
+        @Post("admin/functions/{name}")
+        Mono<Void> triggerFunction(@HostParam("$host") String host, @PathParam("name") String functionName, @BodyParam("application/json") Object payload);
     }
 
     private static class FunctionKeyListResult {
@@ -661,6 +674,7 @@ class FunctionAppImpl
         }
     }
 
+    /*
     private static final class FunctionCredential implements TokenCredential {
         private final FunctionAppImpl functionApp;
 
@@ -682,4 +696,5 @@ class FunctionAppImpl
                     });
         }
     }
+    */
 }

@@ -92,6 +92,21 @@ public interface FunctionApp extends
     Mono<Void> removeFunctionKeyAsync(String functionName, String keyName);
 
     /**
+     * Triggers a function.
+     * @param functionName the name of the function
+     * @param payload the payload to be serialized to JSON
+     */
+    void triggerFunction(String functionName, Object payload);
+
+    /**
+     * Triggers a function.
+     * @param functionName the name of the function
+     * @param payload the payload to be serialized to JSON
+     * @return the completable of the operation
+     */
+    Mono<Void> triggerFunctionAsync(String functionName, Object payload);
+
+    /**
      * Syncs the triggers on the function app.
      */
     void syncTriggers();
