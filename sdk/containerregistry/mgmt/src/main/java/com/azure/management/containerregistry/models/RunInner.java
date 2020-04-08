@@ -19,9 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The Run model.
- */
+/** The Run model. */
 @JsonFlatten
 @Fluent
 public class RunInner extends ProxyResource {
@@ -139,7 +137,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the runId property: The unique identifier for the run.
-     * 
+     *
      * @return the runId value.
      */
     public String runId() {
@@ -148,7 +146,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the runId property: The unique identifier for the run.
-     * 
+     *
      * @param runId the runId value to set.
      * @return the RunInner object itself.
      */
@@ -159,7 +157,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the status property: The current status of the run.
-     * 
+     *
      * @return the status value.
      */
     public RunStatus status() {
@@ -168,7 +166,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the status property: The current status of the run.
-     * 
+     *
      * @param status the status value to set.
      * @return the RunInner object itself.
      */
@@ -179,7 +177,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the lastUpdatedTime property: The last updated time for the run.
-     * 
+     *
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -188,7 +186,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the lastUpdatedTime property: The last updated time for the run.
-     * 
+     *
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      * @return the RunInner object itself.
      */
@@ -199,7 +197,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the runType property: The type of run.
-     * 
+     *
      * @return the runType value.
      */
     public RunType runType() {
@@ -208,7 +206,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the runType property: The type of run.
-     * 
+     *
      * @param runType the runType value to set.
      * @return the RunInner object itself.
      */
@@ -219,7 +217,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the createTime property: The time the run was scheduled.
-     * 
+     *
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -228,7 +226,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the createTime property: The time the run was scheduled.
-     * 
+     *
      * @param createTime the createTime value to set.
      * @return the RunInner object itself.
      */
@@ -239,7 +237,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the startTime property: The time the run started.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -248,7 +246,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the startTime property: The time the run started.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the RunInner object itself.
      */
@@ -259,7 +257,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the finishTime property: The time the run finished.
-     * 
+     *
      * @return the finishTime value.
      */
     public OffsetDateTime finishTime() {
@@ -268,7 +266,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the finishTime property: The time the run finished.
-     * 
+     *
      * @param finishTime the finishTime value to set.
      * @return the RunInner object itself.
      */
@@ -278,10 +276,9 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the outputImages property: The list of all images that were
-     * generated from the run. This is applicable if the run generates base
-     * image dependencies.
-     * 
+     * Get the outputImages property: The list of all images that were generated from the run. This is applicable if the
+     * run generates base image dependencies.
+     *
      * @return the outputImages value.
      */
     public List<ImageDescriptor> outputImages() {
@@ -289,10 +286,9 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the outputImages property: The list of all images that were
-     * generated from the run. This is applicable if the run generates base
-     * image dependencies.
-     * 
+     * Set the outputImages property: The list of all images that were generated from the run. This is applicable if the
+     * run generates base image dependencies.
+     *
      * @param outputImages the outputImages value to set.
      * @return the RunInner object itself.
      */
@@ -303,7 +299,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the task property: The task against which run was scheduled.
-     * 
+     *
      * @return the task value.
      */
     public String task() {
@@ -312,7 +308,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the task property: The task against which run was scheduled.
-     * 
+     *
      * @param task the task value to set.
      * @return the RunInner object itself.
      */
@@ -322,10 +318,9 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the imageUpdateTrigger property: The image update trigger that
-     * caused the run. This is applicable if the task has base image trigger
-     * configured.
-     * 
+     * Get the imageUpdateTrigger property: The image update trigger that caused the run. This is applicable if the task
+     * has base image trigger configured.
+     *
      * @return the imageUpdateTrigger value.
      */
     public ImageUpdateTrigger imageUpdateTrigger() {
@@ -333,10 +328,9 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the imageUpdateTrigger property: The image update trigger that
-     * caused the run. This is applicable if the task has base image trigger
-     * configured.
-     * 
+     * Set the imageUpdateTrigger property: The image update trigger that caused the run. This is applicable if the task
+     * has base image trigger configured.
+     *
      * @param imageUpdateTrigger the imageUpdateTrigger value to set.
      * @return the RunInner object itself.
      */
@@ -347,7 +341,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the sourceTrigger property: The source trigger that caused the run.
-     * 
+     *
      * @return the sourceTrigger value.
      */
     public SourceTriggerDescriptor sourceTrigger() {
@@ -356,7 +350,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the sourceTrigger property: The source trigger that caused the run.
-     * 
+     *
      * @param sourceTrigger the sourceTrigger value to set.
      * @return the RunInner object itself.
      */
@@ -366,9 +360,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the platform property: The platform properties against which the run
-     * will happen.
-     * 
+     * Get the platform property: The platform properties against which the run will happen.
+     *
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -376,9 +369,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the platform property: The platform properties against which the run
-     * will happen.
-     * 
+     * Set the platform property: The platform properties against which the run will happen.
+     *
      * @param platform the platform value to set.
      * @return the RunInner object itself.
      */
@@ -388,9 +380,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Get the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -398,9 +389,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the agentConfiguration property: The machine configuration of the
-     * run agent.
-     * 
+     * Set the agentConfiguration property: The machine configuration of the run agent.
+     *
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the RunInner object itself.
      */
@@ -410,9 +400,9 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the sourceRegistryAuth property: The scope of the credentials that
-     * were used to login to the source registry during this run.
-     * 
+     * Get the sourceRegistryAuth property: The scope of the credentials that were used to login to the source registry
+     * during this run.
+     *
      * @return the sourceRegistryAuth value.
      */
     public String sourceRegistryAuth() {
@@ -420,9 +410,9 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the sourceRegistryAuth property: The scope of the credentials that
-     * were used to login to the source registry during this run.
-     * 
+     * Set the sourceRegistryAuth property: The scope of the credentials that were used to login to the source registry
+     * during this run.
+     *
      * @param sourceRegistryAuth the sourceRegistryAuth value to set.
      * @return the RunInner object itself.
      */
@@ -432,9 +422,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the customRegistries property: The list of custom registries that
-     * were logged in during this run.
-     * 
+     * Get the customRegistries property: The list of custom registries that were logged in during this run.
+     *
      * @return the customRegistries value.
      */
     public List<String> customRegistries() {
@@ -442,9 +431,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the customRegistries property: The list of custom registries that
-     * were logged in during this run.
-     * 
+     * Set the customRegistries property: The list of custom registries that were logged in during this run.
+     *
      * @param customRegistries the customRegistries value to set.
      * @return the RunInner object itself.
      */
@@ -454,9 +442,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the runErrorMessage property: The error message received from
-     * backend systems after the run is scheduled.
-     * 
+     * Get the runErrorMessage property: The error message received from backend systems after the run is scheduled.
+     *
      * @return the runErrorMessage value.
      */
     public String runErrorMessage() {
@@ -465,7 +452,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of a run.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -474,7 +461,7 @@ public class RunInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: The provisioning state of a run.
-     * 
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the RunInner object itself.
      */
@@ -484,9 +471,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled or not.
-     * 
+     * Get the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
+     *
      * @return the isArchiveEnabled value.
      */
     public Boolean isArchiveEnabled() {
@@ -494,9 +480,8 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the isArchiveEnabled property: The value that indicates whether
-     * archiving is enabled or not.
-     * 
+     * Set the isArchiveEnabled property: The value that indicates whether archiving is enabled or not.
+     *
      * @param isArchiveEnabled the isArchiveEnabled value to set.
      * @return the RunInner object itself.
      */

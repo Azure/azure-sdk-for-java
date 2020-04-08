@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RegistryPassword model.
- */
+/** The RegistryPassword model. */
 @Fluent
 public final class RegistryPassword {
     /*
@@ -26,7 +24,7 @@ public final class RegistryPassword {
 
     /**
      * Get the name property: The password name.
-     * 
+     *
      * @return the name value.
      */
     public PasswordName name() {
@@ -35,7 +33,7 @@ public final class RegistryPassword {
 
     /**
      * Set the name property: The password name.
-     * 
+     *
      * @param name the name value to set.
      * @return the RegistryPassword object itself.
      */
@@ -46,7 +44,7 @@ public final class RegistryPassword {
 
     /**
      * Get the value property: The password value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -55,7 +53,7 @@ public final class RegistryPassword {
 
     /**
      * Set the value property: The password value.
-     * 
+     *
      * @param value the value value to set.
      * @return the RegistryPassword object itself.
      */

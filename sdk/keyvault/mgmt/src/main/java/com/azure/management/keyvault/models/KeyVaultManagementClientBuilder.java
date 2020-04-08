@@ -12,19 +12,19 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the KeyVaultManagementClientImpl type.
- */
+/** A builder for creating a new instance of the KeyVaultManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {KeyVaultManagementClientImpl.class})
 public final class KeyVaultManagementClientBuilder {
     /*
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Subscription credentials which uniquely identify Microsoft Azure subscription.
+     * The subscription ID forms part of the URI for every service call.
      */
     private String subscriptionId;
 
     /**
-     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     * 
+     * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+     * part of the URI for every service call.
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the KeyVaultManagementClientBuilder.
      */
@@ -40,7 +40,7 @@ public final class KeyVaultManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the KeyVaultManagementClientBuilder.
      */
@@ -56,7 +56,7 @@ public final class KeyVaultManagementClientBuilder {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the KeyVaultManagementClientBuilder.
      */
@@ -72,7 +72,7 @@ public final class KeyVaultManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the KeyVaultManagementClientBuilder.
      */
@@ -88,7 +88,7 @@ public final class KeyVaultManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the KeyVaultManagementClientBuilder.
      */
@@ -99,10 +99,10 @@ public final class KeyVaultManagementClientBuilder {
 
     /**
      * Builds an instance of KeyVaultManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of KeyVaultManagementClientImpl.
      */
-    public KeyVaultManagementClientImpl build() {
+    public KeyVaultManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -113,7 +113,10 @@ public final class KeyVaultManagementClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         KeyVaultManagementClientImpl client = new KeyVaultManagementClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

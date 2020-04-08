@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OperationDisplayDefinition model.
- */
+/** The OperationDisplayDefinition model. */
 @Fluent
 public final class OperationDisplayDefinition {
     /*
@@ -37,9 +35,8 @@ public final class OperationDisplayDefinition {
     private String description;
 
     /**
-     * Get the provider property: The resource provider name:
-     * Microsoft.ContainerRegistry.
-     * 
+     * Get the provider property: The resource provider name: Microsoft.ContainerRegistry.
+     *
      * @return the provider value.
      */
     public String provider() {
@@ -47,9 +44,8 @@ public final class OperationDisplayDefinition {
     }
 
     /**
-     * Set the provider property: The resource provider name:
-     * Microsoft.ContainerRegistry.
-     * 
+     * Set the provider property: The resource provider name: Microsoft.ContainerRegistry.
+     *
      * @param provider the provider value to set.
      * @return the OperationDisplayDefinition object itself.
      */
@@ -59,9 +55,8 @@ public final class OperationDisplayDefinition {
     }
 
     /**
-     * Get the resource property: The resource on which the operation is
-     * performed.
-     * 
+     * Get the resource property: The resource on which the operation is performed.
+     *
      * @return the resource value.
      */
     public String resource() {
@@ -69,9 +64,8 @@ public final class OperationDisplayDefinition {
     }
 
     /**
-     * Set the resource property: The resource on which the operation is
-     * performed.
-     * 
+     * Set the resource property: The resource on which the operation is performed.
+     *
      * @param resource the resource value to set.
      * @return the OperationDisplayDefinition object itself.
      */
@@ -82,7 +76,7 @@ public final class OperationDisplayDefinition {
 
     /**
      * Get the operation property: The operation that users can perform.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -91,7 +85,7 @@ public final class OperationDisplayDefinition {
 
     /**
      * Set the operation property: The operation that users can perform.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the OperationDisplayDefinition object itself.
      */
@@ -102,7 +96,7 @@ public final class OperationDisplayDefinition {
 
     /**
      * Get the description property: The description for the operation.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -111,7 +105,7 @@ public final class OperationDisplayDefinition {
 
     /**
      * Set the description property: The description for the operation.
-     * 
+     *
      * @param description the description value to set.
      * @return the OperationDisplayDefinition object itself.
      */

@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The FailoverGroupUpdate model.
- */
+/** The FailoverGroupUpdate model. */
 @JsonFlatten
 @Fluent
 public class FailoverGroupUpdate {
@@ -42,7 +40,7 @@ public class FailoverGroupUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -51,7 +49,7 @@ public class FailoverGroupUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -61,9 +59,8 @@ public class FailoverGroupUpdate {
     }
 
     /**
-     * Get the readWriteEndpoint property: Read-write endpoint of the failover
-     * group instance.
-     * 
+     * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
+     *
      * @return the readWriteEndpoint value.
      */
     public FailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -71,9 +68,8 @@ public class FailoverGroupUpdate {
     }
 
     /**
-     * Set the readWriteEndpoint property: Read-write endpoint of the failover
-     * group instance.
-     * 
+     * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
+     *
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -83,9 +79,8 @@ public class FailoverGroupUpdate {
     }
 
     /**
-     * Get the readOnlyEndpoint property: Read-only endpoint of the failover
-     * group instance.
-     * 
+     * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
+     *
      * @return the readOnlyEndpoint value.
      */
     public FailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -93,9 +88,8 @@ public class FailoverGroupUpdate {
     }
 
     /**
-     * Set the readOnlyEndpoint property: Read-only endpoint of the failover
-     * group instance.
-     * 
+     * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
+     *
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the FailoverGroupUpdate object itself.
      */
@@ -106,7 +100,7 @@ public class FailoverGroupUpdate {
 
     /**
      * Get the databases property: List of databases in the failover group.
-     * 
+     *
      * @return the databases value.
      */
     public List<String> databases() {
@@ -115,7 +109,7 @@ public class FailoverGroupUpdate {
 
     /**
      * Set the databases property: List of databases in the failover group.
-     * 
+     *
      * @param databases the databases value to set.
      * @return the FailoverGroupUpdate object itself.
      */

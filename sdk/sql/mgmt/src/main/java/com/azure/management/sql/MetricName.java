@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetricName model.
- */
+/** The MetricName model. */
 @Immutable
 public final class MetricName {
     /*
@@ -26,7 +24,7 @@ public final class MetricName {
 
     /**
      * Get the value property: The name of the database metric.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -34,9 +32,8 @@ public final class MetricName {
     }
 
     /**
-     * Get the localizedValue property: The friendly name of the database
-     * metric.
-     * 
+     * Get the localizedValue property: The friendly name of the database metric.
+     *
      * @return the localizedValue value.
      */
     public String localizedValue() {

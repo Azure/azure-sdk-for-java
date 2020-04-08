@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The LongTermRetentionBackupListResult model.
- */
+/** The LongTermRetentionBackupListResult model. */
 @Immutable
 public final class LongTermRetentionBackupListResultInner {
     /*
@@ -27,7 +25,7 @@ public final class LongTermRetentionBackupListResultInner {
 
     /**
      * Get the value property: Array of results.
-     * 
+     *
      * @return the value value.
      */
     public List<LongTermRetentionBackupInner> value() {
@@ -36,7 +34,7 @@ public final class LongTermRetentionBackupListResultInner {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

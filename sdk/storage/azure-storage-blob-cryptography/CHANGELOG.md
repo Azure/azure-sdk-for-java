@@ -1,5 +1,8 @@
 # Release History
 
+## 12.7.0-beta.1 (Unreleased)
+
+
 ## 12.6.0 (2020-04-06)
 - It is now possible to specify a key/keyResolver after they specify a pipeline/client on the builder.
 - The builder will now throw if a pipeline/client was already configured for decryption as the encryption info may conflict.

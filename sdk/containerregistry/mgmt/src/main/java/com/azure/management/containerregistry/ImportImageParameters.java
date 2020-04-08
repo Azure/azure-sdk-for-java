@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ImportImageParameters model.
- */
+/** The ImportImageParameters model. */
 @Fluent
 public final class ImportImageParameters {
     /*
@@ -43,7 +41,7 @@ public final class ImportImageParameters {
 
     /**
      * Get the source property: The source of the image.
-     * 
+     *
      * @return the source value.
      */
     public ImportSource source() {
@@ -52,7 +50,7 @@ public final class ImportImageParameters {
 
     /**
      * Set the source property: The source of the image.
-     * 
+     *
      * @param source the source value to set.
      * @return the ImportImageParameters object itself.
      */
@@ -62,10 +60,9 @@ public final class ImportImageParameters {
     }
 
     /**
-     * Get the targetTags property: List of strings of the form repo[:tag].
-     * When tag is omitted the source will be used (or 'latest' if source tag
-     * is also omitted).
-     * 
+     * Get the targetTags property: List of strings of the form repo[:tag]. When tag is omitted the source will be used
+     * (or 'latest' if source tag is also omitted).
+     *
      * @return the targetTags value.
      */
     public List<String> targetTags() {
@@ -73,10 +70,9 @@ public final class ImportImageParameters {
     }
 
     /**
-     * Set the targetTags property: List of strings of the form repo[:tag].
-     * When tag is omitted the source will be used (or 'latest' if source tag
-     * is also omitted).
-     * 
+     * Set the targetTags property: List of strings of the form repo[:tag]. When tag is omitted the source will be used
+     * (or 'latest' if source tag is also omitted).
+     *
      * @param targetTags the targetTags value to set.
      * @return the ImportImageParameters object itself.
      */
@@ -86,9 +82,9 @@ public final class ImportImageParameters {
     }
 
     /**
-     * Get the untaggedTargetRepositories property: List of strings of
-     * repository names to do a manifest only copy. No tag will be created.
-     * 
+     * Get the untaggedTargetRepositories property: List of strings of repository names to do a manifest only copy. No
+     * tag will be created.
+     *
      * @return the untaggedTargetRepositories value.
      */
     public List<String> untaggedTargetRepositories() {
@@ -96,11 +92,10 @@ public final class ImportImageParameters {
     }
 
     /**
-     * Set the untaggedTargetRepositories property: List of strings of
-     * repository names to do a manifest only copy. No tag will be created.
-     * 
-     * @param untaggedTargetRepositories the untaggedTargetRepositories value
-     * to set.
+     * Set the untaggedTargetRepositories property: List of strings of repository names to do a manifest only copy. No
+     * tag will be created.
+     *
+     * @param untaggedTargetRepositories the untaggedTargetRepositories value to set.
      * @return the ImportImageParameters object itself.
      */
     public ImportImageParameters withUntaggedTargetRepositories(List<String> untaggedTargetRepositories) {
@@ -109,10 +104,9 @@ public final class ImportImageParameters {
     }
 
     /**
-     * Get the mode property: When Force, any existing target tags will be
-     * overwritten. When NoForce, any existing target tags will fail the
-     * operation before any copying begins.
-     * 
+     * Get the mode property: When Force, any existing target tags will be overwritten. When NoForce, any existing
+     * target tags will fail the operation before any copying begins.
+     *
      * @return the mode value.
      */
     public ImportMode mode() {
@@ -120,10 +114,9 @@ public final class ImportImageParameters {
     }
 
     /**
-     * Set the mode property: When Force, any existing target tags will be
-     * overwritten. When NoForce, any existing target tags will fail the
-     * operation before any copying begins.
-     * 
+     * Set the mode property: When Force, any existing target tags will be overwritten. When NoForce, any existing
+     * target tags will fail the operation before any copying begins.
+     *
      * @param mode the mode value to set.
      * @return the ImportImageParameters object itself.
      */

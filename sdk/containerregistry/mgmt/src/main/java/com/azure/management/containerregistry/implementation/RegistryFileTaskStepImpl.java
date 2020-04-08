@@ -10,16 +10,13 @@ import com.azure.management.containerregistry.RegistryFileTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
 import com.azure.management.containerregistry.SetValue;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryFileTaskStepImpl
-        extends RegistryTaskStepImpl
-        implements
-        RegistryFileTaskStep,
+class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
+    implements RegistryFileTaskStep,
         RegistryFileTaskStep.Definition,
         RegistryFileTaskStep.Update,
         HasInner<FileTaskStep> {
@@ -31,8 +28,9 @@ class RegistryFileTaskStepImpl
     RegistryFileTaskStepImpl(RegistryTaskImpl taskImpl) {
         super(taskImpl.inner().step());
         this.inner = new FileTaskStep();
-        if (taskImpl.inner().step() != null &&  !(taskImpl.inner().step() instanceof FileTaskStep)) {
-            throw new IllegalArgumentException("Constructor for RegistryFileTaskStepImpl invoked for class that is not FileTaskStep");
+        if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof FileTaskStep)) {
+            throw new IllegalArgumentException(
+                "Constructor for RegistryFileTaskStepImpl invoked for class that is not FileTaskStep");
         }
         this.taskImpl = taskImpl;
         this.fileTaskStepUpdateParameters = new FileTaskStepUpdateParameters();
@@ -91,7 +89,6 @@ class RegistryFileTaskStepImpl
             value.withValue(entry.getValue().value());
             value.withIsSecret(entry.getValue().isSecret());
             overridingValuesList.add(value);
-
         }
         if (isInCreateMode()) {
             this.inner.withValues(overridingValuesList);

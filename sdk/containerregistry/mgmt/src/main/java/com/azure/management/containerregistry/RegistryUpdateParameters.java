@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The RegistryUpdateParameters model.
- */
+/** The RegistryUpdateParameters model. */
 @JsonFlatten
 @Fluent
 public class RegistryUpdateParameters {
@@ -49,7 +47,7 @@ public class RegistryUpdateParameters {
 
     /**
      * Get the tags property: The tags for the container registry.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -58,7 +56,7 @@ public class RegistryUpdateParameters {
 
     /**
      * Set the tags property: The tags for the container registry.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -69,7 +67,7 @@ public class RegistryUpdateParameters {
 
     /**
      * Get the sku property: The SKU of the container registry.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -78,7 +76,7 @@ public class RegistryUpdateParameters {
 
     /**
      * Set the sku property: The SKU of the container registry.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -88,9 +86,8 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Get the adminUserEnabled property: The value that indicates whether the
-     * admin user is enabled.
-     * 
+     * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
+     *
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -98,9 +95,8 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Set the adminUserEnabled property: The value that indicates whether the
-     * admin user is enabled.
-     * 
+     * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
+     *
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -110,11 +106,10 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Get the storageAccount property: The parameters of a storage account for
-     * the container registry. Only applicable to Classic SKU. If specified,
-     * the storage account must be in the same physical location as the
-     * container registry.
-     * 
+     * Get the storageAccount property: The parameters of a storage account for the container registry. Only applicable
+     * to Classic SKU. If specified, the storage account must be in the same physical location as the container
+     * registry.
+     *
      * @return the storageAccount value.
      */
     public StorageAccountProperties storageAccount() {
@@ -122,11 +117,10 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Set the storageAccount property: The parameters of a storage account for
-     * the container registry. Only applicable to Classic SKU. If specified,
-     * the storage account must be in the same physical location as the
-     * container registry.
-     * 
+     * Set the storageAccount property: The parameters of a storage account for the container registry. Only applicable
+     * to Classic SKU. If specified, the storage account must be in the same physical location as the container
+     * registry.
+     *
      * @param storageAccount the storageAccount value to set.
      * @return the RegistryUpdateParameters object itself.
      */
@@ -136,9 +130,8 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Get the networkRuleSet property: The network rule set for a container
-     * registry.
-     * 
+     * Get the networkRuleSet property: The network rule set for a container registry.
+     *
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -146,9 +139,8 @@ public class RegistryUpdateParameters {
     }
 
     /**
-     * Set the networkRuleSet property: The network rule set for a container
-     * registry.
-     * 
+     * Set the networkRuleSet property: The network rule set for a container registry.
+     *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryUpdateParameters object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BaseImageTriggerUpdateParameters model.
- */
+/** The BaseImageTriggerUpdateParameters model. */
 @Fluent
 public final class BaseImageTriggerUpdateParameters {
     /*
@@ -31,9 +29,8 @@ public final class BaseImageTriggerUpdateParameters {
     private String name;
 
     /**
-     * Get the baseImageTriggerType property: The type of the auto trigger for
-     * base image dependency updates.
-     * 
+     * Get the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
+     *
      * @return the baseImageTriggerType value.
      */
     public BaseImageTriggerType baseImageTriggerType() {
@@ -41,9 +38,8 @@ public final class BaseImageTriggerUpdateParameters {
     }
 
     /**
-     * Set the baseImageTriggerType property: The type of the auto trigger for
-     * base image dependency updates.
-     * 
+     * Set the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
+     *
      * @param baseImageTriggerType the baseImageTriggerType value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
@@ -54,7 +50,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Get the status property: The current status of trigger.
-     * 
+     *
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -63,7 +59,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the status property: The current status of trigger.
-     * 
+     *
      * @param status the status value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */
@@ -74,7 +70,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Get the name property: The name of the trigger.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -83,7 +79,7 @@ public final class BaseImageTriggerUpdateParameters {
 
     /**
      * Set the name property: The name of the trigger.
-     * 
+     *
      * @param name the name value to set.
      * @return the BaseImageTriggerUpdateParameters object itself.
      */

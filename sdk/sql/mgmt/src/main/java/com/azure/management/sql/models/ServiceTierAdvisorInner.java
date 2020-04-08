@@ -13,9 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * The ServiceTierAdvisor model.
- */
+/** The ServiceTierAdvisor model. */
 @JsonFlatten
 @Immutable
 public class ServiceTierAdvisorInner extends ProxyResource {
@@ -84,56 +82,72 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      * Gets or sets usageBasedRecommendationServiceLevelObjective for service
      * tier advisor.
      */
-    @JsonProperty(value = "properties.usageBasedRecommendationServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.usageBasedRecommendationServiceLevelObjective",
+        access = JsonProperty.Access.WRITE_ONLY)
     private String usageBasedRecommendationServiceLevelObjective;
 
     /*
      * Gets or sets usageBasedRecommendationServiceLevelObjectiveId for service
      * tier advisor.
      */
-    @JsonProperty(value = "properties.usageBasedRecommendationServiceLevelObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.usageBasedRecommendationServiceLevelObjectiveId",
+        access = JsonProperty.Access.WRITE_ONLY)
     private UUID usageBasedRecommendationServiceLevelObjectiveId;
 
     /*
      * Gets or sets databaseSizeBasedRecommendationServiceLevelObjective for
      * service tier advisor.
      */
-    @JsonProperty(value = "properties.databaseSizeBasedRecommendationServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.databaseSizeBasedRecommendationServiceLevelObjective",
+        access = JsonProperty.Access.WRITE_ONLY)
     private String databaseSizeBasedRecommendationServiceLevelObjective;
 
     /*
      * Gets or sets databaseSizeBasedRecommendationServiceLevelObjectiveId for
      * service tier advisor.
      */
-    @JsonProperty(value = "properties.databaseSizeBasedRecommendationServiceLevelObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.databaseSizeBasedRecommendationServiceLevelObjectiveId",
+        access = JsonProperty.Access.WRITE_ONLY)
     private UUID databaseSizeBasedRecommendationServiceLevelObjectiveId;
 
     /*
      * Gets or sets disasterPlanBasedRecommendationServiceLevelObjective for
      * service tier advisor.
      */
-    @JsonProperty(value = "properties.disasterPlanBasedRecommendationServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.disasterPlanBasedRecommendationServiceLevelObjective",
+        access = JsonProperty.Access.WRITE_ONLY)
     private String disasterPlanBasedRecommendationServiceLevelObjective;
 
     /*
      * Gets or sets disasterPlanBasedRecommendationServiceLevelObjectiveId for
      * service tier advisor.
      */
-    @JsonProperty(value = "properties.disasterPlanBasedRecommendationServiceLevelObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.disasterPlanBasedRecommendationServiceLevelObjectiveId",
+        access = JsonProperty.Access.WRITE_ONLY)
     private UUID disasterPlanBasedRecommendationServiceLevelObjectiveId;
 
     /*
      * Gets or sets overallRecommendationServiceLevelObjective for service tier
      * advisor.
      */
-    @JsonProperty(value = "properties.overallRecommendationServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.overallRecommendationServiceLevelObjective",
+        access = JsonProperty.Access.WRITE_ONLY)
     private String overallRecommendationServiceLevelObjective;
 
     /*
      * Gets or sets overallRecommendationServiceLevelObjectiveId for service
      * tier advisor.
      */
-    @JsonProperty(value = "properties.overallRecommendationServiceLevelObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(
+        value = "properties.overallRecommendationServiceLevelObjectiveId",
+        access = JsonProperty.Access.WRITE_ONLY)
     private UUID overallRecommendationServiceLevelObjectiveId;
 
     /*
@@ -143,9 +157,8 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     private Double confidence;
 
     /**
-     * Get the observationPeriodStart property: The observation period start
-     * (ISO8601 format).
-     * 
+     * Get the observationPeriodStart property: The observation period start (ISO8601 format).
+     *
      * @return the observationPeriodStart value.
      */
     public OffsetDateTime observationPeriodStart() {
@@ -153,9 +166,8 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the observationPeriodEnd property: The observation period start
-     * (ISO8601 format).
-     * 
+     * Get the observationPeriodEnd property: The observation period start (ISO8601 format).
+     *
      * @return the observationPeriodEnd value.
      */
     public OffsetDateTime observationPeriodEnd() {
@@ -163,9 +175,8 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the activeTimeRatio property: The activeTimeRatio for service tier
-     * advisor.
-     * 
+     * Get the activeTimeRatio property: The activeTimeRatio for service tier advisor.
+     *
      * @return the activeTimeRatio value.
      */
     public Double activeTimeRatio() {
@@ -174,7 +185,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
 
     /**
      * Get the minDtu property: Gets or sets minDtu for service tier advisor.
-     * 
+     *
      * @return the minDtu value.
      */
     public Double minDtu() {
@@ -183,7 +194,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
 
     /**
      * Get the avgDtu property: Gets or sets avgDtu for service tier advisor.
-     * 
+     *
      * @return the avgDtu value.
      */
     public Double avgDtu() {
@@ -192,7 +203,7 @@ public class ServiceTierAdvisorInner extends ProxyResource {
 
     /**
      * Get the maxDtu property: Gets or sets maxDtu for service tier advisor.
-     * 
+     *
      * @return the maxDtu value.
      */
     public Double maxDtu() {
@@ -200,9 +211,8 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the maxSizeInGB property: Gets or sets maxSizeInGB for service tier
-     * advisor.
-     * 
+     * Get the maxSizeInGB property: Gets or sets maxSizeInGB for service tier advisor.
+     *
      * @return the maxSizeInGB value.
      */
     public Double maxSizeInGB() {
@@ -210,9 +220,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the serviceLevelObjectiveUsageMetrics property: Gets or sets
-     * serviceLevelObjectiveUsageMetrics for the service tier advisor.
-     * 
+     * Get the serviceLevelObjectiveUsageMetrics property: Gets or sets serviceLevelObjectiveUsageMetrics for the
+     * service tier advisor.
+     *
      * @return the serviceLevelObjectiveUsageMetrics value.
      */
     public List<SloUsageMetric> serviceLevelObjectiveUsageMetrics() {
@@ -220,9 +230,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the currentServiceLevelObjective property: Gets or sets
-     * currentServiceLevelObjective for service tier advisor.
-     * 
+     * Get the currentServiceLevelObjective property: Gets or sets currentServiceLevelObjective for service tier
+     * advisor.
+     *
      * @return the currentServiceLevelObjective value.
      */
     public String currentServiceLevelObjective() {
@@ -230,9 +240,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the currentServiceLevelObjectiveId property: Gets or sets
-     * currentServiceLevelObjectiveId for service tier advisor.
-     * 
+     * Get the currentServiceLevelObjectiveId property: Gets or sets currentServiceLevelObjectiveId for service tier
+     * advisor.
+     *
      * @return the currentServiceLevelObjectiveId value.
      */
     public UUID currentServiceLevelObjectiveId() {
@@ -240,10 +250,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the usageBasedRecommendationServiceLevelObjective property: Gets or
-     * sets usageBasedRecommendationServiceLevelObjective for service tier
-     * advisor.
-     * 
+     * Get the usageBasedRecommendationServiceLevelObjective property: Gets or sets
+     * usageBasedRecommendationServiceLevelObjective for service tier advisor.
+     *
      * @return the usageBasedRecommendationServiceLevelObjective value.
      */
     public String usageBasedRecommendationServiceLevelObjective() {
@@ -251,10 +260,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the usageBasedRecommendationServiceLevelObjectiveId property: Gets
-     * or sets usageBasedRecommendationServiceLevelObjectiveId for service tier
-     * advisor.
-     * 
+     * Get the usageBasedRecommendationServiceLevelObjectiveId property: Gets or sets
+     * usageBasedRecommendationServiceLevelObjectiveId for service tier advisor.
+     *
      * @return the usageBasedRecommendationServiceLevelObjectiveId value.
      */
     public UUID usageBasedRecommendationServiceLevelObjectiveId() {
@@ -262,10 +270,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the databaseSizeBasedRecommendationServiceLevelObjective property:
-     * Gets or sets databaseSizeBasedRecommendationServiceLevelObjective for
-     * service tier advisor.
-     * 
+     * Get the databaseSizeBasedRecommendationServiceLevelObjective property: Gets or sets
+     * databaseSizeBasedRecommendationServiceLevelObjective for service tier advisor.
+     *
      * @return the databaseSizeBasedRecommendationServiceLevelObjective value.
      */
     public String databaseSizeBasedRecommendationServiceLevelObjective() {
@@ -273,22 +280,19 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the databaseSizeBasedRecommendationServiceLevelObjectiveId property:
-     * Gets or sets databaseSizeBasedRecommendationServiceLevelObjectiveId for
-     * service tier advisor.
-     * 
-     * @return the databaseSizeBasedRecommendationServiceLevelObjectiveId
-     * value.
+     * Get the databaseSizeBasedRecommendationServiceLevelObjectiveId property: Gets or sets
+     * databaseSizeBasedRecommendationServiceLevelObjectiveId for service tier advisor.
+     *
+     * @return the databaseSizeBasedRecommendationServiceLevelObjectiveId value.
      */
     public UUID databaseSizeBasedRecommendationServiceLevelObjectiveId() {
         return this.databaseSizeBasedRecommendationServiceLevelObjectiveId;
     }
 
     /**
-     * Get the disasterPlanBasedRecommendationServiceLevelObjective property:
-     * Gets or sets disasterPlanBasedRecommendationServiceLevelObjective for
-     * service tier advisor.
-     * 
+     * Get the disasterPlanBasedRecommendationServiceLevelObjective property: Gets or sets
+     * disasterPlanBasedRecommendationServiceLevelObjective for service tier advisor.
+     *
      * @return the disasterPlanBasedRecommendationServiceLevelObjective value.
      */
     public String disasterPlanBasedRecommendationServiceLevelObjective() {
@@ -296,22 +300,19 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the disasterPlanBasedRecommendationServiceLevelObjectiveId property:
-     * Gets or sets disasterPlanBasedRecommendationServiceLevelObjectiveId for
-     * service tier advisor.
-     * 
-     * @return the disasterPlanBasedRecommendationServiceLevelObjectiveId
-     * value.
+     * Get the disasterPlanBasedRecommendationServiceLevelObjectiveId property: Gets or sets
+     * disasterPlanBasedRecommendationServiceLevelObjectiveId for service tier advisor.
+     *
+     * @return the disasterPlanBasedRecommendationServiceLevelObjectiveId value.
      */
     public UUID disasterPlanBasedRecommendationServiceLevelObjectiveId() {
         return this.disasterPlanBasedRecommendationServiceLevelObjectiveId;
     }
 
     /**
-     * Get the overallRecommendationServiceLevelObjective property: Gets or
-     * sets overallRecommendationServiceLevelObjective for service tier
-     * advisor.
-     * 
+     * Get the overallRecommendationServiceLevelObjective property: Gets or sets
+     * overallRecommendationServiceLevelObjective for service tier advisor.
+     *
      * @return the overallRecommendationServiceLevelObjective value.
      */
     public String overallRecommendationServiceLevelObjective() {
@@ -319,10 +320,9 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the overallRecommendationServiceLevelObjectiveId property: Gets or
-     * sets overallRecommendationServiceLevelObjectiveId for service tier
-     * advisor.
-     * 
+     * Get the overallRecommendationServiceLevelObjectiveId property: Gets or sets
+     * overallRecommendationServiceLevelObjectiveId for service tier advisor.
+     *
      * @return the overallRecommendationServiceLevelObjectiveId value.
      */
     public UUID overallRecommendationServiceLevelObjectiveId() {
@@ -330,9 +330,8 @@ public class ServiceTierAdvisorInner extends ProxyResource {
     }
 
     /**
-     * Get the confidence property: Gets or sets confidence for service tier
-     * advisor.
-     * 
+     * Get the confidence property: Gets or sets confidence for service tier advisor.
+     *
      * @return the confidence value.
      */
     public Double confidence() {

@@ -7,9 +7,7 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 
-/**
- * The JobVersion model.
- */
+/** The JobVersion model. */
 @Immutable
 public final class JobVersionInner extends ProxyResource {
 }

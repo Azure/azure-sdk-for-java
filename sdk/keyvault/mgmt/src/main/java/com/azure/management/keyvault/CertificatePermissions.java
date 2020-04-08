@@ -8,93 +8,59 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for CertificatePermissions.
- */
+/** Defines values for CertificatePermissions. */
 public final class CertificatePermissions extends ExpandableStringEnum<CertificatePermissions> {
-    /**
-     * Static value get for CertificatePermissions.
-     */
+    /** Static value get for CertificatePermissions. */
     public static final CertificatePermissions GET = fromString("get");
 
-    /**
-     * Static value list for CertificatePermissions.
-     */
+    /** Static value list for CertificatePermissions. */
     public static final CertificatePermissions LIST = fromString("list");
 
-    /**
-     * Static value delete for CertificatePermissions.
-     */
+    /** Static value delete for CertificatePermissions. */
     public static final CertificatePermissions DELETE = fromString("delete");
 
-    /**
-     * Static value create for CertificatePermissions.
-     */
+    /** Static value create for CertificatePermissions. */
     public static final CertificatePermissions CREATE = fromString("create");
 
-    /**
-     * Static value import for CertificatePermissions.
-     */
+    /** Static value import for CertificatePermissions. */
     public static final CertificatePermissions IMPORT = fromString("import");
 
-    /**
-     * Static value update for CertificatePermissions.
-     */
+    /** Static value update for CertificatePermissions. */
     public static final CertificatePermissions UPDATE = fromString("update");
 
-    /**
-     * Static value managecontacts for CertificatePermissions.
-     */
+    /** Static value managecontacts for CertificatePermissions. */
     public static final CertificatePermissions MANAGECONTACTS = fromString("managecontacts");
 
-    /**
-     * Static value getissuers for CertificatePermissions.
-     */
+    /** Static value getissuers for CertificatePermissions. */
     public static final CertificatePermissions GETISSUERS = fromString("getissuers");
 
-    /**
-     * Static value listissuers for CertificatePermissions.
-     */
+    /** Static value listissuers for CertificatePermissions. */
     public static final CertificatePermissions LISTISSUERS = fromString("listissuers");
 
-    /**
-     * Static value setissuers for CertificatePermissions.
-     */
+    /** Static value setissuers for CertificatePermissions. */
     public static final CertificatePermissions SETISSUERS = fromString("setissuers");
 
-    /**
-     * Static value deleteissuers for CertificatePermissions.
-     */
+    /** Static value deleteissuers for CertificatePermissions. */
     public static final CertificatePermissions DELETEISSUERS = fromString("deleteissuers");
 
-    /**
-     * Static value manageissuers for CertificatePermissions.
-     */
+    /** Static value manageissuers for CertificatePermissions. */
     public static final CertificatePermissions MANAGEISSUERS = fromString("manageissuers");
 
-    /**
-     * Static value recover for CertificatePermissions.
-     */
+    /** Static value recover for CertificatePermissions. */
     public static final CertificatePermissions RECOVER = fromString("recover");
 
-    /**
-     * Static value purge for CertificatePermissions.
-     */
+    /** Static value purge for CertificatePermissions. */
     public static final CertificatePermissions PURGE = fromString("purge");
 
-    /**
-     * Static value backup for CertificatePermissions.
-     */
+    /** Static value backup for CertificatePermissions. */
     public static final CertificatePermissions BACKUP = fromString("backup");
 
-    /**
-     * Static value restore for CertificatePermissions.
-     */
+    /** Static value restore for CertificatePermissions. */
     public static final CertificatePermissions RESTORE = fromString("restore");
 
     /**
      * Creates or finds a CertificatePermissions from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding CertificatePermissions.
      */
@@ -103,9 +69,7 @@ public final class CertificatePermissions extends ExpandableStringEnum<Certifica
         return fromString(name, CertificatePermissions.class);
     }
 
-    /**
-     * @return known CertificatePermissions values.
-     */
+    /** @return known CertificatePermissions values. */
     public static Collection<CertificatePermissions> values() {
         return values(CertificatePermissions.class);
     }

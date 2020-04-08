@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import java.time.Duration;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -67,6 +68,70 @@ public class EventProcessorClientBuilderTest {
                 System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
+            .processError(errorContext -> {
+                System.out.printf("Error occurred in partition processor for partition %s, %s",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
+            })
+            .checkpointStore(new InMemoryCheckpointStore())
+            .buildEventProcessorClient();
+
+        assertNotNull(eventProcessorClient);
+    }
+
+    @Test
+    public void testEventProcessorBuilderWithBothSingleAndBatchConsumers() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+                .checkpointStore(new InMemoryCheckpointStore())
+                .consumerGroup("consumer-group")
+                .processEvent(eventContext -> {
+                    System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                        + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                })
+                .processEventBatch(eventContextBatch -> {
+                    eventContextBatch.forEach(eventContext -> {
+                        System.out
+                            .println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                                + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                    });
+                }, 5, Duration.ofSeconds(1))
+                .processError(errorContext -> {
+                    System.out.printf("Error occurred in partition processor for partition {}, {}",
+                        errorContext.getPartitionContext().getPartitionId(),
+                        errorContext.getThrowable());
+                })
+                .buildEventProcessorClient();
+        });
+    }
+
+    @Test
+    public void testEventProcessorBuilderWithNoProcessEventConsumer() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+                .checkpointStore(new InMemoryCheckpointStore())
+                .consumerGroup("consumer-group")
+                .processError(errorContext -> {
+                    System.out.printf("Error occurred in partition processor for partition {}, {}",
+                        errorContext.getPartitionContext().getPartitionId(),
+                        errorContext.getThrowable());
+                })
+                .buildEventProcessorClient();
+        });
+    }
+
+    @Test
+    public void testEventProcessorBuilderWithProcessEventBatch() {
+        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+            .connectionString(CORRECT_CONNECTION_STRING)
+            .consumerGroup("consumer-group")
+            .processEventBatch(eventContextBatch -> {
+                eventContextBatch.forEach(eventContext -> {
+                    System.out
+                        .println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                });
+            }, 5, Duration.ofSeconds(1))
             .processError(errorContext -> {
                 System.out.printf("Error occurred in partition processor for partition %s, %s",
                     errorContext.getPartitionContext().getPartitionId(),
