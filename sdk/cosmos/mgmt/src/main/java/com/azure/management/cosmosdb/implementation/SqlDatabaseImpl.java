@@ -19,27 +19,27 @@ public class SqlDatabaseImpl extends WrapperImpl<SqlDatabaseGetResultsInner> imp
     }
 
     @Override
-    public String _rid() {
+    public String rid() {
         return this.inner().resource().rid();
     }
 
     @Override
-    public Object _ts() {
+    public Object ts() {
         return this.inner().resource().ts();
     }
 
     @Override
-    public String _etag() {
+    public String etag() {
         return this.inner().resource().etag();
     }
 
     @Override
-    public String _colls() {
+    public String colls() {
         return this.inner().resource().colls();
     }
 
     @Override
-    public String _users() {
+    public String users() {
         return this.inner().resource().users();
     }
 }

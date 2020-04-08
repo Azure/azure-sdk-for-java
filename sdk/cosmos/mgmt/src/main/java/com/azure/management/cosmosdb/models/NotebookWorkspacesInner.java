@@ -364,6 +364,7 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters notebook create update parameters
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -397,6 +398,7 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceCreateUpdateParameters notebook create update parameters
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -422,6 +424,7 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceCreateUpdateParameters notebook create update parameters
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -701,6 +704,7 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param notebookCreateUpdateParameters notebook create update parameters
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -734,6 +738,7 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceCreateUpdateParameters notebook create update parameters
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -761,6 +766,7 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceCreateUpdateParameters notebook create update parameters
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -18,35 +18,35 @@ public interface SqlDatabase extends HasInner<SqlDatabaseGetResultsInner> {
     /**
      * Get a system generated property. A unique identifier.
      *
-     * @return the _rid value
+     * @return the rid value
      */
-    String _rid();
+    String rid();
 
     /**
      * Get a system generated property that denotes the last updated timestamp of the resource.
      *
-     * @return the _ts value
+     * @return the ts value
      */
-    Object _ts();
+    Object ts();
 
     /**
      * Get a system generated property representing the resource etag required for optimistic concurrency control.
      *
-     * @return the _etag value
+     * @return the etag value
      */
-    String _etag();
+    String etag();
 
     /**
      * Get a system generated property that specified the addressable path of the collections resource.
      *
-     * @return the _colls value
+     * @return the colls value
      */
-    String _colls();
+    String colls();
 
     /**
      * Get a system generated property that specifies the addressable path of the users resource.
      *
-     * @return the _users value
+     * @return the users value
      */
-    String _users();
+    String users();
 }
