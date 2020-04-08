@@ -4,6 +4,7 @@ package com.azure.management.cosmosdb.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.cosmosdb.Capability;
+import com.azure.management.cosmosdb.ConnectorOffer;
 import com.azure.management.cosmosdb.ConsistencyPolicy;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountCreateUpdateParameters;
@@ -11,6 +12,7 @@ import com.azure.management.cosmosdb.DatabaseAccountKind;
 import com.azure.management.cosmosdb.DatabaseAccountListConnectionStringsResult;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.management.cosmosdb.DatabaseAccountOfferType;
 import com.azure.management.cosmosdb.DatabaseAccountUpdateParameters;
 import com.azure.management.cosmosdb.DefaultConsistencyLevel;
 import com.azure.management.cosmosdb.FailoverPolicy;
@@ -70,7 +72,7 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public String databaseAccountOfferType() {
+    public DatabaseAccountOfferType databaseAccountOfferType() {
         return this.inner().databaseAccountOfferType();
     }
 
@@ -207,7 +209,7 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public String cassandraConnectorOffer() {
+    public ConnectorOffer cassandraConnectorOffer() {
         return this.inner().connectorOffer();
     }
 
@@ -265,7 +267,7 @@ class CosmosDBAccountImpl
     @Override
     public CosmosDBAccountImpl withKind(DatabaseAccountKind kind) {
         this.inner().withKind(kind);
-        return this;        
+        return this;
     }
 
     @Override
@@ -321,7 +323,7 @@ class CosmosDBAccountImpl
     @Override
     public CosmosDBAccountImpl withIpRangeFilter(String ipRangeFilter) {
         this.inner().withIpRangeFilter(ipRangeFilter);
-        return this;        
+        return this;
     }
 
     @Override
@@ -678,16 +680,16 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public CosmosDBAccountImpl withCassandraConnector(String connectorOffer) {
+    public CosmosDBAccountImpl withCassandraConnector(ConnectorOffer connectorOffer) {
         this.inner().withEnableCassandraConnector(true);
-        // this.inner().withConnectorOffer(connectorOffer); // TODO: Constant currently, may change after the generator changed.
+        this.inner().withConnectorOffer(connectorOffer);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withoutCassandraConnector() {
         this.inner().withEnableCassandraConnector(false);
-        // this.inner().withConnectorOffer(null);
+        this.inner().withConnectorOffer(null);
         return this;
     }
 

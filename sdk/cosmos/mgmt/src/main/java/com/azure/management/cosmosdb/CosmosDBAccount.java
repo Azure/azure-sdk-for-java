@@ -40,7 +40,7 @@ public interface CosmosDBAccount extends
     /**
      * @return the offer type for the CosmosDB database account
      */
-    String databaseAccountOfferType();
+    DatabaseAccountOfferType databaseAccountOfferType();
 
     /**
      * @return specifies the set of IP addresses or IP address ranges in CIDR form.
@@ -120,7 +120,7 @@ public interface CosmosDBAccount extends
     /**
      * @return the current cassandra connector offer.
      */
-    String cassandraConnectorOffer();
+    ConnectorOffer cassandraConnectorOffer();
 
     /**
      * @return whether metadata write access is disabled or not.
@@ -425,7 +425,7 @@ public interface CosmosDBAccount extends
              * @param connectorOffer connector offer to specify.
              * @return the next stage
              */
-            WithCreate withCassandraConnector(String connectorOffer);
+            WithCreate withCassandraConnector(ConnectorOffer connectorOffer);
         }
 
         /**
@@ -622,7 +622,7 @@ public interface CosmosDBAccount extends
              * @param connectorOffer connector offer to specify.
              * @return the next stage
              */
-            WithOptionals withCassandraConnector(String connectorOffer);
+            WithOptionals withCassandraConnector(ConnectorOffer connectorOffer);
 
             /**
              * Remove the connector offer.

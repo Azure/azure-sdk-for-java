@@ -216,13 +216,13 @@ public class CosmosDBTests extends TestBase {
                 .withNewResourceGroup(RG_NAME)
                 .withDataModelCassandra()
                 .withStrongConsistency()
-                .withCassandraConnector("Small")
+                .withCassandraConnector(ConnectorOffer.SMALL)
                 .withTag("tag1", "value1")
                 .create();
 
         Assertions.assertEquals("value1", cosmosDBAccount.tags().get("tag1"));
         Assertions.assertTrue(cosmosDBAccount.cassandraConnectorEnabled());
-        Assertions.assertEquals("small", cosmosDBAccount.cassandraConnectorOffer().toLowerCase());
+        Assertions.assertEquals(ConnectorOffer.SMALL, cosmosDBAccount.cassandraConnectorOffer());
 
         cosmosDBAccount = cosmosDBAccount.update()
                 .withoutCassandraConnector()

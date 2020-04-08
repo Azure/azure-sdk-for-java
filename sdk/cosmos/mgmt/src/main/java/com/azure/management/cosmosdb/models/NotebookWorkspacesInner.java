@@ -371,7 +371,8 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         final String apiVersion = "2019-08-01";
         final String notebookWorkspaceName = "default";
         return FluxUtil
@@ -401,8 +402,10 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName);
+    public Mono<NotebookWorkspaceInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookWorkspaceCreateUpdateParameters) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName,
+            notebookWorkspaceCreateUpdateParameters);
         return this
             .client
             .<NotebookWorkspaceInner, NotebookWorkspaceInner>getLroResultAsync(
@@ -422,8 +425,9 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName) {
-        return createOrUpdateAsync(resourceGroupName, accountName).block();
+    public NotebookWorkspaceInner createOrUpdate(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookWorkspaceCreateUpdateParameters) {
+        return createOrUpdateAsync(resourceGroupName, accountName, notebookWorkspaceCreateUpdateParameters).block();
     }
 
     /**
@@ -699,7 +703,8 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<NotebookWorkspaceInner>> beginCreateOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName) {
+        String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
         final String apiVersion = "2019-08-01";
         final String notebookWorkspaceName = "default";
         return FluxUtil
@@ -729,8 +734,10 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName) {
-        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, accountName)
+    public Mono<NotebookWorkspaceInner> beginCreateOrUpdateAsync(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookWorkspaceCreateUpdateParameters) {
+        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, accountName,
+            notebookWorkspaceCreateUpdateParameters)
             .flatMap(
                 (SimpleResponse<NotebookWorkspaceInner> res) -> {
                     if (res.getValue() != null) {
@@ -752,8 +759,10 @@ public final class NotebookWorkspacesInner implements InnerSupportsDelete<Void> 
      * @return a notebook workspace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceInner beginCreateOrUpdate(String resourceGroupName, String accountName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName).block();
+    public NotebookWorkspaceInner beginCreateOrUpdate(String resourceGroupName, String accountName,
+        NotebookWorkspaceCreateUpdateParameters notebookWorkspaceCreateUpdateParameters) {
+        return beginCreateOrUpdateAsync(
+            resourceGroupName, accountName, notebookWorkspaceCreateUpdateParameters).block();
     }
 
     /**

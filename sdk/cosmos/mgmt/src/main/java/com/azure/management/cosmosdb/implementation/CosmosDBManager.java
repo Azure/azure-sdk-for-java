@@ -105,7 +105,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
                     .host(restClient.getBaseUrl().toString())
                     .pipeline(restClient.getHttpPipeline())
                     .subscriptionId(subscriptionId)
-                    .build(),
+                    .buildClient(),
                 sdkContext);
     }
 
