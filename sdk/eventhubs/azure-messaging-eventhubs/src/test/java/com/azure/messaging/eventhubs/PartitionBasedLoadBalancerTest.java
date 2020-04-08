@@ -3,6 +3,40 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.implementation.TracerProvider;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.models.EventContext;
+import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.ErrorContext;
+import com.azure.messaging.eventhubs.models.PartitionContext;
+import com.azure.messaging.eventhubs.models.PartitionEvent;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import com.azure.messaging.eventhubs.models.ReceiveOptions;
+import java.util.HashMap;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
+
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,39 +50,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
-import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
-import com.azure.messaging.eventhubs.models.PartitionOwnership;
-import com.azure.messaging.eventhubs.models.ReceiveOptions;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Flux;
-import reactor.test.StepVerifier;
 
 /**
  * Unit tests for {@link PartitionBasedLoadBalancer}.
@@ -74,8 +75,6 @@ public class PartitionBasedLoadBalancerTest {
 
     @Mock
     private PartitionProcessor partitionProcessor;
-
-    private boolean batchReceiveMode = false;
 
     @BeforeEach
     public void setup() {
@@ -326,8 +325,7 @@ public class PartitionBasedLoadBalancerTest {
             .thenReturn(Flux.error(new IllegalStateException()));
 
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null,
-            batchReceiveMode);
+            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>());
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
@@ -351,8 +349,7 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = Arrays.asList("1", "2", "3");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null,
-            batchReceiveMode);
+            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>());
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
@@ -377,8 +374,7 @@ public class PartitionBasedLoadBalancerTest {
         List<String> partitionIds = new ArrayList<>();
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(partitionIds));
         PartitionPumpManager partitionPumpManager = new PartitionPumpManager(checkpointStore,
-            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null,
-            batchReceiveMode);
+            () -> partitionProcessor, eventHubClientBuilder, false, tracerProvider, new HashMap<>());
         PartitionBasedLoadBalancer loadBalancer = new PartitionBasedLoadBalancer(checkpointStore,
             eventHubAsyncClient, fqNamespace, eventHubName, consumerGroupName, "owner", TimeUnit.SECONDS.toSeconds(5),
             partitionPumpManager, ec -> {
@@ -475,10 +471,9 @@ public class PartitionBasedLoadBalancerTest {
                         eventProcessingErrorContext.getPartitionContext().getPartitionId(),
                         eventProcessingErrorContext.getThrowable());
                 }
-            }, eventHubClientBuilder, false, tracerProvider, new HashMap<>(), 1, null, batchReceiveMode);
+            }, eventHubClientBuilder, false, tracerProvider, new HashMap<>());
         return new PartitionBasedLoadBalancer(checkpointStore, eventHubAsyncClient, fqNamespace,
             eventHubName, consumerGroupName, owner, TimeUnit.SECONDS.toSeconds(5), partitionPumpManager,
-            ec -> {
-            });
+            ec -> { });
     }
 }
