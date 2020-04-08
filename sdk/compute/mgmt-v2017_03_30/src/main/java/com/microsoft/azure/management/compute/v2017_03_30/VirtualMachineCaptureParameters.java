@@ -34,7 +34,7 @@ public class VirtualMachineCaptureParameters {
     private boolean overwriteVhds;
 
     /**
-     * Get the vhdPrefix value.
+     * Get the captured virtual hard disk's name prefix.
      *
      * @return the vhdPrefix value
      */
@@ -43,7 +43,7 @@ public class VirtualMachineCaptureParameters {
     }
 
     /**
-     * Set the vhdPrefix value.
+     * Set the captured virtual hard disk's name prefix.
      *
      * @param vhdPrefix the vhdPrefix value to set
      * @return the VirtualMachineCaptureParameters object itself.
@@ -54,7 +54,7 @@ public class VirtualMachineCaptureParameters {
     }
 
     /**
-     * Get the destinationContainerName value.
+     * Get the destination container name.
      *
      * @return the destinationContainerName value
      */
@@ -63,7 +63,7 @@ public class VirtualMachineCaptureParameters {
     }
 
     /**
-     * Set the destinationContainerName value.
+     * Set the destination container name.
      *
      * @param destinationContainerName the destinationContainerName value to set
      * @return the VirtualMachineCaptureParameters object itself.
@@ -74,7 +74,7 @@ public class VirtualMachineCaptureParameters {
     }
 
     /**
-     * Get the overwriteVhds value.
+     * Get specifies whether to overwrite the destination virtual hard disk, in case of conflict.
      *
      * @return the overwriteVhds value
      */
@@ -83,7 +83,7 @@ public class VirtualMachineCaptureParameters {
     }
 
     /**
-     * Set the overwriteVhds value.
+     * Set specifies whether to overwrite the destination virtual hard disk, in case of conflict.
      *
      * @param overwriteVhds the overwriteVhds value to set
      * @return the VirtualMachineCaptureParameters object itself.
