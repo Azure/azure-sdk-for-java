@@ -121,7 +121,7 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
                     .pipeline(restClient.getHttpPipeline())
                     .host(restClient.getBaseUrl().toString())
                     .subscriptionId(subscriptionId)
-                    .build(),
+                    .buildClient(),
                 sdkContext);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);
     }
