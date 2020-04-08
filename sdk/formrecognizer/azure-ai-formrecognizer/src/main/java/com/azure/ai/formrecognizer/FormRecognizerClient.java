@@ -108,8 +108,7 @@ public final class FormRecognizerClient {
         beginExtractReceipts(InputStream data, long length, FormContentType formContentType, boolean includeTextDetails,
                          Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
-        Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
-        return client.beginExtractReceipts(buffer, length, includeTextDetails, pollInterval)
-            .getSyncPoller();
+        Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(data);
+        return client.beginExtractReceipts(buffer, length, includeTextDetails, pollInterval).getSyncPoller();
     }
 }

@@ -309,6 +309,6 @@ final class TestUtils {
     }
 
     static Flux<ByteBuffer> getReceiptFileBufferData() {
-        return Utility.convertStreamToByteBuffer(getReceiptFileData());
+        return Utility.toFluxByteBuffer(getReceiptFileData());
     }
 }

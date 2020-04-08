@@ -4,9 +4,9 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -16,37 +16,61 @@ import java.nio.ByteBuffer;
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
+    private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
     private Utility() {
     }
 
     /**
-     * A utility method for converting the input stream to Flux of ByteBuffer.
+     * Creates a Flux of ByteBuffer, with each ByteBuffer wrapping bytes read from the given
+     * InputStream.
      *
-     * @param data The input data which needs to convert to ByteBuffer.
-     *
-     * @return {@link ByteBuffer} which contains the input data.
-     * @throws RuntimeException When I/O error occurs.
+     * @param inputStream InputStream to back the Flux
+     * @return Flux of ByteBuffer backed by the InputStream
      */
-    public static Flux<ByteBuffer> convertStreamToByteBuffer(InputStream data) {
-        return Flux.just(toByteArray(data))
-            .doOnError(error -> LOGGER.warning("Failed to convert stream to byte array - {}", error));
+    public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
+        Pair pair = new Pair();
+        return Flux.just(true)
+            .repeat()
+            .map(ignore -> {
+                byte[] buffer = new byte[BYTE_BUFFER_CHUNK_SIZE];
+                try {
+                    int numBytes = inputStream.read(buffer);
+                    if (numBytes > 0) {
+                        return pair.buffer(ByteBuffer.wrap(buffer, 0, numBytes)).readBytes(numBytes);
+                    } else {
+                        return pair.buffer(null).readBytes(numBytes);
+                    }
+                } catch (IOException ioe) {
+                    throw Exceptions.propagate(ioe);
+                }
+            })
+            .takeUntil(p -> p.readBytes() == -1)
+            .filter(p -> p.readBytes() > 0)
+            .map(Pair::buffer);
     }
 
-    private static ByteBuffer toByteArray(InputStream in) {
-        try {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int len;
+    private static class Pair {
+        private ByteBuffer byteBuffer;
+        private int readBytes;
 
-            // read bytes from the input stream and store them in buffer
-            while ((len = in.read(buffer)) != -1) {
-                // write bytes from the buffer into output stream
-                os.write(buffer, 0, len);
-            }
-            return ByteBuffer.wrap(os.toByteArray());
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        ByteBuffer buffer() {
+            return this.byteBuffer;
+        }
+
+        int readBytes() {
+            return this.readBytes;
+        }
+
+        Pair buffer(ByteBuffer byteBuffer) {
+            this.byteBuffer = byteBuffer;
+            return this;
+        }
+
+        Pair readBytes(int cnt) {
+            this.readBytes = cnt;
+            return this;
         }
     }
 }

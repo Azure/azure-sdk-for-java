@@ -194,19 +194,28 @@ final class Transforms {
      * @return The {@link ContentType} content type.
      */
     static ContentType getContentType(ByteBuffer buffer) {
-        byte[] bytes = buffer.array();
+        final byte[] bytes = buffer.array();
         if (bytes.length < 4) {
             throw new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data");
         }
 
-        if (bytes[0] == 0x25 && bytes[1] == 0x50 && bytes[2] == 0x44 && bytes[3] == 0x46) {
+        final int byte0 = Byte.toUnsignedInt(bytes[0]);
+        final int byte1 = Byte.toUnsignedInt(bytes[1]);
+        final int byte2 = Byte.toUnsignedInt(bytes[2]);
+        final int byte3 = Byte.toUnsignedInt(bytes[3]);
+
+        if (byte0 == Byte.toUnsignedInt((byte) 0x25) && byte1 == Byte.toUnsignedInt((byte) 0x50) &&
+            byte2 == Byte.toUnsignedInt((byte) 0x44) && byte3 == Byte.toUnsignedInt((byte) 0x46)) {
             return ContentType.APPLICATION_PDF;
-        } else if (bytes[0] == (int) 0xff && bytes[1] == 0xd8) {
+        } else if (byte0 == Byte.toUnsignedInt((byte) 0xff) && byte1 == Byte.toUnsignedInt((byte) 0xd8)) {
             return ContentType.IMAGE_JPEG;
-        } else if (bytes[0] == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4e && bytes[3] == 0x47) {
+        } else if (byte0 == Byte.toUnsignedInt((byte) 0x89) && byte1 == Byte.toUnsignedInt((byte) 0x50) &&
+            byte2 == Byte.toUnsignedInt((byte) 0x4e) && byte3 == Byte.toUnsignedInt((byte) 0x47)) {
             return ContentType.IMAGE_PNG;
-        } else if ((bytes[0] == 0x49 && bytes[1] == 0x49 && bytes[2] == 0x2a && bytes[3] == 0x0) // little-endian
-            || (bytes[0] == 0x4d && bytes[1] == 0x4d && bytes[2] == 0x0 && bytes[3] == 0x2a)) {  // big-endian
+        } else if ((byte0 == Byte.toUnsignedInt((byte) 0x49) && byte1 == Byte.toUnsignedInt((byte) 0x49) &&
+                byte2 == Byte.toUnsignedInt((byte) 0x2a) && byte3 == Byte.toUnsignedInt((byte) 0x0)) || // little-endian
+            (byte0 == Byte.toUnsignedInt((byte) 0x4d) && byte1 == Byte.toUnsignedInt((byte) 0x4d) &&
+                byte2 == Byte.toUnsignedInt((byte) 0x0) && byte3 == Byte.toUnsignedInt((byte) 0x2a))) {  // big-endian
             return ContentType.IMAGE_TIFF;
         } else {
             throw new IllegalArgumentException ("content type could not be detected");

@@ -151,8 +151,7 @@ public final class FormRecognizerAsyncClient {
         return new PollerFlux<>(interval,
             receiptStreamActivationOperation(data, length, includeTextDetails),
             extractReceiptPollOperation(),
-            (activationResponse, context) -> monoError(logger,
-                new RuntimeException("Cancellation is not supported")),
+            (activationResponse, context) -> monoError(logger, new RuntimeException("Cancellation is not supported")),
             fetchExtractReceiptResult(includeTextDetails));
     }
 
