@@ -108,6 +108,16 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor.Build
     }
 
     /**
+     * Returns the state of the change feed processor.
+     *
+     * @return true if the change feed processor is currently active and running.
+     */
+    @Override
+    public boolean isStarted() {
+        return this.partitionManager != null && this.partitionManager.isRunning();
+    }
+
+    /**
      * Sets the host name.
      *
      * @param hostName the name to be used for the host. When using multiple hosts, each host must have a unique name.

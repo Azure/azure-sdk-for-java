@@ -39,7 +39,7 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdReadFeedKeyType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRemoteStorageType;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonFilter("RntbdToken")
 final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {

@@ -38,6 +38,7 @@ import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -456,4 +457,12 @@ public final class ModelBridgeInternal {
     public static String toJsonFromJsonSerializable(JsonSerializable jsonSerializable) {
         return jsonSerializable.toJson();
     }
+
+    public static ObjectNode getPropertyBagFromJsonSerializable(JsonSerializable jsonSerializable) {
+        if (jsonSerializable == null) {
+            return null;
+        }
+        return jsonSerializable.getPropertyBag();
+    }
+
 }

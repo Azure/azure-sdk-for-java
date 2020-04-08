@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Contains helper methods for message conversions.
  */
-public final class MessageUtils {
+final class MessageUtils {
     public static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
     static final int LOCK_TOKEN_SIZE = 16;
 
@@ -26,7 +26,7 @@ public final class MessageUtils {
      *
      * @return the equivalent UUID.
      */
-    public static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
+    static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {
         // First 4 bytes are in reverse order, 5th and 6th bytes are in reverse order,
         // 7th and 8th bytes are also in reverse order
         if (dotNetBytes == null || dotNetBytes.length != GUID_SIZE) {
@@ -39,20 +39,6 @@ public final class MessageUtils {
         final long mostSignificantBits = buffer.getLong();
         final long leastSignificantBits = buffer.getLong();
         return new UUID(mostSignificantBits, leastSignificantBits);
-    }
-
-    public static byte[] convertUUIDToDotNetBytes(UUID uniqueId) {
-        if (uniqueId == null || uniqueId.equals(ZERO_LOCK_TOKEN)) {
-            return new byte[GUID_SIZE];
-        }
-
-        ByteBuffer buffer = ByteBuffer.allocate(GUID_SIZE);
-        buffer.putLong(uniqueId.getMostSignificantBits());
-        buffer.putLong(uniqueId.getLeastSignificantBits());
-        byte[] javaBytes = buffer.array();
-
-        // The .NET bytes for a UUID.
-        return reorderBytes(javaBytes);
     }
 
     private static byte[] reorderBytes(byte[] javaBytes) {
@@ -95,7 +81,7 @@ public final class MessageUtils {
     }
 
     // Pass little less than client timeout to the server so client doesn't time out before server times out
-    static Duration adjustServerTimeout(Duration clientTimeout) {
+    public static Duration adjustServerTimeout(Duration clientTimeout) {
         return clientTimeout.minusMillis(200);
     }
 }

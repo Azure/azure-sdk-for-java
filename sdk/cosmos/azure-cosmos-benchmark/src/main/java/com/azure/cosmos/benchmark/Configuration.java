@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 class Configuration {
 
+    final static String DEFAULT_PARTITION_KEY_PATH = "/pk";
     private final static int DEFAULT_GRAPHITE_SERVER_PORT = 2003;
     private MeterRegistry azureMonitorMeterRegistry;
     private MeterRegistry graphiteMeterRegistry;
@@ -76,23 +77,27 @@ class Configuration {
     @Parameter(names = "-enableJvmStats", description = "Enables JVM Stats")
     private boolean enableJvmStats;
 
+    @Parameter(names = "-throughput", description = "provisioned throughput for test container")
+    private int throughput = 100000;
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
-            + "\tReadThroughput- run a READ workload that prints only throughput *\n"
-            + "\tWriteThroughput - run a Write workload that prints only throughput\n"
-            + "\tReadLatency - run a READ workload that prints both throughput and latency *\n"
-            + "\tWriteLatency - run a Write workload that prints both throughput and latency\n"
-            + "\tQueryInClauseParallel - run a 'Select * from c where c.pk in (....)' workload that prints latency\n"
-            + "\tQueryCross - run a 'Select * from c where c._rid = SOME_RID' workload that prints throughput\n"
-            + "\tQuerySingle - run a 'Select * from c where c.pk = SOME_PK' workload that prints throughput\n"
-            + "\tQuerySingleMany - run a 'Select * from c where c.pk = \"pk\"' workload that prints throughput\n"
-            + "\tQueryParallel - run a 'Select * from c' workload that prints throughput\n"
-            + "\tQueryOrderby - run a 'Select * from c order by c._ts' workload that prints throughput\n"
-            + "\tQueryAggregate - run a 'Select value max(c._ts) from c' workload that prints throughput\n"
-            + "\tQueryAggregateTopOrderby - run a 'Select top 1 value count(c) from c order by c._ts' workload that prints throughput\n"
-            + "\tQueryTopOrderby - run a 'Select top 1000 * from c order by c._ts' workload that prints throughput\n"
-            + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
-            + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
-            + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
+        + "\tReadThroughput- run a READ workload that prints only throughput *\n"
+        + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
+        + "\tWriteThroughput - run a Write workload that prints only throughput\n"
+        + "\tReadLatency - run a READ workload that prints both throughput and latency *\n"
+        + "\tWriteLatency - run a Write workload that prints both throughput and latency\n"
+        + "\tQueryInClauseParallel - run a 'Select * from c where c.pk in (....)' workload that prints latency\n"
+        + "\tQueryCross - run a 'Select * from c where c._rid = SOME_RID' workload that prints throughput\n"
+        + "\tQuerySingle - run a 'Select * from c where c.pk = SOME_PK' workload that prints throughput\n"
+        + "\tQuerySingleMany - run a 'Select * from c where c.pk = \"pk\"' workload that prints throughput\n"
+        + "\tQueryParallel - run a 'Select * from c' workload that prints throughput\n"
+        + "\tQueryOrderby - run a 'Select * from c order by c._ts' workload that prints throughput\n"
+        + "\tQueryAggregate - run a 'Select value max(c._ts) from c' workload that prints throughput\n"
+        + "\tQueryAggregateTopOrderby - run a 'Select top 1 value count(c) from c order by c._ts' workload that prints throughput\n"
+        + "\tQueryTopOrderby - run a 'Select top 1000 * from c order by c._ts' workload that prints throughput\n"
+        + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
+        + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
+        + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
     @Parameter(names = "-concurrency", description = "Degree of Concurrency in Inserting Documents."
@@ -143,7 +148,8 @@ class Configuration {
         QueryAggregateTopOrderby,
         QueryTopOrderby,
         Mixed,
-        ReadMyWrites;
+        ReadMyWrites,
+        ReadThroughputWithMultipleClients;
 
         static Operation fromString(String code) {
 
@@ -221,6 +227,10 @@ class Configuration {
 
     int getNumberOfOperations() {
         return numberOfOperations;
+    }
+
+    int getThroughput() {
+        return throughput;
     }
 
     String getServiceEndpoint() {
@@ -359,6 +369,10 @@ class Configuration {
         String numberOfOperationsValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("NUMBER_OF_OPERATIONS")), Integer.toString(numberOfOperations));
         numberOfOperations = Integer.parseInt(numberOfOperationsValue);
+
+        String throughputValue = StringUtils.defaultString(
+                Strings.emptyToNull(System.getenv().get("THROUGHPUT")), Integer.toString(throughput));
+        throughput = Integer.parseInt(throughputValue);
     }
 
     private synchronized MeterRegistry azureMonitorMeterRegistry(String instrumentationKey) {

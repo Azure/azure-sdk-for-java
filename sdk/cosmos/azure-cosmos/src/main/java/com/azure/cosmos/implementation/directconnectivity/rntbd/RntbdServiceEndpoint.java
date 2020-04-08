@@ -11,7 +11,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.google.common.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import io.micrometer.core.instrument.Tag;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
@@ -37,8 +37,8 @@ import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient.Options;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 @JsonSerialize(using = RntbdServiceEndpoint.JsonSerializer.class)

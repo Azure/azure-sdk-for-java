@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/containerservice/
-    exclude:
-      - sdk/containerservice/azure
-      - sdk/containerservice/microsoft-azure
-      - sdk/containerservice/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/containerservice/
-    exclude:
-      - sdk/containerservice/azure
-      - sdk/containerservice/microsoft-azure
-      - sdk/containerservice/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -392,7 +391,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         }
 
         // Query for the documents order by the prop field
-        SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterList());
+        SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new ArrayList<>());
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(5);
 

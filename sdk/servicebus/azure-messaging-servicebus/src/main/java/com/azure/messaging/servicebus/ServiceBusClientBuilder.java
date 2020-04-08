@@ -39,10 +39,10 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The builder to create {@link ServiceBusReceiverAsyncClient} and {@link ServiceBusSenderAsyncClient}.
@@ -77,7 +77,7 @@ public final class ServiceBusClientBuilder {
     /**
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
-    private volatile int openClients;
+    private final AtomicInteger openClients = new AtomicInteger();
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP}.
@@ -190,7 +190,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusSenderClientBuilder}.
      */
-    public ServiceBusSenderClientBuilder buildSenderClientBuilder() {
+    public ServiceBusSenderClientBuilder sender() {
         return new ServiceBusSenderClientBuilder();
     }
 
@@ -199,7 +199,7 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusReceiverClientBuilder}.
      */
-    public ServiceBusReceiverClientBuilder buildReceiverClientBuilder() {
+    public ServiceBusReceiverClientBuilder receiver() {
         return new ServiceBusReceiverClientBuilder();
     }
 
@@ -208,13 +208,23 @@ public final class ServiceBusClientBuilder {
      */
     void onClientClose() {
         synchronized (connectionLock) {
-            final int numberOfOpenClients = --openClients;
+            final int numberOfOpenClients = openClients.decrementAndGet();
             logger.info("Closing a dependent client. # of open clients: {}", numberOfOpenClients);
 
-            if (numberOfOpenClients == 0) {
-                logger.info("No more open clients, closing shared connection.");
+            if (numberOfOpenClients > 0) {
+                return;
+            }
+
+            if (numberOfOpenClients < 0) {
+                logger.warning("There should not be less than 0 clients. actual: {}", numberOfOpenClients);
+            }
+
+            logger.info("No more open clients, closing shared connection.");
+            if (sharedConnection != null) {
                 sharedConnection.dispose();
                 sharedConnection = null;
+            } else {
+                logger.warning("Shared ServiceBusConnectionProcessor was already disposed.");
             }
         }
     }
@@ -249,13 +259,13 @@ public final class ServiceBusClientBuilder {
                         clientVersion);
                 }).repeat();
 
-                return connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
+                sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
                     connectionOptions.getFullyQualifiedNamespace(), connectionOptions.getRetry()));
             }
-
-            final int numberOfOpenClients = ++openClients;
-            logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
         }
+
+        final int numberOfOpenClients = openClients.incrementAndGet();
+        logger.info("# of open clients with shared connection: {}", numberOfOpenClients);
 
         return sharedConnection;
     }
@@ -292,8 +302,8 @@ public final class ServiceBusClientBuilder {
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
-            transport, retryOptions, proxyOptions, scheduler);
+        return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType, transport, retryOptions,
+            proxyOptions, scheduler);
     }
 
     private ProxyOptions getDefaultProxyConfiguration(Configuration configuration) {
@@ -326,26 +336,78 @@ public final class ServiceBusClientBuilder {
         return item == null || item.isEmpty();
     }
 
+    private static MessagingEntityType validateEntityPaths(ClientLogger logger, String connectionStringEntityName,
+        String topicName, String queueName) {
+
+        final boolean hasTopicName = !isNullOrEmpty(topicName);
+        final boolean hasQueueName = !isNullOrEmpty(queueName);
+        final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
+
+        final MessagingEntityType entityType;
+
+        if (!hasConnectionStringEntity && !hasQueueName && !hasTopicName) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Cannot build client without setting either a queueName or topicName."));
+        } else if (hasQueueName && hasTopicName) {
+            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot build client with both queueName (%s) and topicName (%s) set.", queueName, topicName)));
+        } else if (hasQueueName) {
+            if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "queueName (%s) is different than the connectionString's EntityPath (%s).",
+                    queueName, connectionStringEntityName)));
+            }
+
+            entityType = MessagingEntityType.QUEUE;
+        } else if (hasTopicName) {
+            if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
+                throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                    "topicName (%s) is different than the connectionString's EntityPath (%s).",
+                    topicName, connectionStringEntityName)));
+            }
+
+            entityType = MessagingEntityType.TOPIC;
+        } else {
+            // It is a connection string entity path.
+            entityType = MessagingEntityType.UNKNOWN;
+        }
+
+        return entityType;
+    }
+
     /**
      * Builder for creating {@link ServiceBusSenderClient} and {@link ServiceBusSenderAsyncClient} to publish messages
      * to Service Bus.
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusSenderClient.class, ServiceBusSenderAsyncClient.class})
     public final class ServiceBusSenderClientBuilder {
-        private String queueOrTopicName;
+        private String queueName;
+        private String topicName;
 
         private ServiceBusSenderClientBuilder() {
         }
 
         /**
-         * Sets the name of the Service Bus resource to publish messages to.
+         * Sets the name of the Service Bus queue to publish messages to.
          *
-         * @param queueOrTopicName Name of the Service Bus resource to publish messages to.
+         * @param queueName Name of the queue.
          *
-         * @return The updated {@link ServiceBusSenderClientBuilder} builder.
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
          */
-        public ServiceBusSenderClientBuilder entityName(String queueOrTopicName) {
-            this.queueOrTopicName = queueOrTopicName;
+        public ServiceBusSenderClientBuilder queueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the Service Bus topic to publish messages to.
+         *
+         * @param topicName Name of the topic.
+         *
+         * @return The modified {@link ServiceBusSenderClientBuilder} object.
+         */
+        public ServiceBusSenderClientBuilder topicName(String topicName) {
+            this.topicName = topicName;
             return this;
         }
 
@@ -354,25 +416,35 @@ public final class ServiceBusClientBuilder {
          * ServiceBusMessage} to a Service Bus queue or topic.
          *
          * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}
+         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
 
-            if (isNullOrEmpty(connectionStringEntityName) && isNullOrEmpty(queueOrTopicName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Cannot create sender without setting the entityName"));
+            final String entityName;
+            switch (entityType) {
+                case QUEUE:
+                    entityName = queueName;
+                    break;
+                case TOPIC:
+                    entityName = topicName;
+                    break;
+                case UNKNOWN:
+                    entityName = connectionStringEntityName;
+                    break;
+                default:
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException("Unknown entity type: " + entityType));
             }
-            if (!isNullOrEmpty(connectionStringEntityName) && !isNullOrEmpty(queueOrTopicName)
-                && !connectionStringEntityName.equals(queueOrTopicName)) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "entityName '%s' from connection string does not match the queueOrTopicName '%s' set in sender.",
-                    connectionStringEntityName, queueOrTopicName)));
-            }
 
-            final String entityName = queueOrTopicName != null ? queueOrTopicName : connectionStringEntityName;
-
-            return new ServiceBusSenderAsyncClient(entityName, connectionProcessor, retryOptions, tracerProvider,
-                messageSerializer);
+            return new ServiceBusSenderAsyncClient(entityName, entityType, connectionProcessor, retryOptions,
+                tracerProvider, messageSerializer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
@@ -380,6 +452,11 @@ public final class ServiceBusClientBuilder {
          * to a Service Bus queue or topic.
          *
          * @return A new {@link ServiceBusSenderAsyncClient} for transmitting to a Service queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}
+         * @throws IllegalArgumentException if the entity type is not a queue or a topic.
          */
         public ServiceBusSenderClient buildClient() {
             return new ServiceBusSenderClient(buildAsyncClient(), retryOptions.getTryTimeout());
@@ -396,53 +473,13 @@ public final class ServiceBusClientBuilder {
         // receiving messages at a slow rate. Applications can set it to a higher value if they need better performance.
         private static final int DEFAULT_PREFETCH_COUNT = 1;
 
-        private boolean autoComplete;
-        private Duration maxAutoLockRenewalDuration;
         private int prefetchCount = DEFAULT_PREFETCH_COUNT;
-        private boolean isLockAutoRenewed;
         private String queueName;
         private String subscriptionName;
         private String topicName;
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
 
         private ServiceBusReceiverClientBuilder() {
-        }
-
-        /**
-         * Sets whether or not to automatically complete a received message after it has been processed.
-         *
-         * @param autoComplete {@code true} to automatically complete a received message after it has been
-         *     processed; {@code false} otherwise.
-         *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder isAutoComplete(boolean autoComplete) {
-            this.autoComplete = autoComplete;
-            return this;
-        }
-
-        /**
-         * Sets if lock should be automatically renewed.
-         *
-         * @param isLockAutoRenewed {@code true} if the lock should be automatically renewed; {@code false} otherwise.
-         * @return The updated {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder isLockAutoRenewed(boolean isLockAutoRenewed) {
-            this.isLockAutoRenewed = isLockAutoRenewed;
-            return this;
-        }
-
-        /**
-         * Sets the maximum duration within which the lock will be renewed automatically. This value should be greater
-         * than the longest message lock duration.
-         *
-         * @param renewalDuration The maximum duration within which the lock will be renewed automatically.
-         *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         */
-        public ServiceBusReceiverClientBuilder maxAutoLockRenewalDuration(Duration renewalDuration) {
-            this.maxAutoLockRenewalDuration = renewalDuration;
-            return this;
         }
 
         /**
@@ -491,7 +528,6 @@ public final class ServiceBusClientBuilder {
          * @param subscriptionName Name of the subscription.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         *
          * @see #topicName A topic name should be set as well.
          */
         public ServiceBusReceiverClientBuilder subscriptionName(String subscriptionName) {
@@ -505,7 +541,6 @@ public final class ServiceBusClientBuilder {
          * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.
-         *
          * @see #subscriptionName A subscription name should be set as well.
          */
         public ServiceBusReceiverClientBuilder topicName(String topicName) {
@@ -518,74 +553,65 @@ public final class ServiceBusClientBuilder {
          * messages} from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverAsyncClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverAsyncClient buildAsyncClient() {
-            final boolean hasTopicName = !isNullOrEmpty(topicName);
-            final boolean hasQueueName = !isNullOrEmpty(queueName);
-            final boolean hasSubscription = !isNullOrEmpty(subscriptionName);
-            final boolean hasConnectionStringEntity = !isNullOrEmpty(connectionStringEntityName);
+            final MessagingEntityType entityType = validateEntityPaths(logger, connectionStringEntityName, topicName,
+                queueName);
 
-            final MessagingEntityType entityType;
             final String entityPath;
+            switch (entityType) {
+                case QUEUE:
+                    entityPath = queueName;
+                    break;
+                case TOPIC:
+                    if (isNullOrEmpty(subscriptionName)) {
+                        throw logger.logExceptionAsError(new IllegalStateException(String.format(
+                            "topicName (%s) must have a subscriptionName associated with it.", topicName)));
+                    }
 
-            if (!hasQueueName && !hasTopicName) {
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    "Cannot build receiver without setting either a queueName or topicName + subscriptionName."));
-            } else if (hasQueueName && hasTopicName) {
-                throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                    "Cannot build receiver with both queueName (%s) and topicName (%s) set.",
-                    queueName, topicName)));
-            } else if (hasQueueName) {
-                if (hasConnectionStringEntity && !queueName.equals(connectionStringEntityName)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                        "queueName (%s) is different than connectionString entityName (%s).",
-                        queueName, connectionStringEntityName)));
-                }
-
-                entityPath = queueName;
-                entityType = MessagingEntityType.QUEUE;
-            } else {
-                if (hasConnectionStringEntity && !topicName.equals(connectionStringEntityName)) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                        "topicName (%s) is different than connectionString entityName (%s).",
-                        topicName, connectionStringEntityName)));
-                } else if (!hasSubscription) {
-                    throw logger.logExceptionAsError(new IllegalStateException(String.format(
-                        "topicName (%s) must have a subscriptionName associated with it.", topicName)));
-                }
-
-                entityPath = topicName;
-                entityType = MessagingEntityType.TOPIC;
+                    entityPath = topicName;
+                    break;
+                default:
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException("Unknown entity type: " + entityType));
             }
 
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
-            } else if (maxAutoLockRenewalDuration != null
-                && (maxAutoLockRenewalDuration.isZero() || maxAutoLockRenewalDuration.isNegative())) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "maxAutoLockRenewalDuration (%s) cannot be less than or equal to a duration of zero.",
-                    maxAutoLockRenewalDuration)));
             }
 
             final MessageLockContainer messageLockContainer = new MessageLockContainer();
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
-            final ReceiveMessageOptions receiveMessageOptions = new ReceiveMessageOptions(autoComplete, receiveMode,
-                prefetchCount, isLockAutoRenewed, maxAutoLockRenewalDuration);
+            final ReceiverOptions receiverOptions = new ReceiverOptions(receiveMode, prefetchCount);
 
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
-                entityType, false, receiveMessageOptions, connectionProcessor, tracerProvider,
-                messageSerializer, messageLockContainer);
+                entityType, false, receiverOptions, connectionProcessor, tracerProvider,
+                messageSerializer, messageLockContainer, ServiceBusClientBuilder.this::onClientClose);
         }
 
         /**
-         * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage
-         * messages} from a specific queue or topic.
+         * Creates <b>synchronous</b> Service Bus receiver responsible for reading {@link ServiceBusMessage messages}
+         * from a specific queue or topic.
          *
          * @return An new {@link ServiceBusReceiverClient} that receives messages from a queue or topic.
+         * @throws IllegalStateException if {@link #queueName(String) queueName} or {@link #topicName(String)
+         *     topicName} are not set or, both of these fields are set. It is also thrown if the Service Bus {@link
+         *     #connectionString(String) connectionString} contains an {@code EntityPath} that does not match one set in
+         *     {@link #queueName(String) queueName} or {@link #topicName(String) topicName}. Lastly, if a {@link
+         *     #topicName(String) topicName} is set, but {@link #subscriptionName(String) subscriptionName} is not.
+         * @throws IllegalArgumentException Queue or topic name are not set via {@link #queueName(String)
+         *     queueName()} or {@link #topicName(String) topicName()}, respectively.
          */
         public ServiceBusReceiverClient buildClient() {
-            return new ServiceBusReceiverClient(buildAsyncClient());
+            return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
     }
 }

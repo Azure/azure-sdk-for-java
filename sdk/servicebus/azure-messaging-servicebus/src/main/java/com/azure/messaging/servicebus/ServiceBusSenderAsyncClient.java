@@ -15,6 +15,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
@@ -22,7 +23,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
-import java.io.Closeable;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,9 +48,22 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
+ *
+ * <p><strong>Create an instance of sender</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation}
+ *
+ * <p><strong>Create an instance of sender using default credential</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiateWithDefaultCredential}
+ *
+ * <p><strong>Send messages to a Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch}
+ *
+ * <p><strong>Send messages using a size-limited {@link ServiceBusMessageBatch} to a Service Bus resource</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncsenderclient.createBatch#CreateBatchOptionsLimitedSize}
+ *
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
-public final class ServiceBusSenderAsyncClient implements Closeable {
+public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     /**
      * The default maximum allowable size, in bytes, for a batch to be sent.
      */
@@ -64,14 +77,17 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     private final MessageSerializer messageSerializer;
     private final AmqpRetryOptions retryOptions;
     private final AmqpRetryPolicy retryPolicy;
+    private final MessagingEntityType entityType;
+    private final Runnable onClientClose;
     private final String entityName;
     private final ServiceBusConnectionProcessor connectionProcessor;
 
     /**
-     * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to
+     * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
-    ServiceBusSenderAsyncClient(String entityName, ServiceBusConnectionProcessor connectionProcessor,
-        AmqpRetryOptions retryOptions, TracerProvider tracerProvider, MessageSerializer messageSerializer) {
+    ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
+        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions,
+        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
@@ -81,6 +97,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
             "'connectionProcessor' cannot be null.");
         this.tracerProvider = tracerProvider;
         this.retryPolicy = getRetryPolicy(retryOptions);
+        this.entityType = entityType;
+
+        this.onClientClose = onClientClose;
     }
 
     /**
@@ -260,12 +279,20 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      *
      * @throws NullPointerException if {@code message} or {@code scheduledEnqueueTime} is {@code null}.
      */
-    public Mono<Long> schedule(ServiceBusMessage message, Instant scheduledEnqueueTime) {
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime) {
         Objects.requireNonNull(message, "'message' cannot be null.");
         Objects.requireNonNull(scheduledEnqueueTime, "'scheduledEnqueueTime' cannot be null.");
 
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return getSendLink()
+            .flatMap(link -> link.getLinkSize().flatMap(size -> {
+                int maxSize =  size > 0
+                    ? size
+                    : MAX_MESSAGE_LENGTH_BYTES;
+
+                return connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+                    .flatMap(managementNode -> managementNode.schedule(message, scheduledEnqueueTime, maxSize));
+            }));
     }
 
     /**
@@ -276,8 +303,9 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
      * @return The {@link Mono} that finishes this operation on service bus resource.
      */
     public Mono<Void> cancelScheduledMessage(long sequenceNumber) {
-        //TODO (hemanttanwar): Implement session id feature.
-        return Mono.error(new IllegalStateException("Not implemented."));
+        return connectionProcessor
+            .flatMap(connection -> connection.getManagementNode(entityName, entityType))
+            .flatMap(managementNode -> managementNode.cancelScheduledMessage(sequenceNumber));
     }
 
     /**
@@ -289,8 +317,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
         if (isDisposed.getAndSet(true)) {
             return;
         }
-        connectionProcessor.dispose();
 
+        onClientClose.run();
     }
 
     private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages) {
@@ -316,11 +344,8 @@ public final class ServiceBusSenderAsyncClient implements Closeable {
     }
 
     private Mono<AmqpSendLink> getSendLink() {
-        final String entityPath = entityName;
-        final String linkName = entityName;
-
         return connectionProcessor
-            .flatMap(connection -> connection.createSendLink(linkName, entityPath, retryOptions));
+            .flatMap(connection -> connection.createSendLink(entityName, entityName, retryOptions));
     }
 
     private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<ServiceBusMessageBatch>,

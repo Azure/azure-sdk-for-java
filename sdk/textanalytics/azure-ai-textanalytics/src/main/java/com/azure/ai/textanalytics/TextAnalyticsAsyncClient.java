@@ -27,6 +27,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import static com.azure.ai.textanalytics.Transforms.mapByIndex;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -50,6 +51,10 @@ public final class TextAnalyticsAsyncClient {
     private final TextAnalyticsServiceVersion serviceVersion;
     private final String defaultCountryHint;
     private final String defaultLanguage;
+
+    // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     final DetectLanguageAsyncClient detectLanguageAsyncClient;
     final AnalyzeSentimentAsyncClient analyzeSentimentAsyncClient;
     final ExtractKeyPhraseAsyncClient extractKeyPhraseAsyncClient;
@@ -121,7 +126,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link Mono} containing the {@link DetectedLanguage detected language} of the document.
      *
@@ -145,7 +150,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -157,7 +162,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectedLanguage> detectLanguage(String document, String countryHint) {
-        // TODO: follow the sample pattern as other endpoint.
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
             .map(detectLanguageResult -> {
                 if (detectLanguageResult.isError()) {
@@ -183,7 +188,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link DetectLanguageResult detected language document result}.
@@ -206,7 +211,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -234,7 +239,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents The list of documents to detect languages for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
@@ -254,8 +259,7 @@ public final class TextAnalyticsAsyncClient {
         }
         final String finalCountryHint = countryHint;
         return detectLanguageBatch(
-            mapByIndex(documents, (index, value) ->
-                new DetectLanguageInput(index, value, finalCountryHint)), options);
+            mapByIndex(documents, (index, value) -> new DetectLanguageInput(index, value, finalCountryHint)), options);
     }
 
     /**
@@ -269,7 +273,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents The list of {@link DetectLanguageInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -289,8 +293,8 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of general categorized entities in the provided document.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
      * This method will use the default language that sets up in
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
      * the language.
@@ -303,7 +307,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
@@ -319,8 +323,8 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of general categorized entities in the provided document.
      *
-     * For a list of supported entity types, check: <a href="https://aka.ms/taner"></a>.
-     * For a list of enabled languages, check: <a href="https://aka.ms/talangs"></a>.
+     * For a list of supported entity types, check: <a href="https://aka.ms/taner">this</a>.
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>.
      *
      * <p><strong>Code sample</strong></p>
      * <p>Recognize entities in a document with provided language code. Subscribes to the call asynchronously and prints
@@ -330,7 +334,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document the text to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
@@ -342,6 +346,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return recognizeEntityAsyncClient.recognizeEntities(document, language);
     }
 
@@ -360,7 +365,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link RecognizeCategorizedEntitiesResult recognized categorized entities document result}.
@@ -384,7 +389,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
@@ -411,7 +416,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -441,7 +446,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -460,7 +465,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
-     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
      * This method will use the default language that sets up in
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -473,7 +478,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of {@link LinkedEntity recognized linked entities}.
      *
@@ -487,7 +492,7 @@ public final class TextAnalyticsAsyncClient {
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the provided document. See
-     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
      * <p>Recognize linked entities in a text with provided language code. Subscribes to the call asynchronously
      * and prints out the entity details when a response is received.</p>
@@ -496,7 +501,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
@@ -507,12 +512,13 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(document, language);
     }
 
     /**
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents. See
-     * <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
      * This method will use the default language that sets up in
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -525,7 +531,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link LinkedEntity recognized linked entities document result}.
@@ -542,7 +548,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
      * provided language code.
      *
-     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
      * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
@@ -551,7 +557,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -570,7 +576,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
      * provided language code and request options.
      *
-     * See <a href="https://aka.ms/talangs"></a> for supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
      *
      * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
      * asynchronously and prints out the entity details when a response is received.</p>
@@ -579,7 +585,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -601,7 +607,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of recognized entities with links to a well-known knowledge base for the list of
      * {@link TextDocumentInput document} with provided request options.
      *
-     * See <a href="https://aka.ms/talangs"></a> supported languages in Text Analytics API.
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p>Recognize linked  entities in a list of {@link TextDocumentInput document} and provided request options to
      * show statistics. Subscribes to the call asynchronously and prints out the entity details when a response is
@@ -611,7 +617,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize linked entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -642,7 +648,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of extracted key phrases.
      *
@@ -657,7 +663,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the document.
      *
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs">this</a> for the list of enabled languages.
      *
      * <p>Extract key phrases in a document with a provided language code. Subscribes to the call asynchronously and
      * prints out the key phrases when a response is received.</p>
@@ -666,7 +672,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed. For text length limits, maximum batch size, and supported text
      * encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -677,6 +683,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(document, language);
     }
 
@@ -694,7 +701,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link ExtractKeyPhraseResult extracted key phrases document result}.
@@ -709,7 +716,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the document with provided language code.
      *
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs">this</a> for the list of enabled languages.
      *
      * <p>Extract key phrases in a list of documents with a provided language code. Subscribes to the call
      * asynchronously and prints out the key phrases when a response is received.</p>
@@ -718,7 +725,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -737,7 +744,7 @@ public final class TextAnalyticsAsyncClient {
      * Returns a list of strings denoting the key phrases in the document with provided language code and request
      * options.
      *
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs">this</a> for the list of enabled languages.
      *
      * <p>Extract key phrases in a list of documents with a provided language and request options. Subscribes to the
      * call asynchronously and prints out the key phrases when a response is received.</p>
@@ -746,7 +753,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -767,7 +774,7 @@ public final class TextAnalyticsAsyncClient {
     /**
      * Returns a list of strings denoting the key phrases in the document with provided request options.
      *
-     * See <a href="https://aka.ms/talangs"></a> for the list of enabled languages.
+     * See <a href="https://aka.ms/talangs">this</a> for the list of enabled languages.
      *
      * <p>Extract key phrases in a list of {@link TextDocumentInput document} with provided request options.
      * Subscribes to the call asynchronously and prints out the key phrases when a response is received.</p>
@@ -776,7 +783,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents}  to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
@@ -808,7 +815,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link Mono} contains the {@link DocumentSentiment analyzed document sentiment} of the document.
      *
@@ -835,7 +842,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param document The document to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
@@ -846,6 +853,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DocumentSentiment> analyzeSentiment(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return analyzeSentimentBatch(Collections.singletonList(document), language, null)
             .map(sentimentResult -> {
                 if (sentimentResult.isError()) {
@@ -871,7 +879,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
      * @return A {@link TextAnalyticsPagedFlux} contains a list of
      * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
@@ -894,7 +902,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
@@ -920,7 +928,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
@@ -949,7 +957,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents}  to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits"/>.
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.test.environment.setup;
 
-import com.azure.core.test.TestBase;
 import com.azure.core.test.utils.TestResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -20,13 +19,14 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 import java.security.SecureRandom;
 import java.util.Objects;
 
-public class AzureSearchResources extends TestBase {
+public class AzureSearchResources {
     private static final String RESOURCE_GROUP_NAME_PREFIX = "azsjava";
     private static final String SEARCH_SERVICE_NAME_PREFIX = "azsjava";
     private static final String BLOB_DATASOURCE_NAME_PREFIX = "azsjavablob";
     private static final String STORAGE_NAME_PREFIX = "azsjavastor";
     private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
     private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
+    private static final String TEST_RESOURCE_GROUP = "azsjavaresourcegroup";
 
     private String searchServiceName;
     private String searchAdminKey;
@@ -118,13 +118,10 @@ public class AzureSearchResources extends TestBase {
      * Creates the Resource Group in Azure. This should be run at @BeforeAll
      */
     public void createResourceGroup() {
-        String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME);
-        boolean resourceGroupNameSet = !CoreUtils.isNullOrEmpty(resourceGroupName);
-        if (!resourceGroupNameSet) {
-            resourceGroupName = randomResourceGroupName();
-        }
+        String resourceGroupName = Configuration.getGlobalConfiguration().get(AZURE_RESOURCEGROUP_NAME,
+            TEST_RESOURCE_GROUP);
 
-        if (resourceGroupNameSet && azure.resourceGroups().checkExistence(resourceGroupName)) {
+        if (azure.resourceGroups().checkExistence(resourceGroupName)) {
             System.out.println("Fetching Resource Group: " + resourceGroupName);
             resourceGroup = azure.resourceGroups()
                 .getByName(resourceGroupName);

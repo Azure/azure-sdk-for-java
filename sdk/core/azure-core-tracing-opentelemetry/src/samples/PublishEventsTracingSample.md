@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.4</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.0.1</version>
+    <version>5.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -32,7 +32,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** for implementation and **
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -44,7 +44,7 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.sdk.trace.TracerSdkFactory;
+import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.Tracer;
 import reactor.core.publisher.Flux;
@@ -56,33 +56,32 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.logging.Logger.getLogger;
 
 public class Sample {
-    final static String VAULT_URL = "<YOUR_VAULT_URL>";
     private static final Logger LOGGER = getLogger("Sample");
     private static  final Tracer TRACER;
-    private static final TracerSdkFactory TRACER_SDK_FACTORY;
+    private static final TracerSdkProvider TRACER_SDK_PROVIDER;
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
 
     static {
-        TRACER_SDK_FACTORY = configureOpenTelemetryAndLoggingExporter();
-        TRACER = TRACER_SDK_FACTORY.get("Sample");
+        TRACER_SDK_PROVIDER = configureOpenTelemetryAndLoggingExporter();
+        TRACER = TRACER_SDK_PROVIDER.get("Sample");
     }
 
     public static void main(String[] args) {
         doClientWork();
-        TRACER_SDK_FACTORY.shutdown();
+        TRACER_SDK_PROVIDER.shutdown();
     }
 
-    private static TracerSdkFactory configureOpenTelemetryAndLoggingExporter() {
+    private static TracerSdkProvider configureOpenTelemetryAndLoggingExporter() {
         LoggingExporter exporter = new LoggingExporter();
-        TracerSdkFactory tracerSdkFactory = (TracerSdkFactory) OpenTelemetry.getTracerFactory();
-        tracerSdkFactory.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
+        TracerSdkProvider tracerSdkProvider = (TracerSdkProvider) OpenTelemetry.getTracerFactory();
+        tracerSdkProvider.addSpanProcessor(SimpleSpansProcessor.newBuilder(exporter).build());
 
-        return tracerSdkFactory;
+        return tracerSdkProvider;
     }
 
     private static void doClientWork() {
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(CONNECTION_STRING)
+            .connectionString("CONNECTION_STRING")
             .buildAsyncProducerClient();
         
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();

@@ -11,7 +11,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.UUID;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdRequestHeader;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class RntbdRequest {
 

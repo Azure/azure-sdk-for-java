@@ -5,9 +5,9 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableSet;
+import com.azure.cosmos.implementation.guava25.collect.Sets;
 import io.netty.handler.codec.DecoderException;
 
 import java.util.EnumSet;

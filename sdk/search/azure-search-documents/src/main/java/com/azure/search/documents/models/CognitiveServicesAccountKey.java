@@ -20,13 +20,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
     /*
-     * The key property.
+     * The key used to provision the cognitive service resource attached to a
+     * skillset.
      */
     @JsonProperty(value = "key", required = true)
     private String key;
 
     /**
-     * Get the key property: The key property.
+     * Get the key property: The key used to provision the cognitive service
+     * resource attached to a skillset.
      *
      * @return the key value.
      */
@@ -35,7 +37,8 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
     }
 
     /**
-     * Set the key property: The key property.
+     * Set the key property: The key used to provision the cognitive service
+     * resource attached to a skillset.
      *
      * @param key the key value to set.
      * @return the CognitiveServicesAccountKey object itself.

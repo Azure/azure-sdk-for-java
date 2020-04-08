@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/costmanagement/
-    exclude:
-      - sdk/costmanagement/azure
-      - sdk/costmanagement/microsoft-azure
-      - sdk/costmanagement/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/costmanagement/
-    exclude:
-      - sdk/costmanagement/azure
-      - sdk/costmanagement/microsoft-azure
-      - sdk/costmanagement/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

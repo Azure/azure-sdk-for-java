@@ -7,9 +7,14 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.util.CustomPatternTokenizerDeserializer;
+import com.azure.search.documents.implementation.util.CustomPatternTokenizerSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens.
@@ -18,6 +23,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
 @Fluent
+@JsonSerialize(using = CustomPatternTokenizerSerializer.class)
+@JsonDeserialize(using = CustomPatternTokenizerDeserializer.class)
 public final class PatternTokenizer extends Tokenizer {
     /*
      * A regular expression pattern to match token separators. Default is an
@@ -27,12 +34,10 @@ public final class PatternTokenizer extends Tokenizer {
     private String pattern;
 
     /*
-     * Regular expression flags. Possible values include: 'CANON_EQ',
-     * 'CASE_INSENSITIVE', 'COMMENTS', 'DOTALL', 'LITERAL', 'MULTILINE',
-     * 'UNICODE_CASE', 'UNIX_LINES'
+     * Regular expression flags.
      */
     @JsonProperty(value = "flags")
-    private RegexFlags flags;
+    private List<RegexFlags> flags;
 
     /*
      * The zero-based ordinal of the matching group in the regular expression
@@ -68,25 +73,21 @@ public final class PatternTokenizer extends Tokenizer {
     }
 
     /**
-     * Get the flags property: Regular expression flags. Possible values
-     * include: 'CANON_EQ', 'CASE_INSENSITIVE', 'COMMENTS', 'DOTALL',
-     * 'LITERAL', 'MULTILINE', 'UNICODE_CASE', 'UNIX_LINES'.
+     * Get the flags property: Regular expression flags.
      *
      * @return the flags value.
      */
-    public RegexFlags getFlags() {
+    public List<RegexFlags> getFlags() {
         return this.flags;
     }
 
     /**
-     * Set the flags property: Regular expression flags. Possible values
-     * include: 'CANON_EQ', 'CASE_INSENSITIVE', 'COMMENTS', 'DOTALL',
-     * 'LITERAL', 'MULTILINE', 'UNICODE_CASE', 'UNIX_LINES'.
+     * Set the flags property: Regular expression flags.
      *
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
-    public PatternTokenizer setFlags(RegexFlags flags) {
+    public PatternTokenizer setFlags(List<RegexFlags> flags) {
         this.flags = flags;
         return this;
     }
