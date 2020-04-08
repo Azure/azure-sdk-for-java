@@ -121,17 +121,6 @@ public interface Secret extends Indexable, HasInner<KeyVaultSecret>, HasId, HasN
             Update withValue(String value);
         }
 
-//        /** The stage of a secret update allowing to set the secret to a different version. */
-//        interface WithVersion {
-//            /**
-//             * Specifies the version the secret show use.
-//             *
-//             * @param version the version of the secret
-//             * @return the next stage of the secret update
-//             */
-//            Update withVersion(String version);
-//        }
-
         /** The stage of a secret update allowing to set the content type of the secret. */
         interface WithContentType {
             /**
@@ -170,7 +159,6 @@ public interface Secret extends Indexable, HasInner<KeyVaultSecret>, HasId, HasN
     interface Update
         extends Appliable<Secret>,
             UpdateStages.WithValue,
-//            UpdateStages.WithVersion,
             UpdateStages.WithAttributes,
             UpdateStages.WithContentType,
             UpdateStages.WithTags {
