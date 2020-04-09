@@ -1,5 +1,8 @@
 # Release History
 
+## 1.1.0-beta.2 (Unreleased)
+
+
 ## 1.1.0-beta.1 (2020-04-08)
 - Updated version of `azure-messaging-eventhubs` to `5.1.0-beta.1` that supports receiving events in batches.
 
