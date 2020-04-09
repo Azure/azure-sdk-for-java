@@ -20,7 +20,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,11 +72,10 @@ public final class CryptographyClientBuilder {
     private static final String SDK_VERSION = "version";
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private KeyVaultKey keyVaultKey;
     private String keyId;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private CryptographyServiceVersion version;
 
@@ -127,18 +125,14 @@ public final class CryptographyClientBuilder {
      * CryptographyClientBuilder#keyIdentifier(String)} have not been set.
      */
     public CryptographyAsyncClient buildAsyncClient() {
-        if (keyVaultKey == null && Strings.isNullOrEmpty(keyId)) {
+        if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
+                "JSON Web Key identifier is required to create cryptography client"));
         }
         CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            if (keyVaultKey != null) {
-                return new CryptographyAsyncClient(keyVaultKey, pipeline, serviceVersion);
-            } else {
-                return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-            }
+            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
         }
 
         if (credential == null) {
@@ -148,11 +142,7 @@ public final class CryptographyClientBuilder {
 
         HttpPipeline pipeline = setupPipeline();
 
-        if (keyVaultKey != null) {
-            return new CryptographyAsyncClient(keyVaultKey, pipeline, serviceVersion);
-        } else {
-            return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
-        }
+        return new CryptographyAsyncClient(keyId, pipeline, serviceVersion);
     }
 
     HttpPipeline setupPipeline() {
@@ -302,16 +292,17 @@ public final class CryptographyClientBuilder {
     }
 
     /**
-     * Sets the jsonWebKey to be used for cryptography operations.
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
      *
-     * <p>If {@code key} is provided then it takes precedence over key identifier and gets used for cryptography
-     * operations.</p>
+     * The default retry policy will be used in the pipeline, if not provided.
      *
-     * @param key The key to be used for cryptography operations.
-     * @return the updated builder object.
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated CryptographyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
      */
-    CryptographyClientBuilder key(KeyVaultKey key) {
-        this.keyVaultKey = key;
+    public CryptographyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = retryPolicy;
         return this;
     }
 }

@@ -42,6 +42,17 @@ import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolVulnera
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.Workspaces;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceAadAdmins;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedIdentitySqlControlSettings;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimes;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeNodeIpAddressOperations;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeObjectMetadatas;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeNodes;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeCredentials;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeConnectionInfos;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeAuthKeysOperations;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeMonitoringDatas;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeStatusOperations;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkResources;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateEndpointConnections;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -75,6 +86,17 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
     private Workspaces workspaces;
     private WorkspaceAadAdmins workspaceAadAdmins;
     private WorkspaceManagedIdentitySqlControlSettings workspaceManagedIdentitySqlControlSettings;
+    private IntegrationRuntimes integrationRuntimes;
+    private IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations;
+    private IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas;
+    private IntegrationRuntimeNodes integrationRuntimeNodes;
+    private IntegrationRuntimeCredentials integrationRuntimeCredentials;
+    private IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos;
+    private IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations;
+    private IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas;
+    private IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations;
+    private PrivateLinkResources privateLinkResources;
+    private PrivateEndpointConnections privateEndpointConnections;
     /**
     * Get a Configurable instance that can be used to create SynapseManager with optional configuration.
     *
@@ -380,6 +402,116 @@ public final class SynapseManager extends ManagerCore<SynapseManager, SynapseMan
             this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsImpl(this);
         }
         return this.workspaceManagedIdentitySqlControlSettings;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimes.
+     */
+    public IntegrationRuntimes integrationRuntimes() {
+        if (this.integrationRuntimes == null) {
+            this.integrationRuntimes = new IntegrationRuntimesImpl(this);
+        }
+        return this.integrationRuntimes;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeNodeIpAddressOperations.
+     */
+    public IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations() {
+        if (this.integrationRuntimeNodeIpAddressOperations == null) {
+            this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsImpl(this);
+        }
+        return this.integrationRuntimeNodeIpAddressOperations;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeObjectMetadatas.
+     */
+    public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
+        if (this.integrationRuntimeObjectMetadatas == null) {
+            this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasImpl(this);
+        }
+        return this.integrationRuntimeObjectMetadatas;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeNodes.
+     */
+    public IntegrationRuntimeNodes integrationRuntimeNodes() {
+        if (this.integrationRuntimeNodes == null) {
+            this.integrationRuntimeNodes = new IntegrationRuntimeNodesImpl(this);
+        }
+        return this.integrationRuntimeNodes;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeCredentials.
+     */
+    public IntegrationRuntimeCredentials integrationRuntimeCredentials() {
+        if (this.integrationRuntimeCredentials == null) {
+            this.integrationRuntimeCredentials = new IntegrationRuntimeCredentialsImpl(this);
+        }
+        return this.integrationRuntimeCredentials;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeConnectionInfos.
+     */
+    public IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos() {
+        if (this.integrationRuntimeConnectionInfos == null) {
+            this.integrationRuntimeConnectionInfos = new IntegrationRuntimeConnectionInfosImpl(this);
+        }
+        return this.integrationRuntimeConnectionInfos;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeAuthKeysOperations.
+     */
+    public IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations() {
+        if (this.integrationRuntimeAuthKeysOperations == null) {
+            this.integrationRuntimeAuthKeysOperations = new IntegrationRuntimeAuthKeysOperationsImpl(this);
+        }
+        return this.integrationRuntimeAuthKeysOperations;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeMonitoringDatas.
+     */
+    public IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas() {
+        if (this.integrationRuntimeMonitoringDatas == null) {
+            this.integrationRuntimeMonitoringDatas = new IntegrationRuntimeMonitoringDatasImpl(this);
+        }
+        return this.integrationRuntimeMonitoringDatas;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeStatusOperations.
+     */
+    public IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations() {
+        if (this.integrationRuntimeStatusOperations == null) {
+            this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsImpl(this);
+        }
+        return this.integrationRuntimeStatusOperations;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(this);
+        }
+        return this.privateLinkResources;
+    }
+
+    /**
+     * @return Entry point to manage PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
+        }
+        return this.privateEndpointConnections;
     }
 
     /**

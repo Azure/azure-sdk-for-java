@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
+import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
@@ -568,6 +569,7 @@ class FileAPITest extends APISpec {
         !properties.getMetadata() // new file does not have default metadata associated
         !properties.getAccessTierChangeTime()
         !properties.getEncryptionKeySha256()
+        !properties.isDirectory()
 
     }
 
@@ -1167,7 +1169,7 @@ class FileAPITest extends APISpec {
 
         when:
         def properties = fc.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(4 * 1024 * 1024, null, null, null), null, null, false, null, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null, null)
 
         then:
         compareFiles(file, outFile, 0, fileSize)
@@ -1209,7 +1211,7 @@ class FileAPITest extends APISpec {
 
         when:
         def properties = fileClient.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(4 * 1024 * 1024, null, null, null), null, null, false, null, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null, null)
 
         then:
         compareFiles(file, outFile, 0, fileSize)
@@ -1250,7 +1252,7 @@ class FileAPITest extends APISpec {
 
         when:
         def downloadMono = fileAsyncClient.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(4 * 1024 * 1024, null, null, null), null, null, false, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null)
 
         then:
         StepVerifier.create(downloadMono)
@@ -1438,7 +1440,7 @@ class FileAPITest extends APISpec {
          * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
          * to change the ETag therefore failing the download.
          */
-        def options = new ParallelTransferOptions(Constants.KB, null, null, null)
+        def options = new ParallelTransferOptions().setBlockSizeLong(Constants.KB)
 
         /*
          * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
@@ -1500,7 +1502,7 @@ class FileAPITest extends APISpec {
 
         when:
         fc.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(null, null, mockReceiver, null),
+            new ParallelTransferOptions().setProgressReceiver(mockReceiver),
             new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null, null)
 
         then:
@@ -1592,17 +1594,28 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "Rename url encoded path"() {
-        setup:
-        // Add some random url encoded characters to the end
-        fc = fsc.getFileClient(generatePathName() + "%20%25")
-        fc.create()
-
+    @Unroll
+    def "Rename url encoded"() {
         when:
-        def response = fc.renameWithResponse(null, generatePathName(), null, null, null, null)
+        fc = fsc.getFileClient(generatePathName() + source)
+        fc.create()
+        def response = fc.renameWithResponse(null, generatePathName() + destination, null, null, null, null)
 
         then:
         response.getStatusCode() == 201
+
+        when:
+        response = response.getValue().getPropertiesWithResponse(null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+
+        where:
+        source     | destination || _
+        ""         | ""          || _ /* Both non encoded. */
+        "%20%25"   | ""          || _ /* One encoded. */
+        ""         | "%20%25"    || _
+        "%20%25"   | "%20%25"    || _ /* Both encoded. */
     }
 
     @Unroll
@@ -2018,8 +2031,8 @@ class FileAPITest extends APISpec {
 
         when:
         // Block length will be ignored for single shot.
-        StepVerifier.create(fac.uploadFromFile(file.getPath(), new ParallelTransferOptions(blockSize, null,
-            null, null), null, null, null))
+        StepVerifier.create(fac.uploadFromFile(file.getPath(), new ParallelTransferOptions().setBlockSizeLong(blockSize),
+            null, null, null))
             .verifyComplete()
 
         then:
@@ -2134,8 +2147,8 @@ class FileAPITest extends APISpec {
         def uploadReporter = new FileUploadReporter()
         def file = getRandomFile(size)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
-            uploadReporter, blockSize - 1)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setNumBuffers(bufferCount)
+            .setProgressReceiver(uploadReporter).setMaxSingleUploadSizeLong(blockSize - 1)
 
         then:
         StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
@@ -2159,11 +2172,11 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Upload from file options"() {
         setup:
-        def file = getRandomFile(dataSize)
+        def file = getRandomFile((int) dataSize)
 
         when:
         fc.uploadFromFile(file.toPath().toString(),
-            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null)
 
         then:
         fc.getProperties().getFileSize() == dataSize
@@ -2222,7 +2235,7 @@ class FileAPITest extends APISpec {
 
         when:
         def data = getRandomData(dataSize)
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize, numBuffs, null, 4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize).setNumBuffers(numBuffs).setMaxSingleUploadSizeLong(4 * Constants.MB)
         fac.upload(Flux.just(data), parallelTransferOptions, true).block()
         data.position(0)
 
@@ -2290,8 +2303,8 @@ class FileAPITest extends APISpec {
         when:
         def uploadReporter = new Reporter(blockSize)
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize, bufferCount,
-            uploadReporter, 4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setNumBuffers(bufferCount)
+            .setProgressReceiver(uploadReporter).setMaxSingleUploadSizeLong(4 * Constants.MB)
 
         then:
         StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(size)),
@@ -2323,7 +2336,7 @@ class FileAPITest extends APISpec {
         This test should validate that the upload should work regardless of what format the passed data is in because
         it will be chunked appropriately.
          */
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(bufferSize * Constants.MB, numBuffers, null, 4 * Constants.MB)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(bufferSize * Constants.MB).setNumBuffers(numBuffers).setMaxSingleUploadSizeLong(4 * Constants.MB)
         def dataList = [] as List<ByteBuffer>
 
         for (def size : dataSizeList) {
@@ -2356,7 +2369,7 @@ class FileAPITest extends APISpec {
             dataList.add(getRandomData(size))
         }
 
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = fac.upload(Flux.fromIterable(dataList), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
@@ -2380,7 +2393,8 @@ class FileAPITest extends APISpec {
         for (def size : dataSizeList) {
             dataList.add(getRandomData(size))
         }
-        def uploadOperation = fac.upload(Flux.fromIterable(dataList).publish().autoConnect(), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), true)
+        def uploadOperation = fac.upload(Flux.fromIterable(dataList).publish().autoConnect(),
+            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         expect:
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fac.read())))
@@ -2400,7 +2414,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions(4, 4, null, null), true))
+        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setNumBuffers(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -2413,7 +2427,7 @@ class FileAPITest extends APISpec {
         when:
         def data = getRandomByteArray(dataSize)
         def contentMD5 = validateContentMD5 ? MessageDigest.getInstance("MD5").digest(data) : null
-        def uploadOperation = fac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions(null, null, null, 4 * Constants.MB), new PathHttpHeaders()
+        def uploadOperation = fac.uploadWithResponse(Flux.just(ByteBuffer.wrap(data)), new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), new PathHttpHeaders()
             .setCacheControl(cacheControl)
             .setContentDisposition(contentDisposition)
             .setContentEncoding(contentEncoding)
@@ -2453,7 +2467,7 @@ class FileAPITest extends APISpec {
         }
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, 10, null, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10).setNumBuffers(10)
         def uploadOperation = fac.uploadWithResponse(Flux.just(getRandomData(10)),
             parallelTransferOptions, null, metadata, null)
 
@@ -2479,7 +2493,7 @@ class FileAPITest extends APISpec {
 
         when:
         fac.uploadWithResponse(Flux.just(data),
-            new ParallelTransferOptions(blockSize, null, null, singleUploadSize), null, null, null).block()
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null).block()
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
@@ -2509,7 +2523,7 @@ class FileAPITest extends APISpec {
             .setIfUnmodifiedSince(unmodified)
 
         expect:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(10, null, null, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10)
         StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),
             parallelTransferOptions, null, null, requestConditions))
             .assertNext({ assert it.getStatusCode() == 200 })
@@ -2539,7 +2553,7 @@ class FileAPITest extends APISpec {
             .setIfNoneMatch(noneMatch)
             .setIfModifiedSince(modified)
             .setIfUnmodifiedSince(unmodified)
-        def parallelTransferOptions = new ParallelTransferOptions(10, null, null, null)
+        def parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(10)
 
         expect:
         StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),
@@ -2571,8 +2585,8 @@ class FileAPITest extends APISpec {
         def requestConditions = new DataLakeRequestConditions().setLeaseId(leaseID)
 
         when:
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(blockSize as int,
-            numBuffers as int, null, null)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize)
+            .setNumBuffers(numBuffers)
 
         then:
         StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(10)),

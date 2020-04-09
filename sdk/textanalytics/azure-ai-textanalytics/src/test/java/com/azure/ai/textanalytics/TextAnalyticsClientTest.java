@@ -9,20 +9,13 @@ import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
@@ -30,7 +23,6 @@ import org.junit.jupiter.api.Test;
 import java.net.HttpURLConnection;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +30,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEn
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -46,7 +37,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
-
     private TextAnalyticsClient client;
 
     @Override
@@ -114,15 +104,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectSingleTextLanguage() {
         validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0),
             client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Verifies that an exception is thrown when null text is passed.
-     */
-    @Test
-    public void detectLanguagesNullInput() {
-        assertThrows(NullPointerException.class, () -> client.detectLanguageBatch(null, null,
-            Context.NONE).streamByPage().findFirst().get());
     }
 
     /**
@@ -256,64 +237,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
-    // Recognize PII entity
-
-    @Test
-    public void recognizePiiEntitiesForTextInput() {
-        final PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0, 9, 1.0);
-        final PiiEntity piiEntity = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 28, 11, 0.0);
-        final TextAnalyticsPagedIterable<PiiEntity> entities = client.recognizePiiEntities("Microsoft employee with ssn 859-98-0987 is using our awesome API's.");
-        Iterator<PiiEntity> iterator = entities.iterator();
-        validatePiiEntity(piiEntity0, iterator.next());
-        validatePiiEntity(piiEntity, iterator.next());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForEmptyText() {
-        Exception exception = assertThrows(TextAnalyticsException.class, () -> client.recognizePiiEntities("").iterator().hasNext());
-        assertTrue(exception.getMessage().equals(INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForFaultyText() {
-        assertFalse(client.recognizePiiEntities("!@#%%").iterator().hasNext());
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInput() {
-        recognizeBatchPiiRunner((inputs) ->
-            client.recognizePiiEntitiesBatch(inputs, null, Context.NONE).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchInputShowStatistics() {
-        recognizeBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizePiiEntitiesBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForBatchStringInput() {
-        recognizePiiStringInputRunner((inputs) ->
-            client.recognizePiiEntitiesBatch(inputs).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListLanguageHint() {
-        recognizePiiLanguageHintRunner((inputs, language) ->
-            client.recognizePiiEntitiesBatch(inputs, language).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(false, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
-    @Test
-    public void recognizePiiEntitiesForListStringWithOptions() {
-        recognizeStringBatchPiiEntitiesShowStatsRunner((inputs, options) ->
-            client.recognizePiiEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
-                validatePiiEntityWithPagedResponse(true, getExpectedBatchPiiEntities(), pagedResponse)));
-    }
-
     // Recognize linked entity
 
     @Test
@@ -372,7 +295,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.recognizeLinkedEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
                 validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
-
 
     // Extract key phrase
 
@@ -521,118 +443,5 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyseBatchSentimentShowStatsRunner((inputs, options) ->
             client.analyzeSentimentBatch(inputs, options, Context.NONE).iterableByPage().forEach(pagedResponse ->
                 validateSentimentWithPagedResponse(true, getExpectedBatchTextSentiment(), pagedResponse)));
-    }
-
-    /**
-     * Test client builder with valid API key
-     */
-    @Test
-    public void validKey() {
-        // Arrange
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(getApiKey())).buildClient();
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test client builder with invalid API key
-     */
-    @Test
-    public void invalidKey() {
-        // Arrange
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(),
-            new TextAnalyticsApiKeyCredential(INVALID_KEY)).buildClient();
-
-        // Action and Assert
-        assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test client with valid API key but update to invalid key and make call to server.
-     */
-    @Test
-    public void updateToInvalidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(getApiKey());
-
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
-
-        // Update to invalid key
-        credential.updateCredential(INVALID_KEY);
-
-        // Action and Assert
-        assertThrows(HttpResponseException.class, () -> client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test client with invalid API key but update to valid key and make call to server.
-     */
-    @Test
-    public void updateToValidKey() {
-        // Arrange
-        final TextAnalyticsApiKeyCredential credential =
-            new TextAnalyticsApiKeyCredential(INVALID_KEY);
-
-        final TextAnalyticsClient client = createClientBuilder(getEndpoint(), credential).buildClient();
-
-        // Update to valid key
-        credential.updateCredential(getApiKey());
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            client.detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test for null service version, which would take take the default service version by default
-     */
-    @Test
-    public void nullServiceVersion() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .retryPolicy(new RetryPolicy())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            clientBuilder.buildClient().detectLanguage("This is a test English Text"));
-    }
-
-    /**
-     * Test for default pipeline in client builder
-     */
-    @Test
-    public void defaultPipeline() {
-        // Arrange
-        final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .endpoint(getEndpoint())
-            .apiKey(new TextAnalyticsApiKeyCredential(getApiKey()))
-            .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        // Action and Assert
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 1.0),
-            clientBuilder.buildClient().detectLanguage("This is a test English Text"));
     }
 }

@@ -5,8 +5,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.google.common.base.Predicates;
-import com.google.common.collect.ImmutableList;
+import com.azure.cosmos.implementation.guava25.base.Predicates;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.assertj.core.api.Condition;
@@ -187,20 +187,26 @@ public class AddressSelectorWrapper {
                 VerifierBuilder resolveAllUriAsync_IncludePrimary(boolean primaryIncluded) {
                     methodName(resolveAllUriAsync);
 
-                    Condition alwaysTrue = new Condition(Predicates.alwaysTrue(), "no getCondition");
-                    Condition primaryIncludedCond = new Condition(Predicates.equalTo(primaryIncluded), String.format("%b (primaryIncluded)", primaryIncluded));
+                    Condition<Boolean> alwaysTrue = new Condition<>(Predicates.alwaysTrue(), "no getCondition");
+                    Condition<Boolean> primaryIncludedCond = new Condition<>(Predicates.equalTo(primaryIncluded), String.format("%b (primaryIncluded)", primaryIncluded));
 
-                    resolveAllUriAsync(alwaysTrue, primaryIncludedCond, alwaysTrue);
+                    resolveAllUriAsync(
+                        new Condition<>(Predicates.alwaysTrue(), "no condition"),
+                        primaryIncludedCond,
+                        alwaysTrue);
                     return this;
                 }
 
                 VerifierBuilder resolveAllUriAsync_ForceRefresh(boolean forceRefresh) {
                     methodName(resolveAllUriAsync);
 
-                    Condition alwaysTrue = new Condition(Predicates.alwaysTrue(), "no condition");
-                    Condition forceRefreshCond = new Condition(Predicates.equalTo(forceRefresh), String.format("%b (forceRefresh)", forceRefresh));
+                    Condition<Boolean> alwaysTrue = new Condition<>(Predicates.alwaysTrue(), "no condition");
+                    Condition<Boolean> forceRefreshCond = new Condition<>(Predicates.equalTo(forceRefresh), String.format("%b (forceRefresh)", forceRefresh));
 
-                    resolveAllUriAsync(alwaysTrue, alwaysTrue, forceRefreshCond);
+                    resolveAllUriAsync(
+                        new Condition<>(Predicates.alwaysTrue(), "no condition"),
+                        alwaysTrue,
+                        forceRefreshCond);
                     return this;
                 }
             }

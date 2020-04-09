@@ -4,11 +4,11 @@
 package com.azure.storage.file.share
 
 import com.azure.storage.common.StorageSharedKeyCredential
-import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
+import com.azure.storage.file.share.models.ShareMetrics
 import com.azure.storage.file.share.models.ShareProperties
 import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties

@@ -7,8 +7,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -36,6 +36,8 @@ import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * Client to a block blob. It may only be instantiated through a {@link SpecializedBlobClientBuilder} or via the method
@@ -58,13 +60,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
+     * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
      */
+    @Deprecated
     public static final int MAX_UPLOAD_BLOB_BYTES = 256 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to upload.
+     */
+    public static final long MAX_UPLOAD_BLOB_BYTES_LONG = 256 * Constants.MB;
+
+    /**
+     * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
+     * @deprecated Use {@link #MAX_STAGE_BLOCK_BYTES_LONG}
+     */
+    @Deprecated
+    public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
-    public static final int MAX_STAGE_BLOCK_BYTES = 100 * Constants.MB;
+    public static final long MAX_STAGE_BLOCK_BYTES_LONG = 4000L * Constants.MB;
 
     /**
      * Indicates the maximum number of blocks allowed in a block blob.
@@ -103,7 +119,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
-     * <p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -132,7 +147,6 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      * <p>
      * Note that the data passed must be replayable if retries are enabled (the default). In other words, the
      * {@code Flux} must produce the same data each time it is subscribed to.
-     * <p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -203,12 +217,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Map<String, String> metadata, AccessTier tier, byte[] contentMd5, BlobRequestConditions requestConditions,
         Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().uploadWithRestResponseAsync(null,
             null, data, length, null, contentMd5, metadata, requestConditions.getLeaseId(), tier,
             requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            encryptionScope, context)
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobUploadHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -275,8 +290,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
         try {
-            return withContext(context -> stageBlockWithResponse(base64BlockId, data, length, contentMd5,
-                leaseId, context));
+            return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
+                contentMd5, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -284,9 +299,10 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId, Context context) {
+        context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.blockBlobs().stageBlockWithRestResponseAsync(null, null,
             base64BlockId, length, data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context)
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -345,8 +361,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     public Mono<Response<Void>> stageBlockFromUrlWithResponse(String base64BlockId, String sourceUrl,
         BlobRange sourceRange, byte[] sourceContentMd5, String leaseId, BlobRequestConditions sourceRequestConditions) {
         try {
-            return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl, sourceRange,
-                sourceContentMd5, leaseId, sourceRequestConditions));
+            return withContext(context -> stageBlockFromUrlWithResponse(base64BlockId, sourceUrl,
+                sourceRange, sourceContentMd5, leaseId, sourceRequestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -364,12 +380,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'sourceUrl' is not a valid url."));
         }
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().stageBlockFromURLWithRestResponseAsync(null, null, base64BlockId, 0,
             url, sourceRange.toHeaderValue(), sourceContentMd5, null, null, leaseId,
             sourceRequestConditions.getIfModifiedSince(), sourceRequestConditions.getIfUnmodifiedSince(),
             sourceRequestConditions.getIfMatch(), sourceRequestConditions.getIfNoneMatch(), null,
-            getCustomerProvidedKey(), encryptionScope, context)
+            getCustomerProvidedKey(), encryptionScope,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -500,8 +518,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> commitBlockListWithResponse(base64BlockIds, headers, metadata, tier,
-                requestConditions, context));
+            return withContext(context -> commitBlockListWithResponse(base64BlockIds, headers,
+                metadata, tier, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -511,12 +529,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
             BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = context == null ? Context.NONE : context;
 
         return this.azureBlobStorage.blockBlobs().commitBlockListWithRestResponseAsync(null, null,
             new BlockLookupList().setLatest(base64BlockIds), null, null, null, metadata, requestConditions.getLeaseId(),
             tier, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
             requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(),
-            encryptionScope, context)
+            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(rb -> {
                 BlockBlobCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

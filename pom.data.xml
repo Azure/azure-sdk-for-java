@@ -601,7 +601,6 @@
       </build>
     </profile>
   </profiles>
-
   <modules>
     <module>./sdk/batch/microsoft-azure-batch</module>
     <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>

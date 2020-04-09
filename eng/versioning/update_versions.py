@@ -169,6 +169,8 @@ def load_version_map_from_file(the_file, version_map):
             if not stripped_line or stripped_line.startswith('#'):
                 continue
             module = CodeModule(stripped_line)
+            if (module.name in version_map):
+                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name)) 
             version_map[module.name] = module
 
 def display_version_info(version_map):

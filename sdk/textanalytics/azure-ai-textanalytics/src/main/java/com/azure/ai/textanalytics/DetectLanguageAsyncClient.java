@@ -21,13 +21,16 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing detect language endpoint.
@@ -50,18 +53,22 @@ class DetectLanguageAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link DetectLanguageResult}.
      *
-     * @param textInputs The list of documents to detect languages for.
+     * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
      */
-    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> textInputs,
+    TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatch(Iterable<DetectLanguageInput> documents,
         TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<DetectLanguageInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
 
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getDetectedLanguageResponseInPage(textInputs, options, context)).flux());
+                getDetectedLanguageResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
@@ -71,17 +78,22 @@ class DetectLanguageAsyncClient {
      * Helper function for calling service with max overloaded parameters with {@link Context} that a returns
      * {@link TextAnalyticsPagedFlux} which is a paged flux that contains {@link DetectLanguageResult}.
      *
-     * @param textInputs The list of documents to detect languages for.
+     * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link DetectLanguageResult}.
      */
     TextAnalyticsPagedFlux<DetectLanguageResult> detectLanguageBatchWithContext(
-        Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<DetectLanguageInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getDetectedLanguageResponseInPage(textInputs, options, context).flux());
+            getDetectedLanguageResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -141,19 +153,20 @@ class DetectLanguageAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link DetectLanguageResult} from a {@link SimpleResponse} of {@link LanguageResult}.
      *
-     * @param textInputs The list of documents to detect languages for.
+     * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link DetectLanguageResult}.
      */
     private Mono<TextAnalyticsPagedResponse<DetectLanguageResult>> getDetectedLanguageResponseInPage(
-        Iterable<DetectLanguageInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.languagesWithRestResponseAsync(
-            new LanguageBatchInput().setDocuments(toLanguageInput(textInputs)),
+            new LanguageBatchInput().setDocuments(toLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", textInputs.toString()))
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Detected languages for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to detect language - {}", error))

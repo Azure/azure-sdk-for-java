@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 /**
  * {@link ChannelPool} implementation that enforces a maximum number of concurrent direct TCP Cosmos connections
@@ -642,6 +642,8 @@ public final class RntbdClientChannelPool extends SimpleChannelPool {
     }
 
     static final class JsonSerializer extends StdSerializer<RntbdClientChannelPool> {
+
+        private static final long serialVersionUID = -8688539496437151693L;
 
         JsonSerializer() {
             super(RntbdClientChannelPool.class);

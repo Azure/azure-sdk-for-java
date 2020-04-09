@@ -11,7 +11,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
@@ -78,9 +79,9 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         public int compare(CosmosItemProperties doc1, CosmosItemProperties doc2) {
             boolean isAsc = order == CompositePathSortOrder.ASCENDING;
             if (isNumericPath) {
-                if (doc1.getInt(path) < doc2.getInt(path))
+                if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) < ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
                     return isAsc ? -1 : 1;
-                else if (doc1.getInt(path) > doc2.getInt(path))
+                else if (ModelBridgeInternal.getIntFromJsonSerializable(doc1, path) > ModelBridgeInternal.getIntFromJsonSerializable(doc2, path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;
@@ -90,11 +91,14 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
                     doc1 = doc2;
                     doc2 = temp;
                 }
-                return doc1.getString(path).compareTo(doc2.getString(path));
+                return ModelBridgeInternal.getStringFromJsonSerializable(doc1, path)
+                                          .compareTo(ModelBridgeInternal.getStringFromJsonSerializable(doc2, path));
             } else if (isBooleanPath) {
-                if (doc1.getBoolean(path) == false && doc2.getBoolean(path) == true)
+                if (!ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
+                    ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
                     return isAsc ? -1 : 1;
-                else if (doc1.getBoolean(path) == true && doc2.getBoolean(path) == false)
+                else if (ModelBridgeInternal.getBooleanFromJsonSerializable(doc1, path) &&
+                    !ModelBridgeInternal.getBooleanFromJsonSerializable(doc2, path))
                     return isAsc ? 1 : -1;
                 else
                     return 0;
@@ -119,7 +123,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void before_MultiOrderByQueryTests() throws Exception {
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 
@@ -128,7 +132,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Random random = new Random();
         for (int i = 0; i < numberOfDocuments; ++i) {
             CosmosItemProperties multiOrderByDocument = generateMultiOrderByDocument();
-            String multiOrderByDocumentString = multiOrderByDocument.toJson();
+            String multiOrderByDocumentString = ModelBridgeInternal.toJsonFromJsonSerializable(multiOrderByDocument);
             int numberOfDuplicates = 5;
 
             for (int j = 0; j < numberOfDuplicates; j++) {
@@ -163,7 +167,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
         voidBulkInsertBlocking(documentCollection, documents);
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
     private CosmosItemProperties generateMultiOrderByDocument() {
@@ -311,7 +315,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         List<CosmosItemProperties> result = new ArrayList<CosmosItemProperties>();
         if (hasFilter) {
             for (CosmosItemProperties document : cosmosItemSettings) {
-                if (document.getInt(NUMBER_FIELD) % 2 == 0) {
+                if (ModelBridgeInternal.getIntFromJsonSerializable(document, NUMBER_FIELD) % 2 == 0) {
                     result.add(document);
                 }
             }

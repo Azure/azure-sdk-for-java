@@ -272,7 +272,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .withConsistencyLevel(ConsistencyLevel.SESSION).build();
             RequestOptions options = new RequestOptions();
             if (StringUtils.isNotEmpty(partitionKey)) {
-                options.setPartitionKey(new PartitionKey((String)partitionKey));
+                options.setPartitionKey(new PartitionKey(partitionKey));
             } else {
                 options.setPartitionKey(PartitionKey.NONE);
             }

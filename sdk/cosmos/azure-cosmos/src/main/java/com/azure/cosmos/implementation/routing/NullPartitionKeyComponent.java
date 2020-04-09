@@ -14,7 +14,7 @@ class NullPartitionKeyComponent implements IPartitionKeyComponent {
     public static final NullPartitionKeyComponent VALUE = new NullPartitionKeyComponent();
 
     @Override
-    public int CompareTo(IPartitionKeyComponent other) {
+    public int compareTo(IPartitionKeyComponent other) {
         NullPartitionKeyComponent otherMinString = Utils.as(other, NullPartitionKeyComponent.class);
         if (otherMinString == null) {
             throw new IllegalArgumentException("other");
@@ -24,12 +24,12 @@ class NullPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int GetTypeOrdinal() {
+    public int getTypeOrdinal() {
         return PartitionKeyComponentType.NULL.type;
     }
 
     @Override
-    public void JsonEncode(JsonGenerator writer) {
+    public void jsonEncode(JsonGenerator writer) {
         try {
             writer.writeObject(null);
         } catch (IOException e) {
@@ -38,7 +38,7 @@ class NullPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashing(OutputStream outputStream) {
+    public void writeForHashing(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NULL.type);
         } catch (IOException e) {
@@ -47,7 +47,7 @@ class NullPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashingV2(OutputStream outputStream) {
+    public void writeForHashingV2(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NULL.type);
         } catch (IOException e) {
@@ -56,7 +56,7 @@ class NullPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForBinaryEncoding(OutputStream outputStream) {
+    public void writeForBinaryEncoding(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.NULL.type);
         } catch (IOException e) {
@@ -65,7 +65,7 @@ class NullPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public IPartitionKeyComponent Truncate() {
+    public IPartitionKeyComponent truncate() {
         return this;
     }
 }
