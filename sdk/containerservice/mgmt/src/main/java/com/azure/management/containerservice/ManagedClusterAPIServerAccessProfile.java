@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedClusterAPIServerAccessProfile model. */
+/** The ManagedClusterApiServerAccessProfile model. */
 @Fluent
-public final class ManagedClusterAPIServerAccessProfile {
+public final class ManagedClusterApiServerAccessProfile {
     /*
      * Authorized IP Ranges to kubernetes API server.
      */
@@ -36,9 +36,9 @@ public final class ManagedClusterAPIServerAccessProfile {
      * Set the authorizedIPRanges property: Authorized IP Ranges to kubernetes API server.
      *
      * @param authorizedIPRanges the authorizedIPRanges value to set.
-     * @return the ManagedClusterAPIServerAccessProfile object itself.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
      */
-    public ManagedClusterAPIServerAccessProfile withAuthorizedIPRanges(List<String> authorizedIPRanges) {
+    public ManagedClusterApiServerAccessProfile withAuthorizedIPRanges(List<String> authorizedIPRanges) {
         this.authorizedIPRanges = authorizedIPRanges;
         return this;
     }
@@ -56,9 +56,9 @@ public final class ManagedClusterAPIServerAccessProfile {
      * Set the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
      *
      * @param enablePrivateCluster the enablePrivateCluster value to set.
-     * @return the ManagedClusterAPIServerAccessProfile object itself.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
      */
-    public ManagedClusterAPIServerAccessProfile withEnablePrivateCluster(Boolean enablePrivateCluster) {
+    public ManagedClusterApiServerAccessProfile withEnablePrivateCluster(Boolean enablePrivateCluster) {
         this.enablePrivateCluster = enablePrivateCluster;
         return this;
     }

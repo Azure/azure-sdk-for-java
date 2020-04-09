@@ -42,6 +42,11 @@ public enum Count {
         return null;
     }
 
+    /**
+     * De-serializes the instance to int value.
+     *
+     * @return the int value.
+     */
     @JsonValue
     public int toInt() {
         return this.value;

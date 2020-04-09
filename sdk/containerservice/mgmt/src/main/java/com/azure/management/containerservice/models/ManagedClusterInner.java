@@ -10,9 +10,9 @@ import com.azure.core.management.Resource;
 import com.azure.management.containerservice.ContainerServiceLinuxProfile;
 import com.azure.management.containerservice.ContainerServiceNetworkProfile;
 import com.azure.management.containerservice.ManagedClusterAADProfile;
-import com.azure.management.containerservice.ManagedClusterAPIServerAccessProfile;
 import com.azure.management.containerservice.ManagedClusterAddonProfile;
 import com.azure.management.containerservice.ManagedClusterAgentPoolProfile;
+import com.azure.management.containerservice.ManagedClusterApiServerAccessProfile;
 import com.azure.management.containerservice.ManagedClusterIdentity;
 import com.azure.management.containerservice.ManagedClusterServicePrincipalProfile;
 import com.azure.management.containerservice.ManagedClusterWindowsProfile;
@@ -102,7 +102,7 @@ public class ManagedClusterInner extends Resource {
      * Whether to enable Kubernetes Role-Based Access Control.
      */
     @JsonProperty(value = "properties.enableRBAC")
-    private Boolean enableRBAC;
+    private Boolean enableRbac;
 
     /*
      * (PREVIEW) Whether to enable Kubernetes Pod security policy.
@@ -126,7 +126,7 @@ public class ManagedClusterInner extends Resource {
      * Access profile for managed cluster API server.
      */
     @JsonProperty(value = "properties.apiServerAccessProfile")
-    private ManagedClusterAPIServerAccessProfile apiServerAccessProfile;
+    private ManagedClusterApiServerAccessProfile apiServerAccessProfile;
 
     /**
      * Get the identity property: The identity of the managed cluster, if configured.
@@ -340,22 +340,22 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the enableRBAC property: Whether to enable Kubernetes Role-Based Access Control.
+     * Get the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
      *
-     * @return the enableRBAC value.
+     * @return the enableRbac value.
      */
-    public Boolean enableRBAC() {
-        return this.enableRBAC;
+    public Boolean enableRbac() {
+        return this.enableRbac;
     }
 
     /**
-     * Set the enableRBAC property: Whether to enable Kubernetes Role-Based Access Control.
+     * Set the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
      *
-     * @param enableRBAC the enableRBAC value to set.
+     * @param enableRbac the enableRbac value to set.
      * @return the ManagedClusterInner object itself.
      */
-    public ManagedClusterInner withEnableRBAC(Boolean enableRBAC) {
-        this.enableRBAC = enableRBAC;
+    public ManagedClusterInner withEnableRbac(Boolean enableRbac) {
+        this.enableRbac = enableRbac;
         return this;
     }
 
@@ -424,7 +424,7 @@ public class ManagedClusterInner extends Resource {
      *
      * @return the apiServerAccessProfile value.
      */
-    public ManagedClusterAPIServerAccessProfile apiServerAccessProfile() {
+    public ManagedClusterApiServerAccessProfile apiServerAccessProfile() {
         return this.apiServerAccessProfile;
     }
 
@@ -434,7 +434,7 @@ public class ManagedClusterInner extends Resource {
      * @param apiServerAccessProfile the apiServerAccessProfile value to set.
      * @return the ManagedClusterInner object itself.
      */
-    public ManagedClusterInner withApiServerAccessProfile(ManagedClusterAPIServerAccessProfile apiServerAccessProfile) {
+    public ManagedClusterInner withApiServerAccessProfile(ManagedClusterApiServerAccessProfile apiServerAccessProfile) {
         this.apiServerAccessProfile = apiServerAccessProfile;
         return this;
     }
