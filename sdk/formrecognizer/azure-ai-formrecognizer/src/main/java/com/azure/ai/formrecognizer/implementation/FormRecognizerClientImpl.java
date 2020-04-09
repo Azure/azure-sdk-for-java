@@ -578,10 +578,23 @@ public final class FormRecognizerClientImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all custom models.
      */
+    // @ServiceMethod(returns = ReturnType.SINGLE)
+    // public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
+    //     final String op = "full";
+    //     return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
+    //         .map(res -> new PagedResponseBase<>(
+    //             res.getRequest(),
+    //             res.getStatusCode(),
+    //             res.getHeaders(),
+    //             res.getValue().getModelList(),
+    //             res.getValue().getNextLink(),
+    //             null));
+    // }
+
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
+    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
         final String op = "full";
-        return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
+        return service.listCustomModels(this.getEndpoint(), op, context)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),

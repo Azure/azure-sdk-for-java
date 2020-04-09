@@ -4,6 +4,14 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.Utility;
+import com.azure.ai.formrecognizer.models.AccountProperties;
+import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.CustomFormModelField;
+import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.ModelTrainingStatus;
+import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
+import com.azure.ai.formrecognizer.models.TrainingStatus;
+import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
 
 import java.io.File;
@@ -11,12 +19,31 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains helper methods for generating inputs for test methods
  */
 final class TestUtils {
 
+    static final String VALID_MODEL_ID = "95537f1b-aac4-4da8-8292-f1b93ac4c8f8";
+    static final String SUPERVISED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
+    static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
+    static final String INVALID_STATUS_MODEL_ID = "";
+    // TODO: Do not hardcode, generate SAS URL
+    static final String VALID_SUPERVISED_SAS_URL = "";
+    static final String VALID_UNSUPERVISED_SAS_URL =  "";
+    static final Object INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
+    static final Object SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
     static final String INVALID_KEY = "invalid key";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
@@ -280,6 +307,49 @@ final class TestUtils {
     //     return new IterableStream<>(new ArrayList<>(Collections.singletonList(extractedReceipt)));
     // }
 
+    static List<TrainingDocumentInfo> getTrainingDocuments() {
+        TrainingDocumentInfo trainingDocumentInfo1 = new TrainingDocumentInfo("Invoice_1.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
+        TrainingDocumentInfo trainingDocumentInfo2 = new TrainingDocumentInfo("Invoice_2.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
+        TrainingDocumentInfo trainingDocumentInfo3 = new TrainingDocumentInfo("Invoice_3.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
+        TrainingDocumentInfo trainingDocumentInfo4 = new TrainingDocumentInfo("Invoice_4.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
+        TrainingDocumentInfo trainingDocumentInfo5 = new TrainingDocumentInfo("Invoice_5.pdf", TrainingStatus.SUCCEEDED, 1, Collections.emptyList());
+        return new ArrayList<>(Arrays.asList(trainingDocumentInfo1, trainingDocumentInfo2, trainingDocumentInfo3, trainingDocumentInfo4, trainingDocumentInfo5));
+    }
+
+    static CustomFormModel getExpectedUnsupervisedModel() {
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, new HashMap<>(), "form-0");
+        return new CustomFormModel(VALID_MODEL_ID, ModelTrainingStatus.READY,
+            OffsetDateTime.parse("2020-04-09T21:30:28Z"),
+            OffsetDateTime.parse("2020-04-09T18:24:56Z"),
+            new IterableStream<>(Collections.singletonList(customFormSubModel)),
+            Collections.emptyList(), getTrainingDocuments());
+    }
+
+    static CustomFormModel getExpectedSupervisedModel() {
+        Map<String, CustomFormModelField> fieldMap =  new HashMap<>() {
+            {
+                put("InvoiceCharges", new CustomFormModelField("InvoiceCharges", 1.0f));
+                put("InvoiceDate", new CustomFormModelField("InvoiceDate", 0.8f));
+                put("InvoiceDueDate", new CustomFormModelField("InvoiceDueDate", 0.8f));
+                put("InvoiceNumber", new CustomFormModelField("InvoiceNumber", 1.0f));
+                put("InvoiceVatId", new CustomFormModelField("InvoiceVatId", 1.0f));
+            }
+
+        };
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.92f, fieldMap, "form-" + SUPERVISED_MODEL_ID);
+        return new CustomFormModel(SUPERVISED_MODEL_ID, ModelTrainingStatus.READY,
+            OffsetDateTime.parse("2020-04-09T18:24:49Z"),
+            OffsetDateTime.parse("2020-04-09T18:24:56Z"),
+            new IterableStream<>(Collections.singletonList(customFormSubModel)),
+            Collections.emptyList(), getTrainingDocuments());
+    }
+
+
+    static AccountProperties getExpectedAccountProperties() {
+        // TODO: wouldn't the count keep changing?
+        return new AccountProperties(14, 5000);
+    }
+
     static InputStream getReceiptFileData() {
         try {
             return new FileInputStream(RECEIPT_LOCAL_URL);
@@ -291,4 +361,5 @@ final class TestUtils {
     static Flux<ByteBuffer> getReceiptFileBufferData() {
         return Utility.convertStreamToByteBuffer(getReceiptFileData());
     }
+
 }
