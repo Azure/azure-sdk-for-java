@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 
 /**
  * Type representing PremierAddOn.
  */
-public interface PremierAddOn extends HasInner<PremierAddOnInner>, Indexable, Refreshable<PremierAddOn>, Updatable<PremierAddOn.Update>, HasManager<AppServiceManager> {
+public interface PremierAddOn extends HasInner<PremierAddOnInner>, Indexable, Refreshable<PremierAddOn>, Updatable<PremierAddOn.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */

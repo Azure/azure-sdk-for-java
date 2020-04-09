@@ -14,15 +14,15 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2018_02_01.PerfMonSet;
 
 class PerfMonResponseImpl extends WrapperImpl<PerfMonResponseInner> implements PerfMonResponse {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    PerfMonResponseImpl(PerfMonResponseInner inner,  AppServiceManager manager) {
+    PerfMonResponseImpl(PerfMonResponseInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

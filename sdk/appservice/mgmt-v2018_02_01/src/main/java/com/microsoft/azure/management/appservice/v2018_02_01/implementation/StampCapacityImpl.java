@@ -14,14 +14,14 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ComputeModeOptions;
 import com.microsoft.azure.management.appservice.v2018_02_01.WorkerSizeOptions;
 
 class StampCapacityImpl extends WrapperImpl<StampCapacityInner> implements StampCapacity {
-    private final AppServiceManager manager;
-    StampCapacityImpl(StampCapacityInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    StampCapacityImpl(StampCapacityInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
