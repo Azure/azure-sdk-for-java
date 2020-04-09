@@ -92,7 +92,7 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocuments(client, hotels);
 
         SearchOptions searchOptions = new SearchOptions().setTop(2000).setSelect("HotelId")
-            .setOrderBy("HotelId asc").setFacets("Rating, sort:-value");
+            .setOrderBy("HotelId asc");
         SearchPagedFlux results = client.search("*", searchOptions, generateRequestOptions());
 
 
@@ -104,14 +104,11 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
                 assertEquals(1000, firstPage.getValue().size());
-                assertEquals(1, firstPage.getFacets().size());
                 assertListEqualHotelIds(expectedId.subList(0, 1000), firstPage.getValue());
                 assertNotNull(firstPage.getContinuationToken());
             })
             .assertNext(nextPage -> {
                 assertEquals(1000, nextPage.getValue().size());
-                assertEquals(1, nextPage.getFacets().size());
-
                 assertListEqualHotelIds(expectedId.subList(1000, 2000), nextPage.getValue());
                 assertNull(nextPage.getContinuationToken());
             }).verifyComplete();

@@ -136,8 +136,7 @@ public class SearchSyncTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setTop(2000)
             .setSelect("HotelId")
-            .setOrderBy("HotelId asc")
-            .setFacets("Rating, sort:-value");
+            .setOrderBy("HotelId asc");
 
         List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
@@ -156,7 +155,6 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedResponse secondPage = iterator.next();
         assertEquals(1000, secondPage.getValue().size());
-        assertEquals(1, firstPage.getFacets().size());
         assertListEqualHotelIds(expectedHotelIds.subList(1000, 2000), secondPage.getValue());
         assertNull(secondPage.getContinuationToken());
     }
