@@ -4,30 +4,39 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
 import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String CONTENTS = "Test-contents";
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
-    private ServiceBusReceiverAsyncClient receiverManualComplete;
     private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
 
@@ -38,15 +47,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         final String queueName = getQueueName();
-        Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
+        assertNotNull(queueName, "'queueName' cannot be null.");
 
         sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
         receiver = createBuilder()
-            .receiver()
-            .queueName(queueName)
-            .buildAsyncClient();
-
-        receiverManualComplete = createBuilder()
             .receiver()
             .queueName(queueName)
             .buildAsyncClient();
@@ -60,7 +64,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(receiver, receiverManualComplete, receiveDeleteModeReceiver, sender);
+        dispose(receiver, receiveDeleteModeReceiver, sender);
     }
 
     /**
@@ -78,9 +82,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         StepVerifier.create(sender.send(message).then(sender.send(message))
             .thenMany(receiver.receive(options)))
             .assertNext(receivedMessage ->
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
+                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .assertNext(receivedMessage ->
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
+                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .thenCancel()
             .verify();
     }
@@ -98,7 +102,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(sender.send(message).thenMany(receiver.receive(options)))
             .assertNext(receivedMessage ->
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
+                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .thenCancel()
             .verify();
     }
@@ -114,9 +118,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peek()))
-            .assertNext(receivedMessage -> {
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-            })
+            .assertNext(receivedMessage -> assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .verifyComplete();
     }
 
@@ -138,8 +140,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.receive().take(1))
             .assertNext(receivedMessage -> {
-                Assertions.assertArrayEquals(contents.getBytes(), receivedMessage.getBody());
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                assertArrayEquals(contents.getBytes(), receivedMessage.getBody());
+                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -152,10 +154,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageId1 = UUID.randomUUID().toString();
         final String messageId2 = UUID.randomUUID().toString();
-        String contents = "Some-contents";
-        final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(contents, messageId1, 0);
-        final ServiceBusMessage message2 = TestUtils.getServiceBusMessage(contents, messageId2, 0);
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(1);
+        final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(CONTENTS, messageId1, 0);
+        final ServiceBusMessage message2 = TestUtils.getServiceBusMessage(CONTENTS, messageId2, 0);
+        final Duration duration = Duration.ofSeconds(10);
+        final Instant scheduledEnqueueTime = Instant.now().plus(duration);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         sender.scheduleMessage(message1, scheduledEnqueueTime)
@@ -164,15 +166,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .block(TIMEOUT);
 
         // Assert & Act
-        String finalContents = contents;
-        StepVerifier.create(receiveDeleteModeReceiver.receive(options).take(2))
+        StepVerifier.create(Mono.delay(duration).thenMany(receiveDeleteModeReceiver.receive(options).take(2)))
             .assertNext(receivedMessage -> {
-                Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                final String actual = new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
+                assertEquals(CONTENTS, actual);
+
+                final Map<String, Object> properties = receivedMessage.getProperties();
+                assertTrue(properties.containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(messageId1, properties.get(MESSAGE_TRACKING_ID));
             })
             .assertNext(receivedMessage -> {
-                Assertions.assertArrayEquals(finalContents.getBytes(), receivedMessage.getBody());
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                final String actual = new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
+                assertEquals(CONTENTS, actual);
+                final Map<String, Object> properties = receivedMessage.getProperties();
+                assertTrue(properties.containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(messageId2, properties.get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -192,7 +200,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final Long sequenceNumber = sender.scheduleMessage(message, scheduledEnqueueTime).block();
         logger.verbose("Scheduled the message, sequence number {}.", sequenceNumber);
 
-        Assertions.assertNotNull(sequenceNumber);
+        assertNotNull(sequenceNumber);
 
         Mono.delay(delayDuration)
             .then(sender.cancelScheduledMessage(sequenceNumber))
@@ -201,8 +209,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(receiver.receive().take(1))
-            .expectNoEvent(Duration.ofSeconds(5))
-            .verifyComplete();
+            .thenAwait(Duration.ofSeconds(2))
+            .thenCancel()
+            .verify();
     }
 
     /**
@@ -217,9 +226,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         // Assert & Act
         StepVerifier.create(sender.send(message).then(receiver.peekAt(fromSequenceNumber)))
-            .assertNext(receivedMessage -> {
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-            })
+            .assertNext(receivedMessage -> assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .verifyComplete();
     }
 
@@ -268,11 +275,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
-        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiver.receive(options).next())
-            .block(Duration.ofSeconds(30));
+        sender.send(message).block(TIMEOUT);
 
-        Assertions.assertNotNull(receivedMessage);
+        final ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next()
+            .block(TIMEOUT);
+
+        assertNotNull(receivedMessage);
 
         // Assert & Act
         StepVerifier.create(receiver.deadLetter(receivedMessage))
@@ -290,28 +298,31 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         final AtomicReference<Instant> initialLock = new AtomicReference<>();
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
-            .setMaxAutoRenewDuration(null);
+            .setEnableAutoComplete(false);
 
         // Blocking here because it is not part of the scenario we want to test.
         sender.send(message).block(TIMEOUT);
         ServiceBusReceivedMessage m = receiver.receive(options).next().block(TIMEOUT);
-        Assertions.assertNotNull(m);
-        Assertions.assertNotNull(m.getLockedUntil());
+        assertNotNull(m);
+        assertNotNull(m.getLockedUntil());
         receivedMessage.set(m);
         initialLock.set(m.getLockedUntil());
 
         // Assert & Act
-        StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
-            .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
-            .assertNext(lockedUntil -> {
-                Assertions.assertTrue(lockedUntil.isAfter(initialLock.get()),
-                    String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
-                        lockedUntil, initialLock.get()));
+        try {
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
+                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
+                .assertNext(lockedUntil -> {
+                    assertTrue(lockedUntil.isAfter(initialLock.get()),
+                        String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
+                            lockedUntil, initialLock.get()));
 
-                Assertions.assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
-            })
-            .verifyComplete();
+                    assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
+                })
+                .verifyComplete();
+        } finally {
+            receiver.complete(receivedMessage.get());
+        }
     }
 
     /**
@@ -323,70 +334,48 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(true)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ofSeconds(120));
 
         // Send the message to verify.
         sender.send(message).block(TIMEOUT);
 
-        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .connectionString(getConnectionString())
-            .receiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .queueName(getQueueName())
-            .buildAsyncClient();
+        // Act & Assert
+        StepVerifier.create(receiver.receive(options))
+            .assertNext(received -> {
+                assertNotNull(received.getLockedUntil());
+                assertNotNull(received.getLockToken());
 
-        try {
-            // Act & Assert
-            StepVerifier.create(receiver.receive(options))
-                .assertNext(received -> {
-                    Assertions.assertNotNull(received.getLockedUntil());
-                    Assertions.assertNotNull(received.getLockToken());
+                logger.info("{}: now: [{}]. lockId[{}]. lockedUntil[{}]", received.getSequenceNumber(), Instant.now(),
+                    received.getLockToken(), received.getLockedUntil());
 
-                    logger.info("{}: lockId[{}]. lockedUntil[{}]",
-                        received.getSequenceNumber(), received.getLockToken(), received.getLockedUntil());
+                final Instant initial = received.getLockedUntil();
+                final Instant timeToStop = initial.plusSeconds(5);
+                Instant latest = Instant.MIN;
 
-                    final Instant initial = received.getLockedUntil();
-                    Instant latest = Instant.MIN;
+                // Simulate some sort of long processing.
+                final AtomicInteger iteration = new AtomicInteger();
+                while (Instant.now().isBefore(timeToStop)) {
+                    logger.info("Iteration: {}", iteration.incrementAndGet());
 
-                    // Simulate some sort of long processing.
-                    for (int i = 0; i < 3; i++) {
-                        try {
-                            TimeUnit.SECONDS.sleep(15);
-                        } catch (InterruptedException error) {
-                            logger.error("Error occurred while sleeping: " + error);
-                        }
-
-                        Assertions.assertNotNull(received.getLockedUntil());
-                        latest = received.getLockedUntil();
+                    try {
+                        TimeUnit.SECONDS.sleep(15);
+                    } catch (InterruptedException error) {
+                        logger.error("Error occurred while sleeping: " + error);
                     }
 
-                    Assertions.assertTrue(initial.isBefore(latest),
-                        String.format("Latest should be after initial. initial: %s. latest: %s", initial, latest));
+                    assertNotNull(received.getLockedUntil());
+                    latest = received.getLockedUntil();
+                }
 
+                try {
+                    assertTrue(initial.isBefore(latest), String.format(
+                        "Latest should be after or equal to initial. initial: %s. latest: %s", initial, latest));
+                } finally {
                     logger.info("Completing message.");
                     receiver.complete(received).block(Duration.ofSeconds(15));
-                })
-                .thenCancel()
-                .verify();
-        } finally {
-            receiver.close();
-        }
-    }
-
-    @Test
-    void receiveAndDeleteWithBinaryData() {
-        // Arrange
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        final Duration timeout = Duration.ofSeconds(2);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-
-        // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(receiveDeleteModeReceiver.receive(options)))
-            .assertNext(receivedMessage ->
-                Assertions.assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
-            .expectNoEvent(timeout)
+                }
+            })
             .thenCancel()
             .verify();
     }
@@ -396,78 +385,75 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false);
 
-        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive().next())
+        sender.send(message).block(TIMEOUT);
+
+        final ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next()
             .block(TIMEOUT);
 
-        Assertions.assertNotNull(receivedMessage);
+        assertNotNull(receivedMessage);
 
         // Assert & Act
-        StepVerifier.create(receiverManualComplete.abandon(receivedMessage))
+        StepVerifier.create(receiver.abandon(receivedMessage))
             .verifyComplete();
     }
 
-    @Test
-    void receiveBySequenceNumberAndDeadletter() {
-        // Arrange
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        final Duration timeout = Duration.ofSeconds(2);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-
-        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive(options).next())
-            .block(TIMEOUT);
-
-        Assertions.assertNotNull(receivedMessage);
-
-        receiverManualComplete.defer(receivedMessage).block(TIMEOUT);
-
-        final ServiceBusReceivedMessage receivedDeferredMessage = receiverManualComplete
-            .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
-
-        Assertions.assertNotNull(receivedDeferredMessage);
-        Assertions.assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
-
-        receiverManualComplete.deadLetter(receivedDeferredMessage).block(TIMEOUT);
-
-        // Assert & Act
-        StepVerifier.create(receiverManualComplete.receiveDeferredMessage(receivedMessage.getSequenceNumber()))
-            .expectNextCount(0)
-            .thenCancel()
-            .verify(timeout);
+    static Stream<Arguments> receiveBySequenceNumber() {
+        return Stream.of(
+            Arguments.of(DispositionStatus.ABANDONED),
+            Arguments.of(DispositionStatus.SUSPENDED),
+            Arguments.of(DispositionStatus.COMPLETED)
+        );
     }
 
-    @Test
-    void receiveBySequenceNumberAndAbandon() {
+    /**
+     * Test we can receive a deferred message via sequence number and then perform abandon, suspend, or complete on it.
+     */
+    @MethodSource
+    @ParameterizedTest
+    void receiveBySequenceNumber(DispositionStatus dispositionStatus) {
         // Arrange
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        final Duration timeout = Duration.ofSeconds(2);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
+            .setEnableAutoComplete(false);
 
         final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive(options).next())
+            .then(receiver.receive(options).next())
             .block(TIMEOUT);
 
-        Assertions.assertNotNull(receivedMessage);
+        assertNotNull(receivedMessage);
 
-        receiverManualComplete.defer(receivedMessage).block(TIMEOUT);
+        receiver.defer(receivedMessage).block(TIMEOUT);
 
-        final ServiceBusReceivedMessage receivedDeferredMessage = receiverManualComplete
+        final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
 
-        Assertions.assertNotNull(receivedDeferredMessage);
-        Assertions.assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
+        assertNotNull(receivedDeferredMessage);
+        assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
 
-        receiverManualComplete.abandon(receivedDeferredMessage).block(TIMEOUT);
+        final Mono<Void> operation;
+        switch (dispositionStatus) {
+            case ABANDONED:
+                operation = receiver.abandon(receivedDeferredMessage);
+                break;
+            case SUSPENDED:
+                operation = receiver.deadLetter(receivedDeferredMessage);
+                break;
+            case COMPLETED:
+                operation = receiver.complete(receivedDeferredMessage);
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Disposition status not recognized for this test case: " + dispositionStatus));
+        }
 
         // Assert & Act
-        StepVerifier.create(receiverManualComplete.receiveDeferredMessage(receivedMessage.getSequenceNumber()))
-            .expectNextCount(0)
-            .thenCancel()
-            .verify(timeout);
+        StepVerifier.create(operation)
+            .expectComplete()
+            .verify();
     }
 
     @Test
@@ -475,7 +461,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageTrackingId = UUID.randomUUID().toString();
         final ServiceBusMessage messageToSend = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        final Duration timeout = Duration.ofSeconds(2);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         Map<String, Object> sentProperties = messageToSend.getProperties();
@@ -496,48 +481,24 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiveDeleteModeReceiver.receive(options))
             .assertNext(receivedMessage -> {
-                Map<String, Object> receivedProperties = receivedMessage.getProperties();
+                final Map<String, Object> received = receivedMessage.getProperties();
+
+                assertEquals(sentProperties.size(), received.size());
+
                 for (Map.Entry<String, Object> sentEntry : sentProperties.entrySet()) {
                     if (sentEntry.getValue() != null && sentEntry.getValue().getClass().isArray()) {
-                        Assertions.assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) receivedProperties.get(sentEntry.getKey()));
+                        assertArrayEquals((Object[]) sentEntry.getValue(), (Object[]) received.get(sentEntry.getKey()));
                     } else {
-                        Assertions.assertEquals(sentEntry.getValue(), receivedProperties.get(sentEntry.getKey()));
+                        final Object expected = sentEntry.getValue();
+                        final Object actual = received.get(sentEntry.getKey());
+
+                        assertEquals(expected, actual, String.format(
+                            "Key '%s' does not match. Expected: '%s'. Actual: '%s'", sentEntry.getKey(), expected,
+                            actual));
                     }
                 }
             })
-            .expectNoEvent(timeout)
             .thenCancel()
             .verify();
-    }
-
-    @Test
-    void receiveBySequenceNumberAndComplete() {
-        // Arrange
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        final Duration timeout = Duration.ofSeconds(2);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-
-        final ServiceBusReceivedMessage receivedMessage = sender.send(message)
-            .then(receiverManualComplete.receive(options).next())
-            .block(TIMEOUT);
-
-        Assertions.assertNotNull(receivedMessage);
-
-        receiverManualComplete.defer(receivedMessage).block(Duration.ofSeconds(30));
-
-        final ServiceBusReceivedMessage receivedDeferredMessage = receiverManualComplete
-            .receiveDeferredMessage(receivedMessage.getSequenceNumber()).block(TIMEOUT);
-
-        Assertions.assertNotNull(receivedDeferredMessage);
-        Assertions.assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
-
-        receiverManualComplete.complete(receivedDeferredMessage).block(TIMEOUT);
-
-        // Assert & Act
-        StepVerifier.create(receiverManualComplete.receiveDeferredMessage(receivedMessage.getSequenceNumber()))
-            .expectNextCount(0)
-            .thenCancel()
-            .verify(timeout);
     }
 }
