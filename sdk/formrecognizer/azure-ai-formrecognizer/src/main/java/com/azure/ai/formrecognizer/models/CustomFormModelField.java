@@ -19,7 +19,7 @@ public class CustomFormModelField {
     /*
      * Estimated extraction accuracy for this field.
      */
-    private final Float accuracy;
+    private final float accuracy;
 
     /**
      * Constructs a CustomFormModelField object.
@@ -46,7 +46,7 @@ public class CustomFormModelField {
      *
      * @return the accuracy value.
      */
-    public Float getAccuracy() {
+    public float getAccuracy() {
         return this.accuracy;
     }
 }

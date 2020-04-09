@@ -53,8 +53,8 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * Recognizes and extracts receipt data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * Recognizes and extracts receipt data from documents using optical character recognition (OCR)
+     * and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
@@ -64,14 +64,14 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>> beginExtractCustomFormsFromUrl(String fileSourceUrl,
-                                                                                                      String modelId) {
+    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
+        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId) {
         return beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, false);
     }
 
     /**
-     * Recognizes and extracts receipt data from documents using optical character recognition (OCR) and a custom trained
-     * model.
+     * Recognizes and extracts receipt data from documents using optical character recognition (OCR)
+     * and a custom trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support</p>
      *
@@ -82,8 +82,8 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>> beginExtractCustomFormsFromUrl(String fileSourceUrl,
-        String modelId, boolean includeTextDetails) {
+    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
+        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails) {
         return client.beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails).getSyncPoller();
     }
 
@@ -101,9 +101,9 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>> 
+    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
         beginExtractCustomForms(Flux<ByteBuffer> data, String modelId, Long length, FormContentType formContentType) {
-        return beginExtractCustomForms(data, modelId, length, formContentType);
+        return beginExtractCustomForms(data, modelId, length, formContentType, false, null);
     }
 
     /**
@@ -123,7 +123,7 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>> 
+    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
         beginExtractCustomForms(Flux<ByteBuffer> data, String modelId, Long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
         return client.beginExtractCustomForms(data, modelId, length, formContentType, includeTextDetails, pollInterval)
@@ -155,11 +155,11 @@ public final class FormRecognizerClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has 
+     * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, has
      * failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<FormPage>>
-    beginExtractContentFromUrl(String sourceUrl, Duration pollInterval) {
+        beginExtractContentFromUrl(String sourceUrl, Duration pollInterval) {
         return client.beginExtractContentFromUrl(sourceUrl, pollInterval).getSyncPoller();
     }
 
@@ -177,7 +177,7 @@ public final class FormRecognizerClient {
      * been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<FormPage>>
-    beginExtractContent(InputStream data, long length, FormContentType formContentType) {
+        beginExtractContent(InputStream data, long length, FormContentType formContentType) {
         return beginExtractContent(data, length, formContentType, null);
     }
 
@@ -193,11 +193,11 @@ public final class FormRecognizerClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract layout operation until it has completed, 
+     * @return A {@link SyncPoller} that polls the extract layout operation until it has completed,
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<FormPage>>
-    beginExtractContent(InputStream data, long length, FormContentType formContentType,
+        beginExtractContent(InputStream data, long length, FormContentType formContentType,
                         Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
@@ -217,7 +217,8 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} to poll the progress of the extract receipt operation until it has completed,
      * has failed, or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> beginExtractReceiptsFromUrl(String sourceUrl) {
+    public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
+        beginExtractReceiptsFromUrl(String sourceUrl) {
         return beginExtractReceiptsFromUrl(sourceUrl, false, null);
     }
 
@@ -255,7 +256,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
-    beginExtractReceipts(InputStream data, long length, FormContentType formContentType) {
+        beginExtractReceipts(InputStream data, long length, FormContentType formContentType) {
         return beginExtractReceipts(data, length, formContentType, false, null);
     }
 
@@ -272,11 +273,11 @@ public final class FormRecognizerClient {
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
-     * @return A {@link SyncPoller} that polls the extract receipt operation until it 
+     * @return A {@link SyncPoller} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
-        beginExtractReceipts(InputStream data, long length, FormContentType formContentType, 
+        beginExtractReceipts(InputStream data, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);

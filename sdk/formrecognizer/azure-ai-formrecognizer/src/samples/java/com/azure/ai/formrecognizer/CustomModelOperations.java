@@ -6,7 +6,6 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
 /**
@@ -22,11 +21,11 @@ public class CustomModelOperations {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormTrainingClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
-            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
+            .apiKey(new AzureKeyCredential("48c9ec5b1c444c899770946defc486c4"))
+            .endpoint("https://javaformrecognizertestresource.cognitiveservices.azure.com/")
             .buildClient().getFormTrainingClient();
 
-        String modelId = "{model_Id}";
+        String modelId = "{model-Id}";
         // Get Custom Model
         CustomFormModel customModel = client.getCustomModel(modelId);
         System.out.printf("Model Id: %s%n", customModel.getModelId());
@@ -55,8 +54,8 @@ public class CustomModelOperations {
         System.out.printf("Model limit in subsciption: %s%n", accountProperties.getLimit());
 
         // Delete Custom Model
-        Response<Void> deletedModel = client.deleteModelWithResponse(modelId, Context.NONE);
-        System.out.printf("Deleted model with model Id: %s operation completed with status: %s%n", modelId, deletedModel.getStatusCode());
+        System.out.printf("Deleted model with model Id: %s operation completed with status: %s%n", modelId,
+            client.deleteModelWithResponse(modelId, Context.NONE).getStatusCode());
 
         // List Custom Model
         // client.listModels()

@@ -19,6 +19,7 @@ import com.azure.ai.formrecognizer.models.DateValue;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.FieldValue;
 import com.azure.ai.formrecognizer.models.FloatValue;
+import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormLine;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
@@ -38,7 +39,6 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.StringValue;
 import com.azure.ai.formrecognizer.models.TimeValue;
-import com.azure.ai.formrecognizer.models.USReceiptType;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -91,7 +91,6 @@ final class Transforms {
             PageResult pageResultItem;
             int pageNumber = readResultItem.getPage();
             List<FormTable> extractedTablesList = new ArrayList<>();
-            Map<String, FieldValue<?>> pageExtractedFields = new HashMap<>();
 
             if (pageResults != null) {
                 pageResultItem = pageResults.get(i);
@@ -199,20 +198,10 @@ final class Transforms {
                 }
 
                 formType = documentResultItem.getDocType();
-                USReceiptType receiptType = null;
                 // add receipt fields
-                for (Map.Entry<String, com.azure.ai.formrecognizer.implementation.models.FieldValue> entry : documentResultItem.getFields().entrySet()) {
-                    String key = entry.getKey();
-                    com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue = entry.getValue();
-                    if (key.equals("ReceiptType")) { // this should also be a field value
-                        receiptType = new USReceiptType(fieldValue.getValueString(),
-                            fieldValue.getConfidence());
-                    } else {
-                        extractedFieldMap.put(key, setFieldValue(fieldValue, readResults, includeTextDetails));
-                    }
-                }
+                documentResultItem.getFields().forEach((key, fieldValue) ->
+                    extractedFieldMap.put(key, setFieldValue(fieldValue, readResults, includeTextDetails)));
             }
-            // TODO: Items to field value?
 
             RecognizedForm recognizedForm = new RecognizedForm(extractedFieldMap, formType, pageRange, formPages);
             RecognizedReceipt extractedReceiptItem = new RecognizedReceipt("en-US", recognizedForm);
@@ -228,8 +217,7 @@ final class Transforms {
             List<FormTableCell> tableCellList = new ArrayList<>();
             dataTable.getCells().forEach(dataTableCell -> {
                 FormTableCell tableCell = new FormTableCell(dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
-                    dataTableCell.getRowSpan() == null ? 1 : dataTableCell.getRowSpan(),
-                    dataTableCell.getColumnSpan() == null ? 1 : dataTableCell.getColumnSpan(),
+                    dataTableCell.getRowSpan(), dataTableCell.getColumnSpan(),
                     dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                     dataTableCell.getConfidence(), null,
                     dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
@@ -304,10 +292,10 @@ final class Transforms {
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
-        if (includeTextDetails && value != null) {
-            // value.setElements(setReferenceElements(readResults, fieldValue.getElements()));
-            System.out.println("TODO:")
-        }
+        // if (includeTextDetails && value != null) {
+        //     value.setElements(setReferenceElements(readResults, fieldValue.getElements()));
+        //     System.out.println("TODO:");
+        // }
         return value;
     }
 
@@ -356,26 +344,28 @@ final class Transforms {
     //             int wordIndex = Integer.parseInt(indices[2]);
     //             TextWord textWord = readResults.get(readResultIndex).getLines().get(lineIndex).getWords()
     //                 .get(wordIndex);
-    //             WordElement wordElement = new WordElement(textWord.getText(), toBoundingBox(textWord.getBoundingBox()));
+    //             FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()), readResultIndex +1, textWord.getConfidence());
     //             elementList.add(wordElement);
     //         } else {
     //             TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
-    //             LineElement lineElement = new LineElement(textLine.getText(), toBoundingBox(textLine.getBoundingBox()));
+    //             FormLine lineElement = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()), readResultIndex +1, toWords());
     //             elementList.add(lineElement);
     //         }
     //     });
     //     return elementList;
     // }
+
     private static ArrayValue toFieldValueArray(
         com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValueItems, List<ReadResult> readResults, boolean includeTextDetails) {
         List<FieldValue<?>> receiptItemList = new ArrayList<>();
         int pageNumber = 0;
+        List<FormContent> elements = new ArrayList<>();
         for (com.azure.ai.formrecognizer.implementation.models.FieldValue eachFieldValue : fieldValueItems.getValueArray()) {
             FieldValue<?> receiptItem = setFieldValue(eachFieldValue, readResults, includeTextDetails);
             pageNumber = receiptItem.getPageNumber();
             receiptItemList.add(receiptItem);
         }
-        return new ArrayValue(null, null, receiptItemList, pageNumber);
+        return new ArrayValue(null, null, receiptItemList, pageNumber, elements);
     }
 
     /**
@@ -389,13 +379,15 @@ final class Transforms {
      */
     private static IntegerValue toFieldValueInteger(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                         serviceIntegerValue) {
+        List<FormContent> elements = new ArrayList<>();
+
         if (serviceIntegerValue.getValueNumber() != null) {
             // TODO: Do not need this check, service team bug
             return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()),
-                serviceIntegerValue.getValueInteger(), serviceIntegerValue.getPage());
+                serviceIntegerValue.getValueInteger(), serviceIntegerValue.getPage(), elements);
         }
 
-        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), null, serviceIntegerValue.getPage());
+        return new IntegerValue(serviceIntegerValue.getText(), toBoundingBox(serviceIntegerValue.getBoundingBox()), null, serviceIntegerValue.getPage(), elements);
     }
 
     /**
@@ -409,8 +401,10 @@ final class Transforms {
      */
     private static StringValue toFieldValueString(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                       serviceStringValue) {
+        List<FormContent> elements = new ArrayList<>();
+
         return new StringValue(serviceStringValue.getText(), toBoundingBox(serviceStringValue.getBoundingBox()),
-            serviceStringValue.getValueString(), serviceStringValue.getPage());
+            serviceStringValue.getValueString(), serviceStringValue.getPage(), elements);
     }
 
     /**
@@ -424,13 +418,15 @@ final class Transforms {
      */
     private static FloatValue toFieldValueNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                      serviceFloatValue) {
+        List<FormContent> elements = new ArrayList<>();
+
         if (serviceFloatValue.getValueNumber() != null) {
             // TODO: Do not need this check, service team bug
             return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()),
-                serviceFloatValue.getValueNumber(), serviceFloatValue.getPage());
+                serviceFloatValue.getValueNumber(), serviceFloatValue.getPage(), elements);
         }
 
-        return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()), null, serviceFloatValue.getPage());
+        return new FloatValue(serviceFloatValue.getText(), toBoundingBox(serviceFloatValue.getBoundingBox()), null, serviceFloatValue.getPage(), elements);
     }
 
     /**
@@ -444,8 +440,9 @@ final class Transforms {
      */
     private static StringValue toFieldValuePhoneNumber(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                            serviceDateValue) {
+        List<FormContent> elements = new ArrayList<>();
         return new StringValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
-            serviceDateValue.getValuePhoneNumber(), serviceDateValue.getPage());
+            serviceDateValue.getValuePhoneNumber(), serviceDateValue.getPage(), elements);
     }
 
     /**
@@ -459,8 +456,10 @@ final class Transforms {
      */
     private static DateValue toFieldValueDate(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                   serviceDateValue) {
+        List<FormContent> elements = new ArrayList<>();
+
         return new DateValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
-            serviceDateValue.getValueDate(), serviceDateValue.getPage());
+            serviceDateValue.getValueDate(), serviceDateValue.getPage(), elements);
     }
 
     /**
@@ -474,8 +473,10 @@ final class Transforms {
      */
     private static TimeValue toFieldValueTime(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                   serviceDateValue) {
+        List<FormContent> elements = new ArrayList<>();
+
         return new TimeValue(serviceDateValue.getText(), toBoundingBox(serviceDateValue.getBoundingBox()),
-            serviceDateValue.getValueTime(), serviceDateValue.getPage());
+            serviceDateValue.getValueTime(), serviceDateValue.getPage(), elements);
         // TODO: currently returning a string, waiting on swagger update.
     }
 
@@ -519,12 +520,13 @@ final class Transforms {
     private static ObjectValue toFieldValueObject(com.azure.ai.formrecognizer.implementation.models.FieldValue
                                                       serviceFieldValue, List<ReadResult> readResults, boolean includeTextDetails) {
         Map<String, FieldValue<?>> stringFieldValueMap = new HashMap<>();
+        List<FormContent> elements = new ArrayList<>();
         AtomicInteger pageNumber = new AtomicInteger();
         serviceFieldValue.getValueObject().forEach((key, fieldValue) -> {
             pageNumber.set(fieldValue.getPage());
             stringFieldValueMap.put(key, setFieldValue(fieldValue, readResults, includeTextDetails));
         });
-        return new ObjectValue(null, null, stringFieldValueMap, pageNumber.get());
+        return new ObjectValue(null, null, stringFieldValueMap, pageNumber.get(), elements);
     }
 
     private static PageRange getPageRange(DocumentResult documentResultItem) {

@@ -14,6 +14,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 /**
  * This class provides a synchronous client that contains model management the operations that apply
  * to Azure Form Recognizer.
@@ -47,9 +49,10 @@ public class FormTrainingClient {
 
     /**
      * Create and train a custom model.
-     * Models are trained using documents that are of the following content
+     * <p>Models are trained using documents that are of the following content
      * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
      * Other type of content is ignored.
+     * </p>
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
@@ -61,7 +64,7 @@ public class FormTrainingClient {
      * been cancelled.
      */
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, false, null);
+        return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
     }
 
     /**
@@ -80,13 +83,16 @@ public class FormTrainingClient {
      * @param filePrefix A case-sensitive prefix string to filter documents in the source path
      * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
      * sub folders for training.
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
      *
      * @return A {@link SyncPoller} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
-                                                                      boolean includeSubFolders, String filePrefix) {
-        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders, filePrefix).getSyncPoller();
+        boolean includeSubFolders, String filePrefix, Duration pollInterval) {
+        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders,
+            filePrefix, pollInterval).getSyncPoller();
     }
 
     /**
@@ -106,7 +112,7 @@ public class FormTrainingClient {
      *
      * @param modelId Model identifier.
      * @param context The context.
-     * 
+     *
      * @return The detailed information for the specified model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -126,7 +132,9 @@ public class FormTrainingClient {
 
     /**
      * Get account information for all custom models.
-     *
+     * 
+     * @param context the context information.
+     * 
      * @return The account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.List;
 
-/*
+/**
  * The USReceipt model.
  */
 @Immutable
@@ -85,9 +85,9 @@ public class USReceipt extends RecognizedReceipt {
      * @param transactionDate Recognized field transaction date.
      * @param transactionTime Recognized field transaction time.
      */
-    public USReceipt(String receiptLocale, RecognizedForm recognizedForm, final List<USReceiptItem> receiptItems, 
-        final USReceiptType receiptType, final FieldValue<?> merchantName, final FieldValue<?> merchantAddress, 
-        final FieldValue<?> merchantPhoneNumber, final FieldValue<?> subtotal, final FieldValue<?> tax, 
+    public USReceipt(String receiptLocale, RecognizedForm recognizedForm, final List<USReceiptItem> receiptItems,
+        final USReceiptType receiptType, final FieldValue<?> merchantName, final FieldValue<?> merchantAddress,
+        final FieldValue<?> merchantPhoneNumber, final FieldValue<?> subtotal, final FieldValue<?> tax,
         final FieldValue<?> tip, final FieldValue<?> total, final FieldValue<?> transactionDate,
         final FieldValue<?> transactionTime) {
         super(receiptLocale, recognizedForm);

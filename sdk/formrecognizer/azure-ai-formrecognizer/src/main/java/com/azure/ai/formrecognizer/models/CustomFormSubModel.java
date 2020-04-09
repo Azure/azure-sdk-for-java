@@ -16,11 +16,10 @@ public class CustomFormSubModel {
     /*
      * Estimated extraction accuracy for this model.
      */
-    private final float accuracy;
+    private final Float accuracy;
 
     /*
-     * List of fields used to train the model and the train operation error
-     * reported by each.
+     * Map of fields used to train the model.
      */
     private final Map<String, CustomFormModelField> fieldMap;
 
@@ -29,7 +28,14 @@ public class CustomFormSubModel {
      */
     private final String formType;
 
-    public CustomFormSubModel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap, 
+    /**
+     * Constructs a CustomFormSubModel object.
+     *
+     * @param accuracy The estimated extraction accuracy for this model.
+     * @param fieldMap The Map of fields used to train the model.
+     * @param formType The recognized form type.
+     */
+    public CustomFormSubModel(final Float accuracy, final Map<String, CustomFormModelField> fieldMap,
         final String formType) {
         this.accuracy = accuracy;
         this.fieldMap = fieldMap;
@@ -41,7 +47,7 @@ public class CustomFormSubModel {
      *
      * @return the accuracy value.
      */
-    public float getAccuracy() {
+    public Float getAccuracy() {
         return this.accuracy;
     }
 

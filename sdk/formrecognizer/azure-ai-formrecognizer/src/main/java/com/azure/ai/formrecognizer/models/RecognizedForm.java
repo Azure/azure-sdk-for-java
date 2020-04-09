@@ -7,7 +7,7 @@ import com.azure.core.annotation.Immutable;
 
 import java.util.Map;
 
-/*
+/**
  * The RecognizedForm model.
  */
 @Immutable

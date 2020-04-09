@@ -44,7 +44,8 @@ public final class ReceiptExtensions {
             FieldValue<?> fieldValue = entry.getValue();
             switch (key) {
                 case "ReceiptType":
-                    receiptType = new USReceiptType(fieldValue.getText(), fieldValue.getConfidence());
+                    receiptType = new USReceiptType(fieldValue.getText(), 0f);
+                    // TODO: update confidence
                     break;
                 case "MerchantName":
                     merchantName = fieldValue;
