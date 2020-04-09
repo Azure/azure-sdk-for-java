@@ -2,28 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.management.containerservice;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.containerservice.models.ManagedClusterUpgradeProfileInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * The result of checking for the Kubernetes cluster's upgrade profile.
- */
+/** The result of checking for the Kubernetes cluster's upgrade profile. */
 @Fluent()
 public interface KubernetesClusterUpgradeProfile extends HasInner<ManagedClusterUpgradeProfileInner> {
-    /**
-     * @return the ID of the Kubernetes cluster upgrade profile
-     */
+    /** @return the ID of the Kubernetes cluster upgrade profile */
     String id();
 
-    /**
-     * @return the name of the Kubernetes cluster upgrade profile
-     */
+    /** @return the name of the Kubernetes cluster upgrade profile */
     String name();
 
-    /**
-     * @return the type of the Kubernetes cluster upgrade profile.
-     */
+    /** @return the type of the Kubernetes cluster upgrade profile. */
     String type();
 }

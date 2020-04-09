@@ -5,13 +5,9 @@ package com.azure.management.containerservice;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
-
-/**
- * Defines values for Kubernetes cluster access profile roles.
- */
+/** Defines values for Kubernetes cluster access profile roles. */
 @Fluent()
 public final class KubernetesClusterAccessProfileRole extends ExpandableStringEnum<KubernetesClusterAccessProfileRole> {
     /** Static value Kubernetes access profile user role. */
@@ -22,6 +18,7 @@ public final class KubernetesClusterAccessProfileRole extends ExpandableStringEn
 
     /**
      * Creates or finds a Kubernetes cluster access profile role from its string representation.
+     *
      * @param name a name to look for
      * @return the corresponding Kubernetes cluster access profile role
      */
@@ -30,9 +27,7 @@ public final class KubernetesClusterAccessProfileRole extends ExpandableStringEn
         return fromString(name, KubernetesClusterAccessProfileRole.class);
     }
 
-    /**
-     * @return known Kubernetes cluster access profile role values
-     */
+    /** @return known Kubernetes cluster access profile role values */
     public static Collection<KubernetesClusterAccessProfileRole> values() {
         return values(KubernetesClusterAccessProfileRole.class);
     }

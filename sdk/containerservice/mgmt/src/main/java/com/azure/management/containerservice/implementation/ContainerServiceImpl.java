@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.containerservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.ContainerService;
 import com.azure.management.containerservice.ContainerServiceAgentPool;
 import com.azure.management.containerservice.ContainerServiceAgentPoolProfile;
@@ -21,27 +22,19 @@ import com.azure.management.containerservice.Count;
 import com.azure.management.containerservice.models.ContainerServiceInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for ContainerService and its create and update interfaces.
- */
-public class ContainerServiceImpl extends
-        GroupableResourceImpl<
-                        ContainerService,
-                        ContainerServiceInner,
-                    ContainerServiceImpl,
-                    ContainerServiceManager>
-        implements
-            ContainerService,
-            ContainerService.Definition,
-            ContainerService.Update {
+/** The implementation for ContainerService and its create and update interfaces. */
+public class ContainerServiceImpl
+    extends GroupableResourceImpl<
+        ContainerService, ContainerServiceInner, ContainerServiceImpl, ContainerServiceManager>
+    implements ContainerService, ContainerService.Definition, ContainerService.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private String networkId;
     private String subnetName;
 
@@ -62,8 +55,7 @@ public class ContainerServiceImpl extends
 
     @Override
     public int masterNodeCount() {
-        if (this.inner().masterProfile() == null
-                || this.inner().masterProfile().count() == null) {
+        if (this.inner().masterProfile() == null || this.inner().masterProfile().count() == null) {
             return 0;
         }
 
@@ -73,7 +65,7 @@ public class ContainerServiceImpl extends
     @Override
     public ContainerServiceOrchestratorTypes orchestratorType() {
         if (this.inner().orchestratorProfile() == null) {
-            throw new RuntimeException("Orchestrator profile is missing!");
+            throw logger.logExceptionAsError(new RuntimeException("Orchestrator profile is missing!"));
         }
 
         return this.inner().orchestratorProfile().orchestratorType();
@@ -121,9 +113,9 @@ public class ContainerServiceImpl extends
     @Override
     public String sshKey() {
         if (this.inner().linuxProfile() == null
-                || this.inner().linuxProfile().ssh() == null
-                || this.inner().linuxProfile().ssh().publicKeys() == null
-                || this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
+            || this.inner().linuxProfile().ssh() == null
+            || this.inner().linuxProfile().ssh().publicKeys() == null
+            || this.inner().linuxProfile().ssh().publicKeys().size() == 0) {
             return null;
         }
 
@@ -178,9 +170,8 @@ public class ContainerServiceImpl extends
 
     @Override
     public boolean isDiagnosticsEnabled() {
-        if (this.inner().diagnosticsProfile() == null
-                || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
-            throw new RuntimeException("Diagnostic profile is missing!");
+        if (this.inner().diagnosticsProfile() == null || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
+            throw logger.logExceptionAsError(new RuntimeException("Diagnostic profile is missing!"));
         }
 
         return this.inner().diagnosticsProfile().vmDiagnostics().enabled();
@@ -188,8 +179,9 @@ public class ContainerServiceImpl extends
 
     @Override
     public ContainerServiceImpl withMasterNodeCount(ContainerServiceMasterProfileCount profileCount) {
-        ContainerServiceMasterProfile masterProfile = new ContainerServiceMasterProfile().withVmSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2);
-        masterProfile.withCount(Count.fromString(String.valueOf(profileCount.count())));
+        ContainerServiceMasterProfile masterProfile =
+            new ContainerServiceMasterProfile().withVmSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2);
+        masterProfile.withCount(Count.fromInt(profileCount.count()));
         this.inner().withMasterProfile(masterProfile);
         return this;
     }
@@ -265,8 +257,7 @@ public class ContainerServiceImpl extends
 
     @Override
     public ContainerServiceImpl withServicePrincipal(String clientId, String secret) {
-        ContainerServicePrincipalProfile serviceProfile =
-                new ContainerServicePrincipalProfile();
+        ContainerServicePrincipalProfile serviceProfile = new ContainerServicePrincipalProfile();
         serviceProfile.withClientId(clientId);
         serviceProfile.withSecret(secret);
         this.inner().withServicePrincipalProfile(serviceProfile);
@@ -337,7 +328,11 @@ public class ContainerServiceImpl extends
 
     @Override
     protected Mono<ContainerServiceInner> getInnerAsync() {
-        return this.manager().inner().containerServices().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .containerServices()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -347,11 +342,15 @@ public class ContainerServiceImpl extends
             this.inner().withServicePrincipalProfile(null);
         }
 
-        return this.manager().inner().containerServices().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(containerServiceInner -> {
+        return this
+            .manager()
+            .inner()
+            .containerServices()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(
+                containerServiceInner -> {
                     self.setInner(containerServiceInner);
                     return self;
                 });
     }
-
 }
