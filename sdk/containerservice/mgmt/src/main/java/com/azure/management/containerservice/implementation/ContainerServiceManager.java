@@ -108,7 +108,7 @@ public final class ContainerServiceManager
                 .host(restClient.getBaseUrl().toString())
                 .pipeline(restClient.getHttpPipeline())
                 .subscriptionId(subscriptionId)
-                .build(),
+                .buildClient(),
             sdkContext);
     }
 

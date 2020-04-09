@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.containerservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.ContainerService;
 import com.azure.management.containerservice.ContainerServiceAgentPool;
 import com.azure.management.containerservice.ContainerServiceAgentPoolProfile;
@@ -33,6 +34,7 @@ public class ContainerServiceImpl
         ContainerService, ContainerServiceInner, ContainerServiceImpl, ContainerServiceManager>
     implements ContainerService, ContainerService.Definition, ContainerService.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private String networkId;
     private String subnetName;
 
@@ -63,7 +65,7 @@ public class ContainerServiceImpl
     @Override
     public ContainerServiceOrchestratorTypes orchestratorType() {
         if (this.inner().orchestratorProfile() == null) {
-            throw new RuntimeException("Orchestrator profile is missing!");
+            throw logger.logExceptionAsError(new RuntimeException("Orchestrator profile is missing!"));
         }
 
         return this.inner().orchestratorProfile().orchestratorType();
@@ -169,7 +171,7 @@ public class ContainerServiceImpl
     @Override
     public boolean isDiagnosticsEnabled() {
         if (this.inner().diagnosticsProfile() == null || this.inner().diagnosticsProfile().vmDiagnostics() == null) {
-            throw new RuntimeException("Diagnostic profile is missing!");
+            throw logger.logExceptionAsError(new RuntimeException("Diagnostic profile is missing!"));
         }
 
         return this.inner().diagnosticsProfile().vmDiagnostics().enabled();
@@ -179,7 +181,7 @@ public class ContainerServiceImpl
     public ContainerServiceImpl withMasterNodeCount(ContainerServiceMasterProfileCount profileCount) {
         ContainerServiceMasterProfile masterProfile =
             new ContainerServiceMasterProfile().withVmSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2);
-        masterProfile.withCount(Count.fromString(String.valueOf(profileCount.count())));
+        masterProfile.withCount(Count.fromInt(profileCount.count()));
         this.inner().withMasterProfile(masterProfile);
         return this;
     }

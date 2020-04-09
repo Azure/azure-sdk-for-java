@@ -12,21 +12,21 @@ import com.azure.management.resources.implementation.ResourceManager;
 public class ContainerServiceManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected ContainerServiceManager containerServiceManager;
-    protected String RG_NAME = "";
+    protected String rgName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javaacsrg", 15);
+        rgName = generateRandomResourceName("javaacsrg", 15);
 
         resourceManager = ResourceManager.authenticate(restClient).withSubscription(defaultSubscription);
 
         containerServiceManager = ContainerServiceManager.authenticate(restClient, defaultSubscription);
 
-        resourceManager.resourceGroups().define(RG_NAME).withRegion(Region.US_EAST).create();
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

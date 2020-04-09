@@ -146,7 +146,7 @@ public class KubernetesClusterImpl
 
     @Override
     public boolean enableRBAC() {
-        return this.inner().enableRbac();
+        return this.inner().enableRBAC();
     }
 
     private Mono<byte[]> getAdminConfig(final KubernetesClusterImpl self) {
@@ -322,13 +322,13 @@ public class KubernetesClusterImpl
 
     @Override
     public KubernetesClusterImpl withRBACEnabled() {
-        this.inner().withEnableRbac(true);
+        this.inner().withEnableRBAC(true);
         return this;
     }
 
     @Override
     public KubernetesClusterImpl withRBACDisabled() {
-        this.inner().withEnableRbac(false);
+        this.inner().withEnableRBAC(false);
         return this;
     }
 }

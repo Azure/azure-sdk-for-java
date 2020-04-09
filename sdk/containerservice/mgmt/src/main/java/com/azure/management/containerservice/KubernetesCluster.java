@@ -100,6 +100,7 @@ public interface KubernetesCluster
             /**
              * Specifies the version for the Kubernetes cluster.
              *
+             * @deprecated use {@link #withVersion(String)} or {@link #withLatestVersion}
              * @param kubernetesVersion the kubernetes version
              * @return the next stage of the definition
              */

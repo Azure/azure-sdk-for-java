@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
-    private static final String sshKey =
+    private static final String SSH_KEY =
         "ssh-rsa"
             + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD"
             + " azjava@javalib.Com";
@@ -39,7 +39,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         }
 
         if (!isPlaybackMode()) {
-            HashMap<String, String> credentialsMap = ParseAuthFile(envSecondaryServicePrincipal);
+            HashMap<String, String> credentialsMap = parseAuthFile(envSecondaryServicePrincipal);
             servicePrincipalClientId = credentialsMap.get("clientId");
             servicePrincipalSecret = credentialsMap.get("clientSecret");
         }
@@ -50,10 +50,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .kubernetesClusters()
                 .define(aksName)
                 .withRegion(Region.US_CENTRAL)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withLatestVersion()
                 .withRootUsername("testaks")
-                .withSshKey(sshKey)
+                .withSshKey(SSH_KEY)
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool(agentPoolName)
@@ -78,7 +78,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .assertEquals(
                 AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, kubernetesCluster.agentPools().get(agentPoolName).type());
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
-        ;
 
         // update
         kubernetesCluster =
@@ -103,7 +102,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
      * @return all fields in azure auth json
      * @throws Exception exception
      */
-    private static HashMap<String, String> ParseAuthFile(String authFilename) throws Exception {
+    private static HashMap<String, String> parseAuthFile(String authFilename) throws Exception {
         String content = new String(Files.readAllBytes(new File(authFilename).toPath()), StandardCharsets.UTF_8).trim();
         HashMap<String, String> auth = new HashMap<>();
         if (isJsonBased(content)) {
