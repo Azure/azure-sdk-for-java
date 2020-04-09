@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -153,10 +154,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final String messageId1 = UUID.randomUUID().toString();
         final String messageId2 = UUID.randomUUID().toString();
-        String contents = "Some-contents";
-        final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(contents, messageId1, 0);
-        final ServiceBusMessage message2 = TestUtils.getServiceBusMessage(contents, messageId2, 0);
-        final Instant scheduledEnqueueTime = Instant.now().plusSeconds(1);
+        final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(CONTENTS, messageId1, 0);
+        final ServiceBusMessage message2 = TestUtils.getServiceBusMessage(CONTENTS, messageId2, 0);
+        final Duration duration = Duration.ofSeconds(10);
+        final Instant scheduledEnqueueTime = Instant.now().plus(duration);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         sender.scheduleMessage(message1, scheduledEnqueueTime)
@@ -165,16 +166,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiveDeleteModeReceiver.receive(options).take(2))
+        StepVerifier.create(Mono.delay(duration).thenMany(receiveDeleteModeReceiver.receive(options).take(2)))
             .assertNext(receivedMessage -> {
                 final String actual = new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
-                assertEquals(contents, actual);
-                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(CONTENTS, actual);
+
+                final Map<String, Object> properties = receivedMessage.getProperties();
+                assertTrue(properties.containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(messageId1, properties.get(MESSAGE_TRACKING_ID));
             })
             .assertNext(receivedMessage -> {
                 final String actual = new String(receivedMessage.getBody(), StandardCharsets.UTF_8);
-                assertEquals(contents, actual);
-                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(CONTENTS, actual);
+                final Map<String, Object> properties = receivedMessage.getProperties();
+                assertTrue(properties.containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(messageId2, properties.get(MESSAGE_TRACKING_ID));
             })
             .verifyComplete();
     }
@@ -291,8 +297,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         final AtomicReference<Instant> initialLock = new AtomicReference<>();
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
-            .setMaxAutoRenewDuration(null);
+            .setEnableAutoComplete(false);
 
         // Blocking here because it is not part of the scenario we want to test.
         sender.send(message).block(TIMEOUT);
@@ -303,16 +308,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         initialLock.set(m.getLockedUntil());
 
         // Assert & Act
-        StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
-            .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
-            .assertNext(lockedUntil -> {
-                assertTrue(lockedUntil.isAfter(initialLock.get()),
-                    String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
-                        lockedUntil, initialLock.get()));
+        try {
+            StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
+                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
+                .assertNext(lockedUntil -> {
+                    assertTrue(lockedUntil.isAfter(initialLock.get()),
+                        String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
+                            lockedUntil, initialLock.get()));
 
-                assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
-            })
-            .verifyComplete();
+                    assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
+                })
+                .verifyComplete();
+        } finally {
+            receiver.complete(receivedMessage.get());
+        }
     }
 
     /**
@@ -324,8 +333,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getServiceBusMessage(CONTENTS, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(true)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
+            .setEnableAutoComplete(false)
+            .setMaxAutoRenewDuration(Duration.ofSeconds(120));
 
         // Send the message to verify.
         sender.send(message).block(TIMEOUT);
@@ -336,14 +345,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(received.getLockedUntil());
                 assertNotNull(received.getLockToken());
 
-                logger.info("{}: lockId[{}]. lockedUntil[{}]",
-                    received.getSequenceNumber(), received.getLockToken(), received.getLockedUntil());
+                logger.info("{}: now: [{}]. lockId[{}]. lockedUntil[{}]", received.getSequenceNumber(), Instant.now(),
+                    received.getLockToken(), received.getLockedUntil());
 
                 final Instant initial = received.getLockedUntil();
+                final Instant timeToStop = initial.plusSeconds(5);
                 Instant latest = Instant.MIN;
 
                 // Simulate some sort of long processing.
-                for (int i = 0; i < 3; i++) {
+                final AtomicInteger iteration = new AtomicInteger();
+                while (Instant.now().isBefore(timeToStop)) {
+                    logger.info("Iteration: {}", iteration.incrementAndGet());
+
                     try {
                         TimeUnit.SECONDS.sleep(15);
                     } catch (InterruptedException error) {
@@ -354,11 +367,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     latest = received.getLockedUntil();
                 }
 
-                assertTrue(initial.isBefore(latest),
-                    String.format("Latest should be after initial. initial: %s. latest: %s", initial, latest));
-
-                logger.info("Completing message.");
-                receiver.complete(received).block(Duration.ofSeconds(15));
+                try {
+                    assertTrue(initial.isBefore(latest), String.format(
+                        "Latest should be after or equal to initial. initial: %s. latest: %s", initial, latest));
+                } finally {
+                    logger.info("Completing message.");
+                    receiver.complete(received).block(Duration.ofSeconds(15));
+                }
             })
             .thenCancel()
             .verify();
