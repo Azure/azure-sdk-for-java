@@ -7,8 +7,6 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
-import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -53,7 +51,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-
+    
     @Test
     abstract void getCustomModelInvalidStatusModel();
 
@@ -82,22 +80,20 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     abstract void deleteModelValidModelIdWithResponse();
 
     @Test
-    abstract void listModels();
-
-    @Test
-    abstract void listModelsWithContext();
-
-    @Test
     abstract void beginTrainingNullInput();
 
     @Test
-    abstract void beginTrainingLabeledResult();
+    abstract void beginTrainingSupervisedResult();
 
     @Test
-    abstract void beginTrainingUnlabeledResult();
+    abstract void beginTrainingUnsupervisedResult();
 
     void getCustomModelInvalidStatusModelRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_STATUS_MODEL_ID);
+    }
+
+    void getCustomModelNullModelIdRunner(Consumer<String> testRunner) {
+        testRunner.accept(null);
     }
 
     void getCustomModelValidModelIdRunner(Consumer<String> testRunner) {
@@ -109,15 +105,15 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     }
 
     void getCustomModelWithResponseRunner(Consumer<String> testRunner) {
-        testRunner.accept(TestUtils.LABELED_MODEL_ID);
+        testRunner.accept(TestUtils.SUPERVISED_MODEL_ID);
     }
 
-    void beginTrainingLabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.VALID_LABELED_DATA_SAS_URL, true);
+    void beginTrainingSupervisedResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.VALID_SUPERVISED_SAS_URL, true);
     }
 
-    void beginTrainingUnlabeledResultRunner(BiConsumer<String, Boolean> testRunner) {
-        testRunner.accept(TestUtils.VALID_UNLABELED_DATA_SAS_URL, false);
+    void beginTrainingUnsupervisedResultRunner(BiConsumer<String, Boolean> testRunner) {
+        testRunner.accept(TestUtils.VALID_UNSUPERVISED_SAS_URL, false);
     }
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
@@ -185,44 +181,15 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
         assertNotNull(actualCustomModel.getModelId());
         assertEquals(expectedModel.getModelStatus(), actualCustomModel.getModelStatus());
-        validateErrors(expectedModel.getModelError(), actualCustomModel.getModelError());
+        assertEquals(expectedModel.getModelError().size(), actualCustomModel.getModelError().size());
         assertNotNull(actualCustomModel.getCreatedOn());
         assertNotNull(actualCustomModel.getLastUpdatedOn());
         validateSubModels(expectedModel.getSubModels(), actualCustomModel.getSubModels());
-        validateTrainingDocuments(expectedModel.getTrainingDocuments(), actualCustomModel.getTrainingDocuments());
     }
 
     static void validateAccountProperties(AccountProperties expectedAccountProperties, AccountProperties actualAccountProperties) {
         assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
         assertNotNull(actualAccountProperties.getCount());
-    }
-
-    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments, List<TrainingDocumentInfo> actualTrainingDocuments) {
-        List<TrainingDocumentInfo> actualTrainingList = actualTrainingDocuments.stream().collect(Collectors.toList());
-        List<TrainingDocumentInfo> expectedTrainingList = expectedTrainingDocuments.stream().collect(Collectors.toList());
-        assertEquals(expectedTrainingList.size(), actualTrainingList.size());
-        for (int i = 0; i < actualTrainingList.size(); i++) {
-            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingList.get(i);
-            TrainingDocumentInfo actualTrainingDocument = actualTrainingList.get(i);
-            assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
-            assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
-            assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
-            validateErrors(expectedTrainingDocument.getDocumentErrors(), actualTrainingDocument.getDocumentErrors());
-        }
-    }
-
-    private static void validateErrors(List<FormRecognizerError> expectedErrors, List<FormRecognizerError> actualErrors) {
-        if (expectedErrors != null && actualErrors != null) {
-            List<FormRecognizerError> actualErrorList = actualErrors.stream().collect(Collectors.toList());
-            List<FormRecognizerError> expectedErrorList = expectedErrors.stream().collect(Collectors.toList());
-            assertEquals(expectedErrorList.size(), actualErrorList.size());
-            for (int i = 0; i < actualErrorList.size(); i++) {
-                FormRecognizerError expectedError = expectedErrorList.get(i);
-                FormRecognizerError actualError = actualErrorList.get(i);
-                assertEquals(expectedError.getCode(), actualError.getCode());
-                assertEquals(expectedError.getMessage(), actualError.getMessage());
-            }
-        }
     }
 
     private static void validateSubModels(IterableStream<CustomFormSubModel> expectedSubModels, IterableStream<CustomFormSubModel> actualSubModels) {

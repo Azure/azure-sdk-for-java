@@ -5,9 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,14 +15,10 @@ import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_MODEL_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedLabeledModel;
-import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnlabeledModel;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.azure.ai.formrecognizer.TestUtils.getExpectedSupervisedModel;
+import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnsupervisedModel;
 
 public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
@@ -50,70 +44,49 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
         client = formRecognizerAsyncClient.getFormTrainingAsyncClient();
     }
 
-    /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
     @Test
     void getCustomModelInvalidStatusModel() {
         getCustomModelInvalidStatusModelRunner(invalidId -> StepVerifier.create(client.getCustomModel(invalidId))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_STATUS_MODEL_ERROR)).verify());
+            .verifyError(IllegalArgumentException.class));
     }
 
-    /**
-     * Verifies that an exception is thrown for null model Id parameter.
-     */
     @Test
     void getCustomModelNullModelId() {
-        StepVerifier.create(client.getCustomModel(null)).verifyError();
+        getCustomModelNullModelIdRunner(nullModelId -> StepVerifier.create(client.getCustomModel(nullModelId))
+            .verifyError());
     }
 
-    /**
-     * Verifies custom model info returned for a valid model Id.
-     */
     @Test
     void getCustomModelValidModelId() {
-        getCustomModelValidModelIdRunner(validModelId -> StepVerifier.create(client.getCustomModel(validModelId))
-            .assertNext(customFormModel ->
-                validateCustomModel(getExpectedUnlabeledModel(), customFormModel)));
+        getCustomModelValidModelIdRunner(validModelId -> {
+            StepVerifier.create(client.getCustomModel(validModelId)).assertNext(customFormModel ->
+                validateCustomModel(getExpectedUnsupervisedModel(), customFormModel));
+        });
     }
 
-    /**
-     * Verifies that an exception is thrown for invalid model Id.
-     */
     @Test
     void getCustomModelInvalidModelId() {
         getCustomModelInvalidModelIdRunner(invalidModelId -> StepVerifier.create(client.getCustomModel(invalidModelId))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException &&
+                throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
     }
 
-    /**
-     * Verifies custom model info returned with response for a valid model Id.
-     */
     @Test
     void getCustomModelWithResponse() {
         getCustomModelWithResponseRunner(validModelId ->
-            StepVerifier.create(client.getCustomModelWithResponse(validModelId))
+            StepVerifier.create(client.getCustomFormModelWithResponse(validModelId))
                 .assertNext(customFormModel ->
-                    validateCustomModel(getExpectedLabeledModel(), customFormModel.getValue()))
+                    validateCustomModel(getExpectedSupervisedModel(), customFormModel.getValue()))
                 .verifyComplete());
     }
 
-    /**
-     * Verifies account properties returned for a subscription account.
-     */
     @Test
     void validGetAccountProperties() {
         StepVerifier.create(client.getAccountProperties())
-            .assertNext(accountProperties -> validateAccountProperties(getExpectedAccountProperties(),
-                accountProperties))
+            .assertNext(accountProperties -> validateAccountProperties(getExpectedAccountProperties(), accountProperties))
             .verifyComplete();
     }
 
-    /**
-     * Verifies account properties returned with an Http Response for a subscription account.
-     */
     @Test
     void validGetAccountPropertiesWithResponse() {
         StepVerifier.create(client.getAccountProperties())
@@ -122,95 +95,45 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             .verifyComplete();
     }
 
-    /**
-     * Verifies that an exception is thrown for invalid status model Id.
-     */
     @Test
     void deleteModelInvalidModelId() {
         StepVerifier.create(client.deleteModel(INVALID_MODEL_ID))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException &&
+                throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
             .verify();
     }
 
     @Test
     void deleteModelValidModelIdWithResponse() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
-            SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
-            syncPoller.waitForCompletion();
-            CustomFormModel createdModel = syncPoller.getFinalResult();
-
-            StepVerifier.create(client.deleteModelWithResponse(createdModel.getModelId()))
-                .assertNext(response ->
-                    assertEquals(response.getStatusCode(), HttpResponseStatus.NO_CONTENT.code()))
-                .verifyComplete();
-
-            StepVerifier.create(client.getCustomModelWithResponse(createdModel.getModelId()))
-                .verifyErrorSatisfies(throwable ->
-                    throwable.getMessage().contains(HttpResponseStatus.NOT_FOUND.toString()));
-        });
+        // TODO: after List models API is merged.
+        // list models select first and delete model Id check success response.
     }
 
-    /**
-     * Test for listing all models information.
-     */
-    @Test
-    void listModels() {
-        StepVerifier.create(client.listModels())
-            .thenConsumeWhile(customFormModelInfo ->
-                customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
-                    && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
-            .verifyComplete();
-    }
-
-    /**
-     * Test for listing all models information with {@link Context}.
-     */
-    @Test
-    void listModelsWithContext() {
-        StepVerifier.create(client.listModels(Context.NONE))
-            .thenConsumeWhile(modelInfo ->
-                modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                    && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that an exception is thrown for null source url input.
-     */
     @Test
     void beginTrainingNullInput() {
-        NullPointerException thrown = assertThrows(
-            NullPointerException.class,
-            () -> client.beginTraining(null, false).getSyncPoller().getFinalResult());
-
-        assertTrue(thrown.getMessage().equals(NULL_SOURCE_URL_ERROR));
+        StepVerifier.create(client.beginTraining(null, false))
+            .expectErrorMatches(throwable -> throwable instanceof NullPointerException &&
+                throwable.getMessage().equals(SOURCE_URL_ERROR))
+            .verify();
     }
 
-    /**
-     * Verifies the result of the training operation for a valid labeled model Id and training set Url.
-     */
     @Test
-    void beginTrainingLabeledResult() {
-        beginTrainingLabeledResultRunner((storageSASUrl, useLabelFile) -> {
+    void beginTrainingSupervisedResult() {
+        beginTrainingSupervisedResultRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedLabeledModel(), syncPoller.getFinalResult());
+            validateCustomModel(getExpectedSupervisedModel(), syncPoller.getFinalResult());
         });
     }
 
-    /**
-     * Verifies the result of the training operation for a valid unlabeled model Id and training set Url.
-     */
     @Test
-    void beginTrainingUnlabeledResult() {
-        beginTrainingUnlabeledResultRunner((storageSASUrl, useLabelFile) -> {
+    void beginTrainingUnsupervisedResult() {
+        beginTrainingUnsupervisedResultRunner((storageSASUrl, useLabelFile) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
                 client.beginTraining(storageSASUrl, useLabelFile).getSyncPoller();
             syncPoller.waitForCompletion();
-            validateCustomModel(getExpectedUnlabeledModel(), syncPoller.getFinalResult());
+            validateCustomModel(getExpectedUnsupervisedModel(), syncPoller.getFinalResult());
         });
     }
 }
