@@ -151,21 +151,43 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      */
     public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
         BlobRequestConditions requestConditions) {
+        return this.createWithResponse(headers, metadata, null, requestConditions);
+    }
+
+    /**
+     * Creates a 0-length append blob. Call appendBlock to append data to an append blob.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions}
+     *
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tags Tags to associate with the blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
+     * appended blob.
+     */
+    public Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
+        Map<String, String> tags, BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> createWithResponse(headers, metadata, requestConditions, context));
+            return withContext(context -> createWithResponse(headers, metadata, tags, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<AppendBlobItem>> createWithResponse(BlobHttpHeaders headers, Map<String, String> metadata,
-        BlobRequestConditions requestConditions, Context context) {
+        Map<String, String> tags, BlobRequestConditions requestConditions, Context context) {
         requestConditions = (requestConditions == null) ? new BlobRequestConditions() : requestConditions;
 
         return this.azureBlobStorage.appendBlobs().createWithRestResponseAsync(null, null, 0, null, metadata,
             requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), null, headers, getCustomerProvidedKey(), encryptionScope, context)
+            requestConditions.getIfNoneMatch(), null, tagsToString(tags), headers, getCustomerProvidedKey(),
+            encryptionScope, context)
             .map(rb -> {
                 AppendBlobCreateHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

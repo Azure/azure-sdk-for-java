@@ -160,8 +160,38 @@ public final class PageBlobClient extends BlobClientBase {
      */
     public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
         Map<String, String> metadata, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        return this.createWithResponse(size, sequenceNumber, headers, metadata, null, requestConditions, timeout,
+            context);
+    }
+
+    /**
+     * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob. For more
+     * information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.PageBlobClient.createWithResponse#long-Long-BlobHttpHeaders-Map-BlobRequestConditions-Duration-Context}
+     *
+     * @param size Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
+     * 512-byte boundary.
+     * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
+     * number must be between 0 and 2^63 - 1.The default value is 0.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tags Tags to associate with the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return The information of the created page blob.
+     */
+    public Response<PageBlobItem> createWithResponse(long size, Long sequenceNumber, BlobHttpHeaders headers,
+        Map<String, String> metadata, Map<String, String> tags, BlobRequestConditions requestConditions,
+        Duration timeout, Context context) {
         Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(size, sequenceNumber, headers,
-            metadata, requestConditions, context);
+            metadata, tags, requestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 

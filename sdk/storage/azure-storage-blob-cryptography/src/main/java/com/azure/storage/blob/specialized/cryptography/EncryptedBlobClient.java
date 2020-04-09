@@ -107,9 +107,31 @@ public class EncryptedBlobClient extends BlobClient {
     public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier,
         BlobRequestConditions requestConditions) {
+        return this.getBlobOutputStream(parallelTransferOptions, headers, metadata, null, tier, requestConditions);
+    }
+
+    /**
+     * Creates and opens an output stream to write data to the block blob. If the blob already exists on the service, it
+     * will be overwritten.
+     * <p>
+     * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
+     *
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tags Tags to associate with the destination blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     *
+     * @return A {@link BlobOutputStream} object used to write data to the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobOutputStream getBlobOutputStream(ParallelTransferOptions parallelTransferOptions,
+        BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
+        BlobRequestConditions requestConditions) {
 
         return BlobOutputStream.blockBlobOutputStream(encryptedBlobAsyncClient, parallelTransferOptions, headers,
-            metadata, tier, requestConditions);
+            metadata, tags, tier, requestConditions);
     }
 
     /**
@@ -165,8 +187,34 @@ public class EncryptedBlobClient extends BlobClient {
     public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         BlobHttpHeaders headers, Map<String, String> metadata, AccessTier tier, BlobRequestConditions requestConditions,
         Duration timeout) throws UncheckedIOException {
+        this.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, null, tier, requestConditions,
+            timeout);
+    }
+
+    /**
+     * Creates a new block blob, or updates the content of an existing block blob.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration}
+     *
+     * @param filePath Path of the file to upload
+     * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
+     *        transfers parameter is ignored.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tags Tags to associate with the destination blob.
+     * @param tier {@link AccessTier} for the uploaded blob
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @throws UncheckedIOException If an I/O error occurs
+     */
+    @Override
+    public void uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
+        BlobHttpHeaders headers, Map<String, String> metadata, Map<String, String> tags, AccessTier tier,
+        BlobRequestConditions requestConditions, Duration timeout) throws UncheckedIOException {
         Mono<Void> upload = this.encryptedBlobAsyncClient.uploadFromFile(filePath, parallelTransferOptions,
-            headers, metadata, tier, requestConditions);
+            headers, metadata, tags, tier, requestConditions);
 
         try {
             StorageImplUtils.blockWithOptionalTimeout(upload, timeout);

@@ -50,7 +50,27 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
         final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
         final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
-        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tier, requestConditions);
+        return blockBlobOutputStream(client, parallelTransferOptions, headers, metadata, null, tier,
+            requestConditions);
+    }
+
+    /**
+     * Creates a block blob output stream from a BlobAsyncClient
+     * @param client {@link BlobAsyncClient} The blob client.
+     * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
+     * @param headers {@link BlobHttpHeaders}
+     * @param metadata Metadata to associate with the blob.
+     * @param tags Tags to associate with the destination blob.
+     * @param tier {@link AccessTier} for the destination blob.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @return {@link BlobOutputStream} associated with the blob.
+     */
+    public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
+        final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
+        final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
+        final BlobRequestConditions requestConditions) {
+        return new BlockBlobOutputStream(client, parallelTransferOptions, headers, metadata, tags, tier,
+            requestConditions);
     }
 
     static BlobOutputStream pageBlobOutputStream(final PageBlobAsyncClient client, final PageRange pageRange,
@@ -158,7 +178,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private BlockBlobOutputStream(final BlobAsyncClient client,
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
-            final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions) {
+            final Map<String, String> metadata, Map<String, String> tags, final AccessTier tier,
+            final BlobRequestConditions requestConditions) {
             super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
 
             Flux<ByteBuffer> fbb = Flux.create((FluxSink<ByteBuffer> sink) -> this.sink = sink);
@@ -168,7 +189,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
              subscribe. */
             fbb.subscribe();
 
-            client.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tier, requestConditions)
+            client.uploadWithResponse(fbb, parallelTransferOptions, headers, metadata, tags, tier, requestConditions)
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
