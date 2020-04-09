@@ -34,7 +34,7 @@ public class VirtualMachineAgentInstanceView {
     private List<InstanceViewStatus> statuses;
 
     /**
-     * Get the vmAgentVersion value.
+     * Get the VM Agent full version.
      *
      * @return the vmAgentVersion value
      */
@@ -43,7 +43,7 @@ public class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Set the vmAgentVersion value.
+     * Set the VM Agent full version.
      *
      * @param vmAgentVersion the vmAgentVersion value to set
      * @return the VirtualMachineAgentInstanceView object itself.
@@ -54,7 +54,7 @@ public class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Get the extensionHandlers value.
+     * Get the virtual machine extension handler instance view.
      *
      * @return the extensionHandlers value
      */
@@ -63,7 +63,7 @@ public class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Set the extensionHandlers value.
+     * Set the virtual machine extension handler instance view.
      *
      * @param extensionHandlers the extensionHandlers value to set
      * @return the VirtualMachineAgentInstanceView object itself.
@@ -74,7 +74,7 @@ public class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Get the statuses value.
+     * Get the resource status information.
      *
      * @return the statuses value
      */
@@ -83,7 +83,7 @@ public class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Set the statuses value.
+     * Set the resource status information.
      *
      * @param statuses the statuses value to set
      * @return the VirtualMachineAgentInstanceView object itself.
