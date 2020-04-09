@@ -13,13 +13,13 @@ import com.microsoft.azure.management.appservice.v2016_03_01.implementation.Dete
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_03_01.implementation.WebManager;
 import java.util.List;
 
 /**
  * Type representing DetectorResponse.
  */
-public interface DetectorResponse extends HasInner<DetectorResponseInner>, Indexable, Refreshable<DetectorResponse>, HasManager<AppServiceManager> {
+public interface DetectorResponse extends HasInner<DetectorResponseInner>, Indexable, Refreshable<DetectorResponse>, HasManager<WebManager> {
     /**
      * @return the dataset value.
      */
