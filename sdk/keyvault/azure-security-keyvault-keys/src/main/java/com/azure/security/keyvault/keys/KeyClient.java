@@ -329,9 +329,9 @@ public final class KeyClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
      * @return The requested {@link KeyVaultKey key}. The content of the key is null if
-     * both {@ncode name} and {@code version} are null or empty.
+     * both {@code name} and {@code version} are null or empty.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault or
-     * an empty/null {@code name} and a non null/empty {@version} is provided.
+     * an empty/null {@code name} and a non null/empty {@code version} is provided.
      * @throws HttpResponseException if a valid {@code name} and a non null/empty {@code version} is specified.
      */
     public KeyVaultKey getKey(String name, String version) {
@@ -351,9 +351,9 @@ public final class KeyClient {
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
      *     equivalent to calling {@link KeyClient#getKey(String)}, with the latest version being retrieved.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the requested {@link KeyVaultKey key}.
-     * The content of the key is null if both {@ncode name} and {@code version} are null or empty.
+     * The content of the key is null if both {@code name} and {@code version} are null or empty.
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault or
-     * an empty/null {@code name} and a non null/empty {@version} is provided.
+     * an empty/null {@code name} and a non null/empty {@code version} is provided.
      * @throws HttpResponseException if a valid {@code name} and a non null/empty {@code version} is specified.
      */
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
@@ -369,7 +369,7 @@ public final class KeyClient {
      * {@codesnippet com.azure.keyvault.keys.keyclient.getKey#string}
      *
      * @param name The name of the key.
-     * @return The requested {@link KeyVaultKey key}. The content of the key is null if {@ncode name} is null or empty.
+     * @return The requested {@link KeyVaultKey key}. The content of the key is null if {@code name} is null or empty.
      * @throws ResourceNotFoundException when a key with non null/empty {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException if a non null/empty and an invalid {@code name} is specified.
      */
