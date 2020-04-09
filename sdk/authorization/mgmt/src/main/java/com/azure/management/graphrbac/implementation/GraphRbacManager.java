@@ -137,12 +137,12 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
                 .pipeline(graphRestClient.getHttpPipeline())
                 .host(graphEndpoint)
                 .tenantID(tenantId)
-                .build();
+                .buildClient();
         this.authorizationManagementClient = new AuthorizationManagementClientBuilder()
                 .pipeline(restClient.getHttpPipeline())
                 .host(resourceManagerEndpoint)
                 .subscriptionId(Utils.getSubscriptionIdFromRestClient(restClient))
-                .build();
+                .buildClient();
         this.tenantId = tenantId;
         this.sdkContext = sdkContext;
     }
