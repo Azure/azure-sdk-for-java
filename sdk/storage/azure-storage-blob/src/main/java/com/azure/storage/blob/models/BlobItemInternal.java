@@ -49,7 +49,7 @@ public final class BlobItemInternal {
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
-    private BlobItemInternalProperties properties;
+    private BlobItemProperties properties;
 
     /*
      * The metadata property.
@@ -174,7 +174,7 @@ public final class BlobItemInternal {
      *
      * @return the properties value.
      */
-    public BlobItemInternalProperties getProperties() {
+    public BlobItemProperties getProperties() {
         return this.properties;
     }
 
@@ -184,7 +184,7 @@ public final class BlobItemInternal {
      * @param properties the properties value to set.
      * @return the BlobItemInternal object itself.
      */
-    public BlobItemInternal setProperties(BlobItemInternalProperties properties) {
+    public BlobItemInternal setProperties(BlobItemProperties properties) {
         this.properties = properties;
         return this;
     }
