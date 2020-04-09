@@ -16,12 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- *  Entry point to container service management API.
- */
+/** Entry point to container service management API. */
 @Fluent()
-public interface ContainerServices extends
-        SupportsCreating<ContainerService.DefinitionStages.Blank>,
+public interface ContainerServices
+    extends SupportsCreating<ContainerService.DefinitionStages.Blank>,
         HasManager<ContainerServiceManager>,
         HasInner<ContainerServicesInner>,
         SupportsBatchCreation<ContainerService>,

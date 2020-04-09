@@ -7,11 +7,10 @@ import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.containerservice.NetworkPlugin;
 import com.azure.management.containerservice.NetworkPolicy;
 
-/**
- * The implementation for KubernetesClusterAgentPool and its create and update interfaces.
- */
+/** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
 public class KubernetesClusterNetworkProfileImpl
-    implements KubernetesCluster.DefinitionStages.NetworkProfileDefinition<KubernetesCluster.DefinitionStages.WithCreate> {
+    implements KubernetesCluster.DefinitionStages.NetworkProfileDefinition<
+        KubernetesCluster.DefinitionStages.WithCreate> {
 
     KubernetesClusterImpl parentKubernetesCluster;
 
@@ -66,5 +65,4 @@ public class KubernetesClusterNetworkProfileImpl
         }
         return this.parentKubernetesCluster.inner().networkProfile();
     }
-
 }

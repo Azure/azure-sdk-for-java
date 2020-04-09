@@ -392,9 +392,15 @@ class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceivedMessage
                 "Cannot renew lock token without a value for 'message.getLockedUntil()'"));
         }
 
-        final Duration initialInterval = Duration.between(Instant.now(), initialLockedUntil);
+        final Instant initialRefreshDuration = initialLockedUntil.minus(Duration.ofMillis(500));
+        Duration initialInterval = Duration.between(Instant.now(), initialRefreshDuration);
+        if (initialInterval.isNegative()) {
+            logger.info("Duration was negative. Moving to refresh immediately: {}", initialInterval.toMillis());
+            initialInterval = Duration.ZERO;
+        }
 
-        logger.info("lock[{}]. lockedUntil[{}]. interval[{}]", lockToken, initialLockedUntil, initialInterval);
+        logger.info("lock[{}]. lockedUntil[{}]. firstInterval[{}]. interval[{}]", lockToken, initialLockedUntil,
+            initialRefreshDuration, initialInterval);
 
         final EmitterProcessor<Duration> emitterProcessor = EmitterProcessor.create();
         final FluxSink<Duration> sink = emitterProcessor.sink(FluxSink.OverflowStrategy.BUFFER);

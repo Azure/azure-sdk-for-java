@@ -1,4 +1,4 @@
-# Azure Core client library for Java
+# Azure Core shared library for Java
 
 [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
 

@@ -1,5 +1,8 @@
 # Release History
 
+## 12.6.0-beta.1 (Unreleased)
+
+
 ## 12.5.0 (2020-04-06)
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 
