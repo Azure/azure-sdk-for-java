@@ -216,8 +216,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
                 return Flux.empty();
             }
             // Use Flux.using to close the stream after complete emission
-            return Flux.using(() -> this.responseBody.byteStream(),
-                bodyStream -> toFluxByteBuffer(bodyStream),
+            return Flux.using(this.responseBody::byteStream,
+                OkHttpResponse::toFluxByteBuffer,
                 bodyStream -> {
                     try {
                         // OkHttp: The stream from ResponseBody::byteStream() has to be explicitly closed.

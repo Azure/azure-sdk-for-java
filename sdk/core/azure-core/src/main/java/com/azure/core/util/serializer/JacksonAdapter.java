@@ -27,7 +27,6 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -66,7 +65,7 @@ public class JacksonAdapter implements SerializerAdapter {
      * BOM header from some response bodies. To be removed in deserialization.
      */
     private static final String BOM = "\uFEFF";
-    private static final String BOM_STRING = new String(BOM.getBytes(StandardCharsets.UTF_8), Charset.defaultCharset());
+    private static final String BOM_STRING = new String(BOM.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.

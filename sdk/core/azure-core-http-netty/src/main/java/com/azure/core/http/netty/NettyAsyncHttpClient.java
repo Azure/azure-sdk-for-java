@@ -29,6 +29,7 @@ import reactor.netty.tcp.TcpClient;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -211,9 +212,27 @@ class NettyAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return bodyIntern().aggregate().asString().doFinally(s -> {
-                if (!reactorNettyConnection.isDisposed()) {
-                    reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+            return getBodyAsByteArray().map(bytes -> {
+                if (bytes.length >= 3 && bytes[0] == (byte) 239 && bytes[1] == (byte) 187 && bytes[2] == (byte) 191) {
+                    return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
+                } else if (bytes.length >= 2 && bytes[0] == (byte) 254 && bytes[1] == (byte) 255) {
+                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
+                } else if (bytes.length >= 2 && bytes[0] == (byte) 255 && bytes[1] == (byte) 254) {
+                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
+                } else {
+                    /*
+                     * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
+                     * present or invalid fallback to 'UTF-8' for the default charset.
+                     */
+                    Charset charset;
+                    try {
+                        charset = Charset.forName(reactorNettyResponse.responseHeaders()
+                            .get("Content-Encoding", "UTF-8"));
+                    } catch (RuntimeException ex) {
+                        charset = StandardCharsets.UTF_8;
+                    }
+
+                    return new String(bytes, charset);
                 }
             });
         }

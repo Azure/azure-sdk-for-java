@@ -216,14 +216,36 @@ class JdkAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray()
-                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+            return getBodyAsByteArray().map(bytes -> {
+                if (bytes.length >= 3 && bytes[0] == (byte) 239 && bytes[1] == (byte) 187 && bytes[2] == (byte) 191) {
+                    return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
+                } else if (bytes.length >= 2 && bytes[0] == (byte) 254 && bytes[1] == (byte) 255) {
+                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
+                } else if (bytes.length >= 2 && bytes[0] == (byte) 255 && bytes[1] == (byte) 254) {
+                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
+                } else {
+                    /*
+                     * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
+                     * present or invalid fallback to 'UTF-8' for the default charset.
+                     */
+                    Charset charset;
+                    try {
+                        String contentEncoding = headers.getValue("Content-Encoding");
+                        charset = (contentEncoding != null)
+                            ? Charset.forName(contentEncoding)
+                            : StandardCharsets.UTF_8;
+                    } catch (RuntimeException ex) {
+                        charset = StandardCharsets.UTF_8;
+                    }
+
+                    return new String(bytes, charset);
+                }
+            });
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray()
-                .map(bytes -> new String(bytes, charset));
+            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
         }
 
         @Override
@@ -246,7 +268,7 @@ class JdkAsyncHttpClient implements HttpClient {
             final HttpHeaders httpHeaders = new HttpHeaders();
             for (final String key : headers.map().keySet()) {
                 final List<String> values = headers.allValues(key);
-                if (values == null || values.size() == 0) {
+                if (CoreUtils.isNullOrEmpty(values)) {
                     continue;
                 } else if (values.size() == 1) {
                     httpHeaders.put(key, values.get(0));
