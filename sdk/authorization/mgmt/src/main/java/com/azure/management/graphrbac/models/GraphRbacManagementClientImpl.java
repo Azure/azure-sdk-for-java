@@ -96,7 +96,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The HTTP pipeline to send requests through.
      */
-    private HttpPipeline httpPipeline;
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -110,7 +110,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The SignedInUsersInner object to access its operations.
      */
-    private SignedInUsersInner signedInUsers;
+    private final SignedInUsersInner signedInUsers;
 
     /**
      * Gets the SignedInUsersInner object to access its operations.
@@ -124,7 +124,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The ApplicationsInner object to access its operations.
      */
-    private ApplicationsInner applications;
+    private final ApplicationsInner applications;
 
     /**
      * Gets the ApplicationsInner object to access its operations.
@@ -138,7 +138,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The DeletedApplicationsInner object to access its operations.
      */
-    private DeletedApplicationsInner deletedApplications;
+    private final DeletedApplicationsInner deletedApplications;
 
     /**
      * Gets the DeletedApplicationsInner object to access its operations.
@@ -152,7 +152,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The GroupsInner object to access its operations.
      */
-    private GroupsInner groups;
+    private final GroupsInner groups;
 
     /**
      * Gets the GroupsInner object to access its operations.
@@ -166,7 +166,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The ServicePrincipalsInner object to access its operations.
      */
-    private ServicePrincipalsInner servicePrincipals;
+    private final ServicePrincipalsInner servicePrincipals;
 
     /**
      * Gets the ServicePrincipalsInner object to access its operations.
@@ -180,7 +180,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The UsersInner object to access its operations.
      */
-    private UsersInner users;
+    private final UsersInner users;
 
     /**
      * Gets the UsersInner object to access its operations.
@@ -194,7 +194,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The ObjectsInner object to access its operations.
      */
-    private ObjectsInner objects;
+    private final ObjectsInner objects;
 
     /**
      * Gets the ObjectsInner object to access its operations.
@@ -208,7 +208,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The DomainsInner object to access its operations.
      */
-    private DomainsInner domains;
+    private final DomainsInner domains;
 
     /**
      * Gets the DomainsInner object to access its operations.
@@ -222,7 +222,7 @@ public final class GraphRbacManagementClientImpl extends AzureServiceClient {
     /**
      * The OAuth2PermissionGrantsInner object to access its operations.
      */
-    private OAuth2PermissionGrantsInner oAuth2PermissionGrants;
+    private final OAuth2PermissionGrantsInner oAuth2PermissionGrants;
 
     /**
      * Gets the OAuth2PermissionGrantsInner object to access its operations.

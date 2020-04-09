@@ -40,12 +40,12 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
     /**
      * The proxy service used to perform REST calls.
      */
-    private RoleAssignmentsService service;
+    private final RoleAssignmentsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private AuthorizationManagementClientImpl client;
+    private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentsInner.
@@ -63,16 +63,16 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AuthorizationManagementClientRoleAssignments")
+    @ServiceInterface(name = "AuthorizationManagem")
     private interface RoleAssignmentsService {
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/roleAssignments")
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers" + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers" + "/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RoleAssignmentListResultInner>> listForResource(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/roleAssignments")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers" + "/Microsoft.Authorization/roleAssignments")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RoleAssignmentListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
@@ -162,6 +162,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listForResourceSinglePageAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) {
@@ -189,6 +190,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) {
@@ -208,6 +210,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
@@ -230,6 +233,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter) {
@@ -247,6 +251,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
@@ -263,6 +268,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String filter) {
@@ -286,6 +292,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
@@ -301,6 +308,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -319,6 +327,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName, String filter) {
@@ -332,6 +341,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listByResourceGroup(String resourceGroupName) {
@@ -348,6 +358,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleAssignmentInner>> deleteWithResponseAsync(String scope, String roleAssignmentName) {
@@ -364,6 +375,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentInner> deleteAsync(String scope, String roleAssignmentName) {
@@ -385,6 +397,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentInner delete(String scope, String roleAssignmentName) {
@@ -400,6 +413,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleAssignmentInner>> createWithResponseAsync(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
@@ -417,6 +431,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentInner> createAsync(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
@@ -439,6 +454,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentInner create(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
@@ -453,6 +469,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleAssignmentInner>> getWithResponseAsync(String scope, String roleAssignmentName) {
@@ -469,6 +486,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentInner> getAsync(String scope, String roleAssignmentName) {
@@ -490,6 +508,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified role assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentInner get(String scope, String roleAssignmentName) {
@@ -503,6 +522,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleAssignmentInner>> deleteByIdWithResponseAsync(String roleId) {
@@ -518,6 +538,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentInner> deleteByIdAsync(String roleId) {
@@ -538,6 +559,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentInner deleteById(String roleId) {
@@ -552,6 +574,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleAssignmentInner>> createByIdWithResponseAsync(String roleId, RoleAssignmentCreateParameters parameters) {
@@ -568,6 +591,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentInner> createByIdAsync(String roleId, RoleAssignmentCreateParameters parameters) {
@@ -589,6 +613,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role Assignments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentInner createById(String roleId, RoleAssignmentCreateParameters parameters) {
@@ -602,6 +627,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleAssignmentInner>> getByIdWithResponseAsync(String roleId) {
@@ -617,6 +643,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleAssignmentInner> getByIdAsync(String roleId) {
@@ -637,6 +664,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role assignment by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentInner getById(String roleId) {
@@ -650,6 +678,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listSinglePageAsync(String filter) {
@@ -672,6 +701,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listAsync(String filter) {
@@ -685,6 +715,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listAsync() {
@@ -702,6 +733,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> list(String filter) {
@@ -713,6 +745,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role assignments for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> list() {
@@ -729,6 +762,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listForScopeSinglePageAsync(String scope, String filter) {
@@ -752,6 +786,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope, String filter) {
@@ -767,6 +802,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleAssignmentInner> listForScopeAsync(String scope) {
@@ -785,6 +821,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForScope(String scope, String filter) {
@@ -798,6 +835,7 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentInner> listForScope(String scope) {
@@ -809,10 +847,11 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listForResourceNextSinglePageAsync(String nextLink) {
@@ -830,10 +869,11 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listForResourceGroupNextSinglePageAsync(String nextLink) {
@@ -851,10 +891,11 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listNextSinglePageAsync(String nextLink) {
@@ -872,10 +913,11 @@ public final class RoleAssignmentsInner implements InnerSupportsListing<RoleAssi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleAssignmentInner>> listForScopeNextSinglePageAsync(String nextLink) {

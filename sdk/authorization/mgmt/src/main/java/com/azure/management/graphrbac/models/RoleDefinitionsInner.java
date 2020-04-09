@@ -38,12 +38,12 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
     /**
      * The proxy service used to perform REST calls.
      */
-    private RoleDefinitionsService service;
+    private final RoleDefinitionsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private AuthorizationManagementClientImpl client;
+    private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of RoleDefinitionsInner.
@@ -61,7 +61,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AuthorizationManagementClientRoleDefinitions")
+    @ServiceInterface(name = "AuthorizationManagem")
     private interface RoleDefinitionsService {
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}")
@@ -108,6 +108,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleDefinitionInner>> deleteWithResponseAsync(String scope, String roleDefinitionId) {
@@ -124,6 +125,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> deleteAsync(String scope, String roleDefinitionId) {
@@ -145,6 +147,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner delete(String scope, String roleDefinitionId) {
@@ -159,6 +162,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition by name (GUID).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleDefinitionInner>> getWithResponseAsync(String scope, String roleDefinitionId) {
@@ -175,6 +179,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition by name (GUID).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> getAsync(String scope, String roleDefinitionId) {
@@ -196,6 +201,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition by name (GUID).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner get(String scope, String roleDefinitionId) {
@@ -211,6 +217,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleDefinitionInner>> createOrUpdateWithResponseAsync(String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition) {
@@ -228,6 +235,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> createOrUpdateAsync(String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition) {
@@ -250,6 +258,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner createOrUpdate(String scope, String roleDefinitionId, RoleDefinitionInner roleDefinition) {
@@ -264,6 +273,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleDefinitionInner>> listSinglePageAsync(String scope, String filter) {
@@ -287,6 +297,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleDefinitionInner> listAsync(String scope, String filter) {
@@ -302,6 +313,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RoleDefinitionInner> listAsync(String scope) {
@@ -320,6 +332,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinitionInner> list(String scope, String filter) {
@@ -333,6 +346,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinitionInner> list(String scope) {
@@ -348,6 +362,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RoleDefinitionInner>> getByIdWithResponseAsync(String roleId) {
@@ -363,6 +378,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RoleDefinitionInner> getByIdAsync(String roleId) {
@@ -383,6 +399,7 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a role definition by ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleDefinitionInner getById(String roleId) {
@@ -392,10 +409,11 @@ public final class RoleDefinitionsInner implements InnerSupportsDelete<RoleDefin
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return role definition list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoleDefinitionInner>> listNextSinglePageAsync(String nextLink) {

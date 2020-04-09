@@ -34,12 +34,12 @@ public final class PermissionsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private PermissionsService service;
+    private final PermissionsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private AuthorizationManagementClientImpl client;
+    private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of PermissionsInner.
@@ -57,16 +57,16 @@ public final class PermissionsInner {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AuthorizationManagementClientPermissions")
+    @ServiceInterface(name = "AuthorizationManagem")
     private interface PermissionsService {
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Authorization/permissions")
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers" + "/Microsoft.Authorization/permissions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<PermissionGetResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
 
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/permissions")
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers" + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers" + "/Microsoft.Authorization/permissions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<PermissionGetResultInner>> listForResource(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
@@ -91,6 +91,7 @@ public final class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PermissionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -113,6 +114,7 @@ public final class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PermissionInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -128,6 +130,7 @@ public final class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionInner> listByResourceGroup(String resourceGroupName) {
@@ -145,6 +148,7 @@ public final class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PermissionInner>> listForResourceSinglePageAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
@@ -171,6 +175,7 @@ public final class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PermissionInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
@@ -190,6 +195,7 @@ public final class PermissionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all permissions the caller has for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PermissionInner> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName) {
@@ -199,10 +205,11 @@ public final class PermissionsInner {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return permissions information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PermissionInner>> listForResourceGroupNextSinglePageAsync(String nextLink) {
@@ -220,10 +227,11 @@ public final class PermissionsInner {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return permissions information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PermissionInner>> listForResourceNextSinglePageAsync(String nextLink) {

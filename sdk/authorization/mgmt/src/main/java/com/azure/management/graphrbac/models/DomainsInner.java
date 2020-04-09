@@ -36,12 +36,12 @@ public final class DomainsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private DomainsService service;
+    private final DomainsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of DomainsInner.
@@ -59,7 +59,7 @@ public final class DomainsInner {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientDomains")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface DomainsService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/domains")
@@ -81,6 +81,7 @@ public final class DomainsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter) {
@@ -102,6 +103,7 @@ public final class DomainsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DomainInner> listAsync(String filter) {
@@ -114,6 +116,7 @@ public final class DomainsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DomainInner> listAsync() {
@@ -130,6 +133,7 @@ public final class DomainsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DomainInner> list(String filter) {
@@ -141,6 +145,7 @@ public final class DomainsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of domains for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DomainInner> list() {
@@ -156,6 +161,7 @@ public final class DomainsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DomainInner>> getWithResponseAsync(String domainName) {
@@ -170,6 +176,7 @@ public final class DomainsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DomainInner> getAsync(String domainName) {
@@ -190,6 +197,7 @@ public final class DomainsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific domain in the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DomainInner get(String domainName) {

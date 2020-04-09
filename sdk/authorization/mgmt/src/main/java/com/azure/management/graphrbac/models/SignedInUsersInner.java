@@ -36,12 +36,12 @@ public final class SignedInUsersInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private SignedInUsersService service;
+    private final SignedInUsersService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of SignedInUsersInner.
@@ -59,7 +59,7 @@ public final class SignedInUsersInner {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientSignedInUsers")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface SignedInUsersService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Get("/{tenantID}/me")
@@ -85,6 +85,7 @@ public final class SignedInUsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<UserInner>> getWithResponseAsync() {
@@ -97,6 +98,7 @@ public final class SignedInUsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> getAsync() {
@@ -115,6 +117,7 @@ public final class SignedInUsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details for the currently logged-in user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserInner get() {
@@ -126,6 +129,7 @@ public final class SignedInUsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsSinglePageAsync() {
@@ -145,6 +149,7 @@ public final class SignedInUsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> listOwnedObjectsAsync() {
@@ -158,6 +163,7 @@ public final class SignedInUsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DirectoryObjectInner> listOwnedObjects() {
@@ -171,6 +177,7 @@ public final class SignedInUsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsNextSinglePageAsync(String nextLink) {

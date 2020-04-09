@@ -46,12 +46,12 @@ public final class ServicePrincipalsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private ServicePrincipalsService service;
+    private final ServicePrincipalsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of ServicePrincipalsInner.
@@ -69,7 +69,7 @@ public final class ServicePrincipalsInner {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientServicePrincipals")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface ServicePrincipalsService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/servicePrincipals")
@@ -151,6 +151,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServicePrincipalInner>> createWithResponseAsync(ServicePrincipalCreateParameters parameters) {
@@ -165,6 +166,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicePrincipalInner> createAsync(ServicePrincipalCreateParameters parameters) {
@@ -185,6 +187,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServicePrincipalInner create(ServicePrincipalCreateParameters parameters) {
@@ -198,6 +201,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String filter) {
@@ -219,6 +223,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServicePrincipalInner> listAsync(String filter) {
@@ -232,6 +237,7 @@ public final class ServicePrincipalsInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServicePrincipalInner> listAsync() {
@@ -249,6 +255,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServicePrincipalInner> list(String filter) {
@@ -260,6 +267,7 @@ public final class ServicePrincipalsInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServicePrincipalInner> list() {
@@ -276,6 +284,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
@@ -291,6 +300,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
@@ -319,6 +329,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
@@ -333,6 +344,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String objectId) {
@@ -360,6 +372,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ServicePrincipalInner>> getWithResponseAsync(String objectId) {
@@ -374,6 +387,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServicePrincipalInner> getAsync(String objectId) {
@@ -394,6 +408,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service principal information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServicePrincipalInner get(String objectId) {
@@ -407,6 +422,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId) {
@@ -428,6 +444,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId) {
@@ -443,6 +460,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DirectoryObjectInner> listOwners(String objectId) {
@@ -456,6 +474,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String objectId) {
@@ -477,6 +496,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId) {
@@ -491,6 +511,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the keyCredentials associated with the specified service principal.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId) {
@@ -505,6 +526,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, List<KeyCredentialInner> value) {
@@ -522,6 +544,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value) {
@@ -550,6 +573,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String objectId) {
@@ -571,6 +595,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId) {
@@ -585,6 +610,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the passwordCredentials associated with a service principal.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId) {
@@ -599,6 +625,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String objectId, List<PasswordCredentialInner> value) {
@@ -616,6 +643,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value) {
@@ -644,6 +672,7 @@ public final class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service principals from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink) {
@@ -661,10 +690,11 @@ public final class ServicePrincipalsInner {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink) {

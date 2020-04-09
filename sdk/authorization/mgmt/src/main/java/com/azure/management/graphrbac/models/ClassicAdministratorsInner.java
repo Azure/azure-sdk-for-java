@@ -34,12 +34,12 @@ public final class ClassicAdministratorsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private ClassicAdministratorsService service;
+    private final ClassicAdministratorsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private AuthorizationManagementClientImpl client;
+    private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of ClassicAdministratorsInner.
@@ -57,7 +57,7 @@ public final class ClassicAdministratorsInner {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AuthorizationManagementClientClassicAdministrators")
+    @ServiceInterface(name = "AuthorizationManagem")
     private interface ClassicAdministratorsService {
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/classicAdministrators")
@@ -77,6 +77,7 @@ public final class ClassicAdministratorsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service administrator, account administrator, and co-administrators for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ClassicAdministratorInner>> listSinglePageAsync() {
@@ -97,6 +98,7 @@ public final class ClassicAdministratorsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service administrator, account administrator, and co-administrators for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassicAdministratorInner> listAsync() {
@@ -110,6 +112,7 @@ public final class ClassicAdministratorsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service administrator, account administrator, and co-administrators for the subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClassicAdministratorInner> list() {
@@ -119,10 +122,11 @@ public final class ClassicAdministratorsInner {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return classicAdministrator list result information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ClassicAdministratorInner>> listNextSinglePageAsync(String nextLink) {

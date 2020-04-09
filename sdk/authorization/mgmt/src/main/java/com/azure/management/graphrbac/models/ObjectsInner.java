@@ -38,12 +38,12 @@ public final class ObjectsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private ObjectsService service;
+    private final ObjectsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of ObjectsInner.
@@ -61,7 +61,7 @@ public final class ObjectsInner {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientObjects")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface ObjectsService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/getObjectsByObjectIds")
@@ -83,6 +83,7 @@ public final class ObjectsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsSinglePageAsync(GetObjectsParameters parameters) {
@@ -104,6 +105,7 @@ public final class ObjectsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(GetObjectsParameters parameters) {
@@ -119,6 +121,7 @@ public final class ObjectsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(GetObjectsParameters parameters) {
@@ -132,6 +135,7 @@ public final class ObjectsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return aD group membership for the specified AD object IDs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getObjectsByObjectIdsNextSinglePageAsync(String nextLink) {

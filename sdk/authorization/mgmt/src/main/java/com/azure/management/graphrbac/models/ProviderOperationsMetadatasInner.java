@@ -34,12 +34,12 @@ public final class ProviderOperationsMetadatasInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private ProviderOperationsMetadatasService service;
+    private final ProviderOperationsMetadatasService service;
 
     /**
      * The service client containing this operation class.
      */
-    private AuthorizationManagementClientImpl client;
+    private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of ProviderOperationsMetadatasInner.
@@ -57,7 +57,7 @@ public final class ProviderOperationsMetadatasInner {
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AuthorizationManagementClientProviderOperationsMetadatas")
+    @ServiceInterface(name = "AuthorizationManagem")
     private interface ProviderOperationsMetadatasService {
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/providerOperations/{resourceProviderNamespace}")
@@ -86,6 +86,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ProviderOperationsMetadataInner>> getWithResponseAsync(String resourceProviderNamespace, String expand) {
@@ -102,6 +103,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderOperationsMetadataInner> getAsync(String resourceProviderNamespace, String expand) {
@@ -122,6 +124,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProviderOperationsMetadataInner> getAsync(String resourceProviderNamespace) {
@@ -145,6 +148,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderOperationsMetadataInner get(String resourceProviderNamespace, String expand) {
@@ -158,6 +162,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for the specified resource provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProviderOperationsMetadataInner get(String resourceProviderNamespace) {
@@ -173,6 +178,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderOperationsMetadataInner>> listSinglePageAsync(String expand) {
@@ -195,6 +201,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderOperationsMetadataInner> listAsync(String expand) {
@@ -208,6 +215,7 @@ public final class ProviderOperationsMetadatasInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProviderOperationsMetadataInner> listAsync() {
@@ -225,6 +233,7 @@ public final class ProviderOperationsMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderOperationsMetadataInner> list(String expand) {
@@ -236,6 +245,7 @@ public final class ProviderOperationsMetadatasInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata for all resource providers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProviderOperationsMetadataInner> list() {
@@ -247,10 +257,11 @@ public final class ProviderOperationsMetadatasInner {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provider operations metadata list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ProviderOperationsMetadataInner>> listNextSinglePageAsync(String nextLink) {

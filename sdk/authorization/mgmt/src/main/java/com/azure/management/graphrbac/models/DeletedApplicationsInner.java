@@ -39,12 +39,12 @@ public final class DeletedApplicationsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private DeletedApplicationsService service;
+    private final DeletedApplicationsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of DeletedApplicationsInner.
@@ -62,7 +62,7 @@ public final class DeletedApplicationsInner {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientDeletedApplications")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface DeletedApplicationsService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/deletedApplications/{objectId}/restore")
@@ -96,6 +96,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ApplicationInner>> restoreWithResponseAsync(String objectId) {
@@ -110,6 +111,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationInner> restoreAsync(String objectId) {
@@ -130,6 +132,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationInner restore(String objectId) {
@@ -143,6 +146,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String filter) {
@@ -164,6 +168,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationInner> listAsync(String filter) {
@@ -177,6 +182,7 @@ public final class DeletedApplicationsInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationInner> listAsync() {
@@ -194,6 +200,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list(String filter) {
@@ -205,6 +212,7 @@ public final class DeletedApplicationsInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApplicationInner> list() {
@@ -220,6 +228,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> hardDeleteWithResponseAsync(String applicationObjectId) {
@@ -234,6 +243,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hardDeleteAsync(String applicationObjectId) {
@@ -261,6 +271,7 @@ public final class DeletedApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of deleted applications in the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink) {

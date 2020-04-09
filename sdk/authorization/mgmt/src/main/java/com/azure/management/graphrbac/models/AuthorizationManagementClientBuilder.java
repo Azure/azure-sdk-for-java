@@ -86,7 +86,7 @@ public final class AuthorizationManagementClientBuilder {
      * 
      * @return an instance of AuthorizationManagementClientImpl.
      */
-    public AuthorizationManagementClientImpl build() {
+    public AuthorizationManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }

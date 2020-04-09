@@ -41,12 +41,12 @@ public final class OAuth2PermissionGrantsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private OAuth2PermissionGrantsService service;
+    private final OAuth2PermissionGrantsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of OAuth2PermissionGrantsInner.
@@ -64,7 +64,7 @@ public final class OAuth2PermissionGrantsInner {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientOAuth2PermissionGrants")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface OAuth2PermissionGrantsService {
         @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("/{tenantID}/oauth2PermissionGrants")
@@ -98,6 +98,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listSinglePageAsync(String filter) {
@@ -119,6 +120,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OAuth2PermissionGrantInner> listAsync(String filter) {
@@ -132,6 +134,7 @@ public final class OAuth2PermissionGrantsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OAuth2PermissionGrantInner> listAsync() {
@@ -149,6 +152,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OAuth2PermissionGrantInner> list(String filter) {
@@ -160,6 +164,7 @@ public final class OAuth2PermissionGrantsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OAuth2PermissionGrantInner> list() {
@@ -175,6 +180,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<OAuth2PermissionGrantInner>> createWithResponseAsync(OAuth2PermissionGrantInner body) {
@@ -189,6 +195,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OAuth2PermissionGrantInner> createAsync(OAuth2PermissionGrantInner body) {
@@ -207,6 +214,7 @@ public final class OAuth2PermissionGrantsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OAuth2PermissionGrantInner> createAsync() {
@@ -229,6 +237,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OAuth2PermissionGrantInner create(OAuth2PermissionGrantInner body) {
@@ -240,6 +249,7 @@ public final class OAuth2PermissionGrantsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OAuth2PermissionGrantInner create() {
@@ -255,6 +265,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
@@ -269,6 +280,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String objectId) {
@@ -296,6 +308,7 @@ public final class OAuth2PermissionGrantsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the next page of OAuth2 permission grants.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listNextSinglePageAsync(String nextLink) {

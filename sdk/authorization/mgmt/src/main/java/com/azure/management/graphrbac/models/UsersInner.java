@@ -44,12 +44,12 @@ public final class UsersInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private UsersService service;
+    private final UsersService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of UsersInner.
@@ -67,7 +67,7 @@ public final class UsersInner {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientUsers")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface UsersService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/users")
@@ -119,6 +119,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<UserInner>> createWithResponseAsync(UserCreateParameters parameters) {
@@ -133,6 +134,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> createAsync(UserCreateParameters parameters) {
@@ -153,6 +155,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserInner create(UserCreateParameters parameters) {
@@ -166,6 +169,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UserInner>> listSinglePageAsync(String filter) {
@@ -187,6 +191,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UserInner> listAsync(String filter) {
@@ -200,6 +205,7 @@ public final class UsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UserInner> listAsync() {
@@ -217,6 +223,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UserInner> list(String filter) {
@@ -228,6 +235,7 @@ public final class UsersInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UserInner> list() {
@@ -243,6 +251,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<UserInner>> getWithResponseAsync(String upnOrObjectId) {
@@ -257,6 +266,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> getAsync(String upnOrObjectId) {
@@ -277,6 +287,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return user information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserInner get(String upnOrObjectId) {
@@ -291,6 +302,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, UserUpdateParameters parameters) {
@@ -306,6 +318,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateAsync(String upnOrObjectId, UserUpdateParameters parameters) {
@@ -334,6 +347,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId) {
@@ -348,6 +362,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String upnOrObjectId) {
@@ -376,6 +391,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, boolean securityEnabledOnly) {
@@ -400,6 +416,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
@@ -415,6 +432,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
@@ -428,6 +446,7 @@ public final class UsersInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UserInner>> listNextSinglePageAsync(String nextLink) {

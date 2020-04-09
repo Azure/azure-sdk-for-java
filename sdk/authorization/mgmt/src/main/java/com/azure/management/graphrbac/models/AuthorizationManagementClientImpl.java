@@ -69,7 +69,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The HTTP pipeline to send requests through.
      */
-    private HttpPipeline httpPipeline;
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -83,7 +83,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The ClassicAdministratorsInner object to access its operations.
      */
-    private ClassicAdministratorsInner classicAdministrators;
+    private final ClassicAdministratorsInner classicAdministrators;
 
     /**
      * Gets the ClassicAdministratorsInner object to access its operations.
@@ -97,7 +97,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The GlobalAdministratorsInner object to access its operations.
      */
-    private GlobalAdministratorsInner globalAdministrators;
+    private final GlobalAdministratorsInner globalAdministrators;
 
     /**
      * Gets the GlobalAdministratorsInner object to access its operations.
@@ -111,7 +111,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The ProviderOperationsMetadatasInner object to access its operations.
      */
-    private ProviderOperationsMetadatasInner providerOperationsMetadatas;
+    private final ProviderOperationsMetadatasInner providerOperationsMetadatas;
 
     /**
      * Gets the ProviderOperationsMetadatasInner object to access its operations.
@@ -125,7 +125,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The RoleAssignmentsInner object to access its operations.
      */
-    private RoleAssignmentsInner roleAssignments;
+    private final RoleAssignmentsInner roleAssignments;
 
     /**
      * Gets the RoleAssignmentsInner object to access its operations.
@@ -139,7 +139,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The PermissionsInner object to access its operations.
      */
-    private PermissionsInner permissions;
+    private final PermissionsInner permissions;
 
     /**
      * Gets the PermissionsInner object to access its operations.
@@ -153,7 +153,7 @@ public final class AuthorizationManagementClientImpl extends AzureServiceClient 
     /**
      * The RoleDefinitionsInner object to access its operations.
      */
-    private RoleDefinitionsInner roleDefinitions;
+    private final RoleDefinitionsInner roleDefinitions;
 
     /**
      * Gets the RoleDefinitionsInner object to access its operations.

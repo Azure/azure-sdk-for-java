@@ -104,7 +104,7 @@ public final class GraphRbacManagementClientBuilder {
      * 
      * @return an instance of GraphRbacManagementClientImpl.
      */
-    public GraphRbacManagementClientImpl build() {
+    public GraphRbacManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://graph.windows.net";
         }

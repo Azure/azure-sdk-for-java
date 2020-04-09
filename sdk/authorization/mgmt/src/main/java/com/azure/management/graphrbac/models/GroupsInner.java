@@ -45,12 +45,12 @@ public final class GroupsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private GroupsService service;
+    private final GroupsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private GraphRbacManagementClientImpl client;
+    private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of GroupsInner.
@@ -68,7 +68,7 @@ public final class GroupsInner {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementClientGroups")
+    @ServiceInterface(name = "GraphRbacManagementC")
     private interface GroupsService {
         @Headers({ "Accept: application/json,text/json", "Content-Type: application/json" })
         @Post("/{tenantID}/isMemberOf")
@@ -168,6 +168,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(CheckGroupMembershipParameters parameters) {
@@ -182,6 +183,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CheckGroupMembershipResultInner> isMemberOfAsync(CheckGroupMembershipParameters parameters) {
@@ -202,6 +204,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CheckGroupMembershipResultInner isMemberOf(CheckGroupMembershipParameters parameters) {
@@ -216,6 +219,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId) {
@@ -231,6 +235,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeMemberAsync(String groupObjectId, String memberObjectId) {
@@ -260,6 +265,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String url) {
@@ -277,6 +283,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addMemberAsync(String groupObjectId, String url) {
@@ -305,6 +312,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ADGroupInner>> createWithResponseAsync(GroupCreateParameters parameters) {
@@ -319,6 +327,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ADGroupInner> createAsync(GroupCreateParameters parameters) {
@@ -339,6 +348,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ADGroupInner create(GroupCreateParameters parameters) {
@@ -352,6 +362,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ADGroupInner>> listSinglePageAsync(String filter) {
@@ -373,6 +384,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ADGroupInner> listAsync(String filter) {
@@ -386,6 +398,7 @@ public final class GroupsInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ADGroupInner> listAsync() {
@@ -403,6 +416,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ADGroupInner> list(String filter) {
@@ -414,6 +428,7 @@ public final class GroupsInner {
      * 
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ADGroupInner> list() {
@@ -429,6 +444,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersSinglePageAsync(String objectId) {
@@ -450,6 +466,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> getGroupMembersAsync(String objectId) {
@@ -465,6 +482,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DirectoryObjectInner> getGroupMembers(String objectId) {
@@ -478,6 +496,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ADGroupInner>> getWithResponseAsync(String objectId) {
@@ -492,6 +511,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ADGroupInner> getAsync(String objectId) {
@@ -512,6 +532,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group information from the directory.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ADGroupInner get(String objectId) {
@@ -525,6 +546,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
@@ -539,6 +561,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String objectId) {
@@ -567,6 +590,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, boolean securityEnabledOnly) {
@@ -591,6 +615,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> getMemberGroupsAsync(String objectId, boolean securityEnabledOnly) {
@@ -606,6 +631,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> getMemberGroups(String objectId, boolean securityEnabledOnly) {
@@ -619,6 +645,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId) {
@@ -640,6 +667,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId) {
@@ -655,6 +683,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DirectoryObjectInner> listOwners(String objectId) {
@@ -669,6 +698,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String url) {
@@ -686,6 +716,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addOwnerAsync(String objectId, String url) {
@@ -715,6 +746,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId) {
@@ -730,6 +762,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeOwnerAsync(String objectId, String ownerObjectId) {
@@ -758,6 +791,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ADGroupInner>> listNextSinglePageAsync(String nextLink) {
@@ -779,6 +813,7 @@ public final class GroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersNextSinglePageAsync(String nextLink) {
@@ -796,10 +831,11 @@ public final class GroupsInner {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink) {

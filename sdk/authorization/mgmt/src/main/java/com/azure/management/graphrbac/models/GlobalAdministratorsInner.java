@@ -29,12 +29,12 @@ public final class GlobalAdministratorsInner {
     /**
      * The proxy service used to perform REST calls.
      */
-    private GlobalAdministratorsService service;
+    private final GlobalAdministratorsService service;
 
     /**
      * The service client containing this operation class.
      */
-    private AuthorizationManagementClientImpl client;
+    private final AuthorizationManagementClientImpl client;
 
     /**
      * Initializes an instance of GlobalAdministratorsInner.
@@ -52,7 +52,7 @@ public final class GlobalAdministratorsInner {
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AuthorizationManagementClientGlobalAdministrators")
+    @ServiceInterface(name = "AuthorizationManagem")
     private interface GlobalAdministratorsService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Post("/providers/Microsoft.Authorization/elevateAccess")
@@ -66,6 +66,7 @@ public final class GlobalAdministratorsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> elevateAccessWithResponseAsync() {
@@ -79,6 +80,7 @@ public final class GlobalAdministratorsInner {
      * 
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> elevateAccessAsync() {
