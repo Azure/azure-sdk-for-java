@@ -102,7 +102,7 @@ class BlobAPITest extends APISpec {
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setBlockSize(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize)
+        def pto = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize)
 
         when:
         bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
@@ -430,7 +430,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSize(4 * 1024 * 1024), null, null, false, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null)
 
         then:
         compareFiles(file, outFile, 0, fileSize)
@@ -476,7 +476,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def properties = blobClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSize(4 * 1024 * 1024), null, null, false, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null)
 
         then:
         compareFiles(file, outFile, 0, fileSize)
@@ -521,7 +521,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def downloadMono = blobAsyncClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSize(4 * 1024 * 1024), null, null, false)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false)
 
         then:
         StepVerifier.create(downloadMono)
@@ -720,7 +720,7 @@ class BlobAPITest extends APISpec {
          * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
          * to change the ETag therefore failing the download.
          */
-        def options = new ParallelTransferOptions().setBlockSize(Constants.KB)
+        def options = new ParallelTransferOptions().setBlockSizeLong(Constants.KB)
 
         /*
          * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is

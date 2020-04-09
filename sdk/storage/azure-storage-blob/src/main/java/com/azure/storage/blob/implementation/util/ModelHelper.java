@@ -44,7 +44,7 @@ public class ModelHelper {
         }
 
         return new ParallelTransferOptions()
-            .setBlockSize(blockSize)
+            .setBlockSizeLong(blockSize)
             .setNumBuffers(numBuffers)
             .setProgressReceiver(other.getProgressReceiver())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
@@ -65,7 +65,7 @@ public class ModelHelper {
         Long maxSingleUploadSize = blobOptions.getMaxSingleUploadSizeLong();
 
         return new com.azure.storage.common.ParallelTransferOptions()
-            .setBlockSize(blockSize)
+            .setBlockSizeLong(blockSize)
             .setNumBuffers(numBuffers)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);

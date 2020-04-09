@@ -66,7 +66,7 @@ public class ModelHelper {
         }
 
         return new ParallelTransferOptions()
-            .setBlockSize(blockSize)
+            .setBlockSizeLong(blockSize)
             .setNumBuffers(numBuffers)
             .setProgressReceiver(other.getProgressReceiver())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);

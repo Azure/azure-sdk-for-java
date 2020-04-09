@@ -50,7 +50,7 @@ public final class ParallelTransferOptions {
     @Deprecated
     public ParallelTransferOptions(Integer blockSize, Integer numBuffers, ProgressReceiver progressReceiver,
         Integer maxSingleUploadSize) {
-        this.setBlockSize(blockSize == null ? null : Long.valueOf(blockSize));
+        this.setBlockSizeLong(blockSize == null ? null : Long.valueOf(blockSize));
         this.setNumBuffers(numBuffers);
         this.setProgressReceiver(progressReceiver);
         this.setMaxSingleUploadSizeLong(maxSingleUploadSize == null ? null : Long.valueOf(maxSingleUploadSize));
@@ -86,7 +86,7 @@ public final class ParallelTransferOptions {
      * @param blockSize The block size.
      * @return The ParallelTransferOptions object itself.
      */
-    public ParallelTransferOptions setBlockSize(Long blockSize) {
+    public ParallelTransferOptions setBlockSizeLong(Long blockSize) {
         if (blockSize != null) {
             StorageImplUtils.assertInBounds("blockSize", blockSize, 1, Long.MAX_VALUE);
         }

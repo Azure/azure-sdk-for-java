@@ -171,7 +171,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Long blockSize = 100L * 1024L * 1024L; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         client.uploadWithResponse(data, parallelTransferOptions, headers, metadata, requestConditions)
             .subscribe(response -> System.out.println("Uploaded file %n"));
@@ -188,7 +188,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         ParallelTransferOptions pto = new ParallelTransferOptions()
-            .setBlockSize(blockSize)
+            .setBlockSizeLong(blockSize)
             .setProgressReceiver(bytesTransferred -> System.out.printf("Upload progress: %s bytes sent", bytesTransferred));
 
         client.uploadWithResponse(data, pto, httpHeaders, metadataMap, conditions)
@@ -226,7 +226,7 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .setLeaseId(leaseId)
             .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
         Long blockSize = 100L * 1024L * 1024L; // 100 MB;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSize(blockSize);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize);
 
         client.uploadFromFile(filePath, parallelTransferOptions, headers, metadata, requestConditions)
             .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))

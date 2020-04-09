@@ -435,7 +435,7 @@ class Transforms {
             return null;
         }
         return new com.azure.storage.blob.models.ParallelTransferOptions()
-            .setBlockSize(pto.getBlockSizeLong())
+            .setBlockSizeLong(pto.getBlockSizeLong())
             .setNumBuffers(pto.getNumBuffers())
             .setProgressReceiver(Transforms.toBlobProgressReceiver(pto.getProgressReceiver()))
             .setMaxSingleUploadSizeLong(pto.getMaxSingleUploadSizeLong());
