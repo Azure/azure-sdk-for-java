@@ -16,6 +16,7 @@ import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -91,7 +92,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                                                                     .map(response -> {
                                                                         List<JsonNode> results = response.getResults()
                                                                                                                      .stream()
-                                                                                                                     .map(document -> document.toObject(JsonNode.class))
+                                                                                                                     .map(document ->
+                                                                                                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, JsonNode.class))
                                                                                                                      .collect(Collectors.toList());
                                                                         return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
                                                                     });

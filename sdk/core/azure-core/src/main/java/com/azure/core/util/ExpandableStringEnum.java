@@ -7,10 +7,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * Base implementation for expandable, single string enums.
@@ -18,27 +17,11 @@ import java.util.concurrent.ConcurrentMap;
  * @param <T> a specific expandable enum type
  */
 public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
-    private static final ConcurrentMap<String,
-        ? extends ExpandableStringEnum<?>> VALUES_BY_NAME = new ConcurrentHashMap<>();
+    private static final Map<Class<?>, ConcurrentHashMap<String, ? extends ExpandableStringEnum<?>>> VALUES
+        = new ConcurrentHashMap<>();
 
     private String name;
     private Class<T> clazz;
-
-    private static String uniqueKey(Class<?> clazz, String name) {
-        if (clazz != null) {
-            return (clazz.getName() + "#" + name).toLowerCase(Locale.ROOT);
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    T nameValue(String name, T value, Class<T> clazz) {
-        this.name = name;
-        this.clazz = clazz;
-        ((ConcurrentMap<String, T>) VALUES_BY_NAME).put(uniqueKey(clazz, name), value);
-        return (T) this;
-    }
 
     /**
      * Creates an instance of the specific expandable string enum from a String.
@@ -52,19 +35,30 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
     protected static <T extends ExpandableStringEnum<T>> T fromString(String name, Class<T> clazz) {
         if (name == null) {
             return null;
-        } else {
-            T value = (T) VALUES_BY_NAME.get(uniqueKey(clazz, name));
-            if (value != null) {
-                return value;
-            }
         }
 
-        try {
-            T value = clazz.newInstance();
-            return value.nameValue(name, value, clazz);
-        } catch (InstantiationException | IllegalAccessException e) {
-            return null;
+        ConcurrentHashMap<String, ?> clazzValues = VALUES.computeIfAbsent(clazz, key -> new ConcurrentHashMap<>());
+        T value = (T) clazzValues.get(name);
+
+        if (value != null) {
+            return value;
+        } else {
+            try {
+                value = clazz.newInstance();
+                return value.nameAndAddValue(name, value, clazz);
+            } catch (IllegalAccessException | InstantiationException ex) {
+                return null;
+            }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    T nameAndAddValue(String name, T value, Class<T> clazz) {
+        this.name = name;
+        this.clazz = clazz;
+
+        ((ConcurrentHashMap<String, T>) VALUES.get(clazz)).put(name, value);
+        return (T) this;
     }
 
     /**
@@ -76,17 +70,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
      */
     @SuppressWarnings("unchecked")
     protected static <T extends ExpandableStringEnum<T>> Collection<T> values(Class<T> clazz) {
-        // Make a copy of all values
-        Collection<? extends ExpandableStringEnum<?>> values = new ArrayList<>(VALUES_BY_NAME.values());
-
-        Collection<T> list = new HashSet<T>();
-        for (ExpandableStringEnum<?> value : values) {
-            if (value.getClass().isAssignableFrom(clazz)) {
-                list.add((T) value);
-            }
-        }
-
-        return list;
+        return new ArrayList<T>((Collection<T>) VALUES.getOrDefault(clazz, new ConcurrentHashMap<>()).values());
     }
 
     @Override
@@ -97,7 +81,7 @@ public abstract class ExpandableStringEnum<T extends ExpandableStringEnum<T>> {
 
     @Override
     public int hashCode() {
-        return uniqueKey(this.clazz, this.name).hashCode();
+        return Objects.hash(this.clazz, this.name);
     }
 
     @SuppressWarnings("unchecked")

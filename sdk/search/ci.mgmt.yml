@@ -15,9 +15,7 @@ trigger:
     include:
       - sdk/search/
     exclude:
-      - sdk/search/azure
-      - sdk/search/microsoft-azure
-      - sdk/search/ms-azure
+      - sdk/search/azure-search-documents
 
 pr:
   branches:
@@ -30,9 +28,7 @@ pr:
     include:
       - sdk/search/
     exclude:
-      - sdk/search/azure
-      - sdk/search/microsoft-azure
-      - sdk/search/ms-azure
+      - sdk/search/azure-search-documents
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

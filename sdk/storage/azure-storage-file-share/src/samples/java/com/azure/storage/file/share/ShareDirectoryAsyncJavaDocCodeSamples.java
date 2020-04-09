@@ -508,7 +508,7 @@ public class ShareDirectoryAsyncJavaDocCodeSamples {
      */
     public void forceCloseHandleWithResponse() {
         ShareDirectoryAsyncClient shareDirectoryAsyncClient = createAsyncClientWithConnectionString();
-        // BEGIN:com.azure.storage.file.share.ShareDirectoryAsyncClient.forceCloseHandleWithResponse#String
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryAsyncClient.forceCloseHandleWithResponse#String
         shareDirectoryAsyncClient.listHandles(null, true).subscribe(handleItem ->
             shareDirectoryAsyncClient.forceCloseHandleWithResponse(handleItem.getHandleId()).subscribe(response ->
                 System.out.printf("Closing handle %s on resource %s completed with status code %d%n",

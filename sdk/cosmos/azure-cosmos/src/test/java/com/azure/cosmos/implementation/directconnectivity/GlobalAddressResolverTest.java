@@ -14,13 +14,14 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
-import org.apache.commons.collections4.list.UnmodifiableList;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
@@ -140,7 +141,7 @@ public class GlobalAddressResolverTest {
 
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setId("TestColl");
-        documentCollection.setResourceId("IXYFAOHEBPM=");
+        ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
         CollectionRoutingMap collectionRoutingMap = Mockito.mock(CollectionRoutingMap.class);
         PartitionKeyRange range = new PartitionKeyRange("0", PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
                 PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);

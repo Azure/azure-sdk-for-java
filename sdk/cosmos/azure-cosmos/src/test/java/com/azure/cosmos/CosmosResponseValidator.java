@@ -12,6 +12,7 @@ import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.IndexingMode;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SpatialSpec;
@@ -121,7 +122,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(T cosmosResponse) {
                     assertThat(getResource(cosmosResponse)).isNotNull();
-                    assertThat(getResource(cosmosResponse).get(propertyName)).isEqualTo(value);
+                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(getResource(cosmosResponse), propertyName)).isEqualTo(value);
                 }
             });
             return this;

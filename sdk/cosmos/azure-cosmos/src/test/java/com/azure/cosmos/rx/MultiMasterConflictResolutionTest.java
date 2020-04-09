@@ -180,7 +180,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     public void before_MultiMasterConflictResolutionTest() {
         // set up the client
 
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
         partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();

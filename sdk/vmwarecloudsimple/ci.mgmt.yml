@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/vmwarecloudsimple/
-    exclude:
-      - sdk/vmwarecloudsimple/azure
-      - sdk/vmwarecloudsimple/microsoft-azure
-      - sdk/vmwarecloudsimple/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/vmwarecloudsimple/
-    exclude:
-      - sdk/vmwarecloudsimple/azure
-      - sdk/vmwarecloudsimple/microsoft-azure
-      - sdk/vmwarecloudsimple/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

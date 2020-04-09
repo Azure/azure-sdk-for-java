@@ -26,12 +26,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing recognize entity endpoint.
@@ -60,6 +62,7 @@ class RecognizeEntityAsyncClient {
      * @return The {@link TextAnalyticsPagedFlux} of {@link CategorizedEntity}.
      */
     TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return new TextAnalyticsPagedFlux<>(() ->
             (continuationToken, pageSize) -> recognizeEntitiesBatch(
                 Collections.singletonList(new TextDocumentInput("0", document, language)), null)
@@ -97,6 +100,11 @@ class RecognizeEntityAsyncClient {
     TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getRecognizedEntitiesResponseInPage(documents, options, context)).flux());
@@ -120,6 +128,11 @@ class RecognizeEntityAsyncClient {
     TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
             getRecognizedEntitiesResponseInPage(documents, options, context).flux());
     }
@@ -163,7 +176,7 @@ class RecognizeEntityAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link RecognizeCategorizedEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
-     * @param documents A list of documents to recognize PII entities for.
+     * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -174,7 +187,8 @@ class RecognizeEntityAsyncClient {
         return service.entitiesRecognitionGeneralWithRestResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))

@@ -216,12 +216,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             assertNotNull(deletedKeyResponse.getRecoveryId());
             assertNotNull(deletedKeyResponse.getScheduledPurgeDate());
             assertEquals(keyToDelete.getName(), deletedKeyResponse.getName());
-
-            StepVerifier.create(client.purgeDeletedKeyWithResponse(keyToDelete.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
-            sleepInRecordMode(15000);
         });
     }
 
@@ -388,13 +382,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
                     assertNotNull(deletedKeyResponse.getScheduledPurgeDate());
                     assertEquals(keyToDeleteAndGet.getName(), deletedKeyResponse.getName());
                 }).verifyComplete();
-
-            StepVerifier.create(client.purgeDeletedKeyWithResponse(keyToDeleteAndGet.getName()))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
-            pollOnKeyPurge(keyToDeleteAndGet.getName());
-            sleepInRecordMode(15000);
         });
     }
 
@@ -456,16 +443,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             sleepInRecordMode(30000);
 
             assertEquals(keys.size(), output.size());
-
-            PollerFlux<DeletedKey, Void> poller = client.beginDeleteKey(keyName);
-            AsyncPollResponse<DeletedKey, Void> pollResponse = poller.blockLast();
-            assertNotNull(pollResponse.getValue());
-
-            StepVerifier.create(client.purgeDeletedKeyWithResponse(keyName))
-                    .assertNext(voidResponse -> {
-                        assertEquals(HttpURLConnection.HTTP_NO_CONTENT, voidResponse.getStatusCode());
-                    }).verifyComplete();
-            pollOnKeyPurge(keyName);
         });
 
     }

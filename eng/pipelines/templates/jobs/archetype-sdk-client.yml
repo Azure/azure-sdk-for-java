@@ -1,6 +1,8 @@
 parameters:
   SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  Artifacts: []
+  AdditionalModules: []
   PreTestSteps: []
   TestOptions: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true'
   TestGoals: verify
@@ -101,17 +103,18 @@ jobs:
           RootFolder: $(Build.SourcesDirectory)
           BuildSHA: $(Build.SourceVersion)
           RepoId: 'Azure/azure-sdk-for-java'
-
+        
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
           mavenPomFile: pom.xml
           goals: 'package'
-          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
+          options: '$(DefaultOptions) "-DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -DskipTests -Dinject-codesnippets -Dgenerate-overview -pl $(ProjectList) -am' # We include template-module so we ensure it always builds in CI
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)
@@ -162,6 +165,7 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
       - task: Maven@3
@@ -252,6 +256,7 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Run tests'

@@ -1,5 +1,7 @@
 parameters:
   ServiceDirectory: ''
+  Artifacts: []
+  AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
   Matrix:
@@ -92,6 +94,7 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - task: Maven@3
         displayName: 'Build and Install'
@@ -104,7 +107,6 @@ jobs:
           jdkVersionOption: '1.11'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
-  
 
       - task: Maven@3
         displayName: $(DisplayName)

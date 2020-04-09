@@ -93,6 +93,7 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+          AdditionalModules: ${{parameters.AdditionalModules}}
   
       - task: Maven@3
         displayName: 'Build and Package'
@@ -157,7 +158,8 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
-    
+          AdditionalModules: ${{parameters.AdditionalModules}}
+
       - task: Maven@3
         displayName: 'Install Module and Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
@@ -197,19 +199,7 @@ jobs:
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
-
-      - task: Maven@3
-        displayName: 'Start Jetty'
-        condition: succeeded()
-        inputs:
-          mavenPomFile: pom.data.xml
-          options: '$(DefaultOptions)'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'jetty:run-forked'
+          AdditionalModules: ${{parameters.AdditionalModules}}
 
       - ${{ parameters.PreTestSteps }}
 
