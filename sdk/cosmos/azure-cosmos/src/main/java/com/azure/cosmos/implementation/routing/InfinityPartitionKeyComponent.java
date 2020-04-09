@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 class InfinityPartitionKeyComponent implements IPartitionKeyComponent {
     @Override
-    public int CompareTo(IPartitionKeyComponent other) {
+    public int compareTo(IPartitionKeyComponent other) {
         InfinityPartitionKeyComponent otherInfinity = Utils.as(other, InfinityPartitionKeyComponent.class);
         if (otherInfinity == null) {
             throw new IllegalArgumentException("other");
@@ -21,27 +21,27 @@ class InfinityPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int GetTypeOrdinal() {
+    public int getTypeOrdinal() {
         return PartitionKeyComponentType.INFINITY.type;
     }
 
     @Override
-    public void JsonEncode(JsonGenerator writer) {
+    public void jsonEncode(JsonGenerator writer) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void WriteForHashing(OutputStream outputStream) {
+    public void writeForHashing(OutputStream outputStream) {
         throw new IllegalStateException();
     }
 
     @Override
-    public void WriteForHashingV2(OutputStream outputStream) {
+    public void writeForHashingV2(OutputStream outputStream) {
         throw new IllegalStateException();
     }
 
     @Override
-    public void WriteForBinaryEncoding(OutputStream outputStream) {
+    public void writeForBinaryEncoding(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.INFINITY.type);
         } catch (IOException e) {
@@ -50,7 +50,7 @@ class InfinityPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public IPartitionKeyComponent Truncate() {
+    public IPartitionKeyComponent truncate() {
         return this;
     }
 }

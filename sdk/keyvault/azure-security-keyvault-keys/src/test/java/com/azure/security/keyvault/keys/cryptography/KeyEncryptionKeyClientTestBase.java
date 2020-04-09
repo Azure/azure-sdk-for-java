@@ -8,7 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -25,11 +24,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-
 
 public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     private static final String SDK_NAME = "client_name";
@@ -43,18 +40,8 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
     void beforeTestSetup() {
     }
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        HttpPipeline pipeline = getHttpPipeline();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
-    }
-
-    HttpPipeline getHttpPipeline() {
+    HttpPipeline getHttpPipeline(HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
         TokenCredential credential = null;
-        HttpClient httpClient;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = System.getenv("ARM_CLIENTID");
@@ -72,7 +59,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), CryptographyServiceVersion.getLatest()));
+        policies.add(new UserAgentPolicy(SDK_NAME, SDK_VERSION,  Configuration.getGlobalConfiguration().clone(), serviceVersion));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(new RetryPolicy());
         if (credential != null) {
@@ -80,32 +67,19 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-            policies.add(interceptorManager.getRecordPolicy());
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-            policies.add(interceptorManager.getRecordPolicy());
-        }
+        policies.add(interceptorManager.getRecordPolicy());
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
     }
 
     @Test
-    public abstract void wrapUnwrapSymmetricAK128();
+    public abstract void wrapUnwrapSymmetricAK128(HttpClient httpClient, CryptographyServiceVersion serviceVersion);
 
     @Test
-    public abstract void wrapUnwrapLocalSymmetricAK128();
-
-    @Test
-    public abstract void wrapUnwrapSymmetricAK192();
-
-    @Test
-    public abstract void wrapUnwrapLocalSymmetricAK192();
+    public abstract void wrapUnwrapSymmetricAK192(HttpClient httpClient, CryptographyServiceVersion serviceVersion);
 
 
     public String getEndpoint() {

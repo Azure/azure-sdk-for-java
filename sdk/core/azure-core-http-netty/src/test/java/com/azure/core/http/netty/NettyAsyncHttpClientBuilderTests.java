@@ -251,8 +251,8 @@ public class NettyAsyncHttpClientBuilderTests {
     }
 
     /**
-     * Tests that a custom {@link NioEventLoopGroup} is properly applied to the Netty client to handle sending and
-     * receiving requests and responses.
+     * Tests that a custom {@link io.netty.channel.EventLoopGroup} is properly applied to the Netty client
+     * to handle sending and receiving requests and responses.
      */
     @Test
     public void buildEventLoopClient() {
@@ -268,7 +268,7 @@ public class NettyAsyncHttpClientBuilderTests {
         NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1, (Runnable r) -> new Thread(r, expectedThreadName));
 
         NettyAsyncHttpClient nettyClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(validatorClient)
-            .nioEventLoopGroup(eventLoopGroup)
+            .eventLoopGroup(eventLoopGroup)
             .build();
 
         StepVerifier.create(nettyClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))

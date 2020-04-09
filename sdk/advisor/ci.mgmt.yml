@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/advisor/
-    exclude:
-      - sdk/advisor/azure
-      - sdk/advisor/microsoft-azure
-      - sdk/advisor/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/advisor/
-    exclude:
-      - sdk/advisor/azure
-      - sdk/advisor/microsoft-azure
-      - sdk/advisor/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

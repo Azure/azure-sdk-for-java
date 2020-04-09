@@ -70,7 +70,7 @@ public final class KeyClientBuilder {
     private URL vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private KeyServiceVersion version;
 
@@ -271,6 +271,21 @@ public final class KeyClientBuilder {
      */
     public KeyClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated KeyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     */
+    public KeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = retryPolicy;
         return this;
     }
 

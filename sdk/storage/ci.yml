@@ -21,7 +21,14 @@ trigger:
     include:
       - sdk/storage/
     exclude:
-      - sdk/storage/mgmt-
+      - sdk/storage/mgmt-v2016_01_01
+      - sdk/storage/mgmt-v2017_10_01
+      - sdk/storage/mgmt-v2018_02_01
+      - sdk/storage/mgmt-v2018_03_01_preview
+      - sdk/storage/mgmt-v2018_07_01
+      - sdk/storage/mgmt-v2018_11_01
+      - sdk/storage/mgmt-v2019_04_01
+      - sdk/storage/mgmt-v2019_06_01
 
 pr:
   branches:
@@ -34,7 +41,14 @@ pr:
     include:
       - sdk/storage/
     exclude:
-      - sdk/storage/mgmt-
+      - sdk/storage/mgmt-v2016_01_01
+      - sdk/storage/mgmt-v2017_10_01
+      - sdk/storage/mgmt-v2018_02_01
+      - sdk/storage/mgmt-v2018_03_01_preview
+      - sdk/storage/mgmt-v2018_07_01
+      - sdk/storage/mgmt-v2018_11_01
+      - sdk/storage/mgmt-v2019_04_01
+      - sdk/storage/mgmt-v2019_06_01
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

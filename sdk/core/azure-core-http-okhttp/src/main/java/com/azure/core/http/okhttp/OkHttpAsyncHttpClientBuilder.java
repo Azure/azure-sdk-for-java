@@ -8,13 +8,11 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
 import com.azure.core.http.okhttp.implementation.ProxyAuthenticator;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.logging.ClientLogger;
 import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
-import java.net.Proxy;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.Objects;
  * Builder to configure and build an implementation of {@link HttpClient} for OkHttp.
  */
 public class OkHttpAsyncHttpClientBuilder {
-    private final ClientLogger logger = new ClientLogger(OkHttpAsyncHttpClientBuilder.class);
 
     private final okhttp3.OkHttpClient okHttpClient;
 
@@ -201,7 +198,8 @@ public class OkHttpAsyncHttpClientBuilder {
 
         if (buildProxyOptions != null) {
             httpClientBuilder = httpClientBuilder.proxySelector(new OkHttpProxySelector(
-                mapProxyType(buildProxyOptions.getType(), logger), buildProxyOptions.getAddress(),
+                buildProxyOptions.getType().toProxyType(),
+                buildProxyOptions.getAddress(),
                 buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
@@ -214,24 +212,5 @@ public class OkHttpAsyncHttpClientBuilder {
         }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build());
-    }
-
-    /*
-     * Maps a 'ProxyOptions.Type' to a 'ProxyProvider.Proxy', if the type is unknown or cannot be mapped an
-     * IllegalStateException will be thrown.
-     */
-    private static Proxy.Type mapProxyType(ProxyOptions.Type type, ClientLogger logger) {
-        Objects.requireNonNull(type, "'ProxyOptions.getType()' cannot be null.");
-
-        switch (type) {
-            case HTTP:
-                return Proxy.Type.HTTP;
-            case SOCKS4:
-            case SOCKS5:
-                return Proxy.Type.SOCKS;
-            default:
-                throw logger.logExceptionAsError(new IllegalStateException(
-                    String.format("Unknown proxy type '%s' in use. Use a proxy type from 'ProxyOptions.Type'.", type)));
-        }
     }
 }

@@ -1,4 +1,4 @@
-# Azure core test client library for Java
+# Azure Core Test shared library for Java
 
 Library containing core classes used to test Azure SDK client libraries.
 

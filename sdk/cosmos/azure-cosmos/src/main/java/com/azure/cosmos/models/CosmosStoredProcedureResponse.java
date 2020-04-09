@@ -69,7 +69,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      *
      * @return the string
      */
-    public String responseAsString() {
+    public String getResponseAsString() {
         return asyncResponse.getResponseAsString();
     }
 
@@ -78,7 +78,7 @@ public class CosmosStoredProcedureResponse extends CosmosResponse<CosmosStoredPr
      *
      * @return the string
      */
-    public String scriptLog() {
+    public String getScriptLog() {
         return asyncResponse.getScriptLog();
     }
 

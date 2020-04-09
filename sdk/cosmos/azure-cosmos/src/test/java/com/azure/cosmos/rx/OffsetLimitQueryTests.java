@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -163,6 +163,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
             testSubscriber.assertNoErrors();
             testSubscriber.assertComplete();
 
+            @SuppressWarnings("unchecked")
             FeedResponse<CosmosItemProperties> firstPage =
                 (FeedResponse<CosmosItemProperties>) testSubscriber.getEvents().get(0).get(0);
             requestContinuation = firstPage.getContinuationToken();
@@ -205,13 +206,13 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = 3 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = this.clientBuilder().buildAsyncClient();
+        client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdCollection);
 
         bulkInsert();
 
-        waitIfNeededForReplicasToCatchUp(clientBuilder());
+        waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 }
 

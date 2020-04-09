@@ -33,6 +33,7 @@ public class RetryUtilsTest {
     private StoreResponse storeResponse;
 
     @BeforeClass(groups = { "unit" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void before_RetryUtilsTest() throws Exception {
         retryPolicy = Mockito.mock(IRetryPolicy.class);
         request = Mockito.mock(RxDocumentServiceRequest.class);

@@ -13,9 +13,9 @@ import reactor.core.publisher.Mono;
  * Implementation for {@link RemainingWorkEstimator}.
  */
 class RemainingWorkEstimatorImpl implements RemainingWorkEstimator {
-    private final char PKRangeIdSeparator = ':';
-    private final char SegmentSeparator = '#';
-    private final String LSNPropertyName = "_lsn";
+    private final static char PKRangeIdSeparator = ':';
+    private final static char SegmentSeparator = '#';
+    private final static String LSNPropertyName = "_lsn";
     private final ChangeFeedContextClient feedDocumentClient;
     private final LeaseContainer leaseContainer;
     private final String collectionSelfLink;

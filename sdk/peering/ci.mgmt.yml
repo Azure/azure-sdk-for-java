@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/peering/
-    exclude:
-      - sdk/peering/azure
-      - sdk/peering/microsoft-azure
-      - sdk/peering/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/peering/
-    exclude:
-      - sdk/peering/azure
-      - sdk/peering/microsoft-azure
-      - sdk/peering/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

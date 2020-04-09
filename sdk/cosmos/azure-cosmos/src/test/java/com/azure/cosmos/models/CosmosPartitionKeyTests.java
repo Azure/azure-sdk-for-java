@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosAsyncStoredProcedure;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.CosmosPagedFlux;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.BaseAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -63,7 +63,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosPartitionKeyTests() throws URISyntaxException, IOException {
         assertThat(this.client).isNull();
-        client = clientBuilder().buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
@@ -244,7 +244,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
                 .build();
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
         CosmosItemResponseValidator deleteResponseValidator;
-        Mono<CosmosAsyncItemResponse> deleteMono =
+        Mono<CosmosAsyncItemResponse<Object>> deleteMono =
             createdContainer.deleteItem(upsertedItemId, PartitionKey.NONE);
         deleteResponseValidator =
             new CosmosItemResponseValidator.Builder<CosmosAsyncItemResponse<CosmosItemProperties>>()

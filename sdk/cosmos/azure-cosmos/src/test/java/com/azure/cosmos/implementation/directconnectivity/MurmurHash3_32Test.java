@@ -30,7 +30,7 @@ public class MurmurHash3_32Test {
     @Test(groups = "unit")
     public void murmurHash3_32_EmptyByteArray() {
         byte[] byteArray = new byte[0];
-        int actualHash = murmurHash3_32.hash(byteArray, byteArray.length, 0);
+        int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
         HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
         int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
@@ -41,7 +41,7 @@ public class MurmurHash3_32Test {
     @Test(groups = "unit")
     public void murmurHash3_32_String() {
         byte[] byteArray = new String("test").getBytes(Charset.forName("UTF-8"));
-        int actualHash = murmurHash3_32.hash(byteArray, byteArray.length, 0);
+        int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
         HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
         int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
@@ -54,7 +54,7 @@ public class MurmurHash3_32Test {
         String nonLatin = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяабвгдеёжзийклмнопрстуфхцчшщъыьэюяабвгдеёжзийклмнопрстуфхцчшщъыьэюяабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
         for(int i = 0; i < nonLatin.length() + 1; i++) {
             byte[] byteArray = nonLatin.substring(0, i).getBytes("UTF-8");
-            int actualHash = murmurHash3_32.hash(byteArray, byteArray.length, 0);
+            int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
             HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
             int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
@@ -66,7 +66,7 @@ public class MurmurHash3_32Test {
     @Test(groups = "unit")
     public void murmurHash3_32_ZeroByteArray() {
         byte[] byteArray = new byte[3];
-        int actualHash = murmurHash3_32.hash(byteArray, byteArray.length, 0);
+        int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
         HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
         int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
@@ -79,7 +79,7 @@ public class MurmurHash3_32Test {
         for(int i = 0; i < 1000; i++) {
             byte[] byteArray = randomBytes(i);
 
-            int actualHash = murmurHash3_32.hash(byteArray, byteArray.length, 0);
+            int actualHash = MurmurHash3_32.hash(byteArray, byteArray.length, 0);
 
             HashFunction googleMurmur3_32 = Hashing.murmur3_32(0);
             int expectedHash = googleMurmur3_32.hashBytes(byteArray).asInt();
