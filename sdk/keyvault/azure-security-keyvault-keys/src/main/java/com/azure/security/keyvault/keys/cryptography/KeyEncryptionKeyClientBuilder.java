@@ -220,6 +220,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @throws NullPointerException if the specified {@code retryPolicy} is null.
      */
     public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         builder.retryPolicy(retryPolicy);
         return this;
     }
