@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/maintenance/
-    exclude:
-      - sdk/maintenance/azure
-      - sdk/maintenance/microsoft-azure
-      - sdk/maintenance/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/maintenance/
-    exclude:
-      - sdk/maintenance/azure
-      - sdk/maintenance/microsoft-azure
-      - sdk/maintenance/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

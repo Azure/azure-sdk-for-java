@@ -51,11 +51,11 @@ public class RequestResponseChannel implements Disposable {
 
     private final ConcurrentSkipListMap<UnsignedLong, MonoSink<Message>> unconfirmedSends =
         new ConcurrentSkipListMap<>();
-    private final ClientLogger logger = new ClientLogger(RequestResponseChannel.class);
     private final ReplayProcessor<AmqpEndpointState> endpointStates =
         ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
     private final FluxSink<AmqpEndpointState> endpointStatesSink =
         endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ClientLogger logger;
 
     private final Sender sendLink;
     private final Receiver receiveLink;
@@ -71,7 +71,6 @@ public class RequestResponseChannel implements Disposable {
     private final Disposable.Composite subscriptions;
     private final AmqpRetryPolicy retryPolicy;
     private final SenderSettleMode senderSettleMode;
-    private final ReceiverSettleMode receiverSettleMode;
 
     /**
      * Creates a new instance of {@link RequestResponseChannel} to send and receive responses from the
@@ -89,15 +88,15 @@ public class RequestResponseChannel implements Disposable {
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
 
      */
-    RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
+    protected RequestResponseChannel(String connectionId, String fullyQualifiedNamespace, String linkName,
             String entityPath, Session session, AmqpRetryOptions retryOptions, ReactorHandlerProvider handlerProvider,
             ReactorProvider provider, MessageSerializer messageSerializer,
             SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
+        this.logger = new ClientLogger(String.format("%s<%s>", RequestResponseChannel.class, linkName));
         this.provider = provider;
         this.operationTimeout = retryOptions.getTryTimeout();
         this.retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
         this.senderSettleMode = senderSettleMode;
-        this.receiverSettleMode = receiverSettleMode;
 
         this.replyTo = entityPath.replace("$", "") + "-client-reply-to";
         this.messageSerializer = messageSerializer;
@@ -107,23 +106,28 @@ public class RequestResponseChannel implements Disposable {
         this.sendLink.setTarget(target);
         sendLink.setSource(new Source());
         this.sendLink.setSenderSettleMode(senderSettleMode);
+
         this.sendLinkHandler = handlerProvider.createSendLinkHandler(connectionId, fullyQualifiedNamespace, linkName,
             entityPath);
+
         BaseHandler.setHandler(sendLink, sendLinkHandler);
 
         this.receiveLink = session.receiver(linkName + ":receiver");
         final Source source = new Source();
         source.setAddress(entityPath);
         this.receiveLink.setSource(source);
+
         final Target receiverTarget = new Target();
         receiverTarget.setAddress(replyTo);
         this.receiveLink.setTarget(receiverTarget);
         this.receiveLink.setSenderSettleMode(senderSettleMode);
         this.receiveLink.setReceiverSettleMode(receiverSettleMode);
+
         this.receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, fullyQualifiedNamespace,
             linkName, entityPath);
         BaseHandler.setHandler(this.receiveLink, receiveLinkHandler);
 
+        //@formatter:off
         this.subscriptions = Disposables.composite(
             receiveLinkHandler.getDeliveredMessages()
                 .map(this::decodeDelivery)
@@ -154,10 +158,36 @@ public class RequestResponseChannel implements Disposable {
                 dispose();
             })
         );
+        //@formatter:on
+
+        // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
+        // encounter a race condition. So, we are forced to use the dispatcher.
+        try {
+            provider.getReactorDispatcher().invoke(() -> {
+                sendLink.open();
+                receiveLink.open();
+            });
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException("Unable to open send and receive link.", e));
+        }
     }
 
+    /**
+     * Gets the endpoint states for the request/response channel.
+     *
+     * @return The endpoint states for the request/response channel.
+     */
     public Flux<AmqpEndpointState> getEndpointStates() {
-        return endpointStates.distinct();
+        return endpointStates;
+    }
+
+    /**
+     * Gets the name of the receiver link.
+     *
+     * @return The name of the receiver link.
+     */
+    public String getReceiveLinkName() {
+        return receiveLink.getName();
     }
 
     @Override
@@ -187,19 +217,6 @@ public class RequestResponseChannel implements Disposable {
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(
                 "Cannot send a message when request response channel is disposed.")));
-        }
-
-        if (!hasOpened.getAndSet(true)) {
-            // If we try to do proton-j API calls such as opening/closing/sending on AMQP links, it may
-            // encounter a race condition. So, we are forced to use the dispatcher.
-            try {
-                provider.getReactorDispatcher().invoke(() -> {
-                    sendLink.open();
-                    receiveLink.open();
-                });
-            } catch (IOException e) {
-                return Mono.error(new RuntimeException("Unable to open send and receive link.", e));
-            }
         }
 
         if (message == null) {

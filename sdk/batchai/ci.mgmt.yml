@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/batchai/
-    exclude:
-      - sdk/batchai/azure
-      - sdk/batchai/microsoft-azure
-      - sdk/batchai/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/batchai/
-    exclude:
-      - sdk/batchai/azure
-      - sdk/batchai/microsoft-azure
-      - sdk/batchai/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

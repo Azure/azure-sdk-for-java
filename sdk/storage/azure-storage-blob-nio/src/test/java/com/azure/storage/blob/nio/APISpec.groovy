@@ -25,6 +25,8 @@ import com.azure.storage.blob.BlobServiceClient
 import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.ListBlobContainersOptions
+import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import reactor.core.publisher.Flux
@@ -37,6 +39,8 @@ import spock.lang.Timeout
 import java.nio.ByteBuffer
 import java.nio.channels.AsynchronousFileChannel
 import java.nio.charset.StandardCharsets
+import java.nio.file.FileSystem
+import java.nio.file.Path
 import java.nio.file.attribute.FileAttribute
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -97,6 +101,17 @@ class APISpec extends Specification {
     protected TestResourceNamer resourceNamer
     protected String testName
     String containerName
+
+
+    // The values below are used to create data-driven tests for access conditions.
+    static final OffsetDateTime oldDate = OffsetDateTime.now().minusDays(1)
+    static final OffsetDateTime newDate = OffsetDateTime.now().plusDays(1)
+    static final String garbageEtag = "garbage"
+    /*
+     Note that this value is only used to check if we are depending on the received etag. This value will not actually
+     be used.
+     */
+    static final String receivedEtag = "received"
 
     def setupSpec() {
         testMode = setupTestMode()
@@ -168,7 +183,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_KEY")
         } else {
-            accountKey = "astorageaccountkey"
+            return "astorageaccountkey"
         }
     }
 
@@ -176,7 +191,7 @@ class APISpec extends Specification {
         if (testMode == TestMode.RECORD || testMode == TestMode.LIVE) {
             return Configuration.getGlobalConfiguration().get(accountType + "ACCOUNT_NAME")
         } else {
-            accountName = "azstoragesdkaccount"
+            return "azstoragesdkaccount"
         }
     }
 
@@ -357,6 +372,10 @@ class APISpec extends Specification {
     Map<String, Object> initializeConfigMap() {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = getHttpClient()
+        if (testMode == TestMode.RECORD) {
+            config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] =
+                [interceptorManager.getRecordPolicy()] as HttpPipelinePolicy[]
+        }
         config[AzureFileSystem.AZURE_STORAGE_USE_HTTPS] = defaultEndpointTemplate.startsWith("https")
         return config as Map<String, Object>
     }
@@ -389,7 +408,7 @@ class APISpec extends Specification {
         return Base64.encoder.encodeToString(resourceNamer.randomUuid().getBytes(StandardCharsets.UTF_8))
     }
 
-    def createFS(Map<String,String> config) {
+    def createFS(Map<String,Object> config) {
         config[AzureFileSystem.AZURE_STORAGE_FILE_STORES] = generateContainerName() + "," + generateContainerName()
         config[AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY] = getAccountKey(PRIMARY_STORAGE)
 
@@ -481,8 +500,64 @@ class APISpec extends Specification {
         }
     }
 
-    def rootToContainer(String root) {
+    def rootNameToContainerName(String root) {
         return root.substring(0, root.length() - 1)
+    }
+
+    def rootNameToContainerClient(String root) {
+        return primaryBlobServiceClient.getBlobContainerClient(rootNameToContainerName(root))
+    }
+
+    def getNonDefaultRootDir(FileSystem fs) {
+        for (Path dir : fs.getRootDirectories()) {
+            if (!dir.equals(((AzureFileSystem) fs).getDefaultDirectory())) {
+                return dir.toString()
+            }
+        }
+        throw new Exception("File system only contains the default directory");
+    }
+
+    def getDefaultDir(FileSystem fs) {
+        return ((AzureFileSystem) fs).getDefaultDirectory().toString()
+    }
+
+    def getPathWithDepth(int depth) {
+        def pathStr = ""
+        for (int i = 0; i < depth; i++) {
+            pathStr += generateBlobName() + AzureFileSystem.PATH_SEPARATOR
+        }
+        return pathStr
+    }
+
+    def putDirectoryBlob(BlockBlobClient blobClient) {
+        blobClient.commitBlockListWithResponse(Collections.emptyList(), null,
+            [(AzureResource.DIR_METADATA_MARKER): "true"], null, null, null, null)
+    }
+
+    /**
+     * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
+     * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
+     *
+     * @param bc
+     *      The URL to the blob to get the etag on.
+     * @param match
+     *      The ETag value for this test. If {@code receivedEtag} is passed, that will signal that the test is expecting
+     *      the blob's actual etag for this test, so it is retrieved.
+     * @return
+     * The appropriate etag value to run the current test.
+     */
+    def setupBlobMatchCondition(BlobClientBase bc, String match) {
+        if (match == receivedEtag) {
+            return bc.getProperties().getETag()
+        } else {
+            return match
+        }
+    }
+
+    def checkBlobIsDir(BlobClient blobClient) {
+         String isDir = blobClient.getPropertiesWithResponse(null, null, null)
+             .getValue().getMetadata().get(AzureResource.DIR_METADATA_MARKER)
+        return isDir != null && isDir == "true"
     }
 
     static class TestFileAttribute<T> implements  FileAttribute<T> {

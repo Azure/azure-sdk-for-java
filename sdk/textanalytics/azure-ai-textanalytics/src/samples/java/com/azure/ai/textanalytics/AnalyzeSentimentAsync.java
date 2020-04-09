@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential;
+import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,14 +20,14 @@ public class AnalyzeSentimentAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new TextAnalyticsApiKeyCredential("{api_key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
-        // The text that needs be analyzed.
-        String text = "The hotel was dark and unclean. I like Microsoft";
+        // The document that needs be analyzed.
+        String document = "The hotel was dark and unclean. I like Microsoft";
 
-        client.analyzeSentiment(text).subscribe(
+        client.analyzeSentiment(document).subscribe(
             documentSentiment -> {
                 SentimentConfidenceScores scores = documentSentiment.getConfidenceScores();
                 System.out.printf(

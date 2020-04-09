@@ -30,6 +30,7 @@ import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,10 @@ public final class BuilderHelper {
 
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
         policies.add(new AddDatePolicy());
 
         HttpPipelinePolicy credentialPolicy;
@@ -87,9 +92,6 @@ public final class BuilderHelper {
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 
@@ -126,8 +128,8 @@ public final class BuilderHelper {
      * @param parts The {@link BlobUrlParts} from the parse URL.
      * @return The endpoint for the data lake service.
      */
-    public static String getEndpoint(BlobUrlParts parts) {
-        if (ModelHelper.IP_V4_URL_PATTERN.matcher(parts.getHost()).find()) {
+    public static String getEndpoint(BlobUrlParts parts) throws MalformedURLException {
+        if (ModelHelper.determineAuthorityIsIpStyle(parts.getHost())) {
             return String.format("%s://%s/%s", parts.getScheme(), parts.getHost(), parts.getAccountName());
         } else {
             return String.format("%s://%s", parts.getScheme(), parts.getHost());

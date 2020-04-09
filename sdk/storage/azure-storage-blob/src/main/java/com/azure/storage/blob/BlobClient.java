@@ -22,6 +22,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -170,19 +171,29 @@ public class BlobClient extends BlobClientBase {
         Duration timeout, Context context) {
         final ParallelTransferOptions validatedParallelTransferOptions =
             ModelHelper.populateAndApplyDefaults(parallelTransferOptions);
-        // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
-        BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
-            validatedParallelTransferOptions, headers, metadata, tier, requestConditions);
-        try {
-            StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
-            blobOutputStream.close();
-        } catch (IOException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof BlobStorageException) {
-                throw logger.logExceptionAsError((BlobStorageException) cause);
-            } else {
-                throw logger.logExceptionAsError(new UncheckedIOException(e));
+        Mono<Object> upload = Mono.fromCallable(() -> {
+            try {
+                // BlobOutputStream will internally handle the decision for single-shot or multi-part upload.
+                BlobOutputStream blobOutputStream = BlobOutputStream.blockBlobOutputStream(client,
+                    validatedParallelTransferOptions, headers, metadata, tier, requestConditions, context);
+                StorageImplUtils.copyToOutputStream(data, length, blobOutputStream);
+                blobOutputStream.close();
+                return null;
+            } catch (IOException e) {
+                Throwable cause = e.getCause();
+                if (cause instanceof BlobStorageException) {
+                    throw logger.logExceptionAsError((BlobStorageException) cause);
+                } else {
+                    throw logger.logExceptionAsError(new UncheckedIOException(e));
+                }
             }
+            // Subscribing has to happen on a different thread for the timeout to happen properly.
+        }).subscribeOn(Schedulers.elastic());
+
+        try {
+            StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
+        } catch (UncheckedIOException e) {
+            throw logger.logExceptionAsError(e);
         }
     }
 

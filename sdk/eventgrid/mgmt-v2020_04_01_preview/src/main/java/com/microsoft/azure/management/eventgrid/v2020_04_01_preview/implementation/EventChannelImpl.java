@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelSource;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelDestination;
 import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelProvisioningState;
+import com.microsoft.azure.management.eventgrid.v2020_04_01_preview.EventChannelFilter;
 
 class EventChannelImpl extends CreatableUpdatableImpl<EventChannel, EventChannelInner, EventChannelImpl> implements EventChannel, EventChannel.Definition, EventChannel.Update {
     private final EventGridManager manager;
@@ -78,6 +79,11 @@ class EventChannelImpl extends CreatableUpdatableImpl<EventChannel, EventChannel
     }
 
     @Override
+    public EventChannelFilter filter() {
+        return this.inner().filter();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -112,6 +118,12 @@ class EventChannelImpl extends CreatableUpdatableImpl<EventChannel, EventChannel
     @Override
     public EventChannelImpl withDestination(EventChannelDestination destination) {
         this.inner().withDestination(destination);
+        return this;
+    }
+
+    @Override
+    public EventChannelImpl withFilter(EventChannelFilter filter) {
+        this.inner().withFilter(filter);
         return this;
     }
 

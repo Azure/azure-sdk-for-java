@@ -48,6 +48,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetry() throws Exception {
+        @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
@@ -64,6 +65,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     @Test(groups = {"simple"})
     public void backoffRetryUtilityExecuteRetryWithFailure() throws Exception {
+        @SuppressWarnings("unchecked")
         Callable<Mono<StoreResponse>> callbackMethod = Mockito.mock(Callable.class);
         serviceRequest = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
         retryPolicy = new TestRetryPolicy();
@@ -81,6 +83,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
+    @SuppressWarnings("unchecked")
     public void backoffRetryUtilityExecuteAsync() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
@@ -100,6 +103,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
+    @SuppressWarnings("unchecked")
     public void backoffRetryUtilityExecuteAsyncWithFailure() {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> inBackoffAlternateCallbackMethod = Mockito.mock(Function.class);
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> parameterizedCallbackMethod = Mockito.mock(Function.class);
@@ -123,10 +127,10 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
     @Test(groups = {"simple"})
     public void retryContextMockTestOnCRUDOperation() throws NoSuchFieldException, IllegalAccessException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .setEndpoint(TestConfigurations.HOST)
-            .setKey(TestConfigurations.MASTER_KEY);
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        CosmosClient cosmosClient = cosmosClientBuilder.setConnectionPolicy(connectionPolicy).buildClient();
+        CosmosClient cosmosClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
         CosmosAsyncContainer cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl)cosmosClient.asyncClient().getContextClient();
         RxStoreModel mockStoreModel = Mockito.mock(RxStoreModel.class);

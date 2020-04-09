@@ -26,12 +26,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Helper class for managing recognize entity endpoint.
@@ -54,15 +56,16 @@ class RecognizeEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link CategorizedEntity}.
      *
-     * @param text A single document.
+     * @param document A single document.
      * @param language The language code.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link CategorizedEntity}.
      */
-    TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String text, String language) {
+    TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+        Objects.requireNonNull(document, "'document' cannot be null.");
         return new TextAnalyticsPagedFlux<>(() ->
             (continuationToken, pageSize) -> recognizeEntitiesBatch(
-                Collections.singletonList(new TextDocumentInput("0", text, language)), null)
+                Collections.singletonList(new TextDocumentInput("0", document, language)), null)
                 .byPage()
                 .map(resOfResult -> {
                     Iterator<RecognizeCategorizedEntitiesResult> iterator = resOfResult.getValue().iterator();
@@ -89,17 +92,22 @@ class RecognizeEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link RecognizeCategorizedEntitiesResult}.
      *
-     * @param textInputs The list of documents to recognize entities for.
+     * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
      * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeCategorizedEntitiesResult}.
      */
     TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatch(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         try {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getRecognizedEntitiesResponseInPage(textInputs, options, context)).flux());
+                getRecognizedEntitiesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
             return new TextAnalyticsPagedFlux<>(() ->
                 (continuationToken, pageSize) -> fluxError(logger, ex));
@@ -110,7 +118,7 @@ class RecognizeEntityAsyncClient {
      * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
      * which is a paged flux that contains {@link RecognizeCategorizedEntitiesResult}.
      *
-     * @param textInputs The list of documents to recognize entities for.
+     * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -118,10 +126,15 @@ class RecognizeEntityAsyncClient {
      * the SDK.
      */
     TextAnalyticsPagedFlux<RecognizeCategorizedEntitiesResult> recognizeEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
-        Objects.requireNonNull(textInputs, "'textInputs' cannot be null.");
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
+        final Iterator<TextDocumentInput> iterator = documents.iterator();
+        if (!iterator.hasNext()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'documents' cannot be empty."));
+        }
+
         return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-            getRecognizedEntitiesResponseInPage(textInputs, options, context).flux());
+            getRecognizedEntitiesResponseInPage(documents, options, context).flux());
     }
 
     /**
@@ -163,19 +176,20 @@ class RecognizeEntityAsyncClient {
      * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
      * {@link RecognizeCategorizedEntitiesResult} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
-     * @param textInputs A list of documents to recognize PII entities for.
+     * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizeCategorizedEntitiesResult}.
      */
     private Mono<TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult>> getRecognizedEntitiesResponseInPage(
-        Iterable<TextDocumentInput> textInputs, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesRecognitionGeneralWithRestResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(textInputs)),
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options == null ? null : options.getModelVersion(),
-            options == null ? null : options.isIncludeStatistics(), context)
-            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", textInputs.toString()))
+            options == null ? null : options.isIncludeStatistics(),
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))

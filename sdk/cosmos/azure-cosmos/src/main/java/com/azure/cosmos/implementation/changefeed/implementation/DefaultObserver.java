@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverCloseReason;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserverContext;
@@ -14,7 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Consumer;
 
-class DefaultObserver<T> implements ChangeFeedObserver {
+class DefaultObserver implements ChangeFeedObserver {
     private static final Logger log = LoggerFactory.getLogger(DefaultObserver.class);
     private final Consumer<List<JsonNode>> consumer;
 
@@ -36,7 +35,7 @@ class DefaultObserver<T> implements ChangeFeedObserver {
     public Mono<Void> processChanges(ChangeFeedObserverContext context, List<JsonNode> docs) {
         log.info("Start processing from thread {}", Thread.currentThread().getId());
         try {
-            //TODO for later: convert to user T here unless T is JsonNode when we want to add additional support to 
+            //TODO for later: convert to user T here unless T is JsonNode when we want to add additional support to
             // user types.
             consumer.accept(docs);
             log.info("Done processing from thread {}", Thread.currentThread().getId());

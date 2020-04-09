@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.util.CoreUtils;
+
 /**
  * Used internally. HTTP constants in the Azure Cosmos DB database service Java
  * SDK.
@@ -253,11 +255,9 @@ public class HttpConstants {
     public static class Versions {
         public static final String CURRENT_VERSION = "2018-12-31";
         public static final String QUERY_VERSION = "1.0";
+        public static final String AZURE_COSMOS_PROPERTIES_FILE_NAME = "azure-cosmos.properties";
 
-        // TODO: FIXME we can use maven plugin for generating a version file
-        // @see
-        // https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "4.0.0-preview.2";
+        public static final String SDK_VERSION = CoreUtils.getProperties(AZURE_COSMOS_PROPERTIES_FILE_NAME).get("version");
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 
