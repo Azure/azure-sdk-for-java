@@ -56,11 +56,11 @@ class KuduClient {
         String[] parts = host.split("\\.", 2);
         host = parts[0] + ".scm." + parts[1];
         this.host = "https://" + host;
-        RestClient client = new RestClientBuilder() //webAppBase.manager().restClient().newBuilder()
+        RestClient client = webAppBase.manager().restClient().newBuilder()
                 .withBaseUrl(this.host)
                 .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                // FIXME
                 .withPolicy(new KuduAuthenticationPolicy(webAppBase))
+                // TODO (weidxu) support timeout
 //                .withConnectionTimeout(3, TimeUnit.MINUTES)
 //                .withReadTimeout(3, TimeUnit.MINUTES)
                 .buildClient();
@@ -195,7 +195,7 @@ class KuduClient {
     }
 
     private static byte[] byteArrayFromInputStream(InputStream inputStream) {
-        // FIXME core does not yet support InputStream as @BodyParam
+        // TODO (weidxu) core does not yet support InputStream as @BodyParam
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             int nRead;

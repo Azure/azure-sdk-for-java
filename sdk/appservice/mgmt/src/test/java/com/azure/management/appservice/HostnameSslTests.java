@@ -74,7 +74,7 @@ public class HostnameSslTests extends AppServiceTest {
             Response<String> response = null;
             int retryCount = 3;
             while (response == null && retryCount > 0) {
-                // FIXME this probably not work after switch from okhttp to azure-core
+                // TODO (weidxu) this probably not work after switch from okhttp to azure-core
                 try {
                     response = curl("https://" + WEBAPP_NAME + "." + DOMAIN);
                 } catch (SSLPeerUnverifiedException e) {
