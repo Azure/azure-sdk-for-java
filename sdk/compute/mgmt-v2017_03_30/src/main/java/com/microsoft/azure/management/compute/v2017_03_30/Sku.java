@@ -35,7 +35,7 @@ public class Sku {
     private Long capacity;
 
     /**
-     * Get the name value.
+     * Get the sku name.
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the sku name.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -55,7 +55,7 @@ public class Sku {
     }
 
     /**
-     * Get the tier value.
+     * Get specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @return the tier value
      */
@@ -64,7 +64,7 @@ public class Sku {
     }
 
     /**
-     * Set the tier value.
+     * Set specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
      *
      * @param tier the tier value to set
      * @return the Sku object itself.
@@ -75,7 +75,7 @@ public class Sku {
     }
 
     /**
-     * Get the capacity value.
+     * Get specifies the number of virtual machines in the scale set.
      *
      * @return the capacity value
      */
@@ -84,7 +84,7 @@ public class Sku {
     }
 
     /**
-     * Set the capacity value.
+     * Set specifies the number of virtual machines in the scale set.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
