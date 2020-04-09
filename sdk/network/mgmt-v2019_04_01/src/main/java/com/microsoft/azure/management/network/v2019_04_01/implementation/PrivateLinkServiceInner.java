@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.v2019_04_01.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServiceIpConfiguration;
-import com.microsoft.azure.management.network.v2019_04_01.PrivateEndpointConnection;
+import com.microsoft.azure.management.network.v2019_04_01.ProvisioningState;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServicePropertiesVisibility;
 import com.microsoft.azure.management.network.v2019_04_01.PrivateLinkServicePropertiesAutoApproval;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -27,8 +27,8 @@ public class PrivateLinkServiceInner extends Resource {
     /**
      * An array of references to the load balancer IP configurations.
      */
-    @JsonProperty(value = "properties.loadBalancerFrontendIPConfigurations")
-    private List<FrontendIPConfigurationInner> loadBalancerFrontendIPConfigurations;
+    @JsonProperty(value = "properties.loadBalancerFrontendIpConfigurations")
+    private List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations;
 
     /**
      * An array of references to the private link service IP configuration.
@@ -44,17 +44,17 @@ public class PrivateLinkServiceInner extends Resource {
     private List<NetworkInterfaceInner> networkInterfaces;
 
     /**
-     * The provisioning state of the private link service. Possible values are:
-     * 'Updating', 'Succeeded', and 'Failed'.
+     * The provisioning state of the private link service. Possible values
+     * include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
 
     /**
      * An array of list about connections to the private endpoint.
      */
     @JsonProperty(value = "properties.privateEndpointConnections")
-    private List<PrivateEndpointConnection> privateEndpointConnections;
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /**
      * The visibility list of the private link service.
@@ -81,8 +81,7 @@ public class PrivateLinkServiceInner extends Resource {
     private String alias;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -96,20 +95,20 @@ public class PrivateLinkServiceInner extends Resource {
     /**
      * Get an array of references to the load balancer IP configurations.
      *
-     * @return the loadBalancerFrontendIPConfigurations value
+     * @return the loadBalancerFrontendIpConfigurations value
      */
-    public List<FrontendIPConfigurationInner> loadBalancerFrontendIPConfigurations() {
-        return this.loadBalancerFrontendIPConfigurations;
+    public List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations() {
+        return this.loadBalancerFrontendIpConfigurations;
     }
 
     /**
      * Set an array of references to the load balancer IP configurations.
      *
-     * @param loadBalancerFrontendIPConfigurations the loadBalancerFrontendIPConfigurations value to set
+     * @param loadBalancerFrontendIpConfigurations the loadBalancerFrontendIpConfigurations value to set
      * @return the PrivateLinkServiceInner object itself.
      */
-    public PrivateLinkServiceInner withLoadBalancerFrontendIPConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIPConfigurations) {
-        this.loadBalancerFrontendIPConfigurations = loadBalancerFrontendIPConfigurations;
+    public PrivateLinkServiceInner withLoadBalancerFrontendIpConfigurations(List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations) {
+        this.loadBalancerFrontendIpConfigurations = loadBalancerFrontendIpConfigurations;
         return this;
     }
 
@@ -143,11 +142,11 @@ public class PrivateLinkServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioning state of the private link service. Possible values are: 'Updating', 'Succeeded', and 'Failed'.
+     * Get the provisioning state of the private link service. Possible values include: 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      *
      * @return the provisioningState value
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -156,7 +155,7 @@ public class PrivateLinkServiceInner extends Resource {
      *
      * @return the privateEndpointConnections value
      */
-    public List<PrivateEndpointConnection> privateEndpointConnections() {
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
@@ -166,7 +165,7 @@ public class PrivateLinkServiceInner extends Resource {
      * @param privateEndpointConnections the privateEndpointConnections value to set
      * @return the PrivateLinkServiceInner object itself.
      */
-    public PrivateLinkServiceInner withPrivateEndpointConnections(List<PrivateEndpointConnection> privateEndpointConnections) {
+    public PrivateLinkServiceInner withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
@@ -241,7 +240,7 @@ public class PrivateLinkServiceInner extends Resource {
     }
 
     /**
-     * Get gets a unique read-only string that changes whenever the resource is updated.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -250,7 +249,7 @@ public class PrivateLinkServiceInner extends Resource {
     }
 
     /**
-     * Set gets a unique read-only string that changes whenever the resource is updated.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the PrivateLinkServiceInner object itself.
