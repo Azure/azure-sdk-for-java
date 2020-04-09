@@ -407,10 +407,10 @@
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]perf-test[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]perf-test[/\\].*\.java"/>
-  <suppress checks="GoodLogging" files=".*[/\\]perf-test[/\\].*\.java"/>
+            files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
+  <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files=".*[/\\]com.azure.perf.test.core[/\\].*"/>
