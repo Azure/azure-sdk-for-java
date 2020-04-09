@@ -430,6 +430,19 @@ public final class ServiceBusClientBuilder {
         /**
          * Sets the name of the topic.
          *
+         * @param queueName Name of the queue.
+         *
+         * @return The modified {@link ServiceBusMultiSessionProcessorClientBuilder} object.
+         * @see #subscriptionName A subscription name should be set as well.
+         */
+        public ServiceBusMultiSessionProcessorClientBuilder queueName(String queueName) {
+            this.queueName = queueName;
+            return this;
+        }
+
+        /**
+         * Sets the name of the topic.
+         *
          * @param topicName Name of the topic.
          *
          * @return The modified {@link ServiceBusMultiSessionProcessorClientBuilder} object.
