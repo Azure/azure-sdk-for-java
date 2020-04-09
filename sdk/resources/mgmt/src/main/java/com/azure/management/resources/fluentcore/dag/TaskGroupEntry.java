@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.dag;
 
@@ -32,7 +29,7 @@ final class TaskGroupEntry<TaskT extends TaskItem>
     /**
      * Creates TaskGroupEntry.
      *
-     * @param taskId   id that uniquely identifies the task from other tasks in the group
+     * @param taskId id that uniquely identifies the task from other tasks in the group
      * @param taskItem the task this entry holds
      */
     TaskGroupEntry(String taskId, TaskT taskItem) {
@@ -84,7 +81,7 @@ final class TaskGroupEntry<TaskT extends TaskItem>
      * @param ignoreCachedResult if the task is already invoked and has result cached then a value false for this
      *                           parameter indicates the cached result can be returned without invoking task again,
      *                           if true then cached result will be ignored and task will be invoked
-     * @param context            the context object shared across all the entries in the group that this entry belongs to,
+     * @param context the context object shared across all the entries in the group that this entry belongs to,
      *                           this will be passed to {@link TaskItem#invokeAsync(TaskGroup.InvocationContext)}
      *                           method of the task item
      * @return a cold Observable upon subscription invokes the task this entry hold, which produces a result of

@@ -1,30 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
-
 
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.management.sql.SqlRestorableDroppedDatabase;
 import com.azure.management.sql.models.RestorableDroppedDatabaseInner;
+import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-
-/**
- * Implementation for SQL restorable dropped database interface.
- */
-public class SqlRestorableDroppedDatabaseImpl extends RefreshableWrapperImpl<RestorableDroppedDatabaseInner, SqlRestorableDroppedDatabase>
+/** Implementation for SQL restorable dropped database interface. */
+public class SqlRestorableDroppedDatabaseImpl
+    extends RefreshableWrapperImpl<RestorableDroppedDatabaseInner, SqlRestorableDroppedDatabase>
     implements SqlRestorableDroppedDatabase {
 
     private final String sqlServerName;
     private final String resourceGroupName;
     private final SqlServerManager sqlServerManager;
 
-    protected SqlRestorableDroppedDatabaseImpl(String resourceGroupName, String sqlServerName,  RestorableDroppedDatabaseInner innerObject, SqlServerManager sqlServerManager) {
+    protected SqlRestorableDroppedDatabaseImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        RestorableDroppedDatabaseInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
@@ -78,7 +76,11 @@ public class SqlRestorableDroppedDatabaseImpl extends RefreshableWrapperImpl<Res
 
     @Override
     protected Mono<RestorableDroppedDatabaseInner> getInnerAsync() {
-        return this.sqlServerManager.inner().restorableDroppedDatabases().getAsync(this.resourceGroupName, this.sqlServerName, this.inner().getId());
+        return this
+            .sqlServerManager
+            .inner()
+            .restorableDroppedDatabases()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.inner().getId());
     }
 
     @Override

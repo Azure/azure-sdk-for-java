@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.network.implementation;
 
@@ -14,13 +11,11 @@ import com.azure.management.network.VirtualNetworkGatewayConnection;
 import com.azure.management.network.VirtualNetworkGatewayConnections;
 import com.azure.management.network.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.management.network.models.VirtualNetworkGatewayConnectionsInner;
-import com.azure.management.network.models.VirtualNetworkGatewayInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.Function;
 
 /**

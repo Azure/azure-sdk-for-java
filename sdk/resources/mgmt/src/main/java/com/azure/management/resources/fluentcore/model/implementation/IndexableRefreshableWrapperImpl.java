@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.model.implementation;
 
@@ -15,7 +12,7 @@ import reactor.core.publisher.Mono;
  * The implementation for {@link Indexable}, {@link Refreshable}, and {@link HasInner}.
  *
  * @param <FluentModelT> The fluent model type
- * @param <InnerModelT>  Azure inner resource class type
+ * @param <InnerModelT> Azure inner resource class type
  */
 public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         extends IndexableRefreshableImpl<FluentModelT>

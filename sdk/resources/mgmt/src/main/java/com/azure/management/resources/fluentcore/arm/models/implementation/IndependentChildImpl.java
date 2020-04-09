@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.models.implementation;
 
@@ -19,17 +16,18 @@ import reactor.core.publisher.Mono;
  * Implementation for the child resource which can be CRUDed independently from the parent resource.
  * (internal use only)
  *
- * @param <FluentModelT>       The fluent model type
+ * @param <FluentModelT> The fluent model type
  * @param <FluentParentModelT> the fluent model for parent resource
- * @param <InnerModelT>        Azure inner resource class type
- * @param <FluentModelImplT>   the implementation type of the fluent model type
- * @param <ManagerT>           the client manager type representing the service
+ * @param <InnerModelT> Azure inner resource class type
+ * @param <FluentModelImplT> the implementation type of the fluent model type
+ * @param <ManagerT> the client manager type representing the service
  */
 public abstract class IndependentChildImpl<
         FluentModelT extends IndependentChild<ManagerT>,
         FluentParentModelT extends Resource & HasResourceGroup,
         InnerModelT,
-        FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>,
+        FluentModelImplT extends IndependentChildImpl<FluentModelT, FluentParentModelT,
+                                                      InnerModelT, FluentModelImplT, ManagerT>,
         ManagerT>
         extends
         CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
@@ -44,7 +42,7 @@ public abstract class IndependentChildImpl<
     /**
      * Creates a new instance of IndependentChildResourceImpl.
      *
-     * @param name        the name of the resource
+     * @param name the name of the resource
      * @param innerObject the inner object
      */
     protected IndependentChildImpl(String name, InnerModelT innerObject, ManagerT manager) {

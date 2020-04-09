@@ -1,10 +1,8 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.AgentProperties;
 import com.azure.management.containerregistry.Architecture;
 import com.azure.management.containerregistry.DockerBuildRequest;
@@ -23,18 +21,16 @@ import com.azure.management.containerregistry.Variant;
 import com.azure.management.containerregistry.models.RegistriesInner;
 import com.azure.management.containerregistry.models.RunInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
-class RegistryTaskRunImpl implements
-        RegistryTaskRun,
-        RegistryTaskRun.Definition {
+class RegistryTaskRunImpl implements RegistryTaskRun, RegistryTaskRun.Definition {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final ContainerRegistryManager registryManager;
     private final String key = UUID.randomUUID().toString();
     private String resourceGroupName;
@@ -109,7 +105,6 @@ class RegistryTaskRunImpl implements
     public String runId() {
         return this.inner.runId();
     }
-
 
     RegistryTaskRunImpl(ContainerRegistryManager registryManager, RunInner runInner) {
         this.registryManager = registryManager;
@@ -205,7 +200,6 @@ class RegistryTaskRunImpl implements
             value.withValue(entry.getValue().value());
             value.withIsSecret(entry.getValue().isSecret());
             overridingValuesList.add(value);
-
         }
         this.taskRunRequest.withValues(overridingValuesList);
         return this;
@@ -289,31 +283,43 @@ class RegistryTaskRunImpl implements
     public Mono<RegistryTaskRun> executeAsync() {
         final RegistryTaskRunImpl self = this;
         if (this.fileTaskRunRequest != null) {
-            return this.registriesInner.scheduleRunAsync(this.resourceGroupName, this.registryName, this.fileTaskRunRequest)
-                .map(runInner -> {
-                    self.inner = runInner;
-                    return self;
-                });
+            return this
+                .registriesInner
+                .scheduleRunAsync(this.resourceGroupName, this.registryName, this.fileTaskRunRequest)
+                .map(
+                    runInner -> {
+                        self.inner = runInner;
+                        return self;
+                    });
         } else if (this.encodedTaskRunRequest != null) {
-            return this.registriesInner.scheduleRunAsync(this.resourceGroupName, this.registryName, this.encodedTaskRunRequest)
-                .map(runInner -> {
-                    self.inner = runInner;
-                    return self;
-                });
+            return this
+                .registriesInner
+                .scheduleRunAsync(this.resourceGroupName, this.registryName, this.encodedTaskRunRequest)
+                .map(
+                    runInner -> {
+                        self.inner = runInner;
+                        return self;
+                    });
         } else if (this.dockerTaskRunRequest != null) {
-            return this.registriesInner.scheduleRunAsync(this.resourceGroupName, this.registryName, this.dockerTaskRunRequest)
-                .map(runInner -> {
-                    self.inner = runInner;
-                    return self;
-                });
+            return this
+                .registriesInner
+                .scheduleRunAsync(this.resourceGroupName, this.registryName, this.dockerTaskRunRequest)
+                .map(
+                    runInner -> {
+                        self.inner = runInner;
+                        return self;
+                    });
         } else if (this.taskRunRequest != null) {
-            return this.registriesInner.scheduleRunAsync(this.resourceGroupName, this.registryName, this.taskRunRequest)
-                .map(runInner -> {
-                    self.inner = runInner;
-                    return self;
-                });
+            return this
+                .registriesInner
+                .scheduleRunAsync(this.resourceGroupName, this.registryName, this.taskRunRequest)
+                .map(
+                    runInner -> {
+                        self.inner = runInner;
+                        return self;
+                    });
         }
-        throw new RuntimeException("Unsupported file task run request");
+        throw logger.logExceptionAsError(new RuntimeException("Unsupported file task run request"));
     }
 
     @Override
@@ -349,10 +355,14 @@ class RegistryTaskRunImpl implements
     @Override
     public Mono<RegistryTaskRun> refreshAsync() {
         final RegistryTaskRunImpl self = this;
-        return registryManager.inner().runs().getAsync(this.resourceGroupName, this.registryName, this.inner.runId())
-            .map(runInner -> {
-                self.inner = runInner;
-                return self;
-            });
+        return registryManager
+            .inner()
+            .runs()
+            .getAsync(this.resourceGroupName, this.registryName, this.inner.runId())
+            .map(
+                runInner -> {
+                    self.inner = runInner;
+                    return self;
+                });
     }
 }

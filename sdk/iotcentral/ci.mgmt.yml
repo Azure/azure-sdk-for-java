@@ -14,10 +14,6 @@ trigger:
   paths:
     include:
       - sdk/iotcentral/
-    exclude:
-      - sdk/iotcentral/azure
-      - sdk/iotcentral/microsoft-azure
-      - sdk/iotcentral/ms-azure
 
 pr:
   branches:
@@ -29,10 +25,6 @@ pr:
   paths:
     include:
       - sdk/iotcentral/
-    exclude:
-      - sdk/iotcentral/azure
-      - sdk/iotcentral/microsoft-azure
-      - sdk/iotcentral/ms-azure
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.management.containerregistry.Argument;
@@ -12,15 +9,12 @@ import com.azure.management.containerregistry.PlatformProperties;
 import com.azure.management.containerregistry.RegistryDockerTaskRunRequest;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-class RegistryDockerTaskRunRequestImpl implements
-        RegistryDockerTaskRunRequest,
-        RegistryDockerTaskRunRequest.Definition,
-        HasInner<DockerBuildRequest> {
+class RegistryDockerTaskRunRequestImpl
+    implements RegistryDockerTaskRunRequest, RegistryDockerTaskRunRequest.Definition, HasInner<DockerBuildRequest> {
 
     private DockerBuildRequest inner;
     private RegistryTaskRunImpl registryTaskRunImpl;
@@ -88,7 +82,8 @@ class RegistryDockerTaskRunRequestImpl implements
     }
 
     @Override
-    public RegistryDockerTaskRunRequestImpl withOverridingArguments(Map<String, OverridingArgument> overridingArguments) {
+    public RegistryDockerTaskRunRequestImpl withOverridingArguments(
+        Map<String, OverridingArgument> overridingArguments) {
         if (overridingArguments.size() == 0) {
             return this;
         }
@@ -105,7 +100,8 @@ class RegistryDockerTaskRunRequestImpl implements
     }
 
     @Override
-    public DefinitionStages.DockerTaskRunRequestStepAttachable withOverridingArgument(String name, OverridingArgument overridingArgument) {
+    public DefinitionStages.DockerTaskRunRequestStepAttachable withOverridingArgument(
+        String name, OverridingArgument overridingArgument) {
         if (this.inner.arguments() == null) {
             this.inner.withArguments(new ArrayList<Argument>());
         }
@@ -116,7 +112,6 @@ class RegistryDockerTaskRunRequestImpl implements
         this.inner.arguments().add(argument);
         return this;
     }
-
 
     @Override
     public RegistryTaskRunImpl attach() {

@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ManagedInstanceLongTermRetentionBackup model.
- */
+/** The ManagedInstanceLongTermRetentionBackup model. */
 @JsonFlatten
 @Immutable
 public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
@@ -53,9 +51,8 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     private OffsetDateTime backupExpirationTime;
 
     /**
-     * Get the managedInstanceName property: The managed instance that the
-     * backup database belongs to.
-     * 
+     * Get the managedInstanceName property: The managed instance that the backup database belongs to.
+     *
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
@@ -63,9 +60,8 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     }
 
     /**
-     * Get the managedInstanceCreateTime property: The create time of the
-     * instance.
-     * 
+     * Get the managedInstanceCreateTime property: The create time of the instance.
+     *
      * @return the managedInstanceCreateTime value.
      */
     public OffsetDateTime managedInstanceCreateTime() {
@@ -73,9 +69,8 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     }
 
     /**
-     * Get the databaseName property: The name of the database the backup
-     * belong to.
-     * 
+     * Get the databaseName property: The name of the database the backup belong to.
+     *
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -84,7 +79,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     * 
+     *
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -93,7 +88,7 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     * 
+     *
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -101,9 +96,8 @@ public class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     }
 
     /**
-     * Get the backupExpirationTime property: The time the long term retention
-     * backup will expire.
-     * 
+     * Get the backupExpirationTime property: The time the long term retention backup will expire.
+     *
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {

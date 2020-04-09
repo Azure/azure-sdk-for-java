@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.utils;
 
@@ -12,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureTokenCredential;
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -79,7 +77,7 @@ public final class Utils {
     /**
      * Creates an Odata filter string that can be used for filtering list results by tags.
      *
-     * @param tagName  the name of the tag. If not provided, all resources will be returned.
+     * @param tagName the name of the tag. If not provided, all resources will be returned.
      * @param tagValue the value of the tag. If not provided, only tag name will be filtered.
      * @return the Odata filter to pass into list methods
      */
@@ -98,7 +96,7 @@ public final class Utils {
      * resource from a given Mono of {@link Indexable}.
      *
      * @param stream the input Mono of {@link Indexable}
-     * @param <U>    the specialized type of last item in the input stream
+     * @param <U> the specialized type of last item in the input stream
      * @return a Mono that emits last item
      */
     @SuppressWarnings("unchecked")
@@ -109,14 +107,14 @@ public final class Utils {
     /**
      * Download a file asynchronously.
      *
-     * @param url      the URL pointing to the file
+     * @param url the URL pointing to the file
      * @param retrofit the retrofit client
      * @return an Observable pointing to the content of the file
      */
     /**
      * Download a file asynchronously.
      *
-     * @param url      the URL pointing to the file
+     * @param url the URL pointing to the file
      * @param retrofit the retrofit client
      * @return an Observable pointing to the content of the file
      */
@@ -157,7 +155,7 @@ public final class Utils {
     /**
      * Adds a value to the list if does not already exists.
      *
-     * @param list  the list
+     * @param list the list
      * @param value value to add if not exists in the list
      */
     public static void addToListIfNotExists(List<String> list, String value) {
@@ -176,7 +174,7 @@ public final class Utils {
     /**
      * Removes a value from the list.
      *
-     * @param list  the list
+     * @param list the list
      * @param value value to remove
      */
     public static void removeFromList(List<String> list, String value) {
@@ -214,7 +212,9 @@ public final class Utils {
                 }
             }
             if (environment == null) {
-                throw new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl);
+                ClientLogger logger = new ClientLogger(Utils.class);
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Unknown resource manager endpoint " + baseUrl));
             }
         }
         return environment;

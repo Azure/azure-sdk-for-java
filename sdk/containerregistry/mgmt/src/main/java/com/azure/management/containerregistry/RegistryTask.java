@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.containerregistry;
 
@@ -15,81 +12,50 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of an Azure registry task.
- */
+/** An immutable client-side representation of an Azure registry task. */
 @Fluent()
-public interface RegistryTask extends
-        Resource,
-        HasInner<TaskInner>,
-        Refreshable<RegistryTask>,
-        Updatable<RegistryTask.Update> {
+public interface RegistryTask
+    extends Resource, HasInner<TaskInner>, Refreshable<RegistryTask>, Updatable<RegistryTask.Update> {
 
-    /**
-     * @return the name of the resource's resource group
-     */
+    /** @return the name of the resource's resource group */
     String resourceGroupName();
 
-
-    /**
-     * @return the parent ID of this resource
-     */
+    /** @return the parent ID of this resource */
     String parentRegistryId();
 
-    /**
-     * @return the provisioning state of the build task
-     */
+    /** @return the provisioning state of the build task */
     ProvisioningState provisioningState();
 
-    /**
-     * @return the creation date of build task
-     */
+    /** @return the creation date of build task */
     OffsetDateTime creationDate();
 
-    /**
-     * @return the current status of build task
-     */
+    /** @return the current status of build task */
     TaskStatus status();
 
-    /**
-     * @return the RegistryTaskStep of the current task
-     */
+    /** @return the RegistryTaskStep of the current task */
     RegistryTaskStep registryTaskStep();
 
-    /**
-     * @return the build timeout settings in seconds
-     */
+    /** @return the build timeout settings in seconds */
     int timeout();
 
-    /**
-     * @return the build timeout settings in seconds
-     */
+    /** @return the build timeout settings in seconds */
     PlatformProperties platform();
 
-    /**
-     * @return the CPU count
-     */
+    /** @return the CPU count */
     int cpuCount();
 
-    /**
-     * @return the trigger of the task
-     */
+    /** @return the trigger of the task */
     TriggerProperties trigger();
 
-    /**
-     * @return the source triggers of the task.
-     */
+    /** @return the source triggers of the task. */
     Map<String, RegistrySourceTrigger> sourceTriggers();
 
-    /**
-     * Container interface for all the definitions related to a registry task.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** Container interface for all the definitions related to a registry task. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.Location,
             DefinitionStages.Platform,
             DefinitionStages.TaskStepType,
@@ -98,11 +64,9 @@ public interface RegistryTask extends
             DefinitionStages.TaskCreatable {
     }
 
-    /**
-     * Container interface for all the updates related to a registry task.
-     */
-    interface Update extends
-            UpdateStages.Platform,
+    /** Container interface for all the updates related to a registry task. */
+    interface Update
+        extends UpdateStages.Platform,
             UpdateStages.TriggerTypes,
             UpdateStages.AgentConfiguration,
             UpdateStages.Timeout,
@@ -110,13 +74,9 @@ public interface RegistryTask extends
             Appliable<RegistryTask> {
     }
 
-    /**
-     * Grouping of registry task definition stages.
-     */
+    /** Grouping of registry task definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a container registry task definition.
-         */
+        /** The first stage of a container registry task definition. */
         interface Blank {
             /**
              * The parameters referencing an existing container registry under which this task resides.
@@ -128,9 +88,7 @@ public interface RegistryTask extends
             Location withExistingRegistry(String resourceGroupName, String registryName);
         }
 
-        /**
-         * The stage of the container registry task definition allowing to specify location.
-         */
+        /** The stage of the container registry task definition allowing to specify location. */
         interface Location {
             /**
              * The parameters specifying location of the container registry task.
@@ -149,9 +107,7 @@ public interface RegistryTask extends
             Platform withLocation(Region location);
         }
 
-        /**
-         * The stage of the container registry task definition allowing to specify the platform.
-         */
+        /** The stage of the container registry task definition allowing to specify the platform. */
         interface Platform {
             /**
              * The function that specifies a Linux OS system for the platform.
@@ -210,9 +166,7 @@ public interface RegistryTask extends
             TaskStepType withPlatform(PlatformProperties platformProperties);
         }
 
-        /**
-         * The stage of the container registry task definition that specifies the type of task step.
-         */
+        /** The stage of the container registry task definition that specifies the type of task step. */
         interface TaskStepType {
             /**
              * The function that specifies a task step of type FileTaskStep.
@@ -236,9 +190,7 @@ public interface RegistryTask extends
             RegistryDockerTaskStep.DefinitionStages.Blank defineDockerTaskStep();
         }
 
-        /**
-         * The stage of the container registry task definition that allows users to define a source trigger.
-         */
+        /** The stage of the container registry task definition that allows users to define a source trigger. */
         interface SourceTriggerDefinition {
             /**
              * The function that begins the definition of a source trigger.
@@ -250,7 +202,8 @@ public interface RegistryTask extends
         }
 
         /**
-         * The stage of the container registry task definition that allows users to define either a source trigger and/or a base image trigger.
+         * The stage of the container registry task definition that allows users to define either a source trigger
+         * and/or a base image trigger.
          */
         interface TriggerTypes {
             /**
@@ -262,27 +215,34 @@ public interface RegistryTask extends
             RegistrySourceTrigger.DefinitionStages.Blank defineSourceTrigger(String sourceTriggerName);
 
             /**
-             * The function that defines a base image trigger with the two parameters required for base image trigger creation.
+             * The function that defines a base image trigger with the two parameters required for base image trigger
+             * creation.
              *
              * @param baseImageTriggerName the name of the base image trigger.
-             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something else that the user inputs.
+             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something
+             *     else that the user inputs.
              * @return the next stage of the container registry task definition.
              */
             TaskCreatable withBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType);
 
             /**
-             * The function that defines a base image trigger with all possible parameters for base image trigger creation.
+             * The function that defines a base image trigger with all possible parameters for base image trigger
+             * creation.
              *
              * @param baseImageTriggerName the name of the base image trigger.
-             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something else that the user inputs.
-             * @param triggerStatus the status for the trigger. Can be enabled, disabled, or something else that the user inputs.
+             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something
+             *     else that the user inputs.
+             * @param triggerStatus the status for the trigger. Can be enabled, disabled, or something else that the
+             *     user inputs.
              * @return the next stage of the container registry task definition.
              */
-            TaskCreatable withBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus);
+            TaskCreatable withBaseImageTrigger(
+                String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus);
         }
 
         /**
-         * The stage of the container registry task definition that specifies the AgentConfiguration for the container registry task.
+         * The stage of the container registry task definition that specifies the AgentConfiguration for the container
+         * registry task.
          */
         interface AgentConfiguration {
             /**
@@ -295,7 +255,8 @@ public interface RegistryTask extends
         }
 
         /**
-         * The stage of the container registry task definition that specifies the timeout for the container registry task.
+         * The stage of the container registry task definition that specifies the timeout for the container registry
+         * task.
          */
         interface Timeout {
             /**
@@ -309,25 +270,17 @@ public interface RegistryTask extends
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
-         *  but also allows for any other optional settings to be specified.
+         * but also allows for any other optional settings to be specified.
          */
-        interface TaskCreatable extends
-                AgentConfiguration,
-                Timeout,
-                SourceTriggerDefinition,
-                TriggerTypes,
-                Creatable<RegistryTask> {
+        interface TaskCreatable
+            extends AgentConfiguration, Timeout, SourceTriggerDefinition, TriggerTypes, Creatable<RegistryTask> {
         }
     }
 
-    /**
-     * Grouping of registry task update stages.
-     */
+    /** Grouping of registry task update stages. */
     interface UpdateStages {
 
-        /**
-         * The stage of the container registry task definition that specifies the type of task step.
-         */
+        /** The stage of the container registry task definition that specifies the type of task step. */
         interface TaskStepType {
             /**
              * The function that specifies a task step of type FileTaskStep.
@@ -351,9 +304,7 @@ public interface RegistryTask extends
             RegistryDockerTaskStep.Update updateDockerTaskStep();
         }
 
-        /**
-         * The stage of the container registry task update allowing to update the platform.
-         */
+        /** The stage of the container registry task update allowing to update the platform. */
         interface Platform {
             /**
              * The function that specifies a Linux OS system for the platform.
@@ -413,7 +364,8 @@ public interface RegistryTask extends
         }
 
         /**
-         * The stage of the container registry task update that allows users to update either a source trigger and/or a base image trigger.
+         * The stage of the container registry task update that allows users to update either a source trigger and/or a
+         * base image trigger.
          */
         interface TriggerTypes {
             /**
@@ -432,27 +384,34 @@ public interface RegistryTask extends
             RegistrySourceTrigger.UpdateDefinitionStages.Blank defineSourceTrigger(String sourceTriggerName);
 
             /**
-             * The function that defines a base image trigger with the two parameters required for base image trigger update.
+             * The function that defines a base image trigger with the two parameters required for base image trigger
+             * update.
              *
              * @param baseImageTriggerName the name of the base image trigger.
-             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something else that the user inputs.
+             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something
+             *     else that the user inputs.
              * @return the next stage of the container registry task update.
              */
             Update updateBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType);
 
             /**
-             * The function that defines a base image trigger with all possible parameters for base image trigger update.
+             * The function that defines a base image trigger with all possible parameters for base image trigger
+             * update.
              *
              * @param baseImageTriggerName the name of the base image trigger.
-             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something else that the user inputs.
-             * @param triggerStatus the status for the trigger. Can be enabled, disabled, or something else that the user inputs.
+             * @param baseImageTriggerType the trigger type for the base image. Can be "All", "Runtime", or something
+             *     else that the user inputs.
+             * @param triggerStatus the status for the trigger. Can be enabled, disabled, or something else that the
+             *     user inputs.
              * @return the next stage of the container registry task update.
              */
-            Update updateBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus);
+            Update updateBaseImageTrigger(
+                String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus);
         }
 
         /**
-         * The stage of the container registry task update that updates the AgentConfiguration for the container registry task.
+         * The stage of the container registry task update that updates the AgentConfiguration for the container
+         * registry task.
          */
         interface AgentConfiguration {
             /**
@@ -464,9 +423,7 @@ public interface RegistryTask extends
             Update withCpuCount(int count);
         }
 
-        /**
-         * The stage of the container registry task update that updates the timeout for the container registry task.
-         */
+        /** The stage of the container registry task update that updates the timeout for the container registry task. */
         interface Timeout {
             /**
              * The function that updates the timeout time.

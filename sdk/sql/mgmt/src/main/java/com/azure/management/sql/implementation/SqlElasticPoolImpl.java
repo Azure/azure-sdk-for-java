@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -41,8 +38,6 @@ import com.azure.management.sql.models.ElasticPoolDatabaseActivityInner;
 import com.azure.management.sql.models.ElasticPoolInner;
 import com.azure.management.sql.models.MetricDefinitionInner;
 import com.azure.management.sql.models.MetricInner;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,15 +45,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SqlElasticPool.
- */
+/** Implementation for SqlElasticPool. */
 public class SqlElasticPoolImpl
-    extends
-        ExternalChildResourceImpl<SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer>
-    implements
-        SqlElasticPool,
+    extends ExternalChildResourceImpl<SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer>
+    implements SqlElasticPool,
         SqlElasticPool.SqlElasticPoolDefinition<SqlServer.DefinitionStages.WithCreate>,
         SqlElasticPoolOperations.DefinitionStages.WithCreate,
         SqlElasticPool.Update,
@@ -74,12 +66,13 @@ public class SqlElasticPoolImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlElasticPoolImpl(String name, SqlServerImpl parent, ElasticPoolInner innerObject, SqlServerManager sqlServerManager) {
+    SqlElasticPoolImpl(
+        String name, SqlServerImpl parent, ElasticPoolInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -98,11 +91,17 @@ public class SqlElasticPoolImpl
      * @param resourceGroupName the resource group name
      * @param sqlServerName the parent SQL server name
      * @param sqlServerLocation the parent SQL server location
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlElasticPoolImpl(String resourceGroupName, String sqlServerName, String sqlServerLocation, String name, ElasticPoolInner innerObject, SqlServerManager sqlServerManager) {
+    SqlElasticPoolImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String sqlServerLocation,
+        String name,
+        ElasticPoolInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -110,13 +109,14 @@ public class SqlElasticPoolImpl
         this.sqlServerName = sqlServerName;
         this.sqlServerLocation = sqlServerLocation;
 
-        this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
+        this.sqlDatabases =
+            new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
     }
 
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
@@ -125,7 +125,8 @@ public class SqlElasticPoolImpl
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
 
-        this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
+        this.sqlDatabases =
+            new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
     }
 
     @Override
@@ -196,8 +197,12 @@ public class SqlElasticPoolImpl
     @Override
     public List<ElasticPoolActivity> listActivities() {
         List<ElasticPoolActivity> elasticPoolActivities = new ArrayList<>();
-        PagedIterable<ElasticPoolActivityInner> elasticPoolActivityInners = this.sqlServerManager.inner()
-            .elasticPoolActivities().listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<ElasticPoolActivityInner> elasticPoolActivityInners =
+            this
+                .sqlServerManager
+                .inner()
+                .elasticPoolActivities()
+                .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         if (elasticPoolActivityInners != null) {
             for (ElasticPoolActivityInner inner : elasticPoolActivityInners) {
                 elasticPoolActivities.add(new ElasticPoolActivityImpl(inner));
@@ -208,16 +213,23 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<ElasticPoolActivity> listActivitiesAsync() {
-        return this.sqlServerManager.inner()
-            .elasticPoolActivities().listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPoolActivities()
+            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(elasticPoolActivityInner -> new ElasticPoolActivityImpl(elasticPoolActivityInner));
     }
 
     @Override
     public List<ElasticPoolDatabaseActivity> listDatabaseActivities() {
         List<ElasticPoolDatabaseActivity> elasticPoolDatabaseActivities = new ArrayList<>();
-        PagedIterable<ElasticPoolDatabaseActivityInner> elasticPoolDatabaseActivityInners = this.sqlServerManager.inner()
-            .elasticPoolDatabaseActivities().listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<ElasticPoolDatabaseActivityInner> elasticPoolDatabaseActivityInners =
+            this
+                .sqlServerManager
+                .inner()
+                .elasticPoolDatabaseActivities()
+                .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         if (elasticPoolDatabaseActivityInners != null) {
             for (ElasticPoolDatabaseActivityInner inner : elasticPoolDatabaseActivityInners) {
                 elasticPoolDatabaseActivities.add(new ElasticPoolDatabaseActivityImpl(inner));
@@ -228,15 +240,25 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<ElasticPoolDatabaseActivity> listDatabaseActivitiesAsync() {
-        return this.sqlServerManager.inner()
-            .elasticPoolDatabaseActivities().listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(elasticPoolDatabaseActivityInner -> new ElasticPoolDatabaseActivityImpl(elasticPoolDatabaseActivityInner));
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPoolDatabaseActivities()
+            .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
+            .mapPage(
+                elasticPoolDatabaseActivityInner ->
+                    new ElasticPoolDatabaseActivityImpl(elasticPoolDatabaseActivityInner));
     }
 
     @Override
     public List<SqlDatabaseMetric> listDatabaseMetrics(String filter) {
         List<SqlDatabaseMetric> databaseMetrics = new ArrayList<>();
-        PagedIterable<MetricInner> inners = this.sqlServerManager.inner().elasticPools().listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
+        PagedIterable<MetricInner> inners =
+            this
+                .sqlServerManager
+                .inner()
+                .elasticPools()
+                .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
         if (inners != null) {
             for (MetricInner inner : inners) {
                 databaseMetrics.add(new SqlDatabaseMetricImpl(inner));
@@ -248,14 +270,23 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<SqlDatabaseMetric> listDatabaseMetricsAsync(String filter) {
-        return this.sqlServerManager.inner().elasticPools().listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPools()
+            .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
             .mapPage(metricInner -> new SqlDatabaseMetricImpl(metricInner));
     }
 
     @Override
     public List<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitions() {
         List<SqlDatabaseMetricDefinition> databaseMetricDefinitions = new ArrayList<>();
-        PagedIterable<MetricDefinitionInner> inners = this.sqlServerManager.inner().elasticPools().listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<MetricDefinitionInner> inners =
+            this
+                .sqlServerManager
+                .inner()
+                .elasticPools()
+                .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
         if (inners != null) {
             for (MetricDefinitionInner inner : inners) {
                 databaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(inner));
@@ -267,18 +298,34 @@ public class SqlElasticPoolImpl
 
     @Override
     public PagedFlux<SqlDatabaseMetricDefinition> listDatabaseMetricDefinitionsAsync() {
-        return this.sqlServerManager.inner().elasticPools().listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPools()
+            .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(metricDefinitionInner -> new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
     }
 
     @Override
     public List<SqlDatabase> listDatabases() {
         List<SqlDatabase> databases = new ArrayList<>();
-        PagedIterable<DatabaseInner> databaseInners = this.sqlServerManager.inner().databases()
-            .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<DatabaseInner> databaseInners =
+            this
+                .sqlServerManager
+                .inner()
+                .databases()
+                .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
         if (databaseInners != null) {
             for (DatabaseInner inner : databaseInners) {
-                databases.add(new SqlDatabaseImpl(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation, inner.getName(), inner, this.sqlServerManager));
+                databases
+                    .add(
+                        new SqlDatabaseImpl(
+                            this.resourceGroupName,
+                            this.sqlServerName,
+                            this.sqlServerLocation,
+                            inner.getName(),
+                            inner,
+                            this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(databases);
@@ -287,22 +334,44 @@ public class SqlElasticPoolImpl
     @Override
     public PagedFlux<SqlDatabase> listDatabasesAsync() {
         final SqlElasticPoolImpl self = this;
-        return this.sqlServerManager.inner().databases()
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
             .listByElasticPoolAsync(self.resourceGroupName, self.sqlServerName, this.name())
-            .mapPage(databaseInner -> new SqlDatabaseImpl(self.resourceGroupName, self.sqlServerName, self.sqlServerLocation, databaseInner.getName(), databaseInner, self.sqlServerManager));
+            .mapPage(
+                databaseInner ->
+                    new SqlDatabaseImpl(
+                        self.resourceGroupName,
+                        self.sqlServerName,
+                        self.sqlServerLocation,
+                        databaseInner.getName(),
+                        databaseInner,
+                        self.sqlServerManager));
     }
 
     @Override
     public SqlDatabase getDatabase(String databaseName) {
-        DatabaseInner databaseInner = this.sqlServerManager.inner().databases()
-            .get(this.resourceGroupName, this.sqlServerName, databaseName);
+        DatabaseInner databaseInner =
+            this.sqlServerManager.inner().databases().get(this.resourceGroupName, this.sqlServerName, databaseName);
 
-        return databaseInner != null ? new SqlDatabaseImpl(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation, databaseName, databaseInner, this.sqlServerManager) : null;
+        return databaseInner != null
+            ? new SqlDatabaseImpl(
+                this.resourceGroupName,
+                this.sqlServerName,
+                this.sqlServerLocation,
+                databaseName,
+                databaseInner,
+                this.sqlServerManager)
+            : null;
     }
 
     @Override
     public SqlDatabase addNewDatabase(String databaseName) {
-        return this.sqlServerManager.sqlServers().databases()
+        return this
+            .sqlServerManager
+            .sqlServers()
+            .databases()
             .define(databaseName)
             .withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation)
             .withExistingElasticPool(this)
@@ -311,23 +380,18 @@ public class SqlElasticPoolImpl
 
     @Override
     public SqlDatabase addExistingDatabase(String databaseName) {
-        return this.getDatabase(databaseName)
-            .update()
-            .withExistingElasticPool(this)
-            .apply();
+        return this.getDatabase(databaseName).update().withExistingElasticPool(this).apply();
     }
 
     @Override
     public SqlDatabase addExistingDatabase(SqlDatabase database) {
-        return database
-            .update()
-            .withExistingElasticPool(this)
-            .apply();
+        return database.update().withExistingElasticPool(this).apply();
     }
 
     @Override
     public SqlDatabase removeDatabase(String databaseName) {
-        return this.getDatabase(databaseName)
+        return this
+            .getDatabase(databaseName)
             .update()
             .withoutElasticPool()
             .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
@@ -346,30 +410,42 @@ public class SqlElasticPoolImpl
 
     @Override
     protected Mono<ElasticPoolInner> getInnerAsync() {
-        return this.sqlServerManager.inner().elasticPools().getAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPools()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     public Mono<SqlElasticPool> createResourceAsync() {
         final SqlElasticPoolImpl self = this;
         this.inner().setLocation(this.sqlServerLocation);
-        return this.sqlServerManager.inner().elasticPools()
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPools()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     @Override
     public Mono<SqlElasticPool> updateResourceAsync() {
         final SqlElasticPoolImpl self = this;
-        return this.sqlServerManager.inner().elasticPools()
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPools()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     void addParentDependency(TaskGroup.HasTaskGroup parentDependency) {
@@ -391,7 +467,11 @@ public class SqlElasticPoolImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().elasticPools().deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .elasticPools()
+            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -542,44 +622,64 @@ public class SqlElasticPoolImpl
     @Override
     public SqlElasticPoolImpl withNewDatabase(String databaseName) {
         if (this.sqlDatabases == null) {
-            this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
+            this.sqlDatabases =
+                new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
         }
 
-        return new SqlDatabaseForElasticPoolImpl(this, this.sqlDatabases
-            .defineInlineDatabase(databaseName).withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation))
+        return new SqlDatabaseForElasticPoolImpl(
+                this,
+                this
+                    .sqlDatabases
+                    .defineInlineDatabase(databaseName)
+                    .withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation))
             .attach();
     }
 
     @Override
     public SqlElasticPoolImpl withExistingDatabase(String databaseName) {
         if (this.sqlDatabases == null) {
-            this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
+            this.sqlDatabases =
+                new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
         }
 
-        return new SqlDatabaseForElasticPoolImpl(this, this.sqlDatabases
-            .patchUpdateDatabase(databaseName).withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation))
+        return new SqlDatabaseForElasticPoolImpl(
+                this,
+                this
+                    .sqlDatabases
+                    .patchUpdateDatabase(databaseName)
+                    .withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation))
             .attach();
     }
 
     @Override
     public SqlElasticPoolImpl withExistingDatabase(SqlDatabase database) {
         if (this.sqlDatabases == null) {
-            this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
+            this.sqlDatabases =
+                new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
         }
 
-        return new SqlDatabaseForElasticPoolImpl(this, this.sqlDatabases
-            .patchUpdateDatabase(database.name()).withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation))
+        return new SqlDatabaseForElasticPoolImpl(
+                this,
+                this
+                    .sqlDatabases
+                    .patchUpdateDatabase(database.name())
+                    .withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation))
             .attach();
     }
 
     @Override
     public SqlDatabaseForElasticPoolImpl defineDatabase(String databaseName) {
         if (this.sqlDatabases == null) {
-            this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
+            this.sqlDatabases =
+                new SqlDatabasesAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlDatabase");
         }
 
-        return new SqlDatabaseForElasticPoolImpl(this, this.sqlDatabases
-            .defineInlineDatabase(databaseName).withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation));
+        return new SqlDatabaseForElasticPoolImpl(
+            this,
+            this
+                .sqlDatabases
+                .defineInlineDatabase(databaseName)
+                .withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation));
     }
 
     @Override

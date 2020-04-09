@@ -1,20 +1,18 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.dag.FunctionalTaskItem;
-import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.sql.ElasticPoolEdition;
+import com.azure.management.sql.IdentityType;
 import com.azure.management.sql.RecommendedElasticPool;
 import com.azure.management.sql.ResourceIdentity;
 import com.azure.management.sql.ServerMetric;
@@ -40,31 +38,19 @@ import com.azure.management.sql.models.ServerAzureADAdministratorInner;
 import com.azure.management.sql.models.ServerInner;
 import com.azure.management.sql.models.ServerUsageInner;
 import com.azure.management.sql.models.ServiceObjectiveInner;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SqlServer and its parent interfaces.
- */
-public class SqlServerImpl
-        extends
-            GroupableResourceImpl<
-                    SqlServer,
-                    ServerInner,
-                    SqlServerImpl,
-                    SqlServerManager>
-        implements
-            SqlServer,
-            SqlServer.Definition,
-            SqlServer.Update {
+/** Implementation for SqlServer and its parent interfaces. */
+public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner, SqlServerImpl, SqlServerManager>
+    implements SqlServer, SqlServer.Definition, SqlServer.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private FunctionalTaskItem sqlADAdminCreator;
     private boolean allowAzureServicesAccess;
     private SqlFirewallRulesAsExternalChildResourcesImpl sqlFirewallRules;
@@ -87,32 +73,38 @@ public class SqlServerImpl
         this.sqlADAdminCreator = null;
         this.allowAzureServicesAccess = true;
         this.sqlFirewallRules = new SqlFirewallRulesAsExternalChildResourcesImpl(this, "SqlFirewallRule");
-        this.sqlVirtualNetworkRules = new SqlVirtualNetworkRulesAsExternalChildResourcesImpl(this, "SqlVirtualNetworkRule");
+        this.sqlVirtualNetworkRules =
+            new SqlVirtualNetworkRulesAsExternalChildResourcesImpl(this, "SqlVirtualNetworkRule");
         this.sqlElasticPools = new SqlElasticPoolsAsExternalChildResourcesImpl(this, "SqlElasticPool");
         this.sqlDatabases = new SqlDatabasesAsExternalChildResourcesImpl(this, "SqlDatabase");
     }
 
     @Override
     protected Mono<ServerInner> getInnerAsync() {
-        return this.manager().inner().servers().getByResourceGroupAsync(
-                this.resourceGroupName(), this.name());
+        return this.manager().inner().servers().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<SqlServer> createResourceAsync() {
         final SqlServer self = this;
-        return this.manager().inner().servers().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-            .map(serverInner -> {
-                setInner(serverInner);
-                return this;
-            });
+        return this
+            .manager()
+            .inner()
+            .servers()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(
+                serverInner -> {
+                    setInner(serverInner);
+                    return this;
+                });
     }
 
     @Override
     public void beforeGroupCreateOrUpdate() {
         if (this.isInCreateMode()) {
             if (allowAzureServicesAccess) {
-                this.sqlFirewallRules
+                this
+                    .sqlFirewallRules
                     .defineInlineFirewallRule("AllowAllWindowsAzureIps")
                     .withStartIPAddress("0.0.0.0")
                     .withEndIPAddress("0.0.0.0");
@@ -123,8 +115,10 @@ public class SqlServerImpl
         }
         if (this.sqlElasticPools != null && this.sqlDatabases != null) {
             // Databases must be deleted before the Elastic Pools (only an empty Elastic Pool can be deleted)
-            List<SqlDatabaseImpl> dbToBeRemoved = this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
-            List<SqlElasticPoolImpl> epToBeRemoved = this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
+            List<SqlDatabaseImpl> dbToBeRemoved =
+                this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
+            List<SqlElasticPoolImpl> epToBeRemoved =
+                this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
             for (SqlElasticPoolImpl epItem : epToBeRemoved) {
                 for (SqlDatabaseImpl dbItem : dbToBeRemoved) {
                     epItem.addParentDependency(dbItem);
@@ -132,16 +126,18 @@ public class SqlServerImpl
             }
 
             // Databases in a new Elastic Pool should be created after the Elastic Pool
-            List<SqlDatabaseImpl> dbToBeCreated = this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
-            List<SqlElasticPoolImpl> epToBeCreated = this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+            List<SqlDatabaseImpl> dbToBeCreated =
+                this.sqlDatabases.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+            List<SqlElasticPoolImpl> epToBeCreated =
+                this.sqlElasticPools.getChildren(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
             for (SqlElasticPoolImpl epItem : epToBeCreated) {
                 for (SqlDatabaseImpl dbItem : dbToBeCreated) {
-                    if (dbItem.elasticPoolId() != null && ResourceUtils.nameFromResourceId(dbItem.elasticPoolId()).equals(epItem.name())) {
+                    if (dbItem.elasticPoolId() != null
+                        && ResourceUtils.nameFromResourceId(dbItem.elasticPoolId()).equals(epItem.name())) {
                         dbItem.addParentDependency(epItem);
                     }
                 }
             }
-
         }
     }
 
@@ -176,7 +172,7 @@ public class SqlServerImpl
 
     @Override
     public boolean isManagedServiceIdentityEnabled() {
-        return this.inner().identity() != null && this.inner().identity().type().equalsIgnoreCase("SystemAssigned");
+        return this.inner().identity() != null && this.inner().identity().type().equals(IdentityType.SYSTEM_ASSIGNED);
     }
 
     @Override
@@ -190,15 +186,15 @@ public class SqlServerImpl
     }
 
     @Override
-    public String managedServiceIdentityType() {
+    public IdentityType managedServiceIdentityType() {
         return this.inner().identity() != null ? this.inner().identity().type() : null;
     }
 
     @Override
     public List<ServerMetric> listUsageMetrics() {
         List<ServerMetric> serverMetrics = new ArrayList<>();
-        PagedIterable<ServerUsageInner> serverUsageInners = this.manager().inner().serverUsages()
-            .listByServer(this.resourceGroupName(), this.name());
+        PagedIterable<ServerUsageInner> serverUsageInners =
+            this.manager().inner().serverUsages().listByServer(this.resourceGroupName(), this.name());
         if (serverUsageInners != null) {
             for (ServerUsageInner serverUsageInner : serverUsageInners) {
                 serverMetrics.add(new ServerMetricImpl(serverUsageInner));
@@ -210,8 +206,8 @@ public class SqlServerImpl
     @Override
     public List<ServiceObjective> listServiceObjectives() {
         List<ServiceObjective> serviceObjectives = new ArrayList<>();
-        PagedIterable<ServiceObjectiveInner> serviceObjectiveInners = this.manager().inner().serviceObjectives()
-            .listByServer(this.resourceGroupName(), this.name());
+        PagedIterable<ServiceObjectiveInner> serviceObjectiveInners =
+            this.manager().inner().serviceObjectives().listByServer(this.resourceGroupName(), this.name());
         if (serviceObjectiveInners != null) {
             for (ServiceObjectiveInner inner : serviceObjectiveInners) {
                 serviceObjectives.add(new ServiceObjectiveImpl(inner, this));
@@ -222,16 +218,16 @@ public class SqlServerImpl
 
     @Override
     public ServiceObjective getServiceObjective(String serviceObjectiveName) {
-        ServiceObjectiveInner inner = this.manager().inner().serviceObjectives()
-            .get(this.resourceGroupName(), this.name(), serviceObjectiveName);
+        ServiceObjectiveInner inner =
+            this.manager().inner().serviceObjectives().get(this.resourceGroupName(), this.name(), serviceObjectiveName);
         return (inner != null) ? new ServiceObjectiveImpl(inner, this) : null;
     }
 
     @Override
     public Map<String, RecommendedElasticPool> listRecommendedElasticPools() {
         Map<String, RecommendedElasticPool> recommendedElasticPoolMap = new HashMap<>();
-        PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners = this.manager().inner()
-            .recommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
+        PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
+            this.manager().inner().recommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
         if (recommendedElasticPoolInners != null) {
             for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
                 recommendedElasticPoolMap.put(inner.getName(), new RecommendedElasticPoolImpl(inner, this));
@@ -244,11 +240,14 @@ public class SqlServerImpl
     @Override
     public List<SqlRestorableDroppedDatabase> listRestorableDroppedDatabases() {
         List<SqlRestorableDroppedDatabase> sqlRestorableDroppedDatabases = new ArrayList<>();
-        PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners = this.manager().inner()
-            .restorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
+        PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners =
+            this.manager().inner().restorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
         if (restorableDroppedDatabasesInners != null) {
             for (RestorableDroppedDatabaseInner restorableDroppedDatabaseInner : restorableDroppedDatabasesInners) {
-                sqlRestorableDroppedDatabases.add(new SqlRestorableDroppedDatabaseImpl(this.resourceGroupName(), this.name(), restorableDroppedDatabaseInner, this.manager()));
+                sqlRestorableDroppedDatabases
+                    .add(
+                        new SqlRestorableDroppedDatabaseImpl(
+                            this.resourceGroupName(), this.name(), restorableDroppedDatabaseInner, this.manager()));
             }
         }
         return Collections.unmodifiableList(sqlRestorableDroppedDatabases);
@@ -257,9 +256,15 @@ public class SqlServerImpl
     @Override
     public PagedFlux<SqlRestorableDroppedDatabase> listRestorableDroppedDatabasesAsync() {
         final SqlServerImpl self = this;
-        return this.manager().inner()
-            .restorableDroppedDatabases().listByServerAsync(this.resourceGroupName(), this.name())
-            .mapPage(restorableDroppedDatabaseInner -> new SqlRestorableDroppedDatabaseImpl(self.resourceGroupName(), self.name(), restorableDroppedDatabaseInner, self.manager()));
+        return this
+            .manager()
+            .inner()
+            .restorableDroppedDatabases()
+            .listByServerAsync(this.resourceGroupName(), this.name())
+            .mapPage(
+                restorableDroppedDatabaseInner ->
+                    new SqlRestorableDroppedDatabaseImpl(
+                        self.resourceGroupName(), self.name(), restorableDroppedDatabaseInner, self.manager()));
     }
 
     @Override
@@ -271,18 +276,28 @@ public class SqlServerImpl
     public SqlFirewallRule enableAccessFromAzureServices() {
         SqlFirewallRule firewallRule = null;
         try {
-            firewallRule = this.manager().sqlServers().firewallRules()
+            firewallRule =
+                this
+                    .manager()
+                    .sqlServers()
+                    .firewallRules()
                     .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
         } catch (CloudException e) {
-            if (e.getResponse().getStatusCode() != 404) throw e;
+            if (e.getResponse().getStatusCode() != 404) {
+                throw logger.logExceptionAsError(e);
+            }
         }
 
         if (firewallRule == null) {
-            firewallRule = this.manager().sqlServers().firewallRules()
-                .define("AllowAllWindowsAzureIps")
-                .withExistingSqlServer(this.resourceGroupName(), this.name())
-                .withIPAddress("0.0.0.0")
-                .create();
+            firewallRule =
+                this
+                    .manager()
+                    .sqlServers()
+                    .firewallRules()
+                    .define("AllowAllWindowsAzureIps")
+                    .withExistingSqlServer(this.resourceGroupName(), this.name())
+                    .withIPAddress("0.0.0.0")
+                    .create();
         }
 
         return firewallRule;
@@ -290,29 +305,45 @@ public class SqlServerImpl
 
     @Override
     public void removeAccessFromAzureServices() {
-        SqlFirewallRule firewallRule = this.manager().sqlServers().firewallRules()
-            .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
+        SqlFirewallRule firewallRule =
+            this
+                .manager()
+                .sqlServers()
+                .firewallRules()
+                .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
         if (firewallRule != null) {
-            this.manager().sqlServers().firewallRules()
+            this
+                .manager()
+                .sqlServers()
+                .firewallRules()
                 .deleteBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
         }
     }
 
     @Override
     public SqlActiveDirectoryAdministratorImpl setActiveDirectoryAdministrator(String userLogin, String objectId) {
-        ServerAzureADAdministratorInner serverAzureADAdministratorInner = new ServerAzureADAdministratorInner()
-            .withLogin(userLogin)
-            .withSid(UUID.fromString(objectId))
-            .withTenantId(UUID.fromString(this.manager().tenantId()));
+        ServerAzureADAdministratorInner serverAzureADAdministratorInner =
+            new ServerAzureADAdministratorInner()
+                .withLogin(userLogin)
+                .withSid(UUID.fromString(objectId))
+                .withTenantId(UUID.fromString(this.manager().tenantId()));
 
-        return new SqlActiveDirectoryAdministratorImpl(this.manager().inner().serverAzureADAdministrators().createOrUpdate(this.resourceGroupName(), this.name(), serverAzureADAdministratorInner));
+        return new SqlActiveDirectoryAdministratorImpl(
+            this
+                .manager()
+                .inner()
+                .serverAzureADAdministrators()
+                .createOrUpdate(this.resourceGroupName(), this.name(), serverAzureADAdministratorInner));
     }
 
     @Override
     public SqlActiveDirectoryAdministratorImpl getActiveDirectoryAdministrator() {
-        ServerAzureADAdministratorInner serverAzureADAdministratorInner = this.manager().inner().serverAzureADAdministrators().get(this.resourceGroupName(), this.name());
+        ServerAzureADAdministratorInner serverAzureADAdministratorInner =
+            this.manager().inner().serverAzureADAdministrators().get(this.resourceGroupName(), this.name());
 
-        return serverAzureADAdministratorInner != null ? new SqlActiveDirectoryAdministratorImpl(serverAzureADAdministratorInner) : null;
+        return serverAzureADAdministratorInner != null
+            ? new SqlActiveDirectoryAdministratorImpl(serverAzureADAdministratorInner)
+            : null;
     }
 
     @Override
@@ -322,11 +353,12 @@ public class SqlServerImpl
 
     @Override
     public SqlServerAutomaticTuning getServerAutomaticTuning() {
-        ServerAutomaticTuningInner serverAutomaticTuningInner = this.manager().inner().serverAutomaticTunings()
-            .get(this.resourceGroupName(), this.name());
-        return serverAutomaticTuningInner != null ? new SqlServerAutomaticTuningImpl(this, serverAutomaticTuningInner) : null;
+        ServerAutomaticTuningInner serverAutomaticTuningInner =
+            this.manager().inner().serverAutomaticTunings().get(this.resourceGroupName(), this.name());
+        return serverAutomaticTuningInner != null
+            ? new SqlServerAutomaticTuningImpl(this, serverAutomaticTuningInner)
+            : null;
     }
-
 
     @Override
     public SqlFirewallRuleOperations.SqlFirewallRuleActionsDefinition firewallRules() {
@@ -363,18 +395,25 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServer.DefinitionStages.WithCreate withActiveDirectoryAdministrator(final String userLogin, final String objectId) {
+    public SqlServer.DefinitionStages.WithCreate withActiveDirectoryAdministrator(
+        final String userLogin, final String objectId) {
         final SqlServerImpl self = this;
-        sqlADAdminCreator = context -> {
-            ServerAzureADAdministratorInner serverAzureADAdministratorInner = new ServerAzureADAdministratorInner()
-                .withLogin(userLogin)
-                .withSid(UUID.fromString(objectId))
-                .withTenantId(UUID.fromString(self.manager().tenantId()));
+        sqlADAdminCreator =
+            context -> {
+                ServerAzureADAdministratorInner serverAzureADAdministratorInner =
+                    new ServerAzureADAdministratorInner()
+                        .withLogin(userLogin)
+                        .withSid(UUID.fromString(objectId))
+                        .withTenantId(UUID.fromString(self.manager().tenantId()));
 
-            return self.manager().inner().serverAzureADAdministrators()
-                .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
-                .flatMap((Function<ServerAzureADAdministratorInner, Mono<Indexable>>) serverAzureADAdministratorInner1 -> context.voidMono());
-        };
+                return self
+                    .manager()
+                    .inner()
+                    .serverAzureADAdministrators()
+                    .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
+                    .flatMap(
+                        serverAzureADAdministratorInner1 -> context.voidMono());
+            };
         return this;
     }
 
@@ -390,12 +429,15 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress) {
-        return this.withNewFirewallRule(startIPAddress, endIPAddress, this.manager().getSdkContext().randomResourceName("firewall_", 15));
+        return this
+            .withNewFirewallRule(
+                startIPAddress, endIPAddress, this.manager().getSdkContext().randomResourceName("firewall_", 15));
     }
 
     @Override
     public SqlServerImpl withNewFirewallRule(String startIPAddress, String endIPAddress, String firewallRuleName) {
-        return this.sqlFirewallRules
+        return this
+            .sqlFirewallRules
             .defineInlineFirewallRule(firewallRuleName)
             .withStartIPAddress(startIPAddress)
             .withEndIPAddress(endIPAddress)
@@ -409,7 +451,8 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlVirtualNetworkRule.DefinitionStages.Blank<SqlServer.DefinitionStages.WithCreate> defineVirtualNetworkRule(String virtualNetworkRuleName) {
+    public SqlVirtualNetworkRule.DefinitionStages.Blank<SqlServer.DefinitionStages.WithCreate> defineVirtualNetworkRule(
+        String virtualNetworkRuleName) {
         return this.sqlVirtualNetworkRules.defineInlineVirtualNetworkRule(virtualNetworkRuleName);
     }
 
@@ -462,9 +505,11 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServerSecurityAlertPolicyOperations.SqlServerSecurityAlertPolicyActionsDefinition serverSecurityAlertPolicies() {
+    public SqlServerSecurityAlertPolicyOperations.SqlServerSecurityAlertPolicyActionsDefinition
+        serverSecurityAlertPolicies() {
         if (this.sqlServerSecurityAlertPolicyOperations == null) {
-            this.sqlServerSecurityAlertPolicyOperations = new SqlServerSecurityAlertPolicyOperationsImpl(this, this.manager());
+            this.sqlServerSecurityAlertPolicyOperations =
+                new SqlServerSecurityAlertPolicyOperationsImpl(this, this.manager());
         }
         return this.sqlServerSecurityAlertPolicyOperations;
     }
@@ -476,10 +521,7 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withNewElasticPool(String elasticPoolName, ElasticPoolEdition elasticPoolEdition) {
-        return this.sqlElasticPools
-            .defineInlineElasticPool(elasticPoolName)
-            .withEdition(elasticPoolEdition)
-            .attach();
+        return this.sqlElasticPools.defineInlineElasticPool(elasticPoolName).withEdition(elasticPoolEdition).attach();
     }
 
     @Override
@@ -489,27 +531,23 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServerImpl withNewElasticPool(String elasticPoolName, ElasticPoolEdition elasticPoolEdition, String... databaseNames) {
+    public SqlServerImpl withNewElasticPool(
+        String elasticPoolName, ElasticPoolEdition elasticPoolEdition, String... databaseNames) {
         this.withNewElasticPool(elasticPoolName, elasticPoolEdition);
         for (String dbName : databaseNames) {
-            this.defineDatabase(dbName)
-                .withExistingElasticPool(elasticPoolName)
-                .attach();
+            this.defineDatabase(dbName).withExistingElasticPool(elasticPoolName).attach();
         }
         return this;
     }
 
     @Override
     public SqlDatabaseImpl defineDatabase(String name) {
-        return this.sqlDatabases
-            .defineInlineDatabase(name);
+        return this.sqlDatabases.defineInlineDatabase(name);
     }
 
     @Override
     public SqlServerImpl withNewDatabase(String databaseName) {
-        return this.sqlDatabases
-            .defineInlineDatabase(databaseName)
-            .attach();
+        return this.sqlDatabases.defineInlineDatabase(databaseName).attach();
     }
 
     @Override
@@ -520,7 +558,7 @@ public class SqlServerImpl
 
     @Override
     public SqlServerImpl withSystemAssignedManagedServiceIdentity() {
-        this.inner().withIdentity(new ResourceIdentity().withType("SystemAssigned"));
+        this.inner().withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED));
         return this;
     }
 }

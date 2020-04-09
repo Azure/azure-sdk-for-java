@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ImportSourceCredentials model.
- */
+/** The ImportSourceCredentials model. */
 @Fluent
 public final class ImportSourceCredentials {
     /*
@@ -25,9 +23,8 @@ public final class ImportSourceCredentials {
     private String password;
 
     /**
-     * Get the username property: The username to authenticate with the source
-     * registry.
-     * 
+     * Get the username property: The username to authenticate with the source registry.
+     *
      * @return the username value.
      */
     public String username() {
@@ -35,9 +32,8 @@ public final class ImportSourceCredentials {
     }
 
     /**
-     * Set the username property: The username to authenticate with the source
-     * registry.
-     * 
+     * Set the username property: The username to authenticate with the source registry.
+     *
      * @param username the username value to set.
      * @return the ImportSourceCredentials object itself.
      */
@@ -47,9 +43,8 @@ public final class ImportSourceCredentials {
     }
 
     /**
-     * Get the password property: The password used to authenticate with the
-     * source registry.
-     * 
+     * Get the password property: The password used to authenticate with the source registry.
+     *
      * @return the password value.
      */
     public String password() {
@@ -57,9 +52,8 @@ public final class ImportSourceCredentials {
     }
 
     /**
-     * Set the password property: The password used to authenticate with the
-     * source registry.
-     * 
+     * Set the password property: The password used to authenticate with the source registry.
+     *
      * @param password the password value to set.
      * @return the ImportSourceCredentials object itself.
      */

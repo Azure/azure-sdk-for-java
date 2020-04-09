@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.management.containerregistry.AccessKeyType;
@@ -10,15 +7,13 @@ import com.azure.management.containerregistry.RegistryCredentials;
 import com.azure.management.containerregistry.RegistryPassword;
 import com.azure.management.containerregistry.models.RegistryListCredentialsResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Implementation for RegistryCredentials.
- */
-public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentialsResultInner> implements RegistryCredentials {
+/** Implementation for RegistryCredentials. */
+public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentialsResultInner>
+    implements RegistryCredentials {
     private Map<AccessKeyType, String> accessKeys;
 
     protected RegistryCredentialsImpl(RegistryListCredentialsResultInner innerObject) {

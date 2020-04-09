@@ -124,11 +124,7 @@ public class Main {
         try {
             benchmark = new AsynReadWithMultipleClients(cfg);
             LOGGER.info("Starting {}", cfg.getOperationType());
-            if(cfg.isDeleteCollections()) {
-                benchmark.deleteCollection();
-            } else {
-                benchmark.run();
-            }
+            benchmark.run();
         } finally {
             if (benchmark != null) {
                 benchmark.shutdown();

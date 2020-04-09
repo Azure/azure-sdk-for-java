@@ -1,16 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
-
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * The reserved eDTUs value range for a "Standard" edition of an Azure SQL Elastic Pool.
- */
+/** The reserved eDTUs value range for a "Standard" edition of an Azure SQL Elastic Pool. */
 @Fluent
 public enum SqlElasticPoolStandardEDTUs {
     /** 50 eDTUs available to the pool. */
@@ -53,9 +47,7 @@ public enum SqlElasticPoolStandardEDTUs {
         this.value = eDTU;
     }
 
-    /**
-     * @return the reserved eDTU for the SQL Elastic Pool
-     */
+    /** @return the reserved eDTU for the SQL Elastic Pool */
     public int value() {
         return this.value;
     }

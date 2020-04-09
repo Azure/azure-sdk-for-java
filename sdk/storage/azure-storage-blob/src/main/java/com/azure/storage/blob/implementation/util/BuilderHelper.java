@@ -31,8 +31,8 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides helper methods for common builder patterns.
@@ -70,8 +70,11 @@ public final class BuilderHelper {
 
         policies.add(getUserAgentPolicy(configuration));
         policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
 
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(new RequestRetryPolicy(retryOptions));
+
+        policies.add(new AddDatePolicy());
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
             credentialPolicy =  new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
@@ -88,9 +91,6 @@ public final class BuilderHelper {
         if (credentialPolicy != null) {
             policies.add(credentialPolicy);
         }
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.addAll(additionalPolicies);
 

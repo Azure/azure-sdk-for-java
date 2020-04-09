@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -19,20 +16,13 @@ import com.azure.management.sql.SyncDirection;
 import com.azure.management.sql.SyncMemberDbType;
 import com.azure.management.sql.SyncMemberState;
 import com.azure.management.sql.models.SyncMemberInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SqlSyncMember.
- */
+/** Implementation for SqlSyncMember. */
 public class SqlSyncMemberImpl
-    extends
-        ExternalChildResourceImpl<SqlSyncMember, SyncMemberInner, SqlSyncGroupImpl, SqlSyncGroup>
-    implements
-        SqlSyncMember,
-        SqlSyncMember.Update,
-        SqlSyncMemberOperations.SqlSyncMemberOperationsDefinition {
+    extends ExternalChildResourceImpl<SqlSyncMember, SyncMemberInner, SqlSyncGroupImpl, SqlSyncGroup>
+    implements SqlSyncMember, SqlSyncMember.Update, SqlSyncMemberOperations.SqlSyncMemberOperationsDefinition {
 
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
@@ -43,12 +33,13 @@ public class SqlSyncMemberImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncMemberImpl(String name, SqlSyncGroupImpl parent, SyncMemberInner innerObject, SqlServerManager sqlServerManager) {
+    SqlSyncMemberImpl(
+        String name, SqlSyncGroupImpl parent, SyncMemberInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -64,14 +55,21 @@ public class SqlSyncMemberImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param resourceGroupName the resource group name
-     * @param sqlServerName     the parent SQL server name
-     * @param sqlDatabaseName   the parent SQL Database name
-     * @param sqlSyncGroupName  the parent SQL Sync Group name
-     * @param name              the name of this external child resource
-     * @param innerObject       reference to the inner object representing this external child resource
-     * @param sqlServerManager  reference to the SQL server manager that accesses DNS alias operations
+     * @param sqlServerName the parent SQL server name
+     * @param sqlDatabaseName the parent SQL Database name
+     * @param sqlSyncGroupName the parent SQL Sync Group name
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncMemberImpl(String resourceGroupName, String sqlServerName, String sqlDatabaseName, String sqlSyncGroupName, String name, SyncMemberInner innerObject, SqlServerManager sqlServerManager) {
+    SqlSyncMemberImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String sqlDatabaseName,
+        String sqlSyncGroupName,
+        String name,
+        SyncMemberInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -84,8 +82,8 @@ public class SqlSyncMemberImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name             the name of this external child resource
-     * @param innerObject      reference to the inner object representing this external child resource
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
     SqlSyncMemberImpl(String name, SyncMemberInner innerObject, SqlServerManager sqlServerManager) {
@@ -177,12 +175,22 @@ public class SqlSyncMemberImpl
     @Override
     public Mono<SqlSyncMember> createResourceAsync() {
         final SqlSyncMemberImpl self = this;
-        return this.sqlServerManager.inner().syncMembers()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name(), this.inner())
-            .map(syncMemberInner -> {
-                self.setInner(syncMemberInner);
-                return self;
-            });
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .createOrUpdateAsync(
+                this.resourceGroupName,
+                this.sqlServerName,
+                this.sqlDatabaseName,
+                this.sqlSyncGroupName,
+                this.name(),
+                this.inner())
+            .map(
+                syncMemberInner -> {
+                    self.setInner(syncMemberInner);
+                    return self;
+                });
     }
 
     @Override
@@ -192,20 +200,32 @@ public class SqlSyncMemberImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().syncMembers()
-            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .deleteAsync(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
 
     @Override
     protected Mono<SyncMemberInner> getInnerAsync() {
-        return this.sqlServerManager.inner().syncMembers()
-            .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .getAsync(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().syncMembers()
-            .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+        this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .delete(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
 
     @Override
@@ -221,28 +241,44 @@ public class SqlSyncMemberImpl
 
     @Override
     public PagedIterable<SqlSyncFullSchemaProperty> listMemberSchemas() {
-        return this.sqlServerManager.inner().syncMembers()
-            .listMemberSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .listMemberSchemas(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
             .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncFullSchemaProperty> listMemberSchemasAsync() {
-        return this.sqlServerManager.inner().syncMembers()
-            .listMemberSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .listMemberSchemasAsync(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name())
             .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
 
     @Override
     public void refreshMemberSchema() {
-        this.sqlServerManager.inner().syncMembers()
-            .refreshMemberSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+        this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .refreshMemberSchema(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
 
     @Override
     public Mono<Void> refreshMemberSchemaAsync() {
-        return this.sqlServerManager.inner().syncMembers()
-            .refreshMemberSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .refreshMemberSchemaAsync(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.sqlSyncGroupName, this.name());
     }
 
     @Override

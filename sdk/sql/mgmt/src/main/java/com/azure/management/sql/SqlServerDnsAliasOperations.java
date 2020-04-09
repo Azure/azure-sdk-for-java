@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -10,13 +7,11 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-/**
- * A representation of the Azure SQL Server DNS alias operations.
- */
+/** A representation of the Azure SQL Server DNS alias operations. */
 @Fluent
-public interface SqlServerDnsAliasOperations extends
-    SupportsCreating<SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer>,
-    SqlChildrenOperations<SqlServerDnsAlias> {
+public interface SqlServerDnsAliasOperations
+    extends SupportsCreating<SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer>,
+        SqlChildrenOperations<SqlServerDnsAlias> {
 
     /**
      * Acquires server DNS alias from another server.
@@ -58,30 +53,25 @@ public interface SqlServerDnsAliasOperations extends
      */
     Mono<Void> acquireAsync(String dnsAliasName, String oldSqlServerId, String newSqlServerId);
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface SqlServerDnsAliasOperationsDefinition extends
-        SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer,
-        SqlServerDnsAliasOperations.DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface SqlServerDnsAliasOperationsDefinition
+        extends SqlServerDnsAliasOperations.DefinitionStages.WithSqlServer,
+            SqlServerDnsAliasOperations.DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the SQL Server DNS alias definition stages.
-     */
+    /** Grouping of all the SQL Server DNS alias definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the SQL Server DNS alias definition.
-         */
+        /** The first stage of the SQL Server DNS alias definition. */
         interface WithSqlServer {
             /**
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
+             * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(String resourceGroupName, String sqlServerName);
+            SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(
+                String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Server DNS alias.
@@ -100,16 +90,12 @@ public interface SqlServerDnsAliasOperations extends
             SqlServerDnsAliasOperations.DefinitionStages.WithCreate withExistingSqlServer(SqlServer sqlServer);
         }
 
-        /**
-         * The final stage of the SQL Server DNS alias definition.
-         */
+        /** The final stage of the SQL Server DNS alias definition. */
         interface WithCreate extends Creatable<SqlServerDnsAlias> {
         }
     }
 
-    /**
-     * Grouping of the Azure SQL Server DNS alias common actions.
-     */
+    /** Grouping of the Azure SQL Server DNS alias common actions. */
     interface SqlServerDnsAliasActionsDefinition extends SqlChildrenActionsDefinition<SqlServerDnsAlias> {
         /**
          * Begins the definition of a new SQL Server DNS alias to be added to this server.

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
@@ -19,7 +16,6 @@ import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.LoadBalancerTcpProbe;
 import com.azure.management.network.LoadBalancingRule;
-import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NicIPConfiguration;
 import com.azure.management.network.ProbeProtocol;
 import com.azure.management.network.PublicIPAddress;

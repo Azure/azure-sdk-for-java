@@ -1,64 +1,42 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of an Azure RegistryDockerTaskStep registry task.
- */
+/** An immutable client-side representation of an Azure RegistryDockerTaskStep registry task. */
 @Fluent()
-public interface RegistryDockerTaskStep extends
-        HasInner<DockerTaskStep>,
-        RegistryTaskStep {
-    /**
-     * @return the image names of this Docker task step
-     */
+public interface RegistryDockerTaskStep extends HasInner<DockerTaskStep>, RegistryTaskStep {
+    /** @return the image names of this Docker task step */
     List<String> imageNames();
 
-    /**
-     * @return whether push is enabled for this Docker task step
-     */
+    /** @return whether push is enabled for this Docker task step */
     boolean isPushEnabled();
 
-    /**
-     * @return whether there is no cache for this Docker task step
-     */
+    /** @return whether there is no cache for this Docker task step */
     boolean noCache();
 
-    /**
-     * @return Docker file path for this Docker task step
-     */
+    /** @return Docker file path for this Docker task step */
     String dockerFilePath();
 
-    /**
-     * @return the arguments this Docker task step
-     */
+    /** @return the arguments this Docker task step */
     List<Argument> arguments();
 
-    /**
-     * Container interface for all the definitions related to a RegistryDockerTaskStep.
-     */
-    interface Definition extends
-            RegistryDockerTaskStep.DefinitionStages.Blank,
+    /** Container interface for all the definitions related to a RegistryDockerTaskStep. */
+    interface Definition
+        extends RegistryDockerTaskStep.DefinitionStages.Blank,
             RegistryDockerTaskStep.DefinitionStages.DockerFilePath,
             RegistryDockerTaskStep.DefinitionStages.DockerTaskStepAttachable {
     }
 
-    /**
-     * Container interface for all the updates related to a RegistryDockerTaskStep.
-     */
-    interface Update extends
-            RegistryDockerTaskStep.UpdateStages.DockerFilePath,
+    /** Container interface for all the updates related to a RegistryDockerTaskStep. */
+    interface Update
+        extends RegistryDockerTaskStep.UpdateStages.DockerFilePath,
             RegistryDockerTaskStep.UpdateStages.ImageNames,
             RegistryDockerTaskStep.UpdateStages.Push,
             RegistryDockerTaskStep.UpdateStages.Cache,
@@ -66,19 +44,16 @@ public interface RegistryDockerTaskStep extends
             Settable<RegistryTask.Update> {
     }
 
-    /**
-     * Grouping of registry Docker task definition stages.
-     */
+    /** Grouping of registry Docker task definition stages. */
     interface DefinitionStages {
 
-        /**
-         * The first stage of a DockerFileTaskStep definition.
-         */
+        /** The first stage of a DockerFileTaskStep definition. */
         interface Blank extends DockerFilePath {
         }
 
         /**
-         * The stage of the container registry DockerTaskStep definition allowing to specify the path to the Docker file.
+         * The stage of the container registry DockerTaskStep definition allowing to specify the path to the Docker
+         * file.
          */
         interface DockerFilePath {
             /**
@@ -92,7 +67,7 @@ public interface RegistryDockerTaskStep extends
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be attached,
-         *  but also allows for any other optional settings to be specified.
+         * but also allows for any other optional settings to be specified.
          */
         interface DockerTaskStepAttachable extends Attachable<RegistryTask.DefinitionStages.SourceTriggerDefinition> {
             /**
@@ -122,7 +97,8 @@ public interface RegistryDockerTaskStep extends
             /**
              * The function that specifies the overriding arguments and what they will override.
              *
-             * @param overridingArguments map with key of the name of the value to be overridden and value OverridingArgument specifying the content of the overriding argument.
+             * @param overridingArguments map with key of the name of the value to be overridden and value
+             *     OverridingArgument specifying the content of the overriding argument.
              * @return the next stage of the container Docker task step definition.
              */
             DockerTaskStepAttachable withOverridingArguments(Map<String, OverridingArgument> overridingArguments);
@@ -135,17 +111,12 @@ public interface RegistryDockerTaskStep extends
              * @return the next stage of the container Docker task step definition.
              */
             DockerTaskStepAttachable withOverridingArgument(String name, OverridingArgument overridingArgument);
-
         }
     }
 
-    /**
-     * Grouping of registry Docker task update stages.
-     */
+    /** Grouping of registry Docker task update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the container registry DockerTaskStep update allowing to specify the Docker file path.
-         */
+        /** The stage of the container registry DockerTaskStep update allowing to specify the Docker file path. */
         interface DockerFilePath {
             /**
              * The function that specifies the path to the Docker file.
@@ -156,9 +127,7 @@ public interface RegistryDockerTaskStep extends
             Update withDockerFilePath(String path);
         }
 
-        /**
-         * The stage of the container registry DockerTaskStep update allowing to specify the image names.
-         */
+        /** The stage of the container registry DockerTaskStep update allowing to specify the image names. */
         interface ImageNames {
             /**
              * The function that specifies the image names.
@@ -193,17 +162,15 @@ public interface RegistryDockerTaskStep extends
              * @return the next stage of the container registry DockerTaskStep update.
              */
             Update withCacheEnabled(boolean enabled);
-
         }
 
-        /**
-         * The stage of the container registry DockerTaskStep update allowing to specify any overriding arguments.
-         */
+        /** The stage of the container registry DockerTaskStep update allowing to specify any overriding arguments. */
         interface OverridingArgumentUpdate {
             /**
              * The function that specifies the overriding arguments and what they will override.
              *
-             * @param overridingArguments map with key of the name of the value to be overridden and value OverridingArgument specifying the content of the overriding argument.
+             * @param overridingArguments map with key of the name of the value to be overridden and value
+             *     OverridingArgument specifying the content of the overriding argument.
              * @return the next stage of the container Docker task step update.
              */
             Update withOverridingArguments(Map<String, OverridingArgument> overridingArguments);

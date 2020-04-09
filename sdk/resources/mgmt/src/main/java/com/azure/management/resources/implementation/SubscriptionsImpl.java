@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -10,11 +7,9 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.Subscription;
 import com.azure.management.resources.Subscriptions;
-import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByIdImpl;
 import com.azure.management.resources.models.SubscriptionInner;
 import com.azure.management.resources.models.SubscriptionsInner;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**

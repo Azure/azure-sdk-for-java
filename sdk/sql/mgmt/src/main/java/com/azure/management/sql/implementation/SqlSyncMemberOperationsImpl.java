@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -12,20 +9,15 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Exter
 import com.azure.management.sql.SqlSyncMember;
 import com.azure.management.sql.SqlSyncMemberOperations;
 import com.azure.management.sql.models.SyncMemberInner;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SQL Sync Member operations.
- */
+/** Implementation for SQL Sync Member operations. */
 public class SqlSyncMemberOperationsImpl
-    implements
-        SqlSyncMemberOperations,
-    SqlSyncMemberOperations.SqlSyncMemberActionsDefinition {
+    implements SqlSyncMemberOperations, SqlSyncMemberOperations.SqlSyncMemberActionsDefinition {
 
     protected SqlServerManager sqlServerManager;
     protected String resourceGroupName;
@@ -51,17 +43,48 @@ public class SqlSyncMemberOperationsImpl
     }
 
     @Override
-    public SqlSyncMember getBySqlServer(String resourceGroupName, String sqlServerName, String databaseName, String syncGroupName, String name) {
-        SyncMemberInner syncMemberInner = this.sqlServerManager.inner().syncMembers()
-            .get(resourceGroupName, sqlServerName, databaseName, syncGroupName, name);
-        return syncMemberInner != null ? new SqlSyncMemberImpl(resourceGroupName, sqlServerName, databaseName, syncGroupName, name, syncMemberInner, this.sqlServerManager) : null;
+    public SqlSyncMember getBySqlServer(
+        String resourceGroupName, String sqlServerName, String databaseName, String syncGroupName, String name) {
+        SyncMemberInner syncMemberInner =
+            this
+                .sqlServerManager
+                .inner()
+                .syncMembers()
+                .get(resourceGroupName, sqlServerName, databaseName, syncGroupName, name);
+        return syncMemberInner != null
+            ? new SqlSyncMemberImpl(
+                resourceGroupName,
+                sqlServerName,
+                databaseName,
+                syncGroupName,
+                name,
+                syncMemberInner,
+                this.sqlServerManager)
+            : null;
     }
 
     @Override
-    public Mono<SqlSyncMember> getBySqlServerAsync(final String resourceGroupName, final String sqlServerName, final String databaseName, final String syncGroupName, final String name) {
-        return this.sqlServerManager.inner().syncMembers()
+    public Mono<SqlSyncMember> getBySqlServerAsync(
+        final String resourceGroupName,
+        final String sqlServerName,
+        final String databaseName,
+        final String syncGroupName,
+        final String name) {
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
             .getAsync(resourceGroupName, sqlServerName, databaseName, syncGroupName, name)
-            .map(syncMemberInner -> new SqlSyncMemberImpl(resourceGroupName, sqlServerName, databaseName, syncGroupName, name, syncMemberInner, sqlServerManager));
+            .map(
+                syncMemberInner ->
+                    new SqlSyncMemberImpl(
+                        resourceGroupName,
+                        sqlServerName,
+                        databaseName,
+                        syncGroupName,
+                        name,
+                        syncMemberInner,
+                        sqlServerManager));
     }
 
     @Override
@@ -69,7 +92,13 @@ public class SqlSyncMemberOperationsImpl
         if (this.sqlSyncGroup == null) {
             return null;
         }
-        return this.getBySqlServer(this.sqlSyncGroup.resourceGroupName(), this.sqlSyncGroup.sqlServerName(), this.sqlSyncGroup.sqlDatabaseName(), this.sqlSyncGroup.name(), name);
+        return this
+            .getBySqlServer(
+                this.sqlSyncGroup.resourceGroupName(),
+                this.sqlSyncGroup.sqlServerName(),
+                this.sqlSyncGroup.sqlDatabaseName(),
+                this.sqlSyncGroup.name(),
+                name);
     }
 
     @Override
@@ -77,7 +106,13 @@ public class SqlSyncMemberOperationsImpl
         if (this.sqlSyncGroup == null) {
             return null;
         }
-        return this.getBySqlServerAsync(this.sqlSyncGroup.resourceGroupName(), this.sqlSyncGroup.sqlServerName(), this.sqlSyncGroup.sqlDatabaseName(), this.sqlSyncGroup.name(), name);
+        return this
+            .getBySqlServerAsync(
+                this.sqlSyncGroup.resourceGroupName(),
+                this.sqlSyncGroup.sqlServerName(),
+                this.sqlSyncGroup.sqlDatabaseName(),
+                this.sqlSyncGroup.name(),
+                name);
     }
 
     @Override
@@ -85,11 +120,13 @@ public class SqlSyncMemberOperationsImpl
         Objects.requireNonNull(id);
         try {
             ResourceId resourceId = ResourceId.fromString(id);
-            return this.getBySqlServer(resourceId.resourceGroupName(),
-                resourceId.parent().parent().parent().name(),
-                resourceId.parent().parent().name(),
-                resourceId.parent().name(),
-                resourceId.name());
+            return this
+                .getBySqlServer(
+                    resourceId.resourceGroupName(),
+                    resourceId.parent().parent().parent().name(),
+                    resourceId.parent().parent().name(),
+                    resourceId.parent().name(),
+                    resourceId.name());
         } catch (NullPointerException e) {
         }
         return null;
@@ -100,11 +137,13 @@ public class SqlSyncMemberOperationsImpl
         Objects.requireNonNull(id);
         try {
             ResourceId resourceId = ResourceId.fromString(id);
-            return this.getBySqlServerAsync(resourceId.resourceGroupName(),
-                resourceId.parent().parent().parent().name(),
-                resourceId.parent().parent().name(),
-                resourceId.parent().name(),
-                resourceId.name());
+            return this
+                .getBySqlServerAsync(
+                    resourceId.resourceGroupName(),
+                    resourceId.parent().parent().parent().name(),
+                    resourceId.parent().parent().name(),
+                    resourceId.parent().name(),
+                    resourceId.name());
         } catch (NullPointerException e) {
         }
         return null;
@@ -115,8 +154,16 @@ public class SqlSyncMemberOperationsImpl
         if (this.sqlSyncGroup == null) {
             return;
         }
-        this.sqlServerManager.inner().syncMembers()
-            .delete(this.sqlSyncGroup.resourceGroupName(), this.sqlSyncGroup.sqlServerName(), this.sqlSyncGroup.sqlDatabaseName(), this.sqlSyncGroup.name(), name);
+        this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .delete(
+                this.sqlSyncGroup.resourceGroupName(),
+                this.sqlSyncGroup.sqlServerName(),
+                this.sqlSyncGroup.sqlDatabaseName(),
+                this.sqlSyncGroup.name(),
+                name);
     }
 
     @Override
@@ -124,19 +171,32 @@ public class SqlSyncMemberOperationsImpl
         if (this.sqlSyncGroup == null) {
             return null;
         }
-        return this.sqlServerManager.inner().syncMembers()
-            .deleteAsync(this.sqlSyncGroup.resourceGroupName(), this.sqlSyncGroup.sqlServerName(), this.sqlSyncGroup.sqlDatabaseName(), this.sqlSyncGroup.name(), name);
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .deleteAsync(
+                this.sqlSyncGroup.resourceGroupName(),
+                this.sqlSyncGroup.sqlServerName(),
+                this.sqlSyncGroup.sqlDatabaseName(),
+                this.sqlSyncGroup.name(),
+                name);
     }
 
     @Override
     public void deleteById(String id) {
         try {
             ResourceId resourceId = ResourceId.fromString(id);
-            this.sqlServerManager.inner().syncMembers().delete(resourceId.resourceGroupName(),
-                resourceId.parent().parent().parent().name(),
-                resourceId.parent().parent().name(),
-                resourceId.parent().name(),
-                resourceId.name());
+            this
+                .sqlServerManager
+                .inner()
+                .syncMembers()
+                .delete(
+                    resourceId.resourceGroupName(),
+                    resourceId.parent().parent().parent().name(),
+                    resourceId.parent().parent().name(),
+                    resourceId.parent().name(),
+                    resourceId.name());
         } catch (NullPointerException e) {
         }
     }
@@ -145,11 +205,16 @@ public class SqlSyncMemberOperationsImpl
     public Mono<Void> deleteByIdAsync(String id) {
         try {
             ResourceId resourceId = ResourceId.fromString(id);
-            return this.sqlServerManager.inner().syncMembers().deleteAsync(resourceId.resourceGroupName(),
-                resourceId.parent().parent().parent().name(),
-                resourceId.parent().parent().name(),
-                resourceId.parent().name(),
-                resourceId.name());
+            return this
+                .sqlServerManager
+                .inner()
+                .syncMembers()
+                .deleteAsync(
+                    resourceId.resourceGroupName(),
+                    resourceId.parent().parent().parent().name(),
+                    resourceId.parent().parent().name(),
+                    resourceId.parent().name(),
+                    resourceId.name());
         } catch (NullPointerException e) {
         }
         return null;
@@ -159,14 +224,24 @@ public class SqlSyncMemberOperationsImpl
     public List<SqlSyncMember> list() {
         List<SqlSyncMember> sqlSyncMembers = new ArrayList<>();
         if (this.sqlSyncGroup != null) {
-            PagedIterable<SyncMemberInner> syncMemberInners = this.sqlServerManager.inner().syncMembers()
-                .listBySyncGroup(this.sqlSyncGroup.resourceGroupName(), this.sqlSyncGroup.sqlServerName(), this.sqlSyncGroup.sqlDatabaseName(), this.sqlSyncGroup.name());
+            PagedIterable<SyncMemberInner> syncMemberInners =
+                this
+                    .sqlServerManager
+                    .inner()
+                    .syncMembers()
+                    .listBySyncGroup(
+                        this.sqlSyncGroup.resourceGroupName(),
+                        this.sqlSyncGroup.sqlServerName(),
+                        this.sqlSyncGroup.sqlDatabaseName(),
+                        this.sqlSyncGroup.name());
             if (syncMemberInners != null) {
                 for (SyncMemberInner syncMemberInner : syncMemberInners) {
-                    sqlSyncMembers.add(new SqlSyncMemberImpl(syncMemberInner.getName(), this.sqlSyncGroup, syncMemberInner, this.sqlServerManager));
+                    sqlSyncMembers
+                        .add(
+                            new SqlSyncMemberImpl(
+                                syncMemberInner.getName(), this.sqlSyncGroup, syncMemberInner, this.sqlServerManager));
                 }
             }
-
         }
         return Collections.unmodifiableList(sqlSyncMembers);
     }
@@ -174,9 +249,19 @@ public class SqlSyncMemberOperationsImpl
     @Override
     public PagedFlux<SqlSyncMember> listAsync() {
         final SqlSyncMemberOperationsImpl self = this;
-        return this.sqlServerManager.inner().syncMembers()
-            .listBySyncGroupAsync(this.sqlSyncGroup.resourceGroupName(), this.sqlSyncGroup.sqlServerName(), this.sqlSyncGroup.sqlDatabaseName(), this.sqlSyncGroup.name())
-            .mapPage(syncMemberInner -> new SqlSyncMemberImpl(syncMemberInner.getName(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));
+        return this
+            .sqlServerManager
+            .inner()
+            .syncMembers()
+            .listBySyncGroupAsync(
+                this.sqlSyncGroup.resourceGroupName(),
+                this.sqlSyncGroup.sqlServerName(),
+                this.sqlSyncGroup.sqlDatabaseName(),
+                this.sqlSyncGroup.name())
+            .mapPage(
+                syncMemberInner ->
+                    new SqlSyncMemberImpl(
+                        syncMemberInner.getName(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));
     }
 
     @Override

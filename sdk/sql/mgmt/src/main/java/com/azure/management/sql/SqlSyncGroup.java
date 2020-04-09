@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -15,74 +12,48 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.sql.models.SyncGroupInner;
+import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-
-/**
- * An immutable client-side representation of an Azure SQL Server Sync Group.
- */
+/** An immutable client-side representation of an Azure SQL Server Sync Group. */
 @Fluent
 public interface SqlSyncGroup
-    extends
-    ExternalChildResource<SqlSyncGroup, SqlDatabase>,
-    HasInner<SyncGroupInner>,
-    HasResourceGroup,
-    Refreshable<SqlSyncGroup>,
-    Updatable<SqlSyncGroup.Update> {
-    /**
-     * @return name of the SQL Server to which this Sync Group belongs
-     */
+    extends ExternalChildResource<SqlSyncGroup, SqlDatabase>,
+        HasInner<SyncGroupInner>,
+        HasResourceGroup,
+        Refreshable<SqlSyncGroup>,
+        Updatable<SqlSyncGroup.Update> {
+    /** @return name of the SQL Server to which this Sync Group belongs */
     String sqlServerName();
 
-    /**
-     * @return name of the SQL Database to which this Sync Group belongs
-     */
+    /** @return name of the SQL Database to which this Sync Group belongs */
     String sqlDatabaseName();
 
-    /**
-     * @return the parent SQL Database ID
-     */
+    /** @return the parent SQL Database ID */
     String parentId();
 
-    /**
-     * @return sync interval of the sync group
-     */
+    /** @return sync interval of the sync group */
     int interval();
 
-    /**
-     * @return last sync time of the sync group
-     */
+    /** @return last sync time of the sync group */
     OffsetDateTime lastSyncTime();
 
-    /**
-     * @return conflict resolution policy of the sync group
-     */
+    /** @return conflict resolution policy of the sync group */
     SyncConflictResolutionPolicy conflictResolutionPolicy();
 
-    /**
-     * @return the ARM resource id of the sync database in the sync group
-     */
+    /** @return the ARM resource id of the sync database in the sync group */
     String syncDatabaseId();
 
-    /**
-     * @return user name for the sync group hub database credential
-     */
+    /** @return user name for the sync group hub database credential */
     String databaseUserName();
 
-    /**
-     * @return sync state of the sync group
-     */
+    /** @return sync state of the sync group */
     SyncGroupState syncState();
 
-    /**
-     * @return sync schema of the sync group
-     */
+    /** @return sync schema of the sync group */
     SyncGroupSchema schema();
 
-    /**
-     * Deletes the Sync Group resource.
-     */
+    /** Deletes the Sync Group resource. */
     void delete();
 
     /**
@@ -92,9 +63,7 @@ public interface SqlSyncGroup
      */
     Mono<Void> deleteAsync();
 
-    /**
-     * Refreshes a hub database schema.
-     */
+    /** Refreshes a hub database schema. */
     void refreshHubSchema();
 
     /**
@@ -134,13 +103,12 @@ public interface SqlSyncGroup
      * @param startTime get logs generated after this time.
      * @param endTime get logs generated before this time.
      * @param type the types of logs to retrieve
-     * @return a representation of the deferred computation of this call returning the group log property objects if successful.
+     * @return a representation of the deferred computation of this call returning the group log property objects if
+     *     successful.
      */
     PagedFlux<SqlSyncGroupLogProperty> listLogsAsync(String startTime, String endTime, String type);
 
-    /**
-     * Triggers a sync group synchronization.
-     */
+    /** Triggers a sync group synchronization. */
     void triggerSynchronization();
 
     /**
@@ -150,9 +118,7 @@ public interface SqlSyncGroup
      */
     Mono<Void> triggerSynchronizationAsync();
 
-    /**
-     * Cancels a sync group synchronization.
-     */
+    /** Cancels a sync group synchronization. */
     void cancelSynchronization();
 
     /**
@@ -162,37 +128,27 @@ public interface SqlSyncGroup
      */
     Mono<Void> cancelSynchronizationAsync();
 
-    /**
-     * @return the SQL Sync Member entry point
-     */
+    /** @return the SQL Sync Member entry point */
     SqlSyncMemberOperations.SqlSyncMemberActionsDefinition syncMembers();
-
-
 
     /**************************************************************
      * Fluent interfaces to provision a SQL Sync Group
      **************************************************************/
 
-    /**
-     * The template for a SQL Sync Group update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-        SqlSyncGroup.UpdateStages.WithSyncDatabaseId,
-        SqlSyncGroup.UpdateStages.WithDatabaseUserName,
-        SqlSyncGroup.UpdateStages.WithDatabasePassword,
-        SqlSyncGroup.UpdateStages.WithConflictResolutionPolicy,
-        SqlSyncGroup.UpdateStages.WithInterval,
-        SqlSyncGroup.UpdateStages.WithSchema,
-        Appliable<SqlSyncGroup> {
+    /** The template for a SQL Sync Group update operation, containing all the settings that can be modified. */
+    interface Update
+        extends SqlSyncGroup.UpdateStages.WithSyncDatabaseId,
+            SqlSyncGroup.UpdateStages.WithDatabaseUserName,
+            SqlSyncGroup.UpdateStages.WithDatabasePassword,
+            SqlSyncGroup.UpdateStages.WithConflictResolutionPolicy,
+            SqlSyncGroup.UpdateStages.WithInterval,
+            SqlSyncGroup.UpdateStages.WithSchema,
+            Appliable<SqlSyncGroup> {
     }
 
-    /**
-     * Grouping of all the SQL Sync Group update stages.
-     */
+    /** Grouping of all the SQL Sync Group update stages. */
     interface UpdateStages {
-        /**
-         * The SQL Sync Group definition to set the database ID to sync with.
-         */
+        /** The SQL Sync Group definition to set the database ID to sync with. */
         interface WithSyncDatabaseId {
             /**
              * Sets the sync database ID.
@@ -200,12 +156,10 @@ public interface SqlSyncGroup
              * @param databaseId the sync database ID value to set
              * @return The next stage of the definition.
              */
-             SqlSyncGroup.Update withSyncDatabaseId(String databaseId);
+            SqlSyncGroup.Update withSyncDatabaseId(String databaseId);
         }
 
-        /**
-         * The SQL Sync Group definition to set the database user name.
-         */
+        /** The SQL Sync Group definition to set the database user name. */
         interface WithDatabaseUserName {
             /**
              * Sets the database user name.
@@ -216,9 +170,7 @@ public interface SqlSyncGroup
             SqlSyncGroup.Update withDatabaseUserName(String userName);
         }
 
-        /**
-         * The SQL Sync Group definition to set the database login password.
-         */
+        /** The SQL Sync Group definition to set the database login password. */
         interface WithDatabasePassword {
             /**
              * Sets the database login password.
@@ -229,9 +181,7 @@ public interface SqlSyncGroup
             SqlSyncGroup.Update withDatabasePassword(String password);
         }
 
-        /**
-         * The SQL Sync Group definition to set the schema.
-         */
+        /** The SQL Sync Group definition to set the schema. */
         interface WithSchema {
             /**
              * Sets the schema.
@@ -242,9 +192,7 @@ public interface SqlSyncGroup
             SqlSyncGroup.Update withSchema(SyncGroupSchema schema);
         }
 
-        /**
-         * The SQL Sync Group definition to set the conflict resolution policy.
-         */
+        /** The SQL Sync Group definition to set the conflict resolution policy. */
         interface WithConflictResolutionPolicy {
             /**
              * Sets the conflict resolution policy to "HubWin".
@@ -261,9 +209,7 @@ public interface SqlSyncGroup
             SqlSyncGroup.Update withConflictResolutionPolicyMemberWins();
         }
 
-        /**
-         * The SQL Sync Group definition to set the sync frequency.
-         */
+        /** The SQL Sync Group definition to set the sync frequency. */
         interface WithInterval {
             /**
              * Sets the sync frequency.
@@ -273,6 +219,5 @@ public interface SqlSyncGroup
              */
             SqlSyncGroup.Update withInterval(int interval);
         }
-
     }
 }

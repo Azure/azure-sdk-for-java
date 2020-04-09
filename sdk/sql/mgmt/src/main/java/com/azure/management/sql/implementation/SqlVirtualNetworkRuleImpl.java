@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -12,18 +9,13 @@ import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlVirtualNetworkRule;
 import com.azure.management.sql.SqlVirtualNetworkRuleOperations;
 import com.azure.management.sql.models.VirtualNetworkRuleInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SQL Virtual Network Rule interface.
- */
+/** Implementation for SQL Virtual Network Rule interface. */
 public class SqlVirtualNetworkRuleImpl
-    extends
-        ExternalChildResourceImpl<SqlVirtualNetworkRule, VirtualNetworkRuleInner, SqlServerImpl, SqlServer>
-    implements
-        SqlVirtualNetworkRule,
+    extends ExternalChildResourceImpl<SqlVirtualNetworkRule, VirtualNetworkRuleInner, SqlServerImpl, SqlServer>
+    implements SqlVirtualNetworkRule,
         SqlVirtualNetworkRule.SqlVirtualNetworkRuleDefinition<SqlServer.DefinitionStages.WithCreate>,
         SqlVirtualNetworkRule.Update,
         SqlVirtualNetworkRuleOperations.SqlVirtualNetworkRuleOperationsDefinition {
@@ -35,12 +27,13 @@ public class SqlVirtualNetworkRuleImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses virtual network rule operations
      */
-    SqlVirtualNetworkRuleImpl(String name, SqlServerImpl parent, VirtualNetworkRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlVirtualNetworkRuleImpl(
+        String name, SqlServerImpl parent, VirtualNetworkRuleInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -55,11 +48,16 @@ public class SqlVirtualNetworkRuleImpl
      *
      * @param resourceGroupName the resource group name
      * @param sqlServerName the parent SQL server name
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses virtual network rule operations
      */
-    SqlVirtualNetworkRuleImpl(String resourceGroupName, String sqlServerName, String name, VirtualNetworkRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlVirtualNetworkRuleImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String name,
+        VirtualNetworkRuleInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -70,7 +68,7 @@ public class SqlVirtualNetworkRuleImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses virtual network rule operations
      */
@@ -83,12 +81,16 @@ public class SqlVirtualNetworkRuleImpl
     @Override
     public Mono<SqlVirtualNetworkRule> createResourceAsync() {
         final SqlVirtualNetworkRuleImpl self = this;
-        return this.sqlServerManager.inner().virtualNetworkRules()
+        return this
+            .sqlServerManager
+            .inner()
+            .virtualNetworkRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     @Override
@@ -98,12 +100,20 @@ public class SqlVirtualNetworkRuleImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().virtualNetworkRules().deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .virtualNetworkRules()
+            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     protected Mono<VirtualNetworkRuleInner> getInnerAsync() {
-        return this.sqlServerManager.inner().virtualNetworkRules().getAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .virtualNetworkRules()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

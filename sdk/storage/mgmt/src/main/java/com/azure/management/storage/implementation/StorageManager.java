@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.storage.implementation;
 
@@ -50,7 +47,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
-     * @param credential     the credentials to use
+     * @param credential the credentials to use
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
@@ -67,7 +64,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
-     * @param restClient     the RestClient to be used for API calls.
+     * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
@@ -78,9 +75,9 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
-     * @param restClient     the RestClient to be used for API calls.
+     * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
-     * @param SdkContext     the sdk context
+     * @param SdkContext the sdk context
      * @return the StorageManager
      */
     public static StorageManager authenticate(RestClient restClient, String subscriptionId, SdkContext SdkContext) {
@@ -94,7 +91,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         /**
          * Creates an instance of StorageManager that exposes storage management API entry points.
          *
-         * @param credentials    the credentials to use
+         * @param credentials the credentials to use
          * @param subscriptionId the subscription UUID
          * @return the interface exposing storage management API entry points that work across subscriptions
          */

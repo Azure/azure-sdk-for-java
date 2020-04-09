@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.utils;
 
@@ -26,7 +23,7 @@ public class SdkContext {
     /**
      * Default constructor for SdkContext.
      */
-    public SdkContext() {}
+    public SdkContext() { }
 
     /**
      * Function to override the ResourceNamerFactory.
@@ -63,7 +60,7 @@ public class SdkContext {
      *
      * @param prefix the prefix to be used if possible
      * @param maxLen the maximum length for the random generated name
-     * @param count  the number of names to generate
+     * @param count the number of names to generate
      * @return random names
      */
     public String[] randomResourceNames(String prefix, int maxLen, int count) {
@@ -124,6 +121,8 @@ public class SdkContext {
 
     /**
      * Get long-running operation retry timeout.
+     *
+     * @return the duration
      */
     public static Duration getLroRetryDuration() {
         return delayProvider.getLroRetryTimeout();

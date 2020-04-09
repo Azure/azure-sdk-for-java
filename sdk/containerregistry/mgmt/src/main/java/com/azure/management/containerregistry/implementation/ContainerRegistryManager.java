@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.containerregistry.implementation;
 
@@ -25,10 +22,9 @@ import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlin
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.implementation.StorageManager;
 
-/**
- * Entry point to Azure container registry management.
- */
-public final class ContainerRegistryManager extends Manager<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
+/** Entry point to Azure container registry management. */
+public final class ContainerRegistryManager
+    extends Manager<ContainerRegistryManager, ContainerRegistryManagementClientImpl> {
     // The service managers
     private RegistriesImpl registries;
     private StorageManager storageManager;
@@ -52,14 +48,16 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      * @return the ContainerRegistryManager
      */
     public static ContainerRegistryManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credentials.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withPolicy(new ProviderRegistrationPolicy(credentials))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), subscriptionId);
+                .buildClient(),
+            subscriptionId);
     }
 
     /**
@@ -81,13 +79,12 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      * @param sdkContext the sdk context
      * @return the ContainerRegistryManager
      */
-    public static ContainerRegistryManager authenticate(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
+    public static ContainerRegistryManager authenticate(
+        RestClient restClient, String subscriptionId, SdkContext sdkContext) {
         return new ContainerRegistryManager(restClient, subscriptionId, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
@@ -99,10 +96,8 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
         ContainerRegistryManager authenticate(AzureTokenCredential credentials, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    /** The implementation for Configurable interface. */
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public ContainerRegistryManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
             return ContainerRegistryManager.authenticate(buildRestClient(credentials), subscriptionId);
@@ -118,21 +113,18 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      */
     private ContainerRegistryManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new ContainerRegistryManagementClientBuilder()
-                    .pipeline(restClient.getHttpPipeline())
-                    .host(restClient.getBaseUrl().toString())
-                    .subscriptionId(subscriptionId)
-                    .build(),
-                sdkContext);
+            restClient,
+            subscriptionId,
+            new ContainerRegistryManagementClientBuilder()
+                .pipeline(restClient.getHttpPipeline())
+                .host(restClient.getBaseUrl().toString())
+                .subscriptionId(subscriptionId)
+                .buildClient(),
+            sdkContext);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);
     }
 
-
-    /**
-     * @return the availability set resource management API entry point
-     */
+    /** @return the availability set resource management API entry point */
     public Registries containerRegistries() {
         if (this.registries == null) {
             this.registries = new RegistriesImpl(this, this.storageManager);

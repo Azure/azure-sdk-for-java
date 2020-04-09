@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -10,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.azure.management.sql.Enum15;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlSyncFullSchemaProperty;
 import com.azure.management.sql.SqlSyncGroup;
@@ -20,22 +16,16 @@ import com.azure.management.sql.SqlSyncMemberOperations;
 import com.azure.management.sql.SyncConflictResolutionPolicy;
 import com.azure.management.sql.SyncGroupSchema;
 import com.azure.management.sql.SyncGroupState;
+import com.azure.management.sql.SyncGroupsType;
 import com.azure.management.sql.models.SyncGroupInner;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SqlSyncGroup.
- */
+/** Implementation for SqlSyncGroup. */
 public class SqlSyncGroupImpl
-    extends
-        ExternalChildResourceImpl<SqlSyncGroup, SyncGroupInner, SqlDatabaseImpl, SqlDatabase>
-    implements
-        SqlSyncGroup,
-        SqlSyncGroup.Update,
-        SqlSyncGroupOperations.SqlSyncGroupOperationsDefinition {
+    extends ExternalChildResourceImpl<SqlSyncGroup, SyncGroupInner, SqlDatabaseImpl, SqlDatabase>
+    implements SqlSyncGroup, SqlSyncGroup.Update, SqlSyncGroupOperations.SqlSyncGroupOperationsDefinition {
 
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
@@ -47,12 +37,13 @@ public class SqlSyncGroupImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncGroupImpl(String name, SqlDatabaseImpl parent, SyncGroupInner innerObject, SqlServerManager sqlServerManager) {
+    SqlSyncGroupImpl(
+        String name, SqlDatabaseImpl parent, SyncGroupInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -67,13 +58,19 @@ public class SqlSyncGroupImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param resourceGroupName the resource group name
-     * @param sqlServerName     the parent SQL server name
-     * @param sqlDatabaseName   the parent SQL Database name
-     * @param name              the name of this external child resource
-     * @param innerObject       reference to the inner object representing this external child resource
-     * @param sqlServerManager  reference to the SQL server manager that accesses DNS alias operations
+     * @param sqlServerName the parent SQL server name
+     * @param sqlDatabaseName the parent SQL Database name
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncGroupImpl(String resourceGroupName, String sqlServerName, String sqlDatabaseName, String name, SyncGroupInner innerObject, SqlServerManager sqlServerManager) {
+    SqlSyncGroupImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String sqlDatabaseName,
+        String name,
+        SyncGroupInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -85,8 +82,8 @@ public class SqlSyncGroupImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name             the name of this external child resource
-     * @param innerObject      reference to the inner object representing this external child resource
+     * @param name the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
     SqlSyncGroupImpl(String name, SyncGroupInner innerObject, SqlServerManager sqlServerManager) {
@@ -166,65 +163,109 @@ public class SqlSyncGroupImpl
 
     @Override
     public void refreshHubSchema() {
-        this.sqlServerManager.inner().syncGroups()
+        this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .refreshHubSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public Mono<Void> refreshHubSchemaAsync() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .refreshHubSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public PagedIterable<SqlSyncFullSchemaProperty> listHubSchemas() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncFullSchemaProperty> listHubSchemasAsync() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name())
             .mapPage(syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
 
     @Override
     public PagedIterable<SqlSyncGroupLogProperty> listLogs(String startTime, String endTime, String type) {
-        return this.sqlServerManager.inner().syncGroups()
-            .listLogs(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), startTime, endTime, Enum15.fromString(type))
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
+            .listLogs(
+                this.resourceGroupName,
+                this.sqlServerName,
+                this.sqlDatabaseName,
+                this.name(),
+                startTime,
+                endTime,
+                SyncGroupsType.fromString(type))
             .mapPage(inner -> new SqlSyncGroupLogPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncGroupLogProperty> listLogsAsync(String startTime, String endTime, String type) {
-        return this.sqlServerManager.inner().syncGroups()
-            .listLogsAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), startTime, endTime, Enum15.fromString(type))
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
+            .listLogsAsync(
+                this.resourceGroupName,
+                this.sqlServerName,
+                this.sqlDatabaseName,
+                this.name(),
+                startTime,
+                endTime,
+                SyncGroupsType.fromString(type))
             .mapPage(syncGroupLogPropertiesInner -> new SqlSyncGroupLogPropertyImpl(syncGroupLogPropertiesInner));
     }
 
     @Override
     public void triggerSynchronization() {
-        this.sqlServerManager.inner().syncGroups()
+        this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .triggerSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public Mono<Void> triggerSynchronizationAsync() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .triggerSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public void cancelSynchronization() {
-        this.sqlServerManager.inner().syncGroups()
+        this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .cancelSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public Mono<Void> cancelSynchronizationAsync() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .cancelSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -300,12 +341,17 @@ public class SqlSyncGroupImpl
     @Override
     public Mono<SqlSyncGroup> createResourceAsync() {
         final SqlSyncGroupImpl self = this;
-        return this.sqlServerManager.inner().syncGroups()
-            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.inner())
-            .map(syncGroupInner -> {
-                self.setInner(syncGroupInner);
-                return self;
-            });
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
+            .createOrUpdateAsync(
+                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.inner())
+            .map(
+                syncGroupInner -> {
+                    self.setInner(syncGroupInner);
+                    return self;
+                });
     }
 
     @Override
@@ -315,19 +361,28 @@ public class SqlSyncGroupImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     protected Mono<SyncGroupInner> getInnerAsync() {
-        return this.sqlServerManager.inner().syncGroups()
+        return this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public void delete() {
-        this.sqlServerManager.inner().syncGroups()
+        this
+            .sqlServerManager
+            .inner()
+            .syncGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
@@ -344,5 +399,4 @@ public class SqlSyncGroupImpl
 
         return this.syncMemberOps;
     }
-
 }

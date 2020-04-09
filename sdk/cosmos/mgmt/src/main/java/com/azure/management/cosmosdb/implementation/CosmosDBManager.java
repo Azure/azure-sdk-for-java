@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.cosmosdb.implementation;
 
@@ -21,9 +18,7 @@ import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPoli
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
-/**
- * Entry point to Azure compute resource management.
- */
+/** Entry point to Azure compute resource management. */
 public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBManagementClientImpl> {
     private CosmosDBAccountsImpl databaseAccounts;
     /**
@@ -43,14 +38,16 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
      * @return the ComputeManager
      */
     public static CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credentials.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withPolicy(new ProviderRegistrationPolicy(credentials))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), subscriptionId);
+                .buildClient(),
+            subscriptionId);
     }
 
     /**
@@ -76,9 +73,7 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
         return new CosmosDBManager(restClient, subscriptionId, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
@@ -90,10 +85,8 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
         CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    /** The implementation for Configurable interface. */
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
             return CosmosDBManager.authenticate(buildRestClient(credentials), subscriptionId);
@@ -102,19 +95,17 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
 
     private CosmosDBManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new CosmosDBManagementClientBuilder()
-                    .host(restClient.getBaseUrl().toString())
-                    .pipeline(restClient.getHttpPipeline())
-                    .subscriptionId(subscriptionId)
-                    .build(),
-                sdkContext);
+            restClient,
+            subscriptionId,
+            new CosmosDBManagementClientBuilder()
+                .host(restClient.getBaseUrl().toString())
+                .pipeline(restClient.getHttpPipeline())
+                .subscriptionId(subscriptionId)
+                .buildClient(),
+            sdkContext);
     }
 
-    /**
-     * @return the cosmos db database account resource management API entry point
-     */
+    /** @return the cosmos db database account resource management API entry point */
     public CosmosDBAccounts databaseAccounts() {
         if (databaseAccounts == null) {
             databaseAccounts = new CosmosDBAccountsImpl(this);

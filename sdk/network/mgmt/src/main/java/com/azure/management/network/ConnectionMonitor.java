@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
@@ -229,7 +226,7 @@ public interface ConnectionMonitor extends
             /**
              * Adds a tag to the connection monitor.
              *
-             * @param key   the key for the tag
+             * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the definition
              */

@@ -24,6 +24,17 @@ public interface IpFirewallRules {
     IpFirewallRuleInfo.DefinitionStages.Blank defineFirewallRule(String name);
 
     /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param ruleName The IP firewall rule name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IpFirewallRuleInfo> getAsync(String resourceGroupName, String workspaceName, String ruleName);
+
+    /**
      * Returns a list of firewall rules.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

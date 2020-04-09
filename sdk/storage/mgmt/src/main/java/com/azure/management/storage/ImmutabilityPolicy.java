@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.storage;
 
@@ -55,7 +52,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * The entirety of the ImmutabilityPolicy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer, DefinitionStages.WithIfMatch, DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithContainer, DefinitionStages.WithImmutabilityPeriodSinceCreationInDays, DefinitionStages.WithCreate {
     }
 
     /**
@@ -79,19 +76,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
              * @param containerName The name of the blob container within the specified storage account. Blob container names must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately preceded and followed by a letter or number
              * @return the next definition stage
              */
-            WithIfMatch withExistingContainer(String resourceGroupName, String accountName, String containerName);
-        }
-
-        /**
-         * The stage of the immutabilitypolicy definition allowing to specify IfMatch.
-         */
-        interface WithIfMatch {
-            /**
-             * Specifies ifMatch.
-             * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied
-             * @return the next definition stage
-             */
-            WithImmutabilityPeriodSinceCreationInDays withIfMatch(String ifMatch);
+            WithImmutabilityPeriodSinceCreationInDays withExistingContainer(String resourceGroupName, String accountName, String containerName);
         }
 
         /**
@@ -117,7 +102,7 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
     /**
      * The template for a ImmutabilityPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithIfMatch, UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
+    interface Update extends Appliable<ImmutabilityPolicy>, UpdateStages.WithETagCheck, UpdateStages.WithImmutabilityPeriodSinceCreationInDays {
     }
 
     /**
@@ -125,15 +110,21 @@ public interface ImmutabilityPolicy extends HasInner<ImmutabilityPolicyInner>, I
      */
     interface UpdateStages {
         /**
-         * The stage of the immutabilitypolicy update allowing to specify IfMatch.
+         * The stage of the immutabilitypolicy update allowing to specify If-Match header.
          */
-        interface WithIfMatch {
+        interface WithETagCheck {
             /**
-             * Specifies ifMatch.
-             * @param ifMatch The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied
+             * Specifies If-Match header.
              * @return the next update stage
              */
-            Update withIfMatch(String ifMatch);
+            Update withETagCheck();
+
+            /**
+             * Specifies If-Match header.
+             * @param eTagValue The entity state (ETag) version of the immutability policy to update. A value of "*" can be used to apply the operation only if the immutability policy already exists. If omitted, this operation will always be applied
+             * @return the next update stage
+             */
+            Update withETagCheck(String eTagValue);
         }
 
         /**

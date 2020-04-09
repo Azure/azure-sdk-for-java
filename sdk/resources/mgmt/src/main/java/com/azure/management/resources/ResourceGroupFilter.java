@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ResourceGroupFilter model.
- */
+/** The ResourceGroupFilter model. */
 @Fluent
 public final class ResourceGroupFilter {
     /*
@@ -26,40 +24,40 @@ public final class ResourceGroupFilter {
 
     /**
      * Get the tagName property: The tag name.
-     * 
+     *
      * @return the tagName value.
      */
-    public String getTagName() {
+    public String tagName() {
         return this.tagName;
     }
 
     /**
      * Set the tagName property: The tag name.
-     * 
+     *
      * @param tagName the tagName value to set.
      * @return the ResourceGroupFilter object itself.
      */
-    public ResourceGroupFilter setTagName(String tagName) {
+    public ResourceGroupFilter withTagName(String tagName) {
         this.tagName = tagName;
         return this;
     }
 
     /**
      * Get the tagValue property: The tag value.
-     * 
+     *
      * @return the tagValue value.
      */
-    public String getTagValue() {
+    public String tagValue() {
         return this.tagValue;
     }
 
     /**
      * Set the tagValue property: The tag value.
-     * 
+     *
      * @param tagValue the tagValue value to set.
      * @return the ResourceGroupFilter object itself.
      */
-    public ResourceGroupFilter setTagValue(String tagValue) {
+    public ResourceGroupFilter withTagValue(String tagValue) {
         this.tagValue = tagValue;
         return this;
     }

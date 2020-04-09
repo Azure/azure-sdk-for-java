@@ -1,11 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm.collection.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
@@ -22,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Base class for creatable resource collection, i.e. those where the member of the collection is of <code>Resource</code>
- * type and are creatable.
+ * Base class for creatable resource collection,
+ * i.e. those where the member of the collection is of <code>Resource</code> type and are creatable.
  * (Internal use only)
  *
- * @param <T>      the individual resource type returned
- * @param <ImplT>  the individual resource implementation
+ * @param <T> the individual resource type returned
+ * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
 public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends T, InnerT>
@@ -84,6 +82,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     private class CreatedResourcesImpl<ResourceT extends Indexable>
             extends HashMap<String, ResourceT>
             implements CreatedResources<ResourceT> {
+        private final ClientLogger logger = new ClientLogger(this.getClass());
         private static final long serialVersionUID = -1360746896732289907L;
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
 
@@ -101,22 +100,22 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
 
         @Override
         public void clear() {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
 
         @Override
         public ResourceT put(String key, ResourceT value) {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
 
         @Override
         public ResourceT remove(Object key) {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
 
         @Override
         public void putAll(Map<? extends String, ? extends ResourceT> m) {
-            throw new UnsupportedOperationException();
+            throw logger.logExceptionAsError(new UnsupportedOperationException());
         }
     }
 
@@ -138,7 +137,9 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatableUpdatableResourcesRootImpl<ResourceT extends Indexable>
-            extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
+            extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>,
+                                           Object,
+                                           CreatableUpdatableResourcesRootImpl<ResourceT>>
             implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -19,127 +16,87 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.sql.models.DatabaseInner;
 import com.azure.management.storage.StorageAccount;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of an Azure SQL Server Database.
- */
+/** An immutable client-side representation of an Azure SQL Server Database. */
 @Fluent
 public interface SqlDatabase
-    extends
-        ExternalChildResource<SqlDatabase, SqlServer>,
+    extends ExternalChildResource<SqlDatabase, SqlServer>,
         HasInner<DatabaseInner>,
         HasResourceGroup,
         Refreshable<SqlDatabase>,
         Updatable<SqlDatabase.Update> {
 
-    /**
-     * @return name of the SQL Server to which this database belongs
-     */
+    /** @return name of the SQL Server to which this database belongs */
     String sqlServerName();
 
-    /**
-     * @return the collation of the Azure SQL Database
-     */
+    /** @return the collation of the Azure SQL Database */
     String collation();
 
-    /**
-     * @return the creation date of the Azure SQL Database
-     */
+    /** @return the creation date of the Azure SQL Database */
     OffsetDateTime creationDate();
 
     /**
-     * @return the current Service Level Objective Name of the Azure SQL Database, this is the Name of the
-     * Service Level Objective that is currently active
+     * @return the current Service Level Objective Name of the Azure SQL Database, this is the Name of the Service Level
+     *     Objective that is currently active
      */
     String currentServiceObjectiveName();
 
-    /**
-     * @return the Id of the Azure SQL Database
-     */
+    /** @return the Id of the Azure SQL Database */
     String databaseId();
 
     /**
-     * @return the recovery period start date of the Azure SQL Database. This
-     * records the start date and time when recovery is available for this
-     * Azure SQL Database.
+     * @return the recovery period start date of the Azure SQL Database. This records the start date and time when
+     *     recovery is available for this Azure SQL Database.
      */
     OffsetDateTime earliestRestoreDate();
 
-    /**
-     * @return the edition of the Azure SQL Database
-     */
+    /** @return the edition of the Azure SQL Database */
     DatabaseEdition edition();
 
-    /**
-     * @return the max size of the Azure SQL Database expressed in bytes.
-     */
+    /** @return the max size of the Azure SQL Database expressed in bytes. */
     long maxSizeBytes();
 
     /**
-     * @return the name of the configured Service Level Objective of the Azure
-     * SQL Database, this is the Service Level Objective that is being
-     * applied to the Azure SQL Database
+     * @return the name of the configured Service Level Objective of the Azure SQL Database, this is the Service Level
+     *     Objective that is being applied to the Azure SQL Database
      */
     String requestedServiceObjectiveName();
 
-    /**
-     * @return the status of the Azure SQL Database
-     */
+    /** @return the status of the Azure SQL Database */
     DatabaseStatus status();
 
-    /**
-     * @return the elasticPoolId value
-     */
+    /** @return the elasticPoolId value */
     String elasticPoolId();
 
-    /**
-     * @return the elasticPoolName value
-     */
+    /** @return the elasticPoolName value */
     String elasticPoolName();
 
-    /**
-     * @return the defaultSecondaryLocation value
-     */
+    /** @return the defaultSecondaryLocation value */
     String defaultSecondaryLocation();
 
-    /**
-     * @return the parent SQL server ID
-     */
+    /** @return the parent SQL server ID */
     String parentId();
 
-    /**
-     * @return the name of the region the resource is in
-     */
+    /** @return the name of the region the resource is in */
     String regionName();
 
-    /**
-     * @return the region the resource is in
-     */
+    /** @return the region the resource is in */
     Region region();
 
-    /**
-     * @return true if this Database is SqlWarehouse
-     */
+    /** @return true if this Database is SqlWarehouse */
     boolean isDataWarehouse();
 
-    /**
-     * @return SqlWarehouse instance for more operations
-     */
+    /** @return SqlWarehouse instance for more operations */
     SqlWarehouse asWarehouse();
 
-    /**
-     * @return the list of all restore points on this database
-     */
+    /** @return the list of all restore points on this database */
     List<RestorePoint> listRestorePoints();
 
-    /**
-     * @return the list of all restore points on this database
-     */
+    /** @return the list of all restore points on this database */
     PagedFlux<RestorePoint> listRestorePointsAsync();
 
     /**
@@ -154,14 +111,10 @@ public interface SqlDatabase
      */
     PagedFlux<SqlDatabaseMetric> listMetricsAsync(String filter);
 
-    /**
-     * @return the list of metric definitions for this database
-     */
+    /** @return the list of metric definitions for this database */
     List<SqlDatabaseMetricDefinition> listMetricDefinitions();
 
-    /**
-     * @return a representation of the deferred computation of the metric definitions for this database
-     */
+    /** @return a representation of the deferred computation of the metric definitions for this database */
     PagedFlux<SqlDatabaseMetricDefinition> listMetricDefinitionsAsync();
 
     /**
@@ -174,23 +127,21 @@ public interface SqlDatabase
     /**
      * Gets an Azure SQL Database Transparent Data Encryption for this database.
      *
-     * @return a representation of the deferred computation of an Azure SQL Database Transparent Data Encryption for this database
+     * @return a representation of the deferred computation of an Azure SQL Database Transparent Data Encryption for
+     *     this database
      */
     Mono<TransparentDataEncryption> getTransparentDataEncryptionAsync();
 
-    /**
-     * @return information about service tier advisors for the current database
-     */
+    /** @return information about service tier advisors for the current database */
     Map<String, ServiceTierAdvisor> listServiceTierAdvisors();
 
     /**
-     * @return a representation of the deferred computation of the information about service tier advisors for this database
+     * @return a representation of the deferred computation of the information about service tier advisors for this
+     *     database
      */
     PagedFlux<ServiceTierAdvisor> listServiceTierAdvisorsAsync();
 
-    /**
-     * @return all the replication links associated with this database
-     */
+    /** @return all the replication links associated with this database */
     Map<String, ReplicationLink> listReplicationLinks();
 
     /**
@@ -214,7 +165,8 @@ public interface SqlDatabase
      * @param fileName the exported database file name
      * @return response object
      */
-    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(StorageAccount storageAccount, String containerName, String fileName);
+    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
+        StorageAccount storageAccount, String containerName, String fileName);
 
     /**
      * Exports the current database to a new storage account and relative path.
@@ -224,7 +176,8 @@ public interface SqlDatabase
      * @param fileName the exported database file name
      * @return response object
      */
-    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
+    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
+        Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
 
     /**
      * Imports into the current database from a specified URI path; the current database must be empty.
@@ -235,14 +188,16 @@ public interface SqlDatabase
     SqlDatabaseImportRequest.DefinitionStages.WithStorageTypeAndKey importBacpac(String storageUri);
 
     /**
-     * Imports into the current database from an existing storage account and relative path; the current database must be empty.
+     * Imports into the current database from an existing storage account and relative path; the current database must
+     * be empty.
      *
      * @param storageAccount an existing storage account to be used
      * @param containerName the container name within the storage account to use
      * @param fileName the exported database file name
      * @return response object
      */
-    SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword importBacpac(StorageAccount storageAccount, String containerName, String fileName);
+    SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword importBacpac(
+        StorageAccount storageAccount, String containerName, String fileName);
 
     /**
      * Begins a definition for a security alert policy.
@@ -280,7 +235,6 @@ public interface SqlDatabase
      */
     PagedFlux<SqlDatabaseUsageMetric> listUsageMetricsAsync();
 
-
     /**
      * Renames the database.
      *
@@ -297,9 +251,7 @@ public interface SqlDatabase
      */
     Mono<SqlDatabase> renameAsync(String newDatabaseName);
 
-    /**
-     * Deletes the database from the server.
-     */
+    /** Deletes the database from the server. */
     void delete();
 
     /**
@@ -309,11 +261,8 @@ public interface SqlDatabase
      */
     Mono<Void> deleteAsync();
 
-    /**
-     * @return the SQL Sync Group entry point for the current database
-     */
+    /** @return the SQL Sync Group entry point for the current database */
     SqlSyncGroupOperations.SqlSyncGroupActionsDefinition syncGroups();
-
 
     /**************************************************************
      * Fluent interfaces to provision a SQL Database
@@ -324,32 +273,29 @@ public interface SqlDatabase
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface SqlDatabaseDefinition<ParentT> extends
-        SqlDatabase.DefinitionStages.Blank<ParentT>,
-        SqlDatabase.DefinitionStages.WithAllDifferentOptions<ParentT>,
-        SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
-        SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
-        SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
-        SqlDatabase.DefinitionStages.WithStorageKey<ParentT>,
-        SqlDatabase.DefinitionStages.WithAuthentication<ParentT>,
-        SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
-        SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
-        SqlDatabase.DefinitionStages.WithCreateMode<ParentT>,
-        SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>,
-        SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
+    interface SqlDatabaseDefinition<ParentT>
+        extends SqlDatabase.DefinitionStages.Blank<ParentT>,
+            SqlDatabase.DefinitionStages.WithAllDifferentOptions<ParentT>,
+            SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
+            SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
+            SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
+            SqlDatabase.DefinitionStages.WithStorageKey<ParentT>,
+            SqlDatabase.DefinitionStages.WithAuthentication<ParentT>,
+            SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
+            SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
+            SqlDatabase.DefinitionStages.WithCreateMode<ParentT>,
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>,
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
     }
 
-    /**
-     * Grouping of all the SQL Database definition stages.
-     */
+    /** Grouping of all the SQL Database definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of the SQL Server Firewall rule definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends
-            SqlDatabase.DefinitionStages.WithAllDifferentOptions<ParentT> {
+        interface Blank<ParentT> extends SqlDatabase.DefinitionStages.WithAllDifferentOptions<ParentT> {
         }
 
         /**
@@ -357,15 +303,15 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAllDifferentOptions<ParentT> extends
-            SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
-            SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
-            SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
-            SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
-            SqlDatabase.DefinitionStages.WithSampleDatabase<ParentT>,
-            SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> {
+        interface WithAllDifferentOptions<ParentT>
+            extends SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
+                SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
+                SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
+                SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
+                SqlDatabase.DefinitionStages.WithSampleDatabase<ParentT>,
+                SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
+                SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
+                SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> {
         }
 
         /**
@@ -373,7 +319,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithElasticPoolName<ParentT>  {
+        interface WithElasticPoolName<ParentT> {
             /**
              * Sets the existing elastic pool for the SQLDatabase.
              *
@@ -399,7 +345,8 @@ public interface SqlDatabase
             WithExistingDatabaseAfterElasticPool<ParentT> withExistingElasticPool(SqlElasticPool sqlElasticPool);
 
             /**
-             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
+             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating
+             * database.
              *
              * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database
              * @return The next stage of the definition.
@@ -412,12 +359,12 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithExistingDatabaseAfterElasticPool<ParentT> extends
-            SqlDatabase.DefinitionStages.WithImportFromAfterElasticPool<ParentT>,
-            SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<ParentT>,
-            SqlDatabase.DefinitionStages.WithSampleDatabaseAfterElasticPool<ParentT>,
-            SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
-            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> {
+        interface WithExistingDatabaseAfterElasticPool<ParentT>
+            extends SqlDatabase.DefinitionStages.WithImportFromAfterElasticPool<ParentT>,
+                SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<ParentT>,
+                SqlDatabase.DefinitionStages.WithSampleDatabaseAfterElasticPool<ParentT>,
+                SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
+                SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> {
         }
 
         /**
@@ -425,7 +372,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithImportFrom<ParentT>  {
+        interface WithImportFrom<ParentT> {
             /**
              * Creates a new database from a BACPAC file.
              *
@@ -442,7 +389,8 @@ public interface SqlDatabase
              * @param fileName the exported database file name
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAuthentication<ParentT> importFrom(StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabase.DefinitionStages.WithAuthentication<ParentT> importFrom(
+                StorageAccount storageAccount, String containerName, String fileName);
         }
 
         /**
@@ -450,7 +398,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithStorageKey<ParentT>  {
+        interface WithStorageKey<ParentT> {
             /**
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
@@ -469,20 +417,22 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAuthentication<ParentT>  {
+        interface WithAuthentication<ParentT> {
             /**
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSqlAdministratorLoginAndPassword(
+                String administratorLogin, String administratorPassword);
 
             /**
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withActiveDirectoryLoginAndPassword(
+                String administratorLogin, String administratorPassword);
         }
 
         /**
@@ -490,7 +440,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithImportFromAfterElasticPool<ParentT>  {
+        interface WithImportFromAfterElasticPool<ParentT> {
             /**
              * Creates a new database from a BACPAC file.
              *
@@ -507,7 +457,8 @@ public interface SqlDatabase
              * @param fileName the exported database file name
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> importFrom(StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> importFrom(
+                StorageAccount storageAccount, String containerName, String fileName);
         }
 
         /**
@@ -515,18 +466,20 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithStorageKeyAfterElasticPool<ParentT>  {
+        interface WithStorageKeyAfterElasticPool<ParentT> {
             /**
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> withStorageAccessKey(String storageAccessKey);
+            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> withStorageAccessKey(
+                String storageAccessKey);
 
             /**
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> withSharedAccessKey(String sharedAccessKey);
+            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> withSharedAccessKey(
+                String sharedAccessKey);
         }
 
         /**
@@ -534,20 +487,22 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAuthenticationAfterElasticPool<ParentT>  {
+        interface WithAuthenticationAfterElasticPool<ParentT> {
             /**
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withSqlAdministratorLoginAndPassword(
+                String administratorLogin, String administratorPassword);
 
             /**
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withActiveDirectoryLoginAndPassword(
+                String administratorLogin, String administratorPassword);
         }
 
         /**
@@ -555,17 +510,18 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithRestorableDroppedDatabase<ParentT>  {
+        interface WithRestorableDroppedDatabase<ParentT> {
             /**
              * Creates a new database from a previously deleted database (see restorable dropped database).
-             * <p>
-             * Collation, Edition, and MaxSizeBytes must remain the same while the link is
-             * active. Values specified for these parameters will be ignored.
+             *
+             * <p>Collation, Edition, and MaxSizeBytes must remain the same while the link is active. Values specified
+             * for these parameters will be ignored.
              *
              * @param restorableDroppedDatabase the restorable dropped database
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> fromRestorableDroppedDatabase(SqlRestorableDroppedDatabase restorableDroppedDatabase);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> fromRestorableDroppedDatabase(
+                SqlRestorableDroppedDatabase restorableDroppedDatabase);
         }
 
         /**
@@ -573,14 +529,15 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithRestorePointDatabaseAfterElasticPool<ParentT>  {
+        interface WithRestorePointDatabaseAfterElasticPool<ParentT> {
             /**
              * Creates a new database from a restore point.
              *
              * @param restorePoint the restore point
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> fromRestorePoint(RestorePoint restorePoint);
+            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> fromRestorePoint(
+                RestorePoint restorePoint);
 
             /**
              * Creates a new database from a restore point.
@@ -589,7 +546,8 @@ public interface SqlDatabase
              * @param restorePointDateTime date and time to restore from
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> fromRestorePoint(RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
+            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> fromRestorePoint(
+                RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
         }
 
         /**
@@ -597,7 +555,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithRestorePointDatabase<ParentT>  {
+        interface WithRestorePointDatabase<ParentT> {
             /**
              * Creates a new database from a restore point.
              *
@@ -613,7 +571,8 @@ public interface SqlDatabase
              * @param restorePointDateTime date and time to restore from
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> fromRestorePoint(RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> fromRestorePoint(
+                RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
         }
 
         /**
@@ -621,7 +580,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithSampleDatabaseAfterElasticPool<ParentT>  {
+        interface WithSampleDatabaseAfterElasticPool<ParentT> {
             /**
              * Creates a new database from a restore point.
              *
@@ -636,7 +595,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithSampleDatabase<ParentT>  {
+        interface WithSampleDatabase<ParentT> {
             /**
              * Creates a new database from a restore point.
              *
@@ -651,13 +610,13 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithSourceDatabaseId<ParentT>  {
+        interface WithSourceDatabaseId<ParentT> {
 
             /**
              * Sets the resource if of source database for the SQL Database.
-             * <p>
-             * Collation, Edition, and MaxSizeBytes must remain the same while the link is
-             * active. Values specified for these parameters will be ignored.
+             *
+             * <p>Collation, Edition, and MaxSizeBytes must remain the same while the link is active. Values specified
+             * for these parameters will be ignored.
              *
              * @param sourceDatabaseId id of the source database
              * @return The next stage of the definition.
@@ -666,9 +625,9 @@ public interface SqlDatabase
 
             /**
              * Sets the resource if of source database for the SQL Database.
-             * <p>
-             * Collation, Edition, and MaxSizeBytes must remain the same while the link is
-             * active. Values specified for these parameters will be ignored.
+             *
+             * <p>Collation, Edition, and MaxSizeBytes must remain the same while the link is active. Values specified
+             * for these parameters will be ignored.
              *
              * @param sourceDatabase instance of the source database
              * @return The next stage of the definition.
@@ -681,7 +640,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithCreateMode<ParentT>  {
+        interface WithCreateMode<ParentT> {
             /**
              * Sets the create mode for the SQL Database.
              *
@@ -696,11 +655,10 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttachAfterElasticPoolOptions<ParentT>  extends
-            SqlDatabase.DefinitionStages.WithCollationAfterElasticPoolOptions<ParentT>,
-            SqlDatabase.DefinitionStages.WithMaxSizeBytesAfterElasticPoolOptions<ParentT>,
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
-
+        interface WithAttachAfterElasticPoolOptions<ParentT>
+            extends SqlDatabase.DefinitionStages.WithCollationAfterElasticPoolOptions<ParentT>,
+                SqlDatabase.DefinitionStages.WithMaxSizeBytesAfterElasticPoolOptions<ParentT>,
+                SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
         }
 
         /**
@@ -708,7 +666,7 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithCollationAfterElasticPoolOptions<ParentT>  {
+        interface WithCollationAfterElasticPoolOptions<ParentT> {
             /**
              * Sets the collation for the SQL Database.
              *
@@ -727,10 +685,9 @@ public interface SqlDatabase
             /**
              * Sets the max size in bytes for SQL Database.
              *
-             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only
-             * the following sizes are supported (in addition to limitations being
-             * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
-             * GB | 30 GB … 150 GB | 200 GB … 500 GB }
+             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
+             *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
+             *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the definition.
              */
             SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> withMaxSizeBytes(long maxSizeBytes);
@@ -745,6 +702,7 @@ public interface SqlDatabase
             /**
              * Sets the edition for the SQL Database.
              *
+             * @deprecated use {@link WithEditionDefaults}
              * @param edition edition to be set for database
              * @return The next stage of the definition
              */
@@ -770,7 +728,8 @@ public interface SqlDatabase
              *
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withBasicEdition(SqlDatabaseBasicStorage maxStorageCapacity);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withBasicEdition(
+                SqlDatabaseBasicStorage maxStorageCapacity);
 
             /**
              * Sets a "Standard" edition for the SQL Database.
@@ -778,7 +737,8 @@ public interface SqlDatabase
              * @param serviceObjective edition to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withStandardEdition(SqlDatabaseStandardServiceObjective serviceObjective);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withStandardEdition(
+                SqlDatabaseStandardServiceObjective serviceObjective);
 
             /**
              * Sets a "Standard" edition and maximum storage capacity for the SQL Database.
@@ -787,7 +747,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity edition to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withStandardEdition(SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withStandardEdition(
+                SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity);
 
             /**
              * Sets a "Premium" edition for the SQL Database.
@@ -795,7 +756,8 @@ public interface SqlDatabase
              * @param serviceObjective edition to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withPremiumEdition(SqlDatabasePremiumServiceObjective serviceObjective);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withPremiumEdition(
+                SqlDatabasePremiumServiceObjective serviceObjective);
 
             /**
              * Sets a "Premium" edition and maximum storage capacity for the SQL Database.
@@ -804,7 +766,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity edition to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withPremiumEdition(SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withPremiumEdition(
+                SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
 
             /**
              * Sets a custom sku for the SQL Database.
@@ -814,13 +777,14 @@ public interface SqlDatabase
              * @param capacity capacity of the particular SKU
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withCustomEdition(DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withCustomEdition(
+                DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity);
 
             /**
              * Sets a custom sku for the SQL Database.
              *
              * @param sku sku/edition to be set for database, all possible capabilities could be found by
-             *            Sqlservers.getCapabilitiesByRegion(Region)
+             *     Sqlservers.getCapabilitiesByRegion(Region)
              * @return The next stage of the definition
              */
             SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withCustomEdition(Sku sku);
@@ -850,10 +814,10 @@ public interface SqlDatabase
             /**
              * Sets the max size in bytes for SQL Database.
              *
-             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only
-             * the following sizes are supported (in addition to limitations being
-             * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
-             * GB | 30 GB … 150 GB | 200 GB … 500 GB }
+             * @deprecated use {@link WithEditionDefaults}
+             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
+             *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
+             *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the definition.
              */
             @Deprecated
@@ -869,64 +833,60 @@ public interface SqlDatabase
             /**
              * Sets the service level objective for the SQL Database.
              *
+             * @deprecated use {@link WithEditionDefaults}
              * @param serviceLevelObjective service level objected for the SQL Database
              * @return The next stage of the definition.
              */
             @Deprecated
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withServiceObjective(ServiceObjectiveName serviceLevelObjective);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withServiceObjective(
+                ServiceObjectiveName serviceLevelObjective);
         }
-
 
         /**
          * The final stage of the SQL Database definition with all the other options.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttachAllOptions<ParentT> extends
-            SqlDatabase.DefinitionStages.WithServiceObjective<ParentT>,
-            SqlDatabase.DefinitionStages.WithEdition<ParentT>,
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
-            SqlDatabase.DefinitionStages.WithCollation<ParentT>,
-            SqlDatabase.DefinitionStages.WithMaxSizeBytes<ParentT>,
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
+        interface WithAttachAllOptions<ParentT>
+            extends SqlDatabase.DefinitionStages.WithServiceObjective<ParentT>,
+                SqlDatabase.DefinitionStages.WithEdition<ParentT>,
+                SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
+                SqlDatabase.DefinitionStages.WithCollation<ParentT>,
+                SqlDatabase.DefinitionStages.WithMaxSizeBytes<ParentT>,
+                SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
         }
 
-        /** The final stage of the SQL Database definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the SQL Database definition
-         * can be attached to the parent SQL Server definition.
+        /**
+         * The final stage of the SQL Database definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the SQL Database definition can be
+         * attached to the parent SQL Server definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttachFinal<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+        interface WithAttachFinal<ParentT> extends Attachable.InDefinition<ParentT> {
         }
     }
 
-    /**
-     * The template for a SqlDatabase update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-        UpdateStages.WithEdition,
-        UpdateStages.WithElasticPoolName,
-        UpdateStages.WithMaxSizeBytes,
-        UpdateStages.WithServiceObjective,
-        Resource.UpdateWithTags<SqlDatabase.Update>,
-        Appliable<SqlDatabase> {
+    /** The template for a SqlDatabase update operation, containing all the settings that can be modified. */
+    interface Update
+        extends UpdateStages.WithEdition,
+            UpdateStages.WithElasticPoolName,
+            UpdateStages.WithMaxSizeBytes,
+            UpdateStages.WithServiceObjective,
+            Resource.UpdateWithTags<SqlDatabase.Update>,
+            Appliable<SqlDatabase> {
     }
 
-    /**
-     * Grouping of all the SqlDatabase update stages.
-     */
+    /** Grouping of all the SqlDatabase update stages. */
     interface UpdateStages {
 
-        /**
-         * The SQL Database definition to set the edition for database.
-         */
+        /** The SQL Database definition to set the edition for database. */
         interface WithEdition {
             /**
              * Sets the edition for the SQL Database.
              *
+             * @deprecated use specific edition instead
              * @param edition edition to be set for database
              * @return The next stage of the update.
              */
@@ -961,7 +921,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity edition to be set for database
              * @return The next stage of the definition
              */
-            Update withStandardEdition(SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity);
+            Update withStandardEdition(
+                SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity);
 
             /**
              * Sets a "Premium" edition for the SQL Database.
@@ -978,7 +939,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity edition to be set for database
              * @return The next stage of the definition
              */
-            Update withPremiumEdition(SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
+            Update withPremiumEdition(
+                SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
 
             /**
              * Sets a custom sku for the SQL Database.
@@ -994,35 +956,33 @@ public interface SqlDatabase
              * Sets a custom sku for the SQL Database.
              *
              * @param sku sku/edition to be set for database, all possible capabilities could be found by
-             *            Sqlservers.getCapabilitiesByRegion(Region)
+             *     Sqlservers.getCapabilitiesByRegion(Region)
              * @return The next stage of the update
              */
             Update withCustomEdition(Sku sku);
         }
 
-        /**
-         * The SQL Database definition to set the Max Size in Bytes for database.
-         */
+        /** The SQL Database definition to set the Max Size in Bytes for database. */
         interface WithMaxSizeBytes {
             /**
              * Sets the max size in bytes for SQL Database.
-             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only
-             * the following sizes are supported (in addition to limitations being
-             * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
-             * GB | 30 GB … 150 GB | 200 GB … 500 GB }
+             *
+             * @deprecated use specific edition instead
+             * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only the following sizes
+             *     are supported (in addition to limitations being placed on each edition): { 100 MB | 500 MB |1 GB | 5
+             *     GB | 10 GB | 20 GB | 30 GB … 150 GB | 200 GB … 500 GB }
              * @return The next stage of the update.
              */
             @Deprecated
             Update withMaxSizeBytes(long maxSizeBytes);
         }
 
-        /**
-         * The SQL Database definition to set the service level objective.
-         */
+        /** The SQL Database definition to set the service level objective. */
         interface WithServiceObjective {
             /**
              * Sets the service level objective for the SQL Database.
              *
+             * @deprecated use specific edition instead
              * @param serviceLevelObjective service level objected for the SQL Database
              * @return The next stage of the update.
              */
@@ -1030,9 +990,7 @@ public interface SqlDatabase
             Update withServiceObjective(ServiceObjectiveName serviceLevelObjective);
         }
 
-        /**
-         * The SQL Database definition to set the elastic pool for database.
-         */
+        /** The SQL Database definition to set the elastic pool for database. */
         interface WithElasticPoolName {
             /**
              * Removes database from it's elastic pool.
@@ -1066,7 +1024,8 @@ public interface SqlDatabase
             Update withExistingElasticPool(SqlElasticPool sqlElasticPool);
 
             /**
-             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
+             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating
+             * database.
              *
              * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database
              * @return The next stage of the update.

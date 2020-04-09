@@ -336,6 +336,11 @@
             <configuration>
               <!-- Sets the output directory for the code coverage report. -->
               <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
           <execution>
@@ -361,6 +366,11 @@
                   </limits>
                 </rule>
               </rules>
+              <excludes>
+                <exclude>**/com/azure/cosmos/implementation/apachecommons/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava25/**/*</exclude>
+                <exclude>**/com/azure/cosmos/implementation/guava27/**/*</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
@@ -405,6 +415,92 @@
             <goals>
               <goal>check</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>net.jonathangiles.tools</groupId>
+        <artifactId>whitelistgenerator-maven-plugin</artifactId>
+        <version>1.0.1</version> <!-- {x-version-update;net.jonathangiles.tools:whitelistgenerator-maven-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>generateWhitelistReport</id>
+            <phase>package</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <baseDir>.</baseDir>
+              <reportFile>target/dependency-whitelist.json</reportFile>
+              <ignoredGA>
+                <param>com.azure:azure-cosmos-examples</param>
+                <param>com.azure:azure-cosmos-benchmark</param>
+                <param>com.azure:azure-core-test</param>
+                <param>com.azure:azure-e2e</param>
+                <param>com.azure:azure-storage-perf</param>
+                <param>com.azure:perf-test-core</param>
+              </ignoredGA>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/bannedDependencies.html
+                We have a list of blessed dependencies here: https://azure.github.io/azure-sdk/java_implementation.html#dependencies
+                Format of includes / excludes is the following: 'groupId[:artifactId][:version][:type][:scope][:classifier]'.
+                Wildcards can be used.
+                -->
+                <bannedDependencies>
+                  <searchTransitive>false</searchTransitive>
+                  <excludes>
+                    <!-- We exclude everything that is runtime-time, compile-time, or provided scoped (i.e. we allow
+                    dependencies when they are used for test scope or otherwise) -->
+                    <exclude>*:*:*:*:runtime</exclude>
+                    <exclude>*:*:*:*:compile</exclude>
+                    <exclude>*:*:*:*:provided</exclude>
+                  </excludes>
+                  <includes>
+                    <include>com.azure:*</include>
+
+                    <!-- Used by many libraries to bring in annotations used by Reactor -->
+                    <include>com.google.code.findbugs:jsr305</include>
+                  </includes>
+                </bannedDependencies>
+
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/requireReleaseDeps.html
+                -->
+                <requireReleaseDeps>
+                  <message>No Snapshots Allowed!</message>
+                </requireReleaseDeps>
+
+                <!--
+                Rule: https://maven.apache.org/enforcer/enforcer-rules/requireSameVersions.html
+                This rule is used to enforce that all modules depend on the same version of particular dependencies or
+                plugins.
+                -->
+                <requireSameVersions>
+                  <dependencies>
+                    <dependency>com.azure.*</dependency>
+                  </dependencies>
+                </requireSameVersions>
+              </rules>
+              <fail>true</fail>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -473,6 +569,10 @@
               <group>
                 <title>Azure Event Hubs</title>
                 <packages>com.azure.messaging.eventhubs*</packages>
+              </group>
+              <group>
+                <title>Azure Form Recognizer</title>
+                <packages>com.azure.ai.formrecognizer*</packages>
               </group>
               <group>
                 <title>Azure Identity</title>
@@ -700,6 +800,7 @@
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-netty/src/samples/java
                 -snippetpath ${project.basedir}/sdk/core/azure-core-http-okhttp/src/samples/java
                 -snippetpath ${project.basedir}/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java
+                -snippetpath ${project.basedir}/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-certificates/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-keys/src/samples/java
                 -snippetpath ${project.basedir}/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java
@@ -960,8 +1061,11 @@
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.http.policy=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.http.rest=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.util=ALL-UNNAMED
                 --add-opens com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
+                --add-opens com.azure.core/com.azure.core.implementation.serializer=ALL-UNNAMED
+                --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer=ALL-UNNAMED
                 --add-opens com.azure.ai.textanalytics/com.azure.ai.textanalytics=ALL-UNNAMED
                 --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
                 --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
@@ -1058,19 +1162,19 @@
                 <goals>
                   <goal>exec</goal>
                 </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
+                    <argument>--rf</argument>
+                    <argument>${project.basedir}/README.md</argument>
+                    <argument>--v</argument>
+                    <argument>${project.version}</argument>
+                  </arguments>
+                </configuration>
               </execution>
             </executions>
-            <configuration>
-              <executable>python</executable>
-              <workingDirectory>${project.basedir}</workingDirectory>
-              <arguments>
-                <argument>../../../eng/pipelines/scripts/generate_overview_from_readme.py</argument>
-                <argument>--rf</argument>
-                <argument>${project.basedir}/README.md</argument>
-                <argument>--v</argument>
-                <argument>${project.version}</argument>
-              </arguments>
-            </configuration>
           </plugin>
           <!-- Add the overview argument to the javadoc args -->
           <plugin>
@@ -1081,6 +1185,50 @@
               <overview>${project.basedir}/readme_overview.html</overview>
               <quiet>true</quiet>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <!-- Skip codesnippet injection unless -Dinject-codesnippets is passed as an argument.
+      This is specifically done to prevent requiring python as a pre-requisite since
+      this is only needed by the build system. This is also necessary due to limitations in consumption
+      from docs side.
+       -->
+    <profile>
+      <id>replace-codesnippet-references</id>
+      <activation>
+        <property>
+          <name>inject-codesnippets</name>
+        </property>
+        <file>
+          <exists>../../../eng/pipelines/scripts/inject_codesnippets.py</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version> <!-- {x-version-update;org.codehaus.mojo:exec-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>replace-codesnippet-references</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <configuration>
+                  <executable>python</executable>
+                  <workingDirectory>${project.basedir}</workingDirectory>
+                  <arguments>
+                    <argument>../../../eng/pipelines/scripts/inject_codesnippets.py</argument>
+                    <argument>--project-dir</argument>
+                    <argument>${project.basedir}</argument>
+                  </arguments>
+                </configuration>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1308,6 +1456,7 @@
     <module>sdk/core/azure-core-management</module>
     <module>sdk/core/azure-core-http-netty</module>
     <module>sdk/core/azure-core-http-okhttp</module>
+    <module>sdk/core/azure-core-http-jdk-httpclient</module>
     <module>sdk/core/azure-core-test</module>
     <module>sdk/core/azure-core-tracing-opentelemetry</module>
     <module>sdk/cosmos/azure-cosmos</module>
@@ -1316,6 +1465,7 @@
     <module>sdk/e2e</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs</module>
     <module>sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob</module>
+    <module>sdk/formrecognizer/azure-ai-formrecognizer</module>
     <module>sdk/identity/azure-identity</module>
     <module>sdk/keyvault/azure-security-keyvault-certificates</module>
     <module>sdk/keyvault/azure-security-keyvault-keys</module>
@@ -1329,8 +1479,8 @@
     <module>sdk/storage/azure-storage-common</module>
     <module>sdk/storage/azure-storage-file-share</module>
     <module>sdk/storage/azure-storage-file-datalake</module>
+    <module>sdk/storage/azure-storage-perf</module>
     <module>sdk/storage/azure-storage-queue</module>
-    <module>sdk/storage/perf-test</module>
     <module>sdk/textanalytics/azure-ai-textanalytics</module>
   </modules>
 </project>

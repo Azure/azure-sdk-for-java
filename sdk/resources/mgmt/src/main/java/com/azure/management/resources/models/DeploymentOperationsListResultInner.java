@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DeploymentOperationsListResult model.
- */
+/** The DeploymentOperationsListResult model. */
 @Fluent
 public final class DeploymentOperationsListResultInner {
     /*
@@ -27,31 +25,30 @@ public final class DeploymentOperationsListResultInner {
 
     /**
      * Get the value property: An array of deployment operations.
-     * 
+     *
      * @return the value value.
      */
-    public List<DeploymentOperationInner> getValue() {
+    public List<DeploymentOperationInner> value() {
         return this.value;
     }
 
     /**
      * Set the value property: An array of deployment operations.
-     * 
+     *
      * @param value the value value to set.
      * @return the DeploymentOperationsListResultInner object itself.
      */
-    public DeploymentOperationsListResultInner setValue(List<DeploymentOperationInner> value) {
+    public DeploymentOperationsListResultInner withValue(List<DeploymentOperationInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
-    public String getNextLink() {
+    public String nextLink() {
         return this.nextLink;
     }
 }

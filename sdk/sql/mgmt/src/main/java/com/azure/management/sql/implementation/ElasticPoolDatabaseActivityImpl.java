@@ -1,25 +1,18 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
 
-import com.azure.management.sql.ElasticPoolDatabaseActivity;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import com.azure.management.sql.ElasticPoolDatabaseActivity;
 import com.azure.management.sql.models.ElasticPoolDatabaseActivityInner;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for Elastic Pool Database Activity interface.
- */
-class ElasticPoolDatabaseActivityImpl
-        extends WrapperImpl<ElasticPoolDatabaseActivityInner>
-        implements ElasticPoolDatabaseActivity {
+/** Implementation for Elastic Pool Database Activity interface. */
+class ElasticPoolDatabaseActivityImpl extends WrapperImpl<ElasticPoolDatabaseActivityInner>
+    implements ElasticPoolDatabaseActivity {
     private final ResourceId resourceId;
 
     protected ElasticPoolDatabaseActivityImpl(ElasticPoolDatabaseActivityInner innerObject) {

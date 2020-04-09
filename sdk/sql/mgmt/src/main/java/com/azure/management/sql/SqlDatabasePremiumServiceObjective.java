@@ -1,19 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
-
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * The name of the configured Service Level Objective of a "Premium" Azure SQL Database.
- */
+/** The name of the configured Service Level Objective of a "Premium" Azure SQL Database. */
 @Fluent
 public class SqlDatabasePremiumServiceObjective extends ExpandableStringEnum<SqlDatabasePremiumServiceObjective> {
     /** Static value P1 for ServiceObjectiveName. */
@@ -39,6 +32,7 @@ public class SqlDatabasePremiumServiceObjective extends ExpandableStringEnum<Sql
 
     /**
      * Creates or finds a ServiceObjectiveName from its string representation.
+     *
      * @param name a name to look for
      * @return the corresponding ServiceObjectiveName
      */
@@ -46,9 +40,7 @@ public class SqlDatabasePremiumServiceObjective extends ExpandableStringEnum<Sql
         return fromString(name, SqlDatabasePremiumServiceObjective.class);
     }
 
-    /**
-     * @return known ServiceObjectiveName values
-     */
+    /** @return known ServiceObjectiveName values */
     public static Collection<SqlDatabasePremiumServiceObjective> values() {
         return values(SqlDatabasePremiumServiceObjective.class);
     }

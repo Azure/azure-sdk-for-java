@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -13,18 +10,13 @@ import com.azure.management.sql.SqlFirewallRule;
 import com.azure.management.sql.SqlFirewallRuleOperations;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.FirewallRuleInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SqlFirewallRule.
- */
+/** Implementation for SqlFirewallRule. */
 public class SqlFirewallRuleImpl
-    extends
-        ExternalChildResourceImpl<SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer>
-    implements
-        SqlFirewallRule,
+    extends ExternalChildResourceImpl<SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer>
+    implements SqlFirewallRule,
         SqlFirewallRule.SqlFirewallRuleDefinition<SqlServer.DefinitionStages.WithCreate>,
         SqlFirewallRule.Update,
         SqlFirewallRuleOperations.SqlFirewallRuleOperationsDefinition {
@@ -36,12 +28,13 @@ public class SqlFirewallRuleImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlFirewallRuleImpl(String name, SqlServerImpl parent, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFirewallRuleImpl(
+        String name, SqlServerImpl parent, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -56,11 +49,16 @@ public class SqlFirewallRuleImpl
      *
      * @param resourceGroupName the resource group name
      * @param sqlServerName the parent SQL server name
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlFirewallRuleImpl(String resourceGroupName, String sqlServerName, String name, FirewallRuleInner innerObject, SqlServerManager sqlServerManager) {
+    SqlFirewallRuleImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String name,
+        FirewallRuleInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -71,7 +69,7 @@ public class SqlFirewallRuleImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
@@ -83,7 +81,11 @@ public class SqlFirewallRuleImpl
 
     @Override
     protected Mono<FirewallRuleInner> getInnerAsync() {
-        return this.sqlServerManager.inner().firewallRules().getAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -146,28 +148,40 @@ public class SqlFirewallRuleImpl
     @Override
     public Mono<SqlFirewallRule> createResourceAsync() {
         final SqlFirewallRuleImpl self = this;
-        return this.sqlServerManager.inner().firewallRules()
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     @Override
     public Mono<SqlFirewallRule> updateResourceAsync() {
         final SqlFirewallRuleImpl self = this;
-        return this.sqlServerManager.inner().firewallRules()
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-            .map(inner -> {
-                self.setInner(inner);
-                return self;
-            });
+            .map(
+                inner -> {
+                    self.setInner(inner);
+                    return self;
+                });
     }
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().firewallRules().deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .firewallRules()
+            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override

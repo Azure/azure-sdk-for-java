@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -11,13 +8,11 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-/**
- * A representation of the Azure SQL Failover Group operations.
- */
+/** A representation of the Azure SQL Failover Group operations. */
 @Fluent
-public interface SqlFailoverGroupOperations extends
-    SupportsCreating<SqlFailoverGroupOperations.DefinitionStages.WithSqlServer>,
-    SqlChildrenOperations<SqlFailoverGroup> {
+public interface SqlFailoverGroupOperations
+    extends SupportsCreating<SqlFailoverGroupOperations.DefinitionStages.WithSqlServer>,
+        SqlChildrenOperations<SqlFailoverGroup> {
 
     /**
      * Fails over from the current primary server to this server.
@@ -57,38 +52,33 @@ public interface SqlFailoverGroupOperations extends
      * @param failoverGroupName the name of the failover group
      * @return a representation of the deferred computation of this call returning the SqlFailoverGroup object
      */
-    Mono<SqlFailoverGroup> forceFailoverAllowDataLossAsync(String resourceGroupName, String serverName, String failoverGroupName);
+    Mono<SqlFailoverGroup> forceFailoverAllowDataLossAsync(
+        String resourceGroupName, String serverName, String failoverGroupName);
 
-
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface SqlFailoverGroupOperationsDefinition extends
-        SqlFailoverGroupOperations.DefinitionStages.WithSqlServer,
-        SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy,
-        SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
-        SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer,
-        SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
-        SqlFailoverGroupOperations.DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface SqlFailoverGroupOperationsDefinition
+        extends SqlFailoverGroupOperations.DefinitionStages.WithSqlServer,
+            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy,
+            SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
+            SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer,
+            SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
+            SqlFailoverGroupOperations.DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the SQL Failover Group definition stages.
-     */
+    /** Grouping of all the SQL Failover Group definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the SQL Failover Group definition.
-         */
+        /** The first stage of the SQL Failover Group definition. */
         interface WithSqlServer {
             /**
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
-             * @param location          the parent SQL server location
+             * @param sqlServerName the parent SQL server name
+             * @param location the parent SQL server location
              * @return the next stage of the definition
              */
-            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(String resourceGroupName, String sqlServerName, String location);
+            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(
+                String resourceGroupName, String sqlServerName, String location);
 
             /**
              * Sets the parent SQL server for the new Failover Group.
@@ -96,20 +86,21 @@ public interface SqlFailoverGroupOperations extends
              * @param sqlServer the parent SQL server
              * @return the next stage of the definition
              */
-            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(SqlServer sqlServer);
+            SqlFailoverGroupOperations.DefinitionStages.WithReadWriteEndpointPolicy withExistingSqlServer(
+                SqlServer sqlServer);
         }
 
-        /**
-         * The SQL Failover Group definition to set the read-write endpoint failover policy.
-         */
+        /** The SQL Failover Group definition to set the read-write endpoint failover policy. */
         interface WithReadWriteEndpointPolicy {
             /**
              * Sets the SQL Failover Group read-write endpoint failover policy as "Automatic".
              *
-             * @param gracePeriodInMinutes the grace period before failover with data loss is attempted for the read-write endpoint
+             * @param gracePeriodInMinutes the grace period before failover with data loss is attempted for the
+             *     read-write endpoint
              * @return the next stage of the definition
              */
-            SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(int gracePeriodInMinutes);
+            SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer
+                withAutomaticReadWriteEndpointPolicyAndDataLossGracePeriod(int gracePeriodInMinutes);
 
             /**
              * Sets the SQL Failover Group read-write endpoint failover policy as "Manual".
@@ -119,9 +110,7 @@ public interface SqlFailoverGroupOperations extends
             SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer withManualReadWriteEndpointPolicy();
         }
 
-        /**
-         * The SQL Failover Group definition to set the failover policy of the read-only endpoint.
-         */
+        /** The SQL Failover Group definition to set the failover policy of the read-only endpoint. */
         interface WithReadOnlyEndpointPolicy {
             /**
              * Sets the SQL Failover Group failover policy of the read-only endpoint to "Enabled".
@@ -138,9 +127,7 @@ public interface SqlFailoverGroupOperations extends
             SqlFailoverGroupOperations.DefinitionStages.WithCreate withReadOnlyEndpointPolicyDisabled();
         }
 
-        /**
-         * The SQL Failover Group definition to set the partner servers.
-         */
+        /** The SQL Failover Group definition to set the partner servers. */
         interface WithPartnerServer extends SqlFailoverGroupOperations.DefinitionStages.WithCreate {
             /**
              * Sets the SQL Failover Group partner server.
@@ -151,9 +138,7 @@ public interface SqlFailoverGroupOperations extends
             SqlFailoverGroupOperations.DefinitionStages.WithPartnerServer withPartnerServerId(String id);
         }
 
-        /**
-         * The SQL Failover Group definition to set the partner servers.
-         */
+        /** The SQL Failover Group definition to set the partner servers. */
         interface WithDatabase {
             /**
              * Sets the SQL Failover Group database.
@@ -172,20 +157,16 @@ public interface SqlFailoverGroupOperations extends
             SqlFailoverGroupOperations.DefinitionStages.WithCreate withDatabaseIds(String... ids);
         }
 
-        /**
-         * The final stage of the SQL Failover Group definition.
-         */
-        interface WithCreate extends
-            SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
-            SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
-            Resource.DefinitionWithTags<SqlFailoverGroupOperations.DefinitionStages.WithCreate>,
-            Creatable<SqlFailoverGroup> {
+        /** The final stage of the SQL Failover Group definition. */
+        interface WithCreate
+            extends SqlFailoverGroupOperations.DefinitionStages.WithReadOnlyEndpointPolicy,
+                SqlFailoverGroupOperations.DefinitionStages.WithDatabase,
+                Resource.DefinitionWithTags<SqlFailoverGroupOperations.DefinitionStages.WithCreate>,
+                Creatable<SqlFailoverGroup> {
         }
     }
 
-    /**
-     * Grouping of the Azure SQL Failover Group common actions.
-     */
+    /** Grouping of the Azure SQL Failover Group common actions. */
     interface SqlFailoverGroupActionsDefinition extends SqlChildrenActionsDefinition<SqlFailoverGroup> {
         /**
          * Begins the definition of a new SQL Failover Group to be added to this server.

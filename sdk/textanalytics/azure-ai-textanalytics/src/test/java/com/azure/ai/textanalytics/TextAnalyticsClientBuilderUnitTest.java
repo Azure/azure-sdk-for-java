@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TextAnalyticsClientBuilderUnitTest {
 
     /**
-     * Test for missing endpoint
+     * Test for missing endpoint when building an asynchronous client
      */
     @Test
     public void missingEndpointAsyncClient() {
@@ -26,7 +26,7 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
-     * Test for missing endpoint
+     * Test for missing endpoint when building a synchronous client
      */
     @Test
     public void missingEndpoint() {

@@ -1,17 +1,13 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.azure.management.sql.AdministratorType;
 import com.azure.management.sql.SqlActiveDirectoryAdministrator;
 import com.azure.management.sql.models.ServerAzureADAdministratorInner;
 
-/**
- * Response containing the SQL Active Directory administrator.
- */
+/** Response containing the SQL Active Directory administrator. */
 public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzureADAdministratorInner>
     implements SqlActiveDirectoryAdministrator {
 
@@ -20,7 +16,7 @@ public class SqlActiveDirectoryAdministratorImpl extends WrapperImpl<ServerAzure
     }
 
     @Override
-    public String administratorType() {
+    public AdministratorType administratorType() {
         return this.inner().administratorType();
     }
 

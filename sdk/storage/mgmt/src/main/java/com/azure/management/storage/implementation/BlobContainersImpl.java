@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.storage.implementation;
 
@@ -15,9 +12,7 @@ import com.azure.management.storage.LegalHold;
 import com.azure.management.storage.models.BlobContainerInner;
 import com.azure.management.storage.models.BlobContainersInner;
 import com.azure.management.storage.models.ImmutabilityPolicyInner;
-import com.azure.management.storage.models.LegalHoldInner;
 import com.azure.management.storage.models.ListContainerItemInner;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -109,21 +104,36 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     }
 
     @Override
-    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch) {
-        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, ifMatch);
+    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName) {
+        return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch) {
+    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String eTagValue) {
+        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue);
+    }
+
+    @Override
+    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName) {
+        return lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
+    }
+
+    @Override
+    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String eTagValue) {
         BlobContainersInner client = this.inner();
-        return client.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, ifMatch)
+        return client.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
                 .map(inner -> new ImmutabilityPolicyImpl(inner, manager()));
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, String ifMatch, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites, null);
+    }
+
+    @Override
+    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites, String eTagValue) {
         BlobContainersInner client = this.inner();
-        return client.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, ifMatch, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites)
+        return client.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue, immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites)
                 .map(policyInner -> new ImmutabilityPolicyImpl(policyInner, this.manager));
     }
 }

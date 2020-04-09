@@ -1,11 +1,7 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
-
 
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
@@ -14,19 +10,15 @@ import com.azure.management.sql.ServiceTierAdvisor;
 import com.azure.management.sql.SloUsageMetric;
 import com.azure.management.sql.SloUsageMetricInterface;
 import com.azure.management.sql.models.ServiceTierAdvisorInner;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Azure SQL Database's service tier advisor.
- */
-class ServiceTierAdvisorImpl
-        extends RefreshableWrapperImpl<ServiceTierAdvisorInner, ServiceTierAdvisor>
-        implements ServiceTierAdvisor {
+/** Implementation for Azure SQL Database's service tier advisor. */
+class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorInner, ServiceTierAdvisor>
+    implements ServiceTierAdvisor {
     private final String sqlServerName;
     private final String resourceGroupName;
     private final SqlServerManager sqlServerManager;
@@ -34,14 +26,17 @@ class ServiceTierAdvisorImpl
     private List<SloUsageMetricInterface> sloUsageMetrics;
     private List<ServiceLevelObjectiveUsageMetric> serviceLevelObjectiveUsageMetrics;
 
-    protected ServiceTierAdvisorImpl(String resourceGroupName, String sqlServerName, ServiceTierAdvisorInner innerObject, SqlServerManager sqlServerManager) {
+    protected ServiceTierAdvisorImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        ServiceTierAdvisorInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
         this.resourceId = ResourceId.fromString(this.inner().getId());
     }
-
 
     @Override
     public String name() {
@@ -104,22 +99,13 @@ class ServiceTierAdvisorImpl
     }
 
     @Override
-    public List<SloUsageMetricInterface> serviceLevelObjectiveUsageMetrics() {
-        if (this.sloUsageMetrics == null) {
-            this.sloUsageMetrics = new ArrayList<>();
-            for (SloUsageMetric sloUsageMetricInner : this.inner().serviceLevelObjectiveUsageMetrics()) {
-                this.sloUsageMetrics.add(new SloUsageMetricImpl(sloUsageMetricInner));
-            }
-        }
-        return sloUsageMetrics;
-    }
-
-    @Override
     public List<ServiceLevelObjectiveUsageMetric> serviceLevelObjectiveUsageMetric() {
         if (this.serviceLevelObjectiveUsageMetrics == null) {
             this.serviceLevelObjectiveUsageMetrics = new ArrayList<>();
             for (SloUsageMetric sloUsageMetricInner : this.inner().serviceLevelObjectiveUsageMetrics()) {
-                this.serviceLevelObjectiveUsageMetrics.add(new ServiceLevelObjectiveUsageMetricImpl(sloUsageMetricInner));
+                this
+                    .serviceLevelObjectiveUsageMetrics
+                    .add(new ServiceLevelObjectiveUsageMetricImpl(sloUsageMetricInner));
             }
         }
         return serviceLevelObjectiveUsageMetrics;
@@ -185,6 +171,10 @@ class ServiceTierAdvisorImpl
         this.sloUsageMetrics = null;
         this.serviceLevelObjectiveUsageMetrics = null;
 
-        return this.sqlServerManager.inner().serviceTierAdvisors().getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .serviceTierAdvisors()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 }

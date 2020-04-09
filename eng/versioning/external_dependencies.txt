@@ -5,7 +5,6 @@ com.fasterxml.jackson.core:jackson-core;2.10.1
 com.fasterxml.jackson.core:jackson-databind;2.10.1
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.10.1
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.10.1
-com.fasterxml.uuid:java-uuid-generator;3.2.0
 com.github.spotbugs:spotbugs;4.0.0-beta3
 com.github.spotbugs:spotbugs-maven-plugin;3.1.12.2
 com.google.code.gson:gson;2.8.5
@@ -61,10 +60,9 @@ com.microsoft.azure:azure-mgmt-storage;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.3.0
 com.sun.activation:jakarta.activation;1.2.1
-commons-collections:commons-collections;3.2.2
 io.opentelemetry:opentelemetry-api;0.2.4
 io.opentelemetry:opentelemetry-sdk;0.2.4
-io.projectreactor:reactor-test;3.3.0.RELEASE
+io.projectreactor:reactor-test;3.3.3.RELEASE
 junit:junit;4.13-beta-3
 org.assertj:assertj-core;3.11.1
 org.bouncycastle:bcprov-jdk15on;1.60
@@ -95,9 +93,7 @@ org.openjdk.jmh:jmh-core;1.22
 org.openjdk.jmh:jmh-generator-annprocess;1.22
 org.spockframework:spock-core;1.3-groovy-2.5
 org.testng:testng;6.14.3
-ognl:ognl;3.0.12
 uk.org.lidalia:slf4j-test;1.2.0
-org.unitils:unitils-core;3.4.6
 com.microsoft.azure:azure;1.24.1
 com.microsoft.azure:azure-mgmt-search;1.24.1
 
@@ -116,6 +112,7 @@ io.dropwizard.metrics:metrics-jvm;4.0.5
 io.reactivex.rxjava2:rxjava;2.2.4
 net.java.dev.jna:jna-platform;5.4.0
 net.jonathangiles.tools:dependencyChecker-maven-plugin;1.0.4
+net.jonathangiles.tools:whitelistgenerator-maven-plugin;1.0.1
 org.apache.commons:commons-collections4;4.2
 org.apache.commons:commons-lang3;3.8.1
 org.apache.commons:commons-text;1.6
@@ -125,6 +122,7 @@ org.apache.maven.plugins:maven-checkstyle-plugin;3.1.0
 org.apache.maven.plugins:maven-clean-plugin;3.0.0
 org.apache.maven.plugins:maven-compiler-plugin;3.8.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
+org.apache.maven.plugins:maven-enforcer-plugin;3.0.0-M3
 org.apache.maven.plugins:maven-failsafe-plugin;2.22.0
 org.apache.maven.plugins:maven-help-plugin;2.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.1.2
@@ -180,7 +178,6 @@ cosmos_io.netty:netty-handler;4.1.45.Final
 cosmos_io.netty:netty-handler-proxy;4.1.45.Final
 cosmos_io.netty:netty-tcnative;2.0.27.Final
 cosmos_io.netty:netty-transport-native-epoll;4.1.45.Final
-cosmos_log4j:log4j;1.2.17
 cosmos_org.mockito:mockito-core;1.10.19
 
 # sdk\eventgrid\microsoft-azure-eventgrid\pom.xml

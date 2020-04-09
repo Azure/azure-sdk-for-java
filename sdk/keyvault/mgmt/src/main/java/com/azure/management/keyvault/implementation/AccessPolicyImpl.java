@@ -1,17 +1,8 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.keyvault.implementation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
 import com.azure.management.graphrbac.ServicePrincipal;
@@ -23,13 +14,18 @@ import com.azure.management.keyvault.Permissions;
 import com.azure.management.keyvault.SecretPermissions;
 import com.azure.management.keyvault.StoragePermissions;
 import com.azure.management.keyvault.Vault;
+import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
-/**
- * Implementation for AccessPolicy and its parent interfaces.
- */
+/** Implementation for AccessPolicy and its parent interfaces. */
 class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, Vault>
-        implements AccessPolicy, AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,
-        AccessPolicy.UpdateDefinition<Vault.Update>, AccessPolicy.Update {
+    implements AccessPolicy,
+        AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,
+        AccessPolicy.UpdateDefinition<Vault.Update>,
+        AccessPolicy.Update {
     private String userPrincipalName;
     private String servicePrincipalName;
 
@@ -373,5 +369,4 @@ class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, V
         inner().permissions().storage().removeAll(permissions);
         return this;
     }
-
 }

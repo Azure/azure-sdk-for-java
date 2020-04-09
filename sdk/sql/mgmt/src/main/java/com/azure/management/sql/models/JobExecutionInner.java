@@ -14,9 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * The JobExecution model.
- */
+/** The JobExecution model. */
 @JsonFlatten
 @Fluent
 public class JobExecutionInner extends ProxyResource {
@@ -100,7 +98,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the jobVersion property: The job version number.
-     * 
+     *
      * @return the jobVersion value.
      */
     public Integer jobVersion() {
@@ -109,7 +107,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the stepName property: The job step name.
-     * 
+     *
      * @return the stepName value.
      */
     public String stepName() {
@@ -118,7 +116,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the stepId property: The job step id.
-     * 
+     *
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -126,9 +124,8 @@ public class JobExecutionInner extends ProxyResource {
     }
 
     /**
-     * Get the jobExecutionId property: The unique identifier of the job
-     * execution.
-     * 
+     * Get the jobExecutionId property: The unique identifier of the job execution.
+     *
      * @return the jobExecutionId value.
      */
     public UUID jobExecutionId() {
@@ -137,7 +134,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the lifecycle property: The detailed state of the job execution.
-     * 
+     *
      * @return the lifecycle value.
      */
     public JobExecutionLifecycle lifecycle() {
@@ -145,9 +142,8 @@ public class JobExecutionInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: The ARM provisioning state of the
-     * job execution.
-     * 
+     * Get the provisioningState property: The ARM provisioning state of the job execution.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -155,9 +151,8 @@ public class JobExecutionInner extends ProxyResource {
     }
 
     /**
-     * Get the createTime property: The time that the job execution was
-     * created.
-     * 
+     * Get the createTime property: The time that the job execution was created.
+     *
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -166,7 +161,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the startTime property: The time that the job execution started.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -175,7 +170,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the endTime property: The time that the job execution completed.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -183,9 +178,8 @@ public class JobExecutionInner extends ProxyResource {
     }
 
     /**
-     * Get the currentAttempts property: Number of times the job execution has
-     * been attempted.
-     * 
+     * Get the currentAttempts property: Number of times the job execution has been attempted.
+     *
      * @return the currentAttempts value.
      */
     public Integer currentAttempts() {
@@ -193,9 +187,8 @@ public class JobExecutionInner extends ProxyResource {
     }
 
     /**
-     * Set the currentAttempts property: Number of times the job execution has
-     * been attempted.
-     * 
+     * Set the currentAttempts property: Number of times the job execution has been attempted.
+     *
      * @param currentAttempts the currentAttempts value to set.
      * @return the JobExecutionInner object itself.
      */
@@ -205,9 +198,8 @@ public class JobExecutionInner extends ProxyResource {
     }
 
     /**
-     * Get the currentAttemptStartTime property: Start time of the current
-     * attempt.
-     * 
+     * Get the currentAttemptStartTime property: Start time of the current attempt.
+     *
      * @return the currentAttemptStartTime value.
      */
     public OffsetDateTime currentAttemptStartTime() {
@@ -216,7 +208,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the lastMessage property: The last status or error message.
-     * 
+     *
      * @return the lastMessage value.
      */
     public String lastMessage() {
@@ -225,7 +217,7 @@ public class JobExecutionInner extends ProxyResource {
 
     /**
      * Get the target property: The target that this execution is executed on.
-     * 
+     *
      * @return the target value.
      */
     public JobExecutionTarget target() {

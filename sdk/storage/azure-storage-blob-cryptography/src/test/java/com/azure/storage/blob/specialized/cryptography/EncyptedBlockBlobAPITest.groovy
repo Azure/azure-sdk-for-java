@@ -797,11 +797,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         ebc.download(originalStream)
 
         def bc2 = ebc.createSnapshot()
-        new EncryptedBlobClientBuilder()
-            .key(fakeKey, "keyWrapAlgorithm")
-            .blobClient(ebc)
-            .buildEncryptedBlobAsyncClient()
-            .upload(Flux.just(ByteBuffer.wrap("ABC".getBytes())), null)
+        ebc.upload(new ByteArrayInputStream("ABC".getBytes()), "ABC".getBytes().length, true)
 
         then:
         def snapshotStream = new ByteArrayOutputStream()

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
 
@@ -58,8 +55,6 @@ import com.azure.management.sql.models.RestorePointInner;
 import com.azure.management.sql.models.ServiceTierAdvisorInner;
 import com.azure.management.sql.models.TransparentDataEncryptionInner;
 import com.azure.management.storage.StorageAccount;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,15 +62,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SqlDatabase and its parent interfaces.
- */
-class SqlDatabaseImpl
-    extends
-        ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
-    implements
-        SqlDatabase,
+/** Implementation for SqlDatabase and its parent interfaces. */
+class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer>
+    implements SqlDatabase,
         SqlDatabase.SqlDatabaseDefinition<SqlServer.DefinitionStages.WithCreate>,
         SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
         SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<SqlServer.DefinitionStages.WithCreate>,
@@ -100,12 +91,11 @@ class SqlDatabaseImpl
 
     private SqlSyncGroupOperationsImpl syncGroups;
 
-
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param name        the name of this external child resource
-     * @param parent      reference to the parent of this external child resource
+     * @param name the name of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
@@ -130,11 +120,17 @@ class SqlDatabaseImpl
      * @param resourceGroupName the resource group name
      * @param sqlServerName the parent SQL server name
      * @param sqlServerLocation the parent SQL server location
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlDatabaseImpl(String resourceGroupName, String sqlServerName, String sqlServerLocation, String name, DatabaseInner innerObject, SqlServerManager sqlServerManager) {
+    SqlDatabaseImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        String sqlServerLocation,
+        String name,
+        DatabaseInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -151,11 +147,15 @@ class SqlDatabaseImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param parentSqlElasticPool the parent SqlElasticPool this database belongs to
-     * @param name        the name of this external child resource
+     * @param name the name of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlDatabaseImpl(TaskGroup.HasTaskGroup parentSqlElasticPool, String name, DatabaseInner innerObject, SqlServerManager sqlServerManager) {
+    SqlDatabaseImpl(
+        TaskGroup.HasTaskGroup parentSqlElasticPool,
+        String name,
+        DatabaseInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(parentSqlElasticPool);
         Objects.requireNonNull(sqlServerManager);
@@ -231,7 +231,6 @@ class SqlDatabaseImpl
         return this.inner().elasticPoolId();
     }
 
-
     @Override
     public String elasticPoolName() {
         return ResourceUtils.nameFromResourceId(this.inner().elasticPoolId());
@@ -253,7 +252,13 @@ class SqlDatabaseImpl
             if (this.parent() != null) {
                 return new SqlWarehouseImpl(this.name(), this.parent(), this.inner(), this.sqlServerManager);
             } else {
-                return new SqlWarehouseImpl(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation, this.name(), this.inner(), this.sqlServerManager);
+                return new SqlWarehouseImpl(
+                    this.resourceGroupName,
+                    this.sqlServerName,
+                    this.sqlServerLocation,
+                    this.name(),
+                    this.inner(),
+                    this.sqlServerManager);
             }
         }
 
@@ -263,8 +268,12 @@ class SqlDatabaseImpl
     @Override
     public List<RestorePoint> listRestorePoints() {
         List<RestorePoint> restorePoints = new ArrayList<>();
-        PagedIterable<RestorePointInner> restorePointInners = this.sqlServerManager.inner()
-            .restorePoints().listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<RestorePointInner> restorePointInners =
+            this
+                .sqlServerManager
+                .inner()
+                .restorePoints()
+                .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         if (restorePointInners != null) {
             for (RestorePointInner inner : restorePointInners) {
                 restorePoints.add(new RestorePointImpl(this.resourceGroupName, this.sqlServerName, inner));
@@ -276,19 +285,32 @@ class SqlDatabaseImpl
     @Override
     public PagedFlux<RestorePoint> listRestorePointsAsync() {
         final SqlDatabaseImpl self = this;
-        return this.sqlServerManager.inner()
-            .restorePoints().listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(restorePointInner -> new RestorePointImpl(self.resourceGroupName, self.sqlServerName, restorePointInner));
+        return this
+            .sqlServerManager
+            .inner()
+            .restorePoints()
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
+            .mapPage(
+                restorePointInner ->
+                    new RestorePointImpl(self.resourceGroupName, self.sqlServerName, restorePointInner));
     }
 
     @Override
     public Map<String, ReplicationLink> listReplicationLinks() {
         Map<String, ReplicationLink> replicationLinkMap = new HashMap<>();
-        PagedIterable<ReplicationLinkInner> replicationLinkInners = this.sqlServerManager.inner()
-            .replicationLinks().listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<ReplicationLinkInner> replicationLinkInners =
+            this
+                .sqlServerManager
+                .inner()
+                .replicationLinks()
+                .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         if (replicationLinkInners != null) {
             for (ReplicationLinkInner inner : replicationLinkInners) {
-                replicationLinkMap.put(inner.getName(), new ReplicationLinkImpl(this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
+                replicationLinkMap
+                    .put(
+                        inner.getName(),
+                        new ReplicationLinkImpl(
+                            this.resourceGroupName, this.sqlServerName, inner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableMap(replicationLinkMap);
@@ -297,15 +319,20 @@ class SqlDatabaseImpl
     @Override
     public PagedFlux<ReplicationLink> listReplicationLinksAsync() {
         final SqlDatabaseImpl self = this;
-        return this.sqlServerManager.inner()
-            .replicationLinks().listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(replicationLinkInner -> new ReplicationLinkImpl(self.resourceGroupName, self.sqlServerName, replicationLinkInner, self.sqlServerManager));
+        return this
+            .sqlServerManager
+            .inner()
+            .replicationLinks()
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
+            .mapPage(
+                replicationLinkInner ->
+                    new ReplicationLinkImpl(
+                        self.resourceGroupName, self.sqlServerName, replicationLinkInner, self.sqlServerManager));
     }
 
     @Override
     public SqlDatabaseExportRequestImpl exportTo(String storageUri) {
-        return new SqlDatabaseExportRequestImpl(this, this.sqlServerManager)
-            .exportTo(storageUri);
+        return new SqlDatabaseExportRequestImpl(this, this.sqlServerManager).exportTo(storageUri);
     }
 
     @Override
@@ -316,7 +343,8 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseExportRequestImpl exportTo(Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName) {
+    public SqlDatabaseExportRequestImpl exportTo(
+        Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName) {
         Objects.requireNonNull(storageAccountCreatable);
         return new SqlDatabaseExportRequestImpl(this, this.sqlServerManager)
             .exportTo(storageAccountCreatable, containerName, fileName);
@@ -324,12 +352,12 @@ class SqlDatabaseImpl
 
     @Override
     public SqlDatabaseImportRequestImpl importBacpac(String storageUri) {
-        return new SqlDatabaseImportRequestImpl(this, this.sqlServerManager)
-            .importFrom(storageUri);
+        return new SqlDatabaseImportRequestImpl(this, this.sqlServerManager).importFrom(storageUri);
     }
 
     @Override
-    public SqlDatabaseImportRequestImpl importBacpac(StorageAccount storageAccount, String containerName, String fileName) {
+    public SqlDatabaseImportRequestImpl importBacpac(
+        StorageAccount storageAccount, String containerName, String fileName) {
         Objects.requireNonNull(storageAccount);
         return new SqlDatabaseImportRequestImpl(this, this.sqlServerManager)
             .importFrom(storageAccount, containerName, fileName);
@@ -337,28 +365,45 @@ class SqlDatabaseImpl
 
     @Override
     public SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(String policyName) {
-        return new SqlDatabaseThreatDetectionPolicyImpl(policyName, this, new DatabaseSecurityAlertPolicyInner(), this.sqlServerManager);
+        return new SqlDatabaseThreatDetectionPolicyImpl(
+            policyName, this, new DatabaseSecurityAlertPolicyInner(), this.sqlServerManager);
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicy getThreatDetectionPolicy() {
-        DatabaseSecurityAlertPolicyInner policyInner = this.sqlServerManager.inner().databaseThreatDetectionPolicies()
-            .get(this.resourceGroupName, this.sqlServerName, this.name());
-        return policyInner != null ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.getName(), this, policyInner, this.sqlServerManager) : null;
+        DatabaseSecurityAlertPolicyInner policyInner =
+            this
+                .sqlServerManager
+                .inner()
+                .databaseThreatDetectionPolicies()
+                .get(this.resourceGroupName, this.sqlServerName, this.name());
+        return policyInner != null
+            ? new SqlDatabaseThreatDetectionPolicyImpl(policyInner.getName(), this, policyInner, this.sqlServerManager)
+            : null;
     }
 
     @Override
     public SqlDatabaseAutomaticTuning getDatabaseAutomaticTuning() {
-        DatabaseAutomaticTuningInner databaseAutomaticTuningInner = this.sqlServerManager.inner().databaseAutomaticTunings()
-            .get(this.resourceGroupName, this.sqlServerName, this.name());
-        return databaseAutomaticTuningInner != null ? new SqlDatabaseAutomaticTuningImpl(this, databaseAutomaticTuningInner) : null;
+        DatabaseAutomaticTuningInner databaseAutomaticTuningInner =
+            this
+                .sqlServerManager
+                .inner()
+                .databaseAutomaticTunings()
+                .get(this.resourceGroupName, this.sqlServerName, this.name());
+        return databaseAutomaticTuningInner != null
+            ? new SqlDatabaseAutomaticTuningImpl(this, databaseAutomaticTuningInner)
+            : null;
     }
 
     @Override
     public List<SqlDatabaseUsageMetric> listUsageMetrics() {
         List<SqlDatabaseUsageMetric> databaseUsageMetrics = new ArrayList<>();
-        PagedIterable<DatabaseUsageInner> databaseUsageInners = this.sqlServerManager.inner().databaseUsages()
-            .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<DatabaseUsageInner> databaseUsageInners =
+            this
+                .sqlServerManager
+                .inner()
+                .databaseUsages()
+                .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         if (databaseUsageInners != null) {
             for (DatabaseUsageInner inner : databaseUsageInners) {
                 databaseUsageMetrics.add(new SqlDatabaseUsageMetricImpl(inner));
@@ -369,7 +414,10 @@ class SqlDatabaseImpl
 
     @Override
     public PagedFlux<SqlDatabaseUsageMetric> listUsageMetricsAsync() {
-        return this.sqlServerManager.inner().databaseUsages()
+        return this
+            .sqlServerManager
+            .inner()
+            .databaseUsages()
             .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(databaseUsageInner -> new SqlDatabaseUsageMetricImpl(databaseUsageInner));
     }
@@ -378,9 +426,15 @@ class SqlDatabaseImpl
     public SqlDatabase rename(String newDatabaseName) {
         ResourceId resourceId = ResourceId.fromString(this.id());
         String newId = resourceId.parent().id() + "/databases/" + newDatabaseName;
-        this.sqlServerManager.inner().databases()
+        this
+            .sqlServerManager
+            .inner()
+            .databases()
             .rename(this.resourceGroupName, this.sqlServerName, this.name(), newId);
-        return this.sqlServerManager.sqlServers().databases()
+        return this
+            .sqlServerManager
+            .sqlServers()
+            .databases()
             .getBySqlServer(this.resourceGroupName, this.sqlServerName, newDatabaseName);
     }
 
@@ -389,17 +443,29 @@ class SqlDatabaseImpl
         final SqlDatabaseImpl self = this;
         ResourceId resourceId = ResourceId.fromString(this.id());
         String newId = resourceId.parent().id() + "/databases/" + newDatabaseName;
-        return this.sqlServerManager.inner().databases()
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
             .renameAsync(this.resourceGroupName, this.sqlServerName, self.name(), newId)
-            .flatMap(aVoid -> self.sqlServerManager.sqlServers().databases()
-                .getBySqlServerAsync(self.resourceGroupName, self.sqlServerName, newDatabaseName));
+            .flatMap(
+                aVoid ->
+                    self
+                        .sqlServerManager
+                        .sqlServers()
+                        .databases()
+                        .getBySqlServerAsync(self.resourceGroupName, self.sqlServerName, newDatabaseName));
     }
 
     @Override
     public List<SqlDatabaseMetric> listMetrics(String filter) {
         List<SqlDatabaseMetric> sqlDatabaseMetrics = new ArrayList<>();
-        PagedIterable<MetricInner> metricInners = this.sqlServerManager.inner().databases()
-            .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
+        PagedIterable<MetricInner> metricInners =
+            this
+                .sqlServerManager
+                .inner()
+                .databases()
+                .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
         if (metricInners != null) {
             for (MetricInner metricInner : metricInners) {
                 sqlDatabaseMetrics.add(new SqlDatabaseMetricImpl(metricInner));
@@ -410,7 +476,10 @@ class SqlDatabaseImpl
 
     @Override
     public PagedFlux<SqlDatabaseMetric> listMetricsAsync(final String filter) {
-        return this.sqlServerManager.inner().databases()
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
             .mapPage(metricInner -> new SqlDatabaseMetricImpl(metricInner));
     }
@@ -418,8 +487,12 @@ class SqlDatabaseImpl
     @Override
     public List<SqlDatabaseMetricDefinition> listMetricDefinitions() {
         List<SqlDatabaseMetricDefinition> sqlDatabaseMetricDefinitions = new ArrayList<>();
-        PagedIterable<MetricDefinitionInner> metricDefinitionInners = this.sqlServerManager.inner().databases()
-            .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<MetricDefinitionInner> metricDefinitionInners =
+            this
+                .sqlServerManager
+                .inner()
+                .databases()
+                .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
         if (metricDefinitionInners != null) {
             for (MetricDefinitionInner metricDefinitionInner : metricDefinitionInners) {
                 sqlDatabaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
@@ -431,35 +504,64 @@ class SqlDatabaseImpl
 
     @Override
     public PagedFlux<SqlDatabaseMetricDefinition> listMetricDefinitionsAsync() {
-        return this.sqlServerManager.inner().databases()
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(metricDefinitionInner -> new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
     }
 
     @Override
     public TransparentDataEncryption getTransparentDataEncryption() {
-        TransparentDataEncryptionInner transparentDataEncryptionInner = this.sqlServerManager.inner()
-            .transparentDataEncryptions().get(this.resourceGroupName, this.sqlServerName, this.name());
-        return (transparentDataEncryptionInner == null) ? null : new TransparentDataEncryptionImpl(this.resourceGroupName, this.sqlServerName, transparentDataEncryptionInner, this.sqlServerManager);
+        TransparentDataEncryptionInner transparentDataEncryptionInner =
+            this
+                .sqlServerManager
+                .inner()
+                .transparentDataEncryptions()
+                .get(this.resourceGroupName, this.sqlServerName, this.name());
+        return (transparentDataEncryptionInner == null)
+            ? null
+            : new TransparentDataEncryptionImpl(
+                this.resourceGroupName, this.sqlServerName, transparentDataEncryptionInner, this.sqlServerManager);
     }
 
     @Override
     public Mono<TransparentDataEncryption> getTransparentDataEncryptionAsync() {
         final SqlDatabaseImpl self = this;
-        return this.sqlServerManager.inner()
-            .transparentDataEncryptions().getAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .map(transparentDataEncryptionInner -> new TransparentDataEncryptionImpl(self.resourceGroupName, self.sqlServerName, transparentDataEncryptionInner, self.sqlServerManager));
+        return this
+            .sqlServerManager
+            .inner()
+            .transparentDataEncryptions()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name())
+            .map(
+                transparentDataEncryptionInner ->
+                    new TransparentDataEncryptionImpl(
+                        self.resourceGroupName,
+                        self.sqlServerName,
+                        transparentDataEncryptionInner,
+                        self.sqlServerManager));
     }
 
     @Override
     public Map<String, ServiceTierAdvisor> listServiceTierAdvisors() {
         Map<String, ServiceTierAdvisor> serviceTierAdvisorMap = new HashMap<>();
-        PagedIterable<ServiceTierAdvisorInner> serviceTierAdvisorInners = this.sqlServerManager.inner()
-            .serviceTierAdvisors().listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
+        PagedIterable<ServiceTierAdvisorInner> serviceTierAdvisorInners =
+            this
+                .sqlServerManager
+                .inner()
+                .serviceTierAdvisors()
+                .listByDatabase(this.resourceGroupName, this.sqlServerName, this.name());
         if (serviceTierAdvisorInners != null) {
             for (ServiceTierAdvisorInner serviceTierAdvisorInner : serviceTierAdvisorInners) {
-                serviceTierAdvisorMap.put(serviceTierAdvisorInner.getName(),
-                    new ServiceTierAdvisorImpl(this.resourceGroupName, this.sqlServerName, serviceTierAdvisorInner, this.sqlServerManager));
+                serviceTierAdvisorMap
+                    .put(
+                        serviceTierAdvisorInner.getName(),
+                        new ServiceTierAdvisorImpl(
+                            this.resourceGroupName,
+                            this.sqlServerName,
+                            serviceTierAdvisorInner,
+                            this.sqlServerManager));
             }
         }
         return Collections.unmodifiableMap(serviceTierAdvisorMap);
@@ -468,9 +570,15 @@ class SqlDatabaseImpl
     @Override
     public PagedFlux<ServiceTierAdvisor> listServiceTierAdvisorsAsync() {
         final SqlDatabaseImpl self = this;
-        return this.sqlServerManager.inner()
-            .serviceTierAdvisors().listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(serviceTierAdvisorInner -> new ServiceTierAdvisorImpl(self.resourceGroupName, self.sqlServerName, serviceTierAdvisorInner, self.sqlServerManager));
+        return this
+            .sqlServerManager
+            .inner()
+            .serviceTierAdvisors()
+            .listByDatabaseAsync(this.resourceGroupName, this.sqlServerName, this.name())
+            .mapPage(
+                serviceTierAdvisorInner ->
+                    new ServiceTierAdvisorImpl(
+                        self.resourceGroupName, self.sqlServerName, serviceTierAdvisorInner, self.sqlServerManager));
     }
 
     @Override
@@ -497,7 +605,6 @@ class SqlDatabaseImpl
         return this.syncGroups;
     }
 
-
     SqlDatabaseImpl withPatchUpdate() {
         this.isPatchUpdate = true;
         return this;
@@ -505,7 +612,11 @@ class SqlDatabaseImpl
 
     @Override
     protected Mono<DatabaseInner> getInnerAsync() {
-        return this.sqlServerManager.inner().databases().getAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
+            .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     void addParentDependency(TaskGroup.HasTaskGroup parentDependency) {
@@ -517,12 +628,13 @@ class SqlDatabaseImpl
         if (this.importRequestInner != null && this.elasticPoolId() != null) {
             final SqlDatabaseImpl self = this;
             final String epId = this.elasticPoolId();
-            this.addPostRunDependent(context -> {
-                self.importRequestInner = null;
-                self.withExistingElasticPoolId(epId);
-                return self.createResourceAsync()
-                    .flatMap(sqlDatabase -> context.voidMono());
-            });
+            this
+                .addPostRunDependent(
+                    context -> {
+                        self.importRequestInner = null;
+                        self.withExistingElasticPoolId(epId);
+                        return self.createResourceAsync().flatMap(sqlDatabase -> context.voidMono());
+                    });
         }
     }
 
@@ -536,29 +648,42 @@ class SqlDatabaseImpl
                 this.importRequestInner.withEdition(this.edition());
             }
             if (this.importRequestInner.serviceObjectiveName() == null && this.inner().sku() != null) {
-                this.importRequestInner.withServiceObjectiveName(ServiceObjectiveName.fromString(this.requestedServiceObjectiveName()));
+                this
+                    .importRequestInner
+                    .withServiceObjectiveName(ServiceObjectiveName.fromString(this.requestedServiceObjectiveName()));
             }
             if (this.importRequestInner.maxSizeBytes() == null) {
                 this.importRequestInner.withMaxSizeBytes(String.valueOf(this.inner().maxSizeBytes()));
             }
 
-            return this.sqlServerManager.inner().databases()
+            return this
+                .sqlServerManager
+                .inner()
+                .databases()
                 .importMethodAsync(this.resourceGroupName, this.sqlServerName, this.importRequestInner)
-                .flatMap(importExportResponseInner -> {
-                    if (self.elasticPoolId() != null) {
-                        self.importRequestInner = null;
-                        return self.withExistingElasticPoolId(self.elasticPoolId()).withPatchUpdate().updateResourceAsync();
-                    } else {
-                        return self.refreshAsync();
-                    }
-                });
+                .flatMap(
+                    importExportResponseInner -> {
+                        if (self.elasticPoolId() != null) {
+                            self.importRequestInner = null;
+                            return self
+                                .withExistingElasticPoolId(self.elasticPoolId())
+                                .withPatchUpdate()
+                                .updateResourceAsync();
+                        } else {
+                            return self.refreshAsync();
+                        }
+                    });
         } else {
-            return this.sqlServerManager.inner().databases()
+            return this
+                .sqlServerManager
+                .inner()
+                .databases()
                 .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.name(), this.inner())
-                .map(inner -> {
-                    self.setInner(inner);
-                    return self;
-                });
+                .map(
+                    inner -> {
+                        self.setInner(inner);
+                        return self;
+                    });
         }
     }
 
@@ -566,21 +691,26 @@ class SqlDatabaseImpl
     public Mono<SqlDatabase> updateResourceAsync() {
         if (this.isPatchUpdate) {
             final SqlDatabaseImpl self = this;
-            DatabaseUpdate databaseUpdateInner = new DatabaseUpdate()
-                .withTags(self.inner().getTags())
-                .withCollation(self.inner().collation())
-                .withSourceDatabaseId(self.inner().sourceDatabaseId())
-                .withCreateMode(self.inner().createMode())
-                .withSku(self.inner().sku())
-                .withMaxSizeBytes(this.inner().maxSizeBytes())
-                .withElasticPoolId(this.inner().elasticPoolId());
-            return this.sqlServerManager.inner().databases()
+            DatabaseUpdate databaseUpdateInner =
+                new DatabaseUpdate()
+                    .withTags(self.inner().getTags())
+                    .withCollation(self.inner().collation())
+                    .withSourceDatabaseId(self.inner().sourceDatabaseId())
+                    .withCreateMode(self.inner().createMode())
+                    .withSku(self.inner().sku())
+                    .withMaxSizeBytes(this.inner().maxSizeBytes())
+                    .withElasticPoolId(this.inner().elasticPoolId());
+            return this
+                .sqlServerManager
+                .inner()
+                .databases()
                 .updateAsync(this.resourceGroupName, this.sqlServerName, this.name(), databaseUpdateInner)
-                .map(inner -> {
-                    self.setInner(inner);
-                    self.isPatchUpdate = false;
-                    return self;
-                });
+                .map(
+                    inner -> {
+                        self.setInner(inner);
+                        self.isPatchUpdate = false;
+                        return self;
+                    });
 
         } else {
             return this.createResourceAsync();
@@ -605,7 +735,11 @@ class SqlDatabaseImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.sqlServerManager.inner().databases().deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
+        return this
+            .sqlServerManager
+            .inner()
+            .databases()
+            .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
@@ -619,7 +753,8 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withExistingSqlServer(String resourceGroupName, String sqlServerName, String sqlServerLocation) {
+    public SqlDatabaseImpl withExistingSqlServer(
+        String resourceGroupName, String sqlServerName, String sqlServerLocation) {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerLocation = sqlServerLocation;
@@ -651,7 +786,9 @@ class SqlDatabaseImpl
 
     private String generateElasticPoolIdFromName(String elasticPoolName) {
         if (this.parentId() == null) {
-            return ResourceUtils.constructResourceId(this.sqlServerManager.getSubscriptionId(),
+            return ResourceUtils
+                .constructResourceId(
+                    this.sqlServerManager.getSubscriptionId(),
                     this.resourceGroupName,
                     "Microsoft.Sql",
                     "elasticPools",
@@ -660,7 +797,6 @@ class SqlDatabaseImpl
         }
         return String.format("%s/elasticPools/%s", this.parentId(), elasticPoolName);
     }
-
 
     @Override
     public SqlDatabaseImpl withExistingElasticPool(String elasticPoolName) {
@@ -700,20 +836,25 @@ class SqlDatabaseImpl
     @Override
     public SqlElasticPoolForDatabaseImpl defineElasticPool(String elasticPoolName) {
         if (this.sqlElasticPools == null) {
-            this.sqlElasticPools = new SqlElasticPoolsAsExternalChildResourcesImpl(this.taskGroup(), this.sqlServerManager, "SqlElasticPool");
+            this.sqlElasticPools =
+                new SqlElasticPoolsAsExternalChildResourcesImpl(
+                    this.taskGroup(), this.sqlServerManager, "SqlElasticPool");
         }
         this.inner().withSku(null);
         this.inner().withElasticPoolId(generateElasticPoolIdFromName(elasticPoolName));
 
-        return new SqlElasticPoolForDatabaseImpl(this, this.sqlElasticPools
-            .defineIndependentElasticPool(elasticPoolName).withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation));
+        return new SqlElasticPoolForDatabaseImpl(
+            this,
+            this
+                .sqlElasticPools
+                .defineIndependentElasticPool(elasticPoolName)
+                .withExistingSqlServer(this.resourceGroupName, this.sqlServerName, this.sqlServerLocation));
     }
 
     @Override
     public SqlDatabaseImpl fromRestorableDroppedDatabase(SqlRestorableDroppedDatabase restorableDroppedDatabase) {
         Objects.requireNonNull(restorableDroppedDatabase);
-        this.inner().withRestorableDroppedDatabaseId(restorableDroppedDatabase.id())
-                .withCreateMode(CreateMode.RESTORE);
+        this.inner().withRestorableDroppedDatabaseId(restorableDroppedDatabase.id()).withCreateMode(CreateMode.RESTORE);
         return this;
     }
 
@@ -736,23 +877,36 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl importFrom(final StorageAccount storageAccount, final String containerName, final String fileName) {
+    public SqlDatabaseImpl importFrom(
+        final StorageAccount storageAccount, final String containerName, final String fileName) {
         final SqlDatabaseImpl self = this;
         Objects.requireNonNull(storageAccount);
         this.initializeImportRequestInner();
-        this.addDependency(new FunctionalTaskItem() {
-            @Override
-            public Mono<Indexable> apply(final Context context) {
-                return storageAccount.getKeysAsync()
-                    .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
-                    .flatMap(storageAccountKey -> {
-                        self.importRequestInner.withStorageUri(String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
-                        self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                        self.importRequestInner.withStorageKey(storageAccountKey.value());
-                        return context.voidMono();
-                    });
-            }
-        });
+        this
+            .addDependency(
+                new FunctionalTaskItem() {
+                    @Override
+                    public Mono<Indexable> apply(final Context context) {
+                        return storageAccount
+                            .getKeysAsync()
+                            .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
+                            .flatMap(
+                                storageAccountKey -> {
+                                    self
+                                        .importRequestInner
+                                        .withStorageUri(
+                                            String
+                                                .format(
+                                                    "%s%s/%s",
+                                                    storageAccount.endPoints().primary().blob(),
+                                                    containerName,
+                                                    fileName));
+                                    self.importRequestInner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                                    self.importRequestInner.withStorageKey(storageAccountKey.value());
+                                    return context.voidMono();
+                                });
+                    }
+                });
         return this;
     }
 
@@ -771,7 +925,8 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword) {
+    public SqlDatabaseImpl withSqlAdministratorLoginAndPassword(
+        String administratorLogin, String administratorPassword) {
         this.importRequestInner.withAuthenticationType(AuthenticationType.SQL);
         this.importRequestInner.withAdministratorLogin(administratorLogin);
         this.importRequestInner.withAdministratorLoginPassword(administratorPassword);
@@ -779,7 +934,8 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword) {
+    public SqlDatabaseImpl withActiveDirectoryLoginAndPassword(
+        String administratorLogin, String administratorPassword) {
         this.importRequestInner.withAuthenticationType(AuthenticationType.ADPASSWORD);
         this.importRequestInner.withAdministratorLogin(administratorLogin);
         this.importRequestInner.withAdministratorLoginPassword(administratorPassword);
@@ -795,8 +951,7 @@ class SqlDatabaseImpl
     public SqlDatabaseImpl fromRestorePoint(RestorePoint restorePoint, OffsetDateTime restorePointDateTime) {
         Objects.requireNonNull(restorePoint);
         this.inner().withRestorePointInTime(restorePointDateTime);
-        return this.withSourceDatabase(restorePoint.databaseId())
-            .withMode(CreateMode.POINT_IN_TIME_RESTORE);
+        return this.withSourceDatabase(restorePoint.databaseId()).withMode(CreateMode.POINT_IN_TIME_RESTORE);
     }
 
     @Override
@@ -854,8 +1009,7 @@ class SqlDatabaseImpl
 
     @Override
     public SqlDatabaseImpl withBasicEdition(SqlDatabaseBasicStorage maxStorageCapacity) {
-        Sku sku = new Sku().withName(ServiceObjectiveName.BASIC.toString())
-                .withTier(DatabaseEdition.BASIC.toString());
+        Sku sku = new Sku().withName(ServiceObjectiveName.BASIC.toString()).withTier(DatabaseEdition.BASIC.toString());
 
         this.inner().withSku(sku);
         this.inner().withMaxSizeBytes(maxStorageCapacity.capacity());
@@ -869,9 +1023,9 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withStandardEdition(SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity) {
-        Sku sku = new Sku().withName(serviceObjective.toString())
-                .withTier(DatabaseEdition.STANDARD.toString());
+    public SqlDatabaseImpl withStandardEdition(
+        SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity) {
+        Sku sku = new Sku().withName(serviceObjective.toString()).withTier(DatabaseEdition.STANDARD.toString());
 
         this.inner().withSku(sku);
         this.inner().withMaxSizeBytes(maxStorageCapacity.capacity());
@@ -885,9 +1039,9 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withPremiumEdition(SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity) {
-        Sku sku = new Sku().withName(serviceObjective.toString())
-                .withTier(DatabaseEdition.PREMIUM.toString());
+    public SqlDatabaseImpl withPremiumEdition(
+        SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity) {
+        Sku sku = new Sku().withName(serviceObjective.toString()).withTier(DatabaseEdition.PREMIUM.toString());
 
         this.inner().withSku(sku);
         this.inner().withMaxSizeBytes(maxStorageCapacity.capacity());
@@ -903,8 +1057,11 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withCustomEdition(DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity) {
-        Sku sku = new Sku().withName(serviceObjective.toString())
+    public SqlDatabaseImpl withCustomEdition(
+        DatabaseEdition edition, ServiceObjectiveName serviceObjective, int capacity) {
+        Sku sku =
+            new Sku()
+                .withName(serviceObjective.toString())
                 .withTier(edition.toString())
                 .withCapacity(capacity <= 0 ? null : Integer.valueOf(capacity));
 

@@ -1,22 +1,15 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.SqlSyncGroupLogProperty;
 import com.azure.management.sql.SyncGroupLogType;
 import com.azure.management.sql.models.SyncGroupLogPropertiesInner;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for SqlSyncGroupLogProperty.
- */
-public class SqlSyncGroupLogPropertyImpl
-    extends WrapperImpl<SyncGroupLogPropertiesInner>
+/** Implementation for SqlSyncGroupLogProperty. */
+public class SqlSyncGroupLogPropertyImpl extends WrapperImpl<SyncGroupLogPropertiesInner>
     implements SqlSyncGroupLogProperty {
     protected SqlSyncGroupLogPropertyImpl(SyncGroupLogPropertiesInner innerObject) {
         super(innerObject);

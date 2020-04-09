@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
@@ -11,22 +8,17 @@ import com.azure.management.sql.AutomaticTuningServerMode;
 import com.azure.management.sql.AutomaticTuningServerOptions;
 import com.azure.management.sql.SqlServerAutomaticTuning;
 import com.azure.management.sql.models.ServerAutomaticTuningInner;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Azure SQL server automatic tuning.
- */
+/** Implementation for Azure SQL server automatic tuning. */
 public class SqlServerAutomaticTuningImpl
     extends RefreshableWrapperImpl<ServerAutomaticTuningInner, SqlServerAutomaticTuning>
-    implements
-        SqlServerAutomaticTuning,
-        SqlServerAutomaticTuning.Update {
+    implements SqlServerAutomaticTuning, SqlServerAutomaticTuning.Update {
 
     protected String key;
     private SqlServerManager sqlServerManager;
@@ -37,7 +29,11 @@ public class SqlServerAutomaticTuningImpl
         this(server.resourceGroupName(), server.name(), innerObject, server.manager());
     }
 
-    SqlServerAutomaticTuningImpl(String resourceGroupName, String sqlServerName, ServerAutomaticTuningInner innerObject, SqlServerManager sqlServerManager) {
+    SqlServerAutomaticTuningImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        ServerAutomaticTuningInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(innerObject);
         Objects.requireNonNull(innerObject);
         Objects.requireNonNull(sqlServerManager);
@@ -65,7 +61,11 @@ public class SqlServerAutomaticTuningImpl
 
     @Override
     public Map<String, AutomaticTuningServerOptions> tuningOptions() {
-        return Collections.unmodifiableMap(this.inner().options() != null ? this.inner().options() : new HashMap<String, AutomaticTuningServerOptions>());
+        return Collections
+            .unmodifiableMap(
+                this.inner().options() != null
+                    ? this.inner().options()
+                    : new HashMap<String, AutomaticTuningServerOptions>());
     }
 
     @Override
@@ -75,18 +75,26 @@ public class SqlServerAutomaticTuningImpl
     }
 
     @Override
-    public SqlServerAutomaticTuningImpl withAutomaticTuningOption(String tuningOptionName, AutomaticTuningOptionModeDesired desiredState) {
+    public SqlServerAutomaticTuningImpl withAutomaticTuningOption(
+        String tuningOptionName, AutomaticTuningOptionModeDesired desiredState) {
         if (this.inner().options() == null) {
             this.inner().withOptions(new HashMap<String, AutomaticTuningServerOptions>());
         }
         AutomaticTuningServerOptions item = this.inner().options().get(tuningOptionName);
-        this.inner().options()
-            .put(tuningOptionName, item != null ? item.withDesiredState(desiredState) : new AutomaticTuningServerOptions().withDesiredState(desiredState));
+        this
+            .inner()
+            .options()
+            .put(
+                tuningOptionName,
+                item != null
+                    ? item.withDesiredState(desiredState)
+                    : new AutomaticTuningServerOptions().withDesiredState(desiredState));
         return this;
     }
 
     @Override
-    public SqlServerAutomaticTuningImpl withAutomaticTuningOptions(Map<String, AutomaticTuningOptionModeDesired> tuningOptions) {
+    public SqlServerAutomaticTuningImpl withAutomaticTuningOptions(
+        Map<String, AutomaticTuningOptionModeDesired> tuningOptions) {
         if (tuningOptions != null) {
             for (Map.Entry<String, AutomaticTuningOptionModeDesired> option : tuningOptions.entrySet()) {
                 this.withAutomaticTuningOption(option.getKey(), option.getValue());
@@ -97,7 +105,10 @@ public class SqlServerAutomaticTuningImpl
 
     @Override
     protected Mono<ServerAutomaticTuningInner> getInnerAsync() {
-        return this.sqlServerManager.inner().serverAutomaticTunings()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverAutomaticTunings()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
 
@@ -109,12 +120,16 @@ public class SqlServerAutomaticTuningImpl
     @Override
     public Mono<SqlServerAutomaticTuning> applyAsync() {
         final SqlServerAutomaticTuningImpl self = this;
-        return this.sqlServerManager.inner().serverAutomaticTunings()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverAutomaticTunings()
             .updateAsync(this.resourceGroupName, this.sqlServerName, this.inner())
-            .map(serverAutomaticTuningInner -> {
-                self.setInner(serverAutomaticTuningInner);
-                return self;
-            });
+            .map(
+                serverAutomaticTuningInner -> {
+                    self.setInner(serverAutomaticTuningInner);
+                    return self;
+                });
     }
 
     @Override

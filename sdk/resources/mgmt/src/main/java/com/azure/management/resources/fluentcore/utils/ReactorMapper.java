@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.utils;
 
@@ -22,11 +19,12 @@ public final class ReactorMapper<T> implements Function<Object, T> {
     private final T value;
 
     /**
-     * Shortcut for mapping the output of an arbitrary observable to one returning an instance of a specific type, using the IO scheduler.
+     * Shortcut for mapping the output of an arbitrary observable to one returning an instance of a specific type,
+     * using the IO scheduler.
      *
      * @param fromObservable the source observable
-     * @param toValue        the value to emit to the observer
-     * @param <T>            the type of the value to emit
+     * @param toValue the value to emit to the observer
+     * @param <T> the type of the value to emit
      * @return an observable emitting the specified value
      */
     public static <T> Mono<T> map(Mono<?> fromObservable, final T toValue) {

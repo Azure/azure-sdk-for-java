@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
 import com.azure.management.dns.models.RecordSetInner;
@@ -19,6 +16,7 @@ import com.azure.management.dns.PtrRecord;
 import com.azure.management.dns.RecordType;
 import com.azure.management.dns.SrvRecord;
 import com.azure.management.dns.TxtRecord;
+import com.azure.management.resources.fluentcore.utils.ETagState;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -313,8 +311,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withETagCheck() {
-        this.eTagState.withImplicitETagCheckOnCreate();
-        this.eTagState.withImplicitETagCheckOnUpdate();
+        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
         return this;
     }
 
@@ -410,61 +407,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         return this;
     }
 
-    private class ETagState {
-        private boolean doImplicitETagCheckOnCreate;
-        private boolean doImplicitETagCheckOnUpdate;
-        private String eTagOnUpdate;
-        private String eTagOnDelete;
-
-        public ETagState withImplicitETagCheckOnCreate() {
-            this.doImplicitETagCheckOnCreate = true;
-            return this;
-        }
-
-        public ETagState withImplicitETagCheckOnUpdate() {
-            this.doImplicitETagCheckOnUpdate = true;
-            return this;
-        }
-
-        public ETagState withExplicitETagCheckOnUpdate(String eTagValue) {
-            this.eTagOnUpdate = eTagValue;
-            return this;
-        }
-
-        public ETagState withExplicitETagCheckOnDelete(String eTagValue) {
-            this.eTagOnDelete = eTagValue;
-            return this;
-        }
-
-
-        public ETagState clear() {
-            this.doImplicitETagCheckOnCreate = false;
-            this.doImplicitETagCheckOnUpdate = false;
-            this.eTagOnUpdate = null;
-            this.eTagOnDelete = null;
-            return this;
-        }
-
-        public String ifMatchValueOnUpdate(String currentETagValue) {
-            String eTagValue = null;
-            if (this.doImplicitETagCheckOnUpdate) {
-                eTagValue = currentETagValue;
-            }
-            if (this.eTagOnUpdate != null) {
-                eTagValue = this.eTagOnUpdate;
-            }
-            return eTagValue;
-        }
-
-        public String ifMatchValueOnDelete() {
-            return this.eTagOnDelete;
-        }
-
-        public String ifNonMatchValueOnCreate() {
-            if (this.doImplicitETagCheckOnCreate) {
-                return "*";
-            }
-            return null;
-        }
+    private boolean isInCreateMode() {
+        return this.inner().getId() == null;
     }
 }

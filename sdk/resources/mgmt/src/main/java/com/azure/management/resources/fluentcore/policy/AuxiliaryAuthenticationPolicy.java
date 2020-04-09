@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.policy;
 
@@ -16,6 +13,7 @@ import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.AzureTokenCredential;
+import com.azure.management.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -34,6 +32,11 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
 
     private final AzureTokenCredential[] tokenCredentials;
 
+    /**
+     * Initialize an auxiliary authentication policy with the list of AzureTokenCredentials.
+     *
+     * @param credentials the AzureTokenCredentials list
+     */
     public AuxiliaryAuthenticationPolicy(AzureTokenCredential... credentials) {
         this.tokenCredentials = credentials;
     }
@@ -46,7 +49,9 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.clone().process().flatMap(
             response -> {
-                if (!isResponseSuccessful(response) && this.tokenCredentials != null && this.tokenCredentials.length > 0) {
+                if (!isResponseSuccessful(response)
+                    && this.tokenCredentials != null && this.tokenCredentials.length > 0) {
+
                     HttpResponse bufferedResponse = response.buffer();
                     return FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).flatMap(
                         body -> {
@@ -55,25 +60,31 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
                             AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
                             CloudError cloudError;
                             try {
-                                cloudError = jacksonAdapter.deserialize(bodyStr, CloudError.class, SerializerEncoding.JSON);
+                                cloudError = jacksonAdapter.deserialize(
+                                    bodyStr, CloudError.class, SerializerEncoding.JSON);
                             } catch (IOException e) {
                                 return Mono.just(bufferedResponse);
                             }
 
-                            if (cloudError != null && LINKED_AUTHORIZATION_FAILED.equals(cloudError.getCode()) &&
-                                context.getHttpRequest().getHeaders().getValue(AUTHORIZATION_AUXILIARY_HEADER) == null) {
+                            if (cloudError != null && LINKED_AUTHORIZATION_FAILED.equals(cloudError.getCode())
+                                && context.getHttpRequest().getHeaders()
+                                    .getValue(AUTHORIZATION_AUXILIARY_HEADER) == null) {
                                 Flux<String> tokens = Flux.fromIterable(Arrays.asList(tokenCredentials))
                                     .flatMap(
                                         credential -> {
-                                            String defaultScope = com.azure.management.Utils.getDefaultScopeFromRequest(context.getHttpRequest(), credential.getEnvironment());
-                                            return credential.getToken(new TokenRequestContext().addScopes(defaultScope))
-                                                    .map(accessToken -> String.format(SCHEMA_FORMAT, accessToken.getToken()));
+                                            String defaultScope = Utils.getDefaultScopeFromRequest(
+                                                context.getHttpRequest(), credential.getEnvironment());
+                                            return credential.getToken(
+                                                new TokenRequestContext().addScopes(defaultScope))
+                                                    .map(accessToken ->
+                                                        String.format(SCHEMA_FORMAT, accessToken.getToken()));
                                         });
 
                                 // Retry
                                 return tokens.collectList().flatMap(
                                     tokenList -> {
-                                        context.getHttpRequest().setHeader(AUTHORIZATION_AUXILIARY_HEADER, String.join(",", tokenList));
+                                        context.getHttpRequest()
+                                            .setHeader(AUTHORIZATION_AUXILIARY_HEADER, String.join(",", tokenList));
                                         return next.process();
                                     }
                                 );

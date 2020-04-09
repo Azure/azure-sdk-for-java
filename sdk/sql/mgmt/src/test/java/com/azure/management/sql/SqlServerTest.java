@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql;
 
@@ -18,36 +15,32 @@ public abstract class SqlServerTest extends TestBase {
     protected ResourceManager resourceManager;
     protected SqlServerManager sqlServerManager;
     protected StorageManager storageManager;
-    protected String RG_NAME = "";
-    protected String SQL_SERVER_NAME = "";
+    protected String rgName = "";
+    protected String sqlServerName = "";
 
     @Override
     protected RestClient buildRestClient(RestClientBuilder builder, boolean isMocked) {
-//        if (!isMocked) {
-//        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS) , isMocked);
+        //        if (!isMocked) {
+        //        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS) , isMocked);
         return super.buildRestClient(builder, isMocked);
     }
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("rgsql", 20);
-        SQL_SERVER_NAME = generateRandomResourceName("javasqlserver", 20);
+        rgName = generateRandomResourceName("rgsql", 20);
+        sqlServerName = generateRandomResourceName("javasqlserver", 20);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        sqlServerManager = SqlServerManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        sqlServerManager = SqlServerManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
 
-        storageManager = StorageManager
-            .authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
     }
 
     @Override
     protected void cleanUpResources() {
         SdkContext.sleep(1000);
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

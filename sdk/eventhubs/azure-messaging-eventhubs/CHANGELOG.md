@@ -1,6 +1,9 @@
 # Release History
 
-## 5.0.3 (2020-03-10)
+## 5.1.0-beta.1 (Unreleased)
+
+
+## 5.0.3 (2020-04-08)
 - Fix bug where producers and consumers would be unable to get partition information after a reconnect.
 
 ## 5.0.2 (2020-02-13)

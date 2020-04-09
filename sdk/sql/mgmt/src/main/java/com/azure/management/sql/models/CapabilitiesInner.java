@@ -18,114 +18,134 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.sql.CapabilityGroup;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Capabilities.
- */
+/** An instance of this class provides access to all the operations defined in Capabilities. */
 public final class CapabilitiesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private CapabilitiesService service;
+    /** The proxy service used to perform REST calls. */
+    private final CapabilitiesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private SqlManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of CapabilitiesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     CapabilitiesInner(SqlManagementClientImpl client) {
-        this.service = RestProxy.create(CapabilitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(CapabilitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * SqlManagementClientCapabilities to be used by the proxy service to
+     * The interface defining all the services for SqlManagementClientCapabilities to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientCapabilities")
+    @ServiceInterface(name = "SqlManagementClientC")
     private interface CapabilitiesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocation(@HostParam("$host") String host, @PathParam("locationName") String locationName, @QueryParam("include") CapabilityGroup include, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocation(
+            @HostParam("$host") String host,
+            @PathParam("locationName") String locationName,
+            @QueryParam("include") CapabilityGroup include,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
     }
 
     /**
      * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName 
-     * @param include 
+     *
+     * @param locationName The location name whose capabilities are retrieved.
+     * @param include If specified, restricts the response to only include the selected item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription capabilities available for the specified location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocationWithResponseAsync(String locationName, CapabilityGroup include) {
+    public Mono<SimpleResponse<LocationCapabilitiesInner>> listByLocationWithResponseAsync(
+        String locationName, CapabilityGroup include) {
         final String apiVersion = "2018-06-01-preview";
-        return service.listByLocation(this.client.getHost(), locationName, include, this.client.getSubscriptionId(), apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByLocation(
+                            this.client.getHost(),
+                            locationName,
+                            include,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName 
-     * @param include 
+     *
+     * @param locationName The location name whose capabilities are retrieved.
+     * @param include If specified, restricts the response to only include the selected item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription capabilities available for the specified location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocationCapabilitiesInner> listByLocationAsync(String locationName, CapabilityGroup include) {
         return listByLocationWithResponseAsync(locationName, include)
-            .flatMap((SimpleResponse<LocationCapabilitiesInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<LocationCapabilitiesInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The location name whose capabilities are retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription capabilities available for the specified location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LocationCapabilitiesInner> listByLocationAsync(String locationName) {
         final CapabilityGroup include = null;
+        final Context context = null;
         return listByLocationWithResponseAsync(locationName, include)
-            .flatMap((SimpleResponse<LocationCapabilitiesInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<LocationCapabilitiesInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName 
-     * @param include 
+     *
+     * @param locationName The location name whose capabilities are retrieved.
+     * @param include If specified, restricts the response to only include the selected item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription capabilities available for the specified location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationCapabilitiesInner listByLocation(String locationName, CapabilityGroup include) {
@@ -134,15 +154,17 @@ public final class CapabilitiesInner {
 
     /**
      * Gets the subscription capabilities available for the specified location.
-     * 
-     * @param locationName 
+     *
+     * @param locationName The location name whose capabilities are retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the subscription capabilities available for the specified location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LocationCapabilitiesInner listByLocation(String locationName) {
         final CapabilityGroup include = null;
+        final Context context = null;
         return listByLocationAsync(locationName, include).block();
     }
 }

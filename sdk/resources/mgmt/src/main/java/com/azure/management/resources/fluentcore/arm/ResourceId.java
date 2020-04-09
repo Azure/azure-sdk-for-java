@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.arm;
 
@@ -14,13 +11,13 @@ import java.security.InvalidParameterException;
  */
 public final class ResourceId {
 
-    private String subscriptionId = null;
-    private String resourceGroupName = null;
-    private String name = null;
-    private String providerNamespace = null;
-    private String resourceType = null;
-    private String id = null;
-    private String parentId = null;
+    private final String subscriptionId;
+    private final String resourceGroupName;
+    private final String name;
+    private final String providerNamespace;
+    private final String resourceType;
+    private final String id;
+    private final String parentId;
 
     private static String badIdErrorText(String id) {
         return String.format("The specified ID `%s` is not a valid Azure resource ID.", id);
@@ -29,6 +26,13 @@ public final class ResourceId {
     private ResourceId(final String id) {
         if (id == null) {
             // Protect against NPEs from null IDs, preserving legacy behavior for null IDs
+            this.subscriptionId = null;
+            this.resourceGroupName = null;
+            this.name = null;
+            this.providerNamespace = null;
+            this.resourceType = null;
+            this.id = null;
+            this.parentId = null;
             return;
         } else {
             // Skip the first '/' if any, and then split using '/'
@@ -41,8 +45,11 @@ public final class ResourceId {
             this.id = id;
 
             // Format of id:
-            // /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/<providerNamespace>(/<parentResourceType>/<parentName>)*/<resourceType>/<name>
-            //  0             1                2              3                   4         5                                                        N-2            N-1
+            // /subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers
+            // /<providerNamespace>(/<parentResourceType>/<parentName>)*/<resourceType>/<name>
+
+            // 0             1                2              3                   4
+            // 5                                                        N-2            N-1
 
             // Extract resource type and name
             if (splits.length < 2) {
@@ -61,42 +68,24 @@ public final class ResourceId {
                 this.parentId = "/" + String.join("/", parentSplits);
             }
 
-            for (int i = 0; i < splits.length && i < 6; i++) {
-                switch (i) {
-                    case 0:
-                        // Ensure "subscriptions"
-                        if (!splits[i].equalsIgnoreCase("subscriptions")) {
-                            throw new InvalidParameterException(badIdErrorText(id));
-                        }
-                        break;
-                    case 1:
-                        // Extract subscription ID
-                        this.subscriptionId = splits[i];
-                        break;
-                    case 2:
-                        // Ensure "resourceGroups"
-                        if (!splits[i].equalsIgnoreCase("resourceGroups")) {
-                            throw new InvalidParameterException(badIdErrorText(id));
-                        }
-                        break;
-                    case 3:
-                        // Extract resource group name
-                        this.resourceGroupName = splits[i];
-                        break;
-                    case 4:
-                        // Ensure "providers"
-                        if (!splits[i].equalsIgnoreCase("providers")) {
-                            throw new InvalidParameterException(badIdErrorText(id));
-                        }
-                        break;
-                    case 5:
-                        // Extract provider namespace
-                        this.providerNamespace = splits[i];
-                        break;
-                    default:
-                        break;
-                }
+            // Ensure "subscriptions"
+            if (splits.length > 0 && !splits[0].equalsIgnoreCase("subscriptions")) {
+                throw new InvalidParameterException(badIdErrorText(id));
             }
+            // Extract subscription ID
+            this.subscriptionId = splits.length > 1 ? splits[1] : null;
+            // Ensure "resourceGroups"
+            if (splits.length > 2 && !splits[2].equalsIgnoreCase("resourceGroups")) {
+                throw new InvalidParameterException(badIdErrorText(id));
+            }
+            // Extract resource group name
+            this.resourceGroupName = splits.length > 3 ? splits[3] : null;
+            // Ensure "providers"
+            if (splits.length > 4 && !splits[4].equalsIgnoreCase("providers")) {
+                throw new InvalidParameterException(badIdErrorText(id));
+            }
+            // Extract provider namespace
+            this.providerNamespace = splits.length > 5 ? splits[5] : null;
         }
     }
 

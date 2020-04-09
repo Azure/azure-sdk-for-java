@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.management.containerregistry.EventRequestMessage;
@@ -11,9 +8,7 @@ import com.azure.management.containerregistry.WebhookEventInfo;
 import com.azure.management.containerregistry.models.EventInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Response containing the webhook event info.
- */
+/** Response containing the webhook event info. */
 public class WebhookEventInfoImpl extends WrapperImpl<EventInner> implements WebhookEventInfo {
     protected WebhookEventInfoImpl(EventInner innerObject) {
         super(innerObject);

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
@@ -20,16 +17,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.Collection;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
-
-/**
- * Entry point to the registry management API.
- */
+/** Entry point to the registry management API. */
 @Fluent()
-public interface Registries extends
-        SupportsCreating<Registry.DefinitionStages.Blank>,
+public interface Registries
+    extends SupportsCreating<Registry.DefinitionStages.Blank>,
         HasManager<ContainerRegistryManager>,
         HasInner<RegistriesInner>,
         SupportsBatchCreation<Registry>,
@@ -54,7 +48,8 @@ public interface Registries extends
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
-     * @return a representation of the future computation of this call, returning the container registry's login credentials
+     * @return a representation of the future computation of this call, returning the container registry's login
+     *     credentials
      */
     Mono<RegistryCredentials> getCredentialsAsync(String resourceGroupName, String registryName);
 
@@ -66,7 +61,8 @@ public interface Registries extends
      * @param accessKeyType the admin user access key name to regenerate the value for
      * @return the container registry's login credentials
      */
-    RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyType accessKeyType);
+    RegistryCredentials regenerateCredential(
+        String resourceGroupName, String registryName, AccessKeyType accessKeyType);
 
     /**
      * Regenerates the value for one of the admin user access key for the specified container registry.
@@ -74,9 +70,11 @@ public interface Registries extends
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
      * @param accessKeyType the admin user access key name to regenerate the value for
-     * @return a representation of the future computation of this call, returning the container registry's login credentials
+     * @return a representation of the future computation of this call, returning the container registry's login
+     *     credentials
      */
-    Mono<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyType accessKeyType);
+    Mono<RegistryCredentials> regenerateCredentialAsync(
+        String resourceGroupName, String registryName, AccessKeyType accessKeyType);
 
     /**
      * Lists the quota usages for the specified container registry.
@@ -92,7 +90,8 @@ public interface Registries extends
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
-     * @return a representation of the future computation of this call, returning the list of container registry's quota usages
+     * @return a representation of the future computation of this call, returning the list of container registry's quota
+     *     usages
      */
     PagedFlux<RegistryUsage> listQuotaUsagesAsync(String resourceGroupName, String registryName);
 
@@ -108,7 +107,8 @@ public interface Registries extends
      * Checks if container registry name is valid and is not in use asynchronously.
      *
      * @param name the container registry name to check
-     * @return a representation of the future computation of this call, returning whether the name is available or other info if not
+     * @return a representation of the future computation of this call, returning whether the name is available or other
+     *     info if not
      */
     Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 
@@ -130,18 +130,10 @@ public interface Registries extends
      */
     Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync(String rgName, String acrName);
 
-
-
-    /**
-     * @return returns entry point to manage container registry webhooks.
-     */
+    /** @return returns entry point to manage container registry webhooks. */
     WebhooksClient webhooks();
 
-
-
-    /**
-     * Grouping of registry webhook actions.
-     */
+    /** Grouping of registry webhook actions. */
     interface WebhooksClient {
         /**
          * Gets the properties of the specified webhook.
@@ -196,10 +188,9 @@ public interface Registries extends
          *
          * @param resourceGroupName the resource group name
          * @param registryName the registry name
-         * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
+         * @return a representation of the future computation of this call, returning the list of all the webhooks for
+         *     the specified container registry
          */
         PagedFlux<Webhook> listAsync(String resourceGroupName, String registryName);
-
     }
-
 }

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -11,17 +8,12 @@ import com.azure.management.sql.CapabilityStatus;
 import com.azure.management.sql.RegionCapabilities;
 import com.azure.management.sql.ServerVersionCapability;
 import com.azure.management.sql.models.LocationCapabilitiesInner;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Implementation for RegionCapabilities.
- */
-public class RegionCapabilitiesImpl
-    extends WrapperImpl<LocationCapabilitiesInner>
-    implements RegionCapabilities {
+/** Implementation for RegionCapabilities. */
+public class RegionCapabilitiesImpl extends WrapperImpl<LocationCapabilitiesInner> implements RegionCapabilities {
 
     private Map<String, ServerVersionCapability> supportedCapabilitiesMap;
 

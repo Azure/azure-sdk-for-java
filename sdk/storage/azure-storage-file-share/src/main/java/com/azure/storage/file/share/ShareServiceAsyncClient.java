@@ -38,6 +38,9 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
+
 
 /**
  * This class provides a azureFileStorageClient that contains all the operations for interacting with a file account in
@@ -267,7 +270,9 @@ public final class ShareServiceAsyncClient {
     }
 
     Mono<Response<ShareServiceProperties>> getPropertiesWithResponse(Context context) {
-        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(context)
+        context = context == null ? Context.NONE : context;
+        return azureFileStorageClient.services().getPropertiesWithRestResponseAsync(
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, response.getValue()));
     }
 
@@ -358,7 +363,9 @@ public final class ShareServiceAsyncClient {
     }
 
     Mono<Response<Void>> setPropertiesWithResponse(ShareServiceProperties properties, Context context) {
-        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties, context)
+        context = context == null ? Context.NONE : context;
+        return azureFileStorageClient.services().setPropertiesWithRestResponseAsync(properties,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -485,8 +492,10 @@ public final class ShareServiceAsyncClient {
         if (CoreUtils.isNullOrEmpty(snapshot)) {
             deleteSnapshots = DeleteSnapshotsOptionType.INCLUDE;
         }
+        context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares()
-            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots, context)
+            .deleteWithRestResponseAsync(shareName, snapshot, null, deleteSnapshots,
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, null));
     }
 

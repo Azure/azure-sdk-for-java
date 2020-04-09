@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -13,15 +10,14 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import reactor.core.publisher.Mono;
 
-/**
- * A representation of the Azure SQL Sync Group operations.
- */
+/** A representation of the Azure SQL Sync Group operations. */
 @Fluent
-public interface SqlSyncGroupOperations extends
-    SupportsCreating<SqlSyncGroupOperations.DefinitionStages.WithSqlServer> {
+public interface SqlSyncGroupOperations
+    extends SupportsCreating<SqlSyncGroupOperations.DefinitionStages.WithSqlServer> {
 
     /**
-     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource group.
+     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource
+     * group.
      *
      * @param resourceGroupName the name of resource group
      * @param sqlServerName the name of SQL server resource
@@ -32,7 +28,8 @@ public interface SqlSyncGroupOperations extends
     SqlSyncGroup getBySqlServer(String resourceGroupName, String sqlServerName, String databaseName, String name);
 
     /**
-     * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and its resource group.
+     * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and
+     * its resource group.
      *
      * @param resourceGroupName the name of resource group
      * @param sqlServerName the name of SQL server parent resource
@@ -40,7 +37,8 @@ public interface SqlSyncGroupOperations extends
      * @param name the name of the child resource
      * @return a representation of the deferred computation of this call returning the found resource
      */
-    Mono<SqlSyncGroup> getBySqlServerAsync(String resourceGroupName, String sqlServerName, String databaseName, String name);
+    Mono<SqlSyncGroup> getBySqlServerAsync(
+        String resourceGroupName, String sqlServerName, String databaseName, String name);
 
     /**
      * Gets a collection of sync database ids.
@@ -74,38 +72,32 @@ public interface SqlSyncGroupOperations extends
      */
     PagedFlux<String> listSyncDatabaseIdsAsync(Region region);
 
-
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface SqlSyncGroupOperationsDefinition extends
-        SqlSyncGroupOperations.DefinitionStages.WithSqlServer,
-        SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase,
-        SqlSyncGroupOperations.DefinitionStages.WithSyncDatabaseId,
-        SqlSyncGroupOperations.DefinitionStages.WithDatabaseUserName,
-        SqlSyncGroupOperations.DefinitionStages.WithDatabasePassword,
-        SqlSyncGroupOperations.DefinitionStages.WithConflictResolutionPolicy,
-        SqlSyncGroupOperations.DefinitionStages.WithInterval,
-        SqlSyncGroupOperations.DefinitionStages.WithSchema,
-        SqlSyncGroupOperations.DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface SqlSyncGroupOperationsDefinition
+        extends SqlSyncGroupOperations.DefinitionStages.WithSqlServer,
+            SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase,
+            SqlSyncGroupOperations.DefinitionStages.WithSyncDatabaseId,
+            SqlSyncGroupOperations.DefinitionStages.WithDatabaseUserName,
+            SqlSyncGroupOperations.DefinitionStages.WithDatabasePassword,
+            SqlSyncGroupOperations.DefinitionStages.WithConflictResolutionPolicy,
+            SqlSyncGroupOperations.DefinitionStages.WithInterval,
+            SqlSyncGroupOperations.DefinitionStages.WithSchema,
+            SqlSyncGroupOperations.DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the SQL Sync Group definition stages.
-     */
+    /** Grouping of all the SQL Sync Group definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the SQL Sync Group definition.
-         */
+        /** The first stage of the SQL Sync Group definition. */
         interface WithSqlServer {
             /**
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
+             * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase withExistingSqlServer(String resourceGroupName, String sqlServerName);
+            SqlSyncGroupOperations.DefinitionStages.WithSyncGroupDatabase withExistingSqlServer(
+                String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Sync Group.
@@ -116,9 +108,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithSyncDatabaseId withExistingSqlDatabase(SqlDatabase sqlDatabase);
         }
 
-        /**
-         * The SQL Sync Group definition to set the parent database name.
-         */
+        /** The SQL Sync Group definition to set the parent database name. */
         interface WithSyncGroupDatabase {
             /**
              * Sets the name of the database on which the sync group is hosted.
@@ -129,9 +119,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithSyncDatabaseId withExistingDatabaseName(String databaseName);
         }
 
-        /**
-         * The SQL Sync Group definition to set the database ID to sync with.
-         */
+        /** The SQL Sync Group definition to set the database ID to sync with. */
         interface WithSyncDatabaseId {
             /**
              * Sets the sync database ID.
@@ -142,9 +130,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithDatabaseUserName withSyncDatabaseId(String syncDatabaseId);
         }
 
-        /**
-         * The SQL Sync Group definition to set the database user name.
-         */
+        /** The SQL Sync Group definition to set the database user name. */
         interface WithDatabaseUserName {
             /**
              * Sets the database user name.
@@ -155,9 +141,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithDatabasePassword withDatabaseUserName(String userName);
         }
 
-        /**
-         * The SQL Sync Group definition to set the database login password.
-         */
+        /** The SQL Sync Group definition to set the database login password. */
         interface WithDatabasePassword {
             /**
              * Sets the database login password.
@@ -168,9 +152,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithConflictResolutionPolicy withDatabasePassword(String password);
         }
 
-        /**
-         * The SQL Sync Group definition to set the conflict resolution policy.
-         */
+        /** The SQL Sync Group definition to set the conflict resolution policy. */
         interface WithConflictResolutionPolicy {
             /**
              * Sets the conflict resolution policy to "HubWin".
@@ -187,9 +169,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithCreate withConflictResolutionPolicyMemberWins();
         }
 
-        /**
-         * The SQL Sync Group definition to set the sync frequency.
-         */
+        /** The SQL Sync Group definition to set the sync frequency. */
         interface WithInterval {
             /**
              * Sets the sync frequency.
@@ -200,9 +180,7 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithCreate withInterval(int interval);
         }
 
-        /**
-         * The SQL Sync Group definition to set the schema.
-         */
+        /** The SQL Sync Group definition to set the schema. */
         interface WithSchema {
             /**
              * Sets the schema.
@@ -213,19 +191,12 @@ public interface SqlSyncGroupOperations extends
             SqlSyncGroupOperations.DefinitionStages.WithCreate withSchema(SyncGroupSchema schema);
         }
 
-        /**
-         * The final stage of the SQL Sync Group definition.
-         */
-        interface WithCreate extends
-            WithInterval,
-            WithSchema,
-            Creatable<SqlSyncGroup> {
+        /** The final stage of the SQL Sync Group definition. */
+        interface WithCreate extends WithInterval, WithSchema, Creatable<SqlSyncGroup> {
         }
     }
 
-    /**
-     * Grouping of the Azure SQL Server Sync Group common actions.
-     */
+    /** Grouping of the Azure SQL Server Sync Group common actions. */
     interface SqlSyncGroupActionsDefinition extends SqlChildrenOperations.SqlChildrenActionsDefinition<SqlSyncGroup> {
         /**
          * Begins the definition of a new SQL Sync Group to be added to this server.

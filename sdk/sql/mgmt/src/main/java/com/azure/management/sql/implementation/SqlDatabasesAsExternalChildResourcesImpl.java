@@ -1,39 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
-import com.azure.management.sql.SqlDatabase;
-import com.azure.management.sql.SqlServer;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
+import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseStandardServiceObjective;
+import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.DatabaseInner;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Represents a SQL Database collection associated with an Azure SQL server.
- */
+/** Represents a SQL Database collection associated with an Azure SQL server. */
 public class SqlDatabasesAsExternalChildResourcesImpl
-    extends
-        ExternalChildResourcesNonCachedImpl<SqlDatabaseImpl,
-                SqlDatabase,
-                DatabaseInner,
-                SqlServerImpl,
-                SqlServer> {
+    extends ExternalChildResourcesNonCachedImpl<SqlDatabaseImpl, SqlDatabase, DatabaseInner, SqlServerImpl, SqlServer> {
 
     SqlServerManager sqlServerManager;
 
     /**
      * Creates a new ExternalChildResourcesNonCachedImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlDatabasesAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {
@@ -62,7 +51,8 @@ public class SqlDatabasesAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlDatabasesAsExternalChildResourcesImpl(TaskGroup parentTaskGroup, SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlDatabasesAsExternalChildResourcesImpl(
+        TaskGroup parentTaskGroup, SqlServerManager sqlServerManager, String childResourceName) {
         super(null, parentTaskGroup, childResourceName);
 
         Objects.requireNonNull(sqlServerManager);
@@ -71,28 +61,31 @@ public class SqlDatabasesAsExternalChildResourcesImpl
 
     SqlDatabaseImpl defineIndependentDatabase(String name) {
         // resource group and server name will be set by the next method in the Fluent flow
-        return prepareIndependentDefine(new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
+        return prepareIndependentDefine(
+            new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
     }
 
     SqlDatabaseImpl defineInlineDatabase(String name) {
         if (this.getParent() == null) {
             // resource group and server name will be set by the next method in the Fluent flow
-            return prepareInlineDefine(new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
+            return prepareInlineDefine(
+                new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
         } else {
             return prepareInlineDefine(
-                    new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager())
-                            .withStandardEdition(SqlDatabaseStandardServiceObjective.S0)
-            );
+                new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager())
+                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S0));
         }
     }
 
     SqlDatabaseImpl patchUpdateDatabase(String name) {
         if (this.getParent() == null) {
             // resource group and server name will be set by the next method in the Fluent flow
-            return prepareInlineUpdate(new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager))
+            return prepareInlineUpdate(
+                    new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager))
                 .withPatchUpdate();
         } else {
-            return prepareInlineUpdate(new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()))
+            return prepareInlineUpdate(
+                    new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()))
                 .withPatchUpdate();
         }
     }
@@ -100,18 +93,22 @@ public class SqlDatabasesAsExternalChildResourcesImpl
     SqlDatabaseImpl updateInlineDatabase(String name) {
         if (this.getParent() == null) {
             // resource group and server name will be set by the next method in the Fluent flow
-            return prepareInlineUpdate(new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
+            return prepareInlineUpdate(
+                new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
         } else {
-            return prepareInlineUpdate(new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()));
+            return prepareInlineUpdate(
+                new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()));
         }
     }
 
     void removeInlineDatabase(String name) {
         if (this.getParent() == null) {
             // resource group and server name will be set by the next method in the Fluent flow
-            prepareInlineRemove(new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
+            prepareInlineRemove(
+                new SqlDatabaseImpl(null, null, null, name, new DatabaseInner(), this.sqlServerManager));
         } else {
-            prepareInlineRemove(new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()));
+            prepareInlineRemove(
+                new SqlDatabaseImpl(name, this.getParent(), new DatabaseInner(), this.getParent().manager()));
         }
     }
 

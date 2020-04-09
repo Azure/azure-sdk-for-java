@@ -1,31 +1,28 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
 
+import com.azure.management.sql.CreateMode;
 import com.azure.management.sql.RestorePoint;
+import com.azure.management.sql.SampleName;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlElasticPoolOperations;
-import com.azure.management.sql.CreateMode;
-import com.azure.management.sql.SampleName;
 import com.azure.management.storage.StorageAccount;
 import java.time.OffsetDateTime;
-
 import java.util.Objects;
 
-/**
- * Implementation for SqlDatabase as inline definition inside a SqlElasticPool definition.
- */
+/** Implementation for SqlDatabase as inline definition inside a SqlElasticPool definition. */
 public class SqlDatabaseForElasticPoolImpl
-    implements
-        SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<SqlElasticPoolOperations.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<SqlElasticPoolOperations.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<SqlElasticPoolOperations.DefinitionStages.WithCreate>,
+    implements SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<
+            SqlElasticPoolOperations.DefinitionStages.WithCreate>,
+        SqlDatabase.DefinitionStages.WithStorageKeyAfterElasticPool<
+            SqlElasticPoolOperations.DefinitionStages.WithCreate>,
+        SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<
+            SqlElasticPoolOperations.DefinitionStages.WithCreate>,
         SqlDatabase.DefinitionStages.WithCreateMode<SqlElasticPoolOperations.DefinitionStages.WithCreate>,
-        SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<SqlElasticPoolOperations.DefinitionStages.WithCreate> {
+        SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<
+            SqlElasticPoolOperations.DefinitionStages.WithCreate> {
 
     private SqlDatabaseImpl sqlDatabase;
     private SqlElasticPoolImpl sqlElasticPool;
@@ -83,7 +80,8 @@ public class SqlDatabaseForElasticPoolImpl
     }
 
     @Override
-    public SqlDatabaseForElasticPoolImpl importFrom(StorageAccount storageAccount, String containerName, String fileName) {
+    public SqlDatabaseForElasticPoolImpl importFrom(
+        StorageAccount storageAccount, String containerName, String fileName) {
         this.sqlDatabase.importFrom(storageAccount, containerName, fileName);
         return this;
     }
@@ -101,13 +99,15 @@ public class SqlDatabaseForElasticPoolImpl
     }
 
     @Override
-    public SqlDatabaseForElasticPoolImpl withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword) {
+    public SqlDatabaseForElasticPoolImpl withSqlAdministratorLoginAndPassword(
+        String administratorLogin, String administratorPassword) {
         this.sqlDatabase.withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword);
         return this;
     }
 
     @Override
-    public SqlDatabaseForElasticPoolImpl withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword) {
+    public SqlDatabaseForElasticPoolImpl withActiveDirectoryLoginAndPassword(
+        String administratorLogin, String administratorPassword) {
         this.sqlDatabase.withActiveDirectoryLoginAndPassword(administratorLogin, administratorPassword);
         return this;
     }
@@ -119,7 +119,8 @@ public class SqlDatabaseForElasticPoolImpl
     }
 
     @Override
-    public SqlDatabaseForElasticPoolImpl fromRestorePoint(RestorePoint restorePoint, OffsetDateTime restorePointDateTime) {
+    public SqlDatabaseForElasticPoolImpl fromRestorePoint(
+        RestorePoint restorePoint, OffsetDateTime restorePointDateTime) {
         this.sqlDatabase.fromRestorePoint(restorePoint, restorePointDateTime);
         return this;
     }

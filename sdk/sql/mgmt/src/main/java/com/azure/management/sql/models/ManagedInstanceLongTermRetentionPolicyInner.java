@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedInstanceLongTermRetentionPolicy model.
- */
+/** The ManagedInstanceLongTermRetentionPolicy model. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
@@ -40,9 +38,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     private Integer weekOfYear;
 
     /**
-     * Get the weeklyRetention property: The weekly retention policy for an LTR
-     * backup in an ISO 8601 format.
-     * 
+     * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
+     *
      * @return the weeklyRetention value.
      */
     public String weeklyRetention() {
@@ -50,9 +47,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the weeklyRetention property: The weekly retention policy for an LTR
-     * backup in an ISO 8601 format.
-     * 
+     * Set the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
+     *
      * @param weeklyRetention the weeklyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -62,9 +58,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the monthlyRetention property: The monthly retention policy for an
-     * LTR backup in an ISO 8601 format.
-     * 
+     * Get the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
+     *
      * @return the monthlyRetention value.
      */
     public String monthlyRetention() {
@@ -72,9 +67,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the monthlyRetention property: The monthly retention policy for an
-     * LTR backup in an ISO 8601 format.
-     * 
+     * Set the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
+     *
      * @param monthlyRetention the monthlyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -84,9 +78,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the yearlyRetention property: The yearly retention policy for an LTR
-     * backup in an ISO 8601 format.
-     * 
+     * Get the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
+     *
      * @return the yearlyRetention value.
      */
     public String yearlyRetention() {
@@ -94,9 +87,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the yearlyRetention property: The yearly retention policy for an LTR
-     * backup in an ISO 8601 format.
-     * 
+     * Set the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
+     *
      * @param yearlyRetention the yearlyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -106,9 +98,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the weekOfYear property: The week of year to take the yearly backup
-     * in an ISO 8601 format.
-     * 
+     * Get the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
+     *
      * @return the weekOfYear value.
      */
     public Integer weekOfYear() {
@@ -116,9 +107,8 @@ public class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the weekOfYear property: The week of year to take the yearly backup
-     * in an ISO 8601 format.
-     * 
+     * Set the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
+     *
      * @param weekOfYear the weekOfYear value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */

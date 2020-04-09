@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.cosmosdb.implementation;
 
 import com.azure.management.cosmosdb.CosmosDBAccount;
@@ -14,24 +11,21 @@ import com.azure.management.cosmosdb.models.PrivateEndpointConnectionsInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * A private endpoint connection.
- */
+/** A private endpoint connection. */
 public class PrivateEndpointConnectionImpl
-        extends ExternalChildResourceImpl<PrivateEndpointConnection,
-                PrivateEndpointConnectionInner,
-                    CosmosDBAccountImpl,
-                CosmosDBAccount>
-        implements PrivateEndpointConnection,
+    extends ExternalChildResourceImpl<
+        PrivateEndpointConnection, PrivateEndpointConnectionInner, CosmosDBAccountImpl, CosmosDBAccount>
+    implements PrivateEndpointConnection,
         PrivateEndpointConnection.Definition<CosmosDBAccount.DefinitionStages.WithCreate>,
         PrivateEndpointConnection.UpdateDefinition<CosmosDBAccount.UpdateStages.WithOptionals>,
         PrivateEndpointConnection.Update {
     private final PrivateEndpointConnectionsInner client;
 
-    PrivateEndpointConnectionImpl(String name,
-                                  CosmosDBAccountImpl parent,
-                                  PrivateEndpointConnectionInner inner,
-                                  PrivateEndpointConnectionsInner client) {
+    PrivateEndpointConnectionImpl(
+        String name,
+        CosmosDBAccountImpl parent,
+        PrivateEndpointConnectionInner inner,
+        PrivateEndpointConnectionsInner client) {
         super(name, parent, inner);
         this.client = client;
     }
@@ -78,11 +72,11 @@ public class PrivateEndpointConnectionImpl
     @Override
     public Mono<PrivateEndpointConnection> createResourceAsync() {
         final PrivateEndpointConnectionImpl self = this;
-        return this.client.createOrUpdateAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.inner())
-                .map(privateEndpointConnectionInner -> {
+        return this
+            .client
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.inner())
+            .map(
+                privateEndpointConnectionInner -> {
                     self.setInner(privateEndpointConnectionInner);
                     return self;
                 });
@@ -95,20 +89,12 @@ public class PrivateEndpointConnectionImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.client.deleteAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name()
-        );
+        return this.client.deleteAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
 
     @Override
     protected Mono<PrivateEndpointConnectionInner> getInnerAsync() {
-        return this.client.getAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name()
-        );
+        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name());
     }
 
     @Override

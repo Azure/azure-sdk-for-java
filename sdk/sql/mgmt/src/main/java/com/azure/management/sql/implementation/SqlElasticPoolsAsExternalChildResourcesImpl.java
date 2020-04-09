@@ -1,37 +1,27 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
-import com.azure.management.sql.SqlElasticPool;
-import com.azure.management.sql.SqlServer;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.dag.TaskGroup;
+import com.azure.management.sql.SqlElasticPool;
+import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.ElasticPoolInner;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents a SQL Elastic Pool collection associated with an Azure SQL server.
- */
+/** Represents a SQL Elastic Pool collection associated with an Azure SQL server. */
 public class SqlElasticPoolsAsExternalChildResourcesImpl
-    extends
-        ExternalChildResourcesNonCachedImpl<SqlElasticPoolImpl,
-                SqlElasticPool,
-                ElasticPoolInner,
-                SqlServerImpl,
-                SqlServer> {
+    extends ExternalChildResourcesNonCachedImpl<
+        SqlElasticPoolImpl, SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer> {
 
     SqlServerManager sqlServerManager;
 
     /**
      * Creates a new ExternalChildResourcesNonCachedImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlElasticPoolsAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {
@@ -57,7 +47,8 @@ public class SqlElasticPoolsAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlElasticPoolsAsExternalChildResourcesImpl(TaskGroup parentTaskGroup, SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlElasticPoolsAsExternalChildResourcesImpl(
+        TaskGroup parentTaskGroup, SqlServerManager sqlServerManager, String childResourceName) {
         super(null, parentTaskGroup, childResourceName);
         this.sqlServerManager = sqlServerManager;
     }
@@ -72,7 +63,8 @@ public class SqlElasticPoolsAsExternalChildResourcesImpl
             // resource group and server name will be set by the next method in the Fluent flow
             return prepareInlineDefine(new SqlElasticPoolImpl(name, new ElasticPoolInner(), this.sqlServerManager));
         } else {
-            return prepareInlineDefine(new SqlElasticPoolImpl(name, this.getParent(), new ElasticPoolInner(), this.getParent().manager()));
+            return prepareInlineDefine(
+                new SqlElasticPoolImpl(name, this.getParent(), new ElasticPoolInner(), this.getParent().manager()));
         }
     }
 
@@ -81,7 +73,8 @@ public class SqlElasticPoolsAsExternalChildResourcesImpl
             // resource group and server name will be set by the next method in the Fluent flow
             return prepareInlineUpdate(new SqlElasticPoolImpl(name, new ElasticPoolInner(), this.sqlServerManager));
         } else {
-            return prepareInlineUpdate(new SqlElasticPoolImpl(name, this.getParent(), new ElasticPoolInner(), this.getParent().manager()));
+            return prepareInlineUpdate(
+                new SqlElasticPoolImpl(name, this.getParent(), new ElasticPoolInner(), this.getParent().manager()));
         }
     }
 
@@ -90,7 +83,8 @@ public class SqlElasticPoolsAsExternalChildResourcesImpl
             // resource group and server name will be set by the next method in the Fluent flow
             prepareInlineRemove(new SqlElasticPoolImpl(name, new ElasticPoolInner(), this.sqlServerManager));
         } else {
-            prepareInlineRemove(new SqlElasticPoolImpl(name, this.getParent(), new ElasticPoolInner(), this.getParent().manager()));
+            prepareInlineRemove(
+                new SqlElasticPoolImpl(name, this.getParent(), new ElasticPoolInner(), this.getParent().manager()));
         }
     }
 

@@ -1,22 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
-
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.MetricValue;
 import com.azure.management.sql.SqlDatabaseMetricValue;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for SqlDatabaseMetricValue.
- */
-public class SqlDatabaseMetricValueImpl extends WrapperImpl<MetricValue>
-    implements SqlDatabaseMetricValue {
+/** Implementation for SqlDatabaseMetricValue. */
+public class SqlDatabaseMetricValueImpl extends WrapperImpl<MetricValue> implements SqlDatabaseMetricValue {
     protected SqlDatabaseMetricValueImpl(MetricValue innerObject) {
         super(innerObject);
     }

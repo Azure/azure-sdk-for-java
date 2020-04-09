@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.keyvault;
 
@@ -16,106 +13,76 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
-import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of an Azure Key Vault.
- */
+/** An immutable client-side representation of an Azure Key Vault. */
 @Fluent
-public interface Vault extends
-        GroupableResource<KeyVaultManager, VaultInner>,
-        Refreshable<Vault>,
-        Updatable<Vault.Update> {
-    /**
-     * @return an authenticated Key Vault secret client
-     */
+public interface Vault
+    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update> {
+    /** @return an authenticated Key Vault secret client */
     SecretAsyncClient secretClient();
 
-    /**
-     * @return an authenticated Key Vault key client
-     */
+    /** @return an authenticated Key Vault key client */
     KeyAsyncClient keyClient();
 
-    /**
-     * @return an authenticated Key Vault rest client
-     */
+    /** @return an authenticated Key Vault rest client */
     RestClient vaultRestClient();
 
-    /**
-     * @return the Key Vault key API entry point
-     */
+    /** @return the Key Vault key API entry point */
     Keys keys();
 
-    /**
-     * @return the Key Vault secret API entry point
-     */
+    /** @return the Key Vault secret API entry point */
     Secrets secrets();
 
-    /**
-     * @return the URI of the vault for performing operations on keys and secrets.
-     */
+    /** @return the URI of the vault for performing operations on keys and secrets. */
     String vaultUri();
 
     /**
-     * @return the Azure Active Directory tenant ID that should be used for
-     * authenticating requests to the key vault.
+     * @return the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */
     String tenantId();
 
-    /**
-     * @return SKU details.
-     */
+    /** @return SKU details. */
     Sku sku();
 
     /**
-     * @return an array of 0 to 16 identities that have access to the key vault. All
-     * identities in the array must use the same tenant ID as the key vault's
-     * tenant ID.
+     * @return an array of 0 to 16 identities that have access to the key vault. All identities in the array must use
+     *     the same tenant ID as the key vault's tenant ID.
      */
     List<AccessPolicy> accessPolicies();
 
     /**
-     * @return whether Azure Virtual Machines are permitted to
-     * retrieve certificates stored as secrets from the key vault.
+     * @return whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key
+     *     vault.
      */
     boolean enabledForDeployment();
 
-    /**
-     * @return whether Azure Disk Encryption is permitted to
-     * retrieve secrets from the vault and unwrap keys.
-     */
+    /** @return whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys. */
     boolean enabledForDiskEncryption();
 
-    /**
-     * @return whether Azure Resource Manager is permitted to
-     * retrieve secrets from the key vault.
-     */
+    /** @return whether Azure Resource Manager is permitted to retrieve secrets from the key vault. */
     boolean enabledForTemplateDeployment();
-    
-    /**
-     * @return whether soft delete is enabled for this key vault.
-     */
+
+    /** @return whether soft delete is enabled for this key vault. */
     boolean softDeleteEnabled();
-    
+
     /**
-     * @return whether purge protection is enabled for this key vault.
-     * Purge protection can only be enabled if soft delete is enabled.
+     * @return whether purge protection is enabled for this key vault. Purge protection can only be enabled if soft
+     *     delete is enabled.
      */
     boolean purgeProtectionEnabled();
-    
+
     /**
      * Get the createMode value.
-     * 
+     *
      * @return the createMode value
      */
     CreateMode createMode();
-    
+
     /**
      * Get the networkAcls value.
-     * 
+     *
      * @return the networkAcls value
      */
     NetworkRuleSet networkRuleSet();
@@ -124,35 +91,25 @@ public interface Vault extends
      * Fluent interfaces to provision a Vault
      **************************************************************/
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithAccessPolicy,
-        DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition
+        extends DefinitionStages.Blank,
+            DefinitionStages.WithGroup,
+            DefinitionStages.WithAccessPolicy,
+            DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the key vault definition stages.
-     */
+    /** Grouping of all the key vault definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the key vault definition.
-         */
+        /** The first stage of the key vault definition. */
         interface Blank extends DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * A key vault definition allowing resource group to be set.
-         */
+        /** A key vault definition allowing resource group to be set. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAccessPolicy> {
         }
 
-        /**
-         * A key vault definition allowing the sku to be set.
-         */
+        /** A key vault definition allowing the sku to be set. */
         interface WithSku {
             /**
              * Specifies the sku of the key vault.
@@ -163,9 +120,7 @@ public interface Vault extends
             WithCreate withSku(SkuName skuName);
         }
 
-        /**
-         * A key vault definition allowing access policies to be attached.
-         */
+        /** A key vault definition allowing access policies to be attached. */
         interface WithAccessPolicy {
             /**
              * Attach no access policy.
@@ -189,51 +144,49 @@ public interface Vault extends
              */
             AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
         }
-        
-        /**
-         * A key vault definition allowing the networkAcl to be set.
-         */
+
+        /** A key vault definition allowing the networkAcl to be set. */
         interface WithNetworkRuleSet {
-        
+
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
              *
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromAllNetworks();
-            
+
             /**
-             * Specifies that by default access to key vault should be denied from all networks.
-             * except from those networks specified via withVirtualNetworkRules, 
-             * withAccessFromIpAddressRange, withAccessFromIpAddress
-             * 
+             * Specifies that by default access to key vault should be denied from all networks. except from those
+             * networks specified via withVirtualNetworkRules, withAccessFromIpAddressRange, withAccessFromIpAddress
+             *
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromSelectedNetworks();
-            
+
             /**
              * Specifies that access to the key vault from the specific ip address should be allowed.
-             * 
+             *
              * @param ipAddress the ip address
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromIpAddress(String ipAddress);
-            
+
             /**
              * Specifies that access to the key vault from the specific ip range should be allowed.
-             * @param ipAddressCidr
+             *
+             * @param ipAddressCidr the ip address CIDR
              * @return the next stage of key vault definition
              */
             WithCreate withAccessFromIpAddressRange(String ipAddressCidr);
-            
+
             /**
-             * Specifies that access to the key vault should be allowed from applications running on 
-             * Microsoft azure services.
-             * 
+             * Specifies that access to the key vault should be allowed from applications running on Microsoft azure
+             * services.
+             *
              * @return the next stage of key vault definition.
              */
             WithCreate withAccessFromAzureServices();
-            
+
             /**
              * Set the bypass value.
              *
@@ -241,7 +194,7 @@ public interface Vault extends
              * @return the next stage of key vault definition.
              */
             WithCreate withBypass(NetworkRuleBypassOptions bypass);
-            
+
             /**
              * Set the defaultAction value.
              *
@@ -249,19 +202,16 @@ public interface Vault extends
              * @return the next stage of key vault definition.
              */
             WithCreate withDefaultAction(NetworkRuleAction defaultAction);
-            
+
             /**
              * Get the virtualNetworkRules value.
              *
              * @return the next stage of key vault definition.
              */
             WithCreate withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);
-        
         }
 
-        /**
-         * A key vault definition allowing various configurations to be set.
-         */
+        /** A key vault definition allowing various configurations to be set. */
         interface WithConfigurations {
             /**
              * Enable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
@@ -283,17 +233,17 @@ public interface Vault extends
              * @return the next stage of key vault definition
              */
             WithCreate withTemplateDeploymentEnabled();
-            
+
             /**
              * Enable soft delete for the key vault.
-             * 
+             *
              * @return the next stage of key vault definition
              */
             WithCreate withSoftDeleteEnabled();
-            
+
             /**
              * Enable purge protection for the key vault; valid only if soft delete is also enabled.
-             * 
+             *
              * @return the next stage of key vault definition.
              */
             WithCreate withPurgeProtectionEnabled();
@@ -321,27 +271,22 @@ public interface Vault extends
         }
 
         /**
-         * A key vault definition with sufficient inputs to create a new
-         * storage account in the cloud, but exposing additional optional inputs to
-         * specify.
+         * A key vault definition with sufficient inputs to create a new storage account in the cloud, but exposing
+         * additional optional inputs to specify.
          */
-        interface WithCreate extends
-            Creatable<Vault>,
-            GroupableResource.DefinitionWithTags<WithCreate>,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithNetworkRuleSet,
-            DefinitionStages.WithConfigurations,
-            DefinitionStages.WithAccessPolicy {
+        interface WithCreate
+            extends Creatable<Vault>,
+                GroupableResource.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithSku,
+                DefinitionStages.WithNetworkRuleSet,
+                DefinitionStages.WithConfigurations,
+                DefinitionStages.WithAccessPolicy {
         }
     }
 
-    /**
-     * Grouping of all the key vault update stages.
-     */
+    /** Grouping of all the key vault update stages. */
     interface UpdateStages {
-        /**
-         * A key vault update allowing access policies to be modified, attached, or removed.
-         */
+        /** A key vault update allowing access policies to be modified, attached, or removed. */
         interface WithAccessPolicy {
             /**
              * Remove an access policy from the access policy list.
@@ -375,50 +320,48 @@ public interface Vault extends
             AccessPolicy.Update updateAccessPolicy(String objectId);
         }
 
-        /**
-         * A key vault update allowing the NetworkRuleSet to be set.
-         */
+        /** A key vault update allowing the NetworkRuleSet to be set. */
         interface WithNetworkRuleSet {
-            
+
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
              *
              * @return the next stage of key vault definition
              */
             Update withAccessFromAllNetworks();
-            
+
             /**
-             * Specifies that by default access to key vault should be denied from all networks.
-             * except from those networks specified via withVirtualNetworkRules, withAccessFromIpAddressRange
-             * withAccesFromIpAddress
-             * 
+             * Specifies that by default access to key vault should be denied from all networks. except from those
+             * networks specified via withVirtualNetworkRules, withAccessFromIpAddressRange withAccesFromIpAddress
+             *
              * @return the update stage of key vault definition
              */
             Update withAccessFromSelectedNetworks();
-            
+
             /**
              * Specifies that access to the key vault from the specific ip address should be allowed.
-             * 
+             *
              * @param ipAddress the ip address
              * @return the update stage of key vault definition
              */
             Update withAccessFromIpAddress(String ipAddress);
-            
+
             /**
              * Specifies that access to the key vault from the specific ip range should be allowed.
+             *
              * @param ipAddressCidr the idAddress range in Cidr format
              * @return the update stage of key vault definition
              */
             Update withAccessFromIpAddressRange(String ipAddressCidr);
-            
+
             /**
-             * Specifies that access to the key vault should be allowed from applications running on 
-             * Microsoft azure services.
-             * 
+             * Specifies that access to the key vault should be allowed from applications running on Microsoft azure
+             * services.
+             *
              * @return the update stage of key vault definition.
              */
             Update withAccessFromAzureServices();
-            
+
             /**
              * Set the bypass value.
              *
@@ -426,7 +369,7 @@ public interface Vault extends
              * @return the update stage of key vault definition.
              */
             Update withBypass(NetworkRuleBypassOptions bypass);
-            
+
             /**
              * Set the defaultAction value.
              *
@@ -434,19 +377,17 @@ public interface Vault extends
              * @return the update stage of key vault definition.
              */
             Update withDefaultAction(NetworkRuleAction defaultAction);
-            
+
             /**
              * Get the virtualNetworkRules value.
-             * 
+             *
              * @param virtualNetworkRules virtual network rules
              * @return the update stage of key vault definition.
              */
             Update withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules);
         }
-        
-        /**
-         * A key vault update allowing various configurations to be set.
-         */
+
+        /** A key vault update allowing various configurations to be set. */
         interface WithConfigurations {
             /**
              * Enable Azure Virtual Machines to retrieve certificates stored as secrets from the key vault.
@@ -468,17 +409,17 @@ public interface Vault extends
              * @return the key vault update stage
              */
             Update withTemplateDeploymentEnabled();
-            
+
             /**
              * Enable soft delete for the key vault.
-             * 
+             *
              * @return the next stage of key vault definition
              */
             Update withSoftDeleteEnabled();
-            
+
             /**
              * Enable purge protection for the key vault; valid only if soft delete is also enabled.
-             * 
+             *
              * @return the next stage of key vault definition.
              */
             Update withPurgeProtectionEnabled();
@@ -506,15 +447,12 @@ public interface Vault extends
         }
     }
 
-    /**
-     * The template for a key vault update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            GroupableResource.UpdateWithTags<Update>,
+    /** The template for a key vault update operation, containing all the settings that can be modified. */
+    interface Update
+        extends GroupableResource.UpdateWithTags<Update>,
             Appliable<Vault>,
             UpdateStages.WithAccessPolicy,
             UpdateStages.WithNetworkRuleSet,
             UpdateStages.WithConfigurations {
     }
 }
-

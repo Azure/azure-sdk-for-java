@@ -1,22 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.SqlDatabaseUsageMetric;
 import com.azure.management.sql.models.DatabaseUsageInner;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for Azure SQL Database usage.
- */
-public class SqlDatabaseUsageMetricImpl
-    extends WrapperImpl<DatabaseUsageInner>
-    implements SqlDatabaseUsageMetric {
+/** Implementation for Azure SQL Database usage. */
+public class SqlDatabaseUsageMetricImpl extends WrapperImpl<DatabaseUsageInner> implements SqlDatabaseUsageMetric {
 
     protected SqlDatabaseUsageMetricImpl(DatabaseUsageInner innerObject) {
         super(innerObject);

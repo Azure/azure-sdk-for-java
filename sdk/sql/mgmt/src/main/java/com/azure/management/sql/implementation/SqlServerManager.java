@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
 
@@ -21,9 +18,7 @@ import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.models.SqlManagementClientBuilder;
 import com.azure.management.sql.models.SqlManagementClientImpl;
 
-/**
- * Entry point to Azure SQLServer resource management.
- */
+/** Entry point to Azure SQLServer resource management. */
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
     private SqlServers sqlServers;
 
@@ -31,14 +26,14 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
 
     protected SqlServerManager(RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new SqlManagementClientBuilder()
-                    .pipeline(restClient.getHttpPipeline())
-                    .subscriptionId(subscriptionId)
-                    .host(restClient.getBaseUrl().toString())
-                    .build(),
-                sdkContext);
+            restClient,
+            subscriptionId,
+            new SqlManagementClientBuilder()
+                .pipeline(restClient.getHttpPipeline())
+                .subscriptionId(subscriptionId)
+                .host(restClient.getBaseUrl().toString())
+                .buildClient(),
+            sdkContext);
         this.tenantId = tenantId;
     }
 
@@ -59,13 +54,16 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      * @return the SqlServer
      */
     public static SqlServerManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), credential.getDomain(), subscriptionId);
+                .buildClient(),
+            credential.getDomain(),
+            subscriptionId);
     }
 
     /**
@@ -89,15 +87,12 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
      * @param sdkContext the sdk context
      * @return the SqlServer
      */
-    public static SqlServerManager authenticate(RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
+    public static SqlServerManager authenticate(
+        RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
         return new SqlServerManager(restClient, tenantId, subscriptionId, sdkContext);
     }
 
-
-
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of SqlServer that exposes Compute resource management API entry points.
@@ -109,9 +104,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         SqlServerManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
+    /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public SqlServerManager authenticate(AzureTokenCredential credential, String subscriptionId) {
@@ -119,9 +112,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         }
     }
 
-    /**
-     * @return the SQL Server management API entry point
-     */
+    /** @return the SQL Server management API entry point */
     public SqlServers sqlServers() {
         if (sqlServers == null) {
             sqlServers = new SqlServersImpl(this);
@@ -138,6 +129,4 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     public String tenantId() {
         return this.tenantId;
     }
-
-
 }

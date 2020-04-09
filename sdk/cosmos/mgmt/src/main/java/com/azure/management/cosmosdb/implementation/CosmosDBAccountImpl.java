@@ -1,12 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.cosmosdb.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.cosmosdb.Capability;
+import com.azure.management.cosmosdb.ConnectorOffer;
 import com.azure.management.cosmosdb.ConsistencyPolicy;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountCreateUpdateParameters;
@@ -14,6 +12,7 @@ import com.azure.management.cosmosdb.DatabaseAccountKind;
 import com.azure.management.cosmosdb.DatabaseAccountListConnectionStringsResult;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.management.cosmosdb.DatabaseAccountOfferType;
 import com.azure.management.cosmosdb.DatabaseAccountUpdateParameters;
 import com.azure.management.cosmosdb.DefaultConsistencyLevel;
 import com.azure.management.cosmosdb.FailoverPolicy;
@@ -26,8 +25,6 @@ import com.azure.management.cosmosdb.VirtualNetworkRule;
 import com.azure.management.cosmosdb.models.DatabaseAccountGetResultsInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,20 +33,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for CosmosDBAccount.
- */
+/** The implementation for CosmosDBAccount. */
 class CosmosDBAccountImpl
-        extends
-        GroupableResourceImpl<
-                        CosmosDBAccount,
-                        DatabaseAccountGetResultsInner,
-                        CosmosDBAccountImpl,
-                        CosmosDBManager>
-        implements CosmosDBAccount,
-        CosmosDBAccount.Definition,
-        CosmosDBAccount.Update {
+    extends GroupableResourceImpl<CosmosDBAccount, DatabaseAccountGetResultsInner, CosmosDBAccountImpl, CosmosDBManager>
+    implements CosmosDBAccount, CosmosDBAccount.Definition, CosmosDBAccount.Update {
     private List<FailoverPolicy> failoverPolicies;
     private boolean hasFailoverPolicyChanges;
     private final int maxDelayDueToMissingFailovers = 60 * 10;
@@ -59,7 +48,8 @@ class CosmosDBAccountImpl
     CosmosDBAccountImpl(String name, DatabaseAccountGetResultsInner innerObject, CosmosDBManager manager) {
         super(fixDBName(name), innerObject, manager);
         this.failoverPolicies = new ArrayList<FailoverPolicy>();
-        this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this.manager().inner().privateEndpointConnections(), this);
+        this.privateEndpointConnections =
+            new PrivateEndpointConnectionsImpl(this.manager().inner().privateEndpointConnections(), this);
     }
 
     @Override
@@ -73,7 +63,7 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public String databaseAccountOfferType() {
+    public DatabaseAccountOfferType databaseAccountOfferType() {
         return this.inner().databaseAccountOfferType();
     }
 
@@ -113,9 +103,14 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<DatabaseAccountListKeysResult> listKeysAsync() {
-        return this.manager().inner().databaseAccounts()
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
-            .map(databaseAccountListKeysResultInner -> new DatabaseAccountListKeysResultImpl(databaseAccountListKeysResultInner));
+            .map(
+                databaseAccountListKeysResultInner ->
+                    new DatabaseAccountListKeysResultImpl(databaseAccountListKeysResultInner));
     }
 
     @Override
@@ -125,9 +120,14 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync() {
-        return this.manager().inner().databaseAccounts()
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
             .listReadOnlyKeysAsync(this.resourceGroupName(), this.name())
-            .map(databaseAccountListReadOnlyKeysResultInner -> new DatabaseAccountListReadOnlyKeysResultImpl(databaseAccountListReadOnlyKeysResultInner));
+            .map(
+                databaseAccountListReadOnlyKeysResultInner ->
+                    new DatabaseAccountListReadOnlyKeysResultImpl(databaseAccountListReadOnlyKeysResultInner));
     }
 
     @Override
@@ -137,9 +137,15 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync() {
-        return this.manager().inner().databaseAccounts()
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
             .listConnectionStringsAsync(this.resourceGroupName(), this.name())
-            .map(databaseAccountListConnectionStringsResultInner -> new DatabaseAccountListConnectionStringsResultImpl(databaseAccountListConnectionStringsResultInner));
+            .map(
+                databaseAccountListConnectionStringsResultInner ->
+                    new DatabaseAccountListConnectionStringsResultImpl(
+                        databaseAccountListConnectionStringsResultInner));
     }
 
     @Override
@@ -149,9 +155,12 @@ class CosmosDBAccountImpl
 
     @Override
     public PagedFlux<SqlDatabase> listSqlDatabasesAsync() {
-        return this.manager().inner().sqlResources()
-                .listSqlDatabasesAsync(this.resourceGroupName(), this.name())
-                .mapPage(inner -> new SqlDatabaseImpl(inner));
+        return this
+            .manager()
+            .inner()
+            .sqlResources()
+            .listSqlDatabasesAsync(this.resourceGroupName(), this.name())
+            .mapPage(inner -> new SqlDatabaseImpl(inner));
     }
 
     @Override
@@ -161,9 +170,12 @@ class CosmosDBAccountImpl
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        return this.manager().inner().privateLinkResources()
-                .listByDatabaseAccountAsync(this.resourceGroupName(), this.name())
-                .mapPage(inner -> new PrivateLinkResourceImpl(inner));
+        return this
+            .manager()
+            .inner()
+            .privateLinkResources()
+            .listByDatabaseAccountAsync(this.resourceGroupName(), this.name())
+            .mapPage(inner -> new PrivateLinkResourceImpl(inner));
     }
 
     @Override
@@ -173,9 +185,12 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<PrivateLinkResource> getPrivateLinkResourceAsync(String groupName) {
-        return this.manager().inner().privateLinkResources()
-                .getAsync(this.resourceGroupName(), this.name(), groupName)
-                .map(privateLinkResourceInner -> new PrivateLinkResourceImpl(privateLinkResourceInner));
+        return this
+            .manager()
+            .inner()
+            .privateLinkResources()
+            .getAsync(this.resourceGroupName(), this.name(), groupName)
+            .map(privateLinkResourceInner -> new PrivateLinkResourceImpl(privateLinkResourceInner));
     }
 
     @Override
@@ -195,8 +210,10 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<PrivateEndpointConnection> getPrivateEndpointConnectionAsync(String name) {
-        return this.privateEndpointConnections.getImplAsync(name)
-                .map(privateEndpointConnection -> privateEndpointConnection);
+        return this
+            .privateEndpointConnections
+            .getImplAsync(name)
+            .map(privateEndpointConnection -> privateEndpointConnection);
     }
 
     @Override
@@ -210,7 +227,7 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public String cassandraConnectorOffer() {
+    public ConnectorOffer cassandraConnectorOffer() {
         return this.inner().connectorOffer();
     }
 
@@ -230,7 +247,10 @@ class CosmosDBAccountImpl
 
     @Override
     public List<VirtualNetworkRule> virtualNetworkRules() {
-        List<VirtualNetworkRule> result = (this.inner() != null && this.inner().virtualNetworkRules() != null) ? this.inner().virtualNetworkRules() : new ArrayList<VirtualNetworkRule>();
+        List<VirtualNetworkRule> result =
+            (this.inner() != null && this.inner().virtualNetworkRules() != null)
+                ? this.inner().virtualNetworkRules()
+                : new ArrayList<VirtualNetworkRule>();
         return Collections.unmodifiableList(result);
     }
 
@@ -241,7 +261,11 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<Void> offlineRegionAsync(Region region) {
-        return this.manager().inner().databaseAccounts().offlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
+            .offlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
     }
 
     @Override
@@ -251,7 +275,11 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<Void> onlineRegionAsync(Region region) {
-        return this.manager().inner().databaseAccounts().onlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
+            .onlineRegionAsync(this.resourceGroupName(), this.name(), region.label());
     }
 
     @Override
@@ -261,14 +289,17 @@ class CosmosDBAccountImpl
 
     @Override
     public Mono<Void> regenerateKeyAsync(KeyKind keyKind) {
-        return this.manager().inner().databaseAccounts().regenerateKeyAsync(this.resourceGroupName(),
-                this.name(), keyKind);
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
+            .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyKind);
     }
 
     @Override
     public CosmosDBAccountImpl withKind(DatabaseAccountKind kind) {
         this.inner().withKind(kind);
-        return this;        
+        return this;
     }
 
     @Override
@@ -320,11 +351,10 @@ class CosmosDBAccountImpl
         return this;
     }
 
-
     @Override
     public CosmosDBAccountImpl withIpRangeFilter(String ipRangeFilter) {
         this.inner().withIpRangeFilter(ipRangeFilter);
-        return this;        
+        return this;
     }
 
     @Override
@@ -381,9 +411,7 @@ class CosmosDBAccountImpl
 
     @Override
     public CosmosDBAccountImpl withBoundedStalenessConsistency(long maxStalenessPrefix, int maxIntervalInSeconds) {
-        this.setConsistencyPolicy(DefaultConsistencyLevel.BOUNDED_STALENESS,
-                maxStalenessPrefix,
-                maxIntervalInSeconds);
+        this.setConsistencyPolicy(DefaultConsistencyLevel.BOUNDED_STALENESS, maxStalenessPrefix, maxIntervalInSeconds);
         return this;
     }
 
@@ -421,25 +449,27 @@ class CosmosDBAccountImpl
 
     private DatabaseAccountCreateUpdateParameters createUpdateParametersInner(DatabaseAccountGetResultsInner inner) {
         this.ensureFailoverIsInitialized();
-        DatabaseAccountCreateUpdateParameters createUpdateParametersInner =
-                new DatabaseAccountCreateUpdateParameters();
+        DatabaseAccountCreateUpdateParameters createUpdateParametersInner = new DatabaseAccountCreateUpdateParameters();
         createUpdateParametersInner.setLocation(this.regionName().toLowerCase());
         createUpdateParametersInner.withConsistencyPolicy(inner.consistencyPolicy());
-//        createUpdateParametersInner.withDatabaseAccountOfferType(
-//                DatabaseAccountOfferType.STANDARD.toString()); // Enum to Constant
+        //        createUpdateParametersInner.withDatabaseAccountOfferType(
+        //                DatabaseAccountOfferType.STANDARD.toString()); // Enum to Constant
         createUpdateParametersInner.withIpRangeFilter(inner.ipRangeFilter());
         createUpdateParametersInner.withKind(inner.kind());
         createUpdateParametersInner.withCapabilities(inner.capabilities());
         createUpdateParametersInner.setTags(inner.getTags());
         createUpdateParametersInner.withEnableMultipleWriteLocations(inner.enableMultipleWriteLocations());
-        this.addLocationsForParameters(new CreateUpdateLocationParameters(createUpdateParametersInner), this.failoverPolicies);
+        this
+            .addLocationsForParameters(
+                new CreateUpdateLocationParameters(createUpdateParametersInner), this.failoverPolicies);
         createUpdateParametersInner.withIsVirtualNetworkFilterEnabled(inner.isVirtualNetworkFilterEnabled());
         createUpdateParametersInner.withEnableCassandraConnector(inner.enableCassandraConnector());
         createUpdateParametersInner.withConnectorOffer(inner.connectorOffer());
         createUpdateParametersInner.withEnableAutomaticFailover(inner.enableAutomaticFailover());
         createUpdateParametersInner.withDisableKeyBasedMetadataWriteAccess(inner.disableKeyBasedMetadataWriteAccess());
         if (this.virtualNetworkRulesMap != null) {
-            createUpdateParametersInner.withVirtualNetworkRules(new ArrayList<VirtualNetworkRule>(this.virtualNetworkRulesMap.values()));
+            createUpdateParametersInner
+                .withVirtualNetworkRules(new ArrayList<VirtualNetworkRule>(this.virtualNetworkRulesMap.values()));
             this.virtualNetworkRulesMap = null;
         }
         return createUpdateParametersInner;
@@ -473,9 +503,7 @@ class CosmosDBAccountImpl
     }
 
     private void setConsistencyPolicy(
-            DefaultConsistencyLevel level,
-            long maxStalenessPrefix,
-            int maxIntervalInSeconds) {
+        DefaultConsistencyLevel level, long maxStalenessPrefix, int maxIntervalInSeconds) {
         ConsistencyPolicy policy = new ConsistencyPolicy();
         policy.withDefaultConsistencyLevel(level);
         if (level == DefaultConsistencyLevel.BOUNDED_STALENESS) {
@@ -486,9 +514,7 @@ class CosmosDBAccountImpl
         this.inner().withConsistencyPolicy(policy);
     }
 
-    private void addLocationsForParameters(
-            HasLocations locationParameters,
-            List<FailoverPolicy> failoverPolicies) {
+    private void addLocationsForParameters(HasLocations locationParameters, List<FailoverPolicy> failoverPolicies) {
         List<Location> locations = new ArrayList<Location>();
 
         if (failoverPolicies.size() > 0) {
@@ -510,8 +536,13 @@ class CosmosDBAccountImpl
 
     private Mono<CosmosDBAccount> updateFailoverPriorityAsync() {
         final CosmosDBAccountImpl self = this;
-        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(this.resourceGroupName(),
-                this.name(), this.failoverPolicies).map(voidInner -> {
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
+            .failoverPriorityChangeAsync(this.resourceGroupName(), this.name(), this.failoverPolicies)
+            .map(
+                voidInner -> {
                     if (self.inner().failoverPolicies() != null) {
                         self.inner().failoverPolicies().clear();
                         self.inner().failoverPolicies().addAll(self.failoverPolicies);
@@ -532,62 +563,67 @@ class CosmosDBAccountImpl
 
         if (isInCreateMode()) {
             final DatabaseAccountCreateUpdateParameters createUpdateParametersInner =
-                    this.createUpdateParametersInner(this.inner());
-            request = this.manager().inner().databaseAccounts().createOrUpdateAsync(
-                    resourceGroupName(),
-                    name(),
-                    createUpdateParametersInner
-            );
+                this.createUpdateParametersInner(this.inner());
+            request =
+                this
+                    .manager()
+                    .inner()
+                    .databaseAccounts()
+                    .createOrUpdateAsync(resourceGroupName(), name(), createUpdateParametersInner);
             locationParameters = new CreateUpdateLocationParameters(createUpdateParametersInner);
         } else {
-            final DatabaseAccountUpdateParameters updateParametersInner =
-                    this.updateParametersInner(this.inner());
-            request = this.manager().inner().databaseAccounts().updateAsync(
-                    resourceGroupName(),
-                    name(),
-                    updateParametersInner
-            );
+            final DatabaseAccountUpdateParameters updateParametersInner = this.updateParametersInner(this.inner());
+            request =
+                this
+                    .manager()
+                    .inner()
+                    .databaseAccounts()
+                    .updateAsync(resourceGroupName(), name(), updateParametersInner);
             locationParameters = new UpdateLocationParameters(updateParametersInner);
         }
 
         final HasLocations finalLocationParameters = locationParameters;
         return request
-                .flatMap(new Function<DatabaseAccountGetResultsInner, Mono<? extends CosmosDBAccount>>() {
+            .flatMap(
+                new Function<DatabaseAccountGetResultsInner, Mono<? extends CosmosDBAccount>>() {
                     @Override
                     public Mono<? extends CosmosDBAccount> apply(DatabaseAccountGetResultsInner databaseAccountInner) {
                         self.failoverPolicies.clear();
                         self.hasFailoverPolicyChanges = false;
-                        return manager().databaseAccounts().getByResourceGroupAsync(
-                                resourceGroupName(),
-                                name()
-                        )
-                        .flatMap(databaseAccount -> {
-                                if (maxDelayDueToMissingFailovers > data.get(0)
+                        return manager()
+                            .databaseAccounts()
+                            .getByResourceGroupAsync(resourceGroupName(), name())
+                            .flatMap(
+                                databaseAccount -> {
+                                    if (maxDelayDueToMissingFailovers > data.get(0)
                                         && (databaseAccount.id() == null
-                                        || databaseAccount.id().length() == 0
-                                        || finalLocationParameters.locations().size()
-                                        > databaseAccount.inner().failoverPolicies().size())) {
-                                    return Mono.empty();
-                                }
-
-                                if (isAFinalProvisioningState(databaseAccount.inner().provisioningState())) {
-                                    for (Location location : databaseAccount.readableReplications()) {
-                                        if (!isAFinalProvisioningState(location.provisioningState())) {
-                                            return Mono.empty();
-                                        }
+                                            || databaseAccount.id().length() == 0
+                                            || finalLocationParameters.locations().size()
+                                                > databaseAccount.inner().failoverPolicies().size())) {
+                                        return Mono.empty();
                                     }
-                                } else {
-                                    return Mono.empty();
-                                }
 
-                                self.setInner(databaseAccount.inner());
-                                return Mono.just(databaseAccount);
-                        })
-                        .repeatWhenEmpty(longFlux -> longFlux.flatMap(index -> {
-                            data.set(0, data.get(0) + 30);
-                            return Mono.delay(manager().getSdkContext().getLroRetryDuration());
-                        }));
+                                    if (isAFinalProvisioningState(databaseAccount.inner().provisioningState())) {
+                                        for (Location location : databaseAccount.readableReplications()) {
+                                            if (!isAFinalProvisioningState(location.provisioningState())) {
+                                                return Mono.empty();
+                                            }
+                                        }
+                                    } else {
+                                        return Mono.empty();
+                                    }
 
+                                    self.setInner(databaseAccount.inner());
+                                    return Mono.just(databaseAccount);
+                                })
+                            .repeatWhenEmpty(
+                                longFlux ->
+                                    longFlux
+                                        .flatMap(
+                                            index -> {
+                                                data.set(0, data.get(0) + 30);
+                                                return Mono.delay(manager().getSdkContext().getLroRetryDuration());
+                                            }));
                     }
                 });
     }
@@ -601,12 +637,15 @@ class CosmosDBAccountImpl
             this.failoverPolicies.clear();
             FailoverPolicy[] policyInners = new FailoverPolicy[this.inner().failoverPolicies().size()];
             this.inner().failoverPolicies().toArray(policyInners);
-            Arrays.sort(policyInners, new Comparator<FailoverPolicy>() {
-                @Override
-                public int compare(FailoverPolicy o1, FailoverPolicy o2) {
-                    return o1.failoverPriority().compareTo(o2.failoverPriority());
-                }
-            });
+            Arrays
+                .sort(
+                    policyInners,
+                    new Comparator<FailoverPolicy>() {
+                        @Override
+                        public int compare(FailoverPolicy o1, FailoverPolicy o2) {
+                            return o1.failoverPriority().compareTo(o2.failoverPriority());
+                        }
+                    });
 
             for (int i = 0; i < policyInners.length; i++) {
                 this.failoverPolicies.add(policyInners[i]);
@@ -681,16 +720,16 @@ class CosmosDBAccountImpl
     }
 
     @Override
-    public CosmosDBAccountImpl withCassandraConnector(String connectorOffer) {
+    public CosmosDBAccountImpl withCassandraConnector(ConnectorOffer connectorOffer) {
         this.inner().withEnableCassandraConnector(true);
-        // this.inner().withConnectorOffer(connectorOffer); // TODO: Constant currently, may change after the generator changed.
+        this.inner().withConnectorOffer(connectorOffer);
         return this;
     }
 
     @Override
     public CosmosDBAccountImpl withoutCassandraConnector() {
         this.inner().withEnableCassandraConnector(false);
-        // this.inner().withConnectorOffer(null);
+        this.inner().withConnectorOffer(null);
         return this;
     }
 
@@ -702,7 +741,9 @@ class CosmosDBAccountImpl
 
     interface HasLocations {
         String location();
+
         List<Location> locations();
+
         void withLocations(List<Location> locations);
     }
 

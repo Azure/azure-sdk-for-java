@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The Identity model.
- */
+/** The Identity model. */
 @Fluent
 public final class Identity {
     /*
@@ -34,45 +32,46 @@ public final class Identity {
     /*
      * The list of user identities associated with the resource. The user
      * identity dictionary key references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity
+     * /userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     private Map<String, IdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     * 
+     *
      * @return the principalId value.
      */
-    public String getPrincipalId() {
+    public String principalId() {
         return this.principalId;
     }
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     * 
+     *
      * @return the tenantId value.
      */
-    public String getTenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 
     /**
      * Get the type property: The identity type.
-     * 
+     *
      * @return the type value.
      */
-    public ResourceIdentityType getType() {
+    public ResourceIdentityType type() {
         return this.type;
     }
 
     /**
      * Set the type property: The identity type.
-     * 
+     *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
-    public Identity setType(ResourceIdentityType type) {
+    public Identity withType(ResourceIdentityType type) {
         this.type = type;
         return this;
     }
@@ -81,11 +80,12 @@ public final class Identity {
      * Get the userAssignedIdentities property: The list of user identities
      * associated with the resource. The user identity dictionary key
      * references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     * 
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity
+     * /userAssignedIdentities/{identityName}'.
+     *
      * @return the userAssignedIdentities value.
      */
-    public Map<String, IdentityUserAssignedIdentities> getUserAssignedIdentities() {
+    public Map<String, IdentityUserAssignedIdentities> userAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -93,12 +93,13 @@ public final class Identity {
      * Set the userAssignedIdentities property: The list of user identities
      * associated with the resource. The user identity dictionary key
      * references will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     * 
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity
+     * /userAssignedIdentities/{identityName}'.
+     *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.
      */
-    public Identity setUserAssignedIdentities(Map<String, IdentityUserAssignedIdentities> userAssignedIdentities) {
+    public Identity withUserAssignedIdentities(Map<String, IdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }

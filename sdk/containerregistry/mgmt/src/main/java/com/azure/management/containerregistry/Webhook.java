@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
@@ -17,66 +14,45 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Settable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import reactor.core.publisher.Mono;
-
 import java.util.Collection;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * An object that represents a webhook for a container registry.
- */
+/** An object that represents a webhook for a container registry. */
 @Fluent
-public interface Webhook extends
-        ExternalChildResource<Webhook, Registry>,
-    Resource,
+public interface Webhook
+    extends ExternalChildResource<Webhook, Registry>,
+        Resource,
         HasInner<WebhookInner>,
         Refreshable<Webhook>,
         Updatable<Webhook.Update> {
 
-    /**
-     * @return the status of the webhook
-     */
+    /** @return the status of the webhook */
     boolean isEnabled();
 
     /**
      * @return the scope of repositories where the event can be triggered
-     * <p>
-     * For example:
-     *  - 'foo:*' means events for all tags under repository 'foo'
-     *  - 'foo:bar' means events for 'foo:bar' only
-     *  - 'foo' is equivalent to 'foo:latest'
-     *  - empty means all events
+     *     <p>For example: - 'foo:*' means events for all tags under repository 'foo' - 'foo:bar' means events for
+     *     'foo:bar' only - 'foo' is equivalent to 'foo:latest' - empty means all events
      */
     String scope();
 
-    /**
-     * @return the service URI for the webhook to post notifications
-     */
+    /** @return the service URI for the webhook to post notifications */
     String serviceUri();
 
-    /**
-     * @return the Custom headers that will be added to the webhook notifications
-     */
+    /** @return the Custom headers that will be added to the webhook notifications */
     Map<String, String> customHeaders();
 
-    /**
-     * @return the list of actions that trigger the webhook to post notifications
-     */
+    /** @return the list of actions that trigger the webhook to post notifications */
     Collection<WebhookAction> triggers();
 
-    /**
-     * @return the provisioning state of the webhook
-     */
+    /** @return the provisioning state of the webhook */
     ProvisioningState provisioningState();
 
-    /**
-     * @return the webhook parent ID
-     */
+    /** @return the webhook parent ID */
     String parentId();
 
-    /**
-     * Changes the status of the webhook to "enabled".
-     */
+    /** Changes the status of the webhook to "enabled". */
     void enable();
 
     /**
@@ -86,9 +62,7 @@ public interface Webhook extends
      */
     Mono<Void> enableAsync();
 
-    /**
-     * Changes the status of the webhook to "disabled".
-     */
+    /** Changes the status of the webhook to "disabled". */
     void disable();
 
     /**
@@ -98,29 +72,19 @@ public interface Webhook extends
      */
     Mono<Void> disableAsync();
 
-    /**
-     * @return the id on an event info resource
-     */
+    /** @return the id on an event info resource */
     String ping();
 
-    /**
-     * @return a representation of the future computation of this call, returning the id on an event info resource
-     */
+    /** @return a representation of the future computation of this call, returning the id on an event info resource */
     Mono<String> pingAsync();
 
-    /**
-     * @return the list of event info object
-     */
+    /** @return the list of event info object */
     PagedIterable<WebhookEventInfo> listEvents();
 
-    /**
-     * @return a representation of the future computation of this call, returning the list of event info object
-     */
+    /** @return a representation of the future computation of this call, returning the list of event info object */
     PagedFlux<WebhookEventInfo> listEventsAsync();
 
-    /**
-     * Grouping of webhook definition stages.
-     */
+    /** Grouping of webhook definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of the webhook definition.
@@ -131,7 +95,8 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the actions that will trigger the webhook notifications.
+         * The stage of the webhook definition allowing to specify the actions that will trigger the webhook
+         * notifications.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -161,15 +126,16 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the custom headers that will be added to the notifications.
+         * The stage of the webhook definition allowing to specify the custom headers that will be added to the
+         * notifications.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCustomHeaders<ParentT> {
             /**
              * Specifies a custom header that will be added to notifications.
-             * <p>
-             * Consecutive calls to this method will add additional headers.
+             *
+             * <p>Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -187,25 +153,28 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be triggered.
+         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be
+         * triggered.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRepositoriesScope<ParentT> {
             /**
              * Specifies the scope of repositories where the event can be triggered.
-             * <p>
-             * For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only.
-             *  'foo' is equivalent to 'foo:latest', empty means all events.
              *
-             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all events
+             * <p>For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for
+             * 'foo:bar' only. 'foo' is equivalent to 'foo:latest', empty means all events.
+             *
+             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all
+             *     events
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withRepositoriesScope(String repositoriesScope);
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the default status of the webhook after being created.
+         * The stage of the webhook definition allowing to specify the default status of the webhook after being
+         * created.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -219,18 +188,20 @@ public interface Webhook extends
             WithAttach<ParentT> enabled(boolean defaultStatus);
         }
 
-        /** The final stage of the webhook definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the webhook definition
-         * can be attached to the parent container group definition.
+        /**
+         * The final stage of the webhook definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the webhook definition can be attached
+         * to the parent container group definition.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            WithCustomHeaders<ParentT>,
-            WithRepositoriesScope<ParentT>,
-            WithDefaultStatus<ParentT>,
-            DefinitionWithTags<WithAttach<ParentT>>,
-            Attachable.InDefinition<ParentT> {
+        interface WithAttach<ParentT>
+            extends WithCustomHeaders<ParentT>,
+                WithRepositoriesScope<ParentT>,
+                WithDefaultStatus<ParentT>,
+                DefinitionWithTags<WithAttach<ParentT>>,
+                Attachable.InDefinition<ParentT> {
         }
     }
 
@@ -239,16 +210,14 @@ public interface Webhook extends
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface WebhookDefinition<ParentT> extends
-        DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithTriggerWhen<ParentT>,
-        DefinitionStages.WithServiceUri<ParentT>,
-        DefinitionStages.WithAttach<ParentT> {
+    interface WebhookDefinition<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithTriggerWhen<ParentT>,
+            DefinitionStages.WithServiceUri<ParentT>,
+            DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of webhook update definition stages.
-     */
+    /** Grouping of webhook update definition stages. */
     interface UpdateDefinitionStages {
         /**
          * The first stage of the webhook definition.
@@ -259,7 +228,8 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the actions that will trigger the webhook notifications.
+         * The stage of the webhook definition allowing to specify the actions that will trigger the webhook
+         * notifications.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -289,15 +259,16 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the custom headers that will be added to the notifications.
+         * The stage of the webhook definition allowing to specify the custom headers that will be added to the
+         * notifications.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCustomHeaders<ParentT> {
             /**
              * Specifies a custom header that will be added to notifications.
-             * <p>
-             * Consecutive calls to this method will add additional headers.
+             *
+             * <p>Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -315,25 +286,28 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be triggered.
+         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be
+         * triggered.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRepositoriesScope<ParentT> {
             /**
              * Specifies the scope of repositories where the event can be triggered.
-             * <p>
-             * For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only.
-             *  'foo' is equivalent to 'foo:latest', empty means all events.
              *
-             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all events
+             * <p>For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for
+             * 'foo:bar' only. 'foo' is equivalent to 'foo:latest', empty means all events.
+             *
+             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all
+             *     events
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withRepositoriesScope(String repositoriesScope);
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the default status of the webhook after being created.
+         * The stage of the webhook definition allowing to specify the default status of the webhook after being
+         * created.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -371,48 +345,47 @@ public interface Webhook extends
             WithAttach<ParentT> withTag(String key, String value);
         }
 
-        /** The final stage of the webhook definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the webhook definition
-         * can be attached to the parent container group definition.
+        /**
+         * The final stage of the webhook definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the webhook definition can be attached
+         * to the parent container group definition.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            WithCustomHeaders<ParentT>,
-            WithRepositoriesScope<ParentT>,
-            WithDefaultStatus<ParentT>,
-            WithTags<ParentT>,
-            Attachable.InUpdate<ParentT> {
+        interface WithAttach<ParentT>
+            extends WithCustomHeaders<ParentT>,
+                WithRepositoriesScope<ParentT>,
+                WithDefaultStatus<ParentT>,
+                WithTags<ParentT>,
+                Attachable.InUpdate<ParentT> {
         }
     }
 
     /**
      * Grouping of the container registry's webhook update definition.
+     *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-        UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithTriggerWhen<ParentT>,
-        UpdateDefinitionStages.WithServiceUri<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithTriggerWhen<ParentT>,
+            UpdateDefinitionStages.WithServiceUri<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * The entirety of a webhook update.
-     */
-    interface Update extends
-        UpdateStages.WithTriggerWhen,
-        UpdateStages.WithServiceUri,
-        UpdateStages.WithCustomHeaders,
-        UpdateStages.WithRepositoriesScope,
-        UpdateStages.WithDefaultStatus,
-        Resource.UpdateWithTags<Update>,
+    /** The entirety of a webhook update. */
+    interface Update
+        extends UpdateStages.WithTriggerWhen,
+            UpdateStages.WithServiceUri,
+            UpdateStages.WithCustomHeaders,
+            UpdateStages.WithRepositoriesScope,
+            UpdateStages.WithDefaultStatus,
+            Resource.UpdateWithTags<Update>,
             Appliable<Webhook> {
     }
 
-    /**
-     * Grouping of webhook update stages.
-     */
+    /** Grouping of webhook update stages. */
     interface UpdateStages {
         interface WithTriggerWhen {
             /**
@@ -424,9 +397,7 @@ public interface Webhook extends
             Update withTriggerWhen(WebhookAction... webhookActions);
         }
 
-        /**
-         * The stage of the webhook definition allowing to specify the service URI for post notifications.
-         */
+        /** The stage of the webhook definition allowing to specify the service URI for post notifications. */
         interface WithServiceUri {
             /**
              * Specifies the service URI for post notifications.
@@ -438,13 +409,14 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the custom headers that will be added to the notifications.
+         * The stage of the webhook definition allowing to specify the custom headers that will be added to the
+         * notifications.
          */
         interface WithCustomHeaders {
             /**
              * Specifies a custom header that will be added to notifications.
-             * <p>
-             * Consecutive calls to this method will add additional headers.
+             *
+             * <p>Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -462,23 +434,26 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be triggered.
+         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be
+         * triggered.
          */
         interface WithRepositoriesScope {
             /**
              * Specifies the scope of repositories where the event can be triggered.
-             * <p>
-             * For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only.
-             *  'foo' is equivalent to 'foo:latest', empty means all events.
              *
-             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all events
+             * <p>For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for
+             * 'foo:bar' only. 'foo' is equivalent to 'foo:latest', empty means all events.
+             *
+             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all
+             *     events
              * @return the next stage of the resource update
              */
             Update withRepositoriesScope(String repositoriesScope);
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the default status of the webhook after being created.
+         * The stage of the webhook definition allowing to specify the default status of the webhook after being
+         * created.
          */
         interface WithDefaultStatus {
             /**
@@ -493,19 +468,18 @@ public interface Webhook extends
 
     /**
      * The entirety of a webhook resource update as part of a container registry update.
+     *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateResource<ParentT> extends
-        UpdateResourceStages.Blank<ParentT>,
-        UpdateResourceStages.WithAttach<ParentT> {
+    interface UpdateResource<ParentT>
+        extends UpdateResourceStages.Blank<ParentT>, UpdateResourceStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of webhook update stages applicable as part of a container registry update.
-     */
+    /** Grouping of webhook update stages applicable as part of a container registry update. */
     interface UpdateResourceStages {
         /**
          * The first stage of the webhook definition.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this update definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
@@ -537,15 +511,16 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the custom headers that will be added to the notifications.
+         * The stage of the webhook definition allowing to specify the custom headers that will be added to the
+         * notifications.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithCustomHeaders<ParentT> {
             /**
              * Specifies a custom header that will be added to notifications.
-             * <p>
-             * Consecutive calls to this method will add additional headers.
+             *
+             * <p>Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -563,25 +538,28 @@ public interface Webhook extends
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be triggered.
+         * The stage of the webhook definition allowing to specify the scope of repositories where the event can be
+         * triggered.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithRepositoriesScope<ParentT> {
             /**
              * Updates the scope of repositories where the event can be triggered.
-             * <p>
-             * For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only.
-             *  'foo' is equivalent to 'foo:latest', empty means all events.
              *
-             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all events
+             * <p>For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for
+             * 'foo:bar' only. 'foo' is equivalent to 'foo:latest', empty means all events.
+             *
+             * @param repositoriesScope the scope of repositories where the event can be triggered; empty means all
+             *     events
              * @return the next stage of the resource update
              */
             WithAttach<ParentT> withRepositoriesScope(String repositoriesScope);
         }
 
         /**
-         * The stage of the webhook definition allowing to specify the default status of the webhook after being created.
+         * The stage of the webhook definition allowing to specify the default status of the webhook after being
+         * created.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -620,6 +598,7 @@ public interface Webhook extends
 
             /**
              * Removes a tag from the resource.
+             *
              * @param key the key of the tag to remove
              * @return the next stage of the resource update
              */
@@ -628,18 +607,19 @@ public interface Webhook extends
 
         /**
          * The final stage of the webhook definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the webhook definition
-         * can be attached to the parent container registry definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the webhook definition can be attached
+         * to the parent container registry definition.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            WithTriggerWhen<ParentT>,
-            WithServiceUri<ParentT>,
-            WithCustomHeaders<ParentT>,
-            WithRepositoriesScope<ParentT>,
-            WithDefaultStatus<ParentT>,
-            WithOrWithoutTags<ParentT>,
+        interface WithAttach<ParentT>
+            extends WithTriggerWhen<ParentT>,
+                WithServiceUri<ParentT>,
+                WithCustomHeaders<ParentT>,
+                WithRepositoriesScope<ParentT>,
+                WithDefaultStatus<ParentT>,
+                WithOrWithoutTags<ParentT>,
                 Settable<ParentT> {
         }
     }

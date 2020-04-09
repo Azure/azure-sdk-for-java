@@ -9,9 +9,7 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourceListResult model.
- */
+/** The ResourceListResult model. */
 @Fluent
 public final class ResourceListResultInner {
     /*
@@ -28,7 +26,7 @@ public final class ResourceListResultInner {
 
     /**
      * Get the value property: The list of vault resources.
-     * 
+     *
      * @return the value value.
      */
     public List<Resource> value() {
@@ -37,7 +35,7 @@ public final class ResourceListResultInner {
 
     /**
      * Set the value property: The list of vault resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the ResourceListResultInner object itself.
      */
@@ -47,9 +45,8 @@ public final class ResourceListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of vault
-     * resources.
-     * 
+     * Get the nextLink property: The URL to get the next set of vault resources.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -57,9 +54,8 @@ public final class ResourceListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URL to get the next set of vault
-     * resources.
-     * 
+     * Set the nextLink property: The URL to get the next set of vault resources.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ResourceListResultInner object itself.
      */

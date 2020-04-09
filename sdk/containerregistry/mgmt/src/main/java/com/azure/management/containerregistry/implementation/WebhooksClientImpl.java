@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
@@ -13,9 +10,7 @@ import com.azure.management.containerregistry.models.WebhooksInner;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-/**
- * Represents a webhook collection associated with a container registry.
- */
+/** Represents a webhook collection associated with a container registry. */
 public class WebhooksClientImpl implements Registries.WebhooksClient {
     private final ContainerRegistryManager containerRegistryManager;
     private final RegistryImpl containerRegistry;
@@ -35,14 +30,19 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
         final WebhooksClientImpl self = this;
         final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
 
-        return webhooksInner.getAsync(resourceGroupName, registryName, webhookName)
-            .map(webhookInner -> {
-                if (self.containerRegistry != null) {
-                    return new WebhookImpl(webhookName, self.containerRegistry, webhookInner, self.containerRegistryManager);
-                } else {
-                    return new WebhookImpl(resourceGroupName, registryName, webhookName, webhookInner, self.containerRegistryManager);
-                }
-            }).flatMap(webhook -> webhook.setCallbackConfigAsync());
+        return webhooksInner
+            .getAsync(resourceGroupName, registryName, webhookName)
+            .map(
+                webhookInner -> {
+                    if (self.containerRegistry != null) {
+                        return new WebhookImpl(
+                            webhookName, self.containerRegistry, webhookInner, self.containerRegistryManager);
+                    } else {
+                        return new WebhookImpl(
+                            resourceGroupName, registryName, webhookName, webhookInner, self.containerRegistryManager);
+                    }
+                })
+            .flatMap(webhook -> webhook.setCallbackConfigAsync());
     }
 
     @Override
@@ -52,7 +52,11 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
 
     @Override
     public Mono<Void> deleteAsync(final String resourceGroupName, final String registryName, final String webhookName) {
-        return this.containerRegistryManager.inner().webhooks().deleteAsync(resourceGroupName, registryName, webhookName);
+        return this
+            .containerRegistryManager
+            .inner()
+            .webhooks()
+            .deleteAsync(resourceGroupName, registryName, webhookName);
     }
 
     @Override
@@ -65,13 +69,24 @@ public class WebhooksClientImpl implements Registries.WebhooksClient {
         final WebhooksClientImpl self = this;
         final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
 
-        return PagedConverter.flatMapPage(webhooksInner.listAsync(resourceGroupName, registryName)
-             .mapPage(inner -> {
-                if (self.containerRegistry != null) {
-                    return new WebhookImpl(inner.getName(), self.containerRegistry, inner, self.containerRegistryManager);
-                } else {
-                    return new WebhookImpl(resourceGroupName, registryName, inner.getName(), inner, self.containerRegistryManager);
-                }
-            }), webhook -> webhook.setCallbackConfigAsync());
+        return PagedConverter
+            .flatMapPage(
+                webhooksInner
+                    .listAsync(resourceGroupName, registryName)
+                    .mapPage(
+                        inner -> {
+                            if (self.containerRegistry != null) {
+                                return new WebhookImpl(
+                                    inner.getName(), self.containerRegistry, inner, self.containerRegistryManager);
+                            } else {
+                                return new WebhookImpl(
+                                    resourceGroupName,
+                                    registryName,
+                                    inner.getName(),
+                                    inner,
+                                    self.containerRegistryManager);
+                            }
+                        }),
+                webhook -> webhook.setCallbackConfigAsync());
     }
 }

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The WhatIfPropertyChange model.
- */
+/** The WhatIfPropertyChange model. */
 @Fluent
 public final class WhatIfPropertyChange {
     /*
@@ -45,104 +43,100 @@ public final class WhatIfPropertyChange {
 
     /**
      * Get the path property: The path of the property.
-     * 
+     *
      * @return the path value.
      */
-    public String getPath() {
+    public String path() {
         return this.path;
     }
 
     /**
      * Set the path property: The path of the property.
-     * 
+     *
      * @param path the path value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setPath(String path) {
+    public WhatIfPropertyChange withPath(String path) {
         this.path = path;
         return this;
     }
 
     /**
      * Get the propertyChangeType property: The type of property change.
-     * 
+     *
      * @return the propertyChangeType value.
      */
-    public PropertyChangeType getPropertyChangeType() {
+    public PropertyChangeType propertyChangeType() {
         return this.propertyChangeType;
     }
 
     /**
      * Set the propertyChangeType property: The type of property change.
-     * 
+     *
      * @param propertyChangeType the propertyChangeType value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setPropertyChangeType(PropertyChangeType propertyChangeType) {
+    public WhatIfPropertyChange withPropertyChangeType(PropertyChangeType propertyChangeType) {
         this.propertyChangeType = propertyChangeType;
         return this;
     }
 
     /**
-     * Get the before property: The value of the property before the deployment
-     * is executed.
-     * 
+     * Get the before property: The value of the property before the deployment is executed.
+     *
      * @return the before value.
      */
-    public Object getBefore() {
+    public Object before() {
         return this.before;
     }
 
     /**
-     * Set the before property: The value of the property before the deployment
-     * is executed.
-     * 
+     * Set the before property: The value of the property before the deployment is executed.
+     *
      * @param before the before value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setBefore(Object before) {
+    public WhatIfPropertyChange withBefore(Object before) {
         this.before = before;
         return this;
     }
 
     /**
-     * Get the after property: The value of the property after the deployment
-     * is executed.
-     * 
+     * Get the after property: The value of the property after the deployment is executed.
+     *
      * @return the after value.
      */
-    public Object getAfter() {
+    public Object after() {
         return this.after;
     }
 
     /**
-     * Set the after property: The value of the property after the deployment
-     * is executed.
-     * 
+     * Set the after property: The value of the property after the deployment is executed.
+     *
      * @param after the after value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setAfter(Object after) {
+    public WhatIfPropertyChange withAfter(Object after) {
         this.after = after;
         return this;
     }
 
     /**
      * Get the children property: Nested property changes.
-     * 
+     *
      * @return the children value.
      */
-    public List<WhatIfPropertyChange> getChildren() {
+    public List<WhatIfPropertyChange> children() {
         return this.children;
     }
 
     /**
      * Set the children property: Nested property changes.
-     * 
+     *
      * @param children the children value to set.
      * @return the WhatIfPropertyChange object itself.
      */
-    public WhatIfPropertyChange setChildren(List<WhatIfPropertyChange> children) {
+    public WhatIfPropertyChange withChildren(List<WhatIfPropertyChange> children) {
         this.children = children;
         return this;
     }

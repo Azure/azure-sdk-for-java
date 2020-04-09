@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
@@ -10,9 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import reactor.core.publisher.Mono;
 
-/**
- * An immutable client-side representation of collection of Azure registry task runs.
- */
+/** An immutable client-side representation of collection of Azure registry task runs. */
 @Fluent()
 public interface RegistryTaskRuns {
     /**

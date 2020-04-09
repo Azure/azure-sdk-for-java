@@ -1,10 +1,6 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.cosmosdb.implementation;
-
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.cosmosdb.CosmosDBAccount;
@@ -12,22 +8,19 @@ import com.azure.management.cosmosdb.PrivateEndpointConnection;
 import com.azure.management.cosmosdb.models.PrivateEndpointConnectionInner;
 import com.azure.management.cosmosdb.models.PrivateEndpointConnectionsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-
-/**
- * Represents a private endpoint connection collection.
- */
-class PrivateEndpointConnectionsImpl extends
-        ExternalChildResourcesCachedImpl<PrivateEndpointConnectionImpl,
-                        PrivateEndpointConnection,
-                        PrivateEndpointConnectionInner,
-                        CosmosDBAccountImpl,
-                        CosmosDBAccount> {
+/** Represents a private endpoint connection collection. */
+class PrivateEndpointConnectionsImpl
+    extends ExternalChildResourcesCachedImpl<
+        PrivateEndpointConnectionImpl,
+        PrivateEndpointConnection,
+        PrivateEndpointConnectionInner,
+        CosmosDBAccountImpl,
+        CosmosDBAccount> {
     private final PrivateEndpointConnectionsInner client;
 
     PrivateEndpointConnectionsImpl(PrivateEndpointConnectionsInner client, CosmosDBAccountImpl parent) {
@@ -58,34 +51,41 @@ class PrivateEndpointConnectionsImpl extends
     }
 
     public Mono<Map<String, PrivateEndpointConnection>> asMapAsync() {
-        return listAsync().collectList()
-            .map(privateEndpointConnections -> {
-                Map<String, PrivateEndpointConnection> privateEndpointConnectionMap = new HashMap<>();
-                for (PrivateEndpointConnectionImpl privateEndpointConnection : privateEndpointConnections) {
-                    privateEndpointConnectionMap.put(privateEndpointConnection.name(), privateEndpointConnection);
-                }
-                return privateEndpointConnectionMap;
-            });
+        return listAsync()
+            .collectList()
+            .map(
+                privateEndpointConnections -> {
+                    Map<String, PrivateEndpointConnection> privateEndpointConnectionMap = new HashMap<>();
+                    for (PrivateEndpointConnectionImpl privateEndpointConnection : privateEndpointConnections) {
+                        privateEndpointConnectionMap.put(privateEndpointConnection.name(), privateEndpointConnection);
+                    }
+                    return privateEndpointConnectionMap;
+                });
     }
-    
+
     public PagedFlux<PrivateEndpointConnectionImpl> listAsync() {
         final PrivateEndpointConnectionsImpl self = this;
-        return this.client.listByDatabaseAccountAsync(this.getParent().resourceGroupName(), this.getParent().name())
-                .mapPage(inner -> {
-                        PrivateEndpointConnectionImpl childResource = new PrivateEndpointConnectionImpl(inner.getName(), self.getParent(), inner, client);
-                        self.addPrivateEndpointConnection(childResource);
-                        return childResource;
+        return this
+            .client
+            .listByDatabaseAccountAsync(this.getParent().resourceGroupName(), this.getParent().name())
+            .mapPage(
+                inner -> {
+                    PrivateEndpointConnectionImpl childResource =
+                        new PrivateEndpointConnectionImpl(inner.getName(), self.getParent(), inner, client);
+                    self.addPrivateEndpointConnection(childResource);
+                    return childResource;
                 });
     }
 
     public Mono<PrivateEndpointConnectionImpl> getImplAsync(String name) {
         final PrivateEndpointConnectionsImpl self = this;
-        return this.client.getAsync(getParent().resourceGroupName(), getParent().name(), name)
-                .map(inner -> {
-                    PrivateEndpointConnectionImpl childResource = new PrivateEndpointConnectionImpl(inner.getName(),
-                            getParent(),
-                            inner,
-                            client);
+        return this
+            .client
+            .getAsync(getParent().resourceGroupName(), getParent().name(), name)
+            .map(
+                inner -> {
+                    PrivateEndpointConnectionImpl childResource =
+                        new PrivateEndpointConnectionImpl(inner.getName(), getParent(), inner, client);
                     self.addPrivateEndpointConnection(childResource);
                     return childResource;
                 });

@@ -1,15 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /**
  * Base class for Azure SQL Server child resource operations.
@@ -20,7 +16,8 @@ import java.util.List;
 public interface SqlChildrenOperations<T> {
 
     /**
-     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource group.
+     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource
+     * group.
      *
      * @param resourceGroupName the name of resource group
      * @param sqlServerName the name of SQL server parent resource
@@ -30,7 +27,8 @@ public interface SqlChildrenOperations<T> {
     T getBySqlServer(String resourceGroupName, String sqlServerName, String name);
 
     /**
-     * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and its resource group.
+     * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and
+     * its resource group.
      *
      * @param resourceGroupName the name of resource group
      * @param sqlServerName the name of SQL server parent resource
@@ -40,7 +38,8 @@ public interface SqlChildrenOperations<T> {
     Mono<T> getBySqlServerAsync(String resourceGroupName, String sqlServerName, String name);
 
     /**
-     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource group.
+     * Gets the information about a child resource from Azure SQL server, identifying it by its name and its resource
+     * group.
      *
      * @param sqlServer the SQL server parent resource
      * @param name the name of the child resource
@@ -49,7 +48,8 @@ public interface SqlChildrenOperations<T> {
     T getBySqlServer(SqlServer sqlServer, String name);
 
     /**
-     * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and its resource group.
+     * Asynchronously gets the information about a child resource from Azure SQL server, identifying it by its name and
+     * its resource group.
      *
      * @param sqlServer the SQL server parent resource
      * @param name the name of the child resource
@@ -224,4 +224,3 @@ public interface SqlChildrenOperations<T> {
         PagedFlux<T> listAsync();
     }
 }
-

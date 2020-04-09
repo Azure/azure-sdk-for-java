@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources;
 
@@ -30,7 +27,8 @@ public interface Providers extends
      * Unregisters provider from a subscription asynchronously.
      *
      * @param resourceProviderNamespace Namespace of the resource provider
-     * @return a representation of the deferred computation of this call returning the unregistered Provider if successful
+     * @return a representation of the deferred computation of this call
+     *         returning the unregistered Provider if successful
      */
     Mono<Provider> unregisterAsync(String resourceProviderNamespace);
 
@@ -53,7 +51,7 @@ public interface Providers extends
     /**
      * Gets the information about a provider from Azure based on the provider name.
      *
-     * @param name                      the name of the provider
+     * @param name the name of the provider
      * @return a representation of the deferred computation of this call returning the found provider, if any
      */
     Mono<Provider> getByNameAsync(String name);

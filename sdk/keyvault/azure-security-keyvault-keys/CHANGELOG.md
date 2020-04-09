@@ -1,7 +1,8 @@
 # Release History
 
-## 4.2.0-beta.3 (Unreleased)
-
+## 4.2.0-beta.3 (2020-04-09)
+- Added `LocalCryptographyClient`, `LocalCryptographyAsyncClient`, `LocalKeyEncryptionKeyClient` and `LocalKeyEncryptionKeyAsyncClient` to perform cryptography operations locally.
+- Update azure-core dependency to version 1.4.0.
 
 ## 4.2.0-beta.2 (2020-03-10)
 ### Added

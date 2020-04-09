@@ -1,15 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.management.containerregistry.BaseImageDependency;
 import com.azure.management.containerregistry.RegistryTaskStep;
 import com.azure.management.containerregistry.TaskStepProperties;
-
 import java.util.List;
 
 abstract class RegistryTaskStepImpl implements RegistryTaskStep {

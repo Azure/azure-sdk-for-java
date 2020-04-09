@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql;
 
@@ -22,16 +19,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.sql.implementation.SqlServerManager;
 import com.azure.management.sql.models.ServersInner;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-/**
- *  Entry point to SQL Server management API.
- */
+/** Entry point to SQL Server management API. */
 @Fluent
-public interface SqlServers extends
-        SupportsCreating<SqlServer.DefinitionStages.Blank>,
+public interface SqlServers
+    extends SupportsCreating<SqlServer.DefinitionStages.Blank>,
         SupportsListing<SqlServer>,
         SupportsListingByResourceGroup<SqlServer>,
         SupportsGettingByResourceGroup<SqlServer>,
@@ -43,59 +37,37 @@ public interface SqlServers extends
         HasManager<SqlServerManager>,
         HasInner<ServersInner> {
 
-    /**
-     * @return the SQL Server Firewall Rules API entry point
-     */
+    /** @return the SQL Server Firewall Rules API entry point */
     SqlFirewallRuleOperations firewallRules();
 
-    /**
-     * @return the SQL Server VirtualNetwork Rules API entry point
-     */
+    /** @return the SQL Server VirtualNetwork Rules API entry point */
     SqlVirtualNetworkRuleOperations virtualNetworkRules();
 
-    /**
-     * @return the SQL Server DNS aliases API entry point
-     */
+    /** @return the SQL Server DNS aliases API entry point */
     SqlServerDnsAliasOperations dnsAliases();
 
-    /**
-     * @return the SQL Failover Group API entry point
-     */
+    /** @return the SQL Failover Group API entry point */
     SqlFailoverGroupOperations failoverGroups();
 
-    /**
-     * @return the SQL Server Key entry point
-     */
+    /** @return the SQL Server Key entry point */
     SqlServerKeyOperations serverKeys();
 
-    /**
-     * @return the SQL Encryption Protector entry point
-     */
+    /** @return the SQL Encryption Protector entry point */
     SqlEncryptionProtectorOperations encryptionProtectors();
 
-    /**
-     * @return entry point to manage SQL Server Security Alert Policy
-     */
+    /** @return entry point to manage SQL Server Security Alert Policy */
     SqlServerSecurityAlertPolicyOperations serverSecurityAlertPolicies();
 
-    /**
-     * @return the SQL Sync Group entry point
-     */
+    /** @return the SQL Sync Group entry point */
     SqlSyncGroupOperations syncGroups();
 
-    /**
-     * @return the SQL Sync Group entry point
-     */
+    /** @return the SQL Sync Group entry point */
     SqlSyncMemberOperations syncMembers();
 
-    /**
-     * @return the SQL Server Elastic Pools API entry point
-     */
+    /** @return the SQL Server Elastic Pools API entry point */
     SqlElasticPoolOperations elasticPools();
 
-    /**
-     * @return the SQL Server Database API entry point
-     */
+    /** @return the SQL Server Database API entry point */
     SqlDatabaseOperations databases();
 
     /**
@@ -110,7 +82,8 @@ public interface SqlServers extends
      * Checks if container registry name is valid and is not in use asynchronously.
      *
      * @param name the container registry name to check
-     * @return a representation of the future computation of this call, returning whether the name is available or other info if not
+     * @return a representation of the future computation of this call, returning whether the name is available or other
+     *     info if not
      */
     Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 

@@ -9,9 +9,7 @@ import com.azure.management.resources.ProviderResourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Provider model.
- */
+/** The Provider model. */
 @Fluent
 public final class ProviderInner {
     /*
@@ -46,7 +44,7 @@ public final class ProviderInner {
 
     /**
      * Get the id property: The provider ID.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -55,51 +53,48 @@ public final class ProviderInner {
 
     /**
      * Get the namespace property: The namespace of the resource provider.
-     * 
+     *
      * @return the namespace value.
      */
-    public String getNamespace() {
+    public String namespace() {
         return this.namespace;
     }
 
     /**
      * Set the namespace property: The namespace of the resource provider.
-     * 
+     *
      * @param namespace the namespace value to set.
      * @return the ProviderInner object itself.
      */
-    public ProviderInner setNamespace(String namespace) {
+    public ProviderInner withNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
 
     /**
-     * Get the registrationState property: The registration state of the
-     * resource provider.
-     * 
+     * Get the registrationState property: The registration state of the resource provider.
+     *
      * @return the registrationState value.
      */
-    public String getRegistrationState() {
+    public String registrationState() {
         return this.registrationState;
     }
 
     /**
-     * Get the registrationPolicy property: The registration policy of the
-     * resource provider.
-     * 
+     * Get the registrationPolicy property: The registration policy of the resource provider.
+     *
      * @return the registrationPolicy value.
      */
-    public String getRegistrationPolicy() {
+    public String registrationPolicy() {
         return this.registrationPolicy;
     }
 
     /**
-     * Get the resourceTypes property: The collection of provider resource
-     * types.
-     * 
+     * Get the resourceTypes property: The collection of provider resource types.
+     *
      * @return the resourceTypes value.
      */
-    public List<ProviderResourceType> getResourceTypes() {
+    public List<ProviderResourceType> resourceTypes() {
         return this.resourceTypes;
     }
 }

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.containerregistry.implementation;
 
@@ -25,34 +22,24 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Registry and its create and update interfaces.
- */
-public class RegistryImpl
-        extends GroupableResourceImpl<
-                Registry,
-                RegistryInner,
-                RegistryImpl,
-                ContainerRegistryManager>
-        implements Registry,
-        Registry.Definition,
-        Registry.Update {
+/** Implementation for Registry and its create and update interfaces. */
+public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager>
+    implements Registry, Registry.Definition, Registry.Update {
 
     private RegistryUpdateParameters updateParameters;
     private final StorageManager storageManager;
     private String storageAccountId;
     private String creatableStorageAccountKey;
     private WebhooksImpl webhooks;
-    //private QueuedBuildOperations queuedBuilds;
-    //private BuildTaskOperations buildTasks;
+    // private QueuedBuildOperations queuedBuilds;
+    // private BuildTaskOperations buildTasks;
 
-    protected RegistryImpl(String name, RegistryInner innerObject, ContainerRegistryManager manager,
-                           final StorageManager storageManager) {
+    protected RegistryImpl(
+        String name, RegistryInner innerObject, ContainerRegistryManager manager, final StorageManager storageManager) {
         super(name, innerObject, manager);
         this.storageManager = storageManager;
 
@@ -82,11 +69,17 @@ public class RegistryImpl
                 self.inner().storageAccount().withId(storageAccountId);
             }
 
-            return manager().inner().registries().createAsync(self.resourceGroupName(), self.name(), self.inner())
+            return manager()
+                .inner()
+                .registries()
+                .createAsync(self.resourceGroupName(), self.name(), self.inner())
                 .map(innerToFluentMap(this));
         } else {
             updateParameters.withTags(inner().getTags());
-            return manager().inner().registries().updateAsync(self.resourceGroupName(), self.name(), self.updateParameters)
+            return manager()
+                .inner()
+                .registries()
+                .updateAsync(self.resourceGroupName(), self.name(), self.updateParameters)
                 .map(innerToFluentMap(this));
         }
     }
@@ -96,7 +89,6 @@ public class RegistryImpl
         this.webhooks.clear();
         return Mono.empty();
     }
-
 
     @Override
     public Sku sku() {
@@ -191,10 +183,8 @@ public class RegistryImpl
     public RegistryImpl withNewStorageAccount(String storageAccountName) {
         this.storageAccountId = null;
 
-        StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
-                .storageAccounts()
-                .define(storageAccountName)
-                .withRegion(this.regionName());
+        StorageAccount.DefinitionStages.WithGroup definitionWithGroup =
+            this.storageManager.storageAccounts().define(storageAccountName).withRegion(this.regionName());
         Creatable<StorageAccount> definitionAfterGroup;
         if (this.creatableGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
@@ -239,38 +229,38 @@ public class RegistryImpl
 
     @Override
     public RegistryCredentials getCredentials() {
-        return this.manager().containerRegistries()
-            .getCredentials(this.resourceGroupName(), this.name());
+        return this.manager().containerRegistries().getCredentials(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<RegistryCredentials> getCredentialsAsync() {
-        return this.manager().containerRegistries()
-            .getCredentialsAsync(this.resourceGroupName(), this.name());
+        return this.manager().containerRegistries().getCredentialsAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public RegistryCredentials regenerateCredential(AccessKeyType accessKeyType) {
-        return this.manager().containerRegistries()
+        return this
+            .manager()
+            .containerRegistries()
             .regenerateCredential(this.resourceGroupName(), this.name(), accessKeyType);
     }
 
     @Override
     public Mono<RegistryCredentials> regenerateCredentialAsync(AccessKeyType accessKeyType) {
-        return this.manager().containerRegistries()
+        return this
+            .manager()
+            .containerRegistries()
             .regenerateCredentialAsync(this.resourceGroupName(), this.name(), accessKeyType);
     }
 
     @Override
     public Collection<RegistryUsage> listQuotaUsages() {
-        return this.manager().containerRegistries()
-            .listQuotaUsages(this.resourceGroupName(), this.name());
+        return this.manager().containerRegistries().listQuotaUsages(this.resourceGroupName(), this.name());
     }
 
     @Override
     public PagedFlux<RegistryUsage> listQuotaUsagesAsync() {
-        return this.manager().containerRegistries()
-            .listQuotaUsagesAsync(this.resourceGroupName(), this.name());
+        return this.manager().containerRegistries().listQuotaUsagesAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -280,24 +270,25 @@ public class RegistryImpl
 
     @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun() {
-        return new RegistryTaskRunImpl(this.manager(), new RunInner()).withExistingRegistry(this.resourceGroupName(), this.name());
+        return new RegistryTaskRunImpl(this.manager(), new RunInner())
+            .withExistingRegistry(this.resourceGroupName(), this.name());
     }
 
-//    @Override
-//    public QueuedBuildOperations queuedBuilds() {
-//        if (this.queuedBuilds == null) {
-//            this.queuedBuilds = new QueuedBuildOperationsImpl(this);
-//        }
-//        return this.queuedBuilds;
-//    }
+    //    @Override
+    //    public QueuedBuildOperations queuedBuilds() {
+    //        if (this.queuedBuilds == null) {
+    //            this.queuedBuilds = new QueuedBuildOperationsImpl(this);
+    //        }
+    //        return this.queuedBuilds;
+    //    }
 
-//    @Override
-//    public BuildTaskOperations buildTasks() {
-//        if (this.buildTasks == null) {
-//            this.buildTasks = new BuildTaskOperationsImpl(this);
-//        }
-//        return this.buildTasks;
-//    }
+    //    @Override
+    //    public BuildTaskOperations buildTasks() {
+    //        if (this.buildTasks == null) {
+    //            this.buildTasks = new BuildTaskOperationsImpl(this);
+    //        }
+    //        return this.buildTasks;
+    //    }
 
     @Override
     public SourceUploadDefinition getBuildSourceUploadUrl() {
@@ -306,7 +297,10 @@ public class RegistryImpl
 
     @Override
     public Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync() {
-        return this.manager().inner().registries()
+        return this
+            .manager()
+            .inner()
+            .registries()
             .getBuildSourceUploadUrlAsync(this.resourceGroupName(), this.name())
             .map(sourceUploadDefinitionInner -> new SourceUploadDefinitionImpl(sourceUploadDefinitionInner));
     }

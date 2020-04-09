@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
@@ -10,23 +7,17 @@ import com.azure.management.sql.SqlFirewallRule;
 import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.models.FirewallRuleInner;
 
-/**
- * Represents a SQL Firewall rules collection associated with an Azure SQL server.
- */
+/** Represents a SQL Firewall rules collection associated with an Azure SQL server. */
 public class SqlFirewallRulesAsExternalChildResourcesImpl
-    extends
-        ExternalChildResourcesNonCachedImpl<SqlFirewallRuleImpl,
-            SqlFirewallRule,
-            FirewallRuleInner,
-            SqlServerImpl,
-            SqlServer> {
+    extends ExternalChildResourcesNonCachedImpl<
+        SqlFirewallRuleImpl, SqlFirewallRule, FirewallRuleInner, SqlServerImpl, SqlServer> {
 
     SqlServerManager sqlServerManager;
 
     /**
      * Creates a new ExternalNonInlineChildResourcesImpl.
      *
-     * @param parent            the parent Azure resource
+     * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
     protected SqlFirewallRulesAsExternalChildResourcesImpl(SqlServerImpl parent, String childResourceName) {
@@ -40,7 +31,8 @@ public class SqlFirewallRulesAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlFirewallRulesAsExternalChildResourcesImpl(SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlFirewallRulesAsExternalChildResourcesImpl(
+        SqlServerManager sqlServerManager, String childResourceName) {
         super(null, null, childResourceName);
         this.sqlServerManager = sqlServerManager;
     }
@@ -55,7 +47,8 @@ public class SqlFirewallRulesAsExternalChildResourcesImpl
             // resource group and server name will be set by the next method in the Fluent flow
             return prepareInlineDefine(new SqlFirewallRuleImpl(name, new FirewallRuleInner(), this.sqlServerManager));
         } else {
-            return prepareInlineDefine(new SqlFirewallRuleImpl(name, this.getParent(), new FirewallRuleInner(), this.getParent().manager()));
+            return prepareInlineDefine(
+                new SqlFirewallRuleImpl(name, this.getParent(), new FirewallRuleInner(), this.getParent().manager()));
         }
     }
 
@@ -64,7 +57,8 @@ public class SqlFirewallRulesAsExternalChildResourcesImpl
             // resource group and server name will be set by the next method in the Fluent flow
             return prepareInlineUpdate(new SqlFirewallRuleImpl(name, new FirewallRuleInner(), this.sqlServerManager));
         } else {
-            return prepareInlineUpdate(new SqlFirewallRuleImpl(name, this.getParent(), new FirewallRuleInner(), this.getParent().manager()));
+            return prepareInlineUpdate(
+                new SqlFirewallRuleImpl(name, this.getParent(), new FirewallRuleInner(), this.getParent().manager()));
         }
     }
 
@@ -73,7 +67,8 @@ public class SqlFirewallRulesAsExternalChildResourcesImpl
             // resource group and server name will be set by the next method in the Fluent flow
             prepareInlineRemove(new SqlFirewallRuleImpl(name, new FirewallRuleInner(), this.sqlServerManager));
         } else {
-            prepareInlineRemove(new SqlFirewallRuleImpl(name, this.getParent(), new FirewallRuleInner(), this.getParent().manager()));
+            prepareInlineRemove(
+                new SqlFirewallRuleImpl(name, this.getParent(), new FirewallRuleInner(), this.getParent().manager()));
         }
     }
 }

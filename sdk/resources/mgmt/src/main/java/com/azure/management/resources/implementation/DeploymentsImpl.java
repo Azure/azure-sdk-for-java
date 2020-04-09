@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.implementation;
 
@@ -41,13 +38,15 @@ final class DeploymentsImpl
 
     @Override
     public PagedIterable<Deployment> listByResourceGroup(String groupName) {
-        return this.manager().inner().deployments().listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
+        return this.manager().inner().deployments()
+            .listByResourceGroup(groupName).mapPage(inner -> createFluentModel(inner));
     }
 
     @Override
     public Deployment getByName(String name) {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
-            DeploymentExtendedInner inner = this.manager().inner().deployments().getAtManagementGroupScope(group.name(), name);
+            DeploymentExtendedInner inner = this.manager().inner().deployments()
+                .getAtManagementGroupScope(group.name(), name);
             if (inner != null) {
                 return createFluentModel(inner);
             }
@@ -63,13 +62,14 @@ final class DeploymentsImpl
 
     @Override
     public Mono<Deployment> getByResourceGroupAsync(String groupName, String name) {
-        return this.manager().inner().deployments().getByResourceGroupAsync(groupName, name).map(deploymentExtendedInner -> {
-            if (deploymentExtendedInner != null) {
-                return createFluentModel(deploymentExtendedInner);
-            } else {
-                return null;
-            }
-        });
+        return this.manager().inner().deployments()
+            .getByResourceGroupAsync(groupName, name).map(deploymentExtendedInner -> {
+                if (deploymentExtendedInner != null) {
+                    return createFluentModel(deploymentExtendedInner);
+                } else {
+                    return null;
+                }
+            });
     }
 
     @Override
@@ -128,13 +128,14 @@ final class DeploymentsImpl
     @Override
     public PagedFlux<Deployment> listAsync() {
         return PagedConverter.flatMapPage(this.manager().resourceGroups().listAsync(),
-                resourceGroup -> listByResourceGroupAsync(resourceGroup.name()));
+            resourceGroup -> listByResourceGroupAsync(resourceGroup.name()));
     }
 
 
     @Override
     public PagedFlux<Deployment> listByResourceGroupAsync(String resourceGroupName) {
         final DeploymentsInner client = this.manager().inner().deployments();
-        return client.listByResourceGroupAsync(resourceGroupName).mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
+        return client.listByResourceGroupAsync(resourceGroupName)
+            .mapPage(deploymentExtendedInner -> createFluentModel(deploymentExtendedInner));
     }
 }

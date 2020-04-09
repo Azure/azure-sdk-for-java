@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.utils;
 
@@ -22,7 +19,7 @@ import java.util.function.Supplier;
 /**
  * Utility class for conversion of PagedResponse.
  */
-public class PagedConverter {
+public final class PagedConverter {
 
     private PagedConverter() {
 
@@ -31,10 +28,14 @@ public class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedFlux.
      *
+     * @param <T> input type of pagedFlux
+     * @param <S> return type of pagedFlux
+     * @param pagedFlux input
      * @param mapper the flatMap transform of element T to Publisher of S.
      * @return the PagedFlux.
      */
-    public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux, Function<? super T, ? extends Publisher<? extends S>> mapper) {
+    public static <T, S> PagedFlux<S> flatMapPage(PagedFlux<T> pagedFlux,
+            Function<? super T, ? extends Publisher<? extends S>> mapper) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<T>> flux = (continuationToken == null)
                     ? pagedFlux.byPage()
@@ -47,10 +48,13 @@ public class PagedConverter {
     /**
      * Applies flatMap transform to elements of PagedResponse.
      *
+     * @param <T> input type of pagedFlux
+     * @param <S> return type of pagedFlux
      * @param mapper the flatMap transform of element T to Publisher of S.
      * @return the lifted transform on PagedResponse.
      */
-    private static <T, S> Function<PagedResponse<T>, Mono<PagedResponse<S>>> flatMapPagedResponse(Function<? super T, ? extends Publisher<? extends S>> mapper) {
+    private static <T, S> Function<PagedResponse<T>, Mono<PagedResponse<S>>> flatMapPagedResponse(
+            Function<? super T, ? extends Publisher<? extends S>> mapper) {
         return pagedResponse ->
                 Flux.fromIterable(pagedResponse.getValue())
                         .flatMapSequential(mapper)
@@ -66,6 +70,7 @@ public class PagedConverter {
     /**
      * Converts list to PagedFlux.
      *
+     * @param <T> type of List in Mono.
      * @param list the list to convert.
      * @return the PagedFlux.
      */

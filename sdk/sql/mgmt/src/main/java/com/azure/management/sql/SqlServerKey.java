@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -16,66 +13,44 @@ import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.sql.models.ServerKeyInner;
+import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-
-/**
- * An immutable client-side representation of an Azure SQL Server Key.
- */
+/** An immutable client-side representation of an Azure SQL Server Key. */
 @Fluent
 public interface SqlServerKey
-    extends
-        HasId,
+    extends HasId,
         HasInner<ServerKeyInner>,
         HasName,
         HasResourceGroup,
         Indexable,
         Refreshable<SqlServerKey>,
         Updatable<SqlServerKey.Update> {
-    /**
-     * @return name of the SQL Server to which this DNS alias belongs
-     */
+    /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 
-    /**
-     * @return the parent SQL server ID
-     */
+    /** @return the parent SQL server ID */
     String parentId();
 
-    /**
-     * @return  the kind of encryption protector; this is metadata used for the Azure Portal experience
-     */
+    /** @return the kind of encryption protector; this is metadata used for the Azure Portal experience */
     String kind();
 
-    /**
-     * @return  the resource location
-     */
+    /** @return the resource location */
     Region region();
 
-    /**
-     * @return the server key type
-     */
+    /** @return the server key type */
     ServerKeyType serverKeyType();
 
-    /**
-     * @return the URI of the server key
-     */
+    /** @return the URI of the server key */
     String uri();
 
-    /**
-     * @return  the thumbprint of the server key
-     */
+    /** @return the thumbprint of the server key */
     String thumbprint();
 
-    /**
-     * @return the server key creation date
-     */
+    /** @return the server key creation date */
     OffsetDateTime creationDate();
 
-    /**
-     * Deletes the SQL Server Key.
-     */
+    /** Deletes the SQL Server Key. */
     void delete();
 
     /**
@@ -85,22 +60,16 @@ public interface SqlServerKey
      */
     Mono<Void> deleteAsync();
 
-    /**
-     * The template for a SQL Server Key update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-        SqlServerKey.UpdateStages.WithThumbprint,
-        SqlServerKey.UpdateStages.WithCreationDate,
-        Appliable<SqlServerKey> {
+    /** The template for a SQL Server Key update operation, containing all the settings that can be modified. */
+    interface Update
+        extends SqlServerKey.UpdateStages.WithThumbprint,
+            SqlServerKey.UpdateStages.WithCreationDate,
+            Appliable<SqlServerKey> {
     }
 
-    /**
-     * Grouping of all the SQL Server Key update stages.
-     */
+    /** Grouping of all the SQL Server Key update stages. */
     interface UpdateStages {
-        /**
-         * The SQL Server Key definition to set the thumbprint.
-         */
+        /** The SQL Server Key definition to set the thumbprint. */
         interface WithThumbprint {
             /**
              * Sets the thumbprint of the server key.
@@ -111,9 +80,7 @@ public interface SqlServerKey
             SqlServerKey.Update withThumbprint(String thumbprint);
         }
 
-        /**
-         * The SQL Server Key definition to set the server key creation date.
-         */
+        /** The SQL Server Key definition to set the server key creation date. */
         interface WithCreationDate {
             /**
              * Sets the server key creation date.

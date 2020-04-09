@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
@@ -16,74 +13,50 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.sql.models.EncryptionProtectorInner;
 
-/**
- * An immutable client-side representation of an Azure SQL Encryption Protector.
- */
+/** An immutable client-side representation of an Azure SQL Encryption Protector. */
 @Fluent
 public interface SqlEncryptionProtector
-    extends
-        HasId,
+    extends HasId,
         HasInner<EncryptionProtectorInner>,
         HasResourceGroup,
         Indexable,
         Refreshable<SqlEncryptionProtector>,
         Updatable<SqlEncryptionProtector.Update> {
 
-    /**
-     * @return name of the SQL Server to which this DNS alias belongs
-     */
+    /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 
-    /**
-     * @return the parent SQL server ID
-     */
+    /** @return the parent SQL server ID */
     String parentId();
 
-    /**
-     * @return  the kind of encryption protector; this is metadata used for the Azure Portal experience
-     */
+    /** @return the kind of encryption protector; this is metadata used for the Azure Portal experience */
     String kind();
 
-    /**
-     * @return the resource location
-     */
+    /** @return the resource location */
     Region region();
 
-    /**
-     * @return the name of the server key
-     */
+    /** @return the name of the server key */
     String serverKeyName();
 
-    /**
-     * @return the encryption protector type
-     */
+    /** @return the encryption protector type */
     ServerKeyType serverKeyType();
 
-    /**
-     * @return the URI of the server key
-     */
+    /** @return the URI of the server key */
     String uri();
 
-    /**
-     * @return thumbprint of the server key
-     */
+    /** @return thumbprint of the server key */
     String thumbprint();
 
     /**
      * The template for a SQL Encryption Protector update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        SqlEncryptionProtector.UpdateStages.WithServerKeyNameAndType,
-        Appliable<SqlEncryptionProtector> {
+    interface Update
+        extends SqlEncryptionProtector.UpdateStages.WithServerKeyNameAndType, Appliable<SqlEncryptionProtector> {
     }
 
-    /**
-     * Grouping of all the SQL Encryption Protector update stages.
-     */
+    /** Grouping of all the SQL Encryption Protector update stages. */
     interface UpdateStages {
-        /**
-         * The SQL Encryption Protector update definition to set the server key name and type.
-         */
+        /** The SQL Encryption Protector update definition to set the server key name and type. */
         interface WithServerKeyNameAndType {
             /**
              * Updates the Encryption Protector to use an AzureKeyVault server key.

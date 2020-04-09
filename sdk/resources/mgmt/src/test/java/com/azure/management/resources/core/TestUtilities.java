@@ -1,14 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.core;
 
 import com.azure.core.http.rest.PagedIterable;
-
-import java.util.Iterator;
 
 /**
  * Common utility functions for the tests.

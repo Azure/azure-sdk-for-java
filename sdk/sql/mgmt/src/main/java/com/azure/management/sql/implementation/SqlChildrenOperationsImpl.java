@@ -1,18 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.sql.SqlChildrenOperations;
 import com.azure.management.sql.SqlServer;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation for SQL Server children operations.
@@ -20,9 +16,7 @@ import java.util.Objects;
  * @param <FluentModelT> the fluent model type of the child resource
  */
 public abstract class SqlChildrenOperationsImpl<FluentModelT>
-    implements
-        SqlChildrenOperations<FluentModelT>,
-        SqlChildrenOperations.SqlChildrenActionsDefinition<FluentModelT> {
+    implements SqlChildrenOperations<FluentModelT>, SqlChildrenOperations.SqlChildrenActionsDefinition<FluentModelT> {
 
     protected SqlServerManager sqlServerManager;
     protected SqlServer sqlServer;
@@ -52,17 +46,21 @@ public abstract class SqlChildrenOperationsImpl<FluentModelT>
     @Override
     public FluentModelT getById(String id) {
         Objects.requireNonNull(id);
-        return this.getBySqlServer(ResourceUtils.groupFromResourceId(id),
-            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-            ResourceUtils.nameFromResourceId(id));
+        return this
+            .getBySqlServer(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+                ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<FluentModelT> getByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this.getBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
-            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-            ResourceUtils.nameFromResourceId(id));
+        return this
+            .getBySqlServerAsync(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+                ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -83,17 +81,21 @@ public abstract class SqlChildrenOperationsImpl<FluentModelT>
     @Override
     public void deleteById(String id) {
         Objects.requireNonNull(id);
-        this.deleteBySqlServer(ResourceUtils.groupFromResourceId(id),
-            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-            ResourceUtils.nameFromResourceId(id));
+        this
+            .deleteBySqlServer(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+                ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this.deleteBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
-            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-            ResourceUtils.nameFromResourceId(id));
+        return this
+            .deleteBySqlServerAsync(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+                ResourceUtils.nameFromResourceId(id));
     }
 
     @Override

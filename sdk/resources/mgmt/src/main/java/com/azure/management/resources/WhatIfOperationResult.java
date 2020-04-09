@@ -1,16 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.models.WhatIfOperationResultInner;
-
-import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure deployment What-if operation result.

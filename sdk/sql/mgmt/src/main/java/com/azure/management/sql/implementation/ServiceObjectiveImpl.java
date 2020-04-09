@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.sql.implementation;
 
@@ -11,12 +8,9 @@ import com.azure.management.sql.ServiceObjective;
 import com.azure.management.sql.models.ServiceObjectiveInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Azure SQL Server's Service Objective.
- */
-class ServiceObjectiveImpl
-        extends RefreshableWrapperImpl<ServiceObjectiveInner, ServiceObjective>
-        implements ServiceObjective {
+/** Implementation for Azure SQL Server's Service Objective. */
+class ServiceObjectiveImpl extends RefreshableWrapperImpl<ServiceObjectiveInner, ServiceObjective>
+    implements ServiceObjective {
     private final SqlServerImpl sqlServer;
 
     protected ServiceObjectiveImpl(ServiceObjectiveInner innerObject, SqlServerImpl sqlServer) {
@@ -71,7 +65,11 @@ class ServiceObjectiveImpl
 
     @Override
     protected Mono<ServiceObjectiveInner> getInnerAsync() {
-        return this.sqlServer.manager().inner().serviceObjectives()
+        return this
+            .sqlServer
+            .manager()
+            .inner()
+            .serviceObjectives()
             .getAsync(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 }

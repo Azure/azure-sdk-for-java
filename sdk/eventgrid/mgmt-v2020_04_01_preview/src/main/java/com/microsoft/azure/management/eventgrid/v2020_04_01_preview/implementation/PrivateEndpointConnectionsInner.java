@@ -18,9 +18,11 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -65,11 +67,11 @@ public class PrivateEndpointConnectionsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnections update" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("parentType") String parentType, @Path("parentName") String parentName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("parentType") String parentType, @Path("parentName") String parentName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Body PrivateEndpointConnectionInner privateEndpointConnection, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnections beginUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("parentType") String parentType, @Path("parentName") String parentName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("parentType") String parentType, @Path("parentName") String parentName, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Body PrivateEndpointConnectionInner privateEndpointConnection, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventgrid.v2020_04_01_preview.PrivateEndpointConnections delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}", method = "DELETE", hasBody = true)
@@ -201,13 +203,14 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
-    public PrivateEndpointConnectionInner update(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName) {
-        return updateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).toBlocking().last().body();
+    public PrivateEndpointConnectionInner update(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        return updateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection).toBlocking().last().body();
     }
 
     /**
@@ -218,12 +221,13 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName), serviceCallback);
+    public ServiceFuture<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection), serviceCallback);
     }
 
     /**
@@ -234,11 +238,12 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName) {
-        return updateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
+    public Observable<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        return updateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
             @Override
             public PrivateEndpointConnectionInner call(ServiceResponse<PrivateEndpointConnectionInner> response) {
                 return response.body();
@@ -254,10 +259,11 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> updateWithServiceResponseAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName) {
+    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> updateWithServiceResponseAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -273,10 +279,14 @@ public class PrivateEndpointConnectionsInner {
         if (privateEndpointConnectionName == null) {
             throw new IllegalArgumentException("Parameter privateEndpointConnectionName is required and cannot be null.");
         }
+        if (privateEndpointConnection == null) {
+            throw new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, parentType, parentName, privateEndpointConnectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Validator.validate(privateEndpointConnection);
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<PrivateEndpointConnectionInner>() { }.getType());
     }
 
@@ -288,13 +298,14 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateEndpointConnectionInner object if successful.
      */
-    public PrivateEndpointConnectionInner beginUpdate(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).toBlocking().single().body();
+    public PrivateEndpointConnectionInner beginUpdate(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection).toBlocking().single().body();
     }
 
     /**
@@ -305,12 +316,13 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PrivateEndpointConnectionInner> beginUpdateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName), serviceCallback);
+    public ServiceFuture<PrivateEndpointConnectionInner> beginUpdateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection, final ServiceCallback<PrivateEndpointConnectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection), serviceCallback);
     }
 
     /**
@@ -321,11 +333,12 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointConnectionInner object
      */
-    public Observable<PrivateEndpointConnectionInner> beginUpdateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
+    public Observable<PrivateEndpointConnectionInner> beginUpdateAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection).map(new Func1<ServiceResponse<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>() {
             @Override
             public PrivateEndpointConnectionInner call(ServiceResponse<PrivateEndpointConnectionInner> response) {
                 return response.body();
@@ -341,10 +354,11 @@ public class PrivateEndpointConnectionsInner {
      * @param parentType The type of the parent resource. This can be either \'topics\' or \'domains\'.
      * @param parentName The name of the parent resource (namely, either, the topic name or domain name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateEndpointConnectionInner object
      */
-    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName) {
+    public Observable<ServiceResponse<PrivateEndpointConnectionInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String parentType, String parentName, String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -360,10 +374,14 @@ public class PrivateEndpointConnectionsInner {
         if (privateEndpointConnectionName == null) {
             throw new IllegalArgumentException("Parameter privateEndpointConnectionName is required and cannot be null.");
         }
+        if (privateEndpointConnection == null) {
+            throw new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, parentType, parentName, privateEndpointConnectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(privateEndpointConnection);
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateEndpointConnectionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PrivateEndpointConnectionInner>> call(Response<ResponseBody> response) {

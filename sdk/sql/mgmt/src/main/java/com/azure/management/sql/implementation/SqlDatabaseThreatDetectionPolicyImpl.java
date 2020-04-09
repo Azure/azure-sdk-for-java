@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -13,24 +10,25 @@ import com.azure.management.sql.SecurityAlertPolicyUseServerDefault;
 import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseThreatDetectionPolicy;
 import com.azure.management.sql.models.DatabaseSecurityAlertPolicyInner;
+import java.util.Objects;
 import reactor.core.publisher.Mono;
 
-import java.util.Objects;
-
-/**
- * Implementation for SQL database threat detection policy.
- */
-public class SqlDatabaseThreatDetectionPolicyImpl extends
-        ExternalChildResourceImpl<SqlDatabaseThreatDetectionPolicy, DatabaseSecurityAlertPolicyInner, SqlDatabaseImpl, SqlDatabase>
-    implements
-        SqlDatabaseThreatDetectionPolicy,
+/** Implementation for SQL database threat detection policy. */
+public class SqlDatabaseThreatDetectionPolicyImpl
+    extends ExternalChildResourceImpl<
+        SqlDatabaseThreatDetectionPolicy, DatabaseSecurityAlertPolicyInner, SqlDatabaseImpl, SqlDatabase>
+    implements SqlDatabaseThreatDetectionPolicy,
         SqlDatabaseThreatDetectionPolicy.SqlDatabaseThreatDetectionPolicyDefinition,
         SqlDatabaseThreatDetectionPolicy.Update {
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
     private String sqlServerName;
 
-    protected SqlDatabaseThreatDetectionPolicyImpl(String name, SqlDatabaseImpl parent, DatabaseSecurityAlertPolicyInner innerObject, SqlServerManager sqlServerManager) {
+    protected SqlDatabaseThreatDetectionPolicyImpl(
+        String name,
+        SqlDatabaseImpl parent,
+        DatabaseSecurityAlertPolicyInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
         Objects.requireNonNull(parent);
         Objects.requireNonNull(innerObject);
@@ -109,19 +107,26 @@ public class SqlDatabaseThreatDetectionPolicyImpl extends
 
     @Override
     protected Mono<DatabaseSecurityAlertPolicyInner> getInnerAsync() {
-        return this.sqlServerManager.inner().databaseThreatDetectionPolicies()
+        return this
+            .sqlServerManager
+            .inner()
+            .databaseThreatDetectionPolicies()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.parent().name());
     }
 
     @Override
     public Mono<SqlDatabaseThreatDetectionPolicy> createResourceAsync() {
         final SqlDatabaseThreatDetectionPolicyImpl self = this;
-        return this.sqlServerManager.inner().databaseThreatDetectionPolicies()
+        return this
+            .sqlServerManager
+            .inner()
+            .databaseThreatDetectionPolicies()
             .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.parent().name(), this.inner())
-            .map(databaseSecurityAlertPolicyInner -> {
-                self.setInner(databaseSecurityAlertPolicyInner);
-                return self;
-            });
+            .map(
+                databaseSecurityAlertPolicyInner -> {
+                    self.setInner(databaseSecurityAlertPolicyInner);
+                    return self;
+                });
     }
 
     @Override

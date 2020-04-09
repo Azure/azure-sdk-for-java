@@ -1,12 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 /**
- * Defines an overriding argument that overrides arguments passed in for RegistryDockerTaskStep and RegistryDockerTaskRunRequest.
+ * Defines an overriding argument that overrides arguments passed in for RegistryDockerTaskStep and
+ * RegistryDockerTaskRunRequest.
  */
 public class OverridingArgument {
     private final String value;
@@ -23,16 +21,12 @@ public class OverridingArgument {
         this.isSecret = isSecret;
     }
 
-    /**
-     * @return the value of the overriding argument.
-     */
+    /** @return the value of the overriding argument. */
     public String value() {
         return this.value;
     }
 
-    /**
-     * @return whether the overriding argument is secret or not.
-     */
+    /** @return whether the overriding argument is secret or not. */
     public boolean isSecret() {
         return this.isSecret;
     }

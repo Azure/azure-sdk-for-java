@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ReadScaleCapability model.
- */
+/** The ReadScaleCapability model. */
 @Fluent
 public final class ReadScaleCapability {
     /*
@@ -31,9 +29,8 @@ public final class ReadScaleCapability {
     private String reason;
 
     /**
-     * Get the maxNumberOfReplicas property: The maximum number of read scale
-     * replicas.
-     * 
+     * Get the maxNumberOfReplicas property: The maximum number of read scale replicas.
+     *
      * @return the maxNumberOfReplicas value.
      */
     public Integer maxNumberOfReplicas() {
@@ -42,7 +39,7 @@ public final class ReadScaleCapability {
 
     /**
      * Get the status property: The status of the capability.
-     * 
+     *
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -50,9 +47,8 @@ public final class ReadScaleCapability {
     }
 
     /**
-     * Get the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Get the reason property: The reason for the capability not being available.
+     *
      * @return the reason value.
      */
     public String reason() {
@@ -60,9 +56,8 @@ public final class ReadScaleCapability {
     }
 
     /**
-     * Set the reason property: The reason for the capability not being
-     * available.
-     * 
+     * Set the reason property: The reason for the capability not being available.
+     *
      * @param reason the reason value to set.
      * @return the ReadScaleCapability object itself.
      */

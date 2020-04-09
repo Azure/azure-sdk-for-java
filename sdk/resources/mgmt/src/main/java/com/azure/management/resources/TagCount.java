@@ -7,9 +7,7 @@ package com.azure.management.resources;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TagCount model.
- */
+/** The TagCount model. */
 @Fluent
 public final class TagCount {
     /*
@@ -26,40 +24,40 @@ public final class TagCount {
 
     /**
      * Get the type property: Type of count.
-     * 
+     *
      * @return the type value.
      */
-    public String getType() {
+    public String type() {
         return this.type;
     }
 
     /**
      * Set the type property: Type of count.
-     * 
+     *
      * @param type the type value to set.
      * @return the TagCount object itself.
      */
-    public TagCount setType(String type) {
+    public TagCount withType(String type) {
         this.type = type;
         return this;
     }
 
     /**
      * Get the value property: Value of count.
-     * 
+     *
      * @return the value value.
      */
-    public Integer getValue() {
+    public Integer value() {
         return this.value;
     }
 
     /**
      * Set the value property: Value of count.
-     * 
+     *
      * @param value the value value to set.
      * @return the TagCount object itself.
      */
-    public TagCount setValue(Integer value) {
+    public TagCount withValue(Integer value) {
         this.value = value;
         return this;
     }

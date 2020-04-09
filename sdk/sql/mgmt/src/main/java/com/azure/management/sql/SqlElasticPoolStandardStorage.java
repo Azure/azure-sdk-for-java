@@ -1,16 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
-
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * The maximum allowed storage capacity for a "Standard" edition of an Azure SQL Elastic Pool.
- */
+/** The maximum allowed storage capacity for a "Standard" edition of an Azure SQL Elastic Pool. */
 @Fluent
 public enum SqlElasticPoolStandardStorage {
     /** 50 GB storage capacity available to the pool. */
@@ -97,7 +91,6 @@ public enum SqlElasticPoolStandardStorage {
     /** 4096 GB storage capacity available to the pool. */
     MAX_4096_GB(4096);
 
-
     /** The maximum allowed storage capacity in GB for the SQL Elastic Pool. */
     private int capacityInGB;
 
@@ -105,9 +98,7 @@ public enum SqlElasticPoolStandardStorage {
         this.capacityInGB = capacityInGB;
     }
 
-    /**
-     * @return the maximum allowed storage capacity in MB for the SQL Elastic Pool
-     */
+    /** @return the maximum allowed storage capacity in MB for the SQL Elastic Pool */
     public int capacityInMB() {
         return this.capacityInGB * 1024;
     }

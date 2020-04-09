@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.cosmosdb.implementation;
 
@@ -19,23 +16,15 @@ import com.azure.management.cosmosdb.Location;
 import com.azure.management.cosmosdb.models.DatabaseAccountGetResultsInner;
 import com.azure.management.cosmosdb.models.DatabaseAccountsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Registries.
- */
+/** Implementation for Registries. */
 class CosmosDBAccountsImpl
-        extends
-        GroupableResourcesImpl<
-                        CosmosDBAccount,
-                        CosmosDBAccountImpl,
-                        DatabaseAccountGetResultsInner,
-                        DatabaseAccountsInner,
-                        CosmosDBManager>
-        implements CosmosDBAccounts {
+    extends GroupableResourcesImpl<
+        CosmosDBAccount, CosmosDBAccountImpl, DatabaseAccountGetResultsInner, DatabaseAccountsInner, CosmosDBManager>
+    implements CosmosDBAccounts {
 
     CosmosDBAccountsImpl(final CosmosDBManager manager) {
         super(manager.inner().databaseAccounts(), manager);
@@ -48,15 +37,16 @@ class CosmosDBAccountsImpl
 
     @Override
     public PagedFlux<CosmosDBAccount> listAsync() {
-        return this.inner().listAsync()
-                .mapPage(inner -> new CosmosDBAccountImpl(inner.getName(), inner, this.manager()));
+        return this
+            .inner()
+            .listAsync()
+            .mapPage(inner -> new CosmosDBAccountImpl(inner.getName(), inner, this.manager()));
     }
 
     @Override
     public PagedFlux<CosmosDBAccount> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
-
 
     @Override
     public PagedIterable<CosmosDBAccount> listByResourceGroup(String groupName) {
@@ -84,9 +74,7 @@ class CosmosDBAccountsImpl
 
     @Override
     protected CosmosDBAccountImpl wrapModel(String name) {
-        return new CosmosDBAccountImpl(name,
-                new DatabaseAccountGetResultsInner(),
-                this.manager());
+        return new CosmosDBAccountImpl(name, new DatabaseAccountGetResultsInner(), this.manager());
     }
 
     @Override
@@ -95,9 +83,7 @@ class CosmosDBAccountsImpl
             return null;
         }
 
-        return new CosmosDBAccountImpl(containerServiceInner.getName(),
-                containerServiceInner,
-                this.manager());
+        return new CosmosDBAccountImpl(containerServiceInner.getName(), containerServiceInner, this.manager());
     }
 
     @Override
@@ -106,17 +92,22 @@ class CosmosDBAccountsImpl
     }
 
     @Override
-    public Mono<Void> failoverPriorityChangeAsync(String groupName, String accountName, List<Location> failoverLocations) {
+    public Mono<Void> failoverPriorityChangeAsync(
+        String groupName, String accountName, List<Location> failoverLocations) {
         List<FailoverPolicy> policyInners = new ArrayList<FailoverPolicy>();
         for (int i = 0; i < failoverLocations.size(); i++) {
-            Location location  = failoverLocations.get(i);
+            Location location = failoverLocations.get(i);
             FailoverPolicy policyInner = new FailoverPolicy();
             policyInner.withLocationName(location.locationName());
             policyInner.withFailoverPriority(i);
             policyInners.add(policyInner);
         }
 
-        return this.manager().inner().databaseAccounts().failoverPriorityChangeAsync(groupName, accountName, policyInners);
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
+            .failoverPriorityChangeAsync(groupName, accountName, policyInners);
     }
 
     @Override
@@ -131,16 +122,26 @@ class CosmosDBAccountsImpl
 
     @Override
     public Mono<DatabaseAccountListKeysResult> listKeysAsync(String groupName, String accountName) {
-        return this.manager().inner().databaseAccounts()
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
             .listKeysAsync(groupName, accountName)
-            .map(databaseAccountListKeysResultInner -> new DatabaseAccountListKeysResultImpl(databaseAccountListKeysResultInner));
+            .map(
+                databaseAccountListKeysResultInner ->
+                    new DatabaseAccountListKeysResultImpl(databaseAccountListKeysResultInner));
     }
 
     @Override
     public Mono<DatabaseAccountListReadOnlyKeysResult> listReadOnlyKeysAsync(String groupName, String accountName) {
-        return this.manager().inner().databaseAccounts()
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
             .listReadOnlyKeysAsync(groupName, accountName)
-            .map(databaseAccountListReadOnlyKeysResultInner -> new DatabaseAccountListReadOnlyKeysResultImpl(databaseAccountListReadOnlyKeysResultInner));
+            .map(
+                databaseAccountListReadOnlyKeysResultInner ->
+                    new DatabaseAccountListReadOnlyKeysResultImpl(databaseAccountListReadOnlyKeysResultInner));
     }
 
     @Override
@@ -149,10 +150,17 @@ class CosmosDBAccountsImpl
     }
 
     @Override
-    public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(String groupName, String accountName) {
-        return this.manager().inner().databaseAccounts()
+    public Mono<DatabaseAccountListConnectionStringsResult> listConnectionStringsAsync(
+        String groupName, String accountName) {
+        return this
+            .manager()
+            .inner()
+            .databaseAccounts()
             .listConnectionStringsAsync(groupName, accountName)
-            .map(databaseAccountListConnectionStringsResultInner -> new DatabaseAccountListConnectionStringsResultImpl(databaseAccountListConnectionStringsResultInner));
+            .map(
+                databaseAccountListConnectionStringsResultInner ->
+                    new DatabaseAccountListConnectionStringsResultImpl(
+                        databaseAccountListConnectionStringsResultInner));
     }
 
     @Override

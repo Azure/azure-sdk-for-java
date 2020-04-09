@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
 import com.azure.management.dns.models.ZoneInner;
@@ -53,20 +50,41 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
     }
 
     @Override
+    public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName) {
+        return this.manager().inner().zones().deleteAsync(resourceGroupName, zoneName);
+    }
+
+    @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue) {
         return this.manager().inner().zones().deleteAsync(resourceGroupName, zoneName, eTagValue);
     }
 
     @Override
+    public Mono<Void> deleteByIdAsync(String id) {
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
     public Mono<Void> deleteByIdAsync(String id, String eTagValue) {
         return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(id),
-                eTagValue);
+            ResourceUtils.nameFromResourceId(id),
+            eTagValue);
+    }
+
+    @Override
+    public void deleteByResourceGroupName(String resourceGroupName, String zoneName) {
+        deleteByResourceGroupNameAsync(resourceGroupName, zoneName).block();
     }
 
     @Override
     public void deleteByResourceGroupName(String resourceGroupName, String zoneName, String eTagValue) {
         deleteByResourceGroupNameAsync(resourceGroupName, zoneName, eTagValue).block();
+    }
+
+    @Override
+    public void deleteById(String id) {
+        deleteByIdAsync(id).block();
     }
 
     @Override

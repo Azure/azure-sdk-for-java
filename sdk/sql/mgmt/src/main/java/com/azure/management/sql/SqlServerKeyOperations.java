@@ -1,21 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.model.Creatable;
-
 import java.time.OffsetDateTime;
 
-/**
- * A representation of the Azure SQL Server Key operations.
- */
+/** A representation of the Azure SQL Server Key operations. */
 @Fluent
-public interface SqlServerKeyOperations extends
-    SqlChildrenOperations<SqlServerKey> {
+public interface SqlServerKeyOperations extends SqlChildrenOperations<SqlServerKey> {
 
     /**
      * Begins a definition for a new SQL Server Key resource.
@@ -24,33 +17,28 @@ public interface SqlServerKeyOperations extends
      */
     SqlServerKeyOperations.DefinitionStages.WithSqlServer define();
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface SqlServerKeyOperationsDefinition extends
-        SqlServerKeyOperations.DefinitionStages.WithSqlServer,
-        SqlServerKeyOperations.DefinitionStages.WithServerKeyType,
-        SqlServerKeyOperations.DefinitionStages.WithThumbprint,
-        SqlServerKeyOperations.DefinitionStages.WithCreationDate,
-        SqlServerKeyOperations.DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface SqlServerKeyOperationsDefinition
+        extends SqlServerKeyOperations.DefinitionStages.WithSqlServer,
+            SqlServerKeyOperations.DefinitionStages.WithServerKeyType,
+            SqlServerKeyOperations.DefinitionStages.WithThumbprint,
+            SqlServerKeyOperations.DefinitionStages.WithCreationDate,
+            SqlServerKeyOperations.DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the SQL Server Key definition stages.
-     */
+    /** Grouping of all the SQL Server Key definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the SQL Server Key definition.
-         */
+        /** The first stage of the SQL Server Key definition. */
         interface WithSqlServer {
             /**
              * Sets the parent SQL server name and resource group it belongs to.
              *
              * @param resourceGroupName the name of the resource group the parent SQL server
-             * @param sqlServerName     the parent SQL server name
+             * @param sqlServerName the parent SQL server name
              * @return The next stage of the definition.
              */
-            SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServer(String resourceGroupName, String sqlServerName);
+            SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServer(
+                String resourceGroupName, String sqlServerName);
 
             /**
              * Sets the parent SQL server for the new Server Key.
@@ -69,9 +57,7 @@ public interface SqlServerKeyOperations extends
             SqlServerKeyOperations.DefinitionStages.WithServerKeyType withExistingSqlServer(SqlServer sqlServer);
         }
 
-        /**
-         * The SQL Server Key definition to set the server key type.
-         */
+        /** The SQL Server Key definition to set the server key type. */
         interface WithServerKeyType {
             /**
              * Sets the server key type as "AzureKeyVault" and the URI to the key.
@@ -82,9 +68,7 @@ public interface SqlServerKeyOperations extends
             SqlServerKeyOperations.DefinitionStages.WithCreate withAzureKeyVaultKey(String uri);
         }
 
-        /**
-         * The SQL Server Key definition to set the thumbprint.
-         */
+        /** The SQL Server Key definition to set the thumbprint. */
         interface WithThumbprint {
             /**
              * Sets the thumbprint of the server key.
@@ -95,9 +79,7 @@ public interface SqlServerKeyOperations extends
             SqlServerKeyOperations.DefinitionStages.WithCreate withThumbprint(String thumbprint);
         }
 
-        /**
-         * The SQL Server Key definition to set the server key creation date.
-         */
+        /** The SQL Server Key definition to set the server key creation date. */
         interface WithCreationDate {
             /**
              * Sets the server key creation date.
@@ -108,19 +90,15 @@ public interface SqlServerKeyOperations extends
             SqlServerKeyOperations.DefinitionStages.WithCreate withCreationDate(OffsetDateTime creationDate);
         }
 
-        /**
-         * The final stage of the SQL Server Key definition.
-         */
-        interface WithCreate extends
-            SqlServerKeyOperations.DefinitionStages.WithThumbprint,
-            SqlServerKeyOperations.DefinitionStages.WithCreationDate,
-            Creatable<SqlServerKey> {
+        /** The final stage of the SQL Server Key definition. */
+        interface WithCreate
+            extends SqlServerKeyOperations.DefinitionStages.WithThumbprint,
+                SqlServerKeyOperations.DefinitionStages.WithCreationDate,
+                Creatable<SqlServerKey> {
         }
     }
 
-    /**
-     * Grouping of the Azure SQL Server Key common actions.
-     */
+    /** Grouping of the Azure SQL Server Key common actions. */
     interface SqlServerKeyActionsDefinition extends SqlChildrenActionsDefinition<SqlServerKey> {
         /**
          * Begins the definition of a new SQL Server key to be added to this server.

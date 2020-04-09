@@ -1,22 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.sql.ServerMetric;
 import com.azure.management.sql.models.ServerUsageInner;
-
 import java.time.OffsetDateTime;
 
-/**
- * Implementation for DatabaseMetric interface.
- */
-class ServerMetricImpl
-    extends WrapperImpl<ServerUsageInner>
-    implements ServerMetric {
+/** Implementation for DatabaseMetric interface. */
+class ServerMetricImpl extends WrapperImpl<ServerUsageInner> implements ServerMetric {
 
     protected ServerMetricImpl(ServerUsageInner innerObject) {
         super(innerObject);

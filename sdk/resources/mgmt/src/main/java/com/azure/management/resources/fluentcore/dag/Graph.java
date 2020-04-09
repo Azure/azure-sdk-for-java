@@ -1,10 +1,9 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.resources.fluentcore.dag;
+
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * to track the already visited node while performing DFS.
      */
-    private Set<String> visited;
+    private final Set<String> visited;
     /**
      * to generate node entry and exit time while performing DFS.
      */
@@ -37,19 +36,21 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
      * to track the entry time to each node while performing DFS.
      */
-    private Map<String, Integer> entryTime;
+    private final Map<String, Integer> entryTime;
     /**
      * to track the exit time from each node while performing DFS.
      */
-    private Map<String, Integer> exitTime;
+    private final Map<String, Integer> exitTime;
     /**
      * to track the immediate parent node of each node while performing DFS.
      */
-    private Map<String, String> parent;
+    private final Map<String, String> parent;
     /**
      * to track already processed node while performing DFS.
      */
-    private Set<String> processed;
+    private final Set<String> processed;
+
+    private final ClientLogger logger = new ClientLogger(this.getClass());
 
     /**
      * Creates a directed graph.
@@ -143,14 +144,16 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
             }
         }
 
-        throw new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}");
+        throw logger.logExceptionAsError(
+            new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}")
+        );
     }
 
     /**
      * Find the path.
      *
      * @param start key of first node in the path
-     * @param end   key of last node in the path
+     * @param end key of last node in the path
      * @return string containing the nodes keys in the path separated by arrow symbol
      */
     protected String findPath(String start, String end) {
@@ -200,8 +203,8 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
         /**
          * visit an edge.
          *
-         * @param fromKey  key of the from node
-         * @param toKey    key of the to node
+         * @param fromKey key of the from node
+         * @param toKey key of the to node
          * @param edgeType the edge type
          */
         void visitEdge(String fromKey, String toKey, EdgeType edgeType);

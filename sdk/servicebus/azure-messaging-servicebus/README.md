@@ -13,7 +13,6 @@ have to be online at the same time.
 - Topics and subscriptions: Enable 1:n relationships between publishers and subscribers.
 - Message sessions. Implement work-flows that require message ordering or message deferral.
 
-
 [Source code][source_code] | [API reference documentation][api_documentation]  | [Samples][sample_examples]
 
 ## Table of contents
@@ -25,11 +24,8 @@ have to be online at the same time.
   - [Authenticate the client](#authenticate-the-client)
 - [Key concepts](#key-concepts)
 - [Examples](#examples)
-  - [Create a sender or receiver using connection string](#create-a-sender-or-receiver-using-connection-string)
-  - [Send Message to Queue or Topic](#send-message-to-queue-or-topic)
-  - [Receive message from Queue or Subscription](#receive-message-from-queue-or-subscription)
-  - [Send message with Azure Active Directory credentials](#send-message-with-azure-active-directory-credentials)
-  - [Receive message with Azure Active Directory credentials](#receive-message-with-azure-active-directory-credentials)
+  - [Sending messages](#send-message-examples)
+  - [Receiving messages](#receive-message-examples)
 - [Troubleshooting](#troubleshooting)
   - [Enable client logging](#enable-client-logging)
   - [Enable AMQP transport logging](#enable-amqp-transport-logging)
@@ -55,7 +51,7 @@ have to be online at the same time.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>7.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -70,12 +66,12 @@ and authorize with it.
 Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
 platform. First, add the package:
 
-[//]: # ({x-version-update-start;com.azure:azure-identity;current})
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -89,14 +85,41 @@ Follow the instructions in [Creating a service principal using Azure Portal][app
 service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
 obtained from the [App registration page][app_registration_page].
 
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: 
+AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
+
+Use the returned token credential to authenticate the client:
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L48-L54 -->
+```java
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .build();
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .credential("<<fully-qualified-namespace>>", credential)
+    .receiver()
+    .queueName("<<queue-name>>")
+    .buildAsyncClient();
+```
+##### Service Bus Roles
+
 When using Azure Active Directory, your principal must be assigned a role which allows access to Service Bus, such
-as the `Azure Service Bus Data Owner` role. For more information about using Azure Active Directory authorization
-with Service Bus, please refer to [the associated documentation][aad_authorization].
+as the `Azure Service Bus Data Owner`, `Azure Service Bus Data Sender` and `Azure Service Bus Data Receiver` 
+[role][servicebus_roles]. 
+For more information about using Azure Active Directory authorization with Service Bus, please refer to 
+[the associated documentation][aad_authorization].
 
 ## Key concepts
-### Queues
-### Topics
-### Subscriber
+
+You can interact with the primary resource types within a Service Bus Namespace, of which multiple can exist and 
+on which actual message transmission takes place, the namespace often serving as an application container:
+
+* [Queue][queue_concept]: Allows for Sending and Receiving of messages, ordered first-in-first-out.  Often used for 
+point-to-point communication.
+
+* [Topic][topic_concept]: As opposed to Queues, Topics are better suited to publish/subscribe scenarios.  A topic can 
+be sent to, but requires a subscription, of which there can be multiple in parallel, to consume from.
+
+* [Subscription][subscription_concept]: The mechanism to consume from a Topic.  Each subscription is independent, and 
+receaves a copy of each message sent to the topic.
 
 ## Examples
 ### Create a sender or receiver using connection string
@@ -109,7 +132,7 @@ Both the asynchronous and synchronous Service Bus sender and receiver clients ca
 
 The snippet below creates an asynchronous Service Bus sender.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L18-L23 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L23-L28 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
@@ -121,38 +144,37 @@ ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
 
 The snippet below creates an asynchronous Service Bus receiver.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L30-L35 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L35-L41 -->
 ```java
 String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString(connectionString)
     .receiver()
-    .queueName("<< QUEUE NAME >>")
+    .topicName("<< TOPIC NAME >>")
+    .subscriptionName("<< SUBSCRIPTION NAME >>")
     .buildAsyncClient();
 ```
 
-### Send message to Queue or Topic
+### Send Message Examples
 
 You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
 a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
 or topic.
 
-#### Create a Sender and send message to queue or topic
-Example of sending a message asynchronously is documented [here][sample-send-async-message].
+* [Sending a message asynchronously][sample-send-async-message].
+* [Sending a message asynchronously using active directory credential][sample-send-async-aad-message].
+* [Send message in batch synchronously][sample-send-batch-messages].
 
-### Receive message from Queue or Subscription
+### Receive Message Examples
+
 You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or
 a synchronous [`ServiceBusReceiverClient`][ServiceBusReceiverClient]. Each receiver can receive message from either, a queue,
 or subscriber.
 
-#### Create a Receiver and receive message from queue or subscriber
-Example of receiving a message asynchronously is documented [here][sample-receive-async-message].
-
-### Send message with Azure Active Directory credentials
-Example of sending a message asynchronously using active directory credential is documented [here][sample-send-async-aad-message].
-
-### Receive message with Azure Active Directory credentials
-Example of receiving a message asynchronously using active directory credential is documented [here][sample-receive-async-aad-message].
+* [Receiving a message asynchronously][sample-receive-async-message].
+* [Receiving a message asynchronously using active directory credential][sample-receive-async-aad-message].
+* [Receiving a message asynchronously and settling][sample-receive-message-and-settle].
+* [Receiving messages synchronously][sample-receive-message-synchronously].
 
 ## Troubleshooting
 
@@ -243,6 +265,10 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
+[queue_concept]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview#queues
+[topic_concept]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview#topics
+[subscription_concept]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
+[servicebus_roles]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [samples_readme]: ./src/samples/README.md
 [sample_examples]: ./src/samples/java/com/azure/messaging/servicebus/
 [source_code]: ./
@@ -252,11 +278,16 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
 [ServiceBusSenderAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderAsyncClient.java
-[ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusClientBuilder.java
+[ServiceBusSenderClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusSenderClient.java
+[ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
+[ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [service_bus_connection_string]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
-[sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageSendAsyncSample.java
-[sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/MessageReceiverAsyncClient.java
-[sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentity.java
-[sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageWithAzureIDentity.java
+[sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
+[sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
+[sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
+[sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
+[sample-send-batch-messages]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
+[sample-receive-message-and-settle]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
+[sample-receive-message-synchronously]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

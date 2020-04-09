@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
@@ -11,15 +8,12 @@ import com.azure.management.sql.SqlDatabaseMetric;
 import com.azure.management.sql.SqlDatabaseMetricValue;
 import com.azure.management.sql.UnitType;
 import com.azure.management.sql.models.MetricInner;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Response containing the SQL database metrics.
- */
+/** Response containing the SQL database metrics. */
 public class SqlDatabaseMetricImpl extends WrapperImpl<MetricInner> implements SqlDatabaseMetric {
     protected SqlDatabaseMetricImpl(MetricInner innerObject) {
         super(innerObject);

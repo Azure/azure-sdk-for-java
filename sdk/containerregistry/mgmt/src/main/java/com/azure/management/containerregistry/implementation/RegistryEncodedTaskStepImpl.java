@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.management.containerregistry.implementation;
 
@@ -13,16 +10,13 @@ import com.azure.management.containerregistry.RegistryEncodedTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
 import com.azure.management.containerregistry.SetValue;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryEncodedTaskStepImpl
-        extends RegistryTaskStepImpl
-        implements
-        RegistryEncodedTaskStep,
+class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
+    implements RegistryEncodedTaskStep,
         RegistryEncodedTaskStep.Definition,
         RegistryEncodedTaskStep.Update,
         HasInner<EncodedTaskStep> {
@@ -35,7 +29,8 @@ class RegistryEncodedTaskStepImpl
         super(taskImpl.inner().step());
         this.inner = new EncodedTaskStep();
         if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof EncodedTaskStep)) {
-            throw new IllegalArgumentException("Constructor for RegistryEncodedTaskStepImpl invoked for class that is not an EncodedTaskStep");
+            throw new IllegalArgumentException(
+                "Constructor for RegistryEncodedTaskStepImpl invoked for class that is not an EncodedTaskStep");
         }
         this.taskImpl = taskImpl;
         this.encodedTaskStepUpdateParameters = new EncodedTaskStepUpdateParameters();

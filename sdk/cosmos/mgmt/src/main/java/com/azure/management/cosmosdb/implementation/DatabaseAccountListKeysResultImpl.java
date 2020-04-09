@@ -1,18 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.cosmosdb.implementation;
-
 
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.cosmosdb.models.DatabaseAccountListKeysResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The implementation for DatabaseAccountListKeysResult.
- */
+/** The implementation for DatabaseAccountListKeysResult. */
 public class DatabaseAccountListKeysResultImpl extends WrapperImpl<DatabaseAccountListKeysResultInner>
     implements DatabaseAccountListKeysResult {
     DatabaseAccountListKeysResultImpl(DatabaseAccountListKeysResultInner innerObject) {

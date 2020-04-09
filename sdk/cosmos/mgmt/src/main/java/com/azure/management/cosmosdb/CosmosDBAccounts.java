@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
@@ -18,17 +15,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-
-/**
- *  Entry point to Cosmos DB management API.
- */
+/** Entry point to Cosmos DB management API. */
 @Fluent
-public interface CosmosDBAccounts extends
-        SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
+public interface CosmosDBAccounts
+    extends SupportsCreating<CosmosDBAccount.DefinitionStages.Blank>,
         HasManager<CosmosDBManager>,
         HasInner<DatabaseAccountsInner>,
         SupportsBatchCreation<CosmosDBAccount>,
@@ -40,9 +33,10 @@ public interface CosmosDBAccounts extends
         SupportsGettingByResourceGroup<CosmosDBAccount> {
 
     /**
-     * Changes the failover priority for the Azure CosmosDB database account. A failover priority of 0 indicates
-     * a write region. The maximum value for a failover priority = (total number of regions - 1).
-     * Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure CosmosDB database account. A failover priority of 0 indicates a write
+     * region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must
+     * be unique for each of the regions in which the database account exists.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @param failoverPolicies the list of failover policies
@@ -51,6 +45,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Lists the access keys for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @return a list of keys
@@ -59,6 +54,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Lists the read-only access keys for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @return a list of keys
@@ -67,6 +63,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Lists the connection strings for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @return a list of connection strings
@@ -75,6 +72,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Regenerates an access key for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @param keyKind the key kind
@@ -82,9 +80,10 @@ public interface CosmosDBAccounts extends
     void regenerateKey(String groupName, String accountName, KeyKind keyKind);
 
     /**
-     * Changes the failover priority for the Azure CosmosDB database account. A failover priority of 0 indicates
-     * a write region. The maximum value for a failover priority = (total number of regions - 1).
-     * Failover priority values must be unique for each of the regions in which the database account exists.
+     * Changes the failover priority for the Azure CosmosDB database account. A failover priority of 0 indicates a write
+     * region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values must
+     * be unique for each of the regions in which the database account exists.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @param failoverPolicies the list of failover policies
@@ -94,6 +93,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Lists the access keys for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @return a list of keys
@@ -102,6 +102,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Lists the read-only access keys for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @return a list of keys
@@ -110,6 +111,7 @@ public interface CosmosDBAccounts extends
 
     /**
      * Lists the connection strings for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @return a list of connection strings
@@ -118,11 +120,11 @@ public interface CosmosDBAccounts extends
 
     /**
      * Regenerates an access key for the specified Azure CosmosDB database account.
+     *
      * @param groupName the group name
      * @param accountName the account name
      * @param keyKind the key kind
      * @return the ServiceResponse object if successful.
      */
     Mono<Void> regenerateKeyAsync(String groupName, String accountName, KeyKind keyKind);
-
 }

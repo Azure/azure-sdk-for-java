@@ -1,15 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * Response containing the primary and secondary admin API keys for a given Azure Search service.
- */
+/** Response containing the primary and secondary admin API keys for a given Azure Search service. */
 @Fluent
 public interface WebhookEventInfo {
     /**
@@ -25,5 +20,4 @@ public interface WebhookEventInfo {
      * @return the event response message value
      */
     EventResponseMessage eventResponseMessage();
-
 }

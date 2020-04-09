@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.sql.implementation;
 
 import com.azure.management.resources.fluentcore.arm.ResourceId;
@@ -13,21 +10,17 @@ import com.azure.management.sql.SqlServer;
 import com.azure.management.sql.SqlServerSecurityAlertPolicy;
 import com.azure.management.sql.SqlServerSecurityAlertPolicyOperations;
 import com.azure.management.sql.models.ServerSecurityAlertPolicyInner;
-import reactor.core.publisher.Mono;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for SQL Server Security Alert Policy interface.
- */
+/** Implementation for SQL Server Security Alert Policy interface. */
 public class SqlServerSecurityAlertPolicyImpl
-    extends
-        ExternalChildResourceImpl<SqlServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, SqlServerImpl, SqlServer>
-    implements
-        SqlServerSecurityAlertPolicy,
+    extends ExternalChildResourceImpl<
+        SqlServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, SqlServerImpl, SqlServer>
+    implements SqlServerSecurityAlertPolicy,
         SqlServerSecurityAlertPolicy.Update,
         SqlServerSecurityAlertPolicyOperations.SqlServerSecurityAlertPolicyOperationsDefinition {
 
@@ -38,11 +31,12 @@ public class SqlServerSecurityAlertPolicyImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param parent      reference to the parent of this external child resource
+     * @param parent reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlServerSecurityAlertPolicyImpl(SqlServerImpl parent, ServerSecurityAlertPolicyInner innerObject, SqlServerManager sqlServerManager) {
+    SqlServerSecurityAlertPolicyImpl(
+        SqlServerImpl parent, ServerSecurityAlertPolicyInner innerObject, SqlServerManager sqlServerManager) {
         super("Default", parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -56,11 +50,15 @@ public class SqlServerSecurityAlertPolicyImpl
      * Creates an instance of external child resource in-memory.
      *
      * @param resourceGroupName the resource group name
-     * @param sqlServerName     the parent SQL server name
-     * @param innerObject       reference to the inner object representing this external child resource
-     * @param sqlServerManager  reference to the SQL server manager that accesses firewall rule operations
+     * @param sqlServerName the parent SQL server name
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlServerSecurityAlertPolicyImpl(String resourceGroupName, String sqlServerName, ServerSecurityAlertPolicyInner innerObject, SqlServerManager sqlServerManager) {
+    SqlServerSecurityAlertPolicyImpl(
+        String resourceGroupName,
+        String sqlServerName,
+        ServerSecurityAlertPolicyInner innerObject,
+        SqlServerManager sqlServerManager) {
         super("Default", null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -71,7 +69,7 @@ public class SqlServerSecurityAlertPolicyImpl
     /**
      * Creates an instance of external child resource in-memory.
      *
-     * @param innerObject      reference to the inner object representing this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
     SqlServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner innerObject, SqlServerManager sqlServerManager) {
@@ -183,12 +181,16 @@ public class SqlServerSecurityAlertPolicyImpl
     @Override
     public Mono<SqlServerSecurityAlertPolicy> createResourceAsync() {
         final SqlServerSecurityAlertPolicyImpl self = this;
-        return this.sqlServerManager.inner().serverSecurityAlertPolicies()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverSecurityAlertPolicies()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.inner())
-            .map(serverSecurityAlertPolicyInner -> {
-                self.setInner(serverSecurityAlertPolicyInner);
-                return self;
-            });
+            .map(
+                serverSecurityAlertPolicyInner -> {
+                    self.setInner(serverSecurityAlertPolicyInner);
+                    return self;
+                });
     }
 
     @Override
@@ -204,7 +206,10 @@ public class SqlServerSecurityAlertPolicyImpl
 
     @Override
     protected Mono<ServerSecurityAlertPolicyInner> getInnerAsync() {
-        return this.sqlServerManager.inner().serverSecurityAlertPolicies()
+        return this
+            .sqlServerManager
+            .inner()
+            .serverSecurityAlertPolicies()
             .getAsync(this.resourceGroupName, this.sqlServerName);
     }
 

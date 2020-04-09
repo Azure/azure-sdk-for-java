@@ -1,19 +1,13 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry.implementation;
 
 import com.azure.management.containerregistry.SourceUploadDefinition;
 import com.azure.management.containerregistry.models.SourceUploadDefinitionInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Implementation for SourceUploadDefinition.
- */
-public class SourceUploadDefinitionImpl
-    extends WrapperImpl<SourceUploadDefinitionInner>
+/** Implementation for SourceUploadDefinition. */
+public class SourceUploadDefinitionImpl extends WrapperImpl<SourceUploadDefinitionInner>
     implements SourceUploadDefinition {
 
     /**

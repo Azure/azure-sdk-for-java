@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
@@ -10,9 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import reactor.core.publisher.Mono;
 
-/**
- * Grouping of container registry webhook actions.
- */
+/** Grouping of container registry webhook actions. */
 @Fluent
 public interface WebhookOperations {
     /**
@@ -56,7 +51,8 @@ public interface WebhookOperations {
     /**
      * Lists all the webhooks for the container registry.
      *
-     * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
+     * @return a representation of the future computation of this call, returning the list of all the webhooks for the
+     *     specified container registry
      */
     PagedFlux<Webhook> listAsync();
 }
