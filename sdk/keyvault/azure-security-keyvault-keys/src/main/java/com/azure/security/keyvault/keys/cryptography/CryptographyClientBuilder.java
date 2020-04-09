@@ -75,7 +75,7 @@ public final class CryptographyClientBuilder {
     private String keyId;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    final RetryPolicy retryPolicy;
+    private RetryPolicy retryPolicy;
     private Configuration configuration;
     private CryptographyServiceVersion version;
 
@@ -288,6 +288,21 @@ public final class CryptographyClientBuilder {
      */
     public CryptographyClientBuilder serviceVersion(CryptographyServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryPolicy} that is used when each request is sent.
+     *
+     * The default retry policy will be used in the pipeline, if not provided.
+     *
+     * @param retryPolicy user's retry policy applied to each request.
+     * @return The updated CryptographyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
+     */
+    public CryptographyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
+        this.retryPolicy = retryPolicy;
         return this;
     }
 }
