@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -37,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Integration tests for receiving from queues or subscriptions in Service Bus.
+ * Integration tests for {@link ServiceBusReceiverAsyncClient} from queues or subscriptions.
  */
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
@@ -45,6 +44,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
     private ServiceBusReceiverAsyncClient receiver;
+    private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusSenderAsyncClient sessionSender;
 
@@ -54,32 +54,25 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        // In the case that this test failed... we're going to drain the queue or subscription.
-        ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
-            .setMaxAutoRenewDuration(TIMEOUT);
-
         if (messagesPending.get() == 0) {
-            dispose(receiver, sender);
+            dispose(receiver, sender, receiveAndDeleteReceiver);
             return;
         }
 
+        // In the case that this test failed... we're going to drain the queue or subscription.
         try {
-            receiver.receive(options)
-                .takeUntil(m -> {
-                    int pending = messagesPending.decrementAndGet();
-                    return pending > 0;
+            receiveAndDeleteReceiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
+                .take(messagesPending.get())
+                .map(message -> {
+                    logger.info("Message received: {}", message.getSequenceNumber());
+                    return message;
                 })
-                .flatMap(m -> {
-                    logger.info("Completing message: {}", m.getSequenceNumber());
-                    return receiver.complete(m);
-                })
-                .timeout(Duration.ofSeconds(10), Mono.empty())
+                .timeout(Duration.ofSeconds(5), Mono.empty())
                 .blockLast();
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
-            dispose(receiver, sender);
+            dispose(receiver, sender, receiveAndDeleteReceiver);
         }
     }
 
@@ -167,41 +160,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         sender.scheduleMessage(message, scheduledEnqueueTime).block();
 
         // Assert & Act
-        StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiver.receive().next()))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, 0))
-            .verifyComplete();
-    }
-
-    /**
-     * Verifies that we can schedule and receive multiple messages.
-     */
-    @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
-    void sendMultipleScheduledMessageAndReceive(MessagingEntityType entityType) {
-        // Arrange
-        setSenderAndReceiver(entityType, builder -> builder.receiveMode(ReceiveMode.PEEK_LOCK));
-
-        final String messageId1 = UUID.randomUUID().toString();
-        final String messageId2 = UUID.randomUUID().toString();
-        final ServiceBusMessage message1 = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId1, 0);
-        final ServiceBusMessage message2 = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId2, 2);
-        final Duration duration = Duration.ofSeconds(10);
-        final Instant scheduledEnqueueTime = Instant.now().plus(duration);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-
-        sender.scheduleMessage(message1, scheduledEnqueueTime)
-            .block(TIMEOUT);
-        sender.scheduleMessage(message2, scheduledEnqueueTime)
-            .block(TIMEOUT);
-
-        // Assert & Act
-        StepVerifier.create(Mono.delay(duration).thenMany(receiver.receive(options).take(2)))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId1, 0))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId2, 2))
+        StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiveAndDeleteReceiver.receive(options).next()))
+            .assertNext(receivedMessage -> {
+                assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, 0);
+                messagesPending.decrementAndGet();
+            })
             .verifyComplete();
     }
 
@@ -247,22 +215,24 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType);
 
-        final long fromSequenceNumber = 1;
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
 
         sendMessage(message).block();
 
+        final ServiceBusReceivedMessage received = receiver.receive().next().block(TIMEOUT);
+        Assertions.assertNotNull(received);
+
+        final Map<String, Object> expectedProperties = received.getProperties();
+
         // Assert & Act
-        StepVerifier.create(receiver.peekAt(fromSequenceNumber))
+        StepVerifier.create(receiver.peekAt(received.getSequenceNumber()))
             .assertNext(receivedMessage -> {
-                try {
-                    assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, 0);
-                } finally {
-                    // Clear out that message after the operation so we don't have to wait.
-                    receiver.complete(receivedMessage).block();
-                    messagesPending.decrementAndGet();
-                }
+                assertArrayEquals(received.getBody(), receivedMessage.getBody());
+
+                final Map<String, Object> actual = receivedMessage.getProperties();
+                assertEquals(expectedProperties.get(MESSAGE_TRACKING_ID), actual.get(MESSAGE_TRACKING_ID));
+                assertEquals(expectedProperties.get(MESSAGE_POSITION_ID), actual.get(MESSAGE_POSITION_ID));
             })
             .verifyComplete();
     }
@@ -346,36 +316,40 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType);
 
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, "id-1", 0);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
 
-        final AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
-        final AtomicReference<Instant> initialLock = new AtomicReference<>();
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
 
         // Blocking here because it is not part of the scenario we want to test.
         sendMessage(message).block(TIMEOUT);
-        ServiceBusReceivedMessage m = receiver.receive(options).next().block(TIMEOUT);
-        assertNotNull(m);
-        assertNotNull(m.getLockedUntil());
-        receivedMessage.set(m);
-        initialLock.set(m.getLockedUntil());
+        ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next().block(TIMEOUT);
+        assertNotNull(receivedMessage);
+        assertNotNull(receivedMessage.getLockedUntil());
+
+        final Instant initialLock = receivedMessage.getLockedUntil();
+        logger.info("Received message. Seq: {}. lockedUntil: {}", receivedMessage.getSequenceNumber(), initialLock);
 
         // Assert & Act
         try {
             StepVerifier.create(Mono.delay(Duration.ofSeconds(10))
-                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage.get()))))
+                .then(Mono.defer(() -> receiver.renewMessageLock(receivedMessage))))
                 .assertNext(lockedUntil -> {
-                    assertTrue(lockedUntil.isAfter(initialLock.get()),
+                    assertTrue(lockedUntil.isAfter(initialLock),
                         String.format("Updated lock is not after the initial Lock. updated: [%s]. initial:[%s]",
-                            lockedUntil, initialLock.get()));
+                            lockedUntil, initialLock));
 
-                    assertEquals(receivedMessage.get().getLockedUntil(), lockedUntil);
+                    assertEquals(receivedMessage.getLockedUntil(), lockedUntil);
                 })
                 .verifyComplete();
         } finally {
-            receiver.complete(receivedMessage.get()).block();
-            messagesPending.decrementAndGet();
+            logger.info("Completing message. Seq: {}.", receivedMessage.getSequenceNumber());
+
+            receiver.complete(receivedMessage)
+                .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
+                .block();
+            ;
         }
     }
 
@@ -553,8 +527,9 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sender.send(messageToSend);
 
         // Assert & Act
-        StepVerifier.create(receiver.receive(options))
+        StepVerifier.create(receiveAndDeleteReceiver.receive(options))
             .assertNext(receivedMessage -> {
+                messagesPending.decrementAndGet();
                 assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageTrackingId, 0);
 
                 final Map<String, Object> received = receivedMessage.getProperties();
@@ -613,6 +588,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 receiver = onCreate.apply(
                     createBuilder().receiver().queueName(queueName)
                 ).buildAsyncClient();
+
+                receiveAndDeleteReceiver = createBuilder().receiver()
+                    .queueName(queueName)
+                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+                    .buildAsyncClient();
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
@@ -626,6 +606,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     .buildAsyncClient();
                 receiver = onCreate.apply(createBuilder().receiver()
                     .topicName(topicName).subscriptionName(subscriptionName))
+                    .buildAsyncClient();
+
+                receiveAndDeleteReceiver = createBuilder().receiver()
+                    .topicName(topicName).subscriptionName(subscriptionName)
+                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
                 break;
             default:
@@ -641,7 +626,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     private void assertMessageEquals(ServiceBusReceivedMessage message, byte[] contents, String messageId, int position) {
-        assertEquals(contents, message.getBody());
+        assertArrayEquals(contents, message.getBody());
 
         final Map<String, Object> properties = message.getProperties();
 
