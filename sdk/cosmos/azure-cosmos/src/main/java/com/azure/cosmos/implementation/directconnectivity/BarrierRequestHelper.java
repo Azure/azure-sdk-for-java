@@ -49,10 +49,10 @@ public class BarrierRequestHelper {
         if (!isCollectionHeadRequest) {
             // DB Feed
             barrierLsnRequest = RxDocumentServiceRequest.create(
-                    OperationType.HeadFeed,
-                    (String) null,
-                    (ResourceType) ResourceType.Database,
-                    (Map<String, String>) null);
+                OperationType.HeadFeed,
+                null,
+                ResourceType.Database,
+                null);
         } else if (request.getIsNameBased()) {
             // Name based server request
 

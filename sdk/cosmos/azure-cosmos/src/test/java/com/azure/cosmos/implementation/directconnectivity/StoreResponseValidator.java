@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
 import org.assertj.core.api.Condition;
 
@@ -20,13 +19,12 @@ public interface StoreResponseValidator {
         return new Builder();
     }
 
-    public class Builder<T extends Resource> {
+    public class Builder {
         private List<StoreResponseValidator> validators = new ArrayList<>();
 
         public StoreResponseValidator build() {
             return new StoreResponseValidator() {
 
-                @SuppressWarnings({"rawtypes", "unchecked"})
                 @Override
                 public void validate(StoreResponse resp) {
                     for (StoreResponseValidator validator : validators) {

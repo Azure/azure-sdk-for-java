@@ -39,7 +39,8 @@ public interface IMessageSender extends IMessageEntityClient {
     /**
      * Sends a batch of messages to the Azure Service Bus entity this sender is connected to. This method blocks until the batch is sent to the entity. Calling this method is equivalent to calling
      * <code>sendBatchAsync(messages).get()</code>. For better performance, use async methods.
-     *
+     * When called on partitioned entities, messages meant for different partitions cannot be batched together.
+     * 
      * @param messages collection of messages to be sent to the entity
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if the batch couldn't be sent to the entity
@@ -49,7 +50,8 @@ public interface IMessageSender extends IMessageEntityClient {
     /**
      * Sends a batch of messages to the Azure Service Bus entity this sender is connected to. This method blocks until the batch is sent to the entity. Calling this method is equivalent to calling
      * <code>sendBatchAsync(messages).get()</code>. For better performance, use async methods.
-     *
+     * When called on partitioned entities, messages meant for different partitions cannot be batched together.
+     * 
      * @param messages collection of messages to be sent to the entity
      * @param transaction {@link TransactionContext} which this operation should enlist to.
      * @throws InterruptedException if the current thread was interrupted while waiting
@@ -76,7 +78,8 @@ public interface IMessageSender extends IMessageEntityClient {
 
     /**
      * Sends a batch of messages to the Azure Service Bus entity this sender is connected to. This is an asynchronous method returning a CompletableFuture which completes when the batch is sent to the entity.
-     *
+     * When called on partitioned entities, messages meant for different partitions cannot be batched together.
+     * 
      * @param messages collection of messages to be sent to the entity
      * @return a CompletableFuture representing the pending send
      */
@@ -84,7 +87,8 @@ public interface IMessageSender extends IMessageEntityClient {
 
     /**
      * Sends a batch of messages to the Azure Service Bus entity this sender is connected to. This is an asynchronous method returning a CompletableFuture which completes when the batch is sent to the entity.
-     *
+     * When called on partitioned entities, messages meant for different partitions cannot be batched together.
+     * 
      * @param messages collection of messages to be sent to the entity
      * @param transaction {@link TransactionContext} which this operation should enlist to.
      * @return a CompletableFuture representing the pending send

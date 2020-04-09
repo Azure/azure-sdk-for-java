@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +27,7 @@ public interface CollectionRoutingMap {
 
     IServerIdentity tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId);
 
-    boolean IsGone(String partitionKeyRangeId);
+    boolean isGone(String partitionKeyRangeId);
 
     String getCollectionUniqueId();
 

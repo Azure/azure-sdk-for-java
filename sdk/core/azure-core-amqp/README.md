@@ -1,4 +1,4 @@
-# Azure Core AMQP client library for Java
+# Azure Core AMQP shared library for Java
 
 Azure Core AMQP client library is a collection of classes common to the AMQP protocol. It help developers create their
 own AMQP client library that abstracts from the underlying transport library's implementation.
@@ -9,14 +9,14 @@ own AMQP client library that abstracts from the underlying transport library's i
 
 - Java Development Kit (JDK) with version 8 or above
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-core-amqp;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-amqp</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -29,6 +29,12 @@ The concepts for AMQP are well documented in [OASIS Advanced Messaging Queuing P
 ## Examples
 
 ## Troubleshooting
+
+### Enabling Logging
+
+Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 

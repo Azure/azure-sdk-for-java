@@ -1,0 +1,8 @@
+### Generate resource: 
+autorest-beta --input-file="/d/Workspace/ams/azure-rest-api-specs/specification/resources/resource-manager/Microsoft.Resources/stable/2019-08-01/resources.json" --namespace="com.azure.management.resources" --use="/d/Workspace/temp/autorest.java/fluentgen" --java --azure-arm=true --fluent=true --sync-methods=all --license-header=MICROSOFT_MIT_NO_CODEGEN --output-folder=./azure-mgmt-resources --generate-client-as-impl=true
+
+### Generate subscription:
+autorest-beta --input-file="/d/Workspace/ams/azure-rest-api-specs/specification/resources/resource-manager/Microsoft.Resources/stable/2019-06-01/subscriptions.json" --namespace="com.azure.management.resources" --use="/d/Workspace/temp/autorest.java/fluentgen" --java --azure-arm=true --fluent=true --sync-methods=all --license-header=MICROSOFT_MIT_NO_CODEGEN --output-folder=./azure-mgmt-resources --generate-client-as-impl=true --implementation-subpackage=models
+
+### Generate features:
+autorest-beta --input-file="/d/Workspace/ams/azure-rest-api-specs/specification/resources/resource-manager/Microsoft.Features/stable/2015-12-01/features.json" --namespace="com.azure.management.resources" --use="/d/Workspace/temp/autorest.java/fluentgen" --java --azure-arm=true --fluent=true --sync-methods=all --license-header=MICROSOFT_MIT_NO_CODEGEN --output-folder=./azure-mgmt-resources --generate-client-as-impl=true --implementation-subpackage=models

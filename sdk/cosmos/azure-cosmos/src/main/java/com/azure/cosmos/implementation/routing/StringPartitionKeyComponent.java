@@ -27,7 +27,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int CompareTo(IPartitionKeyComponent other) {
+    public int compareTo(IPartitionKeyComponent other) {
         StringPartitionKeyComponent otherString = Utils.as(other, StringPartitionKeyComponent.class) ;
         if (otherString == null) {
             throw new IllegalArgumentException("other");
@@ -37,7 +37,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public int GetTypeOrdinal() {
+    public int getTypeOrdinal() {
         return PartitionKeyComponentType.STRING.type;
     }
 
@@ -47,7 +47,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
         return value.hashCode();
     }
 
-    public IPartitionKeyComponent Truncate() {
+    public IPartitionKeyComponent truncate() {
         if (this.value.length() > MAX_STRING_CHARS) {
             return new StringPartitionKeyComponent(this.value.substring(0, MAX_STRING_CHARS));
         }
@@ -56,7 +56,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void JsonEncode(JsonGenerator writer) {
+    public void jsonEncode(JsonGenerator writer) {
         try {
             writer.writeString(this.value);
         } catch (IOException e) {
@@ -65,7 +65,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashing(OutputStream outputStream) {
+    public void writeForHashing(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.STRING.type);
             outputStream.write(utf8Value);
@@ -76,7 +76,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForHashingV2(OutputStream outputStream) {
+    public void writeForHashingV2(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.STRING.type);
             outputStream.write(utf8Value);
@@ -87,7 +87,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
-    public void WriteForBinaryEncoding(OutputStream outputStream) {
+    public void writeForBinaryEncoding(OutputStream outputStream) {
         try {
             outputStream.write((byte) PartitionKeyComponentType.STRING.type);
             boolean shortString = this.utf8Value.length <= MAX_STRING_BYTES_TO_APPEND;

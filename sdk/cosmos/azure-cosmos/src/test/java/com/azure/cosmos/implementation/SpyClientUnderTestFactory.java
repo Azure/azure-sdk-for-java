@@ -86,7 +86,7 @@ public class SpyClientUnderTestFactory {
         }
 
         protected void initRequestCapture() {
-            doAnswer(new Answer() {
+            doAnswer(new Answer<Object>() {
                 @Override
                 public Object answer(InvocationOnMock invocationOnMock)  {
                     RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);

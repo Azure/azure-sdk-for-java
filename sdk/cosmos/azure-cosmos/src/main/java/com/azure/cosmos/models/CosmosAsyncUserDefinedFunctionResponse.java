@@ -7,7 +7,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncUserDefinedFunction;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.UserDefinedFunction;
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 /**
  * The type Cosmos async user defined function response.

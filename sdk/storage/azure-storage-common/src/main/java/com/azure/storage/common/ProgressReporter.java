@@ -38,7 +38,7 @@ public final class ProgressReporter {
             return Mono.just(this).flatMapMany(progressReporter -> {
                 /*
                 Each time there is a new subscription, we will rewind the progress. This is desirable specifically
-                for retries, which resubscribe on each try. The first time this flowable is subscribed to, the
+                for retries, which resubscribe on each try. The first time this Flux is subscribed to, the
                 rewind will be a noop as there will have been no progress made. Subsequent rewinds will work as
                 expected.
                  */
@@ -102,7 +102,7 @@ public final class ProgressReporter {
             It is typically a bad idea to lock around customer code (which the progressReceiver is) because they could
             never release the lock. However, we have decided that it is sufficiently difficult for them to make their
             progressReporting code threadsafe that we will take that burden and the ensuing risks. Although it is the
-            case that only one thread is allowed to be in onNext at once, however there are multiple independent
+            case that only one thread is allowed to be in onNext at once, there are multiple independent
             requests happening at once to stage/download separate chunks, so we still need to lock either way.
              */
             transferLock.lock();

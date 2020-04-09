@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import org.apache.commons.lang3.tuple.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,10 +112,12 @@ public class ResourceTokenAuthorizationHelper {
                 String resourceAddressWithSlash = resourceAddress.endsWith(Constants.Properties.PATH_SEPARATOR)
                         ? resourceAddress
                         : resourceAddress + Constants.Properties.PATH_SEPARATOR;
-                for (String key : resourceTokensMap.keySet()) {
+                for (Map.Entry<String, List<PartitionKeyAndResourceTokenPair>> entry : resourceTokensMap.entrySet()) {
+                    final String key = entry.getKey();
                     if (key.startsWith(resourceAddressWithSlash)) {
-                        if (resourceTokensMap.get(key) != null && resourceTokensMap.get(key).size() > 0)
-                            resourceToken = resourceTokensMap.get(key).get(0).getResourceToken();
+                        final List<PartitionKeyAndResourceTokenPair> resourceTokens = entry.getValue();
+                        if (resourceTokens != null && resourceTokens.size() > 0)
+                            resourceToken = resourceTokens.get(0).getResourceToken();
                         break;
                     }
                 }
@@ -166,15 +168,17 @@ public class ResourceTokenAuthorizationHelper {
             if (resourceToken == null && resourceId.getDocumentCollection() != 0
                     && (RequestVerb.GET == requestVerb
                             || RequestVerb.HEAD == requestVerb)) {
-                for (String key : resourceTokensMap.keySet()) {
+                for (Map.Entry<String, List<PartitionKeyAndResourceTokenPair>> entry : resourceTokensMap.entrySet()) {
                     ResourceId tokenRid;
+                    final String key = entry.getKey();
                     Pair<Boolean, ResourceId> pair = ResourceId.tryParse(key);
                     ResourceId test1= pair.getRight().getDocumentCollectionId();
                     boolean test = test1.equals(resourceId);
                     if (!PathsHelper.isNameBased(key) && pair.getLeft()
                             && pair.getRight().getDocumentCollectionId().equals(resourceId)) {
-                        if (resourceTokensMap.get(key) != null && resourceTokensMap.get(key).size() > 0) {
-                            resourceToken = resourceTokensMap.get(key).get(0).getResourceToken();
+                        List<PartitionKeyAndResourceTokenPair> resourceTokens = entry.getValue();
+                        if (resourceTokens != null && resourceTokens.size() > 0) {
+                            resourceToken = resourceTokens.get(0).getResourceToken();
                         }
                     }
                 }

@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import org.apache.commons.collections4.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -74,8 +74,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
         CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
-        if (clientException != null && clientException.getCosmosResponseDiagnostics() != null) {
-            this.cosmosResponseDiagnostics = clientException.getCosmosResponseDiagnostics();
+        if (clientException != null && clientException.getResponseDiagnostics() != null) {
+            this.cosmosResponseDiagnostics = clientException.getResponseDiagnostics();
         }
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
@@ -198,28 +198,28 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         this.isReadRequest = request.isReadOnlyRequest();
-        this.canUseMultipleWriteLocations = this.globalEndpointManager.CanUseMultipleWriteLocations(request);
+        this.canUseMultipleWriteLocations = this.globalEndpointManager.canUseMultipleWriteLocations(request);
         if (request.requestContext != null) {
             request.requestContext.cosmosResponseDiagnostics = this.cosmosResponseDiagnostics;
         }
 
         // clear previous location-based routing directive
         if (request.requestContext != null) {
-            request.requestContext.ClearRouteToLocation();
+            request.requestContext.clearRouteToLocation();
         }
         if (this.retryContext != null) {
             // set location-based routing directive based on request retry context
-            request.requestContext.RouteToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
+            request.requestContext.routeToLocation(this.retryContext.retryCount, this.retryContext.retryRequestOnPreferredLocations);
         }
 
         // Resolve the endpoint for the request and pin the resolution to the resolved endpoint
         // This enables marking the endpoint unavailability on endpoint failover/unreachability
         this.locationEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
         if (request.requestContext != null) {
-            request.requestContext.RouteToLocation(this.locationEndpoint);
+            request.requestContext.routeToLocation(this.locationEndpoint);
         }
     }
-    private class RetryContext {
+    private static class RetryContext {
 
         public int retryCount;
         public boolean retryRequestOnPreferredLocations;

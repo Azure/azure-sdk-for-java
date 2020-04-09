@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocumentServiceRequestContext implements Cloneable{
+public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
     public volatile boolean forceRefreshAddressCache;
     public volatile RequestChargeTracker requestChargeTracker;
@@ -49,7 +49,7 @@ public class DocumentServiceRequestContext implements Cloneable{
      * @param locationIndex Index of the location to which the request should be routed.
      * @param usePreferredLocations Use preferred locations to route request.
      */
-    public void RouteToLocation(int locationIndex, boolean usePreferredLocations) {
+    public void routeToLocation(int locationIndex, boolean usePreferredLocations) {
         this.locationIndexToRoute = locationIndex;
         this.usePreferredLocations = usePreferredLocations;
         this.locationEndpointToRoute = null;
@@ -61,7 +61,7 @@ public class DocumentServiceRequestContext implements Cloneable{
      *
      * @param locationEndpoint Location endpoint to which the request should be routed.
      */
-    public void RouteToLocation(URI locationEndpoint) {
+    public void routeToLocation(URI locationEndpoint) {
         this.locationEndpointToRoute = locationEndpoint;
         this.locationIndexToRoute = null;
         this.usePreferredLocations = null;
@@ -70,7 +70,7 @@ public class DocumentServiceRequestContext implements Cloneable{
     /**
      * Clears location-based routing directive
      */
-    public void ClearRouteToLocation() {
+    public void clearRouteToLocation() {
         this.locationIndexToRoute = null;
         this.locationEndpointToRoute = null;
         this.usePreferredLocations = null;

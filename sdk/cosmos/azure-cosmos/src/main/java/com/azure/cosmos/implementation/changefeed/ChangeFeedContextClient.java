@@ -84,7 +84,7 @@ public interface ChangeFeedContextClient {
      * @param options   the request options.
      * @return an {@link Mono} containing the  cosmos item resource response with the deleted item or an error.
      */
-    Mono<CosmosAsyncItemResponse> deleteItem(String itemId, PartitionKey partitionKey, 
+    Mono<CosmosAsyncItemResponse<Object>> deleteItem(String itemId, PartitionKey partitionKey,
                                              CosmosItemRequestOptions options);
 
     /**

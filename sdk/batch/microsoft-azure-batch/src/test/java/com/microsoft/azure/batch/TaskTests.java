@@ -303,7 +303,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         }
     }
 
-    @Test
+    //@Test
     public void testAddMultiTasks() throws Exception {
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
 
