@@ -6,8 +6,7 @@ package com.azure.messaging.servicebus;
 public class ServiceBusMultiSessionProcessorClient {
     public void start(){}
     public void stop(){}
-    public  boolean isRunning() {
-        return true;
+    public  boolean isRunning() { return true;
     }
 }
 
