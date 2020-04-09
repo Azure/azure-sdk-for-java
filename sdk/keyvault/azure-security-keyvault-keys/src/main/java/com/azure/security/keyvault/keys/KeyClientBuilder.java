@@ -281,8 +281,10 @@ public final class KeyClientBuilder {
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated KeyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
      */
     public KeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         this.retryPolicy = retryPolicy;
         return this;
     }

@@ -278,8 +278,10 @@ public final class CertificateClientBuilder {
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated CertificateClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
      */
     public CertificateClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         this.retryPolicy = retryPolicy;
         return this;
     }

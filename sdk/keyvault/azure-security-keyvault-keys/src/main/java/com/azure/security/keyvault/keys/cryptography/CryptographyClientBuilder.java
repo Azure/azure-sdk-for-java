@@ -323,8 +323,10 @@ public final class CryptographyClientBuilder {
      *
      * @param retryPolicy user's retry policy applied to each request.
      * @return The updated CryptographyClientBuilder object.
+     * @throws NullPointerException if the specified {@code retryPolicy} is null.
      */
     public CryptographyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+        Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         this.retryPolicy = retryPolicy;
         return this;
     }
