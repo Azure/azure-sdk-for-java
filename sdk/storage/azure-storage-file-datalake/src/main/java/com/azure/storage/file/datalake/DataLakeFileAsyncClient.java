@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReporter;
+import com.azure.storage.common.implementation.BufferAggregator;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.UploadBufferPool;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -80,7 +81,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    static final int MAX_APPEND_FILE_BYTES = 100 * Constants.MB;
+    static final long MAX_APPEND_FILE_BYTES = 100L * Constants.MB;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileAsyncClient.class);
 
@@ -296,7 +297,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
         // Validation done in the constructor.
         UploadBufferPool pool = new UploadBufferPool(parallelTransferOptions.getNumBuffers(),
-            parallelTransferOptions.getBlockSize(), MAX_APPEND_FILE_BYTES);
+            parallelTransferOptions.getBlockSizeLong(), MAX_APPEND_FILE_BYTES);
 
         Flux<ByteBuffer> chunkedSource = UploadUtils.chunkSource(data, parallelTransferOptions);
 
@@ -306,7 +307,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         return chunkedSource.concatMap(pool::write)
             .concatWith(Flux.defer(pool::flush))
             /* Map the data to a tuple 3, of buffer, buffer length, buffer offset */
-            .map(buffer -> Tuples.of(buffer, (long) buffer.remaining(), (long) 0))
+            .map(buffer -> Tuples.of(buffer, buffer.remaining(), 0L))
             /* Scan reduces a flux with an accumulator while emitting the intermediate results. */
             /* As an example, data consists of ByteBuffers of length 10-10-5.
                In the map above we transform the initial ByteBuffer to a tuple3 of buff, 10, 0.
@@ -315,7 +316,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                (from previous emission). Scan emits that, and on the last iteration, the last ByteBuffer gets
                transformed to buff, 5, 10+10 (from previous emission). */
             .scan((result, source) -> {
-                ByteBuffer buffer = source.getT1();
+                BufferAggregator buffer = source.getT1();
                 long currentBufferLength = buffer.remaining();
                 long lastBytesWritten = result.getT2();
                 long lastOffset = result.getT3();
@@ -323,12 +324,12 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                 return Tuples.of(buffer, currentBufferLength, lastBytesWritten + lastOffset);
             })
             .flatMapSequential(tuple3 -> {
-                ByteBuffer buffer = tuple3.getT1();
+                BufferAggregator buffer = tuple3.getT1();
                 long currentBufferLength = buffer.remaining();
                 long currentOffset = tuple3.getT3() + fileOffset;
                 // Report progress as necessary.
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
-                    Flux.just(buffer), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
+                    buffer.asFlux(), parallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
                 return appendWithResponse(progressData, currentOffset, currentBufferLength, null,
                     requestConditions.getLeaseId())
                     .doFinally(x -> pool.returnBuffer(buffer))
@@ -385,7 +386,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
 
             // Note that if the file will be uploaded using a putBlob, we also can skip the exists check.
             if (!overwrite) {
-                if (UploadUtils.shouldUploadInChunks(filePath, DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
+                if (UploadUtils.shouldUploadInChunks(filePath,
+                    DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES, logger)) {
                     overwriteCheck = exists().flatMap(exists -> exists
                         ? monoError(logger, new IllegalArgumentException(Constants.FILE_ALREADY_EXISTS))
                         : Mono.empty());
@@ -421,9 +423,9 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      */
     public Mono<Void> uploadFromFile(String filePath, ParallelTransferOptions parallelTransferOptions,
         PathHttpHeaders headers, Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
-        Integer originalBlockSize = (parallelTransferOptions == null)
+        Long originalBlockSize = (parallelTransferOptions == null)
             ? null
-            : parallelTransferOptions.getBlockSize();
+            : parallelTransferOptions.getBlockSizeLong();
 
         DataLakeRequestConditions validatedRequestConditions = requestConditions == null
             ? new DataLakeRequestConditions() : requestConditions;
@@ -448,7 +450,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
                                 + "greater than 0."));
                         }
                         if (UploadUtils.shouldUploadInChunks(filePath,
-                            finalParallelTransferOptions.getMaxSingleUploadSize(), logger)) {
+                            finalParallelTransferOptions.getMaxSingleUploadSizeLong(), logger)) {
                             return createWithResponse(null, null, headers, metadata, validatedRequestConditions)
                                 .then(uploadFileChunks(fileOffset, fileSize, finalParallelTransferOptions,
                                     originalBlockSize, headers, validatedUploadRequestConditions, channel));
@@ -471,7 +473,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
     }
 
     private Mono<Void> uploadFileChunks(long fileOffset, long fileSize, ParallelTransferOptions parallelTransferOptions,
-        Integer originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
+        Long originalBlockSize, PathHttpHeaders headers, DataLakeRequestConditions requestConditions,
         AsynchronousFileChannel channel) {
         // parallelTransferOptions are finalized in the calling method.
 
@@ -479,7 +481,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         AtomicLong totalProgress = new AtomicLong();
         Lock progressLock = new ReentrantLock();
 
-        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSize()))
+        return Flux.fromIterable(sliceFile(fileSize, originalBlockSize, parallelTransferOptions.getBlockSizeLong()))
             .flatMap(chunk -> {
                 Flux<ByteBuffer> progressData = ProgressReporter.addParallelProgressReporting(
                     FluxUtil.readFile(channel, chunk.getOffset(), chunk.getCount()),
@@ -493,7 +495,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             .then();
     }
 
-    private List<FileRange> sliceFile(long fileSize, Integer originalBlockSize, int blockSize) {
+    private List<FileRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {
         List<FileRange> ranges = new ArrayList<>();
         if (fileSize > 100 * Constants.MB && originalBlockSize == null) {
             blockSize = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;

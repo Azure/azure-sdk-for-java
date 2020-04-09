@@ -15,8 +15,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -39,70 +37,26 @@ public class UploadUtils {
         ParallelTransferOptions parallelTransferOptions,
         final Function<Flux<ByteBuffer>, Mono<Response<T>>> uploadInChunks,
         final BiFunction<Flux<ByteBuffer>, Long, Mono<Response<T>>> uploadFull) {
-        final long[] bufferedDataSize = {0};
-        final LinkedList<ByteBuffer> cachedBuffers = new LinkedList<>();
 
-        /*
-         * Window the reactive stream until either the stream completes or the windowing size is hit. If the window
-         * size is hit the next emission will be the pointer to the rest of the reactive steam.
-         *
-         * Once the windowing has completed buffer the two streams, this should create a maximum overhead of ~4MB plus
-         * the next stream emission if the window size was hit. If there are two streams buffered use Stage Blocks and
-         * Put Block List as the upload mechanism otherwise use Put Blob.
-         */
+        PayloadSizeGate gate = new PayloadSizeGate(parallelTransferOptions.getMaxSingleUploadSizeLong());
+
         return data
             .filter(ByteBuffer::hasRemaining)
-            .windowUntil(buffer -> {
-                if (bufferedDataSize[0] > parallelTransferOptions.getMaxSingleUploadSize()) {
-                    return false;
+            // The gate buffers data until threshold is breached.
+            .concatMap(gate::write)
+            .concatWith(Flux.defer(gate::flush))
+            // First buffer is emitted after threshold is breached or there's no more data.
+            // Therefore we can make a decision how to upload data on first element.
+            .switchOnFirst((signal, flux) -> {
+                if (gate.isThresholdBreached()) {
+                    return uploadInChunks.apply(flux);
                 } else {
-                    bufferedDataSize[0] += buffer.remaining();
-
-                    if (bufferedDataSize[0] > parallelTransferOptions.getMaxSingleUploadSize()) {
-                        return true;
-                    } else {
-                        /*
-                         * Buffer until the first 4MB are emitted from the stream in case Put Blob is used. This is
-                         * done to support replayability which is required by the Put Blob code path, it doesn't buffer
-                         * the stream in a way that the Stage Blocks and Put Block List code path does, and this API
-                         * explicitly states that it supports non-replayable streams.
-                         */
-                        ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining()).put(buffer);
-                        cachedBuffer.flip();
-                        cachedBuffers.add(cachedBuffer);
-                        return false;
-                    }
-                }
-                /*
-                 * Use cutBefore = true as we want to window all data under 4MB into one window.
-                 * Set the prefetch to 'Integer.MAX_VALUE' to leverage an unbounded fetch limit in case there are numerous
-                 * tiny buffers, windowUntil uses a default limit of 256 and once that is hit it will trigger onComplete
-                 * which causes downstream issues.
-                 */
-            }, true, Integer.MAX_VALUE)
-            .buffer(2)
-            .next()
-            .flatMap(fluxes -> {
-                if (fluxes.size() == 1) {
-                    return uploadFull.apply(Flux.fromIterable(cachedBuffers), bufferedDataSize[0]);
-                } else {
-                    return uploadInChunks.apply(dequeuingFlux(cachedBuffers).concatWith(fluxes.get(1)));
+                    return uploadFull.apply(flux, gate.size());
                 }
             })
+            .next()
             // If nothing was emitted from the stream upload an empty blob.
             .switchIfEmpty(uploadFull.apply(Flux.empty(), 0L));
-    }
-
-    private static Flux<ByteBuffer> dequeuingFlux(Queue<ByteBuffer> queue) {
-        // Generate is used as opposed to Flux.fromIterable as it allows the buffers to be garbage collected sooner.
-        return Flux.generate(sink -> {
-            ByteBuffer buffer = queue.poll();
-            if (buffer != null) {
-                sink.next(buffer);
-            } else {
-                sink.complete();
-            }
-        });
     }
 
     /**
@@ -115,24 +69,29 @@ public class UploadUtils {
      * @return Chunked data
      */
     public static Flux<ByteBuffer> chunkSource(Flux<ByteBuffer> data, ParallelTransferOptions parallelTransferOptions) {
-        return data
-            .flatMapSequential(buffer -> {
-                if (buffer.remaining() <= parallelTransferOptions.getBlockSize()) {
-                    return Flux.just(buffer);
-                }
-                int numSplits = (int) Math.ceil(buffer.remaining() / (double) parallelTransferOptions.getBlockSize());
-                return Flux.range(0, numSplits)
-                    .map(i -> {
-                        ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
-                        duplicate.position(i * parallelTransferOptions.getBlockSize());
-                        duplicate.limit(Math.min(duplicate.limit(), (i + 1) * parallelTransferOptions.getBlockSize()));
-                        return duplicate;
-                    });
-            });
+        if (parallelTransferOptions.getBlockSizeLong() <= Integer.MAX_VALUE) {
+            int chunkSize = parallelTransferOptions.getBlockSizeLong().intValue();
+            return data
+                .flatMapSequential(buffer -> {
+                    if (buffer.remaining() <= chunkSize) {
+                        return Flux.just(buffer);
+                    }
+                    int numSplits = (int) Math.ceil(buffer.remaining() / (double) chunkSize);
+                    return Flux.range(0, numSplits)
+                        .map(i -> {
+                            ByteBuffer duplicate = buffer.duplicate().asReadOnlyBuffer();
+                            duplicate.position(i * chunkSize);
+                            duplicate.limit(Math.min(duplicate.limit(), (i + 1) * chunkSize));
+                            return duplicate;
+                        });
+                });
+        } else {
+            return data;
+        }
     }
 
 
-    public static boolean shouldUploadInChunks(String filePath, Integer maxSingleUploadSize, ClientLogger logger) {
+    public static boolean shouldUploadInChunks(String filePath, Long maxSingleUploadSize, ClientLogger logger) {
         AsynchronousFileChannel channel = uploadFileResourceSupplier(filePath, logger);
         boolean retVal;
         try {

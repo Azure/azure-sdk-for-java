@@ -39,7 +39,6 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.NonWritableChannelException
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
@@ -87,7 +86,7 @@ class BlobAPITest extends APISpec {
         def randomData = getRandomByteArray(20 * Constants.MB)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions(null, null, null, Constants.MB)
+        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(Constants.MB)
 
         when:
         // Uses blob output stream under the hood.
@@ -103,7 +102,7 @@ class BlobAPITest extends APISpec {
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions((Integer) maxUploadSize, null, null, (Integer) maxUploadSize)
+        def pto = new ParallelTransferOptions().setBlockSizeLong(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize)
 
         when:
         bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)
@@ -445,7 +444,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def properties = bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null)
 
         then:
         compareFiles(file, outFile, 0, fileSize)
@@ -491,7 +490,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def properties = blobClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false, null, null)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false, null, null)
 
         then:
         compareFiles(file, outFile, 0, fileSize)
@@ -536,7 +535,7 @@ class BlobAPITest extends APISpec {
 
         when:
         def downloadMono = blobAsyncClient.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(4 * 1024 * 1024, null, null), null, null, false)
+            new ParallelTransferOptions().setBlockSizeLong(4 * 1024 * 1024), null, null, false)
 
         then:
         StepVerifier.create(downloadMono)
@@ -735,7 +734,7 @@ class BlobAPITest extends APISpec {
          * Setup the download to happen in small chunks so many requests need to be sent, this will give the upload time
          * to change the ETag therefore failing the download.
          */
-        def options = new ParallelTransferOptions(Constants.KB, null, null)
+        def options = new ParallelTransferOptions().setBlockSizeLong(Constants.KB)
 
         /*
          * This is done to prevent onErrorDropped exceptions from being logged at the error level. If no hook is
@@ -797,7 +796,7 @@ class BlobAPITest extends APISpec {
 
         when:
         bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions(null, null, mockReceiver),
+            new ParallelTransferOptions().setProgressReceiver(mockReceiver),
             new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
 
         then:

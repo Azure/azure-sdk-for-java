@@ -1308,4 +1308,34 @@ directive:
       replace('public BlobContainerItemProperties setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {', 'public BlobContainerItemProperties setEncryptionScopeOverridePrevented(boolean encryptionScopeOverridePrevented) {');
 ```
 
+### Block size int to long transition
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Block
+  transform: >
+    $.properties.Size["x-ms-client-name"] = "sizeLong";
+    $.properties.Size["format"] = "int64";
+    $.properties.SizeInt = { "type" : "integer" };
+    $.required.push("SizeInt");
+```
+
+``` yaml
+directive:
+- from: Block.java
+  where: $
+  transform: >
+    return $.replace('return this.sizeInt;', 'return (int) this.sizeLong;').
+      replace('this.sizeInt = sizeInt;', 'this.sizeLong = size;').
+      replace('public int getSizeInt() {', '@Deprecated  public int getSize() {').
+      replace('public Block setSizeInt(int sizeInt) {', '@Deprecated public Block setSize(int size) {').
+      replace('@JsonProperty(value = "SizeInt", required = true)', '').
+      replace('private int sizeInt;', '').
+      replace('@return the sizeInt value.', '@return the size value.\n     * @deprecated Use {@link #getSizeLong()}').
+      replace('@param sizeInt the sizeInt value to set.', '@param size the size value to set.\n     * @deprecated Use {@link #setSizeLong(long)}').
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').replace('sizeInt', 'size').
+      replace(/\/\*\s+\*\s+The size property.\s+\*\/\s+\/\*/gm, '/*')
+```
+
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

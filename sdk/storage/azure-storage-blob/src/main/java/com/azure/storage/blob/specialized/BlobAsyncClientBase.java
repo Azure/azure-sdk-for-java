@@ -773,7 +773,7 @@ public class BlobAsyncClientBase {
      * @param requestConditions {@link BlobRequestConditions}
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @return A reactive response containing the blob properties and metadata.
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
@@ -806,7 +806,7 @@ public class BlobAsyncClientBase {
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified blob range should be returned.
      * @param openOptions {@link OpenOption OpenOptions} to use to configure how to open or create the file.
      * @return A reactive response containing the blob properties and metadata.
-     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 100MB.
+     * @throws IllegalArgumentException If {@code blockSize} is less than 0 or greater than 4000MB.
      * @throws UncheckedIOException If an I/O error occurs.
      */
     public Mono<Response<BlobProperties>> downloadToFileWithResponse(String filePath, BlobRange range,
@@ -870,7 +870,7 @@ public class BlobAsyncClientBase {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();
 
-                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSize());
+                int numChunks = calculateNumBlocks(newCount, finalParallelTransferOptions.getBlockSizeLong());
 
                 // In case it is an empty blob, this ensures we still actually perform a download operation.
                 numChunks = numChunks == 0 ? 1 : numChunks;
@@ -885,8 +885,8 @@ public class BlobAsyncClientBase {
                         }
 
                         // Calculate whether we need a full chunk or something smaller because we are at the end.
-                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSize();
-                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSize(),
+                        long modifier = chunkNum.longValue() * finalParallelTransferOptions.getBlockSizeLong();
+                        long chunkSizeActual = Math.min(finalParallelTransferOptions.getBlockSizeLong(),
                             newCount - modifier);
                         BlobRange chunkRange = new BlobRange(finalRange.getOffset() + modifier, chunkSizeActual);
 
@@ -921,8 +921,9 @@ public class BlobAsyncClientBase {
         ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
         BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Context context) {
         // We will scope our initial download to either be one chunk or the total size.
-        long initialChunkSize = range.getCount() != null && range.getCount() < parallelTransferOptions.getBlockSize()
-            ? range.getCount() : parallelTransferOptions.getBlockSize();
+        long initialChunkSize = range.getCount() != null
+            && range.getCount() < parallelTransferOptions.getBlockSizeLong()
+            ? range.getCount() : parallelTransferOptions.getBlockSizeLong();
 
         return this.downloadWithResponse(new BlobRange(range.getOffset(), initialChunkSize), downloadRetryOptions,
             requestConditions, rangeGetContentMd5, context)
@@ -1005,7 +1006,7 @@ public class BlobAsyncClientBase {
             finalParallelTransferOptions.getProgressReceiver(), progressLock, totalProgress);
 
         // Write to the file.
-        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSize());
+        return FluxUtil.writeFile(data, file, chunkNum * finalParallelTransferOptions.getBlockSizeLong());
     }
 
     private static Response<BlobProperties> buildBlobPropertiesResponse(BlobDownloadAsyncResponse response) {

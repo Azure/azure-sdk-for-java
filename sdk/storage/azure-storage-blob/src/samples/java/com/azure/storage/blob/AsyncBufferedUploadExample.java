@@ -65,9 +65,11 @@ public class AsyncBufferedUploadExample {
         Javadoc on the method will give more detailed information on the significance of these parameters, but they are
         likely context dependent.
          */
-        int blockSize = 10 * 1024;
+        long blockSize = 10 * 1024;
         int numBuffers = 5;
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions(numBuffers, blockSize, null);
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setNumBuffers(numBuffers);
         blobClient.upload(sourceData, parallelTransferOptions).block();
     }
 

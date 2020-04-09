@@ -188,7 +188,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
             final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions,
             Context context) {
-            super(BlockBlobClient.MAX_STAGE_BLOCK_BYTES);
+            super(Integer.MAX_VALUE); // writeThreshold is effectively not used by BlockBlobOutputStream.
             // There is a bug in reactor core that does not handle converting Context.NONE to a reactor context.
             context = context == null || context.equals(Context.NONE) ? null : context;
 

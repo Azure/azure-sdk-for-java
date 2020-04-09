@@ -93,7 +93,7 @@ public final class AzureFileSystem extends FileSystem {
     public static final String AZURE_STORAGE_SECONDARY_HOST = "AzureStorageSecondaryHost";
 
     /**
-     * Expected type: Integer
+     * Expected type: Long
      */
     public static final String AZURE_STORAGE_UPLOAD_BLOCK_SIZE = "AzureStorageUploadBlockSize";
 
@@ -126,7 +126,7 @@ public final class AzureFileSystem extends FileSystem {
 
     private final AzureFileSystemProvider parentFileSystemProvider;
     private final BlobServiceClient blobServiceClient;
-    private final Integer blockSize;
+    private final Long blockSize;
     private final Integer downloadResumeRetries;
     private final Map<String, FileStore> fileStores;
     private FileStore defaultFileStore;
@@ -144,7 +144,12 @@ public final class AzureFileSystem extends FileSystem {
         // Read configurations and build client.
         try {
             this.blobServiceClient = this.buildBlobServiceClient(accountName, config);
-            this.blockSize = (Integer) config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            Object blockSize = config.get(AZURE_STORAGE_UPLOAD_BLOCK_SIZE);
+            if (blockSize instanceof Integer) {
+                this.blockSize = Long.valueOf((Integer) blockSize);
+            } else {
+                this.blockSize = (Long) blockSize;
+            }
             this.downloadResumeRetries = (Integer) config.get(AZURE_STORAGE_DOWNLOAD_RESUME_RETRIES);
 
             // Initialize and ensure access to FileStores.

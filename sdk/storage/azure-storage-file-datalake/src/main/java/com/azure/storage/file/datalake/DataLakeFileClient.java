@@ -61,7 +61,7 @@ public class DataLakeFileClient extends DataLakePathClient {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
-    private static final int MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
+    private static final long MAX_APPEND_FILE_BYTES = DataLakeFileAsyncClient.MAX_APPEND_FILE_BYTES;
 
     private final ClientLogger logger = new ClientLogger(DataLakeFileClient.class);
 
