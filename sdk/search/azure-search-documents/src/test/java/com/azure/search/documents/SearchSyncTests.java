@@ -136,7 +136,8 @@ public class SearchSyncTests extends SearchTestBase {
         SearchOptions searchOptions = new SearchOptions()
             .setTop(2000)
             .setSelect("HotelId")
-            .setOrderBy("HotelId asc");
+            .setOrderBy("HotelId asc")
+            .setFacets("Rating, sort:-value");
 
         List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
             .collect(Collectors.toList());
@@ -149,12 +150,50 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedResponse firstPage = iterator.next();
         assertEquals(1000, firstPage.getValue().size());
+        assertEquals(1, firstPage.getFacets().size());
         assertListEqualHotelIds(expectedHotelIds.subList(0, 1000), firstPage.getValue());
         assertNotNull(firstPage.getContinuationToken());
 
         SearchPagedResponse secondPage = iterator.next();
         assertEquals(1000, secondPage.getValue().size());
+        assertEquals(1, firstPage.getFacets().size());
         assertListEqualHotelIds(expectedHotelIds.subList(1000, 2000), secondPage.getValue());
+        assertNull(secondPage.getContinuationToken());
+    }
+
+    @Test
+    public void canContinueSearchWithFacet() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
+
+        // upload large documents batch
+        hotels = createHotelsList(100);
+        uploadDocuments(client, hotels);
+
+        SearchOptions searchOptions = new SearchOptions()
+            .setSelect("HotelId")
+            .setOrderBy("HotelId asc")
+            .setFacets("Rating, sort:-value");
+
+        List<String> expectedHotelIds = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
+            .collect(Collectors.toList());
+
+        SearchPagedIterable results = client.search("*", searchOptions, generateRequestOptions(), Context.NONE);
+
+        assertNotNull(results);
+
+        Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
+
+        SearchPagedResponse firstPage = iterator.next();
+        assertEquals(50, firstPage.getValue().size());
+        assertEquals(1, firstPage.getFacets().size());
+        assertListEqualHotelIds(expectedHotelIds.subList(0, 50), firstPage.getValue());
+        assertNotNull(firstPage.getContinuationToken());
+
+        SearchPagedResponse secondPage = iterator.next();
+        assertEquals(50, secondPage.getValue().size());
+        assertEquals(1, firstPage.getFacets().size());
+        assertListEqualHotelIds(expectedHotelIds.subList(50, 100), secondPage.getValue());
         assertNull(secondPage.getContinuationToken());
     }
 

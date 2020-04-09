@@ -92,7 +92,7 @@ public class SearchAsyncTests extends SearchTestBase {
         uploadDocuments(client, hotels);
 
         SearchOptions searchOptions = new SearchOptions().setTop(2000).setSelect("HotelId")
-            .setOrderBy("HotelId asc");
+            .setOrderBy("HotelId asc").setFacets("Rating, sort:-value");
         SearchPagedFlux results = client.search("*", searchOptions, generateRequestOptions());
 
 
@@ -104,12 +104,50 @@ public class SearchAsyncTests extends SearchTestBase {
         StepVerifier.create(results.byPage())
             .assertNext(firstPage -> {
                 assertEquals(1000, firstPage.getValue().size());
+                assertEquals(1, firstPage.getFacets().size());
                 assertListEqualHotelIds(expectedId.subList(0, 1000), firstPage.getValue());
                 assertNotNull(firstPage.getContinuationToken());
             })
             .assertNext(nextPage -> {
                 assertEquals(1000, nextPage.getValue().size());
+                assertEquals(1, nextPage.getFacets().size());
+
                 assertListEqualHotelIds(expectedId.subList(1000, 2000), nextPage.getValue());
+                assertNull(nextPage.getContinuationToken());
+            }).verifyComplete();
+    }
+
+    @Test
+    public void canContinueSearchWithFacet() {
+        createHotelIndex();
+        client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildAsyncClient();
+
+        // upload large documents batch
+        hotels = createHotelsList(100);
+        uploadDocuments(client, hotels);
+
+        SearchOptions searchOptions = new SearchOptions().setSelect("HotelId")
+            .setOrderBy("HotelId asc").setFacets("Rating, sort:-value");
+        SearchPagedFlux results = client.search("*", searchOptions, generateRequestOptions());
+
+
+        List<String> expectedId = hotels.stream().map(hotel -> (String) hotel.get("HotelId")).sorted()
+            .collect(Collectors.toList());
+
+        // Maximum page size is 1000 if the value of top is grater than 1000.
+        // https://docs.microsoft.com/en-us/rest/api/searchservice/search-documents#top-optional
+        StepVerifier.create(results.byPage())
+            .assertNext(firstPage -> {
+                assertEquals(50, firstPage.getValue().size());
+                assertEquals(1, firstPage.getFacets().size());
+                assertListEqualHotelIds(expectedId.subList(0, 50), firstPage.getValue());
+                assertNotNull(firstPage.getContinuationToken());
+            })
+            .assertNext(nextPage -> {
+                assertEquals(50, nextPage.getValue().size());
+                assertEquals(1, nextPage.getFacets().size());
+
+                assertListEqualHotelIds(expectedId.subList(50, 100), nextPage.getValue());
                 assertNull(nextPage.getContinuationToken());
             }).verifyComplete();
     }
