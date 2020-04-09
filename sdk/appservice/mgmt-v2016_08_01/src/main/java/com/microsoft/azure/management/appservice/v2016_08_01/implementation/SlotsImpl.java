@@ -27,7 +27,7 @@ import com.microsoft.azure.management.appservice.v2016_08_01.ManagedServiceIdent
 import rx.functions.Func1;
 
 class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> implements Slots, Slots.Definition, Slots.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String slot;
@@ -41,7 +41,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     private String uttlInSeconds;
     private SitePatchResource updateParameter;
 
-    SlotsImpl(String name, AppServiceManager manager) {
+    SlotsImpl(String name, WebManager manager) {
         super(name, new SiteInner());
         this.manager = manager;
         // Set resource name
@@ -50,7 +50,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
         this.updateParameter = new SitePatchResource();
     }
 
-    SlotsImpl(SiteInner inner, AppServiceManager manager) {
+    SlotsImpl(SiteInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -64,7 +64,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
