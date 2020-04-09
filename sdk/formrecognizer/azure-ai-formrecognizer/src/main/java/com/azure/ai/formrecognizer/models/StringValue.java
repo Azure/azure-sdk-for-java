@@ -28,9 +28,11 @@ public class StringValue extends FieldValue<String> {
      * @param boundingBox Bounding box of the field value.
      * @param valueString String value.
      * @param pageNumber The page number on which this field exists.
+     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public StringValue(String text, BoundingBox boundingBox, String valueString, int pageNumber) {
-        super(text, boundingBox, pageNumber);
+    public StringValue(String text, BoundingBox boundingBox, String valueString, int pageNumber, 
+        List<FormContent> elements) {
+        super(text, boundingBox, pageNumber, elements);
         this.valueString = valueString;
         this.fieldValueType = FieldValueType.STRING;
     }
@@ -81,13 +83,5 @@ public class StringValue extends FieldValue<String> {
     @Override
     public List<FormContent> getElements() {
         return super.getElements();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Float getConfidence() {
-        return super.getConfidence();
     }
 }

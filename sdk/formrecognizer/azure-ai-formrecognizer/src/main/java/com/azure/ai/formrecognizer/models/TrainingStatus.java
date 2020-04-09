@@ -7,7 +7,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/*
+/**
  * Define enum values for TrainingStatus.
  */
 public final class TrainingStatus extends ExpandableStringEnum<TrainingStatus> {

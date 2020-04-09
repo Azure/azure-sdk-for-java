@@ -29,9 +29,11 @@ public class DateValue extends FieldValue<LocalDate> {
      * @param boundingBox Bounding box of the field value.
      * @param valueDate Date value.
      * @param pageNumber The page number on which this field exists.
+     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public DateValue(String text, BoundingBox boundingBox, LocalDate valueDate, int pageNumber) {
-        super(text, boundingBox, pageNumber);
+    public DateValue(String text, BoundingBox boundingBox, LocalDate valueDate, int pageNumber,
+        List<FormContent> elements) {
+        super(text, boundingBox, pageNumber, elements);
         this.valueDate = valueDate;
         this.fieldValueType = FieldValueType.DATE;
     }
@@ -82,13 +84,5 @@ public class DateValue extends FieldValue<LocalDate> {
     @Override
     public List<FormContent> getElements() {
         return super.getElements();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Float getConfidence() {
-        return super.getConfidence();
     }
 }

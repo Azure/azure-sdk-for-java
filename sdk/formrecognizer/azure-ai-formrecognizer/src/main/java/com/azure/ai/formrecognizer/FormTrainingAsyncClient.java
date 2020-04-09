@@ -35,7 +35,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides an asynchronous client that contains model management operations that apply to Azure Form Recognizer.
+ * This class provides an asynchronous client that contains model management operations 
+ * that apply to Azure Form Recognizer.
  * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
  *
  * @see FormRecognizerClientBuilder
@@ -43,8 +44,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class FormTrainingAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
-    private FormRecognizerClientImpl service;
-    private FormRecognizerServiceVersion serviceVersion;
+    private final FormRecognizerClientImpl service;
+    private final FormRecognizerServiceVersion serviceVersion;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
@@ -58,28 +59,6 @@ public class FormTrainingAsyncClient {
         this.serviceVersion = serviceVersion;
     }
 
-    private static Mono<PollResponse<OperationResult>> processTrainingModelResponse(
-        SimpleResponse<Model> trainingModel,
-        PollResponse<OperationResult> trainingModelOperationResponse) {
-        LongRunningOperationStatus status;
-        switch (trainingModel.getValue().getModelInfo().getStatus()) {
-            case CREATING:
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case READY:
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case INVALID:
-                status = LongRunningOperationStatus.FAILED;
-                break;
-            default:
-                status = LongRunningOperationStatus.fromString(
-                    trainingModel.getValue().getModelInfo().getStatus().toString(), true);
-                break;
-        }
-        return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
-    }
-
     /**
      * Gets the service version the client is using.
      *
@@ -91,13 +70,13 @@ public class FormTrainingAsyncClient {
 
     /**
      * Create and train a custom model.
-     * Models are trained using documents that are of the following content type - 
+     * Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
      * Other type of content is ignored.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure 
+     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
      *
@@ -105,18 +84,19 @@ public class FormTrainingAsyncClient {
      * been cancelled.
      */
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, false, null);
+        return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
     }
 
     /**
      * Create and train a custom model.
-     * Models are trained using documents that are of the following content type -
+     * <p>Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
      * Other type of content is ignored.
+     * </p>
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
      *
-     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure 
+     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
      * @param includeSubFolders to indicate if sub folders within the set of prefix folders will
@@ -124,14 +104,20 @@ public class FormTrainingAsyncClient {
      * @param filePrefix A case-sensitive prefix string to filter documents in the source path
      * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
      * sub folders for training.
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
-    public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, 
-        boolean useLabelFile, boolean includeSubFolders, String filePrefix) {
+    public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
+        boolean useLabelFile, boolean includeSubFolders, String filePrefix, Duration pollInterval) {
+        Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
+        Objects.requireNonNull(useLabelFile, "'useLabelFile' cannot be null.");
+        final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
+
         return new PollerFlux<OperationResult, CustomFormModel>(
-            Duration.ofSeconds(5),
+            interval,
             getTrainingActivationOperation(fileSourceUrl, includeSubFolders, filePrefix, useLabelFile),
             createTrainingPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
@@ -243,6 +229,8 @@ public class FormTrainingAsyncClient {
     }
 
     Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
+        Objects.requireNonNull(modelId, "'modelId' cannot be null");
+
         return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -258,7 +246,7 @@ public class FormTrainingAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> 
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         createTrainingPollOperation() {
         return (pollingContext) -> {
             PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
@@ -290,5 +278,27 @@ public class FormTrainingAsyncClient {
                 return monoError(logger, ex);
             }
         };
+    }
+
+    private static Mono<PollResponse<OperationResult>> processTrainingModelResponse(
+        SimpleResponse<Model> trainingModel,
+        PollResponse<OperationResult> trainingModelOperationResponse) {
+        LongRunningOperationStatus status;
+        switch (trainingModel.getValue().getModelInfo().getStatus()) {
+            case CREATING:
+                status = LongRunningOperationStatus.IN_PROGRESS;
+                break;
+            case READY:
+                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case INVALID:
+                status = LongRunningOperationStatus.FAILED;
+                break;
+            default:
+                status = LongRunningOperationStatus.fromString(
+                    trainingModel.getValue().getModelInfo().getStatus().toString(), true);
+                break;
+        }
+        return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
     }
 }

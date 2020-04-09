@@ -17,27 +17,23 @@ public abstract class FieldValue<T> extends RawItem {
      */
     private final int pageNumber;
 
-    /*
-     * Confidence score.
-     */
-    private Float confidence;
-
     /**
      * List of references to the text elements constituting this field.
      */
-    private List<FormContent> elements;
+    private final List<FormContent> elements;
 
     /**
      * Constructs a {@code FieldValue fieldValue} to describe fields on
      * {@link com.azure.ai.formrecognizer.implementation.models.DocumentResult}
-     *
-     * @param text Text content of the extracted field.
+     *  @param text Text content of the extracted field.
      * @param boundingBox Bounding Box of the extracted field.
      * @param pageNumber The page number of teh extracted receipt on which this field exists
+     * @param elements The set of reference elements when includeTextDetails is set to true.
      */
-    FieldValue(String text, BoundingBox boundingBox, int pageNumber) {
+    FieldValue(String text, BoundingBox boundingBox, int pageNumber, final List<FormContent> elements) {
         super(text, boundingBox);
         this.pageNumber = pageNumber;
+        this.elements = elements;
     }
 
     /**
@@ -64,27 +60,6 @@ public abstract class FieldValue<T> extends RawItem {
     public abstract FieldValueType getType();
 
     /**
-     * Get the confidence property: Confidence score.
-     *
-     * @return the confidence value.
-     */
-    public Float getConfidence() {
-        return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence score.
-     *
-     * @param confidence the confidence value to set.
-     *
-     * @return the IntegerValue object itself.
-     */
-    public FieldValue<T> setConfidence(Float confidence) {
-        this.confidence = confidence;
-        return this;
-    }
-
-    /**
      * Get the elements property: When includeTextDetails is set to true, a
      * list of references to the text elements constituting this field.
      *
@@ -92,18 +67,5 @@ public abstract class FieldValue<T> extends RawItem {
      */
     public List<FormContent> getElements() {
         return this.elements;
-    }
-
-    /**
-     * Set the elements property: When includeTextDetails is set to true, a
-     * list of references to the text elements constituting this field.
-     *
-     * @param elements the elements value to set.
-     *
-     * @return the FieldValue object itself.
-     */
-    public FieldValue<T> setElements(final List<FormContent> elements) {
-        this.elements = elements;
-        return this;
     }
 }

@@ -22,15 +22,17 @@ public class ArrayValue extends FieldValue<List<FieldValue<?>>> {
     private final FieldValueType fieldValueType;
 
     /**
-     * Constructs a DateValue.
+     * Constructs a ArrayValue.
      *
      * @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
      * @param valueArray Array of field values.
      * @param pageNumber The page number on which this field exists.
+     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public ArrayValue(String text, BoundingBox boundingBox, List<FieldValue<?>> valueArray, int pageNumber) {
-        super(text, boundingBox, pageNumber);
+    public ArrayValue(String text, BoundingBox boundingBox, List<FieldValue<?>> valueArray, int pageNumber,
+        List<FormContent> elements) {
+        super(text, boundingBox, pageNumber, elements);
         this.valueArray = valueArray;
         this.fieldValueType = FieldValueType.ARRAY;
     }
@@ -81,13 +83,5 @@ public class ArrayValue extends FieldValue<List<FieldValue<?>>> {
     @Override
     public List<FormContent> getElements() {
         return super.getElements();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Float getConfidence() {
-        return super.getConfidence();
     }
 }

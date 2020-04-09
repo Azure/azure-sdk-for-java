@@ -32,9 +32,11 @@ public class ObjectValue extends FieldValue<Map<String, FieldValue<?>>> {
      * @param boundingBox Bounding box of the field value.
      * @param valueArray Array of field values.
      * @param pageNumber The page number on which this field exists.
+     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public ObjectValue(String text, BoundingBox boundingBox, Map<String, FieldValue<?>> valueArray, int pageNumber) {
-        super(text, boundingBox, pageNumber);
+    public ObjectValue(String text, BoundingBox boundingBox, Map<String, FieldValue<?>> valueArray, 
+        int pageNumber, List<FormContent> elements) {
+        super(text, boundingBox, pageNumber, elements);
         this.valueObject = valueArray;
         this.fieldValueType = FieldValueType.OBJECT;
     }
@@ -85,13 +87,5 @@ public class ObjectValue extends FieldValue<Map<String, FieldValue<?>>> {
     @Override
     public List<FormContent> getElements() {
         return super.getElements();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Float getConfidence() {
-        return super.getConfidence();
     }
 }

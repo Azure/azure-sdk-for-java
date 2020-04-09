@@ -17,13 +17,12 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Helper class to convert service level models to SDK exposed models.
+ * Helper class to convert service level custom form related models to SDK exposed models.
  */
 final class CustomModelTransforms {
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
@@ -33,30 +32,13 @@ final class CustomModelTransforms {
 
     static CustomFormModel toCustomFormModel(Model modelResponse) {
         com.azure.ai.formrecognizer.implementation.models.ModelInfo modelInfo = modelResponse.getModelInfo();
-        if (modelInfo.getStatus().equals(ModelStatus.INVALID)) {
+        if (modelInfo.getStatus() == ModelStatus.INVALID) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid status Model Id."));
         }
-        List<FormRecognizerError> globalErrors = new ArrayList<>();
 
+        List<FormRecognizerError> trainResultErrors = new ArrayList<>();
         if (modelResponse.getTrainResult().getErrors() != null) {
-            globalErrors = setTrainingErrors(modelResponse.getTrainResult().getErrors());
-        }
-
-        String formType = null;
-        Map<String, CustomFormModelField> fieldMap = new HashMap<>();
-        // unsupervised model
-        if (modelResponse.getKeys() != null) {
-            for (Map.Entry<String, List<String>> entry : modelResponse.getKeys().getClusters().entrySet()) {
-                String cluster = entry.getKey();
-                formType = cluster;
-                List<String> fields = entry.getValue();
-                fields.forEach(eachField -> fieldMap.put(cluster, new CustomFormModelField(eachField, null)));
-            }
-        } else if (modelResponse.getTrainResult().getFields() != null) {
-            // supervised model
-            modelResponse.getTrainResult().getFields().forEach(formFieldsReport ->
-                fieldMap.put(modelInfo.getModelId().toString(),
-                    new CustomFormModelField(formFieldsReport.getFieldName(), formFieldsReport.getAccuracy())));
+            trainResultErrors = setTrainingErrors(modelResponse.getTrainResult().getErrors());
         }
 
         List<TrainingDocumentInfo> trainingDocumentInfoList = new ArrayList<>();
@@ -71,13 +53,29 @@ final class CustomModelTransforms {
             trainingDocumentInfoList.add(trainingDocumentInfo);
         });
 
-        CustomFormSubModel subModel =
-            new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(), fieldMap, formType);
+        List<CustomFormSubModel> subModelList = new ArrayList<>();
+        Map<String, CustomFormModelField> fieldMap = new HashMap<>();
+        // unsupervised model
+        if (modelResponse.getKeys() != null) {
+            // TODO: Get update for unsupervised field map from Paul.
+            for (String clusterKey : modelResponse.getKeys().getClusters().keySet()) {
+                subModelList.add(new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(),
+                    fieldMap, "form-" + clusterKey));
+            }
+        } else if (modelResponse.getTrainResult().getFields() != null) {
+            // supervised model
+            modelResponse.getTrainResult().getFields()
+                .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
+                    new CustomFormModelField(formFieldsReport.getFieldName(), formFieldsReport.getAccuracy())));
+            subModelList.add(new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(),
+                fieldMap, "form-" + modelInfo.getModelId()));
+        }
+
         return new CustomFormModel(modelInfo.getModelId().toString(),
             ModelTrainingStatus.fromString(modelInfo.getStatus().toString()),
             modelInfo.getCreatedDateTime(), modelInfo.getLastUpdatedDateTime(),
-            new IterableStream<>(Collections.singletonList(subModel)),
-            globalErrors, trainingDocumentInfoList);
+            new IterableStream<>(subModelList),
+            trainResultErrors, trainingDocumentInfoList);
     }
 
     private static List<FormRecognizerError> setTrainingErrors(List<ErrorInformation> trainingErrorList) {

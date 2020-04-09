@@ -3,33 +3,33 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 /**
  * The USReceiptItem model.
  */
-@Fluent
+@Immutable
 public class USReceiptItem {
 
     /*
      * Name of the field value.
      */
-    private FieldValue<?> name;
+    private final FieldValue<?> name;
 
     /*
      * Quantity of the field value.
      */
-    private FieldValue<?> quantity;
+    private final FieldValue<?> quantity;
 
     /*
      * Price of the field value.
      */
-    private FieldValue<?> price;
+    private final FieldValue<?> price;
 
     /*
      * Total price of the field value.
      */
-    private FieldValue<?> totalPrice;
+    private final FieldValue<?> totalPrice;
 
     /**
      * Constructs a USReceiptItem object.
@@ -57,36 +57,12 @@ public class USReceiptItem {
     }
 
     /**
-     * Sets the name of the field value.
-     *
-     * @param name The name of the field value.
-     *
-     * @return The updated USReceiptItem object.
-     */
-    public USReceiptItem setName(final FieldValue<?> name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Gets the quantity of the Receipt Item.
      *
      * @return the quantity of Receipt Item.
      */
     public FieldValue<?> getQuantity() {
         return quantity;
-    }
-
-    /**
-     * Sets the quantity of the Receipt Item.
-     *
-     * @param quantity the quantity of the Receipt Item.
-     *
-     * @return The updated USReceiptItem object.
-     */
-    public USReceiptItem setQuantity(final FieldValue<?> quantity) {
-        this.quantity = quantity;
-        return this;
     }
 
     /**
@@ -99,35 +75,11 @@ public class USReceiptItem {
     }
 
     /**
-     * Sets the total price of the Receipt Item.
-     *
-     * @param price the price of Receipt Item.
-     *
-     * @return The updated USReceiptItem object.
-     */
-    public USReceiptItem setPrice(final FieldValue<?> price) {
-        this.price = price;
-        return this;
-    }
-
-    /**
      * Gets the total price of the Receipt Item.
      *
      * @return The total Price.
      */
     public FieldValue<?> getTotalPrice() {
         return totalPrice;
-    }
-
-    /**
-     * Sets the total price of the Receipt Item.
-     *
-     * @param totalPrice the Total price of Receipt Item.
-     *
-     * @return The updated USReceiptItem object.
-     */
-    public USReceiptItem setTotalPrice(final FieldValue<?> totalPrice) {
-        this.totalPrice = totalPrice;
-        return this;
     }
 }

@@ -3,7 +3,13 @@
 
 package com.azure.ai.formrecognizer.models;
 
-public abstract class FormContent {
+import com.azure.core.annotation.Immutable;
+
+/**
+ * The FormContent model.
+ */
+@Immutable
+public class FormContent {
 
     /*
      * Text content of the extracted field.

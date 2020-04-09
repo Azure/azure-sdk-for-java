@@ -23,14 +23,15 @@ public class IntegerValue extends FieldValue<Integer> {
 
     /**
      * Constructs an IntegerValue.
-     *
-     * @param text The text content of the extracted field.
+     *  @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
      * @param valueInteger Integer value.
      * @param pageNumber The 1 based page number of the document on which this field is found.
+     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public IntegerValue(String text, BoundingBox boundingBox, Integer valueInteger, int pageNumber) {
-        super(text, boundingBox, pageNumber);
+    public IntegerValue(String text, BoundingBox boundingBox, Integer valueInteger, int pageNumber,
+        List<FormContent> elements) {
+        super(text, boundingBox, pageNumber, elements);
         this.valueInteger = valueInteger;
         this.fieldValueType = FieldValueType.INTEGER;
     }
@@ -81,10 +82,5 @@ public class IntegerValue extends FieldValue<Integer> {
     @Override
     public List<FormContent> getElements() {
         return super.getElements();
-    }
-
-    @Override
-    public Float getConfidence() {
-        return super.getConfidence();
     }
 }

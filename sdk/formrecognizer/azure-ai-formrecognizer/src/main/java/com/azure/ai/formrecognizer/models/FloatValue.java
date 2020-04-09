@@ -23,14 +23,15 @@ public class FloatValue extends FieldValue<Float> {
 
     /**
      * Constructs a FloatValue.
-     *
-     * @param text The text content of the extracted field.
+     *  @param text The text content of the extracted field.
      * @param boundingBox Bounding box of the field value.
      * @param valueNumber Floating point value.
      * @param pageNumber The 1 based page number of the document on which this field is found.
+     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public FloatValue(String text, BoundingBox boundingBox, Float valueNumber, int pageNumber) {
-        super(text, boundingBox, pageNumber);
+    public FloatValue(String text, BoundingBox boundingBox, Float valueNumber, int pageNumber, 
+        List<FormContent> elements) {
+        super(text, boundingBox, pageNumber, elements);
         this.valueNumber = valueNumber;
         this.fieldValueType = FieldValueType.NUMBER;
     }
@@ -81,13 +82,5 @@ public class FloatValue extends FieldValue<Float> {
     @Override
     public List<FormContent> getElements() {
         return super.getElements();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Float getConfidence() {
-        return super.getConfidence();
     }
 }

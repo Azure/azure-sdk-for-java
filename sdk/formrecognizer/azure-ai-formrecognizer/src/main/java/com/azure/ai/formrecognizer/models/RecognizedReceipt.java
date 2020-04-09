@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
-/*
+/**
  * The RecognizedReceipt model.
  */
 @Immutable
