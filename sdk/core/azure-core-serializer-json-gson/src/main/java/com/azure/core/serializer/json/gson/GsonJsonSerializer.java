@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Objects;
 
 /**
  * GSON based implementation of the {@link JsonSerializer} interface.
@@ -42,11 +43,15 @@ public final class GsonJsonSerializer implements JsonSerializer {
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
         return Mono.fromRunnable(() -> gson.toJson(value, new OutputStreamWriter(stream)));
     }
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
         return Mono.fromRunnable(() -> gson.toJson(value, clazz, new OutputStreamWriter(stream)));
     }
 }

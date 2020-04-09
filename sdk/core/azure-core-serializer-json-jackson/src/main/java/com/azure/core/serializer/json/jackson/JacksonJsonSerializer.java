@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * Jackson based implementation of the {@link JsonSerializer} interface.
@@ -34,7 +35,9 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     public <T> Mono<T> read(String input, Class<T> clazz) {
         return Mono.defer(() -> {
             try {
-                return Mono.just(mapper.readValue(input, clazz));
+                return (input == null)
+                    ? Mono.empty()
+                    : Mono.just(mapper.readValue(input, clazz));
             } catch (IOException ex) {
                 return FluxUtil.throwableMonoError(logger, ex);
             }
@@ -65,6 +68,8 @@ public final class JacksonJsonSerializer implements JsonSerializer {
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
         return Mono.fromRunnable(() -> {
             try {
                 mapper.writeValue(stream, value);
@@ -76,12 +81,14 @@ public final class JacksonJsonSerializer implements JsonSerializer {
 
     @Override
     public Mono<Void> write(Object value, OutputStream stream, Class<?> clazz) {
-        return Mono.defer(() -> Mono.fromRunnable(() -> {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
+        return Mono.fromRunnable(() -> {
             try {
                 mapper.writerFor(clazz).writeValue(stream, value);
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
-        }));
+        });
     }
 }

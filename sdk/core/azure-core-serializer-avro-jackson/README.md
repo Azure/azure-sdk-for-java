@@ -1,4 +1,4 @@
-# Azure Core Jackson Avro Serializer implementation library for Java
+# Azure Core Jackson Avro Serializer plugin library for Java
 
 Azure Core Jackson Avro Serializer is a plugin for the `azure-core` `AvroSerializer` API.
 

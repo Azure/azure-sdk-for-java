@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * Apache based implementation of the {@link AvroSerializer} interface.
@@ -34,6 +35,10 @@ public class ApacheAvroSerializer implements AvroSerializer {
     public <T> Mono<T> read(byte[] input, String schema) {
         return Mono.defer(() -> {
             try {
+                if (input == null) {
+                    return Mono.empty();
+                }
+
                 DatumReader<T> reader = new GenericDatumReader<>(PARSER.parse(schema));
                 return Mono.just(reader.read(null, DECODER_FACTORY.binaryDecoder(input, null)));
             } catch (IOException ex) {
@@ -59,13 +64,15 @@ public class ApacheAvroSerializer implements AvroSerializer {
 
     @Override
     public Mono<Void> write(Object value, String schema, OutputStream stream) {
-        return Mono.defer(() -> Mono.fromRunnable(() -> {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
+        return Mono.fromRunnable(() -> {
             try {
                 DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
                 writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
             } catch (IOException ex) {
                 throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
-        }));
+        });
     }
 }

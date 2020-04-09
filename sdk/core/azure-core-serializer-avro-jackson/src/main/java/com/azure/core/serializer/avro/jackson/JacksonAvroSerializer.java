@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Objects;
 
 /**
  * Jackson based implementation of the {@link AvroSerializer} interface.
@@ -34,7 +35,9 @@ public final class JacksonAvroSerializer implements AvroSerializer {
     public <T> Mono<T> read(byte[] input, String schema) {
         return Mono.defer(() -> {
             try {
-                return Mono.just(mapper.reader().with(mapper.schemaFrom(schema)).readValue(input));
+                return (input == null)
+                    ? Mono.empty()
+                    : Mono.just(mapper.reader().with(mapper.schemaFrom(schema)).readValue(input));
             } catch (IOException ex) {
                 return FluxUtil.throwableMonoError(logger, ex);
             }
@@ -54,6 +57,8 @@ public final class JacksonAvroSerializer implements AvroSerializer {
 
     @Override
     public Mono<Void> write(Object value, String schema, OutputStream stream) {
+        Objects.requireNonNull(stream, "'stream' cannot be null.");
+
         return Mono.fromRunnable(() -> {
             try {
                 mapper.writer().with(mapper.schemaFrom(schema)).writeValue(stream, value);
