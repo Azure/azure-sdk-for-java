@@ -127,7 +127,7 @@ public final class CryptographyClientBuilder {
     public CryptographyAsyncClient buildAsyncClient() {
         if (Strings.isNullOrEmpty(keyId)) {
             throw logger.logExceptionAsError(new IllegalStateException(
-                "Json Web Key or jsonWebKey identifier are required to create cryptography client"));
+                "JSON Web Key identifier is required to create cryptography client"));
         }
         CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 

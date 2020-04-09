@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
  * asymmetric and symmetric keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify
  * operations using the configured key.
  *
- * <p><strong>Samples to construct the sync client</strong></p>
+ * <p><strong>Samples to construct the async client</strong></p>
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.LocalCryptographyAsyncClient.instantiation}
  *
  * @see LocalCryptographyClientBuilder
@@ -104,7 +104,7 @@ public class LocalCryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512} and {@link SignatureAlgorithm#ES256K ES256K}.</p>
      *
      * <p><strong>Code Samples</strong></p>
-     * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
+     * <p>Signs the digest. Subscribes to the call asynchronously and prints out the signature details when a response
      * has been received.</p>
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.LocalCryptographyAsyncClient.sign#SignatureAlgorithm-byte}
      *

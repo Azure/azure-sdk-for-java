@@ -14,7 +14,7 @@ import com.azure.security.keyvault.keys.models.JsonWebKey;
  * It constructs an instance of the desired client.
  *
  * <p> The minimal configuration options required by {@link LocalCryptographyClientBuilder cryptographyClientBuilder} to
- * build {@link LocalCryptographyAsyncClient} is ({@link JsonWebKey jsonWebKey}.
+ * build {@link LocalCryptographyAsyncClient} or {@link LocalCryptographyClient} is ({@link JsonWebKey jsonWebKey}.
  * </p>
  *
  * {@codesnippet com.azure.security.keyvault.keys.cryptography.async.LocalCryptographyAsyncClient.instantiation}
@@ -48,11 +48,11 @@ public final class LocalCryptographyClientBuilder {
      * LocalCryptographyAsyncClient async client}.</p>
      *
      * @return A {@link LocalCryptographyAsyncClient} with the options set from the builder.
-     * @throws IllegalStateException If {@link LocalCryptographyClientBuilder#key(JsonWebKey)} is not set.
+     * @throws NullPointerException If {@link LocalCryptographyClientBuilder#key(JsonWebKey)} is not set.
      */
     public LocalCryptographyAsyncClient buildAsyncClient() {
         if (jsonWebKey == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw logger.logExceptionAsError(new NullPointerException(
                 "Json Web Key is required to create local cryptography client"));
         }
 
