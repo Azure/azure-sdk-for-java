@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import java.util.List;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.StampCapacityInner;
 import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceEnvironmentResourceInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppS
 /**
  * Type representing AppServiceEnvironmentResource.
  */
-public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnvironmentResourceInner>, Resource, GroupableResourceCore<AppServiceManager, AppServiceEnvironmentResourceInner>, HasResourceGroup, Refreshable<AppServiceEnvironmentResource>, Updatable<AppServiceEnvironmentResource.Update>, HasManager<AppServiceManager> {
+public interface AppServiceEnvironmentResource extends HasInner<AppServiceEnvironmentResourceInner>, Resource, GroupableResourceCore<WebManager, AppServiceEnvironmentResourceInner>, HasResourceGroup, Refreshable<AppServiceEnvironmentResource>, Updatable<AppServiceEnvironmentResource.Update>, HasManager<WebManager> {
     /**
      * @return the allowedMultiSizes value.
      */
