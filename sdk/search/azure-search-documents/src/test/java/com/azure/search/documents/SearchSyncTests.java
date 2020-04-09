@@ -149,7 +149,6 @@ public class SearchSyncTests extends SearchTestBase {
 
         SearchPagedResponse firstPage = iterator.next();
         assertEquals(1000, firstPage.getValue().size());
-        assertEquals(1, firstPage.getFacets().size());
         assertListEqualHotelIds(expectedHotelIds.subList(0, 1000), firstPage.getValue());
         assertNotNull(firstPage.getContinuationToken());
 
