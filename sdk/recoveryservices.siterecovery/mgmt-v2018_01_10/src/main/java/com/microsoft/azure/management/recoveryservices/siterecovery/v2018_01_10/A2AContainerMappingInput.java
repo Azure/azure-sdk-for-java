@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A2A container mapping input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = A2AContainerMappingInput.class)
 @JsonTypeName("A2A")
 public class A2AContainerMappingInput extends ReplicationProviderSpecificContainerMappingInput {
     /**

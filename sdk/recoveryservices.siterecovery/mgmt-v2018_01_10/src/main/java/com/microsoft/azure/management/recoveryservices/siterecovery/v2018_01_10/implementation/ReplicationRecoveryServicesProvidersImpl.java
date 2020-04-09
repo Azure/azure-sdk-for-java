@@ -100,10 +100,14 @@ class ReplicationRecoveryServicesProvidersImpl extends WrapperImpl<ReplicationRe
     public Observable<RecoveryServicesProvider> getAsync(String fabricName, String providerName) {
         ReplicationRecoveryServicesProvidersInner client = this.inner();
         return client.getAsync(fabricName, providerName)
-        .map(new Func1<RecoveryServicesProviderInner, RecoveryServicesProvider>() {
+        .flatMap(new Func1<RecoveryServicesProviderInner, Observable<RecoveryServicesProvider>>() {
             @Override
-            public RecoveryServicesProvider call(RecoveryServicesProviderInner inner) {
-                return wrapModel(inner);
+            public Observable<RecoveryServicesProvider> call(RecoveryServicesProviderInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RecoveryServicesProvider)wrapModel(inner));
+                }
             }
        });
     }

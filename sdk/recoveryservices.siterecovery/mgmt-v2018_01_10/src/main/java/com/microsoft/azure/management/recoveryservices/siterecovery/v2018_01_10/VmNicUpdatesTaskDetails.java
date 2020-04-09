@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * This class represents the vm NicUpdates task details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VmNicUpdatesTaskDetails.class)
 @JsonTypeName("VmNicUpdatesTaskDetails")
 public class VmNicUpdatesTaskDetails extends TaskTypeDetails {
     /**

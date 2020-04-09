@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Model class for event details of a VMwareAzureV2 event.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InMageAzureV2EventDetails.class)
 @JsonTypeName("InMageAzureV2")
 public class InMageAzureV2EventDetails extends EventProviderSpecificDetails {
     /**
