@@ -1,4 +1,8 @@
 ## Changelog
+### 3.7.2
+- Fixed re-wrapping of request byte buf, issue (https://github.com/Azure/azure-sdk-for-java/issues/9802), PR (https://github.com/Azure/azure-sdk-for-java/pull/9934)
+- Fixed Change Feed Processor - handling of partition splits, PR (https://github.com/Azure/azure-sdk-for-java/pull/9864)
+
 ### 3.7.1
 - Fix netty ByteBuf memory leak, issue (https://github.com/Azure/azure-sdk-for-java/issues/9023), PR (https://github.com/Azure/azure-sdk-for-java/pull/9211)
 
