@@ -438,7 +438,7 @@ class Transforms {
             .setBlockSize(pto.getBlockSizeLong())
             .setNumBuffers(pto.getNumBuffers())
             .setProgressReceiver(Transforms.toBlobProgressReceiver(pto.getProgressReceiver()))
-            .setMaxSingleUploadSize(pto.getMaxSingleUploadSizeLong());
+            .setMaxSingleUploadSizeLong(pto.getMaxSingleUploadSizeLong());
     }
 
     static com.azure.storage.blob.ProgressReceiver toBlobProgressReceiver(ProgressReceiver pr) {

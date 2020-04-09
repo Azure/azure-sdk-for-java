@@ -39,7 +39,6 @@ import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
-import java.nio.channels.NonWritableChannelException
 import java.nio.charset.StandardCharsets
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Files
@@ -87,7 +86,7 @@ class BlobAPITest extends APISpec {
         def randomData = getRandomByteArray(20 * Constants.MB)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setMaxSingleUploadSize(Constants.MB)
+        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(Constants.MB)
 
         when:
         // Uses blob output stream under the hood.
@@ -103,7 +102,7 @@ class BlobAPITest extends APISpec {
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setBlockSize(maxUploadSize).setMaxSingleUploadSize(maxUploadSize)
+        def pto = new ParallelTransferOptions().setBlockSize(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize)
 
         when:
         bc.uploadWithResponse(input, size, pto, null, null, null, null, null, null)

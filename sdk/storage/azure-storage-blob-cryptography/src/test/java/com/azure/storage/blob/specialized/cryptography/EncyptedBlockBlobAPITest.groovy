@@ -18,7 +18,6 @@ import com.azure.storage.blob.models.DownloadRetryOptions
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
 import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.specialized.BlockBlobAsyncClient
 import com.azure.storage.blob.specialized.BlockBlobClient
 import com.azure.storage.common.implementation.Constants
 import com.microsoft.azure.storage.CloudStorageAccount
@@ -1362,7 +1361,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def os = new ByteArrayOutputStream()
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setMaxSingleUploadSize(Constants.MB)
+        def pto = new ParallelTransferOptions().setMaxSingleUploadSizeLong(Constants.MB)
 
         when:
         // Uses blob output stream under the hood.
@@ -1380,7 +1379,7 @@ class EncyptedBlockBlobAPITest extends APISpec {
         def randomData = getRandomByteArray(size)
         def input = new ByteArrayInputStream(randomData)
 
-        def pto = new ParallelTransferOptions().setBlockSize(maxUploadSize).setMaxSingleUploadSize(maxUploadSize)
+        def pto = new ParallelTransferOptions().setBlockSize(maxUploadSize).setMaxSingleUploadSizeLong(maxUploadSize)
 
         when:
         bec.uploadWithResponse(input, size, pto, null, null, null, null, null, null)

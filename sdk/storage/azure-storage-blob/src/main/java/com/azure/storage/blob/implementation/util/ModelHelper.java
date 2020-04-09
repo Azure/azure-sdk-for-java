@@ -47,7 +47,7 @@ public class ModelHelper {
             .setBlockSize(blockSize)
             .setNumBuffers(numBuffers)
             .setProgressReceiver(other.getProgressReceiver())
-            .setMaxSingleUploadSize(maxSingleUploadSize);
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }
 
     /**
@@ -68,6 +68,6 @@ public class ModelHelper {
             .setBlockSize(blockSize)
             .setNumBuffers(numBuffers)
             .setProgressReceiver(wrappedReceiver)
-            .setMaxSingleUploadSize(maxSingleUploadSize);
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
     }
 }

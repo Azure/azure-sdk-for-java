@@ -76,7 +76,7 @@ public final class ParallelTransferOptions {
         this.setBlockSize(blockSize == null ? null : Long.valueOf(blockSize));
         this.setNumBuffers(numBuffers);
         this.setProgressReceiver(progressReceiver);
-        this.setMaxSingleUploadSize(maxSingleUploadSize == null ? null : Long.valueOf(maxSingleUploadSize));
+        this.setMaxSingleUploadSizeLong(maxSingleUploadSize == null ? null : Long.valueOf(maxSingleUploadSize));
     }
 
     /**
@@ -190,7 +190,7 @@ public final class ParallelTransferOptions {
      * @param maxSingleUploadSize The threshold value.
      * @return The ParallelTransferOptions object itself.
      */
-    public ParallelTransferOptions setMaxSingleUploadSize(Long maxSingleUploadSize) {
+    public ParallelTransferOptions setMaxSingleUploadSizeLong(Long maxSingleUploadSize) {
         if (maxSingleUploadSize != null) {
             StorageImplUtils.assertInBounds("maxSingleUploadSize", maxSingleUploadSize, 1,
                 BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES_LONG);
