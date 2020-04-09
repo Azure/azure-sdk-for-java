@@ -367,7 +367,7 @@ public final class ServiceBusClientBuilder {
                     topicName, connectionStringEntityName)));
             }
 
-            entityType = MessagingEntityType.TOPIC;
+            entityType = MessagingEntityType.SUBSCRIPTION;
         } else {
             // It is a connection string entity path.
             entityType = MessagingEntityType.UNKNOWN;
@@ -433,7 +433,7 @@ public final class ServiceBusClientBuilder {
                 case QUEUE:
                     entityName = queueName;
                     break;
-                case TOPIC:
+                case SUBSCRIPTION:
                     entityName = topicName;
                     break;
                 case UNKNOWN:
@@ -585,7 +585,7 @@ public final class ServiceBusClientBuilder {
                 case QUEUE:
                     entityPath = queueName;
                     break;
-                case TOPIC:
+                case SUBSCRIPTION:
                     if (isNullOrEmpty(subscriptionName)) {
                         throw logger.logExceptionAsError(new IllegalStateException(String.format(
                             "topicName (%s) must have a subscriptionName associated with it.", topicName)));

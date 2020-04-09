@@ -35,8 +35,6 @@ public class TestUtils {
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
-    static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
@@ -60,7 +58,7 @@ public class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static org.apache.qpid.proton.message.Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    static org.apache.qpid.proton.message.Message getMessage(byte[] contents, Long sequenceNumber, Date enqueuedTime) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
@@ -77,7 +75,7 @@ public class TestUtils {
      * the application properties. Useful for helping filter messages.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
-        final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+        final Message message = getMessage(contents, SEQUENCE_NUMBER, Date.from(ENQUEUED_TIME));
 
         message.getMessageAnnotations().getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
@@ -127,7 +125,11 @@ public class TestUtils {
     }
 
     public static ServiceBusMessage getServiceBusMessage(String body, String messageTrackingValue, int position) {
-        final ServiceBusMessage message = new ServiceBusMessage(body.getBytes(UTF_8));
+        return getServiceBusMessage(body.getBytes(UTF_8), messageTrackingValue, position);
+    }
+
+    public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageTrackingValue, int position) {
+        final ServiceBusMessage message = new ServiceBusMessage(body);
         message.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
         message.getProperties().put(MESSAGE_POSITION_ID, position);
         return message;

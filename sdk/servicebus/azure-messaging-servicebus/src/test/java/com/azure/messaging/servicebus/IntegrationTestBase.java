@@ -55,7 +55,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
+        logger.info("========= SET-UP [{}] ========= ", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
         Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
@@ -71,7 +71,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
+        logger.info("========= TEARDOWN [{}] ========= ", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
 
