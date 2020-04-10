@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -8,14 +5,13 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.util.Map;
+import java.time.Instant;
 
-public class ServiceBusMultiSessionReceiverAsyncClient extends ServiceBusReceiverAsyncClient{
+public class ServiceBusSessionReceiverAsyncClient extends ServiceBusReceiverAsyncClient {
     /**
      * Creates a receiver that listens to a Service Bus resource.
      * @param fullyQualifiedNamespace The fully qualified domain name for the Service Bus resource.
@@ -29,19 +25,14 @@ public class ServiceBusMultiSessionReceiverAsyncClient extends ServiceBusReceive
      * @param messageLockContainer    Container for message locks.
      * @param onClientClose           Operation to run when the client completes.
      */
-    ServiceBusMultiSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType, boolean isSessionEnabled, ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider, MessageSerializer messageSerializer, MessageLockContainer messageLockContainer, Runnable onClientClose) {
+    ServiceBusSessionReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType, boolean isSessionEnabled, ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider, MessageSerializer messageSerializer, MessageLockContainer messageLockContainer, Runnable onClientClose) {
         super(fullyQualifiedNamespace, entityPath, entityType, isSessionEnabled, receiverOptions, connectionProcessor, tracerProvider, messageSerializer, messageLockContainer, onClientClose);
-    }
 
-    public Mono<ByteBuffer> getSessionState(String sessionId) { return null;}
+    }
+    public Mono<Instant> renewSessionLock(MessageLockToken lockToken){return null;};
+    public Mono<ByteBuffer> getSessionState(String sessionId) {return null;}
     public Mono<Void> setSessionState(String sessionId, ByteBuffer sessionState) {return null;}
+    public String getSessionId(){ return null;}
+    public Instant getSessionLockedUntil() {return null;}
 
-    /**
-     * Disposes of the {@link ServiceBusMultiSessionReceiverAsyncClient}. If the client had a dedicated connection, the underlying
-     * connection is also closed.
-     */
-    @Override
-    public void close() {
-
-    }
 }

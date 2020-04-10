@@ -65,7 +65,7 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * @see ServiceBusReceiverClient To communicate with a Service Bus resource using a synchronous client.
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class, isAsync = true)
-public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
+public class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -600,6 +600,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer(String linkName, ReceiveAsyncOptions options) {
+        Mono<String> a;
+        a.block();
         return openConsumers.computeIfAbsent(linkName, name -> {
             logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
 
