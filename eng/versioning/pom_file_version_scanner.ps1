@@ -524,7 +524,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     $script:FoundError = $true
                     Write-Error-With-Color "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);external_dependency} -->"
                 }
-                else 
+                else
                 {
                     # verify that the version is formatted correctly
                     if (!$version.StartsWith("[") -or !$version.EndsWith("]"))
@@ -533,7 +533,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                         Write-Error-With-Color "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
                     }
                     # verify the version has the correct value
-                    else 
+                    else
                     {
                         $versionWithoutBraces = $version.Substring(1, $version.Length -2)
                         # the key into the dependency has needs to be created from the tag's group/artifact
@@ -548,7 +548,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                                 Write-Error-With-Color "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
                             }
                         }
-                        else 
+                        else
                         {
                             $script:FoundError = $true
                             Write-Error-With-Color "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
@@ -558,7 +558,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             }
             # The only time a split count of 2 is allowed is in the following case.
             # <include>com.azure:*</include>
-            # These entries will not and should not have an update tag 
+            # These entries will not and should not have an update tag
             elseif ($split.Count -eq 2)
             {
                 if ($rawIncludeText -ne $ComAzureWhitelistInclude)
@@ -567,7 +567,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
                     Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($ComAzureWhitelistInclude), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
                 }
             }
-            else 
+            else
             {
                 # At this point the include entry is wildly incorrect.
                 $script:FoundError = $true
