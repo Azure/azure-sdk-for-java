@@ -220,7 +220,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         sendMessage(message).block();
 
-        final ServiceBusReceivedMessage received = receiver.receive().next().block(TIMEOUT);
+        final ServiceBusReceivedMessage received = receiver.receive().next().block();
         Assertions.assertNotNull(received);
 
         final Map<String, Object> expectedProperties = received.getProperties();
@@ -293,10 +293,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
-        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block();
 
         final ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next()
-            .block(TIMEOUT);
+            .block();
 
         assertNotNull(receivedMessage);
 
@@ -323,8 +323,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .setEnableAutoComplete(false);
 
         // Blocking here because it is not part of the scenario we want to test.
-        sendMessage(message).block(TIMEOUT);
-        ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next().block(TIMEOUT);
+        sendMessage(message).block();
+        ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next().block();
         assertNotNull(receivedMessage);
         assertNotNull(receivedMessage.getLockedUntil());
 
@@ -369,7 +369,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .setMaxAutoRenewDuration(Duration.ofSeconds(120));
 
         // Send the message to verify.
-        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block();
 
         // Act & Assert
         StepVerifier.create(receiver.receive(options))
@@ -423,10 +423,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
 
-        sendMessage(message).block(TIMEOUT);
+        sendMessage(message).block();
 
         final ServiceBusReceivedMessage receivedMessage = receiver.receive(options).next()
-            .block(TIMEOUT);
+            .block();
 
         assertNotNull(receivedMessage);
 
@@ -462,15 +462,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusReceivedMessage receivedMessage = sendMessage(message)
             .then(receiver.receive(options).next())
-            .block(TIMEOUT);
+            .block();
 
         assertNotNull(receivedMessage);
 
-        receiver.defer(receivedMessage).block(TIMEOUT);
+        receiver.defer(receivedMessage).block();
 
         final ServiceBusReceivedMessage receivedDeferredMessage = receiver
             .receiveDeferredMessage(receivedMessage.getSequenceNumber())
-            .block(TIMEOUT);
+            .block();
 
         assertNotNull(receivedDeferredMessage);
         assertEquals(receivedMessage.getSequenceNumber(), receivedDeferredMessage.getSequenceNumber());
@@ -524,7 +524,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sentProperties.put("UUIDProperty", UUID.randomUUID());
         sentProperties.put("StringProperty", "string");
 
-        sender.send(messageToSend);
+        sender.send(messageToSend).block();
 
         // Assert & Act
         StepVerifier.create(receiveAndDeleteReceiver.receive(options))
