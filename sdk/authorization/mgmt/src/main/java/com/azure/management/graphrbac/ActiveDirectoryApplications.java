@@ -15,12 +15,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to application management API.
- */
+/** Entry point to application management API. */
 @Fluent
-public interface ActiveDirectoryApplications extends
-        SupportsListing<ActiveDirectoryApplication>,
+public interface ActiveDirectoryApplications
+    extends SupportsListing<ActiveDirectoryApplication>,
         SupportsGettingById<ActiveDirectoryApplication>,
         SupportsGettingByName<ActiveDirectoryApplication>,
         SupportsCreating<ActiveDirectoryApplication.DefinitionStages.Blank>,

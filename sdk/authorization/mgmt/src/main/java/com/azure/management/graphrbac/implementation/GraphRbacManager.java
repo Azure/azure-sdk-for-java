@@ -26,9 +26,7 @@ import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPoli
 import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
-/**
- * Entry point to Azure Graph RBAC management.
- */
+/** Entry point to Azure Graph RBAC management. */
 public final class GraphRbacManager implements HasInner<GraphRbacManagementClientImpl> {
     private String tenantId;
     private SdkContext sdkContext;
@@ -50,15 +48,17 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
      * @return the GraphRbacManager instance
      */
     public static GraphRbacManager authenticate(AzureTokenCredential credential) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credential.getEnvironment().getGraphEndpoint())
-                //.withInterceptor(new RequestIdHeaderInterceptor())
+                // .withInterceptor(new RequestIdHeaderInterceptor())
                 .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                //.withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                // .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), credential.getDomain());
+                .buildClient(),
+            credential.getDomain());
     }
 
     /**
@@ -98,9 +98,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         return this.graphRbacManagementClient;
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of GraphRbacManager that exposes resource management API entry points.
@@ -111,14 +109,12 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         GraphRbacManager authenticate(AzureTokenCredential credentials);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
+    /** The implementation for Configurable interface. */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public GraphRbacManager authenticate(AzureTokenCredential credential) {
-            return GraphRbacManager.authenticate(
-                    buildRestClient(credential, AzureEnvironment.Endpoint.RESOURCE_MANAGER),
-                    credential.getDomain());
+            return GraphRbacManager
+                .authenticate(
+                    buildRestClient(credential, AzureEnvironment.Endpoint.RESOURCE_MANAGER), credential.getDomain());
         }
     }
 
@@ -127,18 +123,23 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         String resourceManagerEndpoint = restClient.getBaseUrl().toString();
         if (restClient.getCredential() instanceof AzureTokenCredential) {
             graphEndpoint = ((AzureTokenCredential) restClient.getCredential()).getEnvironment().getGraphEndpoint();
-            resourceManagerEndpoint = ((AzureTokenCredential) restClient.getCredential()).getEnvironment().getResourceManagerEndpoint();
+            resourceManagerEndpoint =
+                ((AzureTokenCredential) restClient.getCredential()).getEnvironment().getResourceManagerEndpoint();
         }
-        RestClient graphRestClient = restClient.newBuilder()
+        RestClient graphRestClient =
+            restClient
+                .newBuilder()
                 .withBaseUrl(graphEndpoint)
                 .withScope(AzureEnvironment.AZURE.getGraphEndpoint() + "/.default")
                 .buildClient();
-        this.graphRbacManagementClient = new GraphRbacManagementClientBuilder()
+        this.graphRbacManagementClient =
+            new GraphRbacManagementClientBuilder()
                 .pipeline(graphRestClient.getHttpPipeline())
                 .host(graphEndpoint)
                 .tenantID(tenantId)
                 .build();
-        this.authorizationManagementClient = new AuthorizationManagementClientBuilder()
+        this.authorizationManagementClient =
+            new AuthorizationManagementClientBuilder()
                 .pipeline(restClient.getHttpPipeline())
                 .host(resourceManagerEndpoint)
                 .subscriptionId(Utils.getSubscriptionIdFromRestClient(restClient))
@@ -148,30 +149,24 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
     }
 
     /**
-     * @return wrapped inner authorization client providing direct access to
-     * auto-generated API implementation, based on Azure REST API
+     * @return wrapped inner authorization client providing direct access to auto-generated API implementation, based on
+     *     Azure REST API
      */
     public AuthorizationManagementClientImpl roleInner() {
         return authorizationManagementClient;
     }
 
-    /**
-     * @return the tenant ID the graph client is associated with
-     */
+    /** @return the tenant ID the graph client is associated with */
     public String tenantId() {
         return tenantId;
     }
 
-    /**
-     * @return the sdk context in graph manager
-     */
+    /** @return the sdk context in graph manager */
     public SdkContext sdkContext() {
         return sdkContext;
     }
 
-    /**
-     * @return the Active Directory user management API entry point
-     */
+    /** @return the Active Directory user management API entry point */
     public ActiveDirectoryUsers users() {
         if (activeDirectoryUsers == null) {
             activeDirectoryUsers = new ActiveDirectoryUsersImpl(this);
@@ -179,9 +174,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         return activeDirectoryUsers;
     }
 
-    /**
-     * @return the Active Directory group management API entry point
-     */
+    /** @return the Active Directory group management API entry point */
     public ActiveDirectoryGroups groups() {
         if (activeDirectoryGroups == null) {
             activeDirectoryGroups = new ActiveDirectoryGroupsImpl(this);
@@ -189,9 +182,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         return activeDirectoryGroups;
     }
 
-    /**
-     * @return the service principal management API entry point
-     */
+    /** @return the service principal management API entry point */
     public ServicePrincipals servicePrincipals() {
         if (servicePrincipals == null) {
             servicePrincipals = new ServicePrincipalsImpl(graphRbacManagementClient.servicePrincipals(), this);
@@ -199,9 +190,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         return servicePrincipals;
     }
 
-    /**
-     * @return the application management API entry point
-     */
+    /** @return the application management API entry point */
     public ActiveDirectoryApplications applications() {
         if (applications == null) {
             applications = new ActiveDirectoryApplicationsImpl(graphRbacManagementClient.applications(), this);
@@ -209,9 +198,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         return applications;
     }
 
-    /**
-     * @return the role assignment management API entry point
-     */
+    /** @return the role assignment management API entry point */
     public RoleAssignments roleAssignments() {
         if (roleAssignments == null) {
             roleAssignments = new RoleAssignmentsImpl(this);
@@ -219,9 +206,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
         return roleAssignments;
     }
 
-    /**
-     * @return the role definition management API entry point
-     */
+    /** @return the role definition management API entry point */
     public RoleDefinitions roleDefinitions() {
         if (roleDefinitions == null) {
             roleDefinitions = new RoleDefinitionsImpl(this);
