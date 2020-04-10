@@ -17,25 +17,30 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Collections;
 import java.util.List;
-
-import java.net.http.HttpRequest.BodyPublisher;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Flow;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
 
 /**
  * HttpClient implementation for the JDK HttpClient.
  */
 class JdkAsyncHttpClient implements HttpClient {
+    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=([\\S]+)\\b", Pattern.CASE_INSENSITIVE);
+
     private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClient.class);
     private final java.net.http.HttpClient jdkHttpClient;
     private final int javaVersion;
@@ -62,8 +67,7 @@ class JdkAsyncHttpClient implements HttpClient {
         this.jdkHttpClient = httpClient;
         this.javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
-            logger.logExceptionAsError(
-                new RuntimeException("JdkAsyncHttpClient is not supported in Java version 11 and below."));
+            logger.error("JdkAsyncHttpClient is not supported in Java version 11 and below.");
         }
     }
 
@@ -96,11 +100,8 @@ class JdkAsyncHttpClient implements HttpClient {
                         final String headerValue = header.getValue();
                         builder.setHeader(headerName, headerValue);
                     } else {
-                        logger.logExceptionAsError(
-                            new IllegalArgumentException("The header "
-                                + "'" + headerName
-                                + "' is restricted by default in JDK HttpClient 12 and above."
-                                + "(unless it is whitelisted in JAVA_HOME/conf/net.properties)"));
+                        logger.error("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
+                            + "and above (unless it is whitelisted in JAVA_HOME/conf/net.properties).");
                     }
                 }
             }
@@ -228,17 +229,21 @@ class JdkAsyncHttpClient implements HttpClient {
                      * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
                      * present or invalid fallback to 'UTF-8' for the default charset.
                      */
-                    Charset charset;
-                    try {
-                        String contentEncoding = headers.getValue("Content-Encoding");
-                        charset = (contentEncoding != null)
-                            ? Charset.forName(contentEncoding)
-                            : StandardCharsets.UTF_8;
-                    } catch (RuntimeException ex) {
-                        charset = StandardCharsets.UTF_8;
+                    String contentType = headers.getValue("Content-Type");
+                    if (!CoreUtils.isNullOrEmpty(contentType)) {
+                        try {
+                            Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
+                            if (charsetMatcher.find()) {
+                                return new String(bytes, Charset.forName(charsetMatcher.group(1)));
+                            } else {
+                                return new String(bytes, StandardCharsets.UTF_8);
+                            }
+                        } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
+                            return new String(bytes, StandardCharsets.UTF_8);
+                        }
+                    } else {
+                        return new String(bytes, StandardCharsets.UTF_8);
                     }
-
-                    return new String(bytes, charset);
                 }
             });
         }

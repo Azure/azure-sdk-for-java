@@ -27,7 +27,6 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -60,12 +59,6 @@ public class JacksonAdapter implements SerializerAdapter {
      * The lazily-created serializer for this ServiceClient.
      */
     private static SerializerAdapter serializerAdapter;
-
-    /*
-     * BOM header from some response bodies. To be removed in deserialization.
-     */
-    private static final String BOM = "\uFEFF";
-    private static final String BOM_STRING = new String(BOM.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -161,15 +154,8 @@ public class JacksonAdapter implements SerializerAdapter {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
-        if (CoreUtils.isNullOrEmpty(value) || value.equals(BOM) || value.equals(BOM_STRING)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             return null;
-        }
-
-        // Remove any leading BOM from the XML.
-        if (value.startsWith(BOM)) {
-            value = value.replaceFirst(BOM, "");
-        } else if (value.startsWith(BOM_STRING)) {
-            value = value.replaceFirst(BOM_STRING, "");
         }
 
         final JavaType javaType = createJavaType(type);

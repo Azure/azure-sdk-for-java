@@ -29,10 +29,13 @@ import reactor.netty.tcp.TcpClient;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -46,6 +49,7 @@ import java.util.regex.Pattern;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
+    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=(\\S+)\\b", Pattern.CASE_INSENSITIVE);
 
     private final EventLoopGroup eventLoopGroup;
     private final Supplier<ProxyHandler> proxyHandlerSupplier;
@@ -161,8 +165,6 @@ class NettyAsyncHttpClient implements HttpClient {
     }
 
     static class ReactorNettyHttpResponse extends HttpResponse {
-
-        private static final ByteBuffer EMPTY_BYTE_BUFFER = ByteBuffer.wrap(new byte[0]);
         private final HttpClientResponse reactorNettyResponse;
         private final Connection reactorNettyConnection;
         private final boolean disableBufferCopy;
@@ -224,15 +226,19 @@ class NettyAsyncHttpClient implements HttpClient {
                      * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
                      * present or invalid fallback to 'UTF-8' for the default charset.
                      */
-                    Charset charset;
                     try {
-                        charset = Charset.forName(reactorNettyResponse.responseHeaders()
-                            .get("Content-Encoding", "UTF-8"));
-                    } catch (RuntimeException ex) {
-                        charset = StandardCharsets.UTF_8;
-                    }
+                        String contentType = reactorNettyResponse.responseHeaders()
+                            .get("Content-Type", "charset=UTF-8");
 
-                    return new String(bytes, charset);
+                        Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
+                        if (charsetMatcher.find()) {
+                            return new String(bytes, Charset.forName(charsetMatcher.group(1)));
+                        } else {
+                            return new String(bytes, StandardCharsets.UTF_8);
+                        }
+                    } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
+                        return new String(bytes, StandardCharsets.UTF_8);
+                    }
                 }
             });
         }
