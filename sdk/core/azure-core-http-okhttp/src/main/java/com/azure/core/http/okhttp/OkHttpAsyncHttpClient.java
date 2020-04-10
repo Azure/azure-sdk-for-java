@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -250,21 +251,8 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return Mono.fromCallable(() -> {
-                // Reactor: The fromCallable operator treats a null from the Callable
-                // as completion signal.
-                if (responseBody == null) {
-                    return null;
-                }
-                String content = responseBody.string();
-                // Consistent with GAed behaviour.
-                if (content.length() == 0) {
-                    return null;
-                }
-                // OkHttp: When calling ResponseBody::string() the underlying stream automatically closed.
-                // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                return content;
-            });
+            return getBodyAsByteArray()
+                .map(bytes -> CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
         }
 
         @Override

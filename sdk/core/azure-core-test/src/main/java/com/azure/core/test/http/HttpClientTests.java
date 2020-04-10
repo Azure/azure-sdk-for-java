@@ -48,6 +48,9 @@ public abstract class HttpClientTests {
      */
     protected abstract int getWireMockPort();
 
+    /**
+     * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
+     */
     @Test
     public void plainResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
@@ -57,6 +60,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a 'Content-Type' header encodes using the specified charset.
+     */
     @Test
     public void headerResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
@@ -66,6 +72,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a 'Content-Type' containing an invalid or unsupported charset encodes using UTF-8.
+     */
     @Test
     public void invalidHeaderResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
@@ -75,6 +84,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
     @Test
     public void utf8BomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
@@ -84,6 +96,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
     @Test
     public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
@@ -93,6 +108,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
     @Test
     public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
@@ -102,6 +120,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
     @Test
     public void utf32BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
@@ -111,6 +132,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
     @Test
     public void utf32LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
@@ -120,6 +144,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
+     */
     @Test
     public void bomWithSameHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
@@ -129,6 +156,9 @@ public abstract class HttpClientTests {
             .verifyComplete();
     }
 
+    /**
+     * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
+     */
     @Test
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
