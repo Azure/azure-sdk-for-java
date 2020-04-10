@@ -17,22 +17,22 @@ public final class CustomFormModelInfo {
     /*
      * Model identifier.
      */
-    private UUID modelId;
+    private final UUID modelId;
 
     /*
      * Status of the model.
      */
-    private ModelTrainingStatus status;
+    private final ModelTrainingStatus status;
 
     /*
      * Date and time (UTC) when the model was created.
      */
-    private OffsetDateTime createdOn;
+    private final OffsetDateTime createdOn;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
-    private OffsetDateTime lastUpdatedOn;
+    private final OffsetDateTime lastUpdatedOn;
 
     public CustomFormModelInfo(final UUID modelId, final ModelTrainingStatus status, final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn) {
         this.modelId = modelId;
