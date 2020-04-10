@@ -20,11 +20,12 @@ import com.microsoft.azure.management.storage.StorageAccountKey;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AzureSearchResources {
     private static final String RESOURCE_GROUP_NAME_PREFIX = "azsjava";
@@ -112,7 +113,7 @@ public class AzureSearchResources {
         searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
         System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         int recreateCount = 0;
-        while (validateServiceExistence() && recreateCount < 3) {
+        do {
             searchService = azure.searchServices()
                 .define(searchServiceName)
                 .withRegion(location)
@@ -120,29 +121,29 @@ public class AzureSearchResources {
                 .withFreeSku()
                 .create();
             recreateCount += 1;
+        } while (recreateCount < 3 && shouldRetryCreateService());
+        if (recreateCount == 3 && shouldRetryCreateService()) {
+            fail("Failed to create service");
         }
         searchAdminKey = searchService.getAdminKeys().primaryKey();
     }
 
     public String getEndpoint() {
-        return endpoint;
+        searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
+        return String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
     }
 
-    private boolean validateServiceExistence() {
-        searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
-        endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
+    private boolean shouldRetryCreateService() {
+        String ipAddress = getEndpoint().replaceFirst("https://", "");
         try {
-            InetAddress pingService = InetAddress.getByName(endpoint);
-            System.out.println("Sending Ping Request to " + endpoint);
-            if (pingService.isReachable(5000)) {
-                System.out.println("Host is reachable");
-                return true;
-            }
-        } catch (IOException ex) {
-            System.out.println("Sorry ! We can't reach to this host");
+            InetAddress.getByName(ipAddress);
+            System.out.println("Sending Ping Request to " + ipAddress);
             return false;
+        } catch (IOException ex) {
+            System.out.println(String.format("Sorry ! We can't reach to this host: %s.",
+                ipAddress));
+            return true;
         }
-        return false;
     }
 
     /**
