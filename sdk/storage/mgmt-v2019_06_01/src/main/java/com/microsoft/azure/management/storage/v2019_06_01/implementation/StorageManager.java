@@ -23,6 +23,7 @@ import com.microsoft.azure.management.storage.v2019_06_01.Usages;
 import com.microsoft.azure.management.storage.v2019_06_01.ManagementPolicies;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateEndpointConnections;
 import com.microsoft.azure.management.storage.v2019_06_01.PrivateLinkResources;
+import com.microsoft.azure.management.storage.v2019_06_01.ObjectReplicationPolicies;
 import com.microsoft.azure.management.storage.v2019_06_01.EncryptionScopes;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobServices;
 import com.microsoft.azure.management.storage.v2019_06_01.BlobContainers;
@@ -42,6 +43,7 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     private ManagementPolicies managementPolicies;
     private PrivateEndpointConnections privateEndpointConnections;
     private PrivateLinkResources privateLinkResources;
+    private ObjectReplicationPolicies objectReplicationPolicies;
     private EncryptionScopes encryptionScopes;
     private BlobServices blobServices;
     private BlobContainers blobContainers;
@@ -162,6 +164,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
             this.privateLinkResources = new PrivateLinkResourcesImpl(this);
         }
         return this.privateLinkResources;
+    }
+
+    /**
+     * @return Entry point to manage ObjectReplicationPolicies.
+     */
+    public ObjectReplicationPolicies objectReplicationPolicies() {
+        if (this.objectReplicationPolicies == null) {
+            this.objectReplicationPolicies = new ObjectReplicationPoliciesImpl(this);
+        }
+        return this.objectReplicationPolicies;
     }
 
     /**
