@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.TestSuiteBase;
@@ -30,8 +31,6 @@ import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-//  TODO: (naveen) - check why this test is blocking the CI for group "simple"
-@Ignore
 public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
 
     private static final int TIMEOUT = 8000;
@@ -65,8 +64,7 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat(serviceConfigurationReader.getSystemReplicationPolicy()).isNotNull();
     }
 
-    //  TODO: (naveen) - check why this test is blocking the CI for group "simple"
-    @Test(groups = "simple", enabled = false)
+    @Test(groups = "simple")
     public void configurationPropertyReads() throws Exception {
         DatabaseAccountManagerInternal databaseAccountManagerInternal = Mockito.mock(DatabaseAccountManagerInternal.class);
         Mockito.when(databaseAccountManagerInternal.getDatabaseAccountFromEndpoint(Matchers.any())).thenReturn(Flux.just(new DatabaseAccount(GlobalEndPointManagerTest.dbAccountJson1)));
@@ -102,5 +100,6 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
         assertThat((boolean) configurationReader.getQueryEngineConfiguration().get("enableSpatialIndexing")).isTrue();
         assertThat(configurationReader.getSystemReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
         assertThat(configurationReader.getUserReplicationPolicy().getMaxReplicaSetSize()).isEqualTo(4);
+        LifeCycleUtils.closeQuietly(globalEndpointManager);
     }
 }
