@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.Deployments;
-import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;

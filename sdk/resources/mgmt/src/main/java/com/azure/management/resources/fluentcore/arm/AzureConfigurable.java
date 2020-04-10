@@ -7,7 +7,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClientBuilder;
 
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;

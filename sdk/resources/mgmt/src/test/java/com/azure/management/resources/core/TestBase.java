@@ -9,7 +9,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
