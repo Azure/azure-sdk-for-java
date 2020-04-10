@@ -29,8 +29,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.Transforms.getContentType;
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
+import static com.azure.ai.formrecognizer.implementation.Utility.getContentType;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**

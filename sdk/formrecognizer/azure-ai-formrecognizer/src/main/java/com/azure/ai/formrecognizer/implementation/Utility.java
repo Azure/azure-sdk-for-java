@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
+import com.azure.ai.formrecognizer.implementation.models.ContentType;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -20,6 +21,41 @@ public final class Utility {
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
     private Utility() {
+    }
+
+    /**
+     * Automatically detect byte buffer's content type.
+     * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"/>.
+     *
+     * @param buffer The byte buffer input.
+     *
+     * @return The {@link ContentType} content type.
+     */
+    public static ContentType getContentType(ByteBuffer buffer) {
+        final byte[] bytes = buffer.array();
+        if (bytes.length < 4) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data"));
+        }
+
+        if (isEqual(bytes[0], 0x25) && isEqual(bytes[1], 0x50) && isEqual(bytes[2], 0x44) && isEqual(bytes[3], 0x46)) {
+            return ContentType.APPLICATION_PDF;
+        } else if (isEqual(bytes[0], 0xff) && isEqual(bytes[1], 0xd8)) {
+            return ContentType.IMAGE_JPEG;
+        } else if (
+            isEqual(bytes[0], 0x89) && isEqual(bytes[1], 0x50) && isEqual(bytes[2], 0x4e) && isEqual(bytes[3], 0x47)) {
+            return ContentType.IMAGE_PNG;
+        } else if (
+            // little-endian
+            (isEqual(bytes[0], 0x49) && isEqual(bytes[1], 0x49) && isEqual(bytes[2], 0x2a) && isEqual(bytes[3], 0x0))
+            // big-endian
+            || (isEqual(bytes[0], 0x4d) && isEqual(bytes[1], 0x4d) && isEqual(bytes[2], 0x0)
+                && isEqual(bytes[3], 0x2a))) {
+            return ContentType.IMAGE_TIFF;
+        } else {
+            throw new IllegalArgumentException(
+                "Content type could not be detected. Should use other overload API that takes content type.");
+        }
     }
 
     /**
@@ -43,7 +79,7 @@ public final class Utility {
                         return pair.buffer(null).readBytes(numBytes);
                     }
                 } catch (IOException ioe) {
-                    throw Exceptions.propagate(ioe);
+                    throw LOGGER.logExceptionAsError(new RuntimeException(ioe));
                 }
             })
             .takeUntil(p -> p.readBytes() == -1)
@@ -72,5 +108,16 @@ public final class Utility {
             this.readBytes = cnt;
             return this;
         }
+    }
+
+    /**
+     * Compare if a byte value equals to a hex type value.
+     *
+     * @param byteValue the byte type value
+     * @param hexValue the hex type value
+     * @return true if two type's values are equal in unsigned int comparision.
+     */
+    private static boolean isEqual(byte byteValue, int hexValue) {
+        return Byte.toUnsignedInt(byteValue) == Byte.toUnsignedInt((byte) hexValue);
     }
 }

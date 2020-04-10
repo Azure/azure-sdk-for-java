@@ -186,43 +186,6 @@ final class Transforms {
     }
 
     /**
-     * Automatically detect byte buffer's content type.
-     * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"/>.
-     *
-     * @param buffer The byte buffer input.
-     *
-     * @return The {@link ContentType} content type.
-     */
-    static ContentType getContentType(ByteBuffer buffer) {
-        final byte[] bytes = buffer.array();
-        if (bytes.length < 4) {
-            throw new IllegalArgumentException("Invalid input. Expect more than 4 bytes of data");
-        }
-
-        final int byte0 = Byte.toUnsignedInt(bytes[0]);
-        final int byte1 = Byte.toUnsignedInt(bytes[1]);
-        final int byte2 = Byte.toUnsignedInt(bytes[2]);
-        final int byte3 = Byte.toUnsignedInt(bytes[3]);
-
-        if (byte0 == Byte.toUnsignedInt((byte) 0x25) && byte1 == Byte.toUnsignedInt((byte) 0x50) &&
-            byte2 == Byte.toUnsignedInt((byte) 0x44) && byte3 == Byte.toUnsignedInt((byte) 0x46)) {
-            return ContentType.APPLICATION_PDF;
-        } else if (byte0 == Byte.toUnsignedInt((byte) 0xff) && byte1 == Byte.toUnsignedInt((byte) 0xd8)) {
-            return ContentType.IMAGE_JPEG;
-        } else if (byte0 == Byte.toUnsignedInt((byte) 0x89) && byte1 == Byte.toUnsignedInt((byte) 0x50) &&
-            byte2 == Byte.toUnsignedInt((byte) 0x4e) && byte3 == Byte.toUnsignedInt((byte) 0x47)) {
-            return ContentType.IMAGE_PNG;
-        } else if ((byte0 == Byte.toUnsignedInt((byte) 0x49) && byte1 == Byte.toUnsignedInt((byte) 0x49) &&
-                byte2 == Byte.toUnsignedInt((byte) 0x2a) && byte3 == Byte.toUnsignedInt((byte) 0x0)) || // little-endian
-            (byte0 == Byte.toUnsignedInt((byte) 0x4d) && byte1 == Byte.toUnsignedInt((byte) 0x4d) &&
-                byte2 == Byte.toUnsignedInt((byte) 0x0) && byte3 == Byte.toUnsignedInt((byte) 0x2a))) {  // big-endian
-            return ContentType.IMAGE_TIFF;
-        } else {
-            throw new IllegalArgumentException ("content type could not be detected");
-        }
-    }
-
-    /**
      * Helper method to set the text reference elements on FieldValue/fields when {@code includeTextDetails} set to true.
      *
      * @param readResults The ReadResult containing the resolved references for text elements.
