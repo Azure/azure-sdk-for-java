@@ -110,10 +110,10 @@ public class AzureSearchResources {
      * Creates an Azure Service in an existing resource group
      */
     public void createService(TestResourceNamer testResourceNamer) {
-        searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
-        System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         int recreateCount = 0;
         do {
+            searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
+            System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
             searchService = azure.searchServices()
                 .define(searchServiceName)
                 .withRegion(location)
@@ -134,17 +134,22 @@ public class AzureSearchResources {
     }
 
     private boolean shouldRetryCreateService() {
-        String ipAddress = getEndpoint().replaceFirst("https://", "");
-        try {
-            InetAddress.getByName(ipAddress);
-            System.out.println("Sending Ping Request to " + ipAddress);
-            return false;
-        } catch (IOException ex) {
-            System.out.println(String.format("Sorry ! We can't reach to this host: %s.",
-                ipAddress));
-            sleep();
-            return true;
+        String pingAddress = getEndpoint().replaceFirst("https://", "");
+        int retryCount = 0;
+        boolean shouldRetry = true;
+        while (shouldRetry && retryCount < 3) {
+            try {
+                InetAddress ipAddress = InetAddress.getByName(pingAddress);
+                System.out.println("Sending Ping Request to " + pingAddress);
+                shouldRetry = !ipAddress.isReachable(10000);
+            } catch (IOException ex) {
+                System.out.println(String.format("Sorry ! We can't reach to this host: %s.",
+                    pingAddress));
+                sleep();
+            }
+            retryCount += 1;
         }
+        return false;
     }
 
     private void sleep() {
