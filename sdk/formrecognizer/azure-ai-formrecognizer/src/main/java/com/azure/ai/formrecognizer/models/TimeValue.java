@@ -3,8 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import java.util.List;
-
 /**
  * Class to represent the Time value for
  * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueTime()}
@@ -24,42 +22,12 @@ public class TimeValue extends FieldValue<String> {
     /**
      * Constructs a Time Value.
      *
-     * @param text The text content of the extracted field.
-     * @param boundingBox Bounding box of the field value.
      * @param valueTime Time value.
-     * @param pageNumber The page number on which this field exists.
-     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public TimeValue(String text, BoundingBox boundingBox, String valueTime, int pageNumber, 
-        List<FormContent> elements) {
-        super(text, boundingBox, pageNumber, elements);
+    public TimeValue(String valueTime) {
         this.valueTime = valueTime;
         this.fieldValueType = FieldValueType.STRING;
         // TODO: currently returning a string, waiting on swagger update.
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPageNumber() {
-        return super.getPageNumber();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BoundingBox getBoundingBox() {
-        return super.getBoundingBox();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getText() {
-        return super.getText();
     }
 
     /**
@@ -78,11 +46,4 @@ public class TimeValue extends FieldValue<String> {
         return this.fieldValueType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<FormContent> getElements() {
-        return super.getElements();
-    }
 }

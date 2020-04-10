@@ -10,11 +10,8 @@ import com.azure.core.util.IterableStream;
  * The FieldText model.
  */
 @Immutable
-public final class FieldText extends FormContent {
+public class FieldText extends FormContent {
 
-    /**
-     * The list of text element references for the field value.
-     */
     private final IterableStream<FormContent> textContent;
 
     /**
@@ -27,7 +24,7 @@ public final class FieldText extends FormContent {
      */
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
                      final IterableStream<FormContent> textContent) {
-        super(text, boundingBox, pageNumber, null);
+        super(text, boundingBox, pageNumber);
         this.textContent = textContent;
     }
 

@@ -51,24 +51,25 @@ public class ExtractPrebuiltReceipt {
         receiptPageResults.forEach(recognizedReceipt -> {
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
-            System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getText());
-            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getValue());
-            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getText());
-            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getValue());
-            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getText());
-            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getValue());
-            System.out.printf("Total: %s%n", usReceipt.getTotal().getText());
-            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getValue());
+            System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
+            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue().getValue());
+            System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
+            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue().getValue());
+            System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
+            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue().getValue());
+            System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
+            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue().getValue());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
-                System.out.printf("Name: %s%n", receiptItem.getName().getText());
+                System.out.printf("Name: %s%n", receiptItem.getName().getValue());
                 System.out.printf("Quantity: %s%n", receiptItem.getQuantity() == null
-                    ? "N/A" : receiptItem.getQuantity().getFieldValue());
-                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getFieldValue());
+                    ? "N/A" : receiptItem.getQuantity().getValue());
+                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getValue());
                 System.out.println();
             });
 
             // Page Information
+            System.out.println("Page Information:");
             recognizedReceipt.getRecognizedForm().getPages().forEach(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());

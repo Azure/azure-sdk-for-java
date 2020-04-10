@@ -52,7 +52,7 @@ public class AnalyzeForm {
             extractedForm.getFields().forEach((fieldText, fieldValue) -> {
                 System.out.printf("Page number: %s%n", fieldValue.getPageNumber());
                 System.out.printf("Field text: %s%n", fieldText);
-                System.out.printf("Field value: %s%n", fieldValue.getValue());
+                System.out.printf("Field value: %s%n", fieldValue.getFieldValue());
             });
 
             // Page Information

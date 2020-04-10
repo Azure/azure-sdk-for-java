@@ -52,8 +52,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     @Test
     void getCustomModelNullModelId() {
-        getCustomModelNullModelIdRunner(nullModelId -> StepVerifier.create(client.getCustomModel(nullModelId))
-            .verifyError());
+        StepVerifier.create(client.getCustomModel(null)).verifyError();
     }
 
     @Test
@@ -67,8 +66,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void getCustomModelInvalidModelId() {
         getCustomModelInvalidModelIdRunner(invalidModelId -> StepVerifier.create(client.getCustomModel(invalidModelId))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException &&
-                throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException 
+                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
     }
 
     @Test
@@ -98,8 +97,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void deleteModelInvalidModelId() {
         StepVerifier.create(client.deleteModel(INVALID_MODEL_ID))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException &&
-                throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
+                && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR))
             .verify();
     }
 
@@ -112,8 +111,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void beginTrainingNullInput() {
         StepVerifier.create(client.beginTraining(null, false))
-            .expectErrorMatches(throwable -> throwable instanceof NullPointerException &&
-                throwable.getMessage().equals(SOURCE_URL_ERROR))
+            .expectErrorMatches(throwable -> throwable instanceof NullPointerException
+                && throwable.getMessage().equals(SOURCE_URL_ERROR))
             .verify();
     }
 

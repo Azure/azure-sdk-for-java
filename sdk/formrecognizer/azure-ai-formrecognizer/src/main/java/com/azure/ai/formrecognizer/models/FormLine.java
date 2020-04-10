@@ -26,7 +26,8 @@ public class FormLine extends FormContent {
      * @param pageNumber the pagenumber.
      * @param formWords The formwords
      */
-    public FormLine(String text, BoundingBox boundingBox, int pageNumber, final IterableStream<FormWord> formWords) {
+    public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
+        final IterableStream<FormWord> formWords) {
         super(text, boundingBox, pageNumber);
         this.formWords = formWords;
     }
@@ -51,7 +52,7 @@ public class FormLine extends FormContent {
     }
 
     @Override
-    public int getPageNumber() {
+    public Integer getPageNumber() {
         return super.getPageNumber();
     }
 }
