@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.HttpProxyExceptionHandler;
+import com.azure.core.util.CoreUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
@@ -29,13 +30,9 @@ import reactor.netty.tcp.TcpClient;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -214,33 +211,8 @@ class NettyAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(bytes -> {
-                if (bytes.length >= 3 && bytes[0] == (byte) 239 && bytes[1] == (byte) 187 && bytes[2] == (byte) 191) {
-                    return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-                } else if (bytes.length >= 2 && bytes[0] == (byte) 254 && bytes[1] == (byte) 255) {
-                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
-                } else if (bytes.length >= 2 && bytes[0] == (byte) 255 && bytes[1] == (byte) 254) {
-                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
-                } else {
-                    /*
-                     * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
-                     * present or invalid fallback to 'UTF-8' for the default charset.
-                     */
-                    try {
-                        String contentType = reactorNettyResponse.responseHeaders()
-                            .get("Content-Type", "charset=UTF-8");
-
-                        Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
-                        if (charsetMatcher.find()) {
-                            return new String(bytes, Charset.forName(charsetMatcher.group(1)));
-                        } else {
-                            return new String(bytes, StandardCharsets.UTF_8);
-                        }
-                    } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
-                        return new String(bytes, StandardCharsets.UTF_8);
-                    }
-                }
-            });
+            return getBodyAsByteArray().map(bytes ->
+                CoreUtils.bomAwareToString(bytes, reactorNettyResponse.responseHeaders().get("Content-Type")));
         }
 
         @Override

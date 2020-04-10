@@ -20,16 +20,11 @@ import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
-import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Flow;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static java.net.http.HttpRequest.BodyPublishers.fromPublisher;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
@@ -39,11 +34,9 @@ import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
  * HttpClient implementation for the JDK HttpClient.
  */
 class JdkAsyncHttpClient implements HttpClient {
-    private static final Pattern CHARSET_PATTERN = Pattern.compile("charset=([\\S]+)\\b", Pattern.CASE_INSENSITIVE);
-
     private final ClientLogger logger = new ClientLogger(JdkAsyncHttpClient.class);
+
     private final java.net.http.HttpClient jdkHttpClient;
-    private final int javaVersion;
 
     // These headers are restricted by default in native JDK12 HttpClient.
     // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
@@ -65,7 +58,7 @@ class JdkAsyncHttpClient implements HttpClient {
 
     JdkAsyncHttpClient(java.net.http.HttpClient httpClient) {
         this.jdkHttpClient = httpClient;
-        this.javaVersion = getJavaVersion();
+        int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
             logger.error("JdkAsyncHttpClient is not supported in Java version 11 and below.");
         }
@@ -217,35 +210,8 @@ class JdkAsyncHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(bytes -> {
-                if (bytes.length >= 3 && bytes[0] == (byte) 239 && bytes[1] == (byte) 187 && bytes[2] == (byte) 191) {
-                    return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-                } else if (bytes.length >= 2 && bytes[0] == (byte) 254 && bytes[1] == (byte) 255) {
-                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
-                } else if (bytes.length >= 2 && bytes[0] == (byte) 255 && bytes[1] == (byte) 254) {
-                    return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16LE);
-                } else {
-                    /*
-                     * Attempt to retrieve the default charset from the 'Content-Encoding' header, if the value isn't
-                     * present or invalid fallback to 'UTF-8' for the default charset.
-                     */
-                    String contentType = headers.getValue("Content-Type");
-                    if (!CoreUtils.isNullOrEmpty(contentType)) {
-                        try {
-                            Matcher charsetMatcher = CHARSET_PATTERN.matcher(contentType);
-                            if (charsetMatcher.find()) {
-                                return new String(bytes, Charset.forName(charsetMatcher.group(1)));
-                            } else {
-                                return new String(bytes, StandardCharsets.UTF_8);
-                            }
-                        } catch (IllegalCharsetNameException | UnsupportedCharsetException ex) {
-                            return new String(bytes, StandardCharsets.UTF_8);
-                        }
-                    } else {
-                        return new String(bytes, StandardCharsets.UTF_8);
-                    }
-                }
-            });
+            return getBodyAsByteArray().map(bytes ->
+                CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
         }
 
         @Override
