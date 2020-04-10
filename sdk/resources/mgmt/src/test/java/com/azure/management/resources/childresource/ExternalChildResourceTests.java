@@ -31,15 +31,15 @@ public class ExternalChildResourceTests {
         // In the unit test cases we call it directly as we testing external child resource here.
         //
         pullets.commitAsync()
-                .subscribe(
-                        pullet -> Assertions.assertTrue(false, "nothing to commit onNext should not be invoked"),
+            .subscribe(
+                pullet -> Assertions.assertTrue(false, "nothing to commit onNext should not be invoked"),
 
-                        throwable -> {
-                            monitor.countDown();
-                            Assertions.assertTrue(false, "nothing to commit onError should not be invoked");
-                        },
-                        () -> monitor.countDown()
-                );
+                throwable -> {
+                    monitor.countDown();
+                    Assertions.assertTrue(false, "nothing to commit onError should not be invoked");
+                },
+                () -> monitor.countDown()
+            );
         monitor.await();
     }
 
@@ -60,12 +60,12 @@ public class ExternalChildResourceTests {
 
         PulletsImpl pullets = chicken.pullets();
         pullets.commitAsync().subscribe(
-                pullet -> changedPuppets.add(pullet),
-                throwable -> {
-                    monitor.countDown();
-                    Assertions.assertTrue(false, "onError should not be invoked");
-                },
-                () -> monitor.countDown()
+            pullet -> changedPuppets.add(pullet),
+            throwable -> {
+                monitor.countDown();
+                Assertions.assertTrue(false, "onError should not be invoked");
+            },
+            () -> monitor.countDown()
         );
 
         monitor.await();
@@ -97,24 +97,24 @@ public class ExternalChildResourceTests {
         final CountDownLatch monitor = new CountDownLatch(1);
         PulletsImpl pullets = chicken.pullets();
         pullets.commitAsync()
-                .subscribe(
-                        pullet -> changedPuppets.add(pullet),
-                        throwable -> {
-                            try {
-                                Throwable[] exception = throwable.getSuppressed();
-                                Assertions.assertNotNull(exception);
-                                for (Throwable innerThrowable : exception) {
-                                    throwables.add(innerThrowable);
-                                }
-                            } finally {
-                                monitor.countDown();
-                            }
-                        },
-                        () -> {
-                            monitor.countDown();
-                            Assertions.assertTrue(false, "onCompleted should not be invoked");
+            .subscribe(
+                pullet -> changedPuppets.add(pullet),
+                throwable -> {
+                    try {
+                        Throwable[] exception = throwable.getSuppressed();
+                        Assertions.assertNotNull(exception);
+                        for (Throwable innerThrowable : exception) {
+                            throwables.add(innerThrowable);
                         }
-                );
+                    } finally {
+                        monitor.countDown();
+                    }
+                },
+                () -> {
+                    monitor.countDown();
+                    Assertions.assertTrue(false, "onCompleted should not be invoked");
+                }
+            );
 
         monitor.await();
         Assertions.assertTrue(throwables.size() == 2);
@@ -136,14 +136,13 @@ public class ExternalChildResourceTests {
         PulletsImpl pullets = chicken.pullets();
         final CountDownLatch monitor = new CountDownLatch(1);
         pullets.commitAndGetAllAsync()
-                .subscribe(lets -> Assertions.assertTrue(lets.size() == 3),
-                        throwable ->
-                        {
-                            monitor.countDown();
-                            Assertions.assertTrue(false, "onError should not be invoked");
-                        },
-                        () -> monitor.countDown()
-                );
+            .subscribe(lets -> Assertions.assertTrue(lets.size() == 3),
+                throwable -> {
+                    monitor.countDown();
+                    Assertions.assertTrue(false, "onError should not be invoked");
+                },
+                () -> monitor.countDown()
+            );
 
 
         monitor.await();
@@ -164,9 +163,9 @@ public class ExternalChildResourceTests {
                 .attach()
                 .createAsync();
 
-        final SchoolsImpl.SchoolImpl foundSchool[] = new SchoolsImpl.SchoolImpl[1];
-        final SchoolsImpl.TeacherImpl foundTeacher[] = new SchoolsImpl.TeacherImpl[1];
-        final SchoolsImpl.StudentImpl foundStudent[] = new SchoolsImpl.StudentImpl[1];
+        final SchoolsImpl.SchoolImpl[] foundSchool = new SchoolsImpl.SchoolImpl[1];
+        final SchoolsImpl.TeacherImpl[] foundTeacher = new SchoolsImpl.TeacherImpl[1];
+        final SchoolsImpl.StudentImpl[] foundStudent = new SchoolsImpl.StudentImpl[1];
 
         items.doOnNext(indexable -> {
             if (indexable instanceof SchoolsImpl.SchoolImpl) {
@@ -202,18 +201,18 @@ public class ExternalChildResourceTests {
                 .withAge(15)
                 .withTeacher(creatableTeacher);
 
-        final SchoolsImpl.TeacherImpl foundTeacher[] = new SchoolsImpl.TeacherImpl[1];
-        final SchoolsImpl.StudentImpl foundStudent[] = new SchoolsImpl.StudentImpl[1];
+        final SchoolsImpl.TeacherImpl[] foundTeacher = new SchoolsImpl.TeacherImpl[1];
+        final SchoolsImpl.StudentImpl[] foundStudent = new SchoolsImpl.StudentImpl[1];
 
         creatableStudent.createAsync()
-                .doOnNext(indexable -> {
-                    if (indexable instanceof SchoolsImpl.TeacherImpl) {
-                        foundTeacher[0] = (SchoolsImpl.TeacherImpl) indexable;
-                    }
-                    if (indexable instanceof SchoolsImpl.StudentImpl) {
-                        foundStudent[0] = (SchoolsImpl.StudentImpl) indexable;
-                    }
-                }).blockLast();
+            .doOnNext(indexable -> {
+                if (indexable instanceof SchoolsImpl.TeacherImpl) {
+                    foundTeacher[0] = (SchoolsImpl.TeacherImpl) indexable;
+                }
+                if (indexable instanceof SchoolsImpl.StudentImpl) {
+                    foundStudent[0] = (SchoolsImpl.StudentImpl) indexable;
+                }
+            }).blockLast();
 
         Assertions.assertNotNull(foundTeacher[0]);
         Assertions.assertNotNull(foundStudent[0]);
