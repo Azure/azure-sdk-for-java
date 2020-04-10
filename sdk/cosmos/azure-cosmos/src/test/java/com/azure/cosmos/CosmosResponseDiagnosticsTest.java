@@ -77,7 +77,8 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         validateTransportRequestTimelineGateway(diagnostics);
     }
 
-    @Test(groups = {"simple"}, priority = 1)
+    //  TODO: (naveen) - Check the priority
+    @Test(groups = {"simple"}, priority = 1, enabled = false)
     public void gatewayDiagnosticsOnException() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
@@ -133,7 +134,8 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         validateTransportRequestTimelineDirect(diagnostics);
     }
 
-    @Test(groups = {"simple"}, priority = 1)
+    //  TODO: (naveen) - Check the priority
+    @Test(groups = {"simple"}, priority = 1, enabled = false)
     public void directDiagnosticsOnException() throws CosmosClientException {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
