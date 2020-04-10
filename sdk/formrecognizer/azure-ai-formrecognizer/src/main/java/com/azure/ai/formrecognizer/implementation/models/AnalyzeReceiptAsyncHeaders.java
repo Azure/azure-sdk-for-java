@@ -37,4 +37,7 @@ public final class AnalyzeReceiptAsyncHeaders {
         this.operationLocation = operationLocation;
         return this;
     }
+
+    public void validate() {
+    }
 }

@@ -39,4 +39,10 @@ public final class KeysResult {
         this.clusters = clusters;
         return this;
     }
+
+    public void validate() {
+        if (getClusters() == null) {
+            throw new IllegalArgumentException("Missing required property clusters in model KeysResult");
+        }
+    }
 }

@@ -90,4 +90,13 @@ public final class TextWord {
         this.confidence = confidence;
         return this;
     }
+
+    public void validate() {
+        if (getText() == null) {
+            throw new IllegalArgumentException("Missing required property text in model TextWord");
+        }
+        if (getBoundingBox() == null) {
+            throw new IllegalArgumentException("Missing required property boundingBox in model TextWord");
+        }
+    }
 }

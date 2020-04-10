@@ -118,4 +118,13 @@ public final class PageResult {
         this.tables = tables;
         return this;
     }
+
+    public void validate() {
+        if (getKeyValuePairs() != null) {
+            getKeyValuePairs().forEach(e -> e.validate());
+        }
+        if (getTables() != null) {
+            getTables().forEach(e -> e.validate());
+        }
+    }
 }

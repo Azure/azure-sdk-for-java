@@ -37,4 +37,7 @@ public final class SourcePath {
         this.source = source;
         return this;
     }
+
+    public void validate() {
+    }
 }

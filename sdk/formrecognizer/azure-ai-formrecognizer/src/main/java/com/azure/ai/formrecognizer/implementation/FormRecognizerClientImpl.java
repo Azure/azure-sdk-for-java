@@ -137,12 +137,12 @@ public final class FormRecognizerClientImpl {
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
@@ -167,12 +167,12 @@ public final class FormRecognizerClientImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
@@ -206,6 +206,14 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (trainRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter trainRequest is required and cannot be null."));
+        } else {
+            trainRequest.validate();
+        }
         return FluxUtil.withContext(context -> service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context));
     }
 
@@ -221,6 +229,14 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (trainRequest == null) {
+            return Mono.error(new IllegalArgumentException("Parameter trainRequest is required and cannot be null."));
+        } else {
+            trainRequest.validate();
+        }
         return service.trainCustomModelAsync(this.getEndpoint(), trainRequest, context);
     }
 
@@ -236,6 +252,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context));
     }
 
@@ -252,6 +274,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeKeys) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
         return service.getCustomModel(this.getEndpoint(), modelId, includeKeys, context);
     }
 
@@ -266,6 +294,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.deleteCustomModel(this.getEndpoint(), modelId, context));
     }
 
@@ -281,6 +315,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
         return service.deleteCustomModel(this.getEndpoint(), modelId, context);
     }
 
@@ -299,6 +339,18 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (fileStream == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context));
     }
 
@@ -318,6 +370,18 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (fileStream == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
+        }
         return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
@@ -334,6 +398,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
+        if (fileStream != null) {
+            fileStream.validate();
+        }
         return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context));
     }
 
@@ -351,6 +424,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeTextDetails, SourcePath fileStream) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
+        if (fileStream != null) {
+            fileStream.validate();
+        }
         return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, fileStream, context);
     }
 
@@ -366,6 +448,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
+        if (resultId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context));
     }
 
@@ -382,6 +473,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (modelId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter modelId is required and cannot be null."));
+        }
+        if (resultId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
+        }
         return service.getAnalyzeFormResult(this.getEndpoint(), modelId, resultId, context);
     }
 
@@ -399,6 +499,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (fileStream == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context));
     }
 
@@ -417,6 +526,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (fileStream == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
+        }
         return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
@@ -432,6 +550,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Boolean includeTextDetails, SourcePath fileStream) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (fileStream != null) {
+            fileStream.validate();
+        }
         return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context));
     }
 
@@ -448,6 +572,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Context context, Boolean includeTextDetails, SourcePath fileStream) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (fileStream != null) {
+            fileStream.validate();
+        }
         return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, fileStream, context);
     }
 
@@ -462,6 +592,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resultId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context));
     }
 
@@ -477,6 +613,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resultId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
+        }
         return service.getAnalyzeReceiptResult(this.getEndpoint(), resultId, context);
     }
 
@@ -493,6 +635,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (fileStream == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context));
     }
 
@@ -510,6 +661,15 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (contentType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contentType is required and cannot be null."));
+        }
+        if (fileStream == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fileStream is required and cannot be null."));
+        }
         return service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context);
     }
 
@@ -524,6 +684,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(SourcePath fileStream) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (fileStream != null) {
+            fileStream.validate();
+        }
         return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), fileStream, context));
     }
 
@@ -539,6 +705,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(Context context, SourcePath fileStream) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (fileStream != null) {
+            fileStream.validate();
+        }
         return service.analyzeLayoutAsync(this.getEndpoint(), fileStream, context);
     }
 
@@ -553,6 +725,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resultId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context));
     }
 
@@ -568,6 +746,12 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId, Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
+        if (resultId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resultId is required and cannot be null."));
+        }
         return service.getAnalyzeLayoutResult(this.getEndpoint(), resultId, context);
     }
 
@@ -580,6 +764,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
         final String op = "full";
         return FluxUtil.withContext(context -> service.listCustomModels(this.getEndpoint(), op, context))
             .map(res -> new PagedResponseBase<>(
@@ -602,6 +789,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
         final String op = "full";
         return service.listCustomModels(this.getEndpoint(), op, context)
             .map(res -> new PagedResponseBase<>(
@@ -622,6 +812,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync() {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
         final String op = "summary";
         return FluxUtil.withContext(context -> service.getCustomModels(this.getEndpoint(), op, context));
     }
@@ -637,6 +830,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync(Context context) {
+        if (this.getEndpoint() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getEndpoint() is required and cannot be null."));
+        }
         final String op = "summary";
         return service.getCustomModels(this.getEndpoint(), op, context);
     }
@@ -652,6 +848,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
@@ -674,6 +873,9 @@ public final class FormRecognizerClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return service.listCustomModelsNext(nextLink, context)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),

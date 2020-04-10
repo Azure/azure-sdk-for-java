@@ -90,4 +90,12 @@ public final class DataTable {
         this.cells = cells;
         return this;
     }
+
+    public void validate() {
+        if (getCells() == null) {
+            throw new IllegalArgumentException("Missing required property cells in model DataTable");
+        } else {
+            getCells().forEach(e -> e.validate());
+        }
+    }
 }

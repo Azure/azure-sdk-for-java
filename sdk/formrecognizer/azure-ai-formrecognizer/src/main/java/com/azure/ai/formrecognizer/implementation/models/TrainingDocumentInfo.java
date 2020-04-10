@@ -116,4 +116,18 @@ public final class TrainingDocumentInfo {
         this.status = status;
         return this;
     }
+
+    public void validate() {
+        if (getDocumentName() == null) {
+            throw new IllegalArgumentException("Missing required property documentName in model TrainingDocumentInfo");
+        }
+        if (getErrors() == null) {
+            throw new IllegalArgumentException("Missing required property errors in model TrainingDocumentInfo");
+        } else {
+            getErrors().forEach(e -> e.validate());
+        }
+        if (getStatus() == null) {
+            throw new IllegalArgumentException("Missing required property status in model TrainingDocumentInfo");
+        }
+    }
 }

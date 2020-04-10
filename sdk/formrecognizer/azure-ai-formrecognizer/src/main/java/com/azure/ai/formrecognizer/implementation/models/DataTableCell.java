@@ -275,4 +275,13 @@ public final class DataTableCell {
         this.isFooter = isFooter;
         return this;
     }
+
+    public void validate() {
+        if (getText() == null) {
+            throw new IllegalArgumentException("Missing required property text in model DataTableCell");
+        }
+        if (getBoundingBox() == null) {
+            throw new IllegalArgumentException("Missing required property boundingBox in model DataTableCell");
+        }
+    }
 }

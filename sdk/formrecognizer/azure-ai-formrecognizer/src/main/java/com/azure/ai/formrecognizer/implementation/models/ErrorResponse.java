@@ -37,4 +37,12 @@ public final class ErrorResponse {
         this.error = error;
         return this;
     }
+
+    public void validate() {
+        if (getError() == null) {
+            throw new IllegalArgumentException("Missing required property error in model ErrorResponse");
+        } else {
+            getError().validate();
+        }
+    }
 }

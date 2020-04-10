@@ -89,4 +89,18 @@ public final class Model {
         this.trainResult = trainResult;
         return this;
     }
+
+    public void validate() {
+        if (getModelInfo() == null) {
+            throw new IllegalArgumentException("Missing required property modelInfo in model Model");
+        } else {
+            getModelInfo().validate();
+        }
+        if (getKeys() != null) {
+            getKeys().validate();
+        }
+        if (getTrainResult() != null) {
+            getTrainResult().validate();
+        }
+    }
 }

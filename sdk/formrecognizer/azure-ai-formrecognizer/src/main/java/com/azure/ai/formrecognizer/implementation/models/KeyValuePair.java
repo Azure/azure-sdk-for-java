@@ -121,4 +121,17 @@ public final class KeyValuePair {
         this.confidence = confidence;
         return this;
     }
+
+    public void validate() {
+        if (getKey() == null) {
+            throw new IllegalArgumentException("Missing required property key in model KeyValuePair");
+        } else {
+            getKey().validate();
+        }
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model KeyValuePair");
+        } else {
+            getValue().validate();
+        }
+    }
 }

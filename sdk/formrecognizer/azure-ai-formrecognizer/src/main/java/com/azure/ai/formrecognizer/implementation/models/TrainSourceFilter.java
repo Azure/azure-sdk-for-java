@@ -76,4 +76,7 @@ public final class TrainSourceFilter {
         this.includeSubFolders = includeSubFolders;
         return this;
     }
+
+    public void validate() {
+    }
 }

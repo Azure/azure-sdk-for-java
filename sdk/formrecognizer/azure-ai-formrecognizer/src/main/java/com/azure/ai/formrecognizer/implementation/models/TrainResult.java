@@ -122,4 +122,18 @@ public final class TrainResult {
         this.errors = errors;
         return this;
     }
+
+    public void validate() {
+        if (getTrainingDocuments() == null) {
+            throw new IllegalArgumentException("Missing required property trainingDocuments in model TrainResult");
+        } else {
+            getTrainingDocuments().forEach(e -> e.validate());
+        }
+        if (getFields() != null) {
+            getFields().forEach(e -> e.validate());
+        }
+        if (getErrors() != null) {
+            getErrors().forEach(e -> e.validate());
+        }
+    }
 }

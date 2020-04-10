@@ -90,4 +90,13 @@ public final class Models {
         this.nextLink = nextLink;
         return this;
     }
+
+    public void validate() {
+        if (getSummary() != null) {
+            getSummary().validate();
+        }
+        if (getModelList() != null) {
+            getModelList().forEach(e -> e.validate());
+        }
+    }
 }
