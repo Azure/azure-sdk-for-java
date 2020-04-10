@@ -159,14 +159,40 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      */
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
-        boolean isSession, String transferEntityPath, MessagingEntityType entityType) {
+        String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
                 logger.verbose("Get or create consumer for path: '{}'", entityPath);
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
                 return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
-                    retryPolicy, receiveMode, isSession);
+                    retryPolicy, receiveMode);
+            });
+    }
+
+    /**
+     * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
+     * same {@code linkName}. Otherwise, a new link is created and returned.
+     *
+     * @param linkName The name of the link.
+     * @param entityPath The remote address to connect to for the message broker.
+     * @param receiveMode Consumer options to use when creating the link.
+     * @param transferEntityPath to use when creating the link.
+     * @param entityType {@link MessagingEntityType} to use when creating the link.
+     * @param sessionId to use when creating the link.
+     *
+     * @return A new or existing receive link that is connected to the given {@code entityPath}.
+     */
+    @Override
+    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+        String transferEntityPath, MessagingEntityType entityType, String sessionId) {
+        return createSession(entityPath).cast(ServiceBusSession.class)
+            .flatMap(session -> {
+                logger.verbose("Get or create consumer for path: '{}'", entityPath);
+                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+
+                return session.createConsumer(linkName, entityPath, entityType, retryOptions.getTryTimeout(),
+                    retryPolicy, receiveMode, sessionId);
             });
     }
 

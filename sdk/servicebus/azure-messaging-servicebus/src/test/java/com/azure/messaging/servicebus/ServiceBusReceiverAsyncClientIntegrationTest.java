@@ -34,11 +34,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String CONTENTS = "Test-contents";
+    private static final String SESSION_ID = "mysession-id1";
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
 
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
+    private ServiceBusReceiverAsyncClient sessionReceiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
+    private ServiceBusSenderAsyncClient sessionSender;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
@@ -47,9 +50,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         final String queueName = getQueueName();
+        final String sessionQueueName = getSessionQueueName();
         assertNotNull(queueName, "'queueName' cannot be null.");
+        assertNotNull(sessionQueueName, "'sessionQueueName' cannot be null.");
 
         sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
+        sessionSender = createBuilder().sender().queueName(sessionQueueName).buildAsyncClient();
         receiver = createBuilder()
             .receiver()
             .queueName(queueName)
@@ -60,11 +66,17 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .queueName(queueName)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .buildAsyncClient();
+        sessionReceiveDeleteModeReceiver = createBuilder()
+            .receiver()
+            .queueName(sessionQueueName)
+            .sessionId(SESSION_ID)
+            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .buildAsyncClient();
     }
 
     @Override
     protected void afterTest() {
-        dispose(receiver, receiveDeleteModeReceiver, sender);
+        dispose(receiver, receiveDeleteModeReceiver, sender, sessionSender);
     }
 
     /**
@@ -498,6 +510,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     }
                 }
             })
+            .thenCancel()
+            .verify();
+    }
+
+    @Test
+    void sessionReceiveAndDeleteWithBinaryData() {
+        // Arrange
+        final String messageTrackingId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0)
+            .setSessionId(SESSION_ID);
+        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
+
+        // Assert & Act
+        StepVerifier.create(sessionSender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
+            .assertNext(receivedMessage ->
+                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .thenCancel()
             .verify();
     }
