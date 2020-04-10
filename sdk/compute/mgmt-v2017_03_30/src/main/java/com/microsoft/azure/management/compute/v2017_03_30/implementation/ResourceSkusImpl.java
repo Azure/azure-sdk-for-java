@@ -37,7 +37,8 @@ class ResourceSkusImpl extends WrapperImpl<ResourceSkusInner> implements Resourc
             public Iterable<ResourceSkuInner> call(Page<ResourceSkuInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceSkuInner, ResourceSku>() {
+        })
+        .map(new Func1<ResourceSkuInner, ResourceSku>() {
             @Override
             public ResourceSku call(ResourceSkuInner inner) {
                 return new ResourceSkuImpl(inner, manager());
