@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -15,7 +18,7 @@ public class ServiceBusMultiSessionProcessorSample {
         final MessageProcessor processor = new MessageProcessor();
         ServiceBusMultiSessionProcessorClient multiSessionProcessorClient = new ServiceBusClientBuilder()
             .connectionString("connectionString")
-            .receiverMultiSession()
+            .multiSessionProcessor()
             .processMessage((receivedMessage, sessionManager) -> processor.onMessage(receivedMessage, sessionManager))
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
@@ -33,6 +36,7 @@ public class ServiceBusMultiSessionProcessorSample {
         private final AtomicBoolean isDisposed = new AtomicBoolean();
         private final ConcurrentHashMap<String, Set<String>> partitionsProcessing = new ConcurrentHashMap<>();
         void onMessage(ServiceBusReceivedMessage message, SessionManager manager) {
+            manager.complete(message);
         }
         void onError(ServiceBusErrorContext errorContext) {
         }
