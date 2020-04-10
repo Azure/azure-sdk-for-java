@@ -133,6 +133,7 @@ public final class RestClientBuilder {
      * @return builder
      */
     public RestClientBuilder withHttpLogOptions(HttpLogOptions logOptions) {
+        Objects.requireNonNull(logOptions);
         httpLogOptions = logOptions;
         return this;
     }
