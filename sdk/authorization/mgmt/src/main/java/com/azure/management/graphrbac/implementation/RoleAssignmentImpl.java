@@ -4,6 +4,7 @@
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.management.CloudException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryUser;
 import com.azure.management.graphrbac.BuiltInRole;
@@ -31,6 +32,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     // role info
     private String roleDefinitionId;
     private String roleName;
+    private final ClientLogger logger = new ClientLogger(RoleAssignmentImpl.class);
 
     RoleAssignmentImpl(String name, RoleAssignmentInner innerObject, GraphRbacManager manager) {
         super(name, innerObject);
@@ -52,8 +54,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
         } else if (servicePrincipalName != null) {
             objectIdObservable = manager.servicePrincipals().getByNameAsync(servicePrincipalName).map(sp -> sp.id());
         } else {
-            throw new IllegalArgumentException(
-                "Please pass a non-null value for either object Id, user, group, or service principal");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Please pass a non-null value for either object Id, user, group, or service principal"));
         }
 
         Mono<String> roleDefinitionIdObservable;
@@ -66,8 +68,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                     .getByScopeAndRoleNameAsync(scope(), roleName)
                     .map(roleDefinition -> roleDefinition.id());
         } else {
-            throw new IllegalArgumentException(
-                "Please pass a non-null value for either role name or role definition ID");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Please pass a non-null value for either role name or role definition ID"));
         }
 
         return Mono
@@ -96,13 +98,14 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                                 if (exceptionMessage.contains("principalnotfound")
                                                     || exceptionMessage.contains("does not exist in the directory")) {
                                                     // ref:
+                                                    //TODO check how to fix checkstyle for url
                                                     // https://github.com/Azure/azure-cli/blob/dev/src/command_modules/azure-cli-role/azure/cli/command_modules/role/custom.py#L1048-L1065
                                                     return integer;
                                                 } else {
-                                                    throw Exceptions.propagate(throwable);
+                                                    throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                                 }
                                             } else {
-                                                throw Exceptions.propagate(throwable);
+                                                throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                             }
                                         })
                                     .flatMap(i -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(i))))))

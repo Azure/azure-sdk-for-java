@@ -4,6 +4,7 @@
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.CertificateCredential;
 import com.azure.management.graphrbac.CertificateType;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
@@ -24,6 +25,7 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
     private OutputStream authFile;
     private String privateKeyPath;
     private String privateKeyPassword;
+    private final ClientLogger logger = new ClientLogger(CertificateCredentialImpl.class);
 
     CertificateCredentialImpl(KeyCredentialInner keyCredential) {
         super(keyCredential);
@@ -47,12 +49,12 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
 
     @Override
     public Mono<CertificateCredential> refreshAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
     protected Mono<KeyCredentialInner> getInnerAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
@@ -162,7 +164,7 @@ class CertificateCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Certi
         try {
             authFile.write(builder.toString().getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

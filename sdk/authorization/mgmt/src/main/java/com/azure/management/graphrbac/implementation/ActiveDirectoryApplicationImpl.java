@@ -75,8 +75,8 @@ class ActiveDirectoryApplicationImpl
                 .listKeyCredentialsAsync(id())
                 .map(
                     (Function<KeyCredentialInner, CertificateCredential>)
-                        keyCredentialInner ->
-                            new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner))
+                    keyCredentialInner ->
+                        new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner))
                 .collectMap(certificateCredential -> certificateCredential.name())
                 .map(
                     stringCertificateCredentialMap -> {
@@ -92,8 +92,8 @@ class ActiveDirectoryApplicationImpl
                 .listPasswordCredentialsAsync(id())
                 .map(
                     (Function<PasswordCredentialInner, PasswordCredential>)
-                        passwordCredentialInner ->
-                            new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner))
+                    passwordCredentialInner ->
+                        new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner))
                 .collectMap(passwordCredential -> passwordCredential.name())
                 .map(
                     stringPasswordCredentialMap -> {

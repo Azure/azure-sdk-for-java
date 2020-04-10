@@ -240,11 +240,11 @@ class ServicePrincipalImpl extends CreatableUpdatableImpl<ServicePrincipal, Serv
             .just(ServicePrincipalImpl.this)
             .map(
                 (Function<ServicePrincipalImpl, ServicePrincipal>)
-                    servicePrincipal -> {
-                        servicePrincipal.cachedCertificateCredentials.clear();
-                        servicePrincipal.cachedPasswordCredentials.clear();
-                        return servicePrincipal;
-                    })
+                servicePrincipal -> {
+                    servicePrincipal.cachedCertificateCredentials.clear();
+                    servicePrincipal.cachedPasswordCredentials.clear();
+                    return servicePrincipal;
+                })
             .concatWith(
                 manager()
                     .inner()
