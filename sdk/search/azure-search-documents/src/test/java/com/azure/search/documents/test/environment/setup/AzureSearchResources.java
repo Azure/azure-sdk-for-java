@@ -110,10 +110,10 @@ public class AzureSearchResources {
      * Creates an Azure Service in an existing resource group
      */
     public void createService(TestResourceNamer testResourceNamer) {
+        searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
+        System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
         int recreateCount = 0;
         do {
-            searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
-            System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
             searchService = azure.searchServices()
                 .define(searchServiceName)
                 .withRegion(location)
