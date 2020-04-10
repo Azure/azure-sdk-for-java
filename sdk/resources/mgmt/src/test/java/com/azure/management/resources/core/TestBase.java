@@ -9,7 +9,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
@@ -60,8 +59,8 @@ public abstract class TestBase {
         NONE
     }
 
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
 
@@ -125,11 +124,13 @@ public abstract class TestBase {
     }
 
     public static boolean isPlaybackMode() {
-        if (testMode == null) try {
-            initTestMode();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Can't init test mode.");
+        if (testMode == null) {
+            try {
+                initTestMode();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Can't init test mode.");
+            }
         }
         return testMode == TestMode.PLAYBACK;
     }
@@ -190,7 +191,7 @@ public abstract class TestBase {
             restClient = buildRestClient(new RestClientBuilder()
                     .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .withPolicy(interceptorManager.initInterceptor())
                     .withPolicy(new HostPolicy(playbackUri + "/"))
                     .withPolicy(new ResourceGroupTaggingPolicy())
@@ -220,7 +221,7 @@ public abstract class TestBase {
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withCredential(credentials)
                     .withHttpClient(generateHttpClientWithProxy(null))
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .withPolicy(new ResourceGroupTaggingPolicy())
                     .withPolicy(new TimeoutPolicy(Duration.ofMinutes(1)))
                     .withPolicy(new CookiePolicy());
@@ -282,7 +283,7 @@ public abstract class TestBase {
                 if (host != null) {
                     clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port)));
                 }
-            } catch (URISyntaxException e) {}
+            } catch (URISyntaxException e) { }
         }
         return clientBuilder.build();
     }

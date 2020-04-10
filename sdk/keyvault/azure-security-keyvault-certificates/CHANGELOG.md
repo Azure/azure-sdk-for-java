@@ -1,7 +1,8 @@
 # Release History
 
-## 4.1.0-beta.2 (Unreleased)
-
+## 4.2.0-beta.2 (2020-04-09)
+- Added `retryPolicy` setter in `CertificateClientBuilder`
+- Update azure-core dependency to version 1.4.0.
 
 ## 4.1.0-beta.1 (2020-03-10)
 - Added `recoverableDays` property to `CertificateProperties`.

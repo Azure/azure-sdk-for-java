@@ -3,12 +3,50 @@
 
 package com.azure.management.resources.core;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 public class NetworkCallRecord {
-    public String Method;
-    public String Uri;
+    @JsonProperty("Method")
+    private String method;
+    @JsonProperty("Uri")
+    private String uri;
 
-    public Map<String, String> Headers;
-    public Map<String, String> Response;
+    @JsonProperty("Headers")
+    private Map<String, String> headers;
+    @JsonProperty("Response")
+    private Map<String, String> response;
+
+    public String method() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public String uri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Map<String, String> headers() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public Map<String, String> response() {
+        return response;
+    }
+
+    public void setResponse(Map<String, String> response) {
+        this.response = response;
+    }
 }

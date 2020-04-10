@@ -11,8 +11,6 @@ import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
-
 import java.io.File;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
@@ -186,7 +184,7 @@ public final class ManageFunctionAppWithDomainSsl {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

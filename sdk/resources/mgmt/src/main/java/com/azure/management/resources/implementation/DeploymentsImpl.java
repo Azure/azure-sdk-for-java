@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.Deployments;
-import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByResourceGroupImpl;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -44,20 +43,13 @@ final class DeploymentsImpl
 
     @Override
     public Deployment getByName(String name) {
-        for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
-            DeploymentExtendedInner inner = this.manager().inner().deployments()
-                .getAtManagementGroupScope(group.name(), name);
-            if (inner != null) {
-                return createFluentModel(inner);
-            }
-        }
-        return null;
+        return getByNameAsync(name).block();
     }
 
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
-        // TODO: Add this
-        return null;
+        return this.manager().inner().deployments().getAtTenantScopeAsync(name)
+            .map(inner -> new DeploymentImpl(inner, inner.getName(), this.resourceManager));
     }
 
     @Override

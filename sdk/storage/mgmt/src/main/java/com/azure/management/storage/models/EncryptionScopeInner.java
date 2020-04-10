@@ -13,9 +13,7 @@ import com.azure.management.storage.EncryptionScopeState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The EncryptionScope model.
- */
+/** The EncryptionScope model. */
 @JsonFlatten
 @Fluent
 public class EncryptionScopeInner extends ProxyResource {
@@ -27,7 +25,7 @@ public class EncryptionScopeInner extends ProxyResource {
     private EncryptionScopeSource source;
 
     /*
-     * The state of the encryption scope. Possible values (case-insensitive): 
+     * The state of the encryption scope. Possible values (case-insensitive):
      * Enabled, Disabled.
      */
     @JsonProperty(value = "properties.state")
@@ -54,9 +52,9 @@ public class EncryptionScopeInner extends ProxyResource {
     private EncryptionScopeKeyVaultProperties keyVaultProperties;
 
     /**
-     * Get the source property: The provider for the encryption scope. Possible
-     * values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
-     * 
+     * Get the source property: The provider for the encryption scope. Possible values (case-insensitive):
+     * Microsoft.Storage, Microsoft.KeyVault.
+     *
      * @return the source value.
      */
     public EncryptionScopeSource source() {
@@ -64,9 +62,9 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Set the source property: The provider for the encryption scope. Possible
-     * values (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
-     * 
+     * Set the source property: The provider for the encryption scope. Possible values (case-insensitive):
+     * Microsoft.Storage, Microsoft.KeyVault.
+     *
      * @param source the source value to set.
      * @return the EncryptionScopeInner object itself.
      */
@@ -76,9 +74,8 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Get the state property: The state of the encryption scope. Possible
-     * values (case-insensitive):  Enabled, Disabled.
-     * 
+     * Get the state property: The state of the encryption scope. Possible values (case-insensitive): Enabled, Disabled.
+     *
      * @return the state value.
      */
     public EncryptionScopeState state() {
@@ -86,9 +83,8 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Set the state property: The state of the encryption scope. Possible
-     * values (case-insensitive):  Enabled, Disabled.
-     * 
+     * Set the state property: The state of the encryption scope. Possible values (case-insensitive): Enabled, Disabled.
+     *
      * @param state the state value to set.
      * @return the EncryptionScopeInner object itself.
      */
@@ -98,9 +94,8 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Get the creationTime property: Gets the creation date and time of the
-     * encryption scope in UTC.
-     * 
+     * Get the creationTime property: Gets the creation date and time of the encryption scope in UTC.
+     *
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -108,9 +103,8 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Get the lastModifiedTime property: Gets the last modification date and
-     * time of the encryption scope in UTC.
-     * 
+     * Get the lastModifiedTime property: Gets the last modification date and time of the encryption scope in UTC.
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -118,10 +112,9 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Get the keyVaultProperties property: The key vault properties for the
-     * encryption scope. This is a required field if encryption scope 'source'
-     * attribute is set to 'Microsoft.KeyVault'.
-     * 
+     * Get the keyVaultProperties property: The key vault properties for the encryption scope. This is a required field
+     * if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
+     *
      * @return the keyVaultProperties value.
      */
     public EncryptionScopeKeyVaultProperties keyVaultProperties() {
@@ -129,10 +122,9 @@ public class EncryptionScopeInner extends ProxyResource {
     }
 
     /**
-     * Set the keyVaultProperties property: The key vault properties for the
-     * encryption scope. This is a required field if encryption scope 'source'
-     * attribute is set to 'Microsoft.KeyVault'.
-     * 
+     * Set the keyVaultProperties property: The key vault properties for the encryption scope. This is a required field
+     * if encryption scope 'source' attribute is set to 'Microsoft.KeyVault'.
+     *
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the EncryptionScopeInner object itself.
      */
