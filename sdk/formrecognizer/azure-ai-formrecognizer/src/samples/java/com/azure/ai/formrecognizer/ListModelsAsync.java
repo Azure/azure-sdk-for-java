@@ -18,8 +18,8 @@ public class ListModelsAsync {
      */
     public static void main(String[] args) {
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("48c9ec5b1c444c899770946defc486c4"))
-            .endpoint("https://javaformrecognizertestresource.cognitiveservices.azure.com/")
+            .apiKey(new AzureKeyCredential("{api_key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         client.listModels().subscribe(result -> {
