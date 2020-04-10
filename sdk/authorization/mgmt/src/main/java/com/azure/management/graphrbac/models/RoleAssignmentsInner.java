@@ -558,8 +558,8 @@ public final class RoleAssignmentsInner
      * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
      *     example, use '/subscriptions/{subscription-id}/' for a subscription,
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/
+     *     providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -584,8 +584,8 @@ public final class RoleAssignmentsInner
      * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
      *     example, use '/subscriptions/{subscription-id}/' for a subscription,
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/
+     *     providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,8 +613,8 @@ public final class RoleAssignmentsInner
      * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For
      *     example, use '/subscriptions/{subscription-id}/' for a subscription,
      *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-     *     for a resource.
+     *     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/
+     *     providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param parameters Role assignment create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -94,12 +94,12 @@ public class RoleAssignmentHelper {
                     .last()
                     .onErrorResume(
                         (Function<Throwable, Mono<Indexable>>)
-                            throwable -> {
-                                if (isRoleAssignmentExists(throwable)) {
-                                    return cxt.voidMono();
-                                }
-                                return Mono.error(throwable);
-                            });
+                        throwable -> {
+                            if (isRoleAssignmentExists(throwable)) {
+                                return cxt.voidMono();
+                            }
+                            return Mono.error(throwable);
+                        });
             };
         this.preRunTaskGroup.addPostRunDependent(creator, rbacManager.sdkContext());
         return this;
@@ -148,12 +148,12 @@ public class RoleAssignmentHelper {
                     .last()
                     .onErrorResume(
                         (Function<Throwable, Mono<Indexable>>)
-                            throwable -> {
-                                if (isRoleAssignmentExists(throwable)) {
-                                    return cxt.voidMono();
-                                }
-                                return Mono.error(throwable);
-                            });
+                        throwable -> {
+                            if (isRoleAssignmentExists(throwable)) {
+                                return cxt.voidMono();
+                            }
+                            return Mono.error(throwable);
+                        });
             };
         this.preRunTaskGroup.addPostRunDependent(creator, rbacManager.sdkContext());
         return this;
@@ -191,31 +191,31 @@ public class RoleAssignmentHelper {
                     .getByScopeAndRoleNameAsync(scope, asRole.toString())
                     .flatMap(
                         (Function<RoleDefinition, Mono<RoleAssignment>>)
-                            roleDefinition ->
-                                rbacManager
-                                    .roleAssignments()
-                                    .listByScopeAsync(scope)
-                                    .filter(
-                                        roleAssignment -> {
-                                            if (roleDefinition != null && roleAssignment != null) {
-                                                return roleAssignment
-                                                        .roleDefinitionId()
-                                                        .equalsIgnoreCase(roleDefinition.id())
-                                                    && roleAssignment
-                                                        .principalId()
-                                                        .equalsIgnoreCase(idProvider.principalId());
-                                            } else {
-                                                return false;
-                                            }
-                                        })
-                                    .last())
+                        roleDefinition ->
+                            rbacManager
+                                .roleAssignments()
+                                .listByScopeAsync(scope)
+                                .filter(
+                                    roleAssignment -> {
+                                        if (roleDefinition != null && roleAssignment != null) {
+                                            return roleAssignment
+                                                    .roleDefinitionId()
+                                                    .equalsIgnoreCase(roleDefinition.id())
+                                                && roleAssignment
+                                                    .principalId()
+                                                    .equalsIgnoreCase(idProvider.principalId());
+                                        } else {
+                                            return false;
+                                        }
+                                    })
+                                .last())
                     .flatMap(
                         (Function<RoleAssignment, Mono<Indexable>>)
-                            roleAssignment ->
-                                rbacManager
-                                    .roleAssignments()
-                                    .deleteByIdAsync(roleAssignment.id())
-                                    .then(cxt.voidMono()));
+                        roleAssignment ->
+                            rbacManager
+                                .roleAssignments()
+                                .deleteByIdAsync(roleAssignment.id())
+                                .then(cxt.voidMono()));
         this.preRunTaskGroup.addPostRunDependent(remover);
         return this;
     }

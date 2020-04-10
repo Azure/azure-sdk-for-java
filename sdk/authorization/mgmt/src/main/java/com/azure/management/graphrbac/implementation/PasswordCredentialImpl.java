@@ -4,6 +4,7 @@
 package com.azure.management.graphrbac.implementation;
 
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.PasswordCredential;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
@@ -22,6 +23,7 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
     private HasCredential<?> parent;
     OutputStream authFile;
     private String subscriptionId;
+    private final ClientLogger logger = new ClientLogger(PasswordCredentialImpl.class);
 
     PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
         super(passwordCredential);
@@ -44,12 +46,12 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
 
     @Override
     public Mono<PasswordCredential> refreshAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
     protected Mono<PasswordCredentialInner> getInnerAsync() {
-        throw new UnsupportedOperationException("Cannot refresh credentials.");
+        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
@@ -141,7 +143,7 @@ class PasswordCredentialImpl<T> extends IndexableRefreshableWrapperImpl<Password
         try {
             authFile.write(builder.toString().getBytes());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 
