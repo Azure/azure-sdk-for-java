@@ -64,7 +64,7 @@ class StorageAccountsImpl
         String resourceGroupName, String accountName, ServiceSasParameters parameters) {
         return this
             .inner()
-            .listServiceSASAsync(resourceGroupName, accountName, parameters)
+            .listServiceSasAsync(resourceGroupName, accountName, parameters)
             .map(listServiceSasResponseInner -> listServiceSasResponseInner.serviceSasToken());
     }
 

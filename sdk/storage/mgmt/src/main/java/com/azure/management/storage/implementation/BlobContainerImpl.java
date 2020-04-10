@@ -58,7 +58,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     public Mono<BlobContainer> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
         return client
-            .createAsync(this.resourceGroupName, this.accountName, this.containerName, cpublicAccess, cmetadata)
+            .createAsync(this.resourceGroupName, this.accountName, this.containerName, this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -66,7 +66,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
     public Mono<BlobContainer> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
         return client
-            .updateAsync(this.resourceGroupName, this.accountName, this.containerName, upublicAccess, umetadata)
+            .updateAsync(this.resourceGroupName, this.accountName, this.containerName, this.inner())
             .map(innerToFluentMap(this));
     }
 

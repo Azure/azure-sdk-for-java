@@ -111,7 +111,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
                 .pipeline(restClient.getHttpPipeline())
                 .host(restClient.getBaseUrl().toString())
                 .subscriptionId(subscriptionId)
-                .build(),
+                .buildClient(),
             sdkContext);
     }
 
