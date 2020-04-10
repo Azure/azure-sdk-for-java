@@ -80,7 +80,12 @@ mvn -Dgpg.skip -DskipTests -pl com.azure:azure-messaging-eventhubs -am
 ```
 
 The ```-pl``` switch takes a comma seperated list of fully qualified module names and the ```-am```
-switch tells Maven to _also make_ all of the dependencies within the repository that it depends on.
+switch tells Maven to _also make_ all of the dependencies within the repository that it depends on. If
+you are making changes across two modules you can tell Maven to build them both like this:
+
+```
+mvn -Dgpg.skip -DskipTests -pl com.azure:azure-messaging-eventhubs,com.azure:azure-core-amqp -am
+```
 
 Some parts of the SDK have multiple modules for a particular service, if you want to avoid typing
 in all those module names for the ```-pl``` switch you can just target the appropriate POM file
