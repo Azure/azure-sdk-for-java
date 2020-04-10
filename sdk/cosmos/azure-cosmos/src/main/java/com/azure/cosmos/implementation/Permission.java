@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
