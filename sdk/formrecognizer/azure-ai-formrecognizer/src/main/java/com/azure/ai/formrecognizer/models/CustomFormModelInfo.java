@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * The CustomFormModelInfo model.
  */
-@Fluent
+@Immutable
 public final class CustomFormModelInfo {
 
     /*
