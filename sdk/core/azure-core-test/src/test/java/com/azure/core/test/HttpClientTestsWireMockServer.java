@@ -20,14 +20,18 @@ public class HttpClientTestsWireMockServer {
     private static final String HEADER_RESPONSE = "/plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "/plainBytesInvalidHeader";
     private static final String UTF_8_BOM_RESPONSE = "/utf8BomBytes";
-    private static final String UTF_16_BE_BOM_RESPONSE = "/utf16BeBomBytes";
-    private static final String UTF_16_LE_BOM_RESPONSE = "/utf16LeBomBytes";
+    private static final String UTF_16BE_BOM_RESPONSE = "/utf16BeBomBytes";
+    private static final String UTF_16LE_BOM_RESPONSE = "/utf16LeBomBytes";
+    private static final String UTF_32BE_BOM_RESPONSE = "/utf32BeBomBytes";
+    private static final String UTF_32LE_BOM_RESPONSE = "/utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "/bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "/bomBytesWithDifferentHeader";
 
     private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-    private static final byte[] UTF_16_BE_BOM = {(byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_16_LE_BOM = {(byte) 0xFF, (byte) 0xFE};
+    private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
+    private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
+    private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
+    private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
 
@@ -49,16 +53,19 @@ public class HttpClientTestsWireMockServer {
             .withHeader("Content-Type", "charset=invalid")));
 
         // Bytes with leading UTF-8 BOM.
-        server.stubFor(get(UTF_8_BOM_RESPONSE).willReturn(aResponse()
-            .withBody(addBom(UTF_8_BOM))));
+        server.stubFor(get(UTF_8_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_8_BOM))));
 
         // Bytes with leading UTF-16 BE BOM.
-        server.stubFor(get(UTF_16_BE_BOM_RESPONSE).willReturn(aResponse()
-            .withBody(addBom(UTF_16_BE_BOM))));
+        server.stubFor(get(UTF_16BE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_16BE_BOM))));
 
         // Bytes with leading UTF-16 LE BOM.
-        server.stubFor(get(UTF_16_LE_BOM_RESPONSE).willReturn(aResponse()
-            .withBody(addBom(UTF_16_LE_BOM))));
+        server.stubFor(get(UTF_16LE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_16LE_BOM))));
+
+        // Bytes with leading UTF-32 BE BOM.
+        server.stubFor(get(UTF_32BE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_32BE_BOM))));
+
+        // Bytes with leading UTF-32 LE BOM.
+        server.stubFor(get(UTF_32LE_BOM_RESPONSE).willReturn(aResponse().withBody(addBom(UTF_32LE_BOM))));
 
         // Bytes with leading UTF-8 BOM and matching 'Content-Encoding' header.
         server.stubFor(get(BOM_WITH_SAME_HEADER).willReturn(aResponse()

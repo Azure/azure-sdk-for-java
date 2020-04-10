@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,8 +25,10 @@ public abstract class HttpClientTests {
     private static final String HEADER_RESPONSE = "plainBytesWithHeader";
     private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
     private static final String UTF_8_BOM_RESPONSE = "utf8BomBytes";
-    private static final String UTF_16_BE_BOM_RESPONSE = "utf16BeBomBytes";
-    private static final String UTF_16_LE_BOM_RESPONSE = "utf16LeBomBytes";
+    private static final String UTF_16BE_BOM_RESPONSE = "utf16BeBomBytes";
+    private static final String UTF_16LE_BOM_RESPONSE = "utf16LeBomBytes";
+    private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
+    private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_SAME_HEADER = "bomBytesWithSameHeader";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
 
@@ -85,7 +88,7 @@ public abstract class HttpClientTests {
     public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
-        StepVerifier.create(sendRequest(UTF_16_BE_BOM_RESPONSE))
+        StepVerifier.create(sendRequest(UTF_16BE_BOM_RESPONSE))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
@@ -94,7 +97,25 @@ public abstract class HttpClientTests {
     public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
 
-        StepVerifier.create(sendRequest(UTF_16_LE_BOM_RESPONSE))
+        StepVerifier.create(sendRequest(UTF_16LE_BOM_RESPONSE))
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
+    }
+
+    @Test
+    public void utf32BeBomResponse() {
+        String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
+
+        StepVerifier.create(sendRequest(UTF_32BE_BOM_RESPONSE))
+            .assertNext(actual -> assertEquals(expected, actual))
+            .verifyComplete();
+    }
+
+    @Test
+    public void utf32LeBomResponse() {
+        String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
+
+        StepVerifier.create(sendRequest(UTF_32LE_BOM_RESPONSE))
             .assertNext(actual -> assertEquals(expected, actual))
             .verifyComplete();
     }
