@@ -30,7 +30,7 @@ public class ListModelsAsync {
                     result.getLastUpdatedOn());
             },
             error -> System.err.printf(String.format("There was an error list the models, %s.", error)),
-            () -> System.out.println("A list of models ."));
+            () -> System.out.println("Finished listing models."));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

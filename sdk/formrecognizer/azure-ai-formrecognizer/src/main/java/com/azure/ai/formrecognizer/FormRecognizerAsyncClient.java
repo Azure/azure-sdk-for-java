@@ -241,8 +241,8 @@ public final class FormRecognizerAsyncClient {
         Flux<ByteBuffer> buffer, long length, FormContentType formContentType, boolean includeTextDetails) {
         return (pollingContext) -> {
             try {
-                return service.analyzeReceiptAsyncWithResponseAsync(includeTextDetails,
-                    ContentType.fromString(formContentType.toString()), buffer, length)
+                return service.analyzeReceiptAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
+                    buffer, length, includeTextDetails)
                     .map(response -> new OperationResult(
                         parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
