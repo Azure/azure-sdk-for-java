@@ -12,7 +12,6 @@ import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.WebContainer;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.Console;
@@ -226,7 +225,7 @@ public final class ManageWebAppWithAuthentication {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

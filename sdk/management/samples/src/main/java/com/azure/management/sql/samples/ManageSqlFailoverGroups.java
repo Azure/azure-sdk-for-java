@@ -3,7 +3,6 @@
 package com.azure.management.sql.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.ApplicationTokenCredential;
@@ -189,7 +188,7 @@ public class ManageSqlFailoverGroups {
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                     .withSerializerAdapter(new AzureJacksonAdapter())
 //                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .withCredential(credentials).buildClient();
             Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
 

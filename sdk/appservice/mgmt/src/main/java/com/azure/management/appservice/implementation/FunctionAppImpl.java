@@ -119,11 +119,9 @@ class FunctionAppImpl
                 throw new IllegalStateException(e);
             }
             RestClient client = manager().restClient().newBuilder()
-//            RestClient client = new RestClientBuilder()
                     .withBaseUrl(baseUrl)
                     .withCredential(new FunctionCredential(this))
 //                    .withPolicy(new FunctionAuthenticationPolicy(this))
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                     .buildClient();
             functionServiceHost = client.getBaseUrl().toString();
             functionService = RestProxy.create(FunctionService.class, client.getHttpPipeline(), client.getSerializerAdapter());

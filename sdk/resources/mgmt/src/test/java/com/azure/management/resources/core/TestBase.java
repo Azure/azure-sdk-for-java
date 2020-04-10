@@ -9,7 +9,6 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HostPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.TimeoutPolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
@@ -192,7 +191,7 @@ public abstract class TestBase {
             restClient = buildRestClient(new RestClientBuilder()
                     .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .withPolicy(interceptorManager.initInterceptor())
                     .withPolicy(new HostPolicy(playbackUri + "/"))
                     .withPolicy(new ResourceGroupTaggingPolicy())
@@ -222,7 +221,7 @@ public abstract class TestBase {
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withCredential(credentials)
                     .withHttpClient(generateHttpClientWithProxy(null))
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                    .withLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .withPolicy(new ResourceGroupTaggingPolicy())
                     .withPolicy(new TimeoutPolicy(Duration.ofMinutes(1)))
                     .withPolicy(new CookiePolicy());
