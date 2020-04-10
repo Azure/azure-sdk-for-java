@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.containerservice.implementation;
 
-
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.containerservice.ContainerService;
@@ -12,17 +11,11 @@ import com.azure.management.containerservice.models.ContainerServicesInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for ContainerServices.
- */
-public class ContainerServicesImpl extends
-        GroupableResourcesImpl<
-                        ContainerService,
-                        ContainerServiceImpl,
-                        ContainerServiceInner,
-                        ContainerServicesInner,
-                        ContainerServiceManager>
-        implements ContainerServices {
+/** The implementation for ContainerServices. */
+public class ContainerServicesImpl
+    extends GroupableResourcesImpl<
+        ContainerService, ContainerServiceImpl, ContainerServiceInner, ContainerServicesInner, ContainerServiceManager>
+    implements ContainerServices {
 
     ContainerServicesImpl(final ContainerServiceManager containerServiceManager) {
         super(containerServiceManager.inner().containerServices(), containerServiceManager);
@@ -35,15 +28,13 @@ public class ContainerServicesImpl extends
 
     @Override
     public PagedFlux<ContainerService> listAsync() {
-        return this.inner().listAsync()
-                .mapPage(inner -> new ContainerServiceImpl(inner.getName(), inner, manager()));
+        return this.inner().listAsync().mapPage(inner -> new ContainerServiceImpl(inner.getName(), inner, manager()));
     }
 
     @Override
     public PagedFlux<ContainerService> listByResourceGroupAsync(String resourceGroupName) {
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }
-
 
     @Override
     public PagedIterable<ContainerService> listByResourceGroup(String groupName) {
@@ -71,9 +62,7 @@ public class ContainerServicesImpl extends
 
     @Override
     protected ContainerServiceImpl wrapModel(String name) {
-        return new ContainerServiceImpl(name,
-                new ContainerServiceInner(),
-                this.manager());
+        return new ContainerServiceImpl(name, new ContainerServiceInner(), this.manager());
     }
 
     @Override
@@ -82,8 +71,6 @@ public class ContainerServicesImpl extends
             return null;
         }
 
-        return new ContainerServiceImpl(containerServiceInner.getName(),
-                containerServiceInner,
-                this.manager());
+        return new ContainerServiceImpl(containerServiceInner.getName(), containerServiceInner, this.manager());
     }
 }

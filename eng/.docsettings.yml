@@ -13,7 +13,7 @@ omitted_paths:
 language: java
 root_check_enabled: True
 required_readme_sections:
-  - "Azure .+ client library for Java"
+  - "Azure .+ (client|plugin|shared) library for Java"
   - ^Getting started$
   - ^Key concepts$
   - ^Examples$

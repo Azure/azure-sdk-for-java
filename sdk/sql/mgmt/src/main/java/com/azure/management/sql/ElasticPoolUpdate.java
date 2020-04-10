@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ElasticPoolUpdate model.
- */
+/** The ElasticPoolUpdate model. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolUpdate {
@@ -55,7 +53,7 @@ public class ElasticPoolUpdate {
 
     /**
      * Get the sku property: An ARM Resource SKU.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -64,7 +62,7 @@ public class ElasticPoolUpdate {
 
     /**
      * Set the sku property: An ARM Resource SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -75,7 +73,7 @@ public class ElasticPoolUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -84,7 +82,7 @@ public class ElasticPoolUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -94,9 +92,8 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Get the maxSizeBytes property: The storage limit for the database
-     * elastic pool in bytes.
-     * 
+     * Get the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
+     *
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -104,9 +101,8 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Set the maxSizeBytes property: The storage limit for the database
-     * elastic pool in bytes.
-     * 
+     * Set the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
+     *
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -116,9 +112,8 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Get the perDatabaseSettings property: The per database settings for the
-     * elastic pool.
-     * 
+     * Get the perDatabaseSettings property: The per database settings for the elastic pool.
+     *
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
@@ -126,9 +121,8 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Set the perDatabaseSettings property: The per database settings for the
-     * elastic pool.
-     * 
+     * Set the perDatabaseSettings property: The per database settings for the elastic pool.
+     *
      * @param perDatabaseSettings the perDatabaseSettings value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -138,10 +132,9 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not this elastic pool is zone
-     * redundant, which means the replicas of this elastic pool will be spread
-     * across multiple availability zones.
-     * 
+     * Get the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
+     * this elastic pool will be spread across multiple availability zones.
+     *
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -149,10 +142,9 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Set the zoneRedundant property: Whether or not this elastic pool is zone
-     * redundant, which means the replicas of this elastic pool will be spread
-     * across multiple availability zones.
-     * 
+     * Set the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
+     * this elastic pool will be spread across multiple availability zones.
+     *
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ElasticPoolUpdate object itself.
      */
@@ -162,9 +154,8 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this elastic
-     * pool.
-     * 
+     * Get the licenseType property: The license type to apply for this elastic pool.
+     *
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
@@ -172,9 +163,8 @@ public class ElasticPoolUpdate {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this elastic
-     * pool.
-     * 
+     * Set the licenseType property: The license type to apply for this elastic pool.
+     *
      * @param licenseType the licenseType value to set.
      * @return the ElasticPoolUpdate object itself.
      */

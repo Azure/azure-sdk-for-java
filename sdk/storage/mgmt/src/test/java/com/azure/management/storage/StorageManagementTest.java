@@ -8,22 +8,16 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.storage.implementation.StorageManager;
 
-/**
- * The base for storage manager tests.
- */
+/** The base for storage manager tests. */
 public abstract class StorageManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected StorageManager storageManager;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        storageManager = StorageManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
     }
-
 }

@@ -4,7 +4,6 @@
 package com.azure.management.appservice.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.appservice.JavaVersion;
 import com.azure.management.appservice.PricingTier;
@@ -181,7 +180,7 @@ public final class ManageWebAppLogs {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

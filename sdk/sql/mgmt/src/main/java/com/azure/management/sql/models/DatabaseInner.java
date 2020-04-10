@@ -18,28 +18,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/**
- * The Database model.
- */
+/** The Database model. */
 @JsonFlatten
 @Fluent
 public class DatabaseInner extends Resource {
     /*
      * The database SKU.
-     * 
+     *
      * The list of SKUs may vary by region and support offer. To determine the
      * SKUs (including the SKU name, tier/edition, family, and capacity) that
      * are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or one of the following commands:
-     * 
+     *
      * ```azurecli
      * az sql db list-editions -l <location> -o table
      * ````
-     * 
+     *
      * ```powershell
      * Get-AzSqlServerServiceObjective -Location <location>
      * ````
-     * 
+     *
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -58,26 +56,26 @@ public class DatabaseInner extends Resource {
 
     /*
      * Specifies the mode of database creation.
-     * 
+     *
      * Default: regular database creation.
-     * 
+     *
      * Copy: creates a database as a copy of an existing database.
      * sourceDatabaseId must be specified as the resource ID of the source
      * database.
-     * 
+     *
      * Secondary: creates a database as a secondary replica of an existing
      * database. sourceDatabaseId must be specified as the resource ID of the
      * existing primary database.
-     * 
+     *
      * PointInTimeRestore: Creates a database by restoring a point in time
      * backup of an existing database. sourceDatabaseId must be specified as
      * the resource ID of the existing database, and restorePointInTime must be
      * specified.
-     * 
+     *
      * Recovery: Creates a database by restoring a geo-replicated backup.
      * sourceDatabaseId must be specified as the recoverable database resource
      * ID to restore.
-     * 
+     *
      * Restore: Creates a database by restoring a backup of a deleted database.
      * sourceDatabaseId must be specified. If sourceDatabaseId is the
      * database's original resource ID, then sourceDatabaseDeletionDate must be
@@ -85,11 +83,11 @@ public class DatabaseInner extends Resource {
      * database resource ID and sourceDatabaseDeletionDate is ignored.
      * restorePointInTime may also be specified to restore from an earlier
      * point in time.
-     * 
+     *
      * RestoreLongTermRetentionBackup: Creates a database by restoring from a
      * long term retention vault. recoveryServicesRecoveryPointResourceId must
      * be specified as the recovery point resource ID.
-     * 
+     *
      * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported
      * for DataWarehouse edition.
      */
@@ -294,20 +292,15 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the sku property: The database SKU.
-     * 
-     * The list of SKUs may vary by region and support offer. To determine the
-     * SKUs (including the SKU name, tier/edition, family, and capacity) that
-     * are available to your subscription in an Azure region, use the
+     *
+     * <p>The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or one of the following commands:
-     * 
-     * ```azurecli
-     * az sql db list-editions -l &lt;location&gt; -o table
-     * ````
-     * 
-     * ```powershell
-     * Get-AzSqlServerServiceObjective -Location &lt;location&gt;
-     * ````.
-     * 
+     *
+     * <p>```azurecli az sql db list-editions -l &lt;location&gt; -o table ````
+     *
+     * <p>```powershell Get-AzSqlServerServiceObjective -Location &lt;location&gt; ````.
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -316,20 +309,15 @@ public class DatabaseInner extends Resource {
 
     /**
      * Set the sku property: The database SKU.
-     * 
-     * The list of SKUs may vary by region and support offer. To determine the
-     * SKUs (including the SKU name, tier/edition, family, and capacity) that
-     * are available to your subscription in an Azure region, use the
+     *
+     * <p>The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or one of the following commands:
-     * 
-     * ```azurecli
-     * az sql db list-editions -l &lt;location&gt; -o table
-     * ````
-     * 
-     * ```powershell
-     * Get-AzSqlServerServiceObjective -Location &lt;location&gt;
-     * ````.
-     * 
+     *
+     * <p>```azurecli az sql db list-editions -l &lt;location&gt; -o table ````
+     *
+     * <p>```powershell Get-AzSqlServerServiceObjective -Location &lt;location&gt; ````.
+     *
      * @param sku the sku value to set.
      * @return the DatabaseInner object itself.
      */
@@ -339,9 +327,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of database. This is metadata used for the
-     * Azure portal experience.
-     * 
+     * Get the kind property: Kind of database. This is metadata used for the Azure portal experience.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -350,7 +337,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the managedBy property: Resource that manages the database.
-     * 
+     *
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -359,41 +346,32 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the createMode property: Specifies the mode of database creation.
-     * 
-     * Default: regular database creation.
-     * 
-     * Copy: creates a database as a copy of an existing database.
-     * sourceDatabaseId must be specified as the resource ID of the source
-     * database.
-     * 
-     * Secondary: creates a database as a secondary replica of an existing
-     * database. sourceDatabaseId must be specified as the resource ID of the
-     * existing primary database.
-     * 
-     * PointInTimeRestore: Creates a database by restoring a point in time
-     * backup of an existing database. sourceDatabaseId must be specified as
-     * the resource ID of the existing database, and restorePointInTime must be
+     *
+     * <p>Default: regular database creation.
+     *
+     * <p>Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource
+     * ID of the source database.
+     *
+     * <p>Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be
+     * specified as the resource ID of the existing primary database.
+     *
+     * <p>PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
+     * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
      * specified.
-     * 
-     * Recovery: Creates a database by restoring a geo-replicated backup.
-     * sourceDatabaseId must be specified as the recoverable database resource
-     * ID to restore.
-     * 
-     * Restore: Creates a database by restoring a backup of a deleted database.
-     * sourceDatabaseId must be specified. If sourceDatabaseId is the
-     * database's original resource ID, then sourceDatabaseDeletionDate must be
-     * specified. Otherwise sourceDatabaseId must be the restorable dropped
-     * database resource ID and sourceDatabaseDeletionDate is ignored.
-     * restorePointInTime may also be specified to restore from an earlier
-     * point in time.
-     * 
-     * RestoreLongTermRetentionBackup: Creates a database by restoring from a
-     * long term retention vault. recoveryServicesRecoveryPointResourceId must
-     * be specified as the recovery point resource ID.
-     * 
-     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported
-     * for DataWarehouse edition.
-     * 
+     *
+     * <p>Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverable database resource ID to restore.
+     *
+     * <p>Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified.
+     * If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
+     * Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is
+     * ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+     *
+     * <p>RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
+     * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+     *
+     * <p>Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+     *
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -402,41 +380,32 @@ public class DatabaseInner extends Resource {
 
     /**
      * Set the createMode property: Specifies the mode of database creation.
-     * 
-     * Default: regular database creation.
-     * 
-     * Copy: creates a database as a copy of an existing database.
-     * sourceDatabaseId must be specified as the resource ID of the source
-     * database.
-     * 
-     * Secondary: creates a database as a secondary replica of an existing
-     * database. sourceDatabaseId must be specified as the resource ID of the
-     * existing primary database.
-     * 
-     * PointInTimeRestore: Creates a database by restoring a point in time
-     * backup of an existing database. sourceDatabaseId must be specified as
-     * the resource ID of the existing database, and restorePointInTime must be
+     *
+     * <p>Default: regular database creation.
+     *
+     * <p>Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource
+     * ID of the source database.
+     *
+     * <p>Secondary: creates a database as a secondary replica of an existing database. sourceDatabaseId must be
+     * specified as the resource ID of the existing primary database.
+     *
+     * <p>PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database.
+     * sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be
      * specified.
-     * 
-     * Recovery: Creates a database by restoring a geo-replicated backup.
-     * sourceDatabaseId must be specified as the recoverable database resource
-     * ID to restore.
-     * 
-     * Restore: Creates a database by restoring a backup of a deleted database.
-     * sourceDatabaseId must be specified. If sourceDatabaseId is the
-     * database's original resource ID, then sourceDatabaseDeletionDate must be
-     * specified. Otherwise sourceDatabaseId must be the restorable dropped
-     * database resource ID and sourceDatabaseDeletionDate is ignored.
-     * restorePointInTime may also be specified to restore from an earlier
-     * point in time.
-     * 
-     * RestoreLongTermRetentionBackup: Creates a database by restoring from a
-     * long term retention vault. recoveryServicesRecoveryPointResourceId must
-     * be specified as the recovery point resource ID.
-     * 
-     * Copy, Secondary, and RestoreLongTermRetentionBackup are not supported
-     * for DataWarehouse edition.
-     * 
+     *
+     * <p>Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverable database resource ID to restore.
+     *
+     * <p>Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified.
+     * If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified.
+     * Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is
+     * ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+     *
+     * <p>RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault.
+     * recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+     *
+     * <p>Copy, Secondary, and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition.
+     *
      * @param createMode the createMode value to set.
      * @return the DatabaseInner object itself.
      */
@@ -447,7 +416,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the collation property: The collation of the database.
-     * 
+     *
      * @return the collation value.
      */
     public String collation() {
@@ -456,7 +425,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Set the collation property: The collation of the database.
-     * 
+     *
      * @param collation the collation value to set.
      * @return the DatabaseInner object itself.
      */
@@ -466,9 +435,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the maxSizeBytes property: The max size of the database expressed in
-     * bytes.
-     * 
+     * Get the maxSizeBytes property: The max size of the database expressed in bytes.
+     *
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -476,9 +444,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the maxSizeBytes property: The max size of the database expressed in
-     * bytes.
-     * 
+     * Set the maxSizeBytes property: The max size of the database expressed in bytes.
+     *
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the DatabaseInner object itself.
      */
@@ -488,9 +455,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the sampleName property: The name of the sample schema to apply when
-     * creating this database.
-     * 
+     * Get the sampleName property: The name of the sample schema to apply when creating this database.
+     *
      * @return the sampleName value.
      */
     public SampleName sampleName() {
@@ -498,9 +464,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the sampleName property: The name of the sample schema to apply when
-     * creating this database.
-     * 
+     * Set the sampleName property: The name of the sample schema to apply when creating this database.
+     *
      * @param sampleName the sampleName value to set.
      * @return the DatabaseInner object itself.
      */
@@ -510,9 +475,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the elasticPoolId property: The resource identifier of the elastic
-     * pool containing this database.
-     * 
+     * Get the elasticPoolId property: The resource identifier of the elastic pool containing this database.
+     *
      * @return the elasticPoolId value.
      */
     public String elasticPoolId() {
@@ -520,9 +484,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the elasticPoolId property: The resource identifier of the elastic
-     * pool containing this database.
-     * 
+     * Set the elasticPoolId property: The resource identifier of the elastic pool containing this database.
+     *
      * @param elasticPoolId the elasticPoolId value to set.
      * @return the DatabaseInner object itself.
      */
@@ -532,9 +495,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the sourceDatabaseId property: The resource identifier of the source
-     * database associated with create operation of this database.
-     * 
+     * Get the sourceDatabaseId property: The resource identifier of the source database associated with create
+     * operation of this database.
+     *
      * @return the sourceDatabaseId value.
      */
     public String sourceDatabaseId() {
@@ -542,9 +505,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the sourceDatabaseId property: The resource identifier of the source
-     * database associated with create operation of this database.
-     * 
+     * Set the sourceDatabaseId property: The resource identifier of the source database associated with create
+     * operation of this database.
+     *
      * @param sourceDatabaseId the sourceDatabaseId value to set.
      * @return the DatabaseInner object itself.
      */
@@ -555,7 +518,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the status property: The status of the database.
-     * 
+     *
      * @return the status value.
      */
     public DatabaseStatus status() {
@@ -564,7 +527,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the databaseId property: The ID of the database.
-     * 
+     *
      * @return the databaseId value.
      */
     public UUID databaseId() {
@@ -572,9 +535,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the creationDate property: The creation date of the database
-     * (ISO8601 format).
-     * 
+     * Get the creationDate property: The creation date of the database (ISO8601 format).
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -582,9 +544,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the currentServiceObjectiveName property: The current service level
-     * objective name of the database.
-     * 
+     * Get the currentServiceObjectiveName property: The current service level objective name of the database.
+     *
      * @return the currentServiceObjectiveName value.
      */
     public String currentServiceObjectiveName() {
@@ -592,9 +553,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the requestedServiceObjectiveName property: The requested service
-     * level objective name of the database.
-     * 
+     * Get the requestedServiceObjectiveName property: The requested service level objective name of the database.
+     *
      * @return the requestedServiceObjectiveName value.
      */
     public String requestedServiceObjectiveName() {
@@ -602,9 +562,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the defaultSecondaryLocation property: The default secondary region
-     * for this database.
-     * 
+     * Get the defaultSecondaryLocation property: The default secondary region for this database.
+     *
      * @return the defaultSecondaryLocation value.
      */
     public String defaultSecondaryLocation() {
@@ -612,9 +571,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the failoverGroupId property: Failover Group resource identifier
-     * that this database belongs to.
-     * 
+     * Get the failoverGroupId property: Failover Group resource identifier that this database belongs to.
+     *
      * @return the failoverGroupId value.
      */
     public String failoverGroupId() {
@@ -622,10 +580,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the restorePointInTime property: Specifies the point in time
-     * (ISO8601 format) of the source database that will be restored to create
-     * the new database.
-     * 
+     * Get the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
+     * will be restored to create the new database.
+     *
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -633,10 +590,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the restorePointInTime property: Specifies the point in time
-     * (ISO8601 format) of the source database that will be restored to create
-     * the new database.
-     * 
+     * Set the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
+     * will be restored to create the new database.
+     *
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the DatabaseInner object itself.
      */
@@ -646,9 +602,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the sourceDatabaseDeletionDate property: Specifies the time that the
-     * database was deleted.
-     * 
+     * Get the sourceDatabaseDeletionDate property: Specifies the time that the database was deleted.
+     *
      * @return the sourceDatabaseDeletionDate value.
      */
     public OffsetDateTime sourceDatabaseDeletionDate() {
@@ -656,11 +611,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the sourceDatabaseDeletionDate property: Specifies the time that the
-     * database was deleted.
-     * 
-     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value
-     * to set.
+     * Set the sourceDatabaseDeletionDate property: Specifies the time that the database was deleted.
+     *
+     * @param sourceDatabaseDeletionDate the sourceDatabaseDeletionDate value to set.
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withSourceDatabaseDeletionDate(OffsetDateTime sourceDatabaseDeletionDate) {
@@ -669,10 +622,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the recoveryServicesRecoveryPointId property: The resource
-     * identifier of the recovery point associated with create operation of
-     * this database.
-     * 
+     * Get the recoveryServicesRecoveryPointId property: The resource identifier of the recovery point associated with
+     * create operation of this database.
+     *
      * @return the recoveryServicesRecoveryPointId value.
      */
     public String recoveryServicesRecoveryPointId() {
@@ -680,12 +632,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the recoveryServicesRecoveryPointId property: The resource
-     * identifier of the recovery point associated with create operation of
-     * this database.
-     * 
-     * @param recoveryServicesRecoveryPointId the
-     * recoveryServicesRecoveryPointId value to set.
+     * Set the recoveryServicesRecoveryPointId property: The resource identifier of the recovery point associated with
+     * create operation of this database.
+     *
+     * @param recoveryServicesRecoveryPointId the recoveryServicesRecoveryPointId value to set.
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withRecoveryServicesRecoveryPointId(String recoveryServicesRecoveryPointId) {
@@ -694,10 +644,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the longTermRetentionBackupResourceId property: The resource
-     * identifier of the long term retention backup associated with create
-     * operation of this database.
-     * 
+     * Get the longTermRetentionBackupResourceId property: The resource identifier of the long term retention backup
+     * associated with create operation of this database.
+     *
      * @return the longTermRetentionBackupResourceId value.
      */
     public String longTermRetentionBackupResourceId() {
@@ -705,12 +654,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the longTermRetentionBackupResourceId property: The resource
-     * identifier of the long term retention backup associated with create
-     * operation of this database.
-     * 
-     * @param longTermRetentionBackupResourceId the
-     * longTermRetentionBackupResourceId value to set.
+     * Set the longTermRetentionBackupResourceId property: The resource identifier of the long term retention backup
+     * associated with create operation of this database.
+     *
+     * @param longTermRetentionBackupResourceId the longTermRetentionBackupResourceId value to set.
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withLongTermRetentionBackupResourceId(String longTermRetentionBackupResourceId) {
@@ -719,9 +666,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the recoverableDatabaseId property: The resource identifier of the
-     * recoverable database associated with create operation of this database.
-     * 
+     * Get the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
+     * create operation of this database.
+     *
      * @return the recoverableDatabaseId value.
      */
     public String recoverableDatabaseId() {
@@ -729,9 +676,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the recoverableDatabaseId property: The resource identifier of the
-     * recoverable database associated with create operation of this database.
-     * 
+     * Set the recoverableDatabaseId property: The resource identifier of the recoverable database associated with
+     * create operation of this database.
+     *
      * @param recoverableDatabaseId the recoverableDatabaseId value to set.
      * @return the DatabaseInner object itself.
      */
@@ -741,10 +688,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the restorableDroppedDatabaseId property: The resource identifier of
-     * the restorable dropped database associated with create operation of this
-     * database.
-     * 
+     * Get the restorableDroppedDatabaseId property: The resource identifier of the restorable dropped database
+     * associated with create operation of this database.
+     *
      * @return the restorableDroppedDatabaseId value.
      */
     public String restorableDroppedDatabaseId() {
@@ -752,12 +698,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the restorableDroppedDatabaseId property: The resource identifier of
-     * the restorable dropped database associated with create operation of this
-     * database.
-     * 
-     * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value
-     * to set.
+     * Set the restorableDroppedDatabaseId property: The resource identifier of the restorable dropped database
+     * associated with create operation of this database.
+     *
+     * @param restorableDroppedDatabaseId the restorableDroppedDatabaseId value to set.
      * @return the DatabaseInner object itself.
      */
     public DatabaseInner withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId) {
@@ -767,7 +711,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the catalogCollation property: Collation of the metadata catalog.
-     * 
+     *
      * @return the catalogCollation value.
      */
     public CatalogCollationType catalogCollation() {
@@ -776,7 +720,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Set the catalogCollation property: Collation of the metadata catalog.
-     * 
+     *
      * @param catalogCollation the catalogCollation value to set.
      * @return the DatabaseInner object itself.
      */
@@ -786,10 +730,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not this database is zone
-     * redundant, which means the replicas of this database will be spread
-     * across multiple availability zones.
-     * 
+     * Get the zoneRedundant property: Whether or not this database is zone redundant, which means the replicas of this
+     * database will be spread across multiple availability zones.
+     *
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -797,10 +740,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the zoneRedundant property: Whether or not this database is zone
-     * redundant, which means the replicas of this database will be spread
-     * across multiple availability zones.
-     * 
+     * Set the zoneRedundant property: Whether or not this database is zone redundant, which means the replicas of this
+     * database will be spread across multiple availability zones.
+     *
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the DatabaseInner object itself.
      */
@@ -810,9 +752,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this
-     * database.
-     * 
+     * Get the licenseType property: The license type to apply for this database.
+     *
      * @return the licenseType value.
      */
     public DatabaseLicenseType licenseType() {
@@ -820,9 +761,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this
-     * database.
-     * 
+     * Set the licenseType property: The license type to apply for this database.
+     *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseInner object itself.
      */
@@ -833,7 +773,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the maxLogSizeBytes property: The max log size for this database.
-     * 
+     *
      * @return the maxLogSizeBytes value.
      */
     public Long maxLogSizeBytes() {
@@ -841,10 +781,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the earliestRestoreDate property: This records the earliest start
-     * date and time that restore is available for this database (ISO8601
-     * format).
-     * 
+     * Get the earliestRestoreDate property: This records the earliest start date and time that restore is available for
+     * this database (ISO8601 format).
+     *
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -852,11 +791,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the readScale property: If enabled, connections that have
-     * application intent set to readonly in their connection string may be
-     * routed to a readonly secondary replica. This property is only settable
-     * for Premium and Business Critical databases.
-     * 
+     * Get the readScale property: If enabled, connections that have application intent set to readonly in their
+     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
+     * Business Critical databases.
+     *
      * @return the readScale value.
      */
     public DatabaseReadScale readScale() {
@@ -864,11 +802,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the readScale property: If enabled, connections that have
-     * application intent set to readonly in their connection string may be
-     * routed to a readonly secondary replica. This property is only settable
-     * for Premium and Business Critical databases.
-     * 
+     * Set the readScale property: If enabled, connections that have application intent set to readonly in their
+     * connection string may be routed to a readonly secondary replica. This property is only settable for Premium and
+     * Business Critical databases.
+     *
      * @param readScale the readScale value to set.
      * @return the DatabaseInner object itself.
      */
@@ -878,11 +815,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the readReplicaCount property: The number of readonly secondary
-     * replicas associated with the database to which readonly application
-     * intent connections may be routed. This property is only settable for
-     * Hyperscale edition databases.
-     * 
+     * Get the readReplicaCount property: The number of readonly secondary replicas associated with the database to
+     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
+     * edition databases.
+     *
      * @return the readReplicaCount value.
      */
     public Integer readReplicaCount() {
@@ -890,11 +826,10 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the readReplicaCount property: The number of readonly secondary
-     * replicas associated with the database to which readonly application
-     * intent connections may be routed. This property is only settable for
-     * Hyperscale edition databases.
-     * 
+     * Set the readReplicaCount property: The number of readonly secondary replicas associated with the database to
+     * which readonly application intent connections may be routed. This property is only settable for Hyperscale
+     * edition databases.
+     *
      * @param readReplicaCount the readReplicaCount value to set.
      * @return the DatabaseInner object itself.
      */
@@ -905,7 +840,7 @@ public class DatabaseInner extends Resource {
 
     /**
      * Get the currentSku property: The name and tier of the SKU.
-     * 
+     *
      * @return the currentSku value.
      */
     public Sku currentSku() {
@@ -913,10 +848,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the autoPauseDelay property: Time in minutes after which database is
-     * automatically paused. A value of -1 means that automatic pause is
-     * disabled.
-     * 
+     * Get the autoPauseDelay property: Time in minutes after which database is automatically paused. A value of -1
+     * means that automatic pause is disabled.
+     *
      * @return the autoPauseDelay value.
      */
     public Integer autoPauseDelay() {
@@ -924,10 +858,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the autoPauseDelay property: Time in minutes after which database is
-     * automatically paused. A value of -1 means that automatic pause is
-     * disabled.
-     * 
+     * Set the autoPauseDelay property: Time in minutes after which database is automatically paused. A value of -1
+     * means that automatic pause is disabled.
+     *
      * @param autoPauseDelay the autoPauseDelay value to set.
      * @return the DatabaseInner object itself.
      */
@@ -937,9 +870,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the minCapacity property: Minimal capacity that database will always
-     * have allocated, if not paused.
-     * 
+     * Get the minCapacity property: Minimal capacity that database will always have allocated, if not paused.
+     *
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -947,9 +879,8 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Set the minCapacity property: Minimal capacity that database will always
-     * have allocated, if not paused.
-     * 
+     * Set the minCapacity property: Minimal capacity that database will always have allocated, if not paused.
+     *
      * @param minCapacity the minCapacity value to set.
      * @return the DatabaseInner object itself.
      */
@@ -959,9 +890,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the pausedDate property: The date when database was paused by user
-     * configuration or action (ISO8601 format). Null if the database is ready.
-     * 
+     * Get the pausedDate property: The date when database was paused by user configuration or action (ISO8601 format).
+     * Null if the database is ready.
+     *
      * @return the pausedDate value.
      */
     public OffsetDateTime pausedDate() {
@@ -969,10 +900,9 @@ public class DatabaseInner extends Resource {
     }
 
     /**
-     * Get the resumedDate property: The date when database was resumed by user
-     * action or database login (ISO8601 format). Null if the database is
-     * paused.
-     * 
+     * Get the resumedDate property: The date when database was resumed by user action or database login (ISO8601
+     * format). Null if the database is paused.
+     *
      * @return the resumedDate value.
      */
     public OffsetDateTime resumedDate() {

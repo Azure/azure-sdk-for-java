@@ -56,27 +56,51 @@ Merging Pull Requests (for project contributors with write access)
 
 ### Building and Testing
 
-The easiest way to build is by running the following command from the root folder:
+>**Note**: Build and test instructions have recently changed. The ```pom.client.xml``` file is no
+> longer in the root of the repository and should be not be used as an aggregator moving forward.
+
+This repository uses Maven to build the various modules that make up the Azure SDK for Java. You can build the entire set of modules by running the following command from the root of the repository:
+
 ```
-mvn -f pom.client.xml -Dgpg.skip -DskipTests -Dinclude-non-shipping-modules clean install
+mvn -Dgpg.skip clean install
 ```
-- `-f pom.client.xml`: tells maven to target latest Azure SDK for Java project.
-- `-Dgpg.skip`: disables [gpg](https://mran.microsoft.com/snapshot/2016-12-19/web/packages/gpg/vignettes/intro.html) signing.
-- `-DskipTests:` Building without running unit tests would speed operation up, however, make sure all tests pass before creating a new PR.
-- `-Dinclude-non-shipping-modules:` Installing and Runing sdk build tools.
-- `clean:` will remove any previous generated output.
-- `install:`  compiles project and installs it in the local Maven cache.
+
+This will build, test and install all of the modules into your local Maven cache. Optionally, you
+can also skip unit test execution by issuing the following command. This can be useful when you
+just want to try out a quick change without having to worry about unit tests.
+
+```
+mvn -Dgpg.skip -DskipTests clean install
+```
+
+If you only want to work on one module, you may opt to build just that module and its dependencies (e.g. com.azure:azure-messaging-eventhubs):
+
+```
+mvn -Dgpg.skip -DskipTests -pl com.azure:azure-messaging-eventhubs -am
+```
+
+The ```-pl``` switch takes a comma seperated list of fully qualified module names and the ```-am```
+switch tells Maven to _also make_ all of the dependencies within the repository that it depends on. If
+you are making changes across two modules you can tell Maven to build them both like this:
+
+```
+mvn -Dgpg.skip -DskipTests -pl com.azure:azure-messaging-eventhubs,com.azure:azure-core-amqp -am
+```
+
+Some parts of the SDK have multiple modules for a particular service, if you want to avoid typing
+in all those module names for the ```-pl``` switch you can just target the appropriate POM file
+(e.g. sdk/eventhubs/pom.xml) and execute the following command.
+
+```
+mvn -f sdk/eventhubs/pom.xml -Dgpg.skip clean install
+```
+
+Note that any dependencies for those modules will need to be in the Maven cache so will want to run
+the first command listed above once to get the cache primed with all the dependencies.
 
 >**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11 
 >and [this wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit testing
 
-### Compiling one project only
-
-```
-mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
-
-//example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
-```
 ### Live testing
 
 Live tests assume a live resource has been created and appropriate environment
@@ -97,7 +121,7 @@ running live tests.
 To run live tests against a service after deploying live resources:
 
 ```
-mvn -f sdk/keyvault/pom.service.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
+mvn -f sdk/keyvault/pom.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
 ```
 
 Some live tests may have additional steps for setting up live testing resources.

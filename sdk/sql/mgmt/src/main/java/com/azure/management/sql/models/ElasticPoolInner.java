@@ -14,24 +14,22 @@ import com.azure.management.sql.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ElasticPool model.
- */
+/** The ElasticPool model. */
 @JsonFlatten
 @Fluent
 public class ElasticPoolInner extends Resource {
     /*
      * The elastic pool SKU.
-     * 
+     *
      * The list of SKUs may vary by region and support offer. To determine the
      * SKUs (including the SKU name, tier/edition, family, and capacity) that
      * are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
-     * 
+     *
      * ```azurecli
      * az sql elastic-pool list-editions -l <location> -o table
      * ````
-     * 
+     *
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -83,16 +81,13 @@ public class ElasticPoolInner extends Resource {
 
     /**
      * Get the sku property: The elastic pool SKU.
-     * 
-     * The list of SKUs may vary by region and support offer. To determine the
-     * SKUs (including the SKU name, tier/edition, family, and capacity) that
-     * are available to your subscription in an Azure region, use the
+     *
+     * <p>The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
-     * 
-     * ```azurecli
-     * az sql elastic-pool list-editions -l &lt;location&gt; -o table
-     * ````.
-     * 
+     *
+     * <p>```azurecli az sql elastic-pool list-editions -l &lt;location&gt; -o table ````.
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -101,16 +96,13 @@ public class ElasticPoolInner extends Resource {
 
     /**
      * Set the sku property: The elastic pool SKU.
-     * 
-     * The list of SKUs may vary by region and support offer. To determine the
-     * SKUs (including the SKU name, tier/edition, family, and capacity) that
-     * are available to your subscription in an Azure region, use the
+     *
+     * <p>The list of SKUs may vary by region and support offer. To determine the SKUs (including the SKU name,
+     * tier/edition, family, and capacity) that are available to your subscription in an Azure region, use the
      * `Capabilities_ListByLocation` REST API or the following command:
-     * 
-     * ```azurecli
-     * az sql elastic-pool list-editions -l &lt;location&gt; -o table
-     * ````.
-     * 
+     *
+     * <p>```azurecli az sql elastic-pool list-editions -l &lt;location&gt; -o table ````.
+     *
      * @param sku the sku value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -120,9 +112,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of elastic pool. This is metadata used for
-     * the Azure portal experience.
-     * 
+     * Get the kind property: Kind of elastic pool. This is metadata used for the Azure portal experience.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -131,7 +122,7 @@ public class ElasticPoolInner extends Resource {
 
     /**
      * Get the state property: The state of the elastic pool.
-     * 
+     *
      * @return the state value.
      */
     public ElasticPoolState state() {
@@ -139,9 +130,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the creationDate property: The creation date of the elastic pool
-     * (ISO8601 format).
-     * 
+     * Get the creationDate property: The creation date of the elastic pool (ISO8601 format).
+     *
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -149,9 +139,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the maxSizeBytes property: The storage limit for the database
-     * elastic pool in bytes.
-     * 
+     * Get the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
+     *
      * @return the maxSizeBytes value.
      */
     public Long maxSizeBytes() {
@@ -159,9 +148,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Set the maxSizeBytes property: The storage limit for the database
-     * elastic pool in bytes.
-     * 
+     * Set the maxSizeBytes property: The storage limit for the database elastic pool in bytes.
+     *
      * @param maxSizeBytes the maxSizeBytes value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -171,9 +159,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the perDatabaseSettings property: The per database settings for the
-     * elastic pool.
-     * 
+     * Get the perDatabaseSettings property: The per database settings for the elastic pool.
+     *
      * @return the perDatabaseSettings value.
      */
     public ElasticPoolPerDatabaseSettings perDatabaseSettings() {
@@ -181,9 +168,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Set the perDatabaseSettings property: The per database settings for the
-     * elastic pool.
-     * 
+     * Set the perDatabaseSettings property: The per database settings for the elastic pool.
+     *
      * @param perDatabaseSettings the perDatabaseSettings value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -193,10 +179,9 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the zoneRedundant property: Whether or not this elastic pool is zone
-     * redundant, which means the replicas of this elastic pool will be spread
-     * across multiple availability zones.
-     * 
+     * Get the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
+     * this elastic pool will be spread across multiple availability zones.
+     *
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -204,10 +189,9 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Set the zoneRedundant property: Whether or not this elastic pool is zone
-     * redundant, which means the replicas of this elastic pool will be spread
-     * across multiple availability zones.
-     * 
+     * Set the zoneRedundant property: Whether or not this elastic pool is zone redundant, which means the replicas of
+     * this elastic pool will be spread across multiple availability zones.
+     *
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ElasticPoolInner object itself.
      */
@@ -217,9 +201,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this elastic
-     * pool.
-     * 
+     * Get the licenseType property: The license type to apply for this elastic pool.
+     *
      * @return the licenseType value.
      */
     public ElasticPoolLicenseType licenseType() {
@@ -227,9 +210,8 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this elastic
-     * pool.
-     * 
+     * Set the licenseType property: The license type to apply for this elastic pool.
+     *
      * @param licenseType the licenseType value to set.
      * @return the ElasticPoolInner object itself.
      */

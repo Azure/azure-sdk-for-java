@@ -10,10 +10,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/**
- * The TaskStepUpdateParameters model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = TaskStepUpdateParameters.class)
+/** The TaskStepUpdateParameters model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = TaskStepUpdateParameters.class)
 @JsonTypeName("TaskStepUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Docker", value = DockerBuildStepUpdateParameters.class),
@@ -36,9 +38,8 @@ public class TaskStepUpdateParameters {
     private String contextAccessToken;
 
     /**
-     * Get the contextPath property: The URL(absolute or relative) of the
-     * source context for the task step.
-     * 
+     * Get the contextPath property: The URL(absolute or relative) of the source context for the task step.
+     *
      * @return the contextPath value.
      */
     public String contextPath() {
@@ -46,9 +47,8 @@ public class TaskStepUpdateParameters {
     }
 
     /**
-     * Set the contextPath property: The URL(absolute or relative) of the
-     * source context for the task step.
-     * 
+     * Set the contextPath property: The URL(absolute or relative) of the source context for the task step.
+     *
      * @param contextPath the contextPath value to set.
      * @return the TaskStepUpdateParameters object itself.
      */
@@ -58,9 +58,9 @@ public class TaskStepUpdateParameters {
     }
 
     /**
-     * Get the contextAccessToken property: The token (git PAT or SAS token of
-     * storage account blob) associated with the context for a step.
-     * 
+     * Get the contextAccessToken property: The token (git PAT or SAS token of storage account blob) associated with the
+     * context for a step.
+     *
      * @return the contextAccessToken value.
      */
     public String contextAccessToken() {
@@ -68,9 +68,9 @@ public class TaskStepUpdateParameters {
     }
 
     /**
-     * Set the contextAccessToken property: The token (git PAT or SAS token of
-     * storage account blob) associated with the context for a step.
-     * 
+     * Set the contextAccessToken property: The token (git PAT or SAS token of storage account blob) associated with the
+     * context for a step.
+     *
      * @param contextAccessToken the contextAccessToken value to set.
      * @return the TaskStepUpdateParameters object itself.
      */

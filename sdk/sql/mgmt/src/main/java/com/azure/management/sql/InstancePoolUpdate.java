@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The InstancePoolUpdate model.
- */
+/** The InstancePoolUpdate model. */
 @Fluent
 public final class InstancePoolUpdate {
     /*
@@ -21,7 +19,7 @@ public final class InstancePoolUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +28,7 @@ public final class InstancePoolUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the InstancePoolUpdate object itself.
      */

@@ -7,9 +7,7 @@ package com.azure.management.keyvault;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Sku model.
- */
+/** The Sku model. */
 @Fluent
 public final class Sku {
     /*
@@ -25,16 +23,14 @@ public final class Sku {
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
-    /**
-     * Creates an instance of Sku class.
-     */
+    /** Creates an instance of Sku class. */
     public Sku() {
         family = "A";
     }
 
     /**
      * Get the family property: SKU family name.
-     * 
+     *
      * @return the family value.
      */
     public String family() {
@@ -43,7 +39,7 @@ public final class Sku {
 
     /**
      * Set the family property: SKU family name.
-     * 
+     *
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -53,9 +49,8 @@ public final class Sku {
     }
 
     /**
-     * Get the name property: SKU name to specify whether the key vault is a
-     * standard vault or a premium vault.
-     * 
+     * Get the name property: SKU name to specify whether the key vault is a standard vault or a premium vault.
+     *
      * @return the name value.
      */
     public SkuName name() {
@@ -63,9 +58,8 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: SKU name to specify whether the key vault is a
-     * standard vault or a premium vault.
-     * 
+     * Set the name property: SKU name to specify whether the key vault is a standard vault or a premium vault.
+     *
      * @param name the name value to set.
      * @return the Sku object itself.
      */

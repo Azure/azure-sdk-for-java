@@ -7,23 +7,15 @@ package com.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for RestorePointType.
- */
+/** Defines values for RestorePointType. */
 public enum RestorePointType {
-    /**
-     * Enum value CONTINUOUS.
-     */
+    /** Enum value CONTINUOUS. */
     CONTINUOUS("CONTINUOUS"),
 
-    /**
-     * Enum value DISCRETE.
-     */
+    /** Enum value DISCRETE. */
     DISCRETE("DISCRETE");
 
-    /**
-     * The actual serialized value for a RestorePointType instance.
-     */
+    /** The actual serialized value for a RestorePointType instance. */
     private final String value;
 
     RestorePointType(String value) {
@@ -32,7 +24,7 @@ public enum RestorePointType {
 
     /**
      * Parses a serialized value to a RestorePointType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed RestorePointType object, or null if unable to parse.
      */

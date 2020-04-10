@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/**
- * The AccessPolicyEntry model.
- */
+/** The AccessPolicyEntry model. */
 @Fluent
 public final class AccessPolicyEntry {
     /*
@@ -41,9 +39,9 @@ public final class AccessPolicyEntry {
     private Permissions permissions;
 
     /**
-     * Get the tenantId property: The Azure Active Directory tenant ID that
-     * should be used for authenticating requests to the key vault.
-     * 
+     * Get the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * to the key vault.
+     *
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -51,9 +49,9 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Set the tenantId property: The Azure Active Directory tenant ID that
-     * should be used for authenticating requests to the key vault.
-     * 
+     * Set the tenantId property: The Azure Active Directory tenant ID that should be used for authenticating requests
+     * to the key vault.
+     *
      * @param tenantId the tenantId value to set.
      * @return the AccessPolicyEntry object itself.
      */
@@ -63,10 +61,9 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Get the objectId property: The object ID of a user, service principal or
-     * security group in the Azure Active Directory tenant for the vault. The
-     * object ID must be unique for the list of access policies.
-     * 
+     * Get the objectId property: The object ID of a user, service principal or security group in the Azure Active
+     * Directory tenant for the vault. The object ID must be unique for the list of access policies.
+     *
      * @return the objectId value.
      */
     public String objectId() {
@@ -74,10 +71,9 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Set the objectId property: The object ID of a user, service principal or
-     * security group in the Azure Active Directory tenant for the vault. The
-     * object ID must be unique for the list of access policies.
-     * 
+     * Set the objectId property: The object ID of a user, service principal or security group in the Azure Active
+     * Directory tenant for the vault. The object ID must be unique for the list of access policies.
+     *
      * @param objectId the objectId value to set.
      * @return the AccessPolicyEntry object itself.
      */
@@ -87,9 +83,8 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Get the applicationId property:  Application ID of the client making
-     * request on behalf of a principal.
-     * 
+     * Get the applicationId property: Application ID of the client making request on behalf of a principal.
+     *
      * @return the applicationId value.
      */
     public UUID applicationId() {
@@ -97,9 +92,8 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Set the applicationId property:  Application ID of the client making
-     * request on behalf of a principal.
-     * 
+     * Set the applicationId property: Application ID of the client making request on behalf of a principal.
+     *
      * @param applicationId the applicationId value to set.
      * @return the AccessPolicyEntry object itself.
      */
@@ -109,9 +103,8 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Get the permissions property: Permissions the identity has for keys,
-     * secrets and certificates.
-     * 
+     * Get the permissions property: Permissions the identity has for keys, secrets and certificates.
+     *
      * @return the permissions value.
      */
     public Permissions permissions() {
@@ -119,9 +112,8 @@ public final class AccessPolicyEntry {
     }
 
     /**
-     * Set the permissions property: Permissions the identity has for keys,
-     * secrets and certificates.
-     * 
+     * Set the permissions property: Permissions the identity has for keys, secrets and certificates.
+     *
      * @param permissions the permissions value to set.
      * @return the AccessPolicyEntry object itself.
      */

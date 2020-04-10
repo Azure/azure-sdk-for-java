@@ -120,8 +120,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         }
 
         if (!excludeSharedTokenCacheCredential) {
-            output.add(new SharedTokenCacheCredential(null, null,
-                "04b07795-8ddb-461a-bbee-02f9e1bf7b46", identityClientOptions));
+            output.add(new SharedTokenCacheCredential(null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
+                null, identityClientOptions));
         }
 
         if (!excludeAzureCliCredential) {

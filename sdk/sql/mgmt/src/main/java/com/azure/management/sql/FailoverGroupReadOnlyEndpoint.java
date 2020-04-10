@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The FailoverGroupReadOnlyEndpoint model.
- */
+/** The FailoverGroupReadOnlyEndpoint model. */
 @Fluent
 public final class FailoverGroupReadOnlyEndpoint {
     /*
@@ -19,9 +17,8 @@ public final class FailoverGroupReadOnlyEndpoint {
     private ReadOnlyEndpointFailoverPolicy failoverPolicy;
 
     /**
-     * Get the failoverPolicy property: Failover policy of the read-only
-     * endpoint for the failover group.
-     * 
+     * Get the failoverPolicy property: Failover policy of the read-only endpoint for the failover group.
+     *
      * @return the failoverPolicy value.
      */
     public ReadOnlyEndpointFailoverPolicy failoverPolicy() {
@@ -29,9 +26,8 @@ public final class FailoverGroupReadOnlyEndpoint {
     }
 
     /**
-     * Set the failoverPolicy property: Failover policy of the read-only
-     * endpoint for the failover group.
-     * 
+     * Set the failoverPolicy property: Failover policy of the read-only endpoint for the failover group.
+     *
      * @param failoverPolicy the failoverPolicy value to set.
      * @return the FailoverGroupReadOnlyEndpoint object itself.
      */

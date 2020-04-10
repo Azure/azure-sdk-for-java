@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The NetworkRuleSet model.
- */
+/** The NetworkRuleSet model. */
 @Fluent
 public final class NetworkRuleSet {
     /*
@@ -41,10 +39,9 @@ public final class NetworkRuleSet {
     private List<VirtualNetworkRule> virtualNetworkRules;
 
     /**
-     * Get the bypass property: Tells what traffic can bypass network rules.
-     * This can be 'AzureServices' or 'None'.  If not specified the default is
-     * 'AzureServices'.
-     * 
+     * Get the bypass property: Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If
+     * not specified the default is 'AzureServices'.
+     *
      * @return the bypass value.
      */
     public NetworkRuleBypassOptions bypass() {
@@ -52,10 +49,9 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Set the bypass property: Tells what traffic can bypass network rules.
-     * This can be 'AzureServices' or 'None'.  If not specified the default is
-     * 'AzureServices'.
-     * 
+     * Set the bypass property: Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'. If
+     * not specified the default is 'AzureServices'.
+     *
      * @param bypass the bypass value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -65,10 +61,9 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Get the defaultAction property: The default action when no rule from
-     * ipRules and from virtualNetworkRules match. This is only used after the
-     * bypass property has been evaluated.
-     * 
+     * Get the defaultAction property: The default action when no rule from ipRules and from virtualNetworkRules match.
+     * This is only used after the bypass property has been evaluated.
+     *
      * @return the defaultAction value.
      */
     public NetworkRuleAction defaultAction() {
@@ -76,10 +71,9 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Set the defaultAction property: The default action when no rule from
-     * ipRules and from virtualNetworkRules match. This is only used after the
-     * bypass property has been evaluated.
-     * 
+     * Set the defaultAction property: The default action when no rule from ipRules and from virtualNetworkRules match.
+     * This is only used after the bypass property has been evaluated.
+     *
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -90,7 +84,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the ipRules property: The list of IP address rules.
-     * 
+     *
      * @return the ipRules value.
      */
     public List<IPRule> ipRules() {
@@ -99,7 +93,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the ipRules property: The list of IP address rules.
-     * 
+     *
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -110,7 +104,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the virtualNetworkRules property: The list of virtual network rules.
-     * 
+     *
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -119,7 +113,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the virtualNetworkRules property: The list of virtual network rules.
-     * 
+     *
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSet object itself.
      */

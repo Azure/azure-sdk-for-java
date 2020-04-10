@@ -7,9 +7,7 @@ package com.azure.management.keyvault;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateEndpointConnectionsDeleteHeaders model.
- */
+/** The PrivateEndpointConnectionsDeleteHeaders model. */
 @Fluent
 public final class PrivateEndpointConnectionsDeleteHeaders {
     /*
@@ -26,7 +24,7 @@ public final class PrivateEndpointConnectionsDeleteHeaders {
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     * 
+     *
      * @return the retryAfter value.
      */
     public Integer retryAfter() {
@@ -35,7 +33,7 @@ public final class PrivateEndpointConnectionsDeleteHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     * 
+     *
      * @param retryAfter the retryAfter value to set.
      * @return the PrivateEndpointConnectionsDeleteHeaders object itself.
      */
@@ -46,7 +44,7 @@ public final class PrivateEndpointConnectionsDeleteHeaders {
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -55,7 +53,7 @@ public final class PrivateEndpointConnectionsDeleteHeaders {
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the PrivateEndpointConnectionsDeleteHeaders object itself.
      */

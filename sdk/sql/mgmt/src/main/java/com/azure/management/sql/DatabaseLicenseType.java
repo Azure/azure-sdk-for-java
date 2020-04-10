@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for DatabaseLicenseType.
- */
+/** Defines values for DatabaseLicenseType. */
 public final class DatabaseLicenseType extends ExpandableStringEnum<DatabaseLicenseType> {
-    /**
-     * Static value LicenseIncluded for DatabaseLicenseType.
-     */
+    /** Static value LicenseIncluded for DatabaseLicenseType. */
     public static final DatabaseLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
-    /**
-     * Static value BasePrice for DatabaseLicenseType.
-     */
+    /** Static value BasePrice for DatabaseLicenseType. */
     public static final DatabaseLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
      * Creates or finds a DatabaseLicenseType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DatabaseLicenseType.
      */
@@ -33,9 +27,7 @@ public final class DatabaseLicenseType extends ExpandableStringEnum<DatabaseLice
         return fromString(name, DatabaseLicenseType.class);
     }
 
-    /**
-     * @return known DatabaseLicenseType values.
-     */
+    /** @return known DatabaseLicenseType values. */
     public static Collection<DatabaseLicenseType> values() {
         return values(DatabaseLicenseType.class);
     }

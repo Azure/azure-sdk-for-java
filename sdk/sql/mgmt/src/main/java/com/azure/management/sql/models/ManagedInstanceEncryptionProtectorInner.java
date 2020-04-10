@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.management.sql.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedInstanceEncryptionProtector model.
- */
+/** The ManagedInstanceEncryptionProtector model. */
 @JsonFlatten
 @Fluent
 public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
@@ -48,9 +46,8 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
     private String thumbprint;
 
     /**
-     * Get the kind property: Kind of encryption protector. This is metadata
-     * used for the Azure portal experience.
-     * 
+     * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
+     *
      * @return the kind value.
      */
     public String kind() {
@@ -59,7 +56,7 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the serverKeyName property: The name of the managed instance key.
-     * 
+     *
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
@@ -68,7 +65,7 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
 
     /**
      * Set the serverKeyName property: The name of the managed instance key.
-     * 
+     *
      * @param serverKeyName the serverKeyName value to set.
      * @return the ManagedInstanceEncryptionProtectorInner object itself.
      */
@@ -78,9 +75,8 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
     }
 
     /**
-     * Get the serverKeyType property: The encryption protector type like
-     * 'ServiceManaged', 'AzureKeyVault'.
-     * 
+     * Get the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
+     *
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -88,9 +84,8 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
     }
 
     /**
-     * Set the serverKeyType property: The encryption protector type like
-     * 'ServiceManaged', 'AzureKeyVault'.
-     * 
+     * Set the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
+     *
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceEncryptionProtectorInner object itself.
      */
@@ -101,7 +96,7 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the server key.
-     * 
+     *
      * @return the uri value.
      */
     public String uri() {
@@ -110,7 +105,7 @@ public class ManagedInstanceEncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     * 
+     *
      * @return the thumbprint value.
      */
     public String thumbprint() {
