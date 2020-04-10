@@ -52,7 +52,6 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        copy -r target/staging $(Build.ArtifactStagingDirectory)
         copy target/dependency-whitelist.json (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
