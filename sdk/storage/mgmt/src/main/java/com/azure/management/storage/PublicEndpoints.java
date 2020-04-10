@@ -8,8 +8,8 @@ package com.azure.management.storage;
  * of a public blob, queue or table object.
  */
 public class PublicEndpoints {
-    private Endpoints primary;
-    private Endpoints secondary;
+    private final Endpoints primary;
+    private final Endpoints secondary;
 
     /**
      * Creates an instance of PublicEndpoints with two access endpoints.

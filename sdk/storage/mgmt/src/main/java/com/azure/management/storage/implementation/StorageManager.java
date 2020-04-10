@@ -77,11 +77,11 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
-     * @param SdkContext the sdk context
+     * @param sdkContext the sdk context
      * @return the StorageManager
      */
-    public static StorageManager authenticate(RestClient restClient, String subscriptionId, SdkContext SdkContext) {
-        return new StorageManager(restClient, subscriptionId, SdkContext);
+    public static StorageManager authenticate(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
+        return new StorageManager(restClient, subscriptionId, sdkContext);
     }
 
     /** The interface allowing configurations to be set. */

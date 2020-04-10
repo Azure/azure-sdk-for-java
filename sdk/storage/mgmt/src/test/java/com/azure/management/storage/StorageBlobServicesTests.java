@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.management.storage;
 
 import com.azure.management.RestClient;
@@ -22,12 +25,12 @@ public class StorageBlobServicesTests extends StorageManagementTest {
 
     @Test
     public void canCreateBlobServices() {
-        String SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        String saName = generateRandomResourceName("javacsmsa", 15);
 
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -46,12 +49,12 @@ public class StorageBlobServicesTests extends StorageManagementTest {
 
     @Test
     public void canUpdateBlobServices() {
-        String SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        String saName = generateRandomResourceName("javacsmsa", 15);
 
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();

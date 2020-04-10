@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.management.storage;
 
 import com.azure.management.RestClient;
@@ -25,11 +28,11 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
 
     @Test
     public void canCreateManagementPolicies() {
-        String SA_NAME = generateRandomResourceName("javacmsa", 15);
+        String saName = generateRandomResourceName("javacmsa", 15);
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withBlobStorageAccountKind()
@@ -40,7 +43,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         ManagementPolicy managementPolicy =
             managementPolicies
                 .define("management-test")
-                .withExistingStorageAccount(rgName, SA_NAME)
+                .withExistingStorageAccount(rgName, saName)
                 .defineRule("rule1")
                 .withLifecycleRuleType()
                 .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
@@ -122,11 +125,11 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
 
     @Test
     public void managementPolicyGetters() {
-        String SA_NAME = generateRandomResourceName("javacmsa", 15);
+        String saName = generateRandomResourceName("javacmsa", 15);
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withBlobStorageAccountKind()
@@ -137,7 +140,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         ManagementPolicy managementPolicy =
             managementPolicies
                 .define("management-test")
-                .withExistingStorageAccount(rgName, SA_NAME)
+                .withExistingStorageAccount(rgName, saName)
                 .defineRule("rule1")
                 .withLifecycleRuleType()
                 .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)
@@ -177,7 +180,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
 
     @Test
     public void canUpdateManagementPolicy() {
-        String SA_NAME = generateRandomResourceName("javacmsa", 15);
+        String saName = generateRandomResourceName("javacmsa", 15);
         List<BlobTypes> blobTypesToFilterFor = new ArrayList<>();
         blobTypesToFilterFor.add(BlobTypes.BLOCK_BLOB);
 
@@ -187,7 +190,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withBlobStorageAccountKind()
@@ -198,7 +201,7 @@ public class StorageManagementPoliciesTests extends StorageManagementTest {
         ManagementPolicy managementPolicy =
             managementPolicies
                 .define("management-test")
-                .withExistingStorageAccount(rgName, SA_NAME)
+                .withExistingStorageAccount(rgName, saName)
                 .defineRule("rule1")
                 .withLifecycleRuleType()
                 .withBlobTypeToFilterFor(BlobTypes.BLOCK_BLOB)

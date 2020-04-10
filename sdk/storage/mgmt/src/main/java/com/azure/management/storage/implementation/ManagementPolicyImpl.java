@@ -3,6 +3,7 @@
 
 package com.azure.management.storage.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.storage.BlobTypes;
 import com.azure.management.storage.ManagementPolicy;
@@ -21,6 +22,7 @@ import reactor.core.publisher.Mono;
 
 class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, ManagementPolicyInner, ManagementPolicyImpl>
     implements ManagementPolicy, ManagementPolicy.Definition, ManagementPolicy.Update {
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
@@ -225,10 +227,10 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
             }
         }
         if (ruleToUpdate == null) {
-            throw new UnsupportedOperationException(
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "There is no rule that exists with the name "
                     + name
-                    + ". Please define a rule with this name before updating.");
+                    + ". Please define a rule with this name before updating."));
         }
         return new PolicyRuleImpl(ruleToUpdate, this);
     }
@@ -242,8 +244,8 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
             }
         }
         if (ruleToDelete == null) {
-            throw new UnsupportedOperationException(
-                "There is no rule that exists with the name " + name + " so this rule can not be deleted.");
+            throw logger.logExceptionAsError(new UnsupportedOperationException(
+                "There is no rule that exists with the name " + name + " so this rule can not be deleted."));
         }
         List<ManagementPolicyRule> currentRules = this.upolicy.rules();
         currentRules.remove(ruleToDelete);

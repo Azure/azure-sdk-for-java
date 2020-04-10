@@ -3,6 +3,7 @@
 
 package com.azure.management.storage.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.AccessTier;
@@ -37,6 +38,7 @@ class StorageAccountImpl
     extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl, StorageManager>
     implements StorageAccount, StorageAccount.Definition, StorageAccount.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
     private StorageAccountCreateParameters createParameters;
@@ -366,8 +368,8 @@ class StorageAccountImpl
             createParameters.withAccessTier(accessTier);
         } else {
             if (this.inner().kind() != Kind.BLOB_STORAGE) {
-                throw new UnsupportedOperationException(
-                    "Access tier can not be changed for general purpose storage accounts.");
+                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                    "Access tier can not be changed for general purpose storage accounts."));
             }
             updateParameters.withAccessTier(accessTier);
         }

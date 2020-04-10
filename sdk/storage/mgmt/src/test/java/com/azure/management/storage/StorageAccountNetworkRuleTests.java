@@ -26,15 +26,15 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
 
     @Test
     public void canConfigureNetworkRulesWithCreate() throws Exception {
-        String SA_NAME1 = generateRandomResourceName("javacsmsa", 15);
-        String SA_NAME2 = generateRandomResourceName("javacsmsa", 15);
-        String SA_NAME3 = generateRandomResourceName("javacsmsa", 15);
-        String SA_NAME4 = generateRandomResourceName("javacsmsa", 15);
+        String saName1 = generateRandomResourceName("javacsmsa", 15);
+        String saName2 = generateRandomResourceName("javacsmsa", 15);
+        String saName3 = generateRandomResourceName("javacsmsa", 15);
+        String saName4 = generateRandomResourceName("javacsmsa", 15);
 
         StorageAccount storageAccount1 =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME1)
+                .define(saName1)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -58,7 +58,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         StorageAccount storageAccount2 =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME2)
+                .define(saName2)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(resourceGroup)
                 .withAccessFromIpAddress("23.20.0.0")
@@ -85,7 +85,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         StorageAccount storageAccount3 =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME3)
+                .define(saName3)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAccessFromAllNetworks()
@@ -113,7 +113,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         StorageAccount storageAccount4 =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME4)
+                .define(saName4)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(resourceGroup)
                 .withReadAccessToLogEntriesFromAnyNetwork()
@@ -141,12 +141,12 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
 
     @Test
     public void canConfigureNetworkRulesWithUpdate() throws Exception {
-        String SA_NAME1 = generateRandomResourceName("javacsmsa", 15);
+        String saName1 = generateRandomResourceName("javacsmsa", 15);
 
         StorageAccount storageAccount1 =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME1)
+                .define(saName1)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();

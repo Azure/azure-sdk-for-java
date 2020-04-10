@@ -7,7 +7,7 @@ import com.azure.management.storage.models.CheckNameAvailabilityResultInner;
 
 /** The {@link StorageAccounts#checkNameAvailability} action result. */
 public class CheckNameAvailabilityResult {
-    private CheckNameAvailabilityResultInner inner;
+    private final CheckNameAvailabilityResultInner inner;
 
     /**
      * Creates an instance of the check name availability result object.

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.management.storage;
 
 import com.azure.management.RestClient;
@@ -24,7 +27,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
 
     @Test
     public void canCreateBlobContainer() {
-        String SA_NAME = generateRandomResourceName("javacmsa", 15);
+        String saName = generateRandomResourceName("javacmsa", 15);
         Map<String, String> metadataTest = new HashMap<String, String>();
         metadataTest.put("a", "b");
         metadataTest.put("c", "d");
@@ -32,7 +35,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -41,7 +44,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         BlobContainer blobContainer =
             blobContainers
                 .defineContainer("blob-test")
-                .withExistingBlobService(rgName, SA_NAME)
+                .withExistingBlobService(rgName, saName)
                 .withPublicAccess(PublicAccess.CONTAINER)
                 .withMetadata("a", "b")
                 .withMetadata("c", "d")
@@ -54,7 +57,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
 
     @Test
     public void canUpdateBlobContainer() {
-        String SA_NAME = generateRandomResourceName("javacmsa", 15);
+        String saName = generateRandomResourceName("javacmsa", 15);
 
         Map<String, String> metadataInitial = new HashMap<String, String>();
         metadataInitial.put("a", "b");
@@ -66,7 +69,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
-                .define(SA_NAME)
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -75,7 +78,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         BlobContainer blobContainer =
             blobContainers
                 .defineContainer("blob-test")
-                .withExistingBlobService(rgName, SA_NAME)
+                .withExistingBlobService(rgName, saName)
                 .withPublicAccess(PublicAccess.CONTAINER)
                 .withMetadata(metadataInitial)
                 .create();
