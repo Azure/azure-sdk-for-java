@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -116,6 +117,8 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                 searchApiKeyCredential.getKey());
             try {
                 searchIndexService.initializeAndCreateIndex(jsonFile);
+            } catch (UnknownHostException ex) {
+                azureSearchResources.createService(testResourceNamer);
             } catch (IOException e) {
                 fail(e.getMessage());
             }

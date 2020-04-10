@@ -106,7 +106,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     private static final boolean IS_DEBUG = false;
 
     private static String testEnvironment;
-    private static AzureSearchResources azureSearchResources;
+    static AzureSearchResources azureSearchResources;
 
     @BeforeAll
     public static void beforeAll() {

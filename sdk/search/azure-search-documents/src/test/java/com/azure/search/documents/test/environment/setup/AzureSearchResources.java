@@ -100,7 +100,6 @@ public class AzureSearchResources {
             .withExistingResourceGroup(resourceGroup)
             .withFreeSku()
             .create();
-
         searchAdminKey = searchService.getAdminKeys().primaryKey();
     }
 
