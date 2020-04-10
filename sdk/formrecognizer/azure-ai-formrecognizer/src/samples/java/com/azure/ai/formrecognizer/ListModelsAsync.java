@@ -8,11 +8,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample for listing all available models in an asynchronous way.
+ * Sample for listing information for all models in an asynchronous way.
  */
 public class ListModelsAsync {
     /**
-     * Sample for extracting receipt information using file source URL.
+     * Sample for listing information for all models using file source URL.
      *
      * @param args Unused. Arguments to the program.
      */

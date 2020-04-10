@@ -183,7 +183,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * List all available models with taking {@link Context}.
+     * List information for all models with taking {@link Context}.
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -191,7 +191,12 @@ public final class FormRecognizerAsyncClient {
      */
     PagedFlux<CustomFormModelInfo> listModels(Context context) {
         return new PagedFlux<>(() -> listFirstPageModelInfo(context),
-            continuationToken -> listNextPageModelInfo(continuationToken, context));
+            continuationToken -> {
+                if (CoreUtils.isNullOrEmpty(continuationToken)) {
+                    return Mono.empty();
+                }
+                return listNextPageModelInfo(continuationToken, context);
+            });
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
@@ -209,7 +214,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listNextPageModelInfo(String nextPageLink, Context context) {
-        return service.listCustomModelsNextSinglePageAsync(nextPageLink)
+        return service.listCustomModelsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
             .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,

@@ -120,7 +120,17 @@ public final class FormRecognizerClient {
     }
 
     /**
-     * List all available models.
+     * List information for all models.
+     *
+     * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CustomFormModelInfo> listModels() {
+        return new PagedIterable<>(client.listModels(Context.NONE));
+    }
+
+    /**
+     * List information for all models with taking {@link Context}.
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.

@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public class ListModels {
     /**
-     * Sample for extracting receipt information using file source URL.
+     * Sample for listing information for all models using file source URL.
      *
      * @param args Unused. Arguments to the program.
      */
@@ -22,7 +22,7 @@ public class ListModels {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        for (CustomFormModelInfo modelInfo : client.listModels(Context.NONE)) {
+        for (CustomFormModelInfo modelInfo : client.listModels()) {
             System.out.printf("Model ID = %s, model status = %s, created on = %s, last updated on = %s.%n",
                 modelInfo.getModelId(),
                 modelInfo.getStatus(),
