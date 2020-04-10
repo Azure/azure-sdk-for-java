@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.models;
 
 import java.time.LocalDate;
-import java.util.List;
 
 /**
  * Class to represent the Date value for
@@ -25,41 +24,11 @@ public class DateValue extends FieldValue<LocalDate> {
     /**
      * Constructs a DateValue.
      *
-     * @param text The text content of the extracted field.
-     * @param boundingBox Bounding box of the field value.
      * @param valueDate Date value.
-     * @param pageNumber The page number on which this field exists.
-     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public DateValue(String text, BoundingBox boundingBox, LocalDate valueDate, int pageNumber,
-        List<FormContent> elements) {
-        super(text, boundingBox, pageNumber, elements);
+    public DateValue(LocalDate valueDate) {
         this.valueDate = valueDate;
         this.fieldValueType = FieldValueType.DATE;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPageNumber() {
-        return super.getPageNumber();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BoundingBox getBoundingBox() {
-        return super.getBoundingBox();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getText() {
-        return super.getText();
     }
 
     /**
@@ -78,11 +47,4 @@ public class DateValue extends FieldValue<LocalDate> {
         return this.fieldValueType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<FormContent> getElements() {
-        return super.getElements();
-    }
 }

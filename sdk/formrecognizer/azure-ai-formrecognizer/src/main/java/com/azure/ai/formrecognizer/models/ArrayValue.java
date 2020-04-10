@@ -12,7 +12,7 @@ import java.util.List;
 public class ArrayValue extends FieldValue<List<FieldValue<?>>> {
 
     /*
-     * Date value.
+     * List of field values.
      */
     private final List<FieldValue<?>> valueArray;
 
@@ -24,41 +24,11 @@ public class ArrayValue extends FieldValue<List<FieldValue<?>>> {
     /**
      * Constructs a ArrayValue.
      *
-     * @param text The text content of the extracted field.
-     * @param boundingBox Bounding box of the field value.
      * @param valueArray Array of field values.
-     * @param pageNumber The page number on which this field exists.
-     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public ArrayValue(String text, BoundingBox boundingBox, List<FieldValue<?>> valueArray, int pageNumber,
-        List<FormContent> elements) {
-        super(text, boundingBox, pageNumber, elements);
+    public ArrayValue(List<FieldValue<?>> valueArray) {
         this.valueArray = valueArray;
         this.fieldValueType = FieldValueType.ARRAY;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPageNumber() {
-        return super.getPageNumber();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BoundingBox getBoundingBox() {
-        return super.getBoundingBox();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getText() {
-        return super.getText();
     }
 
     /**
@@ -75,13 +45,5 @@ public class ArrayValue extends FieldValue<List<FieldValue<?>>> {
     @Override
     public FieldValueType getType() {
         return this.fieldValueType;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<FormContent> getElements() {
-        return super.getElements();
     }
 }

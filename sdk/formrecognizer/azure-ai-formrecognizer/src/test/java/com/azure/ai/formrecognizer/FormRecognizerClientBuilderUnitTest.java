@@ -7,7 +7,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.formrecognizer.TestUtils.VALID_HTTPS_LOCALHOST;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**

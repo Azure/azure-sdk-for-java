@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The FormContent model.
  */
 @Immutable
-public class FormContent {
+public abstract class FormContent {
 
     /*
      * Text content of the extracted field.
@@ -19,7 +19,7 @@ public class FormContent {
     /*
      * The 1-based page number in the input document.
      */
-    private final int pageNumber;
+    private final Integer pageNumber;
 
     /*
      * BoundingBox specifying relative coordinates of the element.
@@ -33,7 +33,7 @@ public class FormContent {
      * @param boundingBox The BoundingBox of ExtractedField.
      * @param pageNumber the 1 based page number.
      */
-    FormContent(final String text, final BoundingBox boundingBox, final int pageNumber) {
+    FormContent(final String text, final BoundingBox boundingBox, final Integer pageNumber) {
         this.boundingBox = boundingBox;
         this.text = text;
         this.pageNumber = pageNumber;
@@ -62,7 +62,7 @@ public class FormContent {
      *
      * @return the page number value.
      */
-    public int getPageNumber() {
+    public Integer getPageNumber() {
         return this.pageNumber;
     }
 }

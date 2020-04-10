@@ -14,33 +14,32 @@ public class USReceiptItem {
     /*
      * Name of the field value.
      */
-    private final FieldValue<?> name;
+    private final StringValue name;
 
     /*
      * Quantity of the field value.
      */
-    private final FieldValue<?> quantity;
+    private final FloatValue quantity;
 
     /*
      * Price of the field value.
      */
-    private final FieldValue<?> price;
+    private final FloatValue price;
 
     /*
      * Total price of the field value.
      */
-    private final FieldValue<?> totalPrice;
+    private final FloatValue totalPrice;
 
     /**
      * Constructs a USReceiptItem object.
-     *
      * @param name Name of the field value.
      * @param quantity quantity of the field value.
      * @param price price of the field value.
      * @param totalPrice Total price of the field value.
      */
-    public USReceiptItem(final FieldValue<?> name, final FieldValue<?> quantity, final FieldValue<?> price,
-                         final FieldValue<?> totalPrice) {
+    public USReceiptItem(final StringValue name, final FloatValue quantity, final FloatValue price,
+                         final FloatValue totalPrice) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -52,7 +51,7 @@ public class USReceiptItem {
      *
      * @return The name of the field value.
      */
-    public FieldValue<?> getName() {
+    public StringValue getName() {
         return name;
     }
 
@@ -61,7 +60,7 @@ public class USReceiptItem {
      *
      * @return the quantity of Receipt Item.
      */
-    public FieldValue<?> getQuantity() {
+    public FloatValue getQuantity() {
         return quantity;
     }
 
@@ -70,7 +69,7 @@ public class USReceiptItem {
      *
      * @return The total Price.
      */
-    public FieldValue<?> getPrice() {
+    public FloatValue getPrice() {
         return price;
     }
 
@@ -79,7 +78,7 @@ public class USReceiptItem {
      *
      * @return The total Price.
      */
-    public FieldValue<?> getTotalPrice() {
+    public FloatValue getTotalPrice() {
         return totalPrice;
     }
 }

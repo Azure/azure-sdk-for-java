@@ -37,7 +37,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.Transforms.toCustomFormModelInfo;
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
-import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
+import static com.azure.ai.formrecognizer.Transforms.toRecognizedFormSupervised;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -92,7 +92,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormTrainingAsyncClient} object.The new {@code FormTrainingAsyncClient} 
+     * Creates a new {@link FormTrainingAsyncClient} object.The new {@code FormTrainingAsyncClient}
      * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
      *
      * @return A new {@link FormTrainingAsyncClient} object.
@@ -307,7 +307,7 @@ public final class FormRecognizerAsyncClient {
      * @return A {@link PollerFlux} that polls the extract receipt operation until it has completed, has failed, or has
      * been cancelled.
      */
-    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> 
+    public PollerFlux<OperationResult, IterableStream<RecognizedReceipt>>
         beginExtractReceiptsFromUrl(String sourceUrl) {
         return beginExtractReceiptsFromUrl(sourceUrl, null, false);
     }
@@ -357,7 +357,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Recognizes and extracts receipt data from documents using optical character recognition (OCR) 
+     * Recognizes and extracts receipt data from documents using optical character recognition (OCR)
      * and a prebuilt receipt trained model.
      * <p>The service does not support cancellation of the long running operation and returns with an
      * error message indicating absence of cancellation support.</p>
@@ -560,8 +560,8 @@ public final class FormRecognizerAsyncClient {
             UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             UUID modelUid = UUID.fromString(modelId);
             return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                .map(modelSimpleResponse -> 
-                    toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails));
+                .map(modelSimpleResponse ->
+                    toRecognizedFormSupervised(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails));
         };
     }
 
@@ -589,7 +589,7 @@ public final class FormRecognizerAsyncClient {
             try {
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId), includeTextDetails,
                     new SourcePath().setSource(fileSourceUrl))
-                    .map(response -> 
+                    .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -604,7 +604,7 @@ public final class FormRecognizerAsyncClient {
             try {
                 return service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
                     includeTextDetails, ContentType.fromString(formContentType.toString()), data, length)
-                    .map(response -> 
+                    .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);

@@ -26,47 +26,47 @@ public class USReceipt extends RecognizedReceipt {
     /**
      * Recognized field merchant name.
      */
-    private final FieldValue<?> merchantName;
+    private final FormField merchantName;
 
     /**
      * Recognized field merchant address.
      */
-    private final FieldValue<?> merchantAddress;
+    private final FormField merchantAddress;
 
     /**
      * Recognized field merchant phone number.
      */
-    private final FieldValue<?> merchantPhoneNumber;
+    private final FormField merchantPhoneNumber;
 
     /**
      * Recognized field subtotal.
      */
-    private final FieldValue<?> subtotal;
+    private final FormField subtotal;
 
     /**
      * Recognized field tax.
      */
-    private final FieldValue<?> tax;
+    private final FormField tax;
 
     /**
      * Recognized field tip.
      */
-    private final FieldValue<?> tip;
+    private final FormField tip;
 
     /**
      * Recognized field total.
      */
-    private final FieldValue<?> total;
+    private final FormField total;
 
     /**
      * Recognized field transaction date.
      */
-    private final FieldValue<?> transactionDate;
+    private final FormField transactionDate;
 
     /**
      * Recognized field transaction time.
      */
-    private final FieldValue<?> transactionTime;
+    private final FormField transactionTime;
 
     /**
      * Constructs a USReceipt object.
@@ -86,10 +86,10 @@ public class USReceipt extends RecognizedReceipt {
      * @param transactionTime Recognized field transaction time.
      */
     public USReceipt(String receiptLocale, RecognizedForm recognizedForm, final List<USReceiptItem> receiptItems,
-        final USReceiptType receiptType, final FieldValue<?> merchantName, final FieldValue<?> merchantAddress,
-        final FieldValue<?> merchantPhoneNumber, final FieldValue<?> subtotal, final FieldValue<?> tax,
-        final FieldValue<?> tip, final FieldValue<?> total, final FieldValue<?> transactionDate,
-        final FieldValue<?> transactionTime) {
+                     final USReceiptType receiptType, final FormField merchantName, final FormField merchantAddress,
+                     final FormField merchantPhoneNumber, final FormField subtotal, final FormField tax,
+                     final FormField tip, final FormField total, final FormField transactionDate,
+                     final FormField transactionTime) {
         super(receiptLocale, recognizedForm);
         this.receiptItems = receiptItems;
         this.receiptType = receiptType;
@@ -143,7 +143,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the merchantName value.
      */
-    public FieldValue<?> getMerchantName() {
+    public FormField getMerchantName() {
         return this.merchantName;
     }
 
@@ -153,7 +153,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the merchantAddress value.
      */
-    public FieldValue<?> getMerchantAddress() {
+    public FormField getMerchantAddress() {
         return this.merchantAddress;
     }
 
@@ -162,7 +162,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the merchantPhoneNumber value.
      */
-    public FieldValue<?> getMerchantPhoneNumber() {
+    public FormField getMerchantPhoneNumber() {
         return this.merchantPhoneNumber;
     }
 
@@ -171,7 +171,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the subtotal value.
      */
-    public FieldValue<?> getSubtotal() {
+    public FormField getSubtotal() {
         return this.subtotal;
     }
 
@@ -180,7 +180,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the tax value.
      */
-    public FieldValue<?> getTax() {
+    public FormField getTax() {
         return this.tax;
     }
 
@@ -189,7 +189,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the tip value.
      */
-    public FieldValue<?> getTip() {
+    public FormField getTip() {
         return this.tip;
     }
 
@@ -198,7 +198,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the total value.
      */
-    public FieldValue<?> getTotal() {
+    public FormField getTotal() {
         return this.total;
     }
 
@@ -207,7 +207,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the transactionDate value.
      */
-    public FieldValue<?> getTransactionDate() {
+    public FormField getTransactionDate() {
         return this.transactionDate;
     }
 
@@ -216,7 +216,7 @@ public class USReceipt extends RecognizedReceipt {
      *
      * @return the transactionTime value.
      */
-    public FieldValue<?> getTransactionTime() {
+    public FormField getTransactionTime() {
         return this.transactionTime;
     }
 }

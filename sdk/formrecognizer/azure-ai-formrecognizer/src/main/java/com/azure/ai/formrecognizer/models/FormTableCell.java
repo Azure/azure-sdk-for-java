@@ -69,8 +69,8 @@ public class FormTableCell extends FormContent {
      * @param isFooter Is the current cell a footer cell?
      * @param pageNumber The 1 based page number of the cell
      */
-    public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan, 
-        final Integer columnSpan, final String text, final BoundingBox boundingBox, 
+    public FormTableCell(final int rowIndex, final int columnIndex, final Integer rowSpan,
+        final Integer columnSpan, final String text, final BoundingBox boundingBox,
         final float confidence, final List<FormContent> elements, final boolean isHeader,
         final boolean isFooter, final int pageNumber) {
         super(text, boundingBox, pageNumber);
@@ -94,7 +94,7 @@ public class FormTableCell extends FormContent {
     }
 
     @Override
-    public int getPageNumber() {
+    public Integer getPageNumber() {
         return super.getPageNumber();
     }
 

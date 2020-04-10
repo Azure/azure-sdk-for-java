@@ -4,37 +4,28 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 /**
- * The FormTable model.
+ * The FieldText model.
  */
 @Immutable
-public class FormWord extends FormContent {
-    /*
-     * The confidence value of the recognized word.
-     */
-    private final float confidence;
+public class FieldText extends FormContent {
+
+    private final IterableStream<FormContent> textContent;
 
     /**
-     * Creates raw OCR item.
+     * Creates raw OCR FieldText item.
      *
      * @param text The text content of ExtractedField.
      * @param boundingBox The BoundingBox of ExtractedField.
-     * @param pageNumber The 1 based page number.
-     * @param confidence the confidence.
+     * @param pageNumber the 1 based page number.
+     * @param textContent The list of text element references when includeTextDetails is set to true.
      */
-    public FormWord(String text, BoundingBox boundingBox, Integer pageNumber, final float confidence) {
+    public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
+                     final IterableStream<FormContent> textContent) {
         super(text, boundingBox, pageNumber);
-        this.confidence = confidence;
-    }
-
-    /**
-     * Gets the confidence property of the Form Word.
-     *
-     * @return The confidence property of the Form Word.
-     */
-    public float getConfidence() {
-        return this.confidence;
+        this.textContent = textContent;
     }
 
     /**
@@ -59,5 +50,14 @@ public class FormWord extends FormContent {
     @Override
     public Integer getPageNumber() {
         return super.getPageNumber();
+    }
+
+    /**
+     * Gets the list of reference text elements.
+     *
+     * @return The list of reference elements.
+     */
+    public IterableStream<FormContent> getTextContent() {
+        return this.textContent;
     }
 }

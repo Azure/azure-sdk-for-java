@@ -3,8 +3,6 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import java.util.List;
-
 /**
  * Class to represent the String value for
  * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueString()}
@@ -24,41 +22,11 @@ public class StringValue extends FieldValue<String> {
     /**
      * Constructs a StringValue.
      *
-     * @param text The text content of the extracted field.
-     * @param boundingBox Bounding box of the field value.
      * @param valueString String value.
-     * @param pageNumber The page number on which this field exists.
-     * @param elements The list of reference elements when includeTextDetails is set to true.
      */
-    public StringValue(String text, BoundingBox boundingBox, String valueString, int pageNumber, 
-        List<FormContent> elements) {
-        super(text, boundingBox, pageNumber, elements);
+    public StringValue(String valueString) {
         this.valueString = valueString;
         this.fieldValueType = FieldValueType.STRING;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPageNumber() {
-        return super.getPageNumber();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BoundingBox getBoundingBox() {
-        return super.getBoundingBox();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getText() {
-        return super.getText();
     }
 
     /**
@@ -77,11 +45,4 @@ public class StringValue extends FieldValue<String> {
         return this.fieldValueType;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<FormContent> getElements() {
-        return super.getElements();
-    }
 }

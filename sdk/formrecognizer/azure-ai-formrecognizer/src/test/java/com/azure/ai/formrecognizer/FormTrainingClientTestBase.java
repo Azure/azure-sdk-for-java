@@ -51,7 +51,7 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(FORM_RECOGNIZER_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-    
+
     @Test
     abstract void getCustomModelInvalidStatusModel();
 
@@ -90,10 +90,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     void getCustomModelInvalidStatusModelRunner(Consumer<String> testRunner) {
         testRunner.accept(TestUtils.INVALID_STATUS_MODEL_ID);
-    }
-
-    void getCustomModelNullModelIdRunner(Consumer<String> testRunner) {
-        testRunner.accept(null);
     }
 
     void getCustomModelValidModelIdRunner(Consumer<String> testRunner) {

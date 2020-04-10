@@ -23,29 +23,28 @@ public final class ReceiptExtensions {
      *
      * @param receipt The {@link RecognizedReceipt recognized receipt}.
      *
-     * @return The converted {@link USReceipt US locale receipt} type/
+     * @return The converted {@link USReceipt US locale receipt} type.
      */
     public static USReceipt asUSReceipt(RecognizedReceipt receipt) {
         // add receipt fields
         USReceiptType receiptType = null;
-        FieldValue<?> merchantName = null;
-        FieldValue<?> merchantAddress = null;
-        FieldValue<?> merchantPhoneNumber = null;
-        FieldValue<?> subtotal = null;
-        FieldValue<?> tax = null;
-        FieldValue<?> tip = null;
-        FieldValue<?> total = null;
-        FieldValue<?> transactionDate = null;
-        FieldValue<?> transactionTime = null;
+        FormField merchantName = null;
+        FormField merchantAddress = null;
+        FormField merchantPhoneNumber = null;
+        FormField subtotal = null;
+        FormField tax = null;
+        FormField tip = null;
+        FormField total = null;
+        FormField transactionDate = null;
+        FormField transactionTime = null;
         List<USReceiptItem> receiptItems = null;
 
-        for (Map.Entry<String, FieldValue<?>> entry : receipt.getRecognizedForm().getFields().entrySet()) {
+        for (Map.Entry<String, FormField> entry : receipt.getRecognizedForm().getFields().entrySet()) {
             String key = entry.getKey();
-            FieldValue<?> fieldValue = entry.getValue();
+            FormField fieldValue = entry.getValue();
             switch (key) {
                 case "ReceiptType":
-                    receiptType = new USReceiptType(fieldValue.getText(), 0f);
-                    // TODO: update confidence
+                    receiptType = new USReceiptType(key, fieldValue.getConfidence());
                     break;
                 case "MerchantName":
                     merchantName = fieldValue;
@@ -96,8 +95,8 @@ public final class ReceiptExtensions {
      * @return A list of {@link USReceiptItem}.
      */
     private static List<USReceiptItem> toReceiptItems(
-        FieldValue<?> fieldValueItems) {
-        ArrayValue arrayValue = (ArrayValue) (fieldValueItems);
+            FormField fieldValueItems) {
+        ArrayValue arrayValue = (ArrayValue) fieldValueItems.getFieldValue();
         List<USReceiptItem> receiptItemList = new ArrayList<>();
         FieldValue<?> name = null;
         FieldValue<?> quantity = null;
@@ -119,7 +118,8 @@ public final class ReceiptExtensions {
                 } else if (TOTAL_PRICE.toString().equals(key)) {
                     totalPrice = fieldValue;
                 }
-                receiptItem = new USReceiptItem(name, quantity, price, totalPrice);
+                receiptItem = new USReceiptItem((StringValue) name, (FloatValue) quantity, (FloatValue) price,
+                    (FloatValue) totalPrice);
             }
             receiptItemList.add(receiptItem);
         }
