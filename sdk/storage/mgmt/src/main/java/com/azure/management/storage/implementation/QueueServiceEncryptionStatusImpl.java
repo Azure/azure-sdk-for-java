@@ -7,9 +7,7 @@ import com.azure.management.storage.EncryptionService;
 import com.azure.management.storage.EncryptionServices;
 import com.azure.management.storage.StorageService;
 
-/**
- * Implementation of StorageAccountEncryptionStatus for Queue service.
- */
+/** Implementation of StorageAccountEncryptionStatus for Queue service. */
 class QueueServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImpl {
     QueueServiceEncryptionStatusImpl(EncryptionServices encryptionServices) {
         super(encryptionServices);
@@ -25,7 +23,7 @@ class QueueServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImp
         if (super.encryptionServices == null) {
             return null;
         } else {
-            return  super.encryptionServices.queue();
+            return super.encryptionServices.queue();
         }
     }
 }

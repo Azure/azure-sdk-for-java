@@ -1,24 +1,24 @@
-///**
+/// **
 // * Copyright (c) Microsoft Corporation. All rights reserved.
 // * Licensed under the MIT License. See License.txt in the project root for
 // * license information.
 // */
 //
-//package com.azure.management.storage.implementation;
+// package com.azure.management.storage.implementation;
 //
-//import com.azure.management.storage.ImmutabilityPolicyProperties;
-//import com.azure.management.storage.LeaseDuration;
-//import com.azure.management.storage.LeaseState;
-//import com.azure.management.storage.LeaseStatus;
-//import com.azure.management.storage.LegalHoldProperties;
-//import com.azure.management.storage.ListContainerItem;
-//import com.azure.management.storage.PublicAccess;
-//import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-//import org.joda.time.DateTime;
+// import com.azure.management.storage.ImmutabilityPolicyProperties;
+// import com.azure.management.storage.LeaseDuration;
+// import com.azure.management.storage.LeaseState;
+// import com.azure.management.storage.LeaseStatus;
+// import com.azure.management.storage.LegalHoldProperties;
+// import com.azure.management.storage.ListContainerItem;
+// import com.azure.management.storage.PublicAccess;
+// import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+// import org.joda.time.DateTime;
 //
-//import java.util.Map;
+// import java.util.Map;
 //
-//public class ListContainerItemImpl extends WrapperImpl<ListContainerItemInner> implements ListContainerItem {
+// public class ListContainerItemImpl extends WrapperImpl<ListContainerItemInner> implements ListContainerItem {
 //
 //    private final StorageManager manager;
 //
@@ -77,4 +77,4 @@
 //    public Boolean hasImmutabilityPolicy() {
 //        return this.inner().hasImmutabilityPolicy();
 //    }
-//}
+// }

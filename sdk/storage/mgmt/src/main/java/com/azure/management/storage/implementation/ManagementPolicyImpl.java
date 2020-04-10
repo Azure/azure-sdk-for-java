@@ -13,22 +13,14 @@ import com.azure.management.storage.ManagementPolicySnapShot;
 import com.azure.management.storage.PolicyRule;
 import com.azure.management.storage.models.ManagementPoliciesInner;
 import com.azure.management.storage.models.ManagementPolicyInner;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-
-class ManagementPolicyImpl extends
-        CreatableUpdatableImpl<ManagementPolicy,
-                ManagementPolicyInner,
-                ManagementPolicyImpl>
-        implements
-        ManagementPolicy,
-        ManagementPolicy.Definition,
-        ManagementPolicy.Update {
+class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, ManagementPolicyInner, ManagementPolicyImpl>
+    implements ManagementPolicy, ManagementPolicy.Definition, ManagementPolicy.Update {
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
@@ -66,23 +58,27 @@ class ManagementPolicyImpl extends
     @Override
     public Mono<ManagementPolicy> createResourceAsync() {
         ManagementPoliciesInner client = this.manager().inner().managementPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.accountName, cpolicy)
-                .map(resource -> {
+        return client
+            .createOrUpdateAsync(this.resourceGroupName, this.accountName, cpolicy)
+            .map(
+                resource -> {
                     resetCreateUpdateParameters();
                     return resource;
                 })
-                .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<ManagementPolicy> updateResourceAsync() {
         ManagementPoliciesInner client = this.manager().inner().managementPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.accountName, upolicy)
-                .map(resource -> {
+        return client
+            .createOrUpdateAsync(this.resourceGroupName, this.accountName, upolicy)
+            .map(
+                resource -> {
                     resetCreateUpdateParameters();
                     return resource;
                 })
-                .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -136,26 +132,34 @@ class ManagementPolicyImpl extends
             for (String originalBlobType : originalBlobTypes) {
                 returnBlobTypes.add(BlobTypes.fromString(originalBlobType));
             }
-            PolicyRule returnRule = new PolicyRuleImpl(originalRule.name())
+            PolicyRule returnRule =
+                new PolicyRuleImpl(originalRule.name())
                     .withLifecycleRuleType()
                     .withBlobTypesToFilterFor(returnBlobTypes);
 
             // building up prefixes to filter on
             if (originalRule.definition().filters().prefixMatch() != null) {
-                ((PolicyRuleImpl) returnRule).withPrefixesToFilterFor(originalRule.definition().filters().prefixMatch());
+                ((PolicyRuleImpl) returnRule)
+                    .withPrefixesToFilterFor(originalRule.definition().filters().prefixMatch());
             }
 
             // building up actions on base blob
             ManagementPolicyBaseBlob originalBaseBlobActions = originalRule.definition().actions().baseBlob();
             if (originalBaseBlobActions != null) {
                 if (originalBaseBlobActions.tierToCool() != null) {
-                    ((PolicyRuleImpl) returnRule).withTierToCoolActionOnBaseBlob(originalBaseBlobActions.tierToCool().daysAfterModificationGreaterThan());
+                    ((PolicyRuleImpl) returnRule)
+                        .withTierToCoolActionOnBaseBlob(
+                            originalBaseBlobActions.tierToCool().daysAfterModificationGreaterThan());
                 }
                 if (originalBaseBlobActions.tierToArchive() != null) {
-                    ((PolicyRuleImpl) returnRule).withTierToArchiveActionOnBaseBlob(originalBaseBlobActions.tierToArchive().daysAfterModificationGreaterThan());
+                    ((PolicyRuleImpl) returnRule)
+                        .withTierToArchiveActionOnBaseBlob(
+                            originalBaseBlobActions.tierToArchive().daysAfterModificationGreaterThan());
                 }
                 if (originalBaseBlobActions.delete() != null) {
-                    ((PolicyRuleImpl) returnRule).withDeleteActionOnBaseBlob(originalBaseBlobActions.delete().daysAfterModificationGreaterThan());
+                    ((PolicyRuleImpl) returnRule)
+                        .withDeleteActionOnBaseBlob(
+                            originalBaseBlobActions.delete().daysAfterModificationGreaterThan());
                 }
             }
 
@@ -163,7 +167,8 @@ class ManagementPolicyImpl extends
             ManagementPolicySnapShot originalSnapshotActions = originalRule.definition().actions().snapshot();
             if (originalSnapshotActions != null) {
                 if (originalSnapshotActions.delete() != null) {
-                    ((PolicyRuleImpl) returnRule).withDeleteActionOnSnapShot(originalSnapshotActions.delete().daysAfterCreationGreaterThan());
+                    ((PolicyRuleImpl) returnRule)
+                        .withDeleteActionOnSnapShot(originalSnapshotActions.delete().daysAfterCreationGreaterThan());
                 }
             }
             returnRules.add(returnRule);
@@ -220,7 +225,10 @@ class ManagementPolicyImpl extends
             }
         }
         if (ruleToUpdate == null) {
-            throw new UnsupportedOperationException("There is no rule that exists with the name " + name + ". Please define a rule with this name before updating.");
+            throw new UnsupportedOperationException(
+                "There is no rule that exists with the name "
+                    + name
+                    + ". Please define a rule with this name before updating.");
         }
         return new PolicyRuleImpl(ruleToUpdate, this);
     }
@@ -234,7 +242,8 @@ class ManagementPolicyImpl extends
             }
         }
         if (ruleToDelete == null) {
-            throw new UnsupportedOperationException("There is no rule that exists with the name " + name + " so this rule can not be deleted.");
+            throw new UnsupportedOperationException(
+                "There is no rule that exists with the name " + name + " so this rule can not be deleted.");
         }
         List<ManagementPolicyRule> currentRules = this.upolicy.rules();
         currentRules.remove(ruleToDelete);
@@ -242,4 +251,3 @@ class ManagementPolicyImpl extends
         return this;
     }
 }
-

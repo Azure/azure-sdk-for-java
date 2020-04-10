@@ -2,11 +2,10 @@ package com.azure.management.storage;
 
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class StorageBlobContainersTests extends StorageManagementTest {
     private String rgName = "";
@@ -30,21 +29,23 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         metadataTest.put("a", "b");
         metadataTest.put("c", "d");
 
-
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(SA_NAME)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
-        BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
+        BlobContainer blobContainer =
+            blobContainers
+                .defineContainer("blob-test")
                 .withExistingBlobService(rgName, SA_NAME)
                 .withPublicAccess(PublicAccess.CONTAINER)
                 .withMetadata("a", "b")
                 .withMetadata("c", "d")
                 .create();
-
 
         Assertions.assertEquals("blob-test", blobContainer.name());
         Assertions.assertEquals(PublicAccess.CONTAINER, blobContainer.publicAccess());
@@ -62,25 +63,29 @@ public class StorageBlobContainersTests extends StorageManagementTest {
         metadataTest.put("c", "d");
         metadataTest.put("e", "f");
 
-
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
                 .define(SA_NAME)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
         BlobContainers blobContainers = this.storageManager.blobContainers();
-        BlobContainer blobContainer = blobContainers.defineContainer("blob-test")
+        BlobContainer blobContainer =
+            blobContainers
+                .defineContainer("blob-test")
                 .withExistingBlobService(rgName, SA_NAME)
                 .withPublicAccess(PublicAccess.CONTAINER)
                 .withMetadata(metadataInitial)
                 .create();
 
-        blobContainer.update()
-                .withPublicAccess(PublicAccess.BLOB)
-                .withMetadata("c", "d")
-                .withMetadata("e", "f")
-                .apply();
+        blobContainer
+            .update()
+            .withPublicAccess(PublicAccess.BLOB)
+            .withMetadata("c", "d")
+            .withMetadata("e", "f")
+            .apply();
 
         Assertions.assertEquals("blob-test", blobContainer.name());
         Assertions.assertEquals(PublicAccess.BLOB, blobContainer.publicAccess());
