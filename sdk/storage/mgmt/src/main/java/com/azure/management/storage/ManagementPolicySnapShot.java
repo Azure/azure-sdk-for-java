@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagementPolicySnapShot model.
- */
+/** The ManagementPolicySnapShot model. */
 @Fluent
 public final class ManagementPolicySnapShot {
     /*
@@ -20,7 +18,7 @@ public final class ManagementPolicySnapShot {
 
     /**
      * Get the delete property: The function to delete the blob snapshot.
-     * 
+     *
      * @return the delete value.
      */
     public DateAfterCreation delete() {
@@ -29,7 +27,7 @@ public final class ManagementPolicySnapShot {
 
     /**
      * Set the delete property: The function to delete the blob snapshot.
-     * 
+     *
      * @param delete the delete value to set.
      * @return the ManagementPolicySnapShot object itself.
      */

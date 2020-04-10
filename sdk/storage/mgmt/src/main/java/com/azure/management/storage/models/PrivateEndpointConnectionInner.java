@@ -12,9 +12,7 @@ import com.azure.management.storage.PrivateEndpointConnectionProvisioningState;
 import com.azure.management.storage.PrivateLinkServiceConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateEndpointConnection model.
- */
+/** The PrivateEndpointConnection model. */
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnectionInner extends ProxyResource {
@@ -39,7 +37,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
-     * 
+     *
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -48,7 +46,7 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Set the privateEndpoint property: The resource of private end point.
-     * 
+     *
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -58,10 +56,9 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of
-     * information about the state of the connection between service consumer
-     * and provider.
-     * 
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     *
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -69,23 +66,21 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of
-     * information about the state of the connection between service consumer
-     * and provider.
-     * 
-     * @param privateLinkServiceConnectionState the
-     * privateLinkServiceConnectionState value to set.
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
+     * between service consumer and provider.
+     *
+     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
+        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * private endpoint connection resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
+     *
      * @return the provisioningState value.
      */
     public PrivateEndpointConnectionProvisioningState provisioningState() {

@@ -7,9 +7,7 @@ import com.azure.management.storage.EncryptionService;
 import com.azure.management.storage.EncryptionServices;
 import com.azure.management.storage.StorageService;
 
-/**
- * Implementation of StorageAccountEncryptionStatus for Blob service.
- */
+/** Implementation of StorageAccountEncryptionStatus for Blob service. */
 class BlobServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImpl {
     BlobServiceEncryptionStatusImpl(EncryptionServices encryptionServices) {
         super(encryptionServices);

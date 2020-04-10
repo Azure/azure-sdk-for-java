@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ListContainerItems model.
- */
+/** The ListContainerItems model. */
 @Immutable
 public final class ListContainerItemsInner {
     /*
@@ -28,7 +26,7 @@ public final class ListContainerItemsInner {
 
     /**
      * Get the value property: List of blobs containers returned.
-     * 
+     *
      * @return the value value.
      */
     public List<ListContainerItemInner> value() {
@@ -36,10 +34,9 @@ public final class ListContainerItemsInner {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next
-     * page of containers. Returned when total number of requested containers
-     * exceed maximum page size.
-     * 
+     * Get the nextLink property: Request URL that can be used to query next page of containers. Returned when total
+     * number of requested containers exceed maximum page size.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {

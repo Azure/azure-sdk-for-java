@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagementPolicyDefinition model.
- */
+/** The ManagementPolicyDefinition model. */
 @Fluent
 public final class ManagementPolicyDefinition {
     /*
@@ -26,7 +24,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Get the actions property: An object that defines the action set.
-     * 
+     *
      * @return the actions value.
      */
     public ManagementPolicyAction actions() {
@@ -35,7 +33,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Set the actions property: An object that defines the action set.
-     * 
+     *
      * @param actions the actions value to set.
      * @return the ManagementPolicyDefinition object itself.
      */
@@ -46,7 +44,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Get the filters property: An object that defines the filter set.
-     * 
+     *
      * @return the filters value.
      */
     public ManagementPolicyFilter filters() {
@@ -55,7 +53,7 @@ public final class ManagementPolicyDefinition {
 
     /**
      * Set the filters property: An object that defines the filter set.
-     * 
+     *
      * @param filters the filters value to set.
      * @return the ManagementPolicyDefinition object itself.
      */
