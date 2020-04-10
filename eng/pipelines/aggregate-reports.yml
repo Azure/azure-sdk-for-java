@@ -15,8 +15,8 @@ jobs:
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:
-        mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -pl com.azure:jacoco-test-coverage -am'
+        mavenPomFile: ./sdk/parents/azure-client-sdk-parent/pom.xml
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
@@ -52,10 +52,10 @@ jobs:
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        copy -r target/staging $(Build.ArtifactStagingDirectory)
-        copy target/dependency-whitelist.json (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy -r ./sdk/parents/azure-client-sdk-parent/target/staging $(Build.ArtifactStagingDirectory)
+        copy ./sdk/parents/azure-client-sdk-parent/target/dependency-whitelist.json (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-        copy output/pom.client.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+        copy output/pom.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/common/InterdependencyGraph.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy eng/common/dependency-whitelist.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         copy data.js (Join-Path $(Build.ArtifactStagingDirectory) "staging")
