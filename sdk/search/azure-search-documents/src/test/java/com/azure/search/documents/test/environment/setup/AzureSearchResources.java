@@ -8,6 +8,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -16,7 +18,12 @@ import com.microsoft.azure.management.search.SearchService;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.SecureRandom;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AzureSearchResources {
@@ -27,9 +34,13 @@ public class AzureSearchResources {
     private static final String AZURE_RESOURCEGROUP_NAME = "AZURE_RESOURCEGROUP_NAME";
     private static final char[] ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyz0123456789".toCharArray();
     private static final String TEST_RESOURCE_GROUP = "azsjavaresourcegroup";
+    private static final String DEFAULT_DNS_SUFFIX = "search.windows.net";
+    private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
 
     private String searchServiceName;
     private String searchAdminKey;
+    private String searchDnsSuffix;
+    private String endpoint;
 
     private AzureTokenCredentials azureTokenCredentials;
     private String subscriptionId;
@@ -38,6 +49,8 @@ public class AzureSearchResources {
     private Azure azure = null;
     private static ResourceGroup resourceGroup;
     private SearchService searchService = null;
+    private static String testEnvironment = null;
+
 
     /**
      * @return The created Azure Cognitive Search service name
@@ -73,11 +86,15 @@ public class AzureSearchResources {
      */
     public void initialize() {
         validate();
+
+        initializeAzureResources();
         if (azure == null) {
             azure = Azure.configure()
                 .authenticate(azureTokenCredentials)
                 .withSubscription(subscriptionId);
         }
+        searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
+        endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
     }
 
     private void validate() {
@@ -94,13 +111,38 @@ public class AzureSearchResources {
     public void createService(TestResourceNamer testResourceNamer) {
         searchServiceName = testResourceNamer.randomName(SEARCH_SERVICE_NAME_PREFIX, 60);
         System.out.println("Creating Azure Cognitive Search service: " + searchServiceName);
-        searchService = azure.searchServices()
-            .define(searchServiceName)
-            .withRegion(location)
-            .withExistingResourceGroup(resourceGroup)
-            .withFreeSku()
-            .create();
+        int recreateCount = 0;
+        while (validateServiceExistence() && recreateCount < 3) {
+            searchService = azure.searchServices()
+                .define(searchServiceName)
+                .withRegion(location)
+                .withExistingResourceGroup(resourceGroup)
+                .withFreeSku()
+                .create();
+            recreateCount += 1;
+        }
         searchAdminKey = searchService.getAdminKeys().primaryKey();
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    private boolean validateServiceExistence() {
+        searchDnsSuffix = testEnvironment.equals("DOGFOOD") ? DOGFOOD_DNS_SUFFIX : DEFAULT_DNS_SUFFIX;
+        endpoint = String.format("https://%s.%s", searchServiceName, searchDnsSuffix);
+        try {
+            InetAddress pingService = InetAddress.getByName(endpoint);
+            System.out.println("Sending Ping Request to " + endpoint);
+            if (pingService.isReachable(5000)) {
+                System.out.println("Host is reachable");
+                return true;
+            }
+        } catch (IOException ex) {
+            System.out.println("Sorry ! We can't reach to this host");
+            return false;
+        }
+        return false;
     }
 
     /**
@@ -200,4 +242,35 @@ public class AzureSearchResources {
 
         return builder.toString();
     }
+
+
+    public static AzureSearchResources initializeAzureResources() {
+        String appId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID);
+        String azureDomainId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID);
+        String secret = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+        String subscriptionId = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+
+        testEnvironment = Configuration.getGlobalConfiguration().get("AZURE_TEST_ENVIRONMENT");
+        testEnvironment = (testEnvironment == null) ? "AZURE" : testEnvironment.toUpperCase(Locale.US);
+
+        AzureEnvironment environment = testEnvironment.equals("DOGFOOD") ? getDogfoodEnvironment() : AzureEnvironment.AZURE;
+
+        ApplicationTokenCredentials applicationTokenCredentials =
+            new ApplicationTokenCredentials(appId, azureDomainId, secret, environment);
+
+        return new AzureSearchResources(applicationTokenCredentials, subscriptionId, Region.US_WEST2);
+    }
+
+    private static AzureEnvironment getDogfoodEnvironment() {
+        HashMap<String, String> configuration = new HashMap<>();
+        configuration.put("portalUrl", "http://df.onecloud.azure-test.net");
+        configuration.put("managementEndpointUrl", "https://management.core.windows.net/");
+        configuration.put("resourceManagerEndpointUrl", "https://api-dogfood.resources.windows-int.net/");
+        configuration.put("activeDirectoryEndpointUrl", "https://login.windows-ppe.net/");
+        configuration.put("activeDirectoryResourceId", "https://management.core.windows.net/");
+        configuration.put("activeDirectoryGraphResourceId", "https://graph.ppe.windows.net/");
+        configuration.put("activeDirectoryGraphApiVersion", "2013-04-05");
+        return new AzureEnvironment(configuration);
+    }
+
 }

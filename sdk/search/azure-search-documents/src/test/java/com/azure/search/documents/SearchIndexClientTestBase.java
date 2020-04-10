@@ -117,8 +117,6 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                 searchApiKeyCredential.getKey());
             try {
                 searchIndexService.initializeAndCreateIndex(jsonFile);
-            } catch (UnknownHostException ex) {
-                azureSearchResources.createService(testResourceNamer);
             } catch (IOException e) {
                 fail(e.getMessage());
             }
