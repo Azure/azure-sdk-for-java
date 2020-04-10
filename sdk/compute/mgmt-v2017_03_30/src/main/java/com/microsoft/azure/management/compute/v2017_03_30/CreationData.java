@@ -50,7 +50,7 @@ public class CreationData {
     private String sourceResourceId;
 
     /**
-     * Get the createOption value.
+     * Get this enumerates the possible sources of a disk's creation. Possible values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy'.
      *
      * @return the createOption value
      */
@@ -59,7 +59,7 @@ public class CreationData {
     }
 
     /**
-     * Set the createOption value.
+     * Set this enumerates the possible sources of a disk's creation. Possible values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy'.
      *
      * @param createOption the createOption value to set
      * @return the CreationData object itself.
@@ -70,7 +70,7 @@ public class CreationData {
     }
 
     /**
-     * Get the storageAccountId value.
+     * Get if createOption is Import, the Azure Resource Manager identifier of the storage account containing the blob to import as a disk. Required only if the blob is in a different subscription.
      *
      * @return the storageAccountId value
      */
@@ -79,7 +79,7 @@ public class CreationData {
     }
 
     /**
-     * Set the storageAccountId value.
+     * Set if createOption is Import, the Azure Resource Manager identifier of the storage account containing the blob to import as a disk. Required only if the blob is in a different subscription.
      *
      * @param storageAccountId the storageAccountId value to set
      * @return the CreationData object itself.
@@ -90,7 +90,7 @@ public class CreationData {
     }
 
     /**
-     * Get the imageReference value.
+     * Get disk source information.
      *
      * @return the imageReference value
      */
@@ -99,7 +99,7 @@ public class CreationData {
     }
 
     /**
-     * Set the imageReference value.
+     * Set disk source information.
      *
      * @param imageReference the imageReference value to set
      * @return the CreationData object itself.
@@ -110,7 +110,7 @@ public class CreationData {
     }
 
     /**
-     * Get the sourceUri value.
+     * Get if createOption is Import, this is the URI of a blob to be imported into a managed disk.
      *
      * @return the sourceUri value
      */
@@ -119,7 +119,7 @@ public class CreationData {
     }
 
     /**
-     * Set the sourceUri value.
+     * Set if createOption is Import, this is the URI of a blob to be imported into a managed disk.
      *
      * @param sourceUri the sourceUri value to set
      * @return the CreationData object itself.
@@ -130,7 +130,7 @@ public class CreationData {
     }
 
     /**
-     * Get the sourceResourceId value.
+     * Get if createOption is Copy, this is the ARM id of the source snapshot or disk.
      *
      * @return the sourceResourceId value
      */
@@ -139,7 +139,7 @@ public class CreationData {
     }
 
     /**
-     * Set the sourceResourceId value.
+     * Set if createOption is Copy, this is the ARM id of the source snapshot or disk.
      *
      * @param sourceResourceId the sourceResourceId value to set
      * @return the CreationData object itself.
