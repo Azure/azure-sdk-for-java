@@ -4,7 +4,6 @@
 package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.serializer.AvroSerializer;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import reactor.core.Exceptions;
@@ -33,24 +32,26 @@ public final class JacksonAvroSerializer implements AvroSerializer {
 
     @Override
     public <T> Mono<T> read(byte[] input, String schema) {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
+            if (input == null) {
+                return null;
+            }
+
             try {
-                return (input == null)
-                    ? Mono.empty()
-                    : Mono.just(mapper.reader().with(mapper.schemaFrom(schema)).readValue(input));
+                return mapper.reader().with(mapper.schemaFrom(schema)).readValue(input);
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }
 
     @Override
     public Mono<byte[]> write(Object value, String schema) {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             try {
-                return Mono.just(mapper.writer().with(mapper.schemaFrom(schema)).writeValueAsBytes(value));
+                return mapper.writer().with(mapper.schemaFrom(schema)).writeValueAsBytes(value);
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }

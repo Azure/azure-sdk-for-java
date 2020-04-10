@@ -12,48 +12,48 @@ import java.io.OutputStream;
  */
 public interface JsonSerializer {
     /**
-     * Reads the JSON string into its object representation.
+     * Reads the JSON byte stream into its object representation.
      *
-     * @param input The JSON string.
+     * @param input JSON byte stream.
      * @param clazz {@link Class} representing the object.
      * @param <T> Type of the object.
      * @return The object representing the JSON string.
      */
-    <T> Mono<T> read(String input, Class<T> clazz);
+    <T> Mono<T> read(byte[] input, Class<T> clazz);
 
     /**
-     * Writes the object into its JSON string.
+     * Writes the object into its JSON byte stream.
      *
      * @param value The object.
-     * @return The JSON string representing the object.
+     * @return The JSON byte stream representing the object.
      */
-    Mono<String> write(Object value);
+    Mono<byte[]> write(Object value);
 
     /**
-     * Writes the object into its JSON string.
+     * Writes the object into its JSON byte stream.
      *
      * @param value The object.
      * @param clazz {@link Class} representing the object.
-     * @return The JSON string representing the object.
+     * @return The JSON byte stream representing the object.
      */
-    Mono<String> write(Object value, Class<?> clazz);
+    Mono<byte[]> write(Object value, Class<?> clazz);
 
     /**
-     * Converts the object into a JSON string and writes it to the {@link OutputStream}.
+     * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
      *
      * @param value The object.
-     * @param stream The {@link OutputStream} where the JSON string will be written.
-     * @return An indicator that the object's JSON string has been written to the {@link OutputStream}.
+     * @param stream The {@link OutputStream} where the JSON byte stream will be written.
+     * @return An indicator that the object's JSON byte stream has been written to the {@link OutputStream}.
      */
     Mono<Void> write(Object value, OutputStream stream);
 
     /**
-     * Converts the object into a JSON string and writes it to the {@link OutputStream}.
+     * Converts the object into a JSON byte stream and writes it to the {@link OutputStream}.
      *
      * @param value The object.
-     * @param stream The {@link OutputStream} where the JSON string will be written.
+     * @param stream The {@link OutputStream} where the JSON byte stream will be written.
      * @param clazz {@link Class} representing the object.
-     * @return An indicator that the object's JSON string has been written to the {@link OutputStream}.
+     * @return An indicator that the object's JSON byte stream has been written to the {@link OutputStream}.
      */
     Mono<Void> write(Object value, OutputStream stream, Class<?> clazz);
 }

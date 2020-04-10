@@ -4,11 +4,15 @@
 package com.azure.core.serializer.json.gson;
 
 import com.azure.core.serializer.JsonSerializer;
+import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 /**
@@ -27,18 +31,29 @@ public final class GsonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> read(String input, Class<T> clazz) {
-        return Mono.defer(() -> Mono.just(gson.fromJson(input, clazz)));
+    public <T> Mono<T> read(byte[] input, Class<T> clazz) {
+        Reader reader = new Reader() {
+            @Override
+            public int read(char[] cbuf, int off, int len) throws IOException {
+                return 0;
+            }
+
+            @Override
+            public void close() throws IOException {
+
+            }
+        }
+        return Mono.fromCallable(() -> gson.fromJson(new String(input, StandardCharsets.UTF_8), clazz));
     }
 
     @Override
-    public Mono<String> write(Object value) {
-        return Mono.defer(() -> Mono.just(gson.toJson(value)));
+    public Mono<byte[]> write(Object value) {
+        return Mono.fromCallable(() -> gson.toJson(value));
     }
 
     @Override
-    public Mono<String> write(Object value, Class<?> clazz) {
-        return Mono.defer(() -> Mono.just(gson.toJson(value, clazz)));
+    public Mono<byte[]> write(Object value, Class<?> clazz) {
+        return Mono.fromCallable(() -> gson.toJson(value, clazz));
     }
 
     @Override

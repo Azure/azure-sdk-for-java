@@ -4,7 +4,6 @@
 package com.azure.core.serializer.json.jackson;
 
 import com.azure.core.serializer.JsonSerializer;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import reactor.core.Exceptions;
@@ -32,36 +31,38 @@ public final class JacksonJsonSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> Mono<T> read(String input, Class<T> clazz) {
-        return Mono.defer(() -> {
+    public <T> Mono<T> read(byte[] input, Class<T> clazz) {
+        return Mono.fromCallable(() -> {
+            if (input == null) {
+                return null;
+            }
+
             try {
-                return (input == null)
-                    ? Mono.empty()
-                    : Mono.just(mapper.readValue(input, clazz));
+                return mapper.readValue(input, clazz);
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }
 
     @Override
-    public Mono<String> write(Object value) {
-        return Mono.defer(() -> {
+    public Mono<byte[]> write(Object value) {
+        return Mono.fromCallable(() -> {
             try {
-                return Mono.just(mapper.writeValueAsString(value));
+                return mapper.writeValueAsBytes(value);
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }
 
     @Override
-    public Mono<String> write(Object value, Class<?> clazz) {
-        return Mono.defer(() -> {
+    public Mono<byte[]> write(Object value, Class<?> clazz) {
+        return Mono.fromCallable(() -> {
             try {
-                return Mono.just(mapper.writerFor(clazz).writeValueAsString(value));
+                return mapper.writerFor(clazz).writeValueAsBytes(value);
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }

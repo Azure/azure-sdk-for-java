@@ -4,7 +4,6 @@
 package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.serializer.AvroSerializer;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericDatumReader;
@@ -33,31 +32,31 @@ public class ApacheAvroSerializer implements AvroSerializer {
 
     @Override
     public <T> Mono<T> read(byte[] input, String schema) {
-        return Mono.defer(() -> {
-            try {
-                if (input == null) {
-                    return Mono.empty();
-                }
+        return Mono.fromCallable(() -> {
+            if (input == null) {
+                return null;
+            }
 
+            try {
                 DatumReader<T> reader = new GenericDatumReader<>(PARSER.parse(schema));
-                return Mono.just(reader.read(null, DECODER_FACTORY.binaryDecoder(input, null)));
+                return reader.read(null, DECODER_FACTORY.binaryDecoder(input, null));
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }
 
     @Override
     public Mono<byte[]> write(Object value, String schema) {
-        return Mono.defer(() -> {
+        return Mono.fromCallable(() -> {
             DatumWriter<Object> writer = new GenericDatumWriter<>(PARSER.parse(schema));
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
             try {
                 writer.write(value, ENCODER_FACTORY.binaryEncoder(stream, null));
-                return Mono.just(stream.toByteArray());
+                return stream.toByteArray();
             } catch (IOException ex) {
-                return FluxUtil.throwableMonoError(logger, ex);
+                throw logger.logExceptionAsError(Exceptions.propagate(ex));
             }
         });
     }
