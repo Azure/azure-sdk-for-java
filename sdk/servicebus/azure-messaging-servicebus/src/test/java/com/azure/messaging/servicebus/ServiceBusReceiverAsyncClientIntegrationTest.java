@@ -76,7 +76,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(receiver, receiveDeleteModeReceiver, sender);
+        dispose(receiver, receiveDeleteModeReceiver, sender, sessionSender);
     }
 
     /**
@@ -518,8 +518,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     void sessionReceiveAndDeleteWithBinaryData() {
         // Arrange
         final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0);
-        message.setSessionId(SESSION_ID);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0)
+            .setSessionId(SESSION_ID);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         // Assert & Act
