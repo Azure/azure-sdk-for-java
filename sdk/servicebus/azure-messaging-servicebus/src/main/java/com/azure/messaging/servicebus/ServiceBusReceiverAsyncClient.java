@@ -73,7 +73,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
-    private final boolean isSessionEnabled;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final TracerProvider tracerProvider;
@@ -118,9 +117,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         this.prefetch = receiverOptions.getPrefetchCount();
         this.receiveMode = receiverOptions.getReceiveMode();
-
         this.entityType = entityType;
-        this.isSessionEnabled = receiverOptions.isSessionEnabled();
         this.messageLockContainer = messageLockContainer;
         this.onClientClose = onClientClose;
 
@@ -604,12 +601,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
             final Flux<AmqpReceiveLink> receiveLink =
                 connectionProcessor.flatMap(connection -> connection.createReceiveLink(linkName, entityPath,
-                    receiveMode, receiverOptions.getSessionId(), null, entityType))
+                    receiveMode, null, entityType, receiverOptions.getSessionId()))
                     .doOnNext(next -> {
                         final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
                             + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
-                        logger.verbose(format, next.getEntityPath(), receiveMode, isSessionEnabled, "N/A",
-                            entityType);
+                        logger.verbose(format, next.getEntityPath(), receiveMode,
+                            CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
                     })
                     .repeat();
 

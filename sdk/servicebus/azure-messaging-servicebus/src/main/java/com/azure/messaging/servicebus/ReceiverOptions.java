@@ -11,17 +11,15 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 class ReceiverOptions {
     private final ReceiveMode receiveMode;
     private final int prefetchCount;
-    private final boolean enableSession;
     private final String sessionId;
 
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
-        this(receiveMode, prefetchCount, false, null);
+        this(receiveMode, prefetchCount, null);
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, boolean enableSession, String sessionId) {
+    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
-        this.enableSession = enableSession;
         this.sessionId = sessionId;
     }
 
@@ -41,14 +39,6 @@ class ReceiverOptions {
      */
     String getSessionId() {
         return sessionId;
-    }
-
-    /**
-     * Gets the enableSession flag for the message.
-     * @return the enableSession flag for the message.
-     */
-    boolean isSessionEnabled() {
-        return enableSession;
     }
 
     int getPrefetchCount() {
