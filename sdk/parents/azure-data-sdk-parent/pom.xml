@@ -20,7 +20,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-sdk-parent;current} -->
-    <relativePath>./parent/pom.xml</relativePath>
+    <relativePath>../azure-sdk-parent/pom.xml</relativePath>
   </parent>
 
   <licenses>
@@ -602,18 +602,18 @@
     </profile>
   </profiles>
   <modules>
-    <module>./sdk/batch/microsoft-azure-batch</module>
-    <module>./sdk/eventhubs/microsoft-azure-eventhubs/pom.xml</module>
-    <module>./sdk/eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
-    <module>./sdk/eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-complete/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-core/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-cryptography/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-extensions/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-test/pom.xml</module>
-    <module>./sdk/keyvault/microsoft-azure-keyvault-webkey/pom.xml</module>
-    <module>./sdk/servicebus/microsoft-azure-servicebus</module>
-    <module>./sdk/storage/microsoft-azure-storage-blob</module>
+    <!-- <module>../../batch/microsoft-azure-batch</module>
+    <module>../../eventhubs/microsoft-azure-eventhubs/pom.xml</module>
+    <module>../../eventhubs/microsoft-azure-eventhubs-eph/pom.xml</module>
+    <module>../../eventhubs/microsoft-azure-eventhubs-extensions/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault-complete/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault-core/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault-cryptography/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault-extensions/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault-test/pom.xml</module>
+    <module>../../keyvault/microsoft-azure-keyvault-webkey/pom.xml</module>
+    <module>../../servicebus/microsoft-azure-servicebus</module>
+    <module>../../storage/microsoft-azure-storage-blob</module> -->
   </modules>
 </project>
