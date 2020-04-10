@@ -169,7 +169,7 @@ public final class ManageSqlImportExportDatabase {
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                     .withSerializerAdapter(new AzureJacksonAdapter())
 //                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .withCredential(credentials).buildClient();
             Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
 
