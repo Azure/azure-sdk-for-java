@@ -18,79 +18,97 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.management.storage.ErrorResponseException;
-import com.azure.management.storage.PrivateEndpoint;
-import com.azure.management.storage.PrivateLinkServiceConnectionState;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnections. */
-public final class PrivateEndpointConnectionsInner {
+/** An instance of this class provides access to all the operations defined in ObjectReplicationPoliciesOperations. */
+public final class ObjectReplicationPoliciesOperationsInner {
     /** The proxy service used to perform REST calls. */
-    private final PrivateEndpointConnectionsService service;
+    private final ObjectReplicationPoliciesOperationsService service;
 
     /** The service client containing this operation class. */
     private final StorageManagementClientImpl client;
 
     /**
-     * Initializes an instance of PrivateEndpointConnectionsInner.
+     * Initializes an instance of ObjectReplicationPoliciesOperationsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsInner(StorageManagementClientImpl client) {
+    ObjectReplicationPoliciesOperationsInner(StorageManagementClientImpl client) {
         this.service =
             RestProxy
                 .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+                    ObjectReplicationPoliciesOperationsService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StorageManagementClientPrivateEndpointConnections to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for StorageManagementClientObjectReplicationPoliciesOperations to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "StorageManagementCli")
-    private interface PrivateEndpointConnectionsService {
+    private interface ObjectReplicationPoliciesOperationsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
+                + "/storageAccounts/{accountName}/objectReplicationPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> get(
+        Mono<SimpleResponse<ObjectReplicationPoliciesInner>> list(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
+                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<SimpleResponse<ObjectReplicationPolicyInner>> get(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
+                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<PrivateEndpointConnectionInner>> put(
+        Mono<SimpleResponse<ObjectReplicationPolicyInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @BodyParam("application/json") PrivateEndpointConnectionInner properties,
+            @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
+            @BodyParam("application/json") ObjectReplicationPolicyInner properties,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage"
-                + "/storageAccounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
+                + "/storageAccounts/{accountName}/objectReplicationPolicies/{objectReplicationPolicyId}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(
@@ -99,27 +117,93 @@ public final class PrivateEndpointConnectionsInner {
             @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @PathParam("objectReplicationPolicyId") String objectReplicationPolicyId,
             Context context);
     }
 
     /**
-     * Gets the specified private endpoint connection associated with the storage account.
+     * List the object replication policies associated with the storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return list storage account object replication policies.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+    public Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
+        String resourceGroupName, String accountName) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            accountName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<ObjectReplicationPolicyInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * List the object replication policies associated with the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list storage account object replication policies.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ObjectReplicationPolicyInner> listAsync(String resourceGroupName, String accountName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName));
+    }
+
+    /**
+     * List the object replication policies associated with the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list storage account object replication policies.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ObjectReplicationPolicyInner> list(String resourceGroupName, String accountName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, accountName));
+    }
+
+    /**
+     * Get the object replication policy of the storage account by policy ID.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object replication policy of the storage account by policy ID.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ObjectReplicationPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return FluxUtil
             .withContext(
                 context ->
@@ -130,31 +214,30 @@ public final class PrivateEndpointConnectionsInner {
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
-                            privateEndpointConnectionName,
+                            objectReplicationPolicyId,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Gets the specified private endpoint connection associated with the storage account.
+     * Get the object replication policy of the storage account by policy ID.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName)
+    public Mono<ObjectReplicationPolicyInner> getAsync(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+        return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (SimpleResponse<ObjectReplicationPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -164,100 +247,85 @@ public final class PrivateEndpointConnectionsInner {
     }
 
     /**
-     * Gets the specified private endpoint connection associated with the storage account.
+     * Get the object replication policy of the storage account by policy ID.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the storage account.
+     * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, accountName, privateEndpointConnectionName).block();
+    public ObjectReplicationPolicyInner get(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+        return getAsync(resourceGroupName, accountName, objectReplicationPolicyId).block();
     }
 
     /**
-     * Update the state of specified private endpoint connection associated with the storage account.
+     * Create or update the object replication policy of the storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
-     * @param privateEndpoint The Private Endpoint resource.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
+     *     policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<PrivateEndpointConnectionInner>> putWithResponseAsync(
+    public Mono<SimpleResponse<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        PrivateEndpointConnectionInner properties = new PrivateEndpointConnectionInner();
-        properties.withPrivateEndpoint(privateEndpoint);
-        properties.withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties) {
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .put(
+                        .createOrUpdate(
                             this.client.getHost(),
                             resourceGroupName,
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
-                            privateEndpointConnectionName,
+                            objectReplicationPolicyId,
                             properties,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Update the state of specified private endpoint connection associated with the storage account.
+     * Create or update the object replication policy of the storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
-     * @param privateEndpoint The Private Endpoint resource.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
+     *     policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PrivateEndpointConnectionInner> putAsync(
+    public Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(
         String resourceGroupName,
         String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        return putWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionName,
-                privateEndpoint,
-                privateLinkServiceConnectionState)
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties)
             .flatMap(
-                (SimpleResponse<PrivateEndpointConnectionInner> res) -> {
+                (SimpleResponse<ObjectReplicationPolicyInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -267,47 +335,37 @@ public final class PrivateEndpointConnectionsInner {
     }
 
     /**
-     * Update the state of specified private endpoint connection associated with the storage account.
+     * Create or update the object replication policy of the storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
-     * @param privateEndpoint The Private Endpoint resource.
-     * @param privateLinkServiceConnectionState A collection of information about the state of the connection between
-     *     service consumer and provider.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
+     * @param properties The replication policy between two storage accounts. Multiple rules can be defined in one
+     *     policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Private Endpoint Connection resource.
+     * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner put(
+    public ObjectReplicationPolicyInner createOrUpdate(
         String resourceGroupName,
         String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpoint privateEndpoint,
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        return putAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionName,
-                privateEndpoint,
-                privateLinkServiceConnectionState)
-            .block();
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties) {
+        return createOrUpdateAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties).block();
     }
 
     /**
-     * Deletes the specified private endpoint connection associated with the storage account.
+     * Deletes the object replication policy associated with the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -315,7 +373,7 @@ public final class PrivateEndpointConnectionsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName) {
+        String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return FluxUtil
             .withContext(
                 context ->
@@ -326,46 +384,44 @@ public final class PrivateEndpointConnectionsInner {
                             accountName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
-                            privateEndpointConnectionName,
+                            objectReplicationPolicyId,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Deletes the specified private endpoint connection associated with the storage account.
+     * Deletes the object replication policy associated with the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        return deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionName)
+    public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+        return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Deletes the specified private endpoint connection associated with the storage account.
+     * Deletes the object replication policy associated with the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      *     insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names
      *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Storage
-     *     Account.
+     * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionName) {
-        deleteAsync(resourceGroupName, accountName, privateEndpointConnectionName).block();
+    public void delete(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
+        deleteAsync(resourceGroupName, accountName, objectReplicationPolicyId).block();
     }
 }
