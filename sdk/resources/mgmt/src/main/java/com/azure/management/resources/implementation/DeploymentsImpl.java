@@ -44,20 +44,13 @@ final class DeploymentsImpl
 
     @Override
     public Deployment getByName(String name) {
-        for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
-            DeploymentExtendedInner inner = this.manager().inner().deployments()
-                .getAtManagementGroupScope(group.name(), name);
-            if (inner != null) {
-                return createFluentModel(inner);
-            }
-        }
-        return null;
+        return getByNameAsync(name).block();
     }
 
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
-        // TODO: Add this
-        return null;
+        this.manager().inner().deployments().getAtTenantScopeAsync(name)
+            .map(inner -> new DeploymentImpl(inner, inner.getName(), this.resourceManager));
     }
 
     @Override
