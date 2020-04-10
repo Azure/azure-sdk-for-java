@@ -168,7 +168,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * List all available models.
+     * List information for all models.
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */
@@ -201,7 +201,7 @@ public final class FormRecognizerAsyncClient {
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
         return service.listCustomModelsSinglePageAsync(context)
-            .doOnRequest(ignoredValue -> logger.info("Listing all model information"))
+            .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
             .doOnError(error -> logger.warning("Failed to list all models", error))
             .map(res -> new PagedResponseBase<>(
