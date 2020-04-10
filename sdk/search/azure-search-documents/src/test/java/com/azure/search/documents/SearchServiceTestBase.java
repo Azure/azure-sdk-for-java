@@ -42,8 +42,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -67,10 +65,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class SearchServiceTestBase extends TestBase {
-
-    private static final String DEFAULT_DNS_SUFFIX = "search.windows.net";
-    private static final String DOGFOOD_DNS_SUFFIX = "search-dogfood.windows-int.net";
-
     private static final String FAKE_DESCRIPTION = "Some data source";
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
@@ -124,7 +118,6 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-
         if (!interceptorManager.isPlaybackMode()) {
             azureSearchResources.createService(testResourceNamer);
             searchApiKeyCredential = new AzureKeyCredential(azureSearchResources.getSearchAdminKey());

@@ -142,10 +142,18 @@ public class AzureSearchResources {
         } catch (IOException ex) {
             System.out.println(String.format("Sorry ! We can't reach to this host: %s.",
                 ipAddress));
+            sleep();
             return true;
         }
     }
 
+    private void sleep() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Deletes the Azure Cognitive Search service.
      */
