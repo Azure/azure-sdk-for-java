@@ -38,7 +38,7 @@ public class ResourceUtilsTests {
 
     @Test
     public void canDownloadFile() throws Exception {
-        // FIXME: Fix this
+        // TODO(not known): Fix this
 //        RestProxy retrofit = new RestProxyBuilder().baseUrl("http://microsoft.com").addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
 //        byte[] content = Utils.downloadFileAsync("http://google.com/humans.txt", retrofit).toBlocking().single();
 //        String contentString = new String(content);

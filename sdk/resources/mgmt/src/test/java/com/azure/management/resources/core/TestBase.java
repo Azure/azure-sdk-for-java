@@ -60,8 +60,8 @@ public abstract class TestBase {
         NONE
     }
 
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
+    protected static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
 
@@ -125,11 +125,13 @@ public abstract class TestBase {
     }
 
     public static boolean isPlaybackMode() {
-        if (testMode == null) try {
-            initTestMode();
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Can't init test mode.");
+        if (testMode == null) {
+            try {
+                initTestMode();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Can't init test mode.");
+            }
         }
         return testMode == TestMode.PLAYBACK;
     }
@@ -282,7 +284,7 @@ public abstract class TestBase {
                 if (host != null) {
                     clientBuilder.proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress(host, port)));
                 }
-            } catch (URISyntaxException e) {}
+            } catch (URISyntaxException e) { }
         }
         return clientBuilder.build();
     }
