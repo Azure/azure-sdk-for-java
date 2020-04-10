@@ -13,10 +13,6 @@ class ReceiverOptions {
     private final int prefetchCount;
     private final String sessionId;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
-        this(receiveMode, prefetchCount, null);
-    }
-
     ReceiverOptions(ReceiveMode receiveMode, int prefetchCount, String sessionId) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
@@ -35,7 +31,7 @@ class ReceiverOptions {
     /**
      * Gets the sessionId for the message.
      *
-     * @return the sessionId for the message.
+     * @return Id of the session to receive messages from.
      */
     String getSessionId() {
         return sessionId;
