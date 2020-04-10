@@ -38,12 +38,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
         try {
             receiver.receive(new ReceiveAsyncOptions().setEnableAutoComplete(false))
-                .takeUntil(message -> {
-                    final int pending = messagesPending.decrementAndGet();
-                    logger.info("Pending: {}", pending);
-
-                    return pending > 0;
-                })
+                .take(messagesPending.get())
                 .map(message -> {
                     logger.info("Message received: {}", message.getSequenceNumber());
                     return message;
