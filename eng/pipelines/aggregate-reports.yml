@@ -16,7 +16,7 @@ jobs:
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: ./sdk/parents/azure-client-sdk-parent/pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -pl com.azure:jacoco-test-coverage -am'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
