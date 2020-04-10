@@ -124,12 +124,14 @@ class APISpec extends Specification {
     /* Unignore any managed disk tests if a managed disk account is available to be tested. They are difficult to
      acquire so we do not run them in the nightly live run tests. */
     static def MANAGED_DISK_STORAGE = "MANAGED_DISK_STORAGE_"
+    static def VERSIONED_STORAGE = "VERSIONED_STORAGE_"
 
     protected static StorageSharedKeyCredential primaryCredential
     static StorageSharedKeyCredential alternateCredential
     static StorageSharedKeyCredential blobCredential
     static StorageSharedKeyCredential premiumCredential
     static StorageSharedKeyCredential managedDiskCredential
+    static StorageSharedKeyCredential versionedCredential
     static TestMode testMode
 
     BlobServiceClient primaryBlobServiceClient
@@ -138,6 +140,7 @@ class APISpec extends Specification {
     BlobServiceClient blobServiceClient
     BlobServiceClient premiumBlobServiceClient
     BlobServiceClient managedDiskServiceClient
+    BlobServiceClient versionedBlobServiceClient
 
     InterceptorManager interceptorManager
     boolean recordLiveMode
@@ -152,6 +155,7 @@ class APISpec extends Specification {
         blobCredential = getCredential(BLOB_STORAGE)
         premiumCredential = getCredential(PREMIUM_STORAGE)
         managedDiskCredential = getCredential(MANAGED_DISK_STORAGE)
+        versionedCredential = getCredential(VERSIONED_STORAGE)
         // The property is to limit flapMap buffer size of concurrency
         // in case the upload or download open too many connections.
         System.setProperty("reactor.bufferSize.x", "16")
@@ -180,6 +184,7 @@ class APISpec extends Specification {
         blobServiceClient = setClient(blobCredential)
         premiumBlobServiceClient = setClient(premiumCredential)
         managedDiskServiceClient = setClient(managedDiskCredential)
+        versionedBlobServiceClient = setClient(versionedCredential)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)

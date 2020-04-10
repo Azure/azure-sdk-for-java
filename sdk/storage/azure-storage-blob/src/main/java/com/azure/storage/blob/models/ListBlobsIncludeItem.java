@@ -34,7 +34,12 @@ public enum ListBlobsIncludeItem {
     /**
      * Enum value uncommittedblobs.
      */
-    UNCOMMITTEDBLOBS("uncommittedblobs");
+    UNCOMMITTEDBLOBS("uncommittedblobs"),
+
+    /**
+     * Enum value versions.
+     */
+    VERSIONS("versions");
 
     /**
      * The actual serialized value for a ListBlobsIncludeItem instance.

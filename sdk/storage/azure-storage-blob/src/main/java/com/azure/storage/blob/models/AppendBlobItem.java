@@ -21,6 +21,7 @@ public class AppendBlobItem {
     private final String encryptionScope;
     private final String blobAppendOffset;
     private final Integer blobCommittedBlockCount;
+    private final String versionId;
 
     /**
      * Constructs an {@link AppendBlobItem}.
@@ -55,6 +56,27 @@ public class AppendBlobItem {
     public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
         final boolean isServerEncrypted, final String encryptionKeySha256, final String encryptionScope,
         final String blobAppendOffset, final Integer blobCommittedBlockCount) {
+        this(eTag, lastModified, contentMd5, isServerEncrypted, encryptionKeySha256, encryptionScope, blobAppendOffset,
+            blobCommittedBlockCount, null);
+    }
+
+    /**
+     * Constructs an {@link AppendBlobItem}.
+     *
+     * @param eTag ETag of the append blob.
+     * @param lastModified Last modified time of the append blob.
+     * @param contentMd5 Content MD5 of the append blob.
+     * @param isServerEncrypted Flag indicating if the page blob is encrypted on the server.
+     * @param encryptionKeySha256 The encryption key used to encrypt the append blob.
+     * @param encryptionScope The encryption scope used to encrypt the append blob.
+     * @param blobAppendOffset The offset at which the block was committed to the append blob.
+     * @param blobCommittedBlockCount The number of committed blocks in the append blob.
+     * @param versionId The version identifier of the append blob.
+     */
+    public AppendBlobItem(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
+                          final boolean isServerEncrypted, final String encryptionKeySha256,
+                          final String encryptionScope, final String blobAppendOffset,
+                          final Integer blobCommittedBlockCount, final String versionId) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -63,6 +85,7 @@ public class AppendBlobItem {
         this.encryptionScope = encryptionScope;
         this.blobAppendOffset = blobAppendOffset;
         this.blobCommittedBlockCount = blobCommittedBlockCount;
+        this.versionId = versionId;
     }
 
     /**
@@ -119,5 +142,12 @@ public class AppendBlobItem {
      */
     public Integer getBlobCommittedBlockCount() {
         return blobCommittedBlockCount;
+    }
+
+    /**
+     * @return the version identifier of the append blob
+     */
+    public String getVersionId() {
+        return versionId;
     }
 }

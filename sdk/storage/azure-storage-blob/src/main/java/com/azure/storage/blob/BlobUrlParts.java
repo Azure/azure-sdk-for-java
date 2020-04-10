@@ -33,6 +33,7 @@ public final class BlobUrlParts {
     private String containerName;
     private String blobName;
     private String snapshot;
+    private String versionId;
     private String accountName;
     private boolean isIpUrl;
     private CommonSasQueryParameters commonSasQueryParameters;
@@ -172,6 +173,26 @@ public final class BlobUrlParts {
     }
 
     /**
+     * Gets the version identifier that will be used as part of the query string if set.
+     *
+     * @return the version identifier.
+     */
+    public String getVersionId() {
+        return versionId;
+    }
+
+    /**
+     * Sets the version identifier that will be used as part of the query string if set.
+     *
+     * @param versionId The version identifier.
+     * @return the updated BlobUrlParts object.
+     */
+    public BlobUrlParts setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    /**
      * Gets the {@link BlobServiceSasQueryParameters} representing the SAS query parameters
      *
      * @return the {@link BlobServiceSasQueryParameters} of the URL
@@ -283,6 +304,9 @@ public final class BlobUrlParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.UrlConstants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
+        if (this.versionId != null) {
+            url.setQueryParameter(Constants.UrlConstants.VERSIONID_QUERY_PARAMETER, this.versionId);
+        }
         if (this.commonSasQueryParameters != null) {
             String encodedSAS = this.commonSasQueryParameters.encode();
             if (encodedSAS.length() != 0) {
@@ -359,6 +383,11 @@ public final class BlobUrlParts {
         String[] snapshotArray = queryParamsMap.remove("snapshot");
         if (snapshotArray != null) {
             parts.setSnapshot(snapshotArray[0]);
+        }
+
+        String[] versionIdArray = queryParamsMap.remove("versionid");
+        if (versionIdArray != null) {
+            parts.setVersionId(versionIdArray[0]);
         }
 
         CommonSasQueryParameters commonSasQueryParameters = new CommonSasQueryParameters(queryParamsMap, true);

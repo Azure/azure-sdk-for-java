@@ -234,6 +234,11 @@ public final class Constants {
         public static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
 
         /**
+         * The versionId parameters.
+         */
+        public static final String VERSIONID_QUERY_PARAMETER = "versionid";
+
+        /**
          * The SAS service version parameter.
          */
         public static final String SAS_SERVICE_VERSION = "sv";
