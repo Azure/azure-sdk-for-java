@@ -226,6 +226,18 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     }
 
     @Override
+    public ExpressRouteCircuitPeeringImpl withAzureASN(Integer azureASN) {
+        this.inner().withAzureASN(azureASN);
+        return this;
+    }
+
+    @Override
+    public ExpressRouteCircuitPeeringImpl withConnections(List<ExpressRouteCircuitConnectionInner> connections) {
+        this.inner().withConnections(connections);
+        return this;
+    }
+
+    @Override
     public ExpressRouteCircuitPeeringImpl withExpressRouteConnection(ExpressRouteConnectionId expressRouteConnection) {
         this.inner().withExpressRouteConnection(expressRouteConnection);
         return this;
@@ -274,6 +286,12 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     }
 
     @Override
+    public ExpressRouteCircuitPeeringImpl withPrimaryAzurePort(String primaryAzurePort) {
+        this.inner().withPrimaryAzurePort(primaryAzurePort);
+        return this;
+    }
+
+    @Override
     public ExpressRouteCircuitPeeringImpl withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix) {
         this.inner().withPrimaryPeerAddressPrefix(primaryPeerAddressPrefix);
         return this;
@@ -282,6 +300,12 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     @Override
     public ExpressRouteCircuitPeeringImpl withRouteFilter(SubResource routeFilter) {
         this.inner().withRouteFilter(routeFilter);
+        return this;
+    }
+
+    @Override
+    public ExpressRouteCircuitPeeringImpl withSecondaryAzurePort(String secondaryAzurePort) {
+        this.inner().withSecondaryAzurePort(secondaryAzurePort);
         return this;
     }
 
