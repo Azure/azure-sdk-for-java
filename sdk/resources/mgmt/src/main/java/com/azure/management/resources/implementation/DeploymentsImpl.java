@@ -49,7 +49,7 @@ final class DeploymentsImpl
 
     @Override
     public Mono<Deployment> getByNameAsync(String name) {
-        this.manager().inner().deployments().getAtTenantScopeAsync(name)
+        return this.manager().inner().deployments().getAtTenantScopeAsync(name)
             .map(inner -> new DeploymentImpl(inner, inner.getName(), this.resourceManager));
     }
 
