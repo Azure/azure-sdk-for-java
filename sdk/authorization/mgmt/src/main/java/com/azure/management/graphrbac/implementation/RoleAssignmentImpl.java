@@ -15,20 +15,14 @@ import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.time.Duration;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
-
-/**
- * Implementation for ServicePrincipal and its parent interfaces.
- */
-class RoleAssignmentImpl
-        extends CreatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl>
-        implements
-            RoleAssignment,
-            RoleAssignment.Definition {
+/** Implementation for ServicePrincipal and its parent interfaces. */
+class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInner, RoleAssignmentImpl>
+    implements RoleAssignment, RoleAssignment.Definition {
     private GraphRbacManager manager;
     // Active Directory identify info
     private String objectId;
@@ -54,44 +48,65 @@ class RoleAssignmentImpl
         if (objectId != null) {
             objectIdObservable = Mono.just(objectId);
         } else if (userName != null) {
-            objectIdObservable = manager.users().getByNameAsync(userName)
-                    .map(user -> user.id());
+            objectIdObservable = manager.users().getByNameAsync(userName).map(user -> user.id());
         } else if (servicePrincipalName != null) {
-            objectIdObservable = manager.servicePrincipals().getByNameAsync(servicePrincipalName)
-                    .map(sp -> sp.id());
+            objectIdObservable = manager.servicePrincipals().getByNameAsync(servicePrincipalName).map(sp -> sp.id());
         } else {
-            throw new IllegalArgumentException("Please pass a non-null value for either object Id, user, group, or service principal");
+            throw new IllegalArgumentException(
+                "Please pass a non-null value for either object Id, user, group, or service principal");
         }
 
         Mono<String> roleDefinitionIdObservable;
         if (roleDefinitionId != null) {
             roleDefinitionIdObservable = Mono.just(roleDefinitionId);
         } else if (roleName != null) {
-            roleDefinitionIdObservable = manager().roleDefinitions().getByScopeAndRoleNameAsync(scope(), roleName)
+            roleDefinitionIdObservable =
+                manager()
+                    .roleDefinitions()
+                    .getByScopeAndRoleNameAsync(scope(), roleName)
                     .map(roleDefinition -> roleDefinition.id());
         } else {
-            throw new IllegalArgumentException("Please pass a non-null value for either role name or role definition ID");
+            throw new IllegalArgumentException(
+                "Please pass a non-null value for either role name or role definition ID");
         }
 
-        return Mono.zip(objectIdObservable,
-                    roleDefinitionIdObservable,
-                    (objectId, roleDefinitionId) -> new RoleAssignmentCreateParameters().withPrincipalId(objectId).withRoleDefinitionId(roleDefinitionId))
-                .flatMap(roleAssignmentPropertiesInner -> manager().roleInner().roleAssignments()
-                .createAsync(scope(), name(), roleAssignmentPropertiesInner)
-                .retryWhen(throwableFlux -> throwableFlux.zipWith(Flux.range(1, 30), (throwable, integer) -> {
-                    if (throwable instanceof  CloudException) {
-                        CloudException cloudException = (CloudException) throwable;
-                        String exceptionMessage = cloudException.getMessage().toLowerCase();
-                        if (exceptionMessage.contains("principalnotfound") || exceptionMessage.contains("does not exist in the directory")) {
-                            // ref: https://github.com/Azure/azure-cli/blob/dev/src/command_modules/azure-cli-role/azure/cli/command_modules/role/custom.py#L1048-L1065
-                            return integer;
-                        } else {
-                            throw Exceptions.propagate(throwable);
-                        }
-                    } else {
-                        throw Exceptions.propagate(throwable);
-                    }
-                }).flatMap(i -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(i)))))).map(innerToFluentMap(this));
+        return Mono
+            .zip(
+                objectIdObservable,
+                roleDefinitionIdObservable,
+                (objectId, roleDefinitionId) ->
+                    new RoleAssignmentCreateParameters()
+                        .withPrincipalId(objectId)
+                        .withRoleDefinitionId(roleDefinitionId))
+            .flatMap(
+                roleAssignmentPropertiesInner ->
+                    manager()
+                        .roleInner()
+                        .roleAssignments()
+                        .createAsync(scope(), name(), roleAssignmentPropertiesInner)
+                        .retryWhen(
+                            throwableFlux ->
+                                throwableFlux
+                                    .zipWith(
+                                        Flux.range(1, 30),
+                                        (throwable, integer) -> {
+                                            if (throwable instanceof CloudException) {
+                                                CloudException cloudException = (CloudException) throwable;
+                                                String exceptionMessage = cloudException.getMessage().toLowerCase();
+                                                if (exceptionMessage.contains("principalnotfound")
+                                                    || exceptionMessage.contains("does not exist in the directory")) {
+                                                    // ref:
+                                                    // https://github.com/Azure/azure-cli/blob/dev/src/command_modules/azure-cli-role/azure/cli/command_modules/role/custom.py#L1048-L1065
+                                                    return integer;
+                                                } else {
+                                                    throw Exceptions.propagate(throwable);
+                                                }
+                                            } else {
+                                                throw Exceptions.propagate(throwable);
+                                            }
+                                        })
+                                    .flatMap(i -> Mono.delay(SdkContext.getDelayDuration(Duration.ofSeconds(i))))))
+            .map(innerToFluentMap(this));
     }
 
     @Override

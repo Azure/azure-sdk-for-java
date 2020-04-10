@@ -12,8 +12,6 @@ import com.azure.management.graphrbac.models.ApplicationInner;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import reactor.core.publisher.Mono;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -23,17 +21,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ServicePrincipal and its parent interfaces.
- */
+/** Implementation for ServicePrincipal and its parent interfaces. */
 class ActiveDirectoryApplicationImpl
-        extends CreatableUpdatableImpl<ActiveDirectoryApplication, ApplicationInner, ActiveDirectoryApplicationImpl>
-        implements
-            ActiveDirectoryApplication,
-            ActiveDirectoryApplication.Definition,
-            ActiveDirectoryApplication.Update,
-            HasCredential<ActiveDirectoryApplicationImpl> {
+    extends CreatableUpdatableImpl<ActiveDirectoryApplication, ApplicationInner, ActiveDirectoryApplicationImpl>
+    implements ActiveDirectoryApplication,
+        ActiveDirectoryApplication.Definition,
+        ActiveDirectoryApplication.Update,
+        HasCredential<ActiveDirectoryApplicationImpl> {
     private GraphRbacManager manager;
     private ApplicationCreateParameters createParameters;
     private ApplicationUpdateParameters updateParameters;
@@ -58,9 +54,12 @@ class ActiveDirectoryApplicationImpl
             createParameters.withIdentifierUris(new ArrayList<String>());
             createParameters.identifierUris().add(createParameters.homepage());
         }
-        return manager.inner().applications().createAsync(createParameters)
-                .map(innerToFluentMap(this))
-                .flatMap(application -> refreshCredentialsAsync());
+        return manager
+            .inner()
+            .applications()
+            .createAsync(createParameters)
+            .map(innerToFluentMap(this))
+            .flatMap(application -> refreshCredentialsAsync());
     }
 
     @Override
@@ -69,30 +68,45 @@ class ActiveDirectoryApplicationImpl
     }
 
     Mono<ActiveDirectoryApplication> refreshCredentialsAsync() {
-        final Mono<ActiveDirectoryApplication> keyCredentials = manager.inner().applications().listKeyCredentialsAsync(id())
-                .map((Function<KeyCredentialInner, CertificateCredential>) keyCredentialInner -> new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner))
+        final Mono<ActiveDirectoryApplication> keyCredentials =
+            manager
+                .inner()
+                .applications()
+                .listKeyCredentialsAsync(id())
+                .map(
+                    (Function<KeyCredentialInner, CertificateCredential>)
+                        keyCredentialInner ->
+                            new CertificateCredentialImpl<ActiveDirectoryApplication>(keyCredentialInner))
                 .collectMap(certificateCredential -> certificateCredential.name())
-                .map(stringCertificateCredentialMap -> {
-                    ActiveDirectoryApplicationImpl.this.cachedCertificateCredentials = stringCertificateCredentialMap;
-                    return ActiveDirectoryApplicationImpl.this;
-                });
+                .map(
+                    stringCertificateCredentialMap -> {
+                        ActiveDirectoryApplicationImpl.this.cachedCertificateCredentials =
+                            stringCertificateCredentialMap;
+                        return ActiveDirectoryApplicationImpl.this;
+                    });
 
-        final Mono<ActiveDirectoryApplication> passwordCredentials = manager.inner().applications().listPasswordCredentialsAsync(id())
-                .map((Function<PasswordCredentialInner, PasswordCredential>) passwordCredentialInner -> new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner))
+        final Mono<ActiveDirectoryApplication> passwordCredentials =
+            manager
+                .inner()
+                .applications()
+                .listPasswordCredentialsAsync(id())
+                .map(
+                    (Function<PasswordCredentialInner, PasswordCredential>)
+                        passwordCredentialInner ->
+                            new PasswordCredentialImpl<ActiveDirectoryApplication>(passwordCredentialInner))
                 .collectMap(passwordCredential -> passwordCredential.name())
-                .map(stringPasswordCredentialMap -> {
-                    ActiveDirectoryApplicationImpl.this.cachedPasswordCredentials = stringPasswordCredentialMap;
-                    return ActiveDirectoryApplicationImpl.this;
-                });
+                .map(
+                    stringPasswordCredentialMap -> {
+                        ActiveDirectoryApplicationImpl.this.cachedPasswordCredentials = stringPasswordCredentialMap;
+                        return ActiveDirectoryApplicationImpl.this;
+                    });
 
         return keyCredentials.mergeWith(passwordCredentials).last();
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> refreshAsync() {
-        return getInnerAsync()
-                .map(innerToFluentMap(this))
-                .flatMap(application -> refreshCredentialsAsync());
+        return getInnerAsync().map(innerToFluentMap(this)).flatMap(application -> refreshCredentialsAsync());
     }
 
     @Override
@@ -234,14 +248,14 @@ class ActiveDirectoryApplicationImpl
         if (cachedPasswordCredentials.containsKey(name)) {
             cachedPasswordCredentials.remove(name);
             List<PasswordCredentialInner> updatePasswordCredentials = new ArrayList<>();
-            for (PasswordCredential passwordCredential: cachedPasswordCredentials.values()) {
+            for (PasswordCredential passwordCredential : cachedPasswordCredentials.values()) {
                 updatePasswordCredentials.add(passwordCredential.inner());
             }
             updateParameters.withPasswordCredentials(updatePasswordCredentials);
         } else if (cachedCertificateCredentials.containsKey(name)) {
             cachedCertificateCredentials.remove(name);
             List<KeyCredentialInner> updateCertificateCredentials = new ArrayList<>();
-            for (CertificateCredential certificateCredential: cachedCertificateCredentials.values()) {
+            for (CertificateCredential certificateCredential : cachedCertificateCredentials.values()) {
                 updateCertificateCredentials.add(certificateCredential.inner());
             }
             updateParameters.withKeyCredentials(updateCertificateCredentials);

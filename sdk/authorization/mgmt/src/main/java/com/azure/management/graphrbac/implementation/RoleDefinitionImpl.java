@@ -8,18 +8,12 @@ import com.azure.management.graphrbac.RoleDefinition;
 import com.azure.management.graphrbac.models.PermissionInner;
 import com.azure.management.graphrbac.models.RoleDefinitionInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Implementation for ServicePrincipal and its parent interfaces.
- */
-class RoleDefinitionImpl
-        extends WrapperImpl<RoleDefinitionInner>
-        implements
-        RoleDefinition {
+/** Implementation for ServicePrincipal and its parent interfaces. */
+class RoleDefinitionImpl extends WrapperImpl<RoleDefinitionInner> implements RoleDefinition {
     private GraphRbacManager manager;
     // Active Directory identify info
     private String objectId;

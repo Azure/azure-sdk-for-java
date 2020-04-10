@@ -15,58 +15,38 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Indexable;
 
-/**
- * An immutable client-side representation of an Azure AD role assignment.
- */
+/** An immutable client-side representation of an Azure AD role assignment. */
 @Fluent
-public interface RoleAssignment extends
-        Indexable,
-        HasInner<RoleAssignmentInner>,
-        HasId,
-        HasName,
-        HasManager<GraphRbacManager> {
-    /**
-     * @return the role assignment scope
-     */
+public interface RoleAssignment
+    extends Indexable, HasInner<RoleAssignmentInner>, HasId, HasName, HasManager<GraphRbacManager> {
+    /** @return the role assignment scope */
     String scope();
 
-    /**
-     * @return the role definition ID
-     */
+    /** @return the role definition ID */
     String roleDefinitionId();
 
-    /**
-     * @return the principal ID
-     */
+    /** @return the principal ID */
     String principalId();
 
     /**************************************************************
      * Fluent interfaces to provision an role assignment
      **************************************************************/
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithRole,
             DefinitionStages.WithScope,
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the role assignment definition stages.
-     */
+    /** Grouping of all the role assignment definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the role assignment definition.
-         */
+        /** The first stage of the role assignment definition. */
         interface Blank extends WithAssignee {
         }
 
-        /**
-         * The stage of role assignment definition allowing specifying the assignee information.
-         */
+        /** The stage of role assignment definition allowing specifying the assignee information. */
         interface WithAssignee {
             /**
              * Specifies the assignee of the role assignment.
@@ -117,9 +97,7 @@ public interface RoleAssignment extends
             WithRole forServicePrincipal(String servicePrincipalName);
         }
 
-        /**
-         * The stage of role assignment definition allowing specifying the role.
-         */
+        /** The stage of role assignment definition allowing specifying the role. */
         interface WithRole {
             /**
              * Specifies the name of a built in role for this assignment.
@@ -137,13 +115,11 @@ public interface RoleAssignment extends
             WithScope withRoleDefinition(String roleDefinitionId);
         }
 
-        /**
-         * The stage of role assignment definition allowing specifying the scope of the assignment.
-         */
+        /** The stage of role assignment definition allowing specifying the scope of the assignment. */
         interface WithScope {
             /**
-             * Specifies the scope of the role assignment. The scope is usually the ID of
-             * a subscription, a resource group, a resource, etc.
+             * Specifies the scope of the role assignment. The scope is usually the ID of a subscription, a resource
+             * group, a resource, etc.
              *
              * @param scope the scope of the assignment
              * @return the next stage in role assignment definition
@@ -176,12 +152,10 @@ public interface RoleAssignment extends
         }
 
         /**
-         * An role assignment definition with sufficient inputs to create a new
-         * role assignment in the cloud, but exposing additional optional inputs to
-         * specify.
+         * An role assignment definition with sufficient inputs to create a new role assignment in the cloud, but
+         * exposing additional optional inputs to specify.
          */
-        interface WithCreate extends
-                Creatable<RoleAssignment> {
+        interface WithCreate extends Creatable<RoleAssignment> {
         }
     }
 }
