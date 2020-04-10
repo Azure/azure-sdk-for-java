@@ -28,6 +28,7 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
+
         createHotelIndex();
         client = getSearchIndexClientBuilder(HOTELS_INDEX_NAME).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
