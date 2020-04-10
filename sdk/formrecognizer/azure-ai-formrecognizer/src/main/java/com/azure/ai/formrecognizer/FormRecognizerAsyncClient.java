@@ -167,7 +167,6 @@ public final class FormRecognizerAsyncClient {
             fetchExtractReceiptResult(includeTextDetails));
     }
 
-
     /**
      * List all available models.
      *
@@ -183,11 +182,17 @@ public final class FormRecognizerAsyncClient {
         }
     }
 
+    /**
+     * List all available models with taking {@link Context}.
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
+     */
     PagedFlux<CustomFormModelInfo> listModels(Context context) {
         return new PagedFlux<>(() -> listFirstPageModelInfo(context),
             continuationToken -> listNextPageModelInfo(continuationToken, context));
     }
-
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
         return service.listCustomModelsSinglePageAsync(context)
