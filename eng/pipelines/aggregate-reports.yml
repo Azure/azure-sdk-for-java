@@ -22,7 +22,7 @@ jobs:
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'clean verify site:site site:stage'
+        goals: 'clean install site:site site:stage'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
