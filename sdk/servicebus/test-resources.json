@@ -55,6 +55,7 @@
     "namespaceName": "[concat('sb-java-', parameters('baseName'))]",
     "namespaceDomainNameSuffix": "servicebus.windows.net",
     "queueName": "[concat('queue-', parameters('baseName'))]",
+    "sessionQueueName": "[concat('session-queue-', parameters('baseName'))]",
     "subscriptionName": "[concat('subscription-', parameters('baseName'))]",
     "serviceBusDataOwnerRoleId": "090c5cfd-751d-490a-894a-3ce6f1109419",
     "sharedAccessKeyName": "RootManageSharedAccessKey",
@@ -107,6 +108,22 @@
             "maxSizeInMegabytes": 1024,
             "requiresDuplicateDetection": false,
             "requiresSession": false
+          }
+        },
+        {
+          "apiVersion": "2017-04-01",
+          "type": "queues",
+          "name": "[variables('sessionQueueName')]",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
+          ],
+          "properties": {
+            "enablePartitioning": false,
+            "path": "[variables('sessionQueueName')]",
+            "maxDeliveryCount": 10,
+            "maxSizeInMegabytes": 1024,
+            "requiresDuplicateDetection": false,
+            "requiresSession": true
           }
         },
         {
@@ -164,6 +181,10 @@
     "AZURE_SERVICEBUS_QUEUE_NAME": {
       "type": "string",
       "value": "[variables('queueName')]"
+    },
+    "AZURE_SERVICEBUS_SESSION_QUEUE_NAME": {
+      "type": "string",
+      "value": "[variables('sessionQueueName')]"
     },
     "AZURE_SERVICEBUS_TOPIC_NAME": {
       "type": "string",

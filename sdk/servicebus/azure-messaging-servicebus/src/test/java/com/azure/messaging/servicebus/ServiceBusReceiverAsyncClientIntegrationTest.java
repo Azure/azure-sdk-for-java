@@ -41,6 +41,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiveDeleteModeReceiver;
     private ServiceBusReceiverAsyncClient sessionReceiveDeleteModeReceiver;
     private ServiceBusSenderAsyncClient sender;
+    private ServiceBusSenderAsyncClient sessionSender;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
@@ -49,9 +50,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     @Override
     protected void beforeTest() {
         final String queueName = getQueueName();
+        final String sessionQueueName = getSessionQueueName();
         assertNotNull(queueName, "'queueName' cannot be null.");
+        assertNotNull(sessionQueueName, "'sessionQueueName' cannot be null.");
 
         sender = createBuilder().sender().queueName(queueName).buildAsyncClient();
+        sessionSender = createBuilder().sender().queueName(sessionQueueName).buildAsyncClient();
         receiver = createBuilder()
             .receiver()
             .queueName(queueName)
@@ -64,7 +68,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .buildAsyncClient();
         sessionReceiveDeleteModeReceiver = createBuilder()
             .receiver()
-            .queueName(queueName)
+            .queueName(sessionQueueName)
+            .sessionId(SESSION_ID)
             .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
             .buildAsyncClient();
     }
@@ -518,7 +523,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         // Assert & Act
-        StepVerifier.create(sender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
+        StepVerifier.create(sessionSender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
             .assertNext(receivedMessage ->
                 assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
             .thenCancel()
