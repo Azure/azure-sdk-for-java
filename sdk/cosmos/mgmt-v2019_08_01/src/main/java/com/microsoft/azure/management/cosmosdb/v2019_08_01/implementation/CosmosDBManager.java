@@ -34,13 +34,14 @@ import com.microsoft.azure.management.cosmosdb.v2019_08_01.MongoDBResources;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.TableResources;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.CassandraResources;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.GremlinResources;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.NotebookWorkspaces;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
 /**
  * Entry point to Azure CosmosDB resource management.
  */
-public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDBImpl> {
+public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDBManagementClientImpl> {
     private DatabaseAccounts databaseAccounts;
     private Operations operations;
     private Databases databases;
@@ -59,6 +60,7 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
     private TableResources tableResources;
     private CassandraResources cassandraResources;
     private GremlinResources gremlinResources;
+    private NotebookWorkspaces notebookWorkspaces;
     /**
     * Get a Configurable instance that can be used to create CosmosDBManager with optional configuration.
     *
@@ -287,6 +289,16 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
     }
 
     /**
+     * @return Entry point to manage NotebookWorkspaces.
+     */
+    public NotebookWorkspaces notebookWorkspaces() {
+        if (this.notebookWorkspaces == null) {
+            this.notebookWorkspaces = new NotebookWorkspacesImpl(this);
+        }
+        return this.notebookWorkspaces;
+    }
+
+    /**
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
@@ -298,6 +310,6 @@ public final class CosmosDBManager extends ManagerCore<CosmosDBManager, CosmosDB
         super(
             restClient,
             subscriptionId,
-            new CosmosDBImpl(restClient).withSubscriptionId(subscriptionId));
+            new CosmosDBManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 }
