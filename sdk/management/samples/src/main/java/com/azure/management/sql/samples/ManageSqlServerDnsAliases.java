@@ -4,7 +4,6 @@ package com.azure.management.sql.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.management.ApplicationTokenCredential;

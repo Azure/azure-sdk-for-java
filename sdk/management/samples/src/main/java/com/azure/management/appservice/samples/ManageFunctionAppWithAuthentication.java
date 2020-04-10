@@ -11,7 +11,6 @@ import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -220,7 +219,7 @@ public final class ManageFunctionAppWithAuthentication {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

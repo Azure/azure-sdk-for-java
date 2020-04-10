@@ -13,7 +13,6 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
