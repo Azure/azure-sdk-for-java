@@ -37,11 +37,12 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     private CosmosClient directClient;
     private CosmosContainer container;
     private CosmosAsyncContainer cosmosAsyncContainer;
+    private CosmosClientBuilder cosmosClientBuilder;
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         assertThat(this.gatewayClient).isNull();
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+        cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
@@ -77,17 +78,21 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         validateTransportRequestTimelineGateway(diagnostics);
     }
 
-    //  TODO: (naveen) - Check the priority
-    @Test(groups = {"simple"}, priority = 1, enabled = false)
+    @Test(groups = {"simple"})
     public void gatewayDiagnosticsOnException() throws CosmosClientException {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
+        CosmosClient client = null;
         try {
-            createResponse = this.container.createItem(cosmosItemProperties);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            client = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
+            CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
-                this.container.readItem(BridgeInternal.getProperties(createResponse).getId(),
+                container.readItem(BridgeInternal.getProperties(createResponse).getId(),
                     new PartitionKey("wrongPartitionKey"),
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
@@ -100,6 +105,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(exception.getResponseDiagnostics().getRequestLatency()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
+        } finally {
+            if (client != null) {
+                client.close();
+            }
         }
     }
 
@@ -140,8 +149,11 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
+        CosmosClient client = null;
         try {
-            createResponse = this.container.createItem(cosmosItemProperties);
+            client = cosmosClientBuilder.connectionPolicy(new ConnectionPolicy()).buildClient();
+            CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
+            createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
             ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions, new PartitionKey("wrongPartitionKey"));
             CosmosItemResponse<CosmosItemProperties> readResponse =
@@ -157,6 +169,10 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035
             // uncomment below if above issue is fixed
             //validateTransportRequestTimelineDirect(diagnostics);
+        } finally {
+            if (client != null) {
+                client.close();
+            }
         }
     }
 

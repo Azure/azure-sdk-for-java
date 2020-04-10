@@ -2,26 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.models.CosmosResourceType;
-import com.azure.cosmos.models.FeedOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Permission;
-import com.azure.cosmos.models.RequestVerb;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -41,9 +29,21 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.AccessConditionType;
+import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -64,7 +64,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -437,7 +436,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
@@ -612,7 +614,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
                 .doOnNext(resourceResponse -> {
                     // set the session token
@@ -662,7 +667,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
             return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
@@ -963,13 +971,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
             partitionKeyInternal =  extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
             ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
-            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,
                 serializationEndTime,
                 SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
             );
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
@@ -1033,7 +1044,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-        serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
@@ -1298,7 +1312,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
-        serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
