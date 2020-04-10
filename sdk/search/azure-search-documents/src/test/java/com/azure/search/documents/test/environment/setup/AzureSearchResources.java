@@ -139,9 +139,9 @@ public class AzureSearchResources {
         boolean shouldRetry = true;
         while (shouldRetry && retryCount < 3) {
             try {
-                InetAddress ipAddress = InetAddress.getByName(pingAddress);
+                InetAddress.getByName(pingAddress);
                 System.out.println("Sending Ping Request to " + pingAddress);
-                shouldRetry = !ipAddress.isReachable(10000);
+                return false;
             } catch (IOException ex) {
                 System.out.println(String.format("Sorry ! We can't reach to this host: %s.",
                     pingAddress));
@@ -149,7 +149,7 @@ public class AzureSearchResources {
             }
             retryCount += 1;
         }
-        return false;
+        return true;
     }
 
     private void sleep() {
