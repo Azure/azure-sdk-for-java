@@ -5,6 +5,8 @@ package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
 
+import java.util.List;
+
 /**
  * Quadrangle bounding box, with coordinates specified relative to the top-left of the original image
  */
@@ -12,73 +14,25 @@ import com.azure.core.annotation.Immutable;
 public final class BoundingBox {
 
     /**
-     * The top-left coordinate of the Bounding box.
+     * The list of coordinates of the Bounding box.
      */
-    private final Point topLeft;
-
-    /**
-     * The top-right coordinate of the Bounding box.
-     */
-    private final Point topRight;
-
-    /**
-     * The bottom-right coordinate of the Bounding box.
-     */
-    private final Point bottomRight;
-
-    /**
-     * The bottom-left coordinate of the Bounding box.
-     */
-    private final Point bottomLeft;
+    private final List<Point> points;
 
     /**
      * Constructs a Bounding box object.
      *
-     * @param topLeft The top-left coordinate of the Bounding box.
-     * @param topRight The top-right coordinate of the Bounding box.
-     * @param bottomRight The bottom right coordinate of the Bounding box.
-     * @param bottomLeft The bottom-left coordinate of the Bounding box.
+     * @param points The list of coordinates of the Bounding box.
      */
-    public BoundingBox(final Point topLeft, final Point topRight, final Point bottomRight, final Point bottomLeft) {
-        this.topLeft = topLeft;
-        this.topRight = topRight;
-        this.bottomRight = bottomRight;
-        this.bottomLeft = bottomLeft;
+    public BoundingBox(final List<Point> points) {
+        this.points = points;
     }
 
     /**
-     * Gets the top left coordinate of the Bounding box.
+     * Gets the list of all point coordinates of the bounding box.
      *
-     * @return The top left coordinate of the Bounding box.
+     * @return The list of all point coordinates of the Bounding box.
      */
-    public Point getTopLeft() {
-        return this.topLeft;
-    }
-
-    /**
-     * Gets the top right coordinate of the Bounding box.
-     *
-     * @return The top tight coordinate of the Bounding box.
-     */
-    public Point getTopRight() {
-        return this.topRight;
-    }
-
-    /**
-     * Gets the bottom right coordinate of the Bounding box.
-     *
-     * @return The bottom right coordinate of the Bounding box.
-     */
-    public Point getBottomRight() {
-        return this.bottomRight;
-    }
-
-    /**
-     * Gets the bottom left coordinate of the Bounding box.
-     *
-     * @return The bottom left coordinate of the Bounding box.
-     */
-    public Point getBottomLeft() {
-        return this.bottomLeft;
+    public List<Point> getPoints() {
+        return this.points;
     }
 }

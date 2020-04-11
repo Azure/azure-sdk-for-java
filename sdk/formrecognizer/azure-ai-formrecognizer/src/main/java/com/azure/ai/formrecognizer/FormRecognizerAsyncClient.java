@@ -37,7 +37,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.Transforms.toCustomFormModelInfo;
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
-import static com.azure.ai.formrecognizer.Transforms.toRecognizedFormSupervised;
+import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedLayout;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.core.util.FluxUtil.monoError;
@@ -561,7 +561,7 @@ public final class FormRecognizerAsyncClient {
             UUID modelUid = UUID.fromString(modelId);
             return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                 .map(modelSimpleResponse ->
-                    toRecognizedFormSupervised(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails));
+                    toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails));
         };
     }
 

@@ -314,7 +314,20 @@ final class TestUtils {
     }
 
     static CustomFormModel getExpectedUnsupervisedModel() {
-        CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, new HashMap<>(), "form-0");
+        Map<String, CustomFormModelField> fieldMap =  new HashMap<>() {
+            {
+                put("field-0", new CustomFormModelField("field-0", "Address", null));
+                put("field-1", new CustomFormModelField("field-1", "Charges", null));
+                put("field-2", new CustomFormModelField("field-2", "Invoice Date", null));
+                put("field-3", new CustomFormModelField("field-3", "Invoice Due Date", null));
+                put("field-4", new CustomFormModelField("field-4", "Invoice For:", null));
+                put("field-5", new CustomFormModelField("field-5", "Invoice Number", null));
+                put("field-6", new CustomFormModelField("field-6", "Microsoft", null));
+                put("field-7", new CustomFormModelField("field-7", "Page", null));
+                put("field-8", new CustomFormModelField("field-8", "VAT ID", null));
+            }
+        };
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, fieldMap, "form-0");
         return new CustomFormModel(VALID_MODEL_ID, ModelTrainingStatus.READY,
             OffsetDateTime.parse("2020-04-09T21:30:28Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
@@ -325,13 +338,12 @@ final class TestUtils {
     static CustomFormModel getExpectedSupervisedModel() {
         Map<String, CustomFormModelField> fieldMap =  new HashMap<>() {
             {
-                put("InvoiceCharges", new CustomFormModelField("InvoiceCharges", 1.0f));
-                put("InvoiceDate", new CustomFormModelField("InvoiceDate", 0.8f));
-                put("InvoiceDueDate", new CustomFormModelField("InvoiceDueDate", 0.8f));
-                put("InvoiceNumber", new CustomFormModelField("InvoiceNumber", 1.0f));
-                put("InvoiceVatId", new CustomFormModelField("InvoiceVatId", 1.0f));
+                put("InvoiceCharges", new CustomFormModelField(null, "InvoiceCharges", 1.0f));
+                put("InvoiceDate", new CustomFormModelField(null, "InvoiceDate", 0.8f));
+                put("InvoiceDueDate", new CustomFormModelField(null, "InvoiceDueDate", 0.8f));
+                put("InvoiceNumber", new CustomFormModelField(null, "InvoiceNumber", 1.0f));
+                put("InvoiceVatId", new CustomFormModelField(null, "InvoiceVatId", 1.0f));
             }
-
         };
         CustomFormSubModel customFormSubModel = new CustomFormSubModel(0.92f, fieldMap, "form-" + SUPERVISED_MODEL_ID);
         return new CustomFormModel(SUPERVISED_MODEL_ID, ModelTrainingStatus.READY,

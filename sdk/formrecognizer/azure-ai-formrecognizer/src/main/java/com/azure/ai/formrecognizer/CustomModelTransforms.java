@@ -17,9 +17,9 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Helper class to convert service level custom form related models to SDK exposed models.
@@ -54,21 +54,29 @@ final class CustomModelTransforms {
         });
 
         List<CustomFormSubModel> subModelList = new ArrayList<>();
-        Map<String, CustomFormModelField> fieldMap = new HashMap<>();
-        // unsupervised model
+        String formType = "form-";
+        // unlabeled model
         if (modelResponse.getKeys() != null) {
-            // TODO: Get update for unsupervised field map from Paul.
-            for (String clusterKey : modelResponse.getKeys().getClusters().keySet()) {
-                subModelList.add(new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(),
-                    fieldMap, "form-" + clusterKey));
-            }
+            Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
+            modelResponse.getKeys().getClusters().forEach((clusterKey, clusterFields) -> {
+                for (int i = 0, clusterFieldsSize = clusterFields.size(); i < clusterFieldsSize; i++) {
+                    String eachField = clusterFields.get(i);
+                    String fieldLabel = "field-" + i;
+                    fieldMap.put(fieldLabel, new CustomFormModelField(fieldLabel, eachField, null));
+                }
+                CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, fieldMap,
+                    formType + clusterKey);
+                subModelList.add(customFormSubModel);
+            });
         } else if (modelResponse.getTrainResult().getFields() != null) {
-            // supervised model
+            // labeled model
+            Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
             modelResponse.getTrainResult().getFields()
                 .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
-                    new CustomFormModelField(formFieldsReport.getFieldName(), formFieldsReport.getAccuracy())));
+                        new CustomFormModelField(null, formFieldsReport.getFieldName(), 
+                        formFieldsReport.getAccuracy())));
             subModelList.add(new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(),
-                fieldMap, "form-" + modelInfo.getModelId()));
+                fieldMap, formType + modelInfo.getModelId()));
         }
 
         return new CustomFormModel(modelInfo.getModelId().toString(),
