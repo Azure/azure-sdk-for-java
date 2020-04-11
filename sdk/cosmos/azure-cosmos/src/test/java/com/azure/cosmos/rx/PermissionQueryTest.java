@@ -13,7 +13,7 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.User;
 import org.testng.annotations.AfterClass;

@@ -16,7 +16,6 @@ import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.models.RequestVerb;
 import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
