@@ -6,6 +6,7 @@
 // import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 // import com.azure.ai.formrecognizer.models.FormContentType;
 // import com.azure.ai.formrecognizer.models.OperationResult;
+// import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 // import com.azure.core.exception.HttpResponseException;
 // import com.azure.core.util.IterableStream;
 // import com.azure.core.util.polling.SyncPoller;
@@ -47,8 +48,8 @@
 //     @Test
 //     void extractReceiptSourceUrl() {
 //         receiptSourceUrlRunner((sourceUrl) -> {
-//             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-//                 client.beginExtractReceiptsFromUrl(sourceUrl, ).getSyncPoller();
+//             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+//                 client.beginExtractReceiptsFromUrl(sourceUrl).getSyncPoller();
 //             syncPoller.waitForCompletion();
 //             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
 //         });
@@ -57,8 +58,8 @@
 //     @Test
 //     void extractReceiptSourceUrlTextDetails() {
 //         receiptSourceUrlRunnerTextDetails((sourceUrl, includeTextDetails) -> {
-//             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-//                 client.beginExtractReceiptsFromUrl(sourceUrl, , null, includeTextDetails).getSyncPoller();
+//             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+//                 client.beginExtractReceiptsFromUrl(sourceUrl, null, includeTextDetails).getSyncPoller();
 //             syncPoller.waitForCompletion();
 //             validateReceiptResult(true, getExtractedReceipts(), syncPoller.getFinalResult());
 //         });
@@ -67,8 +68,8 @@
 //     @Test
 //     void extractReceiptData() {
 //         receiptDataRunner((data) -> {
-//             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller =
-//                 client.beginExtractReceipts(getReceiptFileBufferData(), , false,
+//             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+//                 client.beginExtractReceipts(getReceiptFileBufferData() , false,
 //                     FormContentType.IMAGE_JPEG, null, FILE_LENGTH).getSyncPoller();
 //             syncPoller.waitForCompletion();
 //             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
@@ -78,8 +79,8 @@
 //     @Test
 //     void extractReceiptDataTextDetails() {
 //         receiptDataRunnerTextDetails((data, includeTextDetails) -> {
-//             SyncPoller<OperationResult, IterableStream<ExtractedReceipt>> syncPoller
-//                 = client.beginExtractReceipts(getReceiptFileBufferData(), , includeTextDetails,
+//             SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller
+//                 = client.beginExtractReceipts(getReceiptFileBufferData(), includeTextDetails,
 //                 FormContentType.IMAGE_JPEG, null, FILE_LENGTH).getSyncPoller();
 //             syncPoller.waitForCompletion();
 //             validateReceiptResult(false, getExtractedReceipts(), syncPoller.getFinalResult());
@@ -89,7 +90,8 @@
 //     @Test
 //     void extractReceiptInvalidSourceUrl() {
 //         receiptInvalidSourceUrlRunner((sourceUrl) -> {
-//             assertThrows(HttpResponseException.class, () -> client.beginExtractReceiptsFromUrl(sourceUrl, ).getSyncPoller());
+//             assertThrows(HttpResponseException.class, () ->
+//                 client.beginExtractReceiptsFromUrl(sourceUrl).getSyncPoller());
 //         });
 //     }
 // }

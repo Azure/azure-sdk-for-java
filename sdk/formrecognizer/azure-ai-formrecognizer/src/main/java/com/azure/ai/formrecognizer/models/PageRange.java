@@ -14,12 +14,12 @@ public final class PageRange {
     /*
      * The start page number property.
      */
-    private final long startPageNumber;
+    private final int startPageNumber;
 
     /*
      * The end page number property.
      */
-    private final long endPageNumber;
+    private final int endPageNumber;
 
 
     /**
@@ -28,7 +28,7 @@ public final class PageRange {
      * @param startPageNumber The start page number property.
      * @param endPageNumber The end page number property.
      */
-    public PageRange(final long startPageNumber, final long endPageNumber) {
+    public PageRange(final int startPageNumber, final int endPageNumber) {
         this.startPageNumber = startPageNumber;
         this.endPageNumber = endPageNumber;
     }
@@ -38,7 +38,7 @@ public final class PageRange {
      *
      * @return the start value of the page number .
      */
-    public long getStartPageNumber() {
+    public int getStartPageNumber() {
         return this.startPageNumber;
     }
 
@@ -47,7 +47,7 @@ public final class PageRange {
      *
      * @return the end value of the page number .
      */
-    public long getEndPageNumber() {
+    public int getEndPageNumber() {
         return this.endPageNumber;
     }
 }

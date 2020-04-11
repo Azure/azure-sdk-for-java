@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import static com.azure.ai.formrecognizer.models.ReceiptItemType.TOTAL_PRICE;
  * The ReceiptExtensions class to allow users to convert a {@link RecognizedReceipt}
  * to a receiptLocale specific Receipt type.
  */
+@SuppressWarnings("unchecked")
 public final class ReceiptExtensions {
 
     /**
@@ -28,50 +30,50 @@ public final class ReceiptExtensions {
     public static USReceipt asUSReceipt(RecognizedReceipt receipt) {
         // add receipt fields
         USReceiptType receiptType = null;
-        FormField merchantName = null;
-        FormField merchantAddress = null;
-        FormField merchantPhoneNumber = null;
-        FormField subtotal = null;
-        FormField tax = null;
-        FormField tip = null;
-        FormField total = null;
-        FormField transactionDate = null;
-        FormField transactionTime = null;
+        FormField<String> merchantName = null;
+        FormField<String> merchantAddress = null;
+        FormField<String> merchantPhoneNumber = null;
+        FormField<Float> subtotal = null;
+        FormField<Float> tax = null;
+        FormField<Float> tip = null;
+        FormField<Float> total = null;
+        FormField<LocalDate> transactionDate = null;
+        FormField<String> transactionTime = null;
         List<USReceiptItem> receiptItems = null;
 
-        for (Map.Entry<String, FormField> entry : receipt.getRecognizedForm().getFields().entrySet()) {
+        for (Map.Entry<String, FormField<?>> entry : receipt.getRecognizedForm().getFields().entrySet()) {
             String key = entry.getKey();
-            FormField fieldValue = entry.getValue();
+            FormField<?> fieldValue = entry.getValue();
             switch (key) {
                 case "ReceiptType":
                     receiptType = new USReceiptType(key, fieldValue.getConfidence());
                     break;
                 case "MerchantName":
-                    merchantName = fieldValue;
+                    merchantName = (FormField<String>) fieldValue;
                     break;
                 case "MerchantAddress":
-                    merchantAddress = fieldValue;
+                    merchantAddress = (FormField<String>) fieldValue;
                     break;
                 case "MerchantPhoneNumber":
-                    merchantPhoneNumber = fieldValue;
+                    merchantPhoneNumber = (FormField<String>) fieldValue;
                     break;
                 case "Subtotal":
-                    subtotal = fieldValue;
+                    subtotal = (FormField<Float>) fieldValue;
                     break;
                 case "Tax":
-                    tax = fieldValue;
+                    tax = (FormField<Float>) fieldValue;
                     break;
                 case "Tip":
-                    tip = fieldValue;
+                    tip = (FormField<Float>) fieldValue;
                     break;
                 case "Total":
-                    total = fieldValue;
+                    total = (FormField<Float>) fieldValue;
                     break;
                 case "TransactionDate":
-                    transactionDate = fieldValue;
+                    transactionDate = (FormField<LocalDate>) fieldValue;
                     break;
                 case "TransactionTime":
-                    transactionTime = fieldValue;
+                    transactionTime = (FormField<String>) fieldValue;
                     break;
                 case "Items":
                     receiptItems = toReceiptItems(fieldValue);
@@ -94,32 +96,29 @@ public final class ReceiptExtensions {
      *
      * @return A list of {@link USReceiptItem}.
      */
-    private static List<USReceiptItem> toReceiptItems(
-            FormField fieldValueItems) {
-        ArrayValue arrayValue = (ArrayValue) fieldValueItems.getFieldValue();
+    private static List<USReceiptItem> toReceiptItems(FormField<?> fieldValueItems) {
+        List<FormField<?>> fieldValueArray = (List<FormField<?>>) fieldValueItems.getFieldValue();
         List<USReceiptItem> receiptItemList = new ArrayList<>();
-        FieldValue<?> name = null;
-        FieldValue<?> quantity = null;
-        FieldValue<?> price = null;
-        FieldValue<?> totalPrice = null;
+        FormField<String> name = null;
+        FormField<Float> quantity = null;
+        FormField<Float> price = null;
+        FormField<Float> totalPrice = null;
         USReceiptItem receiptItem = null;
 
-        for (FieldValue<?> eachFieldValue : arrayValue.getValue()) {
-            ObjectValue objectValue = ((ObjectValue) (eachFieldValue));
-            for (Map.Entry<String, FieldValue<?>> entry : objectValue.getValue().entrySet()) {
+        for (FormField<?> eachFieldValue : fieldValueArray) {
+            Map<String, FormField<?>> objectValue = ((Map<String, FormField<?>>) (eachFieldValue.getFieldValue()));
+            for (Map.Entry<String, FormField<?>> entry : objectValue.entrySet()) {
                 String key = entry.getKey();
-                FieldValue<?> fieldValue = entry.getValue();
                 if (QUANTITY.toString().equals(key)) {
-                    quantity = fieldValue;
+                    quantity = (FormField<Float>) entry.getValue();
                 } else if (NAME.toString().equals(key)) {
-                    name = fieldValue;
+                    name = (FormField<String>) entry.getValue();
                 } else if (PRICE.toString().equals(key)) {
-                    price = fieldValue;
+                    price = (FormField<Float>) entry.getValue();
                 } else if (TOTAL_PRICE.toString().equals(key)) {
-                    totalPrice = fieldValue;
+                    totalPrice = (FormField<Float>) entry.getValue();
                 }
-                receiptItem = new USReceiptItem((StringValue) name, (FloatValue) quantity, (FloatValue) price,
-                    (FloatValue) totalPrice);
+                receiptItem = new USReceiptItem(name, quantity, price, totalPrice);
             }
             receiptItemList.add(receiptItem);
         }

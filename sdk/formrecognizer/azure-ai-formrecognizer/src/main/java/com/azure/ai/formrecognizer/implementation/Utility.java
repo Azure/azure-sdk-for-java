@@ -61,7 +61,10 @@ public final class Utility {
      */
     public static String parseModelId(String operationLocation) {
         if (!CoreUtils.isNullOrEmpty(operationLocation)) {
-            return operationLocation.substring(operationLocation.lastIndexOf('/') + 1);
+            int lastIndex = operationLocation.lastIndexOf('/');
+            if (lastIndex != -1) {
+                return operationLocation.substring(lastIndex + 1);
+            }
         }
         throw LOGGER.logExceptionAsError(new RuntimeException("Failed to parse operation header for result Id."));
     }

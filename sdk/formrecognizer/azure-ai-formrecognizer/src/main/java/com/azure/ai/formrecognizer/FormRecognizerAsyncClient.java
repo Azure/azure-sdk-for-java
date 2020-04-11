@@ -45,8 +45,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are, to recognize receipt data from documents, extract layout information and
- * analyze custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt data from documents, extracting layout information and
+ * analyzing custom forms for predefined data.
  *
  * @see FormRecognizerClientBuilder
  */
@@ -92,7 +92,7 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormTrainingAsyncClient} object.The new {@code FormTrainingAsyncClient}
+     * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
      * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
      *
      * @return A new {@link FormTrainingAsyncClient} object.
@@ -141,12 +141,15 @@ public final class FormRecognizerAsyncClient {
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param modelId The custom trained model Id to be used.
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
      *
      * @return A {@link PollerFlux} that polls the extract custom form operation until it has completed, has failed,
      * or has been cancelled.
      */
     public PollerFlux<OperationResult, IterableStream<RecognizedForm>>
-        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails) {
+        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
+        Duration pollInterval) {
         return new PollerFlux<OperationResult, IterableStream<RecognizedForm>>(
             Duration.ofSeconds(5),
             analyzeFormActivationOperation(fileSourceUrl, modelId, includeTextDetails),
@@ -550,7 +553,8 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult()));
+                .map(modelSimpleResponse ->
+                    new IterableStream<>(toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult())));
         };
     }
 
@@ -561,7 +565,8 @@ public final class FormRecognizerAsyncClient {
             UUID modelUid = UUID.fromString(modelId);
             return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                 .map(modelSimpleResponse ->
-                    toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(), includeTextDetails));
+                    new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
+                        includeTextDetails)));
         };
     }
 

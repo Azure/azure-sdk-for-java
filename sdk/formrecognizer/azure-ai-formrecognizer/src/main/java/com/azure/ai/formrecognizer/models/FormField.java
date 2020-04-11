@@ -6,10 +6,11 @@ package com.azure.ai.formrecognizer.models;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The FormField Model.
+ * The FormField model.
+ * @param <T> The type of FormField.
  */
 @Immutable
-public class FormField {
+public class FormField<T> {
 
     /*
      * The confidence value of the field.
@@ -29,7 +30,7 @@ public class FormField {
     /*
      * The value of the field.
      */
-    private final FieldValue<?> fieldValue;
+    private final T fieldValue;
 
     /*
      * The text value field..
@@ -51,8 +52,7 @@ public class FormField {
      * @param valueText The label value text for the field.
      * @param pageNumber The label text value for the field.
      */
-    public FormField(final Float confidence, final FieldText labelText,
-        final String name, final FieldValue<?> fieldValue, 
+    public FormField(final Float confidence, final FieldText labelText, final String name, final T fieldValue,
         final FieldText valueText, final Integer pageNumber) {
         this.confidence = confidence;
         this.labelText = labelText;
@@ -94,7 +94,7 @@ public class FormField {
      *
      * @return Value of the field.
      */
-    public FieldValue<?> getFieldValue() {
+    public T getFieldValue() {
         return this.fieldValue;
     }
 

@@ -35,7 +35,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
- * This class provides an asynchronous client that contains model management operations 
+ * This class provides an asynchronous client that contains model management operations
  * that apply to Azure Form Recognizer.
  * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
  *
@@ -133,11 +133,7 @@ public class FormTrainingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomFormModel> getCustomModel(String modelId) {
-        try {
-            return getCustomFormModelWithResponse(modelId).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getCustomFormModelWithResponse(modelId).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -170,11 +166,7 @@ public class FormTrainingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccountProperties> getAccountProperties() {
-        try {
-            return getAccountPropertiesWithResponse().flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return getAccountPropertiesWithResponse().flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -206,11 +198,7 @@ public class FormTrainingAsyncClient {
      * @return An empty Mono.
      */
     public Mono<Void> deleteModel(String modelId) {
-        try {
-            return deleteModelWithResponse(modelId).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+        return deleteModelWithResponse(modelId).flatMap(FluxUtil::toMono);
     }
 
     /**

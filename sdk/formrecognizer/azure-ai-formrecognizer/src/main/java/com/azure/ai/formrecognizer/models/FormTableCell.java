@@ -16,27 +16,27 @@ public class FormTableCell extends FormContent {
     /*
      * Row index of the cell.
      */
-    private final int rowIndex;
+    private final Integer rowIndex;
 
     /*
      * Column index of the cell.
      */
-    private final int columnIndex;
+    private final Integer columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
-    private final int rowSpan;
+    private final Integer rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
-    private final int columnSpan;
+    private final Integer columnSpan;
 
     /*
      * Confidence value.
      */
-    private final float confidence;
+    private final Float confidence;
 
     /*
      * When includeTextDetails is set to true, a list of references to the text
@@ -47,12 +47,12 @@ public class FormTableCell extends FormContent {
     /*
      * Is the current cell a header cell?
      */
-    private final boolean isHeader;
+    private final Boolean isHeader;
 
     /*
      * Is the current cell a footer cell?
      */
-    private final boolean isFooter;
+    private final Boolean isFooter;
 
     /**
      * Constructs a FormTableCell object.
@@ -89,7 +89,7 @@ public class FormTableCell extends FormContent {
      *
      * @return the confidence value.
      */
-    public float getConfidence() {
+    public Float getConfidence() {
         return this.confidence;
     }
 
@@ -113,7 +113,7 @@ public class FormTableCell extends FormContent {
      *
      * @return the rowIndex value.
      */
-    public int getRowIndex() {
+    public Integer getRowIndex() {
         return this.rowIndex;
     }
 
@@ -122,7 +122,7 @@ public class FormTableCell extends FormContent {
      *
      * @return the columnIndex value.
      */
-    public int getColumnIndex() {
+    public Integer getColumnIndex() {
         return this.columnIndex;
     }
 
@@ -131,7 +131,7 @@ public class FormTableCell extends FormContent {
      *
      * @return the rowSpan value.
      */
-    public int getRowSpan() {
+    public Integer getRowSpan() {
         return this.rowSpan;
     }
 
@@ -141,7 +141,7 @@ public class FormTableCell extends FormContent {
      *
      * @return the columnSpan value.
      */
-    public int getColumnSpan() {
+    public Integer getColumnSpan() {
         return this.columnSpan;
     }
 
