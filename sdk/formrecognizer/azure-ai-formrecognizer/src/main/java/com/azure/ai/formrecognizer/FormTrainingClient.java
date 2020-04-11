@@ -111,7 +111,7 @@ public class FormTrainingClient {
      * Get detailed information for a specified custom model id.
      *
      * @param modelId Model identifier.
-     * @param context The context.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return The detailed information for the specified model.
      */
@@ -132,9 +132,9 @@ public class FormTrainingClient {
 
     /**
      * Get account information for all custom models.
-     * 
-     * @param context the context information.
-     * 
+     *
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return The account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -155,7 +155,7 @@ public class FormTrainingClient {
      * Deletes the specified custom model.
      *
      * @param modelId The modelIdentifier.
-     * @param context The context object.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
