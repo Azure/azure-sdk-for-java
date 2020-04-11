@@ -54,12 +54,13 @@
     "contributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
     "namespaceName": "[concat('sb-java-', parameters('baseName'))]",
     "namespaceDomainNameSuffix": "servicebus.windows.net",
-    "queueName": "[concat('queue-', parameters('baseName'))]",
-    "sessionQueueName": "[concat('session-queue-', parameters('baseName'))]",
-    "subscriptionName": "[concat('subscription-', parameters('baseName'))]",
+    "queueName": "queue",
+    "queueSessionName": "queue-session",
+    "subscriptionName": "subscription",
+    "subscriptionSessionName": "subscription-session",
     "serviceBusDataOwnerRoleId": "090c5cfd-751d-490a-894a-3ce6f1109419",
     "sharedAccessKeyName": "RootManageSharedAccessKey",
-    "topicName": "[concat('topic-', parameters('baseName'))]"
+    "topicName": "topic"
   },
   "resources": [
     {
@@ -90,7 +91,23 @@
               "name": "[variables('subscriptionName')]",
               "dependsOn": [
                 "[variables('topicName')]"
-              ]
+              ],
+              "properties": {
+                "requiresSession": false,
+                "maxDeliveryCount": 5
+              }
+            },
+            {
+              "type": "subscriptions",
+              "apiVersion": "2017-04-01",
+              "name": "[variables('subscriptionSessionName')]",
+              "dependsOn": [
+                "[variables('topicName')]"
+              ],
+              "properties": {
+                "requiresSession": true,
+                "maxDeliveryCount": 5
+              }
             }
           ]
         },
@@ -113,13 +130,13 @@
         {
           "apiVersion": "2017-04-01",
           "type": "queues",
-          "name": "[variables('sessionQueueName')]",
+          "name": "[variables('queueSessionName')]",
           "dependsOn": [
             "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
           ],
           "properties": {
             "enablePartitioning": false,
-            "path": "[variables('sessionQueueName')]",
+            "path": "[variables('queueSessionName')]",
             "maxDeliveryCount": 10,
             "maxSizeInMegabytes": 1024,
             "requiresDuplicateDetection": false,
@@ -184,7 +201,7 @@
     },
     "AZURE_SERVICEBUS_SESSION_QUEUE_NAME": {
       "type": "string",
-      "value": "[variables('sessionQueueName')]"
+      "value": "[variables('queueSessionName')]"
     },
     "AZURE_SERVICEBUS_TOPIC_NAME": {
       "type": "string",
@@ -193,6 +210,10 @@
     "AZURE_SERVICEBUS_SUBSCRIPTION_NAME": {
       "type": "string",
       "value": "[variables('subscriptionName')]"
+    },
+    "AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME": {
+      "type": "string",
+      "value": "[variables('subscriptionSessionName')]"
     }
   }
 }
