@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Helper class to convert service level custom form related models to SDK exposed models.
@@ -30,6 +31,13 @@ final class CustomModelTransforms {
     private CustomModelTransforms() {
     }
 
+    /**
+     * Helper method to convert the {@link Model model Response} from service to {@link CustomFormModel}.
+     *
+     * @param modelResponse The {@code Model model response} returned from the service.
+     *
+     * @return The {@link CustomFormModel}.
+     */
     static CustomFormModel toCustomFormModel(Model modelResponse) {
         com.azure.ai.formrecognizer.implementation.models.ModelInfo modelInfo = modelResponse.getModelInfo();
         if (modelInfo.getStatus() == ModelStatus.INVALID) {
@@ -41,17 +49,17 @@ final class CustomModelTransforms {
             trainResultErrors = setTrainingErrors(modelResponse.getTrainResult().getErrors());
         }
 
-        List<TrainingDocumentInfo> trainingDocumentInfoList = new ArrayList<>();
-        modelResponse.getTrainResult().getTrainingDocuments().forEach(trainingDocumentItem -> {
-            List<FormRecognizerError> documentErrors = new ArrayList<>();
-            if (trainingDocumentItem.getErrors() != null) {
-                documentErrors = setTrainingErrors(trainingDocumentItem.getErrors());
-            }
-            TrainingDocumentInfo trainingDocumentInfo = new TrainingDocumentInfo(trainingDocumentItem.getDocumentName(),
-                TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()), trainingDocumentItem.getPages(),
-                documentErrors);
-            trainingDocumentInfoList.add(trainingDocumentInfo);
-        });
+        List<TrainingDocumentInfo> trainingDocumentInfoList =
+            modelResponse.getTrainResult().getTrainingDocuments().stream().map(trainingDocumentItem -> {
+                List<FormRecognizerError> documentErrors = new ArrayList<>();
+                if (trainingDocumentItem.getErrors() != null) {
+                    documentErrors = setTrainingErrors(trainingDocumentItem.getErrors());
+                }
+                return new TrainingDocumentInfo(trainingDocumentItem.getDocumentName(),
+                    TrainingStatus.fromString(trainingDocumentItem.getStatus().toString()),
+                    trainingDocumentItem.getPages(),
+                    documentErrors);
+            }).collect(Collectors.toList());
 
         List<CustomFormSubModel> subModelList = new ArrayList<>();
         String formType = "form-";
@@ -73,7 +81,7 @@ final class CustomModelTransforms {
             Map<String, CustomFormModelField> fieldMap = new TreeMap<>();
             modelResponse.getTrainResult().getFields()
                 .forEach(formFieldsReport -> fieldMap.put(formFieldsReport.getFieldName(),
-                        new CustomFormModelField(null, formFieldsReport.getFieldName(), 
+                    new CustomFormModelField(null, formFieldsReport.getFieldName(),
                         formFieldsReport.getAccuracy())));
             subModelList.add(new CustomFormSubModel(modelResponse.getTrainResult().getAverageModelAccuracy(),
                 fieldMap, formType + modelInfo.getModelId()));
@@ -86,12 +94,16 @@ final class CustomModelTransforms {
             trainResultErrors, trainingDocumentInfoList);
     }
 
+    /**
+     * Helper method to convert the list of {@link ErrorInformation} to list of {@link FormRecognizerError}.
+     *
+     * @param trainingErrorList The list of {@link ErrorInformation}.
+     *
+     * @return The list of {@link FormRecognizerError}
+     */
     private static List<FormRecognizerError> setTrainingErrors(List<ErrorInformation> trainingErrorList) {
-        List<FormRecognizerError> formRecognizerErrorList = new ArrayList<>();
-        trainingErrorList.forEach(errorInformation ->
-            formRecognizerErrorList.add(new FormRecognizerError(errorInformation.getCode(),
-                errorInformation.getMessage())));
-        return formRecognizerErrorList;
+        return trainingErrorList.stream().map(errorInformation -> new FormRecognizerError(errorInformation.getCode(),
+            errorInformation.getMessage())).collect(Collectors.toList());
     }
 }
 

@@ -11,6 +11,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /*
@@ -19,9 +20,11 @@ import java.util.Optional;
 public class AnalyzeForm {
 
     /**
-     * Main method to invoke this demo about how to analyze custom forms to extract information.
+     * Main method to invoke this demo to analyze custom forms to extract information.
      *
      * @param args Unused arguments to the program.
+     *
+     * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
@@ -30,7 +33,7 @@ public class AnalyzeForm {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String analyzeFilePath = "{file_path}";
+        String analyzeFilePath = "{analyze_file_path}";
         String modelId = "{model_Id}";
         PollerFlux<OperationResult, IterableStream<RecognizedForm>> trainingPoller = client.beginExtractCustomFormsFromUrl(analyzeFilePath, modelId);
 
@@ -59,15 +62,20 @@ public class AnalyzeForm {
             extractedForm.getPages().forEach(formPage -> {
                 System.out.printf("Page Angle: %s%n", formPage.getTextAngle());
                 System.out.printf("Page Dimension unit: %s%n", formPage.getUnit());
-
+                System.out.println();
                 // Table information
+                System.out.println("Recognized Tables: ");
                 formPage.getTables().forEach(formTable -> {
                     for (int i = 0; i < formTable.getRowCount(); i++) {
                         for (int j = 0; j < formTable.getColumnCount(); j++) {
                             int finalJ = j;
                             int finalI = i;
                             Optional<FormTableCell> p = formTable.getCells().stream().filter(formTableCell -> formTableCell.getRowIndex() == finalI && formTableCell.getColumnIndex() == finalJ).findFirst();
-                            System.out.printf("%s || ", p.get().getText());
+                            if (p.isPresent()) {
+                                System.out.printf("%s || ", p.get().getText());
+                            } else {
+                                System.out.printf(" ");
+                            }
                         }
                         System.out.println();
                     }

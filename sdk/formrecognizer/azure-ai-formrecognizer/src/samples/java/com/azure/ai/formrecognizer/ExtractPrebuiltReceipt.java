@@ -52,19 +52,19 @@ public class ExtractPrebuiltReceipt {
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
             System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
             System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
-            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue().getValue());
+            System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
             System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
-            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue().getValue());
+            System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
             System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
-            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue().getValue());
+            System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
             System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
-            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue().getValue());
+            System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
-                System.out.printf("Name: %s%n", receiptItem.getName().getValue());
+                System.out.printf("Name: %s%n", receiptItem.getName().getFieldValue());
                 System.out.printf("Quantity: %s%n", receiptItem.getQuantity() == null
-                    ? "N/A" : receiptItem.getQuantity().getValue());
-                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getValue());
+                    ? "N/A" : receiptItem.getQuantity().getFieldValue());
+                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getFieldValue());
                 System.out.println();
             });
 

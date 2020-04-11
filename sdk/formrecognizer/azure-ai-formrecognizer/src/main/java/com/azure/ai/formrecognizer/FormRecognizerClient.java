@@ -21,8 +21,8 @@ import java.time.Duration;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
- * Operations allowed by the client are, to recognize receipt data from documents, extract layout information and
- * analyze custom forms for predefined data.
+ * Operations allowed by the client are recognizing receipt data from documents, extracting layout information and
+ *  * analyzing custom forms for predefined data.
  *
  * @see FormRecognizerClientBuilder
  */
@@ -64,7 +64,7 @@ public final class FormRecognizerClient {
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
         beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId) {
-        return beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, false);
+        return beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
     }
 
     /**
@@ -76,13 +76,17 @@ public final class FormRecognizerClient {
      * @param fileSourceUrl The source URL to the input document. Size of the file must be less than 20 MB.
      * @param modelId The custom trained model Id to be used.
      * @param includeTextDetails Include text lines and element references in the result.
+     * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
+     * 5 seconds is used.
      *
      * @return A {@link SyncPoller} to poll the progress of the extract custom form operation until it has completed,
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails) {
-        return client.beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails).getSyncPoller();
+        beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
+        Duration pollInterval) {
+        return client.beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails, pollInterval)
+            .getSyncPoller();
     }
 
     /**

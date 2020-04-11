@@ -78,7 +78,7 @@ FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
 ```
 The Azure Form Recognizer client library provides a way to **rotate the existing API key**.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L50-L66 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L60-L66 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -103,14 +103,14 @@ The following sections provide several code snippets covering some of the most c
 Form Recognizer support both synchronous and asynchronous client creation by using
 `FormRecognizerClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L39-L42 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L40-L43 -->
 ``` java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L49-L52 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L50-L53 -->
 ``` java
 FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
     .apiKey(new AzureKeyCredential("{api_key}"))
@@ -119,8 +119,25 @@ FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBu
 ```
 
 ### Extract receipt information
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L70-86 -->
+<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L70-L86 -->
 ```java
+String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
+SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+    formRecognizerClient.beginExtractReceiptsFromUrl(receiptSourceUrl);
+IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+
+receiptPageResults.forEach(recognizedReceipt -> {
+    USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);
+    System.out.printf("Page Number: %s%n", usReceipt.getMerchantName().getPageNumber());
+    System.out.printf("Merchant Name %s%n", usReceipt.getMerchantName().getName());
+    System.out.printf("Merchant Name Value: %s%n", usReceipt.getMerchantName().getFieldValue());
+    System.out.printf("Merchant Address %s%n", usReceipt.getMerchantAddress().getName());
+    System.out.printf("Merchant Address Value: %s%n", usReceipt.getMerchantAddress().getFieldValue());
+    System.out.printf("Merchant Phone Number %s%n", usReceipt.getMerchantPhoneNumber().getName());
+    System.out.printf("Merchant Phone Number Value: %s%n", usReceipt.getMerchantPhoneNumber().getFieldValue());
+    System.out.printf("Total: %s%n", usReceipt.getTotal().getName());
+    System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
+});
 ```
 For more detailed examples, refer to [here][samples_readme].
 

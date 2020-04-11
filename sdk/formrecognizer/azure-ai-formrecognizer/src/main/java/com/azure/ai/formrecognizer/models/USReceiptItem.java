@@ -14,22 +14,22 @@ public class USReceiptItem {
     /*
      * Name of the field value.
      */
-    private final StringValue name;
+    private final FormField<String> name;
 
     /*
      * Quantity of the field value.
      */
-    private final FloatValue quantity;
+    private final FormField<Float> quantity;
 
     /*
      * Price of the field value.
      */
-    private final FloatValue price;
+    private final FormField<Float> price;
 
     /*
      * Total price of the field value.
      */
-    private final FloatValue totalPrice;
+    private final FormField<Float> totalPrice;
 
     /**
      * Constructs a USReceiptItem object.
@@ -38,8 +38,8 @@ public class USReceiptItem {
      * @param price price of the field value.
      * @param totalPrice Total price of the field value.
      */
-    public USReceiptItem(final StringValue name, final FloatValue quantity, final FloatValue price,
-                         final FloatValue totalPrice) {
+    public USReceiptItem(final FormField<String> name, final FormField<Float> quantity, final FormField<Float> price,
+                         final FormField<Float> totalPrice) {
         this.name = name;
         this.quantity = quantity;
         this.price = price;
@@ -51,7 +51,7 @@ public class USReceiptItem {
      *
      * @return The name of the field value.
      */
-    public StringValue getName() {
+    public FormField<String> getName() {
         return name;
     }
 
@@ -60,7 +60,7 @@ public class USReceiptItem {
      *
      * @return the quantity of Receipt Item.
      */
-    public FloatValue getQuantity() {
+    public FormField<Float> getQuantity() {
         return quantity;
     }
 
@@ -69,7 +69,7 @@ public class USReceiptItem {
      *
      * @return The total Price.
      */
-    public FloatValue getPrice() {
+    public FormField<Float> getPrice() {
         return price;
     }
 
@@ -78,7 +78,7 @@ public class USReceiptItem {
      *
      * @return The total Price.
      */
-    public FloatValue getTotalPrice() {
+    public FormField<Float> getTotalPrice() {
         return totalPrice;
     }
 }

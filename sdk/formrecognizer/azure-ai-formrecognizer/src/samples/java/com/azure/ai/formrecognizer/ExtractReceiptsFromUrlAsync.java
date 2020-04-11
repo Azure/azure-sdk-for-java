@@ -61,10 +61,10 @@ public class ExtractReceiptsFromUrlAsync {
             System.out.printf("Total Value: %s%n", usReceipt.getTotal().getFieldValue());
             System.out.printf("Receipt Items: %n");
             usReceipt.getReceiptItems().forEach(receiptItem -> {
-                System.out.printf("Name: %s%n", receiptItem.getName().getValue());
+                System.out.printf("Name: %s%n", receiptItem.getName().getFieldValue());
                 System.out.printf("Quantity: %s%n", receiptItem.getQuantity() == null
-                    ? "N/A" : receiptItem.getQuantity().getValue());
-                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getValue());
+                    ? "N/A" : receiptItem.getQuantity().getFieldValue());
+                System.out.printf("Total Price: %s%n", receiptItem.getTotalPrice().getFieldValue());
                 System.out.println();
             });
 

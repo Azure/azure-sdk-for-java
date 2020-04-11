@@ -5,19 +5,15 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.implementation.models.DocumentResult;
-import com.azure.ai.formrecognizer.implementation.models.FieldValue;
 import com.azure.ai.formrecognizer.implementation.models.KeyValuePair;
 import com.azure.ai.formrecognizer.implementation.models.PageResult;
 import com.azure.ai.formrecognizer.implementation.models.ReadResult;
 import com.azure.ai.formrecognizer.implementation.models.TextLine;
 >>>>>>> aa9264e4ca... update form recognizer endpoint models
 import com.azure.ai.formrecognizer.implementation.models.TextWord;
-import com.azure.ai.formrecognizer.models.ArrayValue;
 import com.azure.ai.formrecognizer.models.BoundingBox;
 import com.azure.ai.formrecognizer.models.DimensionUnit;
 import com.azure.ai.formrecognizer.models.FieldText;
-import com.azure.ai.formrecognizer.models.FieldValue;
-import com.azure.ai.formrecognizer.models.FloatValue;
 import com.azure.ai.formrecognizer.models.FormContent;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormLine;
@@ -25,6 +21,7 @@ import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormTableCell;
 import com.azure.ai.formrecognizer.models.FormWord;
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 import com.azure.ai.formrecognizer.models.IntegerValue;
@@ -36,10 +33,14 @@ import com.azure.ai.formrecognizer.models.PageMetadata;
 import com.azure.ai.formrecognizer.models.ObjectValue;
 >>>>>>> 01efeece09... update to new design
 >>>>>>> 8d5b01b07c... update to new design
+=======
+import com.azure.ai.formrecognizer.models.ObjectValue;
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
 import com.azure.ai.formrecognizer.models.PageRange;
 import com.azure.ai.formrecognizer.models.Point;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+<<<<<<< HEAD
 <<<<<<< HEAD
 import com.azure.core.util.CoreUtils;
 =======
@@ -52,6 +53,8 @@ import com.azure.ai.formrecognizer.models.USReceiptType;
 =======
 >>>>>>> 77d8b4487b... checkstyle
 =======
+=======
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
 import com.azure.core.util.CoreUtils;
 >>>>>>> aa9264e4ca... update form recognizer endpoint models
 import com.azure.core.util.IterableStream;
@@ -63,6 +66,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 =======
 import java.util.Arrays;
+<<<<<<< HEAD
 import java.util.HashMap;
 >>>>>>> 8576463b55... update model transforms for fieldMap
 import java.util.List;
@@ -74,6 +78,11 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 =======
 import java.util.concurrent.atomic.AtomicInteger;
+=======
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 <<<<<<< HEAD
@@ -223,38 +232,62 @@ final class Transforms {
 >>>>>>> aa9264e4ca... update form recognizer endpoint models
 =======
     /**
-     * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link FormPage}.
+     * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link RecognizedForm}.
      *
-     * @param analyzeResult The service returned result for analyze layouts.
+     * @param analyzeResult The service returned result for analyze custom forms.
+     * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
      *
-     * @return The IterableStream of {@code FormPage}.
+     * @return The IterableStream of {@code RecognizedForm}.
      */
->>>>>>> 8576463b55... update model transforms for fieldMap
-    static IterableStream<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult) {
+    static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeTextDetails) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
+        List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
-        List<FormPage> formPages = new ArrayList<>();
+        List<RecognizedForm> extractedFormList = new ArrayList<>();
+        Map<String, FormField<?>> extractedFieldMap = null;
+        AtomicReference<PageRange> pageRange = new AtomicReference<>();
 
-        for (int i = 0; i < readResults.size(); i++) {
-            ReadResult readResultItem = readResults.get(i);
-            PageResult pageResultItem;
-            List<FormTable> extractedTablesList = new ArrayList<>();
+        AtomicReference<String> formType = new AtomicReference<>("form-");
 
-            if (!CoreUtils.isNullOrEmpty(pageResults)) {
-                pageResultItem = pageResults.get(i);
-                extractedTablesList = getPageTables(pageResultItem, pageResultItem.getPage());
+        List<FormPage> formPages = toRecognizedLayout(analyzeResult);
+        // labeled
+        if (!CoreUtils.isNullOrEmpty(documentResults)) {
+            for (int i = 0; i < documentResults.size(); i++) {
+
+                DocumentResult documentResultItem = documentResults.get(i);
+                List<Integer> documentPageRange = documentResultItem.getPageRange();
+                if (documentPageRange.size() == 2) {
+                    pageRange.set(new PageRange(documentPageRange.get(0), documentPageRange.get(1)));
+                }
+
+                formType.set(documentResultItem.getDocType());
+                extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults, includeTextDetails);
+
             }
-
-            // add form lines
-            List<FormLine> formLines = new ArrayList<>();
-            if (!CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
-                formLines = getReadResultFormLines(readResultItem);
-            }
-
-            // get form tables
-            formPages.add(getFormPage(readResultItem, extractedTablesList, formLines));
+            extractedFormList.add(new RecognizedForm(extractedFieldMap, formType.get(), pageRange.get(),
+                new IterableStream<FormPage>(formPages.subList(pageRange.get().getStartPageNumber(), pageRange.get().getEndPageNumber()))));
         }
-        return new IterableStream<>(formPages);
+
+        // labeled
+        if (pageResults != null) {
+            for (int i = 0; i < pageResults.size(); i++) {
+                PageResult pageResultItem = pageResults.get(i);
+                Integer pageNumber = pageResultItem.getPage();
+
+                if (CoreUtils.isNullOrEmpty(documentResults)) {
+                    Integer clusterId = pageResultItem.getClusterId();
+                    if (clusterId != null) {
+                        formType.set(formType.get() + clusterId);
+                    }
+                    extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem, pageNumber);
+                }
+                extractedFormList.add(
+                    new RecognizedForm(extractedFieldMap, formType.get(),
+                        new PageRange(pageNumber, pageNumber),
+                        new IterableStream<FormPage>(Arrays.asList(formPages.get(pageNumber - 1)))));
+            }
+        }
+        return extractedFormList;
     }
 
     /**
@@ -266,65 +299,168 @@ final class Transforms {
      * @return The IterableStream of {@code RecognizedReceipt}.
      */
     static IterableStream<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
+        List<RecognizedReceipt> extractedReceiptList =
+            toRecognizedForm(analyzeResult, includeTextDetails).stream()
+                .map(recognizedForm ->
+                    new RecognizedReceipt("en-US", recognizedForm)).collect(Collectors.toList());
+
+        return new IterableStream<>(extractedReceiptList);
+    }
+
+    /**
+     * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link FormPage}.
+     *
+     * @param analyzeResult The service returned result for analyze layouts.
+     *
+     * @return The IterableStream of {@code FormPage}.
+     */
+<<<<<<< HEAD
+>>>>>>> 8576463b55... update model transforms for fieldMap
+    static IterableStream<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult) {
+=======
+    static List<FormPage> toRecognizedLayout(AnalyzeResult analyzeResult) {
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
         List<ReadResult> readResults = analyzeResult.getReadResults();
-        List<DocumentResult> documentResult = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
-        List<RecognizedReceipt> extractedReceiptList = new ArrayList<>();
         List<FormPage> formPages = new ArrayList<>();
-        String formType = null;
-        PageRange pageRange = null;
-        Map<String, FormField> extractedFieldMap = new HashMap<>();
-        if (!CoreUtils.isNullOrEmpty(documentResult)) {
-            for (int i = 0; i < documentResult.size(); i++) {
 
-                DocumentResult documentResultItem = documentResult.get(i);
-                List<Integer> receiptPageRange = documentResultItem.getPageRange();
-                if (receiptPageRange.size() == 2) {
-                    pageRange = new PageRange(receiptPageRange.get(0), receiptPageRange.get(1));
-                }
+        for (int i = 0; i < readResults.size(); i++) {
+            ReadResult readResultItem = readResults.get(i);
+            PageResult pageResultItem;
+            List<FormTable> perPageTableList = new ArrayList<>();
 
-                formType = documentResultItem.getDocType();
-                // add receipt fields
-                documentResultItem.getFields().forEach((key, fieldValue) -> {
-                    IterableStream<FormContent> formContentList = null;
-                    Integer pageNumber = fieldValue.getPage();
-                    if (includeTextDetails && fieldValue.getElements() != null) {
-                        formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
-                    }
-                    // TODO (savaity): what bounding box for valueText?
-                    FieldText valueText = new FieldText(fieldValue.getText(), null, pageNumber, formContentList);
-                    FormField formField = new FormField(fieldValue.getConfidence(), null, key, setFieldValue(fieldValue), valueText, pageNumber);
-                    extractedFieldMap.put(key, formField);
-                });
+            if (!CoreUtils.isNullOrEmpty(pageResults)) {
+                pageResultItem = pageResults.get(i);
+                perPageTableList = getPageTables(pageResultItem, pageResultItem.getPage());
             }
 
-            for (int i = 0; i < readResults.size(); i++) {
-                ReadResult readResultItem = readResults.get(i);
-                PageResult pageResultItem;
-                List<FormTable> extractedTablesList = null;
-
-                if (pageResults != null) {
-                    pageResultItem = pageResults.get(i);
-                    extractedTablesList = getPageTables(pageResultItem, pageResultItem.getPage());
-                }
-
-                // add form lines
-                List<FormLine> formLines = null;
-                if (!CoreUtils.isNullOrEmpty(readResultItem.getLines()) && includeTextDetails) {
-                    formLines = getReadResultFormLines(readResultItem);
-                }
-
-                // get form tables
-                formPages.add(getFormPage(readResultItem, extractedTablesList, formLines));
+            // add form lines
+            List<FormLine> perPageFormLineList = new ArrayList<>();
+            if (!CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
+                perPageFormLineList = getReadResultFormLines(readResultItem);
             }
 
-            RecognizedForm recognizedForm = new RecognizedForm(extractedFieldMap, formType, pageRange, formPages);
-            RecognizedReceipt extractedReceiptItem = new RecognizedReceipt("en-US", recognizedForm);
+            // get form tables
+            formPages.add(getFormPage(readResultItem, perPageTableList, perPageFormLineList));
+        }
+        return formPages;
+    }
 
+    /**
+     * The field map returned on analyze with an unlabeled model id.
+     *
+     * @param documentResultItem The extracted document level information.
+     * @param readResults The text extraction result returned by the service.
+     * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
+     *
+     * @return The {@code RecognizedForm#getFields}.
+     */
+    private static Map<String, FormField<?>> getLabeledFieldMap(DocumentResult documentResultItem,
+        List<ReadResult> readResults, boolean includeTextDetails) {
+        Map<String, FormField<?>> extractedFieldMap = new TreeMap<>();
+        // add receipt fields
+        documentResultItem.getFields().forEach((key, fieldValue) -> {
+            IterableStream<FormContent> formContentList = null;
+            Integer pageNumber = fieldValue.getPage();
+            if (includeTextDetails && !(CoreUtils.isNullOrEmpty(fieldValue.getElements()))) {
+                formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+            }
+            FieldText labelText = new FieldText(key, null, fieldValue.getPage(), null);
+            FieldText valueText = new FieldText(fieldValue.getText(), null, pageNumber, formContentList);
+            extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber));
+        });
+        return extractedFieldMap;
+    }
+
+    /**
+     * Helper method that converts the incoming service field value to one of the strongly typed SDK level
+     * {@link FormField} with reference elements set when {@code includeTextDetails} is set to true.
+     *
+     * @param fieldValue The named field values returned by the service.
+     * @param key The name of the field.
+     * @param labelText The label text of the field.
+     * @param pageNumber The 1-based page number.
+     * @param valueText The value text of the field.
+     *
+     * @return The strongly typed {@link FormField} for the field input.
+     */
+    private static FormField<?> setFormField(FieldText labelText, String key, com.azure.ai.formrecognizer.implementation.models.FieldValue fieldValue, FieldText valueText, Integer pageNumber) {
+        FormField<?> value;
+        switch (fieldValue.getType()) {
+            case PHONE_NUMBER:
+                value = new FormField<String>(fieldValue.getConfidence(), labelText,
+                    key, fieldValue.getValuePhoneNumber(), valueText, pageNumber);
+                break;
+            case STRING:
+                value = new FormField<String>(fieldValue.getConfidence(), labelText,
+                    key, fieldValue.getValueString(), valueText, pageNumber);
+                break;
+            case TIME:
+                value = new FormField<String>(fieldValue.getConfidence(), labelText,
+                    key, fieldValue.getValueTime(), valueText, pageNumber);
+                break;
+            case DATE:
+                value = new FormField<LocalDate>(fieldValue.getConfidence(), labelText,
+                    key, fieldValue.getValueDate(), valueText, pageNumber);
+                break;
+            case INTEGER:
+                value = new FormField<Integer>(fieldValue.getConfidence(), labelText,
+                    key, fieldValue.getValueInteger(), valueText, pageNumber);
+                break;
+            case NUMBER:
+                value = new FormField<Number>(fieldValue.getConfidence(), labelText,
+                    key, fieldValue.getValueNumber(), valueText, pageNumber);
+                break;
+            case ARRAY:
+                value = new FormField<List<FormField<?>>>(null, null, key,
+                    toFormFieldArray(fieldValue.getValueArray()), null, pageNumber);
+                break;
+            case OBJECT:
+                value = new FormField<Map<String, FormField<?>>>(fieldValue.getConfidence(), labelText,
+                    key, toFormFieldObject(fieldValue.getValueObject()), valueText, pageNumber);
+                break;
+            default:
+                throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
+        }
+        return value;
+    }
+
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueObject()}
+     * to a SDK level map of {@link FormField}.
+     *
+     * @param valueObject The array of field values returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueObject()} .
+     *
+     * @return The Map of {@link FormField}.
+     */
+    private static Map<String, FormField<?>> toFormFieldObject(Map<String, com.azure.ai.formrecognizer.implementation.models.FieldValue> valueObject) {
+        Map<String, FormField<?>> fieldValueObjectMap = new TreeMap<>();
+        valueObject.forEach((key, fieldValue) -> {
+            fieldValueObjectMap.put(key, setFormField(null, key, fieldValue, new FieldText(fieldValue.getText(),
+                toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(), null), fieldValue.getPage()));
+        });
+        return fieldValueObjectMap;
+    }
+
+<<<<<<< HEAD
             extractedReceiptList.add(extractedReceiptItem);
 >>>>>>> 8d5b01b07c... update to new design
         }
         return extractedFormList;
+=======
+    /**
+     * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray()}
+     * to a SDK level List of {@link FormField}.
+     *
+     * @param valueArray The array of field values returned by the service in
+     * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray()}.
+     *
+     * @return The List of {@link FormField}.
+     */
+    private static List<FormField<?>> toFormFieldArray(List<com.azure.ai.formrecognizer.implementation.models.FieldValue> valueArray) {
+        return valueArray.stream().map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage())).collect(Collectors.toList());
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
     }
 
     /**
@@ -353,17 +489,15 @@ final class Transforms {
     private static List<FormTable> getPageTables(PageResult pageResultItem, Integer pageNumber) {
         List<FormTable> extractedTablesList = new ArrayList<>();
         pageResultItem.getTables().forEach(dataTable -> {
-            List<FormTableCell> tableCellList = new ArrayList<>();
-            dataTable.getCells().forEach(dataTableCell -> {
-                FormTableCell tableCell = new FormTableCell(dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
+            List<FormTableCell> tableCellList = dataTable.getCells().stream()
+                .map(dataTableCell -> new FormTableCell(dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
                     dataTableCell.getRowSpan(), dataTableCell.getColumnSpan(),
                     dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                     dataTableCell.getConfidence(), null,
                     dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
                     dataTableCell.isFooter() == null ? false : dataTableCell.isHeader(),
-                    pageNumber);
-                tableCellList.add(tableCell);
-            });
+                    pageNumber))
+                .collect(Collectors.toList());
             FormTable extractedTable = new FormTable(dataTable.getRows(), dataTable.getColumns(), tableCellList);
             extractedTablesList.add(extractedTable);
         });
@@ -378,16 +512,15 @@ final class Transforms {
      * @return The list of {@code FormLine}.
      */
     private static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
-        List<FormLine> formLines = new ArrayList<>();
-        readResultItem.getLines().forEach(textLine -> {
-            FormLine formLine = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
-                readResultItem.getPage(), new IterableStream<>(toWords(textLine.getWords(), readResultItem.getPage())));
-            formLines.add(formLine);
-        });
+        List<FormLine> formLines = readResultItem.getLines().stream()
+            .map(textLine -> new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
+                readResultItem.getPage(), new IterableStream<>(toWords(textLine.getWords(), readResultItem.getPage()))))
+            .collect(Collectors.toList());
         return formLines;
     }
 
     /**
+<<<<<<< HEAD
 <<<<<<< HEAD
      * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link RecognizedReceipt}.
 =======
@@ -528,6 +661,8 @@ final class Transforms {
     }
 
     /**
+=======
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
      * Helper method to set the {@link RecognizedForm#getFields() fields} from unlabeled result returned from the service.
      *
      * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
@@ -537,105 +672,32 @@ final class Transforms {
      *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
-    private static Map<String, FormField> getUnlabeledFieldMap(boolean includeTextDetails, List<ReadResult> readResults,
+    private static Map<String, FormField<?>> getUnlabeledFieldMap(boolean includeTextDetails, List<ReadResult> readResults,
         PageResult pageResultItem, Integer pageNumber) {
-        Map<String, FormField> formFieldMap = new HashMap<>();
-        pageResultItem.getKeyValuePairs().forEach(keyValuePair -> {
-            IterableStream<FormContent> formContentList = null;
+        Map<String, FormField<?>> formFieldMap = new TreeMap<>();
+        List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();
+        for (int i = 0; i < keyValuePairs.size(); i++) {
+            KeyValuePair keyValuePair = keyValuePairs.get(i);
+            IterableStream<FormContent> formKeyContentList = null;
+            IterableStream<FormContent> formValueContentList = null;
             if (includeTextDetails && !CoreUtils.isNullOrEmpty(keyValuePair.getValue().getElements())) {
-                formContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults, pageNumber);
+                formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults, pageNumber);
+                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults, pageNumber);
+
             }
-            FieldText labelFieldText = new FieldText(keyValuePair.getLabel(), null, pageNumber, null);
-            // TODO (savaity): what about keyText?
-            // FieldText keyText = new FieldText(keyValuePair.getKey().getText(), toBoundingBox(keyValuePair.getKey().getBoundingBox()), pageNumber, setReferenceElementsF(keyValuePair.getKey().getElements()));
-            FieldText valueText = new FieldText(keyValuePair.getValue().getText(), toBoundingBox(keyValuePair.getValue().getBoundingBox()), pageNumber, formContentList);
-            FieldValue<?> fieldValue = new StringValue(keyValuePair.getValue().getText());
-            FormField formField = new FormField(keyValuePair.getConfidence(), labelFieldText, keyValuePair.getLabel(), fieldValue, valueText, pageNumber);
-            formFieldMap.put(keyValuePair.getLabel(), formField);
-        });
+            String fieldName = "field-" + i;
+            FieldText labelFieldText = new FieldText(keyValuePair.getKey().getText(), toBoundingBox(keyValuePair.getKey().getBoundingBox()), pageNumber, formKeyContentList);
+            FieldText valueText = new FieldText(keyValuePair.getValue().getText(), toBoundingBox(keyValuePair.getValue().getBoundingBox()), pageNumber, formValueContentList);
+            FormField<String> formField = new FormField<>(keyValuePair.getConfidence(), labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText, pageNumber);
+            formFieldMap.put(fieldName, formField);
+        }
         return formFieldMap;
-    }
-
-    /**
-     * Helper method to transform the service returned {@link AnalyzeResult} to SDK model {@link RecognizedForm}.
-     *
-     * @param analyzeResult The service returned result for analyze custom forms.
-     * @param includeTextDetails Boolean to indicate if to set reference elements data on fields.
-     *
-     * @return The IterableStream of {@code RecognizedForm}.
-     */
-    static IterableStream<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeTextDetails) {
-        List<ReadResult> readResults = analyzeResult.getReadResults();
-        List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
-        List<PageResult> pageResults = analyzeResult.getPageResults();
-        AtomicReference<PageRange> pageRange = new AtomicReference<>();
-        List<RecognizedForm> extractedFormList = new ArrayList<>();
-        List<FormPage> formPages = new ArrayList<>();
-        Map<String, FormField> extractedFieldMap = new HashMap<>();
-
-        AtomicReference<String> formType = new AtomicReference<>("form-");
-        if (!CoreUtils.isNullOrEmpty(documentResults)) {
-            Map<String, FormField> finalExtractedFieldMap = extractedFieldMap;
-            documentResults.forEach(documentResultItem -> {
-                formType.set(documentResultItem.getDocType());
-                pageRange.set(new PageRange(documentResultItem.getPageRange().get(0), documentResultItem.getPageRange().get(1)));
-                documentResultItem.getFields().forEach((key, fieldValue) -> {
-                    IterableStream<FormContent> formContentList = null;
-                    Integer pageNumber = fieldValue.getPage();
-                    if (includeTextDetails && !CoreUtils.isNullOrEmpty(fieldValue.getElements())) {
-                        formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
-                    }
-                    // TODO (savaity): what bounding box for valueText?
-                    FieldText valueText = new FieldText(fieldValue.getText(), null, fieldValue.getPage(), formContentList);
-                    FormField formField = new FormField(fieldValue.getConfidence(), null, key, setFieldValue(fieldValue), valueText, pageNumber);
-                    // TODO (savaity): does this still keep the updated value this way?
-                    finalExtractedFieldMap.put(key, formField);
-                });
-            });
-        }
-
-        for (int i = 0; i < readResults.size(); i++) {
-
-            ReadResult readResultItem = readResults.get(i);
-            PageResult pageResultItem = null;
-            Integer pageNumber = readResultItem.getPage();
-            List<FormTable> extractedTablesList = new ArrayList<>();
-
-            // get Tables
-            if (!CoreUtils.isNullOrEmpty(pageResults)) {
-                pageResultItem = pageResults.get(i);
-                pageNumber = pageResultItem.getPage();
-                extractedTablesList = getPageTables(pageResultItem, pageNumber);
-                if (documentResults == null) {
-                    Integer clusterId = pageResultItem.getClusterId();
-                    if (clusterId != null) {
-                        formType.set(formType.get() + clusterId);
-                    }
-                    extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem, pageNumber);
-                }
-            }
-
-            // add form lines
-            List<FormLine> formLines = new ArrayList<>();
-            if (!CoreUtils.isNullOrEmpty(readResultItem.getLines()) && includeTextDetails) {
-                formLines = getReadResultFormLines(readResultItem);
-            }
-
-            // get form tables
-            formPages.add(getFormPage(readResultItem, extractedTablesList, formLines));
-
-            RecognizedForm recognizedForm = new RecognizedForm(extractedFieldMap, formType.get(),
-                pageRange.get() == null ? new PageRange(pageNumber, pageNumber) : pageRange.get(), formPages);
-
-            extractedFormList.add(recognizedForm);
-        }
-        return new IterableStream<>(extractedFormList);
     }
 
     /**
      * Helper method to set the text reference elements on FieldValue/fields when {@code includeTextDetails} set to true.
      *
-     * @return The updated {@link FieldValue} object with list if referenced elements.
+     * @return The list if referenced elements.
      */
     private static IterableStream<FormContent> setReferenceElements(List<String> elements, List<ReadResult> readResults, Integer pageNumber) {
         List<FormContent> formContentList = new ArrayList<>();
@@ -661,7 +723,6 @@ final class Transforms {
             }
         });
         return new IterableStream<>(formContentList);
-
     }
 
     /**
@@ -784,12 +845,16 @@ final class Transforms {
 
 =======
     private static BoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
+        if (CoreUtils.isNullOrEmpty(serviceBoundingBox)) {
+            return null;
+        }
         Point topLeft = new Point(serviceBoundingBox.get(0), serviceBoundingBox.get(1));
         Point topRight = new Point(serviceBoundingBox.get(2), serviceBoundingBox.get(3));
         Point bottomLeft = new Point(serviceBoundingBox.get(4), serviceBoundingBox.get(5));
         Point bottomRight = new Point(serviceBoundingBox.get(6), serviceBoundingBox.get(7));
         return new BoundingBox(Arrays.asList(topLeft, topRight, bottomLeft, bottomRight));
     }
+<<<<<<< HEAD
 
     /**
      * Helper method to convert the service returned {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray()} ()}
@@ -1184,4 +1249,6 @@ final class Transforms {
         });
         return new ObjectValue(stringFieldValueMap);
     }
+=======
+>>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
 }
