@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,7 +47,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
     private ServiceBusSenderAsyncClient sender;
-    private ServiceBusSenderAsyncClient sessionSender;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
@@ -553,19 +553,40 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-    @Test
-    void sessionReceiveAndDeleteWithBinaryData() {
+    @MethodSource("receiverTypesProvider")
+    @ParameterizedTest
+    void sessionReceiveAndDelete(MessagingEntityType entityType) {
         // Arrange
+        final String sessionId;
+        switch (entityType) {
+            case QUEUE:
+                sessionId = getSessionQueueName();
+                break;
+            case SUBSCRIPTION:
+                sessionId = getSessionSubscriptionName();
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported entity: " + entityType));
+        }
+
+        Assertions.assertNotNull(sessionId, "'sessionId' cannot be null.");
+
+        setSenderAndReceiver(entityType, builder -> builder.sessionId(sessionId));
+
         final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS, messageTrackingId, 0)
-            .setSessionId(SESSION_ID);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageTrackingId, 0)
+            .setSessionId(sessionId);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
+        sender.send(message).block();
+
         // Assert & Act
-        StepVerifier.create(sessionSender.send(message).thenMany(sessionReceiveDeleteModeReceiver.receive(options)))
-            .assertNext(receivedMessage ->
-                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID)))
-            .thenCancel()
+        StepVerifier.create(receiver.receive(options).take(1))
+            .assertNext(receivedMessage -> {
+                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
+                assertEquals(sessionId, receivedMessage.getSessionId());
+            })
+            .expectComplete()
             .verify();
     }
 

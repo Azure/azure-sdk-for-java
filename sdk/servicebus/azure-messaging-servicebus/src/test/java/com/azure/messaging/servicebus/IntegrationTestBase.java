@@ -44,6 +44,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_SERVICEBUS_SESSION_QUEUE_NAME = "AZURE_SERVICEBUS_SESSION_QUEUE_NAME";
     private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
+    private static final String AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME";
 
     private ConnectionStringProperties properties;
     private String testName;
@@ -107,6 +108,10 @@ public abstract class IntegrationTestBase extends TestBase {
 
     public String getSessionQueueName() {
         return System.getenv(AZURE_SERVICEBUS_SESSION_QUEUE_NAME);
+    }
+
+    public String getSessionSubscriptionName() {
+        return System.getenv(AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME);
     }
 
     public String getTopicName() {
