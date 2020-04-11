@@ -37,8 +37,10 @@ public final class RntbdReporter {
     }
 
     public static void reportIssueUnless(
-        Logger logger, boolean predicate, Object subject, String format, Object... arguments
-    ) {
+        final Logger logger,
+        final boolean predicate,
+        final Object subject,
+        final String format, final Object... arguments) {
         if (!predicate && logger.isErrorEnabled()) {
             doReportIssue(logger, subject, format, arguments);
         }
