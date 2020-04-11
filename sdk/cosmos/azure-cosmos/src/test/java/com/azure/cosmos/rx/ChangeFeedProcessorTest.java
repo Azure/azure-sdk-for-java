@@ -309,6 +309,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
         // Wait for the feed processor to receive and process the documents.
         waitToReceiveDocuments(10 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
 
+        assertThat(changeFeedProcessorSecond.isStarted()).as("Change Feed Processor instance is running").isTrue();
+
         changeFeedProcessorSecond.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
 
         // Wait for the feed processor to shutdown.

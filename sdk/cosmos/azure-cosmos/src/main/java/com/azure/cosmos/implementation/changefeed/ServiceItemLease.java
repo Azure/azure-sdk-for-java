@@ -3,12 +3,14 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -20,6 +22,7 @@ import java.util.Map;
 /**
  * Document service lease.
  */
+@JsonSerialize(using = ServiceItemLease.ServiceItemLeaseJsonSerializer.class)
 public class ServiceItemLease implements Lease {
     private static final ZonedDateTime UNIX_START_TIME = ZonedDateTime.parse("1970-01-01T00:00:00.0Z[UTC]");
 
@@ -63,8 +66,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-//    @JsonIgnore
-    @JsonProperty("_etag")
     public String getETag() {
         return this._etag;
     }
@@ -74,7 +75,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("LeaseToken")
     public String getLeaseToken() {
         return this.LeaseToken;
     }
@@ -84,7 +84,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("Owner")
     @Override
     public String getOwner() {
         return this.Owner;
@@ -95,7 +94,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("ContinuationToken")
     @Override
     public String getContinuationToken() {
         return this.ContinuationToken;
@@ -162,7 +160,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
     public String getTs() {
         return this._ts;
     }
@@ -172,7 +169,6 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonProperty("timestamp")
     @Override
     public String getTimestamp() {
         if (this.timestamp == null) {
@@ -186,12 +182,12 @@ public class ServiceItemLease implements Lease {
         return this;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     public String getExplicitTimestamp() {
         return this.timestamp;
     }
 
-    @JsonIgnore
+//    @JsonIgnore
     @Override
     public String getConcurrencyToken() {
         return this.getETag();
@@ -238,5 +234,33 @@ public class ServiceItemLease implements Lease {
             this.getContinuationToken(),
             this.getTimestamp(),
             UNIX_START_TIME.plusSeconds(Long.parseLong(this.getTs())));
+    }
+
+    @SuppressWarnings("serial")
+    static final class ServiceItemLeaseJsonSerializer extends StdSerializer<ServiceItemLease> {
+        // this value should be incremented if changes are made to the ServiceItemLease class members
+        private static final long serialVersionUID = 1L;
+
+        protected ServiceItemLeaseJsonSerializer() { this(null); }
+
+        protected ServiceItemLeaseJsonSerializer(Class<ServiceItemLease> t) {
+            super(t);
+        }
+
+        @Override
+        public void serialize(ServiceItemLease lease, JsonGenerator writer, SerializerProvider serializerProvider) {
+            try {
+                writer.writeStartObject();
+                writer.writeStringField(Constants.Properties.ID, lease.getId());
+                writer.writeStringField(Constants.Properties.E_TAG, lease.getETag());
+                writer.writeStringField("LeaseToken", lease.getLeaseToken());
+                writer.writeStringField("ContinuationToken", lease.getContinuationToken());
+                writer.writeStringField("timestamp", lease.getTimestamp());
+                writer.writeStringField("Owner", lease.getOwner());
+                writer.writeEndObject();
+            } catch (IOException e) {
+                throw new IllegalStateException(e);
+            }
+        }
     }
 }
