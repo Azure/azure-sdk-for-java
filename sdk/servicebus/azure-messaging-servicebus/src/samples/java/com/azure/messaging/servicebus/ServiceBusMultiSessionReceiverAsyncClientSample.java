@@ -5,7 +5,11 @@ package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.models.ServiceBusSessionException;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
@@ -27,6 +31,7 @@ public class ServiceBusMultiSessionReceiverAsyncClientSample {
             .connectionString(connectionString)
             .receiverMultiSession()
             .receiveMode(ReceiveMode.PEEK_LOCK)
+            .onSessionErrorContinue(false)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
@@ -35,6 +40,9 @@ public class ServiceBusMultiSessionReceiverAsyncClientSample {
             .setMaxAutoRenewDuration(Duration.ofSeconds(2));
 
         Disposable subscription = receiverAsyncClient.receive(options)
+            .onErrorContinue(ServiceBusSessionException.class, (throwable, o) -> {
+                // can log the session id which error out
+            })
             .flatMap(message -> {
                 boolean messageProcessed =  false;
                 // Process the message here.

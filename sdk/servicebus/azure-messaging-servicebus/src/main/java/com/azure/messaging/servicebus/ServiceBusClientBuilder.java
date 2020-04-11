@@ -418,6 +418,9 @@ public final class ServiceBusClientBuilder {
             this.receiveMode = receiveMode;
             return this;
         }
+        public ServiceBusMultiSessionReceiverAsyncClientBuilder onSessionErrorContinue(boolean onSessionErrorContinue) {
+            return this;
+        }
 
         /**
          * Sets the name of the subscription in the topic to listen to.
