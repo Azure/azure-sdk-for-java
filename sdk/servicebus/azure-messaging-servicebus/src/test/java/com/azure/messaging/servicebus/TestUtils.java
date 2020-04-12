@@ -69,10 +69,10 @@ public class TestUtils {
     }
 
     /**
-     * Creates a message with the given contents, default system properties, and adds a {@code messageTrackingValue} in
+     * Creates a message with the given contents, default system properties, and adds a {@code messageId} in
      * the application properties. Useful for helping filter messages.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
+    static Message getMessage(byte[] contents, String messageId, Map<String, String> additionalProperties) {
         final Message message = getMessage(contents, SEQUENCE_NUMBER, Date.from(ENQUEUED_TIME));
 
         message.getMessageAnnotations().getValue()
@@ -81,8 +81,8 @@ public class TestUtils {
         Map<String, Object> applicationProperties = new HashMap<>();
         APPLICATION_PROPERTIES.forEach(applicationProperties::put);
 
-        if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
-            applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        if (!CoreUtils.isNullOrEmpty(messageId)) {
+            message.setMessageId(messageId);
         }
 
         if (additionalProperties != null) {

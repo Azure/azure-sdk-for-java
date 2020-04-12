@@ -70,7 +70,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
         final String messageId = UUID.randomUUID().toString();
         final String contents = "Some-contents";
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId, 0);
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(contents, messageId);
 
         // Assert & Act
         sender.send(message);

@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,9 +41,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
     private ServiceBusReceiverAsyncClient receiver;
-    private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
     private ServiceBusSenderAsyncClient sender;
     private String sessionId;
+
+    /**
+     * Receiver used to clean up resources in {@link #afterTest()}.
+     */
+    private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
@@ -352,7 +355,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             receiver.complete(receivedMessage)
                 .doOnSuccess(aVoid -> messagesPending.decrementAndGet())
                 .block();
-            ;
         }
     }
 
@@ -579,11 +581,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                     .queueName(queueName)
                     .buildAsyncClient();
                 receiver = onReceiverCreate.apply(
-                    createBuilder().receiver().queueName(queueName)
+                    createBuilder().receiver()
+                        .queueName(queueName)
+                        .sessionId(isSessionEnabled ? sessionId : null)
                 ).buildAsyncClient();
 
                 receiveAndDeleteReceiver = createBuilder().receiver()
                     .queueName(queueName)
+                    .sessionId(isSessionEnabled ? sessionId : null)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
                 break;
@@ -597,12 +602,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 sender = createBuilder().sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiver = onReceiverCreate.apply(createBuilder().receiver()
-                    .topicName(topicName).subscriptionName(subscriptionName))
+                receiver = onReceiverCreate.apply(
+                    createBuilder().receiver()
+                        .topicName(topicName).subscriptionName(subscriptionName)
+                        .sessionId(isSessionEnabled ? sessionId : null))
                     .buildAsyncClient();
 
                 receiveAndDeleteReceiver = createBuilder().receiver()
                     .topicName(topicName).subscriptionName(subscriptionName)
+                    .sessionId(isSessionEnabled ? sessionId : null)
                     .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
                 break;
