@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.implementation.query.metrics;
 
-import org.apache.commons.lang3.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 import java.time.Instant;

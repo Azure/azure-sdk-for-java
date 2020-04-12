@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,10 @@ public interface CosmosItemResponseValidator {
                 @SuppressWarnings("rawtypes")
                 public void validate(CosmosAsyncItemResponse itemResponse) {
                     assertThat(itemResponse.getItem()).isNotNull();
-                    assertThat(CosmosItemProperties.fromObject(itemResponse.getItem())
-                                   .get(propertyName)).as("check property").isEqualTo(value);
+                    assertThat(ModelBridgeInternal
+                        .getObjectFromJsonSerializable(CosmosItemProperties.fromObject(itemResponse.getItem()), propertyName))
+                        .as("check property")
+                        .isEqualTo(value);
                 }
             });
             return this;

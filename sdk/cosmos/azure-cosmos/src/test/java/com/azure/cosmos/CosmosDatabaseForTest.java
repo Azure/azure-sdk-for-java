@@ -6,8 +6,8 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlParameterList;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -85,10 +86,10 @@ public class CosmosDatabaseForTest {
 
     public static void cleanupStaleTestDatabases(DatabaseManager client) {
         logger.info("Cleaning stale test databases ...");
+        List<SqlParameter> sqlParameterList = new ArrayList<>();
+        sqlParameterList.add(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX));
         List<CosmosDatabaseProperties> dbs = client.queryDatabases(
-                new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)",
-                                 new SqlParameterList(new SqlParameter("@PREFIX", CosmosDatabaseForTest.SHARED_DB_ID_PREFIX))))
-                                                   .collectList().block();
+                new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)", sqlParameterList)).collectList().block();
 
         for (CosmosDatabaseProperties db : dbs) {
             assertThat(db.getId()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);

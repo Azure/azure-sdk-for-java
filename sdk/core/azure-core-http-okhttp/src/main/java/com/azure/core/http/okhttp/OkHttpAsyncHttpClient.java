@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.CoreUtils;
 import okhttp3.Call;
 import okhttp3.Headers;
 import okhttp3.MediaType;
@@ -178,7 +179,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
     private static class OkHttpResponse extends HttpResponse {
         private final int statusCode;
         private final HttpHeaders headers;
-        private final Mono<ResponseBody> responseBodyMono;
+        private final ResponseBody responseBody;
         // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
         private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
@@ -186,21 +187,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
             super(request);
             this.statusCode = innerResponse.code();
             this.headers = fromOkHttpHeaders(innerResponse.headers());
-            if (innerResponse.body() == null) {
-                // innerResponse.body() getter will not return null for server returned responses.
-                // It can be null:
-                // [a]. if response is built manually with null body (e.g for mocking)
-                // [b]. for the cases described here
-                // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
-                //
-                this.responseBodyMono = Mono.empty();
-            } else {
-                this.responseBodyMono = Mono.using(innerResponse::body,
-                    Mono::just,
-                    // Resource cleanup
-                    // square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
-                    ResponseBody::close, /* Change in behavior since reactor-core 3.3.0.RELEASE */ false);
-            }
+            // innerResponse.body() getter will not return null for server returned responses.
+            // It can be null:
+            // [a]. if response is built manually with null body (e.g for mocking)
+            // [b]. for the cases described here
+            // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
+            //
+            this.responseBody = innerResponse.body();
         }
 
         @Override
@@ -220,34 +213,46 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return this.responseBodyMono
-                .flatMapMany(irb -> toFluxByteBuffer(irb.byteStream()));
+            if (this.responseBody == null) {
+                return Flux.empty();
+            }
+            // Use Flux.using to close the stream after complete emission
+            return Flux.using(this.responseBody::byteStream,
+                OkHttpResponse::toFluxByteBuffer,
+                bodyStream -> {
+                    try {
+                        // OkHttp: The stream from ResponseBody::byteStream() has to be explicitly closed.
+                 // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
+                        bodyStream.close();
+                    } catch (IOException ioe) {
+                        throw Exceptions.propagate(ioe);
+                    }
+                }, false);
         }
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return this.responseBodyMono
-                .flatMap(rb -> {
-                    try {
-                        byte[] content = rb.bytes();
-                        return content.length == 0 ? Mono.empty() : Mono.just(content);
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                });
+            return Mono.fromCallable(() -> {
+                // Reactor: The fromCallable operator treats a null from the Callable
+                // as completion signal.
+                if (responseBody == null) {
+                    return null;
+                }
+                byte[] content = responseBody.bytes();
+                // Consistent with GAed behaviour.
+                if (content.length == 0) {
+                    return null;
+                }
+                // OkHttp: When calling ResponseBody::bytes() the underlying stream automatically closed.
+                // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed
+                return content;
+            });
         }
 
         @Override
         public Mono<String> getBodyAsString() {
-            return this.responseBodyMono
-                .flatMap(rb -> {
-                    try {
-                        String content = rb.string();
-                        return content.length() == 0 ? Mono.empty() : Mono.just(content);
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                });
+            return getBodyAsByteArray()
+                .map(bytes -> CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
         }
 
         @Override
@@ -258,7 +263,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
 
         @Override
         public void close() {
-            this.responseBodyMono.subscribe().dispose();
+            if (this.responseBody != null) {
+                // It's safe to invoke close() multiple times, additional calls will be ignored.
+                this.responseBody.close();
+            }
         }
 
         /**

@@ -14,8 +14,8 @@ import com.azure.core.tracing.opentelemetry.implementation.HttpTraceUtil;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import io.opentelemetry.OpenTelemetry;
+import io.opentelemetry.common.AttributeValue;
 import io.opentelemetry.context.propagation.HttpTextFormat;
-import io.opentelemetry.trace.AttributeValue;
 import io.opentelemetry.trace.Span;
 import io.opentelemetry.trace.SpanContext;
 import io.opentelemetry.trace.Tracer;
@@ -25,7 +25,7 @@ import reactor.util.context.Context;
 
 import java.util.Optional;
 
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
+import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
 
 /**
@@ -42,7 +42,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
     }
 
     // Singleton OpenTelemetry tracer capable of starting and exporting spans.
-    private static final Tracer TRACER = OpenTelemetry.getTracerFactory().get("Azure-OpenTelemetry");
+    private static final Tracer TRACER = OpenTelemetry.getTracerProvider().get("Azure-OpenTelemetry");
 
     // standard attributes with http call information
     private static final String HTTP_USER_AGENT = "http.user_agent";
@@ -93,10 +93,9 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
         putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
-        // TODO (savaity): replace with the AZ_TRACING_NAMESPACE_KEY
-        Optional<Object> tracingNamespace = context.getData("az.tracing.namespace");
+        Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         if (tracingNamespace.isPresent()) {
-            putAttributeIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, tracingNamespace.get().toString());
+            putAttributeIfNotEmptyOrNull(span, OpenTelemetryTracer.AZ_NAMESPACE_KEY, tracingNamespace.get().toString());
         }
     }
 

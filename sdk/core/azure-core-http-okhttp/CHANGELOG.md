@@ -3,6 +3,10 @@
 ## 1.3.0-beta.1 (Unreleased)
 
 
+## 1.2.1 (2020-04-03)
+
+- Fixed issue where the body stream would be prematurely closed.
+
 ## 1.2.0 (2020-03-06)
 
 - Updated to latest version of Azure Core.

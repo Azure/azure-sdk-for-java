@@ -3,47 +3,48 @@
 
 package com.azure.messaging.servicebus;
 
-import org.junit.jupiter.api.Test;
-import reactor.core.Disposable;
+import java.time.Duration;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
+ * Sample demonstrates how to send {@link ServiceBusMessage} to an Azure Service Bus queue or topic.
  */
 public class MessageSendAsyncSample {
+
     /**
-     * Main method to invoke this demo on how to send a message to an Azure Event Hub.
+     * Main method to invoke this demo on how to send a message to an Azure Service Bus.
+     *
+     * @param args Unused arguments to the program.
      */
-    @Test
-    public void sendMessage() {
+    public static void main(String[] args) {
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
-        // 2. Creating an Queue instance.
-        // 3. Creating a "Shared access policy" for your Queue instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING")
-            + ";EntityPath=hemant-test1";
+        // 2. Go to "Shared access policies"
+        // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
+        String connectionString = System.getenv("AZURE_SERVICEBUS_CONNECTION_STRING");
+
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient senderAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncSenderClient();
+            .sender()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
 
-        // Create a message to send.
+        // Create an message to send.
         ServiceBusMessage message = new ServiceBusMessage("Hello world!".getBytes(UTF_8));
 
         // Send that message. This call returns a Mono<Void>, which we subscribe to. It completes successfully when the
-        // event has been delivered to the Service queue or topic. It completes with an error if an exception occurred
-        // while sending the message.
+        // message has been delivered to the Service Bus. It completes with an error if an exception occurred while
+        // sending the message.
 
-        Disposable disposable = senderAsyncClient.send(message).subscribe();
+        senderAsyncClient.send(message).subscribe();
+
+        // Subscribe is not a blocking call so we sleep here so the program does not end while finishing
+        // the operation.
         try {
-            Thread.sleep(5000);
-        } catch (Exception ee) {
-
+            Thread.sleep(Duration.ofSeconds(20).toMillis());
+        } catch (InterruptedException ignored) {
         }
-        disposable.dispose();
     }
-
-
 }

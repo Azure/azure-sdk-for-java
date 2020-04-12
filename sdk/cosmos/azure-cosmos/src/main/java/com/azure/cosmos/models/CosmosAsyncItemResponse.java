@@ -146,8 +146,8 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getCosmosResponseDiagnostics() {
-        return resourceResponse.getCosmosResponseDiagnostics();
+    public CosmosResponseDiagnostics getResponseDiagnostics() {
+        return resourceResponse.getResponseDiagnostics();
     }
 
     /**

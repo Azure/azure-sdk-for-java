@@ -14,9 +14,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
@@ -74,15 +74,13 @@ final class RntbdToken {
         }
 
         if (this.value instanceof ByteBuf) {
-            final ByteBuf buffer = (ByteBuf)this.value;
-            this.value = codec.defaultValue();
+            final ByteBuf buffer = (ByteBuf) this.value;
             try {
+                this.value = codec.defaultValue();
                 this.value = codec.read(buffer);
             } catch (final CorruptedFrameException error) {
                 String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
                 throw new CorruptedFrameException(message);
-            } finally {
-                buffer.release();
             }
         } else {
             this.value = codec.convert(this.value);
@@ -98,7 +96,6 @@ final class RntbdToken {
     @JsonProperty
     public void setValue(final Object value) {
         this.ensureValid(value);
-        this.releaseBuffer();
         this.value = value;
         this.length = Integer.MIN_VALUE;
     }
@@ -129,7 +126,7 @@ final class RntbdToken {
         }
 
         if (this.value instanceof ByteBuf) {
-            final ByteBuf buffer = (ByteBuf)this.value;
+            final ByteBuf buffer = (ByteBuf) this.value;
             checkState(buffer.readerIndex() == 0);
             return HEADER_LENGTH + buffer.readableBytes();
         }
@@ -148,12 +145,7 @@ final class RntbdToken {
     public void decode(final ByteBuf in) {
 
         checkNotNull(in, "expected non-null in");
-
-        if (this.value instanceof ByteBuf) {
-            ((ByteBuf)this.value).release();
-        }
-
-        this.value = this.header.type().codec().readSlice(in).retain(); // No data transfer until first call to RntbdToken.getValue
+        this.value = this.header.type().codec().readSlice(in);
     }
 
     public void encode(final ByteBuf out) {
@@ -172,15 +164,11 @@ final class RntbdToken {
         out.writeByte(this.getTokenType().id());
 
         if (this.value instanceof ByteBuf) {
-            out.writeBytes((ByteBuf)this.value);
+            out.writeBytes((ByteBuf) this.value);
         } else {
             this.ensureValid(this.value);
             this.header.type().codec().write(this.value, out);
         }
-    }
-
-    public boolean releaseBuffer() {
-        return this.value instanceof ByteBuf && ((ByteBuf)this.value).release();
     }
 
     @Override
@@ -193,8 +181,10 @@ final class RntbdToken {
     // region Privates
 
     private void ensureValid(final Object value) {
-        checkArgument(value != null, "value: null");
-        checkArgument(this.header.type().codec().isValid(value), "value: %s = %s", value.getClass().getName(), value);
+        checkArgument(value != null, "expected non-null value");
+        checkArgument(this.header.type().codec().isValid(value), "invalid value: %s = %s",
+            value.getClass().getName(),
+            value);
     }
 
     // endregion
@@ -204,13 +194,17 @@ final class RntbdToken {
     static class PropertyFilter extends SimpleBeanPropertyFilter {
 
         @Override
-        public void serializeAsField(final Object object, final JsonGenerator generator, final SerializerProvider provider, final PropertyWriter writer) throws Exception {
+        public void serializeAsField(
+            final Object object,
+            final JsonGenerator generator,
+            final SerializerProvider provider,
+            final PropertyWriter writer) throws Exception {
 
             if (generator.canOmitFields()) {
 
                 final Object value = writer.getMember().getValue(object);
 
-                if (value instanceof RntbdToken && !((RntbdToken)value).isPresent()) {
+                if (value instanceof RntbdToken && !((RntbdToken) value).isPresent()) {
                     return;
                 }
             }

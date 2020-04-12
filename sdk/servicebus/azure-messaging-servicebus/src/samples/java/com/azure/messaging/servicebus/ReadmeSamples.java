@@ -3,6 +3,11 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
  * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
@@ -12,22 +17,57 @@ package com.azure.messaging.servicebus;
  */
 public class ReadmeSamples {
     /**
-     * Code sample for creating a synchronous Service Bus sender.
+     * Code sample for creating an asynchronous Service Bus sender.
      */
     public void createAsynchronousServiceBusSender() {
-        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncSenderClient();
+            .sender()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
     }
 
     /**
-     * Code sample for creating a synchronous Service Bus receiver.
+     * Code sample for creating an asynchronous Service Bus receiver.
      */
     public void createAsynchronousServiceBusReceiver() {
-        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS QUEUE or TOPIC >>";
+        String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .buildAsyncReceiverClient();
+            .receiver()
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .buildAsyncClient();
+    }
+
+    /**
+     * Code sample for creating an asynchronous Service Bus receiver using {@link DefaultAzureCredentialBuilder}.
+     */
+    public void createAsynchronousServiceBusReceiverWithAzureIdentity() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential("<<fully-qualified-namespace>>", credential)
+            .receiver()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
+    }
+
+    /**
+     * Code sample for creating an asynchronous Service Bus receiver using Aad.
+     */
+    public void createAsynchronousServiceBusReceiverWithAad() {
+        ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId("<< APPLICATION (CLIENT) ID >>")
+            .clientSecret("<< APPLICATION SECRET >>")
+            .tenantId("<< TENANT ID >>")
+            .build();
+
+        ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+            .credential("<<fully-qualified-namespace>>", credential)
+            .receiver()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
     }
 }

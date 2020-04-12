@@ -4,10 +4,9 @@
 package com.azure.identity;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.core.credential.TokenCredential;
 
 import java.util.ArrayDeque;
-import java.util.Arrays;
 
 /**
  * Creates a credential using environment variables or the shared token cache. It tries to create a valid credential in
@@ -32,13 +31,9 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      * If these environment variables are not available, then this will use the Shared MSAL
      * token cache.
      *
-     * @param identityClientOptions the options to configure the IdentityClient
+     * @param tokenCredentials the list of credentials to execute for authentication.
      */
-    DefaultAzureCredential(IdentityClientOptions identityClientOptions) {
-        super(new ArrayDeque<>(Arrays.asList(new EnvironmentCredential(identityClientOptions),
-            new ManagedIdentityCredential(null, identityClientOptions),
-            new SharedTokenCacheCredential(null, null, "04b07795-8ddb-461a-bbee-02f9e1bf7b46",
-                identityClientOptions),
-            new AzureCliCredential(identityClientOptions))));
+    DefaultAzureCredential(ArrayDeque<TokenCredential> tokenCredentials) {
+        super(tokenCredentials);
     }
 }
