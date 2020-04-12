@@ -183,9 +183,18 @@
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
           <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-          <failOnError>true</failOnError>
+          <failOnError>false</failOnError>
           <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
           <includeTests>false</includeTests>
+
+          <!-- Enable this plugin when security issues documented in Issue #10102 are fixed -->
+<!--          <plugins>-->
+<!--            <plugin>-->
+<!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
+<!--              <artifactId>findsecbugs-plugin</artifactId>-->
+<!--              <version>1.9.0</version>-->
+<!--            </plugin>-->
+<!--          </plugins>-->
           <fork>true</fork>
         </configuration>
         <executions>
