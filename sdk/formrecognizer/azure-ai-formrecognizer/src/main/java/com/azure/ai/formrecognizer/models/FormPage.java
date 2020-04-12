@@ -47,16 +47,15 @@ public class FormPage {
 
     /**
      * Constructs a FormPage object.
-     *
-     * @param height The height of the image/PDF in pixels/inches, respectively.
-     * @param lines When includeTextDetails is set to true, a list of recognized text lines.
-     * @param tables List of data tables extracted from the page.
+     *  @param height The height of the image/PDF in pixels/inches, respectively.
      * @param textAngle The general orientation of the text in clockwise direction.
      * @param unit The unit used by the width, height and boundingBox properties.
      * @param width The width of the image/PDF in pixels/inches, respectively.
+     * @param lines When includeTextDetails is set to true, a list of recognized text lines.
+     * @param tables List of data tables extracted from the page.
      */
-    public FormPage(final float height, final List<FormLine> lines, final List<FormTable> tables, 
-        final float textAngle, final DimensionUnit unit, final float width) {
+    public FormPage(final float height, final float textAngle, final DimensionUnit unit,
+        final float width, final List<FormLine> lines, final List<FormTable> tables) {
         this.height = height;
         this.lines = lines;
         this.tables = tables;

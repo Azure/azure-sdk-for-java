@@ -35,7 +35,7 @@ public class AnalyzeForm {
 
         String analyzeFilePath = "{analyze_file_path}";
         String modelId = "{model_Id}";
-        PollerFlux<OperationResult, IterableStream<RecognizedForm>> trainingPoller = client.beginExtractCustomFormsFromUrl(analyzeFilePath, modelId);
+        PollerFlux<OperationResult, IterableStream<RecognizedForm>> trainingPoller = client.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
 
         IterableStream<RecognizedForm> recognizedForms = trainingPoller
             .last()

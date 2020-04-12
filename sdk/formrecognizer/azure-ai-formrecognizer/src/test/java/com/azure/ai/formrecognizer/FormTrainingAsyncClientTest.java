@@ -19,6 +19,8 @@ import static com.azure.ai.formrecognizer.TestUtils.SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedSupervisedModel;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnsupervisedModel;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
@@ -66,7 +68,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void getCustomModelInvalidModelId() {
         getCustomModelInvalidModelIdRunner(invalidModelId -> StepVerifier.create(client.getCustomModel(invalidModelId))
-            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException 
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                 && throwable.getMessage().equals(INVALID_MODEL_ID_ERROR)).verify());
     }
 
@@ -110,10 +112,11 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     @Test
     void beginTrainingNullInput() {
-        StepVerifier.create(client.beginTraining(null, false))
-            .expectErrorMatches(throwable -> throwable instanceof NullPointerException
-                && throwable.getMessage().equals(SOURCE_URL_ERROR))
-            .verify();
+        NullPointerException thrown = assertThrows(
+            NullPointerException.class,
+            () -> client.beginTraining(null, false).getSyncPoller().getFinalResult());
+
+        assertTrue(thrown.getMessage().equals(SOURCE_URL_ERROR));
     }
 
     @Test

@@ -45,7 +45,7 @@ public class AnalyzeLayout {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, IterableStream<FormPage>> analyzeLayoutPoller =
-            client.beginExtractContent(targetStream, layoutUrl.length(), FormContentType.IMAGE_JPEG, Duration.ofSeconds(5));
+            client.beginRecognizeContent(targetStream, layoutUrl.length(), FormContentType.IMAGE_JPEG, Duration.ofSeconds(5));
 
         IterableStream<FormPage> layoutPageResults = analyzeLayoutPoller.getFinalResult();
 

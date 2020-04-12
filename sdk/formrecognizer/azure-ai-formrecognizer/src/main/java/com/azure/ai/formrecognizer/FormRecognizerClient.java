@@ -85,7 +85,7 @@ public final class FormRecognizerClient {
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
         beginExtractCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
-        return client.beginExtractCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails, pollInterval)
+        return client.beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails, pollInterval)
             .getSyncPoller();
     }
 
@@ -104,8 +104,8 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginExtractCustomForms(Flux<ByteBuffer> data, String modelId, Long length, FormContentType formContentType) {
-        return beginExtractCustomForms(data, modelId, length, formContentType, false, null);
+        beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType) {
+        return beginRecognizeCustomForms(data, modelId, length, formContentType, false, null);
     }
 
     /**
@@ -126,10 +126,10 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
-        beginExtractCustomForms(Flux<ByteBuffer> data, String modelId, Long length, FormContentType formContentType,
+        beginRecognizeCustomForms(Flux<ByteBuffer> data, String modelId, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
-        return client.beginExtractCustomForms(data, modelId, length, formContentType, includeTextDetails, pollInterval)
-            .getSyncPoller();
+        return client.beginRecognizeCustomForms(data, modelId, length, formContentType, 
+            includeTextDetails, pollInterval).getSyncPoller();
     }
 
     /**
@@ -143,8 +143,8 @@ public final class FormRecognizerClient {
      * @return A {@link SyncPoller} that polls the extract layout form operation until it has completed, has failed,
      * or has been cancelled.
      */
-    public SyncPoller<OperationResult, IterableStream<FormPage>> beginExtractContentFromUrl(String fileSourceUrl) {
-        return beginExtractContentFromUrl(fileSourceUrl, null);
+    public SyncPoller<OperationResult, IterableStream<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
+        return beginRecognizeContentFromUrl(fileSourceUrl, null);
     }
 
     /**
@@ -161,8 +161,8 @@ public final class FormRecognizerClient {
      * failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<FormPage>>
-        beginExtractContentFromUrl(String sourceUrl, Duration pollInterval) {
-        return client.beginExtractContentFromUrl(sourceUrl, pollInterval).getSyncPoller();
+        beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
+        return client.beginRecognizeContentFromUrl(sourceUrl, pollInterval).getSyncPoller();
     }
 
     /**
@@ -179,8 +179,8 @@ public final class FormRecognizerClient {
      * been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<FormPage>>
-        beginExtractContent(InputStream data, long length, FormContentType formContentType) {
-        return beginExtractContent(data, length, formContentType, null);
+        beginRecognizeContent(InputStream data, long length, FormContentType formContentType) {
+        return beginRecognizeContent(data, length, formContentType, null);
     }
 
     /**
@@ -199,11 +199,11 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<FormPage>>
-        beginExtractContent(InputStream data, long length, FormContentType formContentType,
+        beginRecognizeContent(InputStream data, long length, FormContentType formContentType,
                         Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
-        return client.beginExtractContent(buffer, formContentType, pollInterval, length)
+        return client.beginRecognizeContent(buffer, formContentType, length, pollInterval)
             .getSyncPoller();
     }
 
@@ -221,8 +221,8 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
-        beginExtractReceiptsFromUrl(String sourceUrl) {
-        return beginExtractReceiptsFromUrl(sourceUrl, false, null);
+        beginRecognizeReceiptsFromUrl(String sourceUrl) {
+        return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
     }
 
     /**
@@ -242,8 +242,8 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
-        beginExtractReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
-        return client.beginExtractReceiptsFromUrl(sourceUrl, pollInterval, includeTextDetails).getSyncPoller();
+        beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
+        return client.beginRecognizeReceiptsFromUrl(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
     }
 
     /**
@@ -261,8 +261,8 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
-        beginExtractReceipts(InputStream data, long length, FormContentType formContentType) {
-        return beginExtractReceipts(data, length, formContentType, false, null);
+        beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType) {
+        return beginRecognizeReceipts(data, length, formContentType, false, null);
     }
 
     /**
@@ -282,11 +282,11 @@ public final class FormRecognizerClient {
      * has completed, has failed, or has been cancelled.
      */
     public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
-        beginExtractReceipts(InputStream data, long length, FormContentType formContentType,
+        beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.convertStreamToByteBuffer(data);
-        return client.beginExtractReceipts(buffer, includeTextDetails, formContentType, pollInterval, length)
+        return client.beginRecognizeReceipts(buffer, length, formContentType, includeTextDetails, pollInterval)
             .getSyncPoller();
     }
 

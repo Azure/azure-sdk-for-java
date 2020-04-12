@@ -467,15 +467,16 @@ final class Transforms {
      * Helper method to convert the page results to {@code FormPage form pages}.
      *
      * @param readResultItem The per page text extraction item result returned by the service.
-     * @param extractedTablesList The per page tables list.
-     * @param formLines The per page form lines.
+     * @param perPageTableList The per page tables list.
+     * @param perPageLineList The per page form lines.
      *
      * @return The per page {@code FormPage}.
      */
-    private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> extractedTablesList, List<FormLine> formLines) {
-        return new FormPage(readResultItem.getHeight(), formLines,
-            extractedTablesList, readResultItem.getAngle(),
-            DimensionUnit.fromString(readResultItem.getUnit().toString()), readResultItem.getWidth());
+    private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> perPageTableList,
+        List<FormLine> perPageLineList) {
+        return new FormPage(readResultItem.getHeight(), readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()), readResultItem.getWidth(), perPageLineList,
+            perPageTableList
+        );
     }
 
     /**
@@ -486,7 +487,7 @@ final class Transforms {
      *
      * @return The list of per page {@code FormTable}.
      */
-    private static List<FormTable> getPageTables(PageResult pageResultItem, Integer pageNumber) {
+    static List<FormTable> getPageTables(PageResult pageResultItem, Integer pageNumber) {
         List<FormTable> extractedTablesList = new ArrayList<>();
         pageResultItem.getTables().forEach(dataTable -> {
             List<FormTableCell> tableCellList = dataTable.getCells().stream()
@@ -511,7 +512,7 @@ final class Transforms {
      *
      * @return The list of {@code FormLine}.
      */
-    private static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
+    static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
         List<FormLine> formLines = readResultItem.getLines().stream()
             .map(textLine -> new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                 readResultItem.getPage(), new IterableStream<>(toWords(textLine.getWords(), readResultItem.getPage()))))
@@ -672,7 +673,7 @@ final class Transforms {
      *
      * @return The fields populated on {@link RecognizedForm#getFields() fields}.
      */
-    private static Map<String, FormField<?>> getUnlabeledFieldMap(boolean includeTextDetails, List<ReadResult> readResults,
+    static Map<String, FormField<?>> getUnlabeledFieldMap(boolean includeTextDetails, List<ReadResult> readResults,
         PageResult pageResultItem, Integer pageNumber) {
         Map<String, FormField<?>> formFieldMap = new TreeMap<>();
         List<KeyValuePair> keyValuePairs = pageResultItem.getKeyValuePairs();

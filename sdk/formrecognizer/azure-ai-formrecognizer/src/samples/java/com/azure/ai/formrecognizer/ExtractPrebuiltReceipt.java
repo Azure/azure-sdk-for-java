@@ -43,7 +43,7 @@ public class ExtractPrebuiltReceipt {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG, true,
+            client.beginRecognizeReceipts(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG, true,
                 Duration.ofSeconds(5));
 
         IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller.getFinalResult();
