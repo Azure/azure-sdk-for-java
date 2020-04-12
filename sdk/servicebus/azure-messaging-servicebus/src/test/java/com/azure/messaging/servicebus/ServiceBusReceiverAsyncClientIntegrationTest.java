@@ -11,7 +11,6 @@ import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,8 +28,6 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.MESSAGE_POSITION_ID;
-import static com.azure.messaging.servicebus.TestUtils.MESSAGE_TRACKING_ID;
-import static com.azure.messaging.servicebus.TestUtils.getServiceBusMessage;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -47,9 +44,15 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusReceiverAsyncClient receiver;
     private ServiceBusReceiverAsyncClient receiveAndDeleteReceiver;
     private ServiceBusSenderAsyncClient sender;
+    private String sessionId;
 
     ServiceBusReceiverAsyncClientIntegrationTest() {
         super(new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class));
+    }
+
+    @Override
+    protected void beforeTest() {
+        sessionId = UUID.randomUUID().toString();
     }
 
     @Override
@@ -76,10 +79,19 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    static Stream<Arguments> receiverTypesProvider() {
+    static Stream<Arguments> messagingEntityProvider() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE),
             Arguments.of(MessagingEntityType.SUBSCRIPTION)
+        );
+    }
+
+    static Stream<Arguments> messagingEntityWithSessions() {
+        return Stream.of(
+            Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
+            Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );
     }
 
@@ -87,22 +99,21 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can send and receive two messages.
      */
     @Disabled("Problem when receiving two messages. Link is closed prematurely.")
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveTwoMessagesAutoComplete(MessagingEntityType entityType) {
+    void receiveTwoMessagesAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final int position = 10;
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, position);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         Mono.when(sendMessage(message), sendMessage(message)).block();
 
         // Assert & Act
         StepVerifier.create(receiver.receive())
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, position))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, position))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .thenCancel()
             .verify();
     }
@@ -110,20 +121,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and receive a message.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveMessageAutoComplete(MessagingEntityType entityType) {
+    void receiveMessageAutoComplete(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block();
 
         // Assert & Act
         StepVerifier.create(receiver.receive())
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, 0))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .thenCancel()
             .verify();
     }
@@ -131,34 +142,34 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a message.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessage(MessagingEntityType entityType) {
+    void peekMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block();
 
         // Assert & Act
         StepVerifier.create(receiver.peek())
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, 0))
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
     }
 
     /**
      * Verifies that we can schedule and receive a message.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void sendScheduledMessageAndReceive(MessagingEntityType entityType) {
+    void sendScheduledMessageAndReceive(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(2);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
@@ -167,7 +178,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(Mono.delay(Duration.ofSeconds(3)).then(receiveAndDeleteReceiver.receive(options).next()))
             .assertNext(receivedMessage -> {
-                assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageId, 0);
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .verifyComplete();
@@ -176,14 +187,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can cancel a scheduled message.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void cancelScheduledMessage(MessagingEntityType entityType) {
+    void cancelScheduledMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final Instant scheduledEnqueueTime = Instant.now().plusSeconds(10);
         final Duration delayDuration = Duration.ofSeconds(3);
 
@@ -209,45 +220,37 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a message.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void peekFromSequenceNumberMessage(MessagingEntityType entityType) {
+    void peekFromSequenceNumberMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         sendMessage(message).block();
 
         final ServiceBusReceivedMessage received = receiver.receive().next().block();
         Assertions.assertNotNull(received);
 
-        final Map<String, Object> expectedProperties = received.getProperties();
-
         // Assert & Act
         StepVerifier.create(receiver.peekAt(received.getSequenceNumber()))
-            .assertNext(receivedMessage -> {
-                assertArrayEquals(received.getBody(), receivedMessage.getBody());
-
-                final Map<String, Object> actual = receivedMessage.getProperties();
-                assertEquals(expectedProperties.get(MESSAGE_TRACKING_ID), actual.get(MESSAGE_TRACKING_ID));
-                assertEquals(expectedProperties.get(MESSAGE_POSITION_ID), actual.get(MESSAGE_POSITION_ID));
-            })
+            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
     }
 
     /**
      * Verifies that we can send and peek a batch of messages.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void peekBatchMessages(MessagingEntityType entityType) {
+    void peekBatchMessages(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final int maxMessages = 2;
 
         Mono.when(sendMessage(message), sendMessage(message)).block();
@@ -261,14 +264,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send and peek a batch of messages.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
     void peekBatchMessagesFromSequence(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, false);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, false);
         final int maxMessages = 2;
         final int fromSequenceNumber = 1;
 
@@ -283,14 +286,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can dead-letter a message.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void deadLetterMessage(MessagingEntityType entityType) {
+    void deadLetterMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         sendMessage(message).block();
@@ -310,14 +313,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can renew message lock.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveAndRenewLock(MessagingEntityType entityType) {
+    void receiveAndRenewLock(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
@@ -356,14 +359,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that the lock can be automatically renewed.
      */
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void autoRenewLockOnReceiveMessage(MessagingEntityType entityType) {
+    void autoRenewLockOnReceiveMessage(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getServiceBusMessage(CONTENTS_BYTES, messageId, 0);
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false)
             .setMaxAutoRenewDuration(Duration.ofSeconds(120));
@@ -412,14 +415,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveAndAbandon(MessagingEntityType entityType) {
+    void receiveAndAbandon(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageTrackingId, 0);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
 
@@ -435,7 +438,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
     }
 
-    static Stream<Arguments> receiveBySequenceNumber() {
+    static Stream<Arguments> receiveDeferredMessageBySequenceNumber() {
         return Stream.of(
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.ABANDONED),
             Arguments.of(MessagingEntityType.QUEUE, DispositionStatus.SUSPENDED),
@@ -451,12 +454,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource
     @ParameterizedTest
-    void receiveBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
+    void receiveDeferredMessageBySequenceNumber(MessagingEntityType entityType, DispositionStatus dispositionStatus) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, false);
 
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageTrackingId, 0);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, false);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
 
@@ -501,14 +504,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    @MethodSource("receiverTypesProvider")
+    @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType) {
+    void sendReceiveMessageWithVariousPropertyTypes(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
-        setSenderAndReceiver(entityType);
+        setSenderAndReceiver(entityType, isSessionEnabled);
 
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage messageToSend = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageTrackingId, 0);
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage messageToSend = getMessage(messageId, isSessionEnabled);
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
 
         Map<String, Object> sentProperties = messageToSend.getProperties();
@@ -524,13 +527,13 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sentProperties.put("UUIDProperty", UUID.randomUUID());
         sentProperties.put("StringProperty", "string");
 
-        sender.send(messageToSend).block();
+        sendMessage(messageToSend).block();
 
         // Assert & Act
         StepVerifier.create(receiveAndDeleteReceiver.receive(options))
             .assertNext(receivedMessage -> {
                 messagesPending.decrementAndGet();
-                assertMessageEquals(receivedMessage, CONTENTS_BYTES, messageTrackingId, 0);
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
 
                 final Map<String, Object> received = receivedMessage.getProperties();
 
@@ -553,60 +556,29 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verify();
     }
 
-    @MethodSource("receiverTypesProvider")
-    @ParameterizedTest
-    void sessionReceiveAndDelete(MessagingEntityType entityType) {
-        // Arrange
-        final String sessionId;
-        switch (entityType) {
-            case QUEUE:
-                sessionId = getSessionQueueName();
-                break;
-            case SUBSCRIPTION:
-                sessionId = getSessionSubscriptionName();
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Unsupported entity: " + entityType));
-        }
+    private ServiceBusMessage getMessage(String messageId, boolean isSessionEnabled) {
+        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageId);
 
-        Assertions.assertNotNull(sessionId, "'sessionId' cannot be null.");
-
-        setSenderAndReceiver(entityType, builder -> builder.sessionId(sessionId));
-
-        final String messageTrackingId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = TestUtils.getServiceBusMessage(CONTENTS_BYTES, messageTrackingId, 0)
-            .setSessionId(sessionId);
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions().setEnableAutoComplete(false);
-
-        sender.send(message).block();
-
-        // Assert & Act
-        StepVerifier.create(receiver.receive(options).take(1))
-            .assertNext(receivedMessage -> {
-                assertTrue(receivedMessage.getProperties().containsKey(MESSAGE_TRACKING_ID));
-                assertEquals(sessionId, receivedMessage.getSessionId());
-            })
-            .expectComplete()
-            .verify();
+        return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    void setSenderAndReceiver(MessagingEntityType entityType) {
-        setSenderAndReceiver(entityType, Function.identity());
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
+        setSenderAndReceiver(entityType, isSessionEnabled, Function.identity());
     }
 
-    void setSenderAndReceiver(MessagingEntityType entityType,
-        Function<ServiceBusReceiverClientBuilder, ServiceBusReceiverClientBuilder> onCreate) {
+    private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
+        Function<ServiceBusReceiverClientBuilder, ServiceBusReceiverClientBuilder> onReceiverCreate) {
 
         switch (entityType) {
             case QUEUE:
-                final String queueName = getQueueName();
+                final String queueName = isSessionEnabled ? getSessionQueueName() : getQueueName();
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
                 sender = createBuilder().sender()
                     .queueName(queueName)
                     .buildAsyncClient();
-                receiver = onCreate.apply(
+                receiver = onReceiverCreate.apply(
                     createBuilder().receiver().queueName(queueName)
                 ).buildAsyncClient();
 
@@ -617,7 +589,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 break;
             case SUBSCRIPTION:
                 final String topicName = getTopicName();
-                final String subscriptionName = getSubscriptionName();
+                final String subscriptionName = isSessionEnabled ? getSessionSubscriptionName() : getSubscriptionName();
 
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
@@ -625,7 +597,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 sender = createBuilder().sender()
                     .topicName(topicName)
                     .buildAsyncClient();
-                receiver = onCreate.apply(createBuilder().receiver()
+                receiver = onReceiverCreate.apply(createBuilder().receiver()
                     .topicName(topicName).subscriptionName(subscriptionName))
                     .buildAsyncClient();
 
@@ -646,15 +618,12 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         });
     }
 
-    private void assertMessageEquals(ServiceBusReceivedMessage message, byte[] contents, String messageId, int position) {
-        assertArrayEquals(contents, message.getBody());
+    private void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
+        assertArrayEquals(CONTENTS_BYTES, message.getBody());
+        assertEquals(messageId, message.getMessageId());
 
-        final Map<String, Object> properties = message.getProperties();
-
-        assertTrue(properties.containsKey(MESSAGE_TRACKING_ID));
-        assertEquals(messageId, properties.get(MESSAGE_TRACKING_ID));
-
-        assertTrue(properties.containsKey(MESSAGE_POSITION_ID));
-        assertEquals(position, properties.get(MESSAGE_POSITION_ID));
+        if (isSessionEnabled) {
+            assertEquals(sessionId, message.getSessionId());
+        }
     }
 }

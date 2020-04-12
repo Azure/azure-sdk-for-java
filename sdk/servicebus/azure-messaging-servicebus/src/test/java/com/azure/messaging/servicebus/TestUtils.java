@@ -40,8 +40,6 @@ public class TestUtils {
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
-    // An application property key used to identify that the request belongs to a test set.
-    public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
     // An application property key to identify where in the stream this message was created.
     public static final String MESSAGE_POSITION_ID = "message-position";
 
@@ -111,27 +109,31 @@ public class TestUtils {
     }
 
     /**
-     * Gets a set of messages with {@link #MESSAGE_TRACKING_ID} as a unique identifier for that service bus message.
+     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that
+     * service bus message.
      *
      * @param numberOfEvents Number of events to create.
-     * @param messageTrackingValue An identifier for the set of messages.
-     *
+     * @param messageId An identifier for the set of messages.
      * @return A list of messages.
      */
-    public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageTrackingValue) {
+    public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId) {
         return IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> getServiceBusMessage("Event " + number, messageTrackingValue, number))
+            .mapToObj(number -> {
+                final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
+                message.getProperties().put(MESSAGE_POSITION_ID, number);
+
+                return message;
+            })
             .collect(Collectors.toList());
     }
 
-    public static ServiceBusMessage getServiceBusMessage(String body, String messageTrackingValue, int position) {
-        return getServiceBusMessage(body.getBytes(UTF_8), messageTrackingValue, position);
+    public static ServiceBusMessage getServiceBusMessage(String body, String messageId) {
+        return getServiceBusMessage(body.getBytes(UTF_8), messageId);
     }
 
-    public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageTrackingValue, int position) {
+    public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageId) {
         final ServiceBusMessage message = new ServiceBusMessage(body);
-        message.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
-        message.getProperties().put(MESSAGE_POSITION_ID, position);
+        message.setMessageId(messageId);
         return message;
     }
 
@@ -140,7 +142,6 @@ public class TestUtils {
      * completion signal is emitted.
      *
      * @param messages Messages to emit.
-     *
      * @return A flux of messages.
      */
     public static Flux<ServiceBusReceivedMessage> createMessageSink(ServiceBusReceivedMessage... messages) {
