@@ -185,7 +185,7 @@
           <failOnError>true</failOnError>
           <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
 
-          <!-- Enable this plugin when security issues documented in Issue #10102 are fixed -->
+          <!-- Enable this plugin when issues documented are fixed -->
 <!--          <plugins>-->
 <!--            <plugin>-->
 <!--              <groupId>com.h3xstream.findsecbugs</groupId>-->
