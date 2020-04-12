@@ -43,7 +43,7 @@ public class AnalyzeLayoutSync {
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
         SyncPoller<OperationResult, IterableStream<FormPage>> analyzeLayoutPoller =
-            client.beginExtractContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF);
+            client.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.APPLICATION_PDF);
 
         IterableStream<FormPage> layoutPageResults = analyzeLayoutPoller.getFinalResult();
 

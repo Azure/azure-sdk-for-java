@@ -32,7 +32,7 @@ public class ExtractReceiptsFromUrlAsync {
 
         String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
-            client.beginExtractReceiptsFromUrl(receiptUrl);
+            client.beginRecognizeReceiptsFromUrl(receiptUrl);
 
         IterableStream<RecognizedReceipt> receiptPageResults = analyzeReceiptPoller
             .last()

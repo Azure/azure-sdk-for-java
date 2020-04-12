@@ -69,7 +69,7 @@ public class ReadmeSamples {
     public void extractReceipt() {
         String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso-allinone.jpg";
         SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-            formRecognizerClient.beginExtractReceiptsFromUrl(receiptSourceUrl);
+            formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
         IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
         receiptPageResults.forEach(recognizedReceipt -> {

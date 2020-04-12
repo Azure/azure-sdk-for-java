@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
 
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class RecognizedForm {
     /*
      * List of extracted pages from the form.
      */
-    private final Iterable<FormPage> pages;
+    private final IterableStream<FormPage> pages;
 
     /**
      * Constructs a RecognizedForm object.
@@ -42,7 +43,7 @@ public class RecognizedForm {
      * @param pages List of extracted pages from the form.
      */
     public RecognizedForm(final Map<String, FormField<?>> fields, final String formType, final PageRange pageRange,
-                          final Iterable<FormPage> pages) {
+        final IterableStream<FormPage> pages) {
         this.fields = fields;
         this.formType = formType;
         this.pageRange = pageRange;
@@ -82,7 +83,7 @@ public class RecognizedForm {
      *
      * @return the pages value.
      */
-    public Iterable<FormPage> getPages() {
+    public IterableStream<FormPage> getPages() {
         return this.pages;
     }
 }

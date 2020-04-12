@@ -1,0 +1,56 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/95537f1b-aac4-4da8-8292-f1b93ac4c8f8/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "940a05eb-7355-44f4-bf4e-84dd16909c57",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 156827 bytes more than the expected 154512 bytes."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/95537f1b-aac4-4da8-8292-f1b93ac4c8f8/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "940a05eb-7355-44f4-bf4e-84dd16909c57",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 156827 bytes more than the expected 154512 bytes."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/95537f1b-aac4-4da8-8292-f1b93ac4c8f8/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "940a05eb-7355-44f4-bf4e-84dd16909c57",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 156827 bytes more than the expected 154512 bytes."
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//custom/models/95537f1b-aac4-4da8-8292-f1b93ac4c8f8/analyze?includeTextDetails=false",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "940a05eb-7355-44f4-bf4e-84dd16909c57",
+      "Content-Type" : "application/pdf"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "com.azure.core.exception.UnexpectedLengthException",
+      "ErrorMessage" : "Request body emitted 156827 bytes more than the expected 154512 bytes."
+    }
+  } ],
+  "variables" : [ ]
+}
