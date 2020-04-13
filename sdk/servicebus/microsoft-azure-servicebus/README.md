@@ -26,7 +26,7 @@ The package can be downloaded from [Maven](https://search.maven.org/artifact/com
 
 ## How to provide feedback
 
-See our [Contribution Guidelines](../.github/CONTRIBUTING.md).
+See our [Contribution Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
 ## How to get support
 
