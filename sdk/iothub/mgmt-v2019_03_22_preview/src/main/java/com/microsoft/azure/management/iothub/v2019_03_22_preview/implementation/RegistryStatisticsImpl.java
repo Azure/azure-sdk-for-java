@@ -12,14 +12,14 @@ import com.microsoft.azure.management.iothub.v2019_03_22_preview.RegistryStatist
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class RegistryStatisticsImpl extends WrapperImpl<RegistryStatisticsInner> implements RegistryStatistics {
-    private final IoTHubManager manager;
-    RegistryStatisticsImpl(RegistryStatisticsInner inner, IoTHubManager manager) {
+    private final DevicesManager manager;
+    RegistryStatisticsImpl(RegistryStatisticsInner inner, DevicesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
