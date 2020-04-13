@@ -171,7 +171,7 @@ public final class MonitorManager extends Manager<MonitorManager, MonitorClientI
                 new MonitorClientBuilder()
                         .pipeline(restClient.getHttpPipeline())
                         .host(restClient.getBaseUrl().toString())
-                        .subscriptionId(subscriptionId).build(),
+                        .subscriptionId(subscriptionId).buildClient(),
                 sdkContext);
     }
 }

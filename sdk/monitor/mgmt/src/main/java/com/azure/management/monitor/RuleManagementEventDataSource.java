@@ -8,15 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
-/**
- * The RuleManagementEventDataSource model.
- */
+/** The RuleManagementEventDataSource model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource")
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public final class RuleManagementEventDataSource extends RuleDataSource {
     /*
      * the event name.
@@ -76,7 +72,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the eventName property: the event name.
-     * 
+     *
      * @return the eventName value.
      */
     public String eventName() {
@@ -85,7 +81,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the eventName property: the event name.
-     * 
+     *
      * @param eventName the eventName value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -96,7 +92,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the eventSource property: the event source.
-     * 
+     *
      * @return the eventSource value.
      */
     public String eventSource() {
@@ -105,7 +101,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the eventSource property: the event source.
-     * 
+     *
      * @param eventSource the eventSource value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -116,7 +112,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the level property: the level.
-     * 
+     *
      * @return the level value.
      */
     public String level() {
@@ -125,7 +121,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the level property: the level.
-     * 
+     *
      * @param level the level value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -135,9 +131,9 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     }
 
     /**
-     * Get the operationName property: The name of the operation that should be
-     * checked for. If no name is provided, any operation will match.
-     * 
+     * Get the operationName property: The name of the operation that should be checked for. If no name is provided, any
+     * operation will match.
+     *
      * @return the operationName value.
      */
     public String operationName() {
@@ -145,9 +141,9 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     }
 
     /**
-     * Set the operationName property: The name of the operation that should be
-     * checked for. If no name is provided, any operation will match.
-     * 
+     * Set the operationName property: The name of the operation that should be checked for. If no name is provided, any
+     * operation will match.
+     *
      * @param operationName the operationName value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -158,7 +154,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the resourceGroupName property: the resource group name.
-     * 
+     *
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -167,7 +163,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the resourceGroupName property: the resource group name.
-     * 
+     *
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -178,7 +174,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the resourceProviderName property: the resource provider name.
-     * 
+     *
      * @return the resourceProviderName value.
      */
     public String resourceProviderName() {
@@ -187,7 +183,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the resourceProviderName property: the resource provider name.
-     * 
+     *
      * @param resourceProviderName the resourceProviderName value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -197,9 +193,9 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     }
 
     /**
-     * Get the status property: The status of the operation that should be
-     * checked for. If no status is provided, any status will match.
-     * 
+     * Get the status property: The status of the operation that should be checked for. If no status is provided, any
+     * status will match.
+     *
      * @return the status value.
      */
     public String status() {
@@ -207,9 +203,9 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     }
 
     /**
-     * Set the status property: The status of the operation that should be
-     * checked for. If no status is provided, any status will match.
-     * 
+     * Set the status property: The status of the operation that should be checked for. If no status is provided, any
+     * status will match.
+     *
      * @param status the status value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -220,7 +216,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the subStatus property: the substatus.
-     * 
+     *
      * @return the subStatus value.
      */
     public String subStatus() {
@@ -229,7 +225,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the subStatus property: the substatus.
-     * 
+     *
      * @param subStatus the subStatus value to set.
      * @return the RuleManagementEventDataSource object itself.
      */
@@ -240,7 +236,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Get the claims property: the claims.
-     * 
+     *
      * @return the claims value.
      */
     public RuleManagementEventClaimsDataSource claims() {
@@ -249,7 +245,7 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
 
     /**
      * Set the claims property: the claims.
-     * 
+     *
      * @param claims the claims value to set.
      * @return the RuleManagementEventDataSource object itself.
      */

@@ -8,17 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
 import java.time.Duration;
 
-/**
- * The ThresholdRuleCondition model.
- */
+/** The ThresholdRuleCondition model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public final class ThresholdRuleCondition extends RuleCondition {
     /*
      * the operator used to compare the data and the threshold.
@@ -49,9 +44,8 @@ public final class ThresholdRuleCondition extends RuleCondition {
     private TimeAggregationOperator timeAggregation;
 
     /**
-     * Get the operator property: the operator used to compare the data and the
-     * threshold.
-     * 
+     * Get the operator property: the operator used to compare the data and the threshold.
+     *
      * @return the operator value.
      */
     public ConditionOperator operator() {
@@ -59,9 +53,8 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Set the operator property: the operator used to compare the data and the
-     * threshold.
-     * 
+     * Set the operator property: the operator used to compare the data and the threshold.
+     *
      * @param operator the operator value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -71,9 +64,8 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Get the threshold property: the threshold value that activates the
-     * alert.
-     * 
+     * Get the threshold property: the threshold value that activates the alert.
+     *
      * @return the threshold value.
      */
     public double threshold() {
@@ -81,9 +73,8 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Set the threshold property: the threshold value that activates the
-     * alert.
-     * 
+     * Set the threshold property: the threshold value that activates the alert.
+     *
      * @param threshold the threshold value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -93,10 +84,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Get the windowSize property: the period of time (in ISO 8601 duration
-     * format) that is used to monitor alert activity based on the threshold.
-     * If specified then it must be between 5 minutes and 1 day.
-     * 
+     * Get the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
+     * activity based on the threshold. If specified then it must be between 5 minutes and 1 day.
+     *
      * @return the windowSize value.
      */
     public Duration windowSize() {
@@ -104,10 +94,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Set the windowSize property: the period of time (in ISO 8601 duration
-     * format) that is used to monitor alert activity based on the threshold.
-     * If specified then it must be between 5 minutes and 1 day.
-     * 
+     * Set the windowSize property: the period of time (in ISO 8601 duration format) that is used to monitor alert
+     * activity based on the threshold. If specified then it must be between 5 minutes and 1 day.
+     *
      * @param windowSize the windowSize value to set.
      * @return the ThresholdRuleCondition object itself.
      */
@@ -117,10 +106,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Get the timeAggregation property: the time aggregation operator. How the
-     * data that are collected should be combined over time. The default value
-     * is the PrimaryAggregationType of the Metric.
-     * 
+     * Get the timeAggregation property: the time aggregation operator. How the data that are collected should be
+     * combined over time. The default value is the PrimaryAggregationType of the Metric.
+     *
      * @return the timeAggregation value.
      */
     public TimeAggregationOperator timeAggregation() {
@@ -128,10 +116,9 @@ public final class ThresholdRuleCondition extends RuleCondition {
     }
 
     /**
-     * Set the timeAggregation property: the time aggregation operator. How the
-     * data that are collected should be combined over time. The default value
-     * is the PrimaryAggregationType of the Metric.
-     * 
+     * Set the timeAggregation property: the time aggregation operator. How the data that are collected should be
+     * combined over time. The default value is the PrimaryAggregationType of the Metric.
+     *
      * @param timeAggregation the timeAggregation value to set.
      * @return the ThresholdRuleCondition object itself.
      */

@@ -7,78 +7,48 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for Unit.
- */
+/** Defines values for Unit. */
 public enum Unit {
-    /**
-     * Enum value Count.
-     */
+    /** Enum value Count. */
     COUNT("Count"),
 
-    /**
-     * Enum value Bytes.
-     */
+    /** Enum value Bytes. */
     BYTES("Bytes"),
 
-    /**
-     * Enum value Seconds.
-     */
+    /** Enum value Seconds. */
     SECONDS("Seconds"),
 
-    /**
-     * Enum value CountPerSecond.
-     */
+    /** Enum value CountPerSecond. */
     COUNT_PER_SECOND("CountPerSecond"),
 
-    /**
-     * Enum value BytesPerSecond.
-     */
+    /** Enum value BytesPerSecond. */
     BYTES_PER_SECOND("BytesPerSecond"),
 
-    /**
-     * Enum value Percent.
-     */
+    /** Enum value Percent. */
     PERCENT("Percent"),
 
-    /**
-     * Enum value MilliSeconds.
-     */
+    /** Enum value MilliSeconds. */
     MILLI_SECONDS("MilliSeconds"),
 
-    /**
-     * Enum value ByteSeconds.
-     */
+    /** Enum value ByteSeconds. */
     BYTE_SECONDS("ByteSeconds"),
 
-    /**
-     * Enum value Unspecified.
-     */
+    /** Enum value Unspecified. */
     UNSPECIFIED("Unspecified"),
 
-    /**
-     * Enum value Cores.
-     */
+    /** Enum value Cores. */
     CORES("Cores"),
 
-    /**
-     * Enum value MilliCores.
-     */
+    /** Enum value MilliCores. */
     MILLI_CORES("MilliCores"),
 
-    /**
-     * Enum value NanoCores.
-     */
+    /** Enum value NanoCores. */
     NANO_CORES("NanoCores"),
 
-    /**
-     * Enum value BitsPerSecond.
-     */
+    /** Enum value BitsPerSecond. */
     BITS_PER_SECOND("BitsPerSecond");
 
-    /**
-     * The actual serialized value for a Unit instance.
-     */
+    /** The actual serialized value for a Unit instance. */
     private final String value;
 
     Unit(String value) {
@@ -87,7 +57,7 @@ public enum Unit {
 
     /**
      * Parses a serialized value to a Unit instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed Unit object, or null if unable to parse.
      */

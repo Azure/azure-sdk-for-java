@@ -13,9 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The AlertRuleResource model.
- */
+/** The AlertRuleResource model. */
 @JsonFlatten
 @Fluent
 public class AlertRuleResourceInner extends Resource {
@@ -59,7 +57,7 @@ public class AlertRuleResourceInner extends Resource {
 
     /**
      * Get the namePropertiesName property: the name of the alert rule.
-     * 
+     *
      * @return the namePropertiesName value.
      */
     public String namePropertiesName() {
@@ -68,7 +66,7 @@ public class AlertRuleResourceInner extends Resource {
 
     /**
      * Set the namePropertiesName property: the name of the alert rule.
-     * 
+     *
      * @param namePropertiesName the namePropertiesName value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -78,9 +76,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the description property: the description of the alert rule that
-     * will be included in the alert email.
-     * 
+     * Get the description property: the description of the alert rule that will be included in the alert email.
+     *
      * @return the description value.
      */
     public String description() {
@@ -88,9 +85,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the description property: the description of the alert rule that
-     * will be included in the alert email.
-     * 
+     * Set the description property: the description of the alert rule that will be included in the alert email.
+     *
      * @param description the description value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -100,9 +96,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the isEnabled property: the flag that indicates whether the alert
-     * rule is enabled.
-     * 
+     * Get the isEnabled property: the flag that indicates whether the alert rule is enabled.
+     *
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -110,9 +105,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the isEnabled property: the flag that indicates whether the alert
-     * rule is enabled.
-     * 
+     * Set the isEnabled property: the flag that indicates whether the alert rule is enabled.
+     *
      * @param isEnabled the isEnabled value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -122,9 +116,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the condition property: the condition that results in the alert rule
-     * being activated.
-     * 
+     * Get the condition property: the condition that results in the alert rule being activated.
+     *
      * @return the condition value.
      */
     public RuleCondition condition() {
@@ -132,9 +125,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the condition property: the condition that results in the alert rule
-     * being activated.
-     * 
+     * Set the condition property: the condition that results in the alert rule being activated.
+     *
      * @param condition the condition value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -144,9 +136,9 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when
-     * the alert rule becomes active, and when an alert condition is resolved.
-     * 
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
+     *
      * @return the actions value.
      */
     public List<RuleAction> actions() {
@@ -154,9 +146,9 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when
-     * the alert rule becomes active, and when an alert condition is resolved.
-     * 
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
+     *
      * @param actions the actions value to set.
      * @return the AlertRuleResourceInner object itself.
      */
@@ -166,9 +158,8 @@ public class AlertRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the lastUpdatedTime property: Last time the rule was updated in
-     * ISO8601 format.
-     * 
+     * Get the lastUpdatedTime property: Last time the rule was updated in ISO8601 format.
+     *
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AlertRuleResourceCollection model.
- */
+/** The AlertRuleResourceCollection model. */
 @Fluent
 public final class AlertRuleResourceCollectionInner {
     /*
@@ -21,7 +19,7 @@ public final class AlertRuleResourceCollectionInner {
 
     /**
      * Get the value property: the values for the alert rule resources.
-     * 
+     *
      * @return the value value.
      */
     public List<AlertRuleResourceInner> value() {
@@ -30,7 +28,7 @@ public final class AlertRuleResourceCollectionInner {
 
     /**
      * Set the value property: the values for the alert rule resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the AlertRuleResourceCollectionInner object itself.
      */
