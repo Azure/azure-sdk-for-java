@@ -26,6 +26,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.management.RestClient;
 import com.azure.management.appservice.AppServicePlan;
@@ -438,8 +439,9 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        return functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01")
-                .map(ListKeysResult::getMasterKey);
+        return FluxUtil.withContext(context -> functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01"))
+            .map(ListKeysResult::getMasterKey)
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
     }
 
     @Override
