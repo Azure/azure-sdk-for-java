@@ -9,6 +9,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class LoadBalancerTests extends NetworkManagementTest {
+    static final String SUBNET_NAME = "subnet1";
+    static final String RULE_NAME_1 = "httpRule";
+    static final String RULE_NAME_2 = "httpsRule";
+    static final String PROBE_NAME_1 = "httpProbe";
+    static final String PROBE_NAME_2 = "httpsProbe";
 
     @Test
     public void canCRUDProbe() throws Exception {
@@ -25,7 +30,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
                 .withRegion(resourceGroup.region())
                 .withExistingResourceGroup(resourceGroup.name())
                 .withAddressSpace("172.18.0.0/28")
-                .withSubnet(subnetName, "172.18.0.0/28")
+                .withSubnet(SUBNET_NAME, "172.18.0.0/28")
                 .create();
 
         LoadBalancer loadBalancer = this.createLoadBalancer(networkManager, resourceGroup, network, lbName);
@@ -35,10 +40,10 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals(0, loadBalancer.tcpProbes().size());
         Assertions.assertEquals(1, loadBalancer.httpProbes().size());
         Assertions.assertEquals(1, loadBalancer.httpsProbes().size());
-        LoadBalancerHttpProbe httpProbe = loadBalancer.httpProbes().get(probeName1);
+        LoadBalancerHttpProbe httpProbe = loadBalancer.httpProbes().get(PROBE_NAME_1);
         Assertions.assertNotNull(httpProbe);
         Assertions.assertEquals(1, httpProbe.loadBalancingRules().size());
-        LoadBalancerHttpProbe httpsProbe = loadBalancer.httpsProbes().get(probeName2);
+        LoadBalancerHttpProbe httpsProbe = loadBalancer.httpsProbes().get(PROBE_NAME_2);
         Assertions.assertEquals(1, httpsProbe.loadBalancingRules().size());
         // verify https probe
         Assertions.assertEquals(ProbeProtocol.HTTPS, httpsProbe.protocol());
@@ -48,7 +53,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         // update probe
         loadBalancer
             .update()
-            .updateHttpsProbe(probeName2)
+            .updateHttpsProbe(PROBE_NAME_2)
             .withIntervalInSeconds(60)
             .withRequestPath("/health")
             .parent()
@@ -58,7 +63,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals(1, loadBalancer.httpProbes().size());
         Assertions.assertEquals(1, loadBalancer.httpsProbes().size());
         Assertions.assertEquals(1, httpProbe.loadBalancingRules().size());
-        httpsProbe = loadBalancer.httpsProbes().get(probeName2);
+        httpsProbe = loadBalancer.httpsProbes().get(PROBE_NAME_2);
         Assertions.assertEquals(1, httpsProbe.loadBalancingRules().size());
         Assertions.assertEquals(ProbeProtocol.HTTPS, httpsProbe.protocol());
         Assertions.assertEquals(443, httpsProbe.port());
@@ -66,21 +71,21 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals("/health", httpsProbe.requestPath());
 
         // delete probe
-        loadBalancer.update().withoutProbe(probeName2).apply();
+        loadBalancer.update().withoutProbe(PROBE_NAME_2).apply();
 
         // verify probe deleted (and deref from rule)
         Assertions.assertEquals(1, loadBalancer.httpProbes().size());
         Assertions.assertEquals(0, loadBalancer.httpsProbes().size());
-        Assertions.assertNull(loadBalancer.loadBalancingRules().get(ruleName2).probe());
+        Assertions.assertNull(loadBalancer.loadBalancingRules().get(RULE_NAME_2).probe());
 
         // add probe
-        loadBalancer.update().defineHttpsProbe(probeName2).withRequestPath("/").attach().apply();
+        loadBalancer.update().defineHttpsProbe(PROBE_NAME_2).withRequestPath("/").attach().apply();
 
         // verify probe added
         loadBalancer.refresh();
         Assertions.assertEquals(1, loadBalancer.httpProbes().size());
         Assertions.assertEquals(1, loadBalancer.httpsProbes().size());
-        httpsProbe = loadBalancer.httpsProbes().get(probeName2);
+        httpsProbe = loadBalancer.httpsProbes().get(PROBE_NAME_2);
         Assertions.assertEquals(0, httpsProbe.loadBalancingRules().size());
     }
 
@@ -91,11 +96,6 @@ public class LoadBalancerTests extends NetworkManagementTest {
         final String backendPoolName2 = lbName + "-BAP2";
         final String natPool50XXto22 = lbName + "natPool50XXto22";
         final String natPool60XXto23 = lbName + "natPool60XXto23";
-        final String subnetName = "subnet1";
-        final String ruleName1 = "httpRule";
-        final String ruleName2 = "httpsRule";
-        final String probeName1 = "httpProbe";
-        final String probeName2 = "httpsProbe";
 
         LoadBalancer loadBalancer1 =
             networkManager
@@ -104,19 +104,19 @@ public class LoadBalancerTests extends NetworkManagementTest {
                 .withRegion(resourceGroup.region())
                 .withExistingResourceGroup(resourceGroup.name())
                 // Add two rules that uses above backend and probe
-                .defineLoadBalancingRule(ruleName1)
+                .defineLoadBalancingRule(RULE_NAME_1)
                 .withProtocol(TransportProtocol.TCP)
                 .fromFrontend(frontendName)
                 .fromFrontendPort(80)
                 .toBackend(backendPoolName1)
-                .withProbe(probeName1)
+                .withProbe(PROBE_NAME_1)
                 .attach()
-                .defineLoadBalancingRule(ruleName2)
+                .defineLoadBalancingRule(RULE_NAME_2)
                 .withProtocol(TransportProtocol.TCP)
                 .fromFrontend(frontendName)
                 .fromFrontendPort(443)
                 .toBackend(backendPoolName2)
-                .withProbe(probeName2)
+                .withProbe(PROBE_NAME_2)
                 .attach()
                 // Add nat pools to enable direct VM connectivity for
                 //  SSH to port 22 and TELNET to port 23
@@ -134,13 +134,13 @@ public class LoadBalancerTests extends NetworkManagementTest {
                 .attach()
                 // Explicitly define the frontend
                 .definePrivateFrontend(frontendName)
-                .withExistingSubnet(network, subnetName)
+                .withExistingSubnet(network, SUBNET_NAME)
                 .attach()
                 // Add two probes one per rule
-                .defineHttpProbe(probeName1)
+                .defineHttpProbe(PROBE_NAME_1)
                 .withRequestPath("/")
                 .attach()
-                .defineHttpsProbe(probeName2)
+                .defineHttpsProbe(PROBE_NAME_2)
                 .withRequestPath("/")
                 .attach()
                 .withSku(LoadBalancerSkuType.STANDARD)
