@@ -3,7 +3,6 @@
 
 package com.azure.management.samples;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -54,6 +53,7 @@ public class DockerUtils {
          * @param caPem - content of the ca.pem certificate file
          * @param keyPem - content of the key.pem certificate file
          * @param certPem - content of the cert.pem certificate file
+         * @throws DockerClientException throws when something unexpected happens
          */
         public DockerSSLConfig(String caPem, String keyPem, String certPem) {
             try {
@@ -69,8 +69,7 @@ public class DockerUtils {
                 sslConfig.keyStorePassword("docker");
                 sslConfig.trustStore(CertificateUtils.createTrustStore(caPem));
             } catch (Exception e) {
-                ClientLogger logger = new ClientLogger(getClass());
-                throw logger.logExceptionAsError(new DockerClientException(e.getMessage(), e));
+                throw new DockerClientException(e.getMessage(), e);
             }
         }
 
