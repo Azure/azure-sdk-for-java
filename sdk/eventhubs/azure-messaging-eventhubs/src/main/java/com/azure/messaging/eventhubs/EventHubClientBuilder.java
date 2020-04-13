@@ -29,6 +29,9 @@ import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.regex.Pattern;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -93,6 +96,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ServiceClientBuilder(serviceClients = {EventHubProducerAsyncClient.class, EventHubProducerClient.class,
     EventHubConsumerAsyncClient.class, EventHubConsumerClient.class})
 public class EventHubClientBuilder {
+
     // Default number of events to fetch when creating the consumer.
     static final int DEFAULT_PREFETCH_COUNT = 500;
 
@@ -117,6 +121,7 @@ public class EventHubClientBuilder {
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
     private static final AmqpRetryOptions DEFAULT_RETRY = new AmqpRetryOptions()
         .setTryTimeout(ClientConstants.OPERATION_TIMEOUT);
+    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private final ClientLogger logger = new ClientLogger(EventHubClientBuilder.class);
     private final Object connectionLock = new Object();
@@ -624,17 +629,33 @@ public class EventHubClientBuilder {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
-        final String[] hostPort = proxyAddress.split(":");
-        if (hostPort.length < 2) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy"));
-        }
+        InetSocketAddress inetSocketAddress = getInetSocketAddress(proxyAddress);
 
-        final String host = hostPort[0];
-        final int port = Integer.parseInt(hostPort[1]);
-        final Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host, port));
+        final Proxy proxy = new Proxy(Proxy.Type.HTTP, inetSocketAddress);
         final String username = configuration.get(ProxyOptions.PROXY_USERNAME);
         final String password = configuration.get(ProxyOptions.PROXY_PASSWORD);
 
         return new ProxyOptions(authentication, proxy, username, password);
     }
+
+    private InetSocketAddress getInetSocketAddress(String proxyAddress) {
+        String host;
+        int port;
+        if (HOST_PORT_PATTERN.matcher(proxyAddress.trim()).find()) {
+            final String[] hostPort = proxyAddress.split(":");
+            host = hostPort[0];
+            port = Integer.parseInt(hostPort[1]);
+        } else {
+            try {
+                URL proxyUrl = new URL(proxyAddress);
+                host = proxyUrl.getHost();
+                port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
+            } catch (MalformedURLException e) {
+                throw logger
+                    .logExceptionAsError(new IllegalArgumentException("HTTP_PROXY cannot be parsed into a proxy"));
+            }
+        }
+        return new InetSocketAddress(host, port);
+    }
+
 }
