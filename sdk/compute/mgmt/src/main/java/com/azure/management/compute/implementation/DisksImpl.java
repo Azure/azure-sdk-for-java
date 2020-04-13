@@ -43,7 +43,7 @@ class DisksImpl
         grantAccessDataInner.withAccess(accessLevel)
                 .withDurationInSeconds(accessDuration);
         return this.inner().grantAccessAsync(resourceGroupName, diskName, grantAccessDataInner)
-                .map(accessUriInner -> accessUriInner.accessSAS());
+                .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override

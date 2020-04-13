@@ -134,7 +134,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
                 new ComputeManagementClientBuilder()
                         .pipeline(restClient.getHttpPipeline())
                         .subscriptionId(subscriptionId)
-                        .build(),
+                        .buildClient(),
                 sdkContext
         );
         storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);

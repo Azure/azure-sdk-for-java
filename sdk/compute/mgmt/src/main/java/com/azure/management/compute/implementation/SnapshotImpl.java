@@ -96,7 +96,7 @@ class SnapshotImpl
                 .withDurationInSeconds(accessDurationInSeconds);
         return manager().inner().snapshots().grantAccessAsync(resourceGroupName(), name(), grantAccessDataInner)
                 .onErrorResume(e -> Mono.empty())
-                .map(accessUriInner -> accessUriInner.accessSAS());
+                .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override

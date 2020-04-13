@@ -116,7 +116,7 @@ class DiskImpl
         return this.manager().inner().disks()
                 .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
                 .onErrorResume(e -> Mono.empty())
-                .map(accessUriInner -> accessUriInner.accessSAS());
+                .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override
