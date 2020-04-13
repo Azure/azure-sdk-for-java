@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CertificatesTests extends AppServiceTest {
-    private final String CERTIFICATE_NAME = "javagoodcert319";
+    private final String certificateName = "javagoodcert319";
 
     @Override
     protected void cleanUpResources() {
@@ -22,15 +22,15 @@ public class CertificatesTests extends AppServiceTest {
     @Test
     @Disabled("Test is failing fix it, this is based on Existing RG and settings.")
     public void canCRDCertificate() throws Exception {
-        Vault vault = keyVaultManager.vaults().getByResourceGroup(RG_NAME, "bananagraphwebapp319com");
+        Vault vault = keyVaultManager.vaults().getByResourceGroup(rgName, "bananagraphwebapp319com");
         AppServiceCertificate certificate =
             appServiceManager
                 .certificates()
                 .define("bananacert")
                 .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withExistingCertificateOrder(
-                    appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, "graphwebapp319"))
+                    appServiceManager.certificateOrders().getByResourceGroup(rgName, "graphwebapp319"))
                 .create();
         Assertions.assertNotNull(certificate);
 
@@ -38,9 +38,9 @@ public class CertificatesTests extends AppServiceTest {
         certificate =
             appServiceManager
                 .certificates()
-                .define(CERTIFICATE_NAME)
+                .define(certificateName)
                 .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withPfxFile(new File("/Users/jianghlu/Documents/code/certs/myserver.pfx"))
                 .withPfxPassword("StrongPass!123")
                 .create();

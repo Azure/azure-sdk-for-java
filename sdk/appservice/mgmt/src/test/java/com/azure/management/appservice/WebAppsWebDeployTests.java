@@ -11,20 +11,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WebAppsWebDeployTests extends AppServiceTest {
-    private String RG_NAME_1 = "";
-    private String WEBAPP_NAME_1 = "";
+    private String rgName1 = "";
+    private String webappName1 = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
+        webappName1 = generateRandomResourceName("java-webapp-", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
+        resourceManager.resourceGroups().beginDeleteByName(rgName1);
     }
 
     @Test
@@ -33,9 +33,9 @@ public class WebAppsWebDeployTests extends AppServiceTest {
         WebApp webApp1 =
             appServiceManager
                 .webApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)

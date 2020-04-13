@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ZipDeployTests extends AppServiceTest {
-    private String WEBAPP_NAME_4 = "";
+    private String webappName4 = "";
 
     public ZipDeployTests() {
         super(TestBase.RunCondition.LIVE_ONLY);
@@ -21,7 +21,7 @@ public class ZipDeployTests extends AppServiceTest {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_4 = generateRandomResourceName("java-func-", 20);
+        webappName4 = generateRandomResourceName("java-func-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
@@ -32,25 +32,25 @@ public class ZipDeployTests extends AppServiceTest {
         FunctionApp functionApp =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_4)
+                .define(webappName4)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .create();
         Assertions.assertNotNull(functionApp);
         SdkContext.sleep(5000);
         functionApp.zipDeploy(new File(FunctionAppsTests.class.getResource("/square-function-app.zip").getPath()));
         SdkContext.sleep(5000);
-        String response = post("http://" + WEBAPP_NAME_4 + ".azurewebsites.net" + "/api/square", "25");
+        String response = post("http://" + webappName4 + ".azurewebsites.net" + "/api/square", "25");
         Assertions.assertNotNull(response);
         Assertions.assertEquals("625", response);
 
         PagedIterable<FunctionEnvelope> envelopes =
-            appServiceManager.functionApps().listFunctions(RG_NAME, functionApp.name());
+            appServiceManager.functionApps().listFunctions(rgName, functionApp.name());
         Assertions.assertNotNull(envelopes);
         Assertions.assertEquals(1, TestUtilities.getSize(envelopes));
         Assertions
             .assertEquals(
                 envelopes.iterator().next().href(),
-                "https://" + WEBAPP_NAME_4 + ".scm.azurewebsites.net/api/functions/square");
+                "https://" + webappName4 + ".scm.azurewebsites.net/api/functions/square");
     }
 }

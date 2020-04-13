@@ -48,7 +48,7 @@ public class AppServiceTest extends TestBase {
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
-    protected String RG_NAME = "";
+    protected String rgName = "";
 
     //    private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).build();
 
@@ -61,7 +61,7 @@ public class AppServiceTest extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 20);
+        rgName = generateRandomResourceName("javacsmrg", 20);
         resourceManager =
             ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
@@ -75,7 +75,7 @@ public class AppServiceTest extends TestBase {
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     private void useExistingDomainAndCertificate() {

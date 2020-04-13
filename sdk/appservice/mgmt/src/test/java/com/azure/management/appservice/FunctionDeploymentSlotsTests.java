@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 
 public class FunctionDeploymentSlotsTests extends AppServiceTest {
-    private String RG_NAME_1 = "";
-    private String WEBAPP_NAME_1 = "";
-    private String SLOT_NAME_1 = "";
-    private String SLOT_NAME_2 = "";
-    private String SLOT_NAME_3 = "";
+    private String rgName1 = "";
+    private String webappName1 = "";
+    private String slotName1 = "";
+    private String slotName2 = "";
+    private String slotName3 = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-funcapp-", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
-        SLOT_NAME_1 = generateRandomResourceName("java-slot-", 20);
-        SLOT_NAME_2 = generateRandomResourceName("java-slot-", 20);
-        SLOT_NAME_3 = generateRandomResourceName("java-slot-", 20);
+        webappName1 = generateRandomResourceName("java-funcapp-", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
+        slotName1 = generateRandomResourceName("java-slot-", 20);
+        slotName2 = generateRandomResourceName("java-slot-", 20);
+        slotName3 = generateRandomResourceName("java-slot-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
@@ -35,9 +35,9 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         FunctionApp functionApp1 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewAppServicePlan(PricingTier.STANDARD_S1)
                 .withAppSetting("appkey", "appvalue")
                 .withStickyAppSetting("stickykey", "stickyvalue")
@@ -56,7 +56,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         FunctionDeploymentSlot slot1 =
             functionApp1
                 .deploymentSlots()
-                .define(SLOT_NAME_1)
+                .define(slotName1)
                 .withBrandNewConfiguration()
                 .withPythonVersion(PythonVersion.PYTHON_27)
                 .create();
@@ -72,7 +72,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
 
         // Create a deployment slot with web app's config
         FunctionDeploymentSlot slot2 =
-            functionApp1.deploymentSlots().define(SLOT_NAME_2).withConfigurationFromParent().create();
+            functionApp1.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(JavaVersion.JAVA_1_7_0_51, slot2.javaVersion());
         appSettingMap = slot2.getAppSettings();
@@ -102,7 +102,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
 
         // Create 3rd deployment slot with configuration from slot 2
         FunctionDeploymentSlot slot3 =
-            functionApp1.deploymentSlots().define(SLOT_NAME_3).withConfigurationFromDeploymentSlot(slot2).create();
+            functionApp1.deploymentSlots().define(slotName3).withConfigurationFromDeploymentSlot(slot2).create();
         Assertions.assertNotNull(slot3);
         Assertions.assertEquals(JavaVersion.OFF, slot3.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());
@@ -110,7 +110,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals("slot2value", appSettingMap.get("slot2key").value());
 
         // Get
-        FunctionDeploymentSlot deploymentSlot = functionApp1.deploymentSlots().getByName(SLOT_NAME_3);
+        FunctionDeploymentSlot deploymentSlot = functionApp1.deploymentSlots().getByName(slotName3);
         Assertions.assertEquals(slot3.id(), deploymentSlot.id());
 
         // List
@@ -119,7 +119,7 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
 
         // Swap
         slot3.swap(slot1.name());
-        slot1 = functionApp1.deploymentSlots().getByName(SLOT_NAME_1);
+        slot1 = functionApp1.deploymentSlots().getByName(slotName1);
         Assertions.assertEquals(JavaVersion.OFF, slot1.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot1.pythonVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_27, slot3.pythonVersion());

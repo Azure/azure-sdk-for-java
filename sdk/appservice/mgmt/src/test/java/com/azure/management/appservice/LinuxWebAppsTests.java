@@ -14,25 +14,25 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class LinuxWebAppsTests extends AppServiceTest {
-    private String RG_NAME_1 = "";
-    private String RG_NAME_2 = "";
-    private String WEBAPP_NAME_1 = "";
-    private String WEBAPP_NAME_2 = "";
+    private String rgName1 = "";
+    private String rgName2 = "";
+    private String webappName1 = "";
+    private String webappName2 = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
-        WEBAPP_NAME_2 = generateRandomResourceName("java-webapp-", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
-        RG_NAME_2 = generateRandomResourceName("javacsmrg", 20);
+        webappName1 = generateRandomResourceName("java-webapp-", 20);
+        webappName2 = generateRandomResourceName("java-webapp-", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
+        rgName2 = generateRandomResourceName("javacsmrg", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_2);
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
+        resourceManager.resourceGroups().beginDeleteByName(rgName2);
+        resourceManager.resourceGroups().beginDeleteByName(rgName1);
     }
 
     @Test
@@ -42,9 +42,9 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp1 =
             appServiceManager
                 .webApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxPlan(PricingTier.BASIC_B1)
                 .withPublicDockerHubImage("wordpress")
                 .create();
@@ -61,9 +61,9 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp2 =
             appServiceManager
                 .webApps()
-                .define(WEBAPP_NAME_2)
+                .define(webappName2)
                 .withExistingLinuxPlan(plan1)
-                .withNewResourceGroup(RG_NAME_2)
+                .withNewResourceGroup(rgName2)
                 .withPublicDockerHubImage("tomcat")
                 .withContainerLoggingEnabled()
                 .create();
@@ -72,7 +72,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         Assertions.assertEquals(OperatingSystem.LINUX, webApp2.operatingSystem());
 
         // Get
-        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME_1, webApp1.name());
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName1, webApp1.name());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp.operatingSystem());
         webApp = appServiceManager.webApps().getById(webApp2.id());
         Assertions.assertEquals(OperatingSystem.LINUX, webApp.operatingSystem());
@@ -132,9 +132,9 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp1 =
             appServiceManager
                 .webApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxPlan(PricingTier.BASIC_B1)
                 .withBuiltInImage(RuntimeStack.TOMCAT_9_0_JAVA11)
                 .create();
@@ -150,9 +150,9 @@ public class LinuxWebAppsTests extends AppServiceTest {
         WebApp webApp2 =
             appServiceManager
                 .webApps()
-                .define(WEBAPP_NAME_2)
+                .define(webappName2)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_2)
+                .withNewResourceGroup(rgName2)
                 .withNewLinuxPlan(PricingTier.BASIC_B2)
                 .withBuiltInImage(RuntimeStack.TOMCAT_8_5_JAVA11)
                 .create();

@@ -15,7 +15,7 @@ import reactor.core.publisher.Flux;
 
 public class KuduTests {
 
-    private static final String logStream =
+    private static final String LOG_STREAM =
         "2020-02-25T07:19:40  Welcome, you are now connected to log-streaming service. The default timeout is 2 hours."
             + " Change the timeout with the App Setting SCM_LOGSTREAM_TIMEOUT (in seconds).\n"
             + "2020-02-25T07:20:40  No new trace in the past 1 min(s).\n"
@@ -95,7 +95,7 @@ public class KuduTests {
     @Test
     public void testConversionFromByteToString() {
         // prepare expected lines
-        String[] logArray = logStream.split("\n");
+        String[] logArray = LOG_STREAM.split("\n");
         final List<String> expectedLogLines = new ArrayList<>(logArray.length);
         for (String logLine : logArray) {
             if (!logLine.isEmpty() && logLine.charAt(logLine.length() - 1) == '\r') {
@@ -104,41 +104,37 @@ public class KuduTests {
             expectedLogLines.add(logLine);
         }
 
-        byte[] logStreamBytes = logStream.getBytes(StandardCharsets.UTF_8);
+        byte[] logStreamBytes = LOG_STREAM.getBytes(StandardCharsets.UTF_8);
 
         // simple cast, just one big ByteBuffer
-        {
-            ByteBuffer byteBuffer = ByteBuffer.wrap(logStreamBytes);
-            Flux<ByteBuffer> byteBufferFlux = Flux.fromIterable(Arrays.asList(byteBuffer));
+        ByteBuffer byteBuffer = ByteBuffer.wrap(logStreamBytes);
+        Flux<ByteBuffer> byteBufferFlux = Flux.fromIterable(Arrays.asList(byteBuffer));
 
-            Flux<String> lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
-            List<String> lines = lineFlux.collectList().block();
+        Flux<String> lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
+        List<String> lines = lineFlux.collectList().block();
 
-            Assertions.assertEquals(expectedLogLines, lines);
-        }
+        Assertions.assertEquals(expectedLogLines, lines);
 
         // simple case, Flux breaks at newline
-        {
-            List<ByteBuffer> byteBuffers = new ArrayList<>();
-            int offset = 0;
-            for (int i = 0; i < logStreamBytes.length; ++i) {
-                if (logStreamBytes[i] == '\n') {
-                    int nextOffset = i + 1;
-                    byteBuffers.add(ByteBuffer.wrap(logStreamBytes, offset, nextOffset - offset));
-                    offset = nextOffset;
-                }
+        List<ByteBuffer> byteBuffers = new ArrayList<>();
+        int offset = 0;
+        for (int i = 0; i < logStreamBytes.length; ++i) {
+            if (logStreamBytes[i] == '\n') {
+                int nextOffset = i + 1;
+                byteBuffers.add(ByteBuffer.wrap(logStreamBytes, offset, nextOffset - offset));
+                offset = nextOffset;
             }
-            if (offset != logStreamBytes.length) {
-                byteBuffers.add(ByteBuffer.wrap(logStreamBytes, offset, logStreamBytes.length - offset));
-            }
-
-            Flux<ByteBuffer> byteBufferFlux = Flux.fromIterable(byteBuffers);
-
-            Flux<String> lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
-            List<String> lines = lineFlux.collectList().block();
-
-            Assertions.assertEquals(expectedLogLines, lines);
         }
+        if (offset != logStreamBytes.length) {
+            byteBuffers.add(ByteBuffer.wrap(logStreamBytes, offset, logStreamBytes.length - offset));
+        }
+
+        byteBufferFlux = Flux.fromIterable(byteBuffers);
+
+        lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
+        lines = lineFlux.collectList().block();
+
+        Assertions.assertEquals(expectedLogLines, lines);
 
         // random
         for (int seed = 0; seed < 100; ++seed) {
@@ -166,7 +162,7 @@ public class KuduTests {
         }
 
         // random
-        logStreamBytes = logStream.replace("\n", "\r\n").getBytes(StandardCharsets.UTF_8);
+        logStreamBytes = LOG_STREAM.replace("\n", "\r\n").getBytes(StandardCharsets.UTF_8);
         for (int seed = 0; seed < 100; ++seed) {
             Random random = new Random(seed);
 

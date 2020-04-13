@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DeploymentSlotsTests extends AppServiceTest {
-    private String WEBAPP_NAME = "";
-    private String SLOT_NAME_1 = "";
-    private String SLOT_NAME_2 = "";
-    private String SLOT_NAME_3 = "";
+    private String webappName = "";
+    private String slotName1 = "";
+    private String slotName2 = "";
+    private String slotName3 = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
-        SLOT_NAME_1 = generateRandomResourceName("java-slot-", 20);
-        SLOT_NAME_2 = generateRandomResourceName("java-slot-", 20);
-        SLOT_NAME_3 = generateRandomResourceName("java-slot-", 20);
+        webappName = generateRandomResourceName("java-webapp-", 20);
+        slotName1 = generateRandomResourceName("java-slot-", 20);
+        slotName2 = generateRandomResourceName("java-slot-", 20);
+        slotName3 = generateRandomResourceName("java-slot-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
@@ -30,9 +30,9 @@ public class DeploymentSlotsTests extends AppServiceTest {
         WebApp webApp =
             appServiceManager
                 .webApps()
-                .define(WEBAPP_NAME)
+                .define(webappName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S2)
                 .withJavaVersion(JavaVersion.JAVA_1_7_0_51)
                 .withWebContainer(WebContainer.TOMCAT_7_0_50)
@@ -41,7 +41,7 @@ public class DeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, webApp.region());
 
         // Create a deployment slot with web app's config
-        DeploymentSlot slot2 = webApp.deploymentSlots().define(SLOT_NAME_2).withConfigurationFromParent().create();
+        DeploymentSlot slot2 = webApp.deploymentSlots().define(slotName2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(JavaVersion.JAVA_1_7_0_51, slot2.javaVersion());
 
@@ -59,13 +59,13 @@ public class DeploymentSlotsTests extends AppServiceTest {
 
         // Create 3rd deployment slot with configuration from slot 2
         DeploymentSlot slot3 =
-            webApp.deploymentSlots().define(SLOT_NAME_3).withConfigurationFromDeploymentSlot(slot2).create();
+            webApp.deploymentSlots().define(slotName3).withConfigurationFromDeploymentSlot(slot2).create();
         Assertions.assertNotNull(slot3);
         Assertions.assertEquals(JavaVersion.OFF, slot3.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());
 
         // Get
-        DeploymentSlot deploymentSlot = webApp.deploymentSlots().getByName(SLOT_NAME_3);
+        DeploymentSlot deploymentSlot = webApp.deploymentSlots().getByName(slotName3);
         Assertions.assertEquals(slot3.id(), deploymentSlot.id());
     }
 }

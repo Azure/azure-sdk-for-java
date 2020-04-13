@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class WebAppConfigTests extends AppServiceTest {
-    private String WEBAPP_NAME = "";
+    private String webappName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
+        webappName = generateRandomResourceName("java-webapp-", 20);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
@@ -24,15 +24,15 @@ public class WebAppConfigTests extends AppServiceTest {
         // Create with new app service plan
         appServiceManager
             .webApps()
-            .define(WEBAPP_NAME)
+            .define(webappName)
             .withRegion(Region.US_EAST)
-            .withNewResourceGroup(RG_NAME)
+            .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.BASIC_B1)
             .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
             .withMinTlsVersion(SupportedTlsVersions.ONE_ONE)
             .create();
 
-        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertNotNull(webApp);
         Assertions.assertEquals(Region.US_EAST, webApp.region());
         Assertions.assertEquals(NetFrameworkVersion.V3_0, webApp.netFrameworkVersion());
@@ -40,24 +40,24 @@ public class WebAppConfigTests extends AppServiceTest {
 
         // Java version
         webApp.update().withJavaVersion(JavaVersion.JAVA_1_7_0_51).withWebContainer(WebContainer.TOMCAT_7_0_50).apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertEquals(JavaVersion.JAVA_1_7_0_51, webApp.javaVersion());
 
         // Python version
         webApp.update().withPythonVersion(PythonVersion.PYTHON_34).apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertEquals(PythonVersion.PYTHON_34, webApp.pythonVersion());
 
         // Default documents
         int documentSize = webApp.defaultDocuments().size();
         webApp.update().withDefaultDocument("somedocument.html").apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertEquals(documentSize + 1, webApp.defaultDocuments().size());
         Assertions.assertTrue(webApp.defaultDocuments().contains("somedocument.html"));
 
         // App settings
         webApp.update().withAppSetting("appkey", "appvalue").withStickyAppSetting("stickykey", "stickyvalue").apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Map<String, AppSetting> appSettingMap = webApp.getAppSettings();
         Assertions.assertEquals("appvalue", appSettingMap.get("appkey").value());
         Assertions.assertEquals(false, appSettingMap.get("appkey").sticky());
@@ -70,7 +70,7 @@ public class WebAppConfigTests extends AppServiceTest {
             .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
             .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
             .apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Map<String, ConnectionString> connectionStringMap = webApp.getConnectionStrings();
         Assertions.assertEquals("connectionValue", connectionStringMap.get("connectionName").value());
         Assertions.assertEquals(false, connectionStringMap.get("connectionName").sticky());
@@ -103,38 +103,38 @@ public class WebAppConfigTests extends AppServiceTest {
         // Create with new app service plan
         appServiceManager
             .webApps()
-            .define(WEBAPP_NAME)
+            .define(webappName)
             .withRegion(Region.US_EAST)
-            .withNewResourceGroup(RG_NAME)
+            .withNewResourceGroup(rgName)
             .withNewWindowsPlan(PricingTier.BASIC_B1)
             .withNetFrameworkVersion(NetFrameworkVersion.V3_0)
             .create();
 
-        WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        WebApp webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertNotNull(webApp);
         Assertions.assertEquals(Region.US_EAST, webApp.region());
         Assertions.assertEquals(NetFrameworkVersion.V3_0, webApp.netFrameworkVersion());
 
         // Java version
         webApp.update().withJavaVersion(JavaVersion.JAVA_11).withWebContainer(WebContainer.TOMCAT_9_0_NEWEST).apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertEquals(JavaVersion.JAVA_11, webApp.javaVersion());
 
         // Python version
         webApp.update().withPythonVersion(PythonVersion.PYTHON_34).apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertEquals(PythonVersion.PYTHON_34, webApp.pythonVersion());
 
         // Default documents
         int documentSize = webApp.defaultDocuments().size();
         webApp.update().withDefaultDocument("somedocument.html").apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Assertions.assertEquals(documentSize + 1, webApp.defaultDocuments().size());
         Assertions.assertTrue(webApp.defaultDocuments().contains("somedocument.html"));
 
         // App settings
         webApp.update().withAppSetting("appkey", "appvalue").withStickyAppSetting("stickykey", "stickyvalue").apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Map<String, AppSetting> appSettingMap = webApp.getAppSettings();
         Assertions.assertEquals("appvalue", appSettingMap.get("appkey").value());
         Assertions.assertEquals(false, appSettingMap.get("appkey").sticky());
@@ -147,7 +147,7 @@ public class WebAppConfigTests extends AppServiceTest {
             .withConnectionString("connectionName", "connectionValue", ConnectionStringType.CUSTOM)
             .withStickyConnectionString("stickyName", "stickyValue", ConnectionStringType.CUSTOM)
             .apply();
-        webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
+        webApp = appServiceManager.webApps().getByResourceGroup(rgName, webappName);
         Map<String, ConnectionString> connectionStringMap = webApp.getConnectionStrings();
         Assertions.assertEquals("connectionValue", connectionStringMap.get("connectionName").value());
         Assertions.assertEquals(false, connectionStringMap.get("connectionName").sticky());

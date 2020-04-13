@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class AppServicePlansTests extends AppServiceTest {
-    private String APP_SERVICE_PLAN_NAME = "";
+    private String appServicePlanName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        APP_SERVICE_PLAN_NAME = generateRandomResourceName("java-asp-", 20);
+        appServicePlanName = generateRandomResourceName("java-asp-", 20);
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -32,9 +32,9 @@ public class AppServicePlansTests extends AppServiceTest {
         AppServicePlan appServicePlan =
             appServiceManager
                 .appServicePlans()
-                .define(APP_SERVICE_PLAN_NAME)
+                .define(appServicePlanName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withPricingTier(PricingTier.PREMIUM_P1)
                 .withOperatingSystem(OperatingSystem.WINDOWS)
                 .withPerSiteScaling(false)
@@ -48,13 +48,13 @@ public class AppServicePlansTests extends AppServiceTest {
         Assertions.assertEquals(20, appServicePlan.maxInstances());
         // GET
         Assertions
-            .assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
+            .assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(rgName, appServicePlanName));
         // LIST
         PagedIterable<AppServicePlan> appServicePlans =
-            appServiceManager.appServicePlans().listByResourceGroup(RG_NAME);
+            appServiceManager.appServicePlans().listByResourceGroup(rgName);
         boolean found = false;
         for (AppServicePlan asp : appServicePlans) {
-            if (APP_SERVICE_PLAN_NAME.equals(asp.name())) {
+            if (appServicePlanName.equals(asp.name())) {
                 found = true;
                 break;
             }

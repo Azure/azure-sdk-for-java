@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class DomainsTests extends AppServiceTest {
-    private final String DOMAIN_NAME = "javatest720.com";
+    private final String domainName = "javatest720.com";
 
     @Override
     protected void cleanUpResources() {
@@ -25,8 +25,8 @@ public class DomainsTests extends AppServiceTest {
         AppServiceDomain domain =
             appServiceManager
                 .domains()
-                .define(DOMAIN_NAME)
-                .withExistingResourceGroup(RG_NAME)
+                .define(domainName)
+                .withExistingResourceGroup(rgName)
                 .defineRegistrantContact()
                 .withFirstName("Jianghao")
                 .withLastName("Lu")

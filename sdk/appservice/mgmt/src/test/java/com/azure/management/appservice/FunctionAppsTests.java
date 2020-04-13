@@ -23,27 +23,27 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class FunctionAppsTests extends AppServiceTest {
-    private String RG_NAME_1 = "";
-    private String RG_NAME_2 = "";
-    private String WEBAPP_NAME_1 = "";
-    private String WEBAPP_NAME_2 = "";
-    private String WEBAPP_NAME_3 = "";
-    private String APP_SERVICE_PLAN_NAME_1 = "";
-    private String APP_SERVICE_PLAN_NAME_2 = "";
-    private String STORAGE_ACCOUNT_NAME_1 = "";
+    private String rgName1 = "";
+    private String rgName2 = "";
+    private String webappName1 = "";
+    private String webappName2 = "";
+    private String webappName3 = "";
+    private String appServicePlanName1 = "";
+    private String appServicePlanName2 = "";
+    private String storageAccountName1 = "";
 
     protected StorageManager storageManager;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-func-", 20);
-        WEBAPP_NAME_2 = generateRandomResourceName("java-func-", 20);
-        WEBAPP_NAME_3 = generateRandomResourceName("java-func-", 20);
-        APP_SERVICE_PLAN_NAME_1 = generateRandomResourceName("java-asp-", 20);
-        APP_SERVICE_PLAN_NAME_2 = generateRandomResourceName("java-asp-", 20);
-        STORAGE_ACCOUNT_NAME_1 = generateRandomResourceName("javastore", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
-        RG_NAME_2 = generateRandomResourceName("javacsmrg", 20);
+        webappName1 = generateRandomResourceName("java-func-", 20);
+        webappName2 = generateRandomResourceName("java-func-", 20);
+        webappName3 = generateRandomResourceName("java-func-", 20);
+        appServicePlanName1 = generateRandomResourceName("java-asp-", 20);
+        appServicePlanName2 = generateRandomResourceName("java-asp-", 20);
+        storageAccountName1 = generateRandomResourceName("javastore", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
+        rgName2 = generateRandomResourceName("javacsmrg", 20);
 
         storageManager = StorageManager.authenticate(restClient, defaultSubscription, sdkContext);
 
@@ -52,12 +52,12 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Override
     protected void cleanUpResources() {
-        if (RG_NAME_1 != null) {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
+        if (rgName1 != null) {
+            resourceManager.resourceGroups().beginDeleteByName(rgName1);
         }
-        if (RG_NAME_2 != null) {
+        if (rgName2 != null) {
             try {
-                resourceManager.resourceGroups().beginDeleteByName(RG_NAME_2);
+                resourceManager.resourceGroups().beginDeleteByName(rgName2);
             } catch (CloudException e) {
                 // fine, RG_NAME_2 is not created
             }
@@ -70,9 +70,9 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp1 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .create();
         Assertions.assertNotNull(functionApp1);
         Assertions.assertEquals(Region.US_WEST, functionApp1.region());
@@ -98,9 +98,9 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp2 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_2)
+                .define(webappName2)
                 .withExistingAppServicePlan(plan1)
-                .withNewResourceGroup(RG_NAME_2)
+                .withNewResourceGroup(rgName2)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
         Assertions.assertNotNull(functionApp2);
@@ -110,9 +110,9 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp3 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_3)
+                .define(webappName3)
                 .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(RG_NAME_2)
+                .withExistingResourceGroup(rgName2)
                 .withNewAppServicePlan(PricingTier.BASIC_B1)
                 .withExistingStorageAccount(functionApp1.storageAccount())
                 .create();
@@ -130,20 +130,20 @@ public class FunctionAppsTests extends AppServiceTest {
                 functionAppResource3.storageAccount.getKeys().get(0).value(), functionAppResource3.accountKey);
 
         // Get
-        FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(RG_NAME_1, functionApp1.name());
+        FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, functionApp1.name());
         Assertions.assertEquals(functionApp1.id(), functionApp.id());
         functionApp = appServiceManager.functionApps().getById(functionApp2.id());
         Assertions.assertEquals(functionApp2.name(), functionApp.name());
 
         // List
-        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(RG_NAME_1);
+        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
-        functionApps = appServiceManager.functionApps().listByResourceGroup(RG_NAME_2);
+        functionApps = appServiceManager.functionApps().listByResourceGroup(rgName2);
         Assertions.assertEquals(2, TestUtilities.getSize(functionApps));
 
         // Update
-        functionApp2.update().withNewStorageAccount(STORAGE_ACCOUNT_NAME_1, StorageAccountSkuType.STANDARD_GRS).apply();
-        Assertions.assertEquals(STORAGE_ACCOUNT_NAME_1, functionApp2.storageAccount().name());
+        functionApp2.update().withNewStorageAccount(storageAccountName1, StorageAccountSkuType.STANDARD_GRS).apply();
+        Assertions.assertEquals(storageAccountName1, functionApp2.storageAccount().name());
 
         FunctionAppResource functionAppResource2 = getStorageAccount(storageManager, functionApp2);
         Assertions.assertTrue(functionAppResource2.appSettings.containsKey(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING));
@@ -152,7 +152,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .assertEquals(
                 functionAppResource2.appSettings.get(KEY_AZURE_WEB_JOBS_STORAGE).value(),
                 functionAppResource2.appSettings.get(KEY_CONTENT_AZURE_FILE_CONNECTION_STRING).value());
-        Assertions.assertEquals(STORAGE_ACCOUNT_NAME_1, functionAppResource2.storageAccount.name());
+        Assertions.assertEquals(storageAccountName1, functionAppResource2.storageAccount.name());
         Assertions
             .assertEquals(
                 functionAppResource2.storageAccount.getKeys().get(0).value(), functionAppResource2.accountKey);
@@ -160,10 +160,10 @@ public class FunctionAppsTests extends AppServiceTest {
         // Update, verify modify AppSetting does not create new storage account
         // https://github.com/Azure/azure-libraries-for-net/issues/457
         int numStorageAccountBefore =
-            TestUtilities.getSize(storageManager.storageAccounts().listByResourceGroup(RG_NAME_1));
+            TestUtilities.getSize(storageManager.storageAccounts().listByResourceGroup(rgName1));
         functionApp1.update().withAppSetting("newKey", "newValue").apply();
         int numStorageAccountAfter =
-            TestUtilities.getSize(storageManager.storageAccounts().listByResourceGroup(RG_NAME_1));
+            TestUtilities.getSize(storageManager.storageAccounts().listByResourceGroup(rgName1));
         Assertions.assertEquals(numStorageAccountBefore, numStorageAccountAfter);
         FunctionAppResource functionAppResource1Updated = getStorageAccount(storageManager, functionApp1);
         Assertions.assertTrue(functionAppResource1Updated.appSettings.containsKey("newKey"));
@@ -193,15 +193,15 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Test
     public void canCRUDLinuxFunctionApp() throws Exception {
-        RG_NAME_2 = null;
+        rgName2 = null;
 
         // function app with consumption plan
         FunctionApp functionApp1 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxConsumptionPlan()
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
                 .withHttpsOnly(true)
@@ -221,16 +221,16 @@ public class FunctionAppsTests extends AppServiceTest {
                     .asList(functionApp1.inner().kind().split(","))
                     .containsAll(Arrays.asList("linux", "functionapp")));
 
-        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(RG_NAME_1);
+        PagedIterable<FunctionApp> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
 
         // function app with app service plan
         FunctionApp functionApp2 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_2)
+                .define(webappName2)
                 .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(RG_NAME_1)
+                .withExistingResourceGroup(rgName1)
                 .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
                 .withHttpsOnly(true)
@@ -248,9 +248,9 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp3 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_3)
+                .define(webappName3)
                 .withExistingLinuxAppServicePlan(plan2)
-                .withExistingResourceGroup(RG_NAME_1)
+                .withExistingResourceGroup(rgName1)
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
                 .withHttpsOnly(true)
                 .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
@@ -263,7 +263,7 @@ public class FunctionAppsTests extends AppServiceTest {
             SdkContext.sleep(180000);
         }
 
-        functionApps = appServiceManager.functionApps().listByResourceGroup(RG_NAME_1);
+        functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
         Assertions.assertEquals(3, TestUtilities.getSize(functionApps));
 
         // verify deploy
@@ -282,15 +282,15 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Test
     public void canCRUDLinuxFunctionAppPremium() {
-        RG_NAME_2 = null;
+        rgName2 = null;
 
         // function app with premium plan
         FunctionApp functionApp1 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxAppServicePlan(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"))
                 .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
                 .withHttpsOnly(true)
@@ -321,9 +321,9 @@ public class FunctionAppsTests extends AppServiceTest {
         FunctionApp functionApp1 =
             appServiceManager
                 .functionApps()
-                .define(WEBAPP_NAME_1)
+                .define(webappName1)
                 .withRegion(Region.US_EAST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewLinuxAppServicePlan(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"))
                 .withPrivateRegistryImage(
                     "weidxuregistry.azurecr.io/az-func-java:v1", "https://weidxuregistry.azurecr.io")
@@ -359,14 +359,14 @@ public class FunctionAppsTests extends AppServiceTest {
         return appSettings;
     }
 
-    private static String KEY_AZURE_WEB_JOBS_STORAGE = "AzureWebJobsStorage";
-    private static String KEY_CONTENT_AZURE_FILE_CONNECTION_STRING = "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
-    private static String KEY_CONTENT_SHARE = "WEBSITE_CONTENTSHARE";
-    private static String KEY_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
-    private static String KEY_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
+    private static final String KEY_AZURE_WEB_JOBS_STORAGE = "AzureWebJobsStorage";
+    private static final String KEY_CONTENT_AZURE_FILE_CONNECTION_STRING = "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
+    private static final String KEY_CONTENT_SHARE = "WEBSITE_CONTENTSHARE";
+    private static final String KEY_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
+    private static final String KEY_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
 
-    private static String ACCOUNT_NAME_SEGMENT = "AccountName=";
-    private static String ACCOUNT_KEY_SEGMENT = "AccountKey=";
+    private static final String ACCOUNT_NAME_SEGMENT = "AccountName=";
+    private static final String ACCOUNT_KEY_SEGMENT = "AccountKey=";
 
     private static class FunctionAppResource {
         Map<String, AppSetting> appSettings;

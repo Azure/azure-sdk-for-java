@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CertificateOrdersTests extends AppServiceTest {
-    private final String CERTIFICATE_NAME = "graphwildcert319";
+    private final String certificateName = "graphwildcert319";
 
     @Override
     protected void cleanUpResources() {
@@ -25,23 +25,23 @@ public class CertificateOrdersTests extends AppServiceTest {
         AppServiceCertificateOrder certificateOrder =
             appServiceManager
                 .certificateOrders()
-                .define(CERTIFICATE_NAME)
-                .withExistingResourceGroup(RG_NAME)
+                .define(certificateName)
+                .withExistingResourceGroup(rgName)
                 .withHostName("*.graph-webapp-319.com")
                 .withWildcardSku()
-                .withDomainVerification(appServiceManager.domains().getByResourceGroup(RG_NAME, "graph-webapp-319.com"))
+                .withDomainVerification(appServiceManager.domains().getByResourceGroup(rgName, "graph-webapp-319.com"))
                 .withNewKeyVault("graphvault", Region.US_WEST)
                 .withValidYears(1)
                 .create();
         Assertions.assertNotNull(certificateOrder);
         // GET
-        Assertions.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, CERTIFICATE_NAME));
+        Assertions.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(rgName, certificateName));
         // LIST
         PagedIterable<AppServiceCertificateOrder> certificateOrders =
-            appServiceManager.certificateOrders().listByResourceGroup(RG_NAME);
+            appServiceManager.certificateOrders().listByResourceGroup(rgName);
         boolean found = false;
         for (AppServiceCertificateOrder co : certificateOrders) {
-            if (CERTIFICATE_NAME.equals(co.name())) {
+            if (certificateName.equals(co.name())) {
                 found = true;
                 break;
             }
