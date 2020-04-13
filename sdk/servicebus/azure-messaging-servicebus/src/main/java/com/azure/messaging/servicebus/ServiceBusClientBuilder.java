@@ -223,8 +223,8 @@ public final class ServiceBusClientBuilder {
      *
      * @return A new instance of {@link ServiceBusMultiSessionProcessorClientBuilder}.
      */
-    public ServiceBusMultiSessionReceiverAsyncClientBuilder receiverMultiSession() {
-        return new ServiceBusMultiSessionReceiverAsyncClientBuilder();
+    public ServiceBusSessionReceiverAsyncClientBuilder receiverSession() {
+        return new ServiceBusSessionReceiverAsyncClientBuilder();
     }
 
     /**
@@ -400,38 +400,40 @@ public final class ServiceBusClientBuilder {
     }
 
 
-    @ServiceClientBuilder(serviceClients = {ServiceBusMultiSessionReceiverAsyncClient.class})
-    public final class ServiceBusMultiSessionReceiverAsyncClientBuilder {
+    @ServiceClientBuilder(serviceClients = {ServiceBusSessionReceiverAsyncClient.class})
+    public final class ServiceBusSessionReceiverAsyncClientBuilder {
         private String topicName;
         private String queueName;
         private String subscriptionName;
         private ReceiveMode receiveMode;
-        private int maxConcurrentSessions;
+        private String sessionId;
+        ServiceBusSessionReceiverAsyncClientBuilder () {
 
+        }
         /**
          * Return instance of {@link ServiceBusMultiSessionProcessorClientBuilder} to receive messages from multiple sessions.
-         * @return {@link ServiceBusMultiSessionReceiverAsyncClient} instance.
+         * @return {@link ServiceBusSessionReceiverAsyncClient} instance.
          */
-        public ServiceBusMultiSessionReceiverAsyncClient buildAsyncClient() {
-            return new ServiceBusMultiSessionReceiverAsyncClient();
+        public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
+            return null;
         }
-        public ServiceBusMultiSessionReceiverAsyncClientBuilder receiveMode(ReceiveMode receiveMode) {
+        public ServiceBusSessionReceiverAsyncClientBuilder receiveMode(ReceiveMode receiveMode) {
             this.receiveMode = receiveMode;
             return this;
         }
-        public ServiceBusMultiSessionReceiverAsyncClientBuilder onSessionErrorContinue(boolean onSessionErrorContinue) {
+        public ServiceBusSessionReceiverAsyncClientBuilder sessionId(String sessionId) {
+            this.sessionId = sessionId;
             return this;
         }
-
         /**
          * Sets the name of the subscription in the topic to listen to.
          *
          * @param subscriptionName Name of the subscription.
          *
-         * @return The modified {@link ServiceBusMultiSessionReceiverAsyncClientBuilder} object.
+         * @return The modified {@link ServiceBusMultiSessionProcessorClientBuilder} object.
          * @see #topicName A topic name should be set as well.
          */
-        public ServiceBusMultiSessionReceiverAsyncClientBuilder subscriptionName(String subscriptionName) {
+        public ServiceBusSessionReceiverAsyncClientBuilder subscriptionName(String subscriptionName) {
             this.subscriptionName = subscriptionName;
             return this;
         }
@@ -441,10 +443,10 @@ public final class ServiceBusClientBuilder {
          *
          * @param queueName Name of the queue.
          *
-         * @return The modified {@link ServiceBusMultiSessionReceiverAsyncClientBuilder} object.
+         * @return The modified {@link ServiceBusMultiSessionProcessorClientBuilder} object.
          * @see #subscriptionName A subscription name should be set as well.
          */
-        public ServiceBusMultiSessionReceiverAsyncClientBuilder queueName(String queueName) {
+        public ServiceBusSessionReceiverAsyncClientBuilder queueName(String queueName) {
             this.queueName = queueName;
             return this;
         }
@@ -454,16 +456,11 @@ public final class ServiceBusClientBuilder {
          *
          * @param topicName Name of the topic.
          *
-         * @return The modified {@link ServiceBusMultiSessionReceiverAsyncClientBuilder} object.
+         * @return The modified {@link ServiceBusMultiSessionProcessorClientBuilder} object.
          * @see #subscriptionName A subscription name should be set as well.
          */
-        public ServiceBusMultiSessionReceiverAsyncClientBuilder topicName(String topicName) {
+        public ServiceBusSessionReceiverAsyncClientBuilder topicName(String topicName) {
             this.topicName = topicName;
-            return this;
-        }
-
-        public ServiceBusMultiSessionReceiverAsyncClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
-            this.maxConcurrentSessions = maxConcurrentSessions;
             return this;
         }
 
@@ -487,7 +484,7 @@ public final class ServiceBusClientBuilder {
          * @return {@link ServiceBusMultiSessionProcessorClient} instance.
          */
         public ServiceBusMultiSessionProcessorClient buildMultiSessionProcessorClient() {
-            return new ServiceBusMultiSessionProcessorClient();
+            return new ServiceBusMultiSessionProcessorClient(receiveMode);
         }
 
         public ServiceBusMultiSessionProcessorClientBuilder receiveMode(ReceiveMode receiveMode) {

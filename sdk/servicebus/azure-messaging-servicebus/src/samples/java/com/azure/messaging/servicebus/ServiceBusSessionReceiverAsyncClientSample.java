@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-public class ServiceBusMultiSessionReceiverAsyncClientSample {
+public class ServiceBusSessionReceiverAsyncClientSample {
     public static void main(String[] args) {
 
         // The connection string value can be obtained by:
@@ -27,12 +27,12 @@ public class ServiceBusMultiSessionReceiverAsyncClientSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-        ServiceBusMultiSessionReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
+        ServiceBusSessionReceiverAsyncClient receiverAsyncClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
-            .receiverMultiSession()
+            .receiverSession()
             .receiveMode(ReceiveMode.PEEK_LOCK)
-            .onSessionErrorContinue(false)
             .queueName("<<queue-name>>")
+            .sessionId("<< session-id >>")
             .buildAsyncClient();
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()

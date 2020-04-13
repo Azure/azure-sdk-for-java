@@ -3,10 +3,24 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.models.ReceiveMode;
+
 public class ServiceBusMultiSessionProcessorClient implements AutoCloseable{
-    public void start(){}
-    public void stop(){}
-    public  boolean isRunning() { return true;
+    private final ReceiveMode receiveMode;
+    private boolean isRunning;
+    ServiceBusMultiSessionProcessorClient(ReceiveMode receiveMode) {
+        this.receiveMode = receiveMode;
+    }
+    public void start(){
+        isRunning = true;
+    }
+    public void stop(){
+        isRunning = false;
+    }
+    public ReceiveMode getReceiveMode(){
+        return receiveMode;
+    }
+    public  boolean isRunning() { return isRunning;
     }
 
     /**

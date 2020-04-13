@@ -583,8 +583,6 @@ public class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private ServiceBusAsyncConsumer getOrCreateConsumer(String linkName, ReceiveAsyncOptions options) {
-        Mono<String> a;
-        a.block();
         return openConsumers.computeIfAbsent(linkName, name -> {
             logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
 

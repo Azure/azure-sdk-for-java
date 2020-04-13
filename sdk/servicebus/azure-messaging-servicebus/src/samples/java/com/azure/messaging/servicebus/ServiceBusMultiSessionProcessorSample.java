@@ -14,12 +14,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ServiceBusMultiSessionProcessorSample {
 
-    public static void main(String[] args) throws Exception {
-        final MessageProcessor processor = new MessageProcessor();
+    public static void main(String[] args) {
+        final MyMessageProcessor processor = new MyMessageProcessor();
         ServiceBusMultiSessionProcessorClient multiSessionProcessorClient = new ServiceBusClientBuilder()
             .connectionString("connectionString")
             .multiSessionProcessor()
             .processMessage((receivedMessage, sessionManager) -> processor.onMessage(receivedMessage, sessionManager))
+            .processError(serviceBusErrorContext -> processor.onError(serviceBusErrorContext))
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildMultiSessionProcessorClient();
@@ -31,14 +32,19 @@ public class ServiceBusMultiSessionProcessorSample {
 
         System.out.println("Exiting process");
     }
-    static class MessageProcessor implements AutoCloseable {
-        private final Logger logger = LoggerFactory.getLogger(MessageProcessor.class);
+    static class MyMessageProcessor implements AutoCloseable {
+        private final Logger logger = LoggerFactory.getLogger(MyMessageProcessor.class);
         private final AtomicBoolean isDisposed = new AtomicBoolean();
         private final ConcurrentHashMap<String, Set<String>> partitionsProcessing = new ConcurrentHashMap<>();
         void onMessage(ServiceBusReceivedMessage message, SessionManager manager) {
+            System.out.println("Process message here. Session id : " + message.getSessionId()
+                + ", message Id :" + message.getMessageId());
             manager.complete(message);
         }
         void onError(ServiceBusErrorContext errorContext) {
+            System.out.println("Error !!! . FullyQualifiedNamespace : "
+                + errorContext.getFullyQualifiedNamespace()
+                + ", EntityPath :" + errorContext.getEntityPath());
         }
         @Override
         public void close() {
