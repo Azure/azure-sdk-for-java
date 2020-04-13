@@ -65,7 +65,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -80,7 +80,7 @@ public final class ManageLinuxWebAppWithDomainSsl {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azure.appServices().domains().define(domainName)
+            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
                         .withFirstName("Jon")

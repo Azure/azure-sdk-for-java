@@ -47,7 +47,7 @@ public final class ManageFunctionAppWithDomainSsl {
 
             System.out.println("Creating function app " + app1Name + "...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_EAST2)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -59,7 +59,7 @@ public final class ManageFunctionAppWithDomainSsl {
             // Create a second function app with the same app service plan
 
             System.out.println("Creating another function app " + app2Name + "...");
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withRegion(Region.US_EAST2)
                     .withExistingResourceGroup(rgName)
                     .create();
@@ -72,7 +72,7 @@ public final class ManageFunctionAppWithDomainSsl {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azure.appServices().domains().define(domainName)
+            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
                         .withFirstName("Jon")
