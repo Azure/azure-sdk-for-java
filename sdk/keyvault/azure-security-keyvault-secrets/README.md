@@ -1,16 +1,16 @@
 # Azure Key Vault Secret client library for Java
 Azure Key Vault is a cloud service that provides a secure storage of secrets, such as passwords and database connection strings.
 
-Secret client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the secrets and its versions.
+Azure Key Vault Secrets client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the secrets and its versions.
 
-Use the secret client library to create and manage secrets.
+Use the Azure Key Vault Secrets client library to create and manage secrets.
 
 [Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
 
 ## Getting started
 ### Adding the package to your project
 
-Maven dependency for Azure Secret Client library. Add it to your project's pom file.
+Maven dependency for Azure Key Vault Secrets Client library. Add it to your project's pom file.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
 ```xml
@@ -60,7 +60,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     }
     ```
 
-* Use the above returned credentials information to set **AZURE_CLIENT_ID**(appId), **AZURE_CLIENT_SECRET**(password) and **AZURE_TENANT_ID**(tenant) environment variables. The following example shows a way to do this in Bash:
+* Use the above returned credentials information to set **AZURE_CLIENT_ID** (appId), **AZURE_CLIENT_SECRET** (password) and **AZURE_TENANT_ID** (tenantId) environment variables. The following example shows a way to do this in Bash:
 
   ```Bash
     export AZURE_CLIENT_ID="generated-app-ID"
@@ -68,7 +68,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     export AZURE_TENANT_ID="tenant-ID"
   ```
 
-* Grant the above mentioned application authorization to perform secret operations on the keyvault:
+* Grant the above mentioned application authorization to perform secret operations on the Azure Key Vault:
 
     ```Bash
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --secret-permissions backup delete get list set
@@ -101,7 +101,7 @@ SecretClient client = new SecretClientBuilder()
 
 ## Key concepts
 ### Secret
-  A secret is the fundamental resource within Azure KeyVault. From a developer's perspective, Key Vault APIs accept and return secret values as strings. In addition to the secret data, the following attributes may be specified:
+  A secret is the fundamental resource within Azure Key Vault. From a developer's perspective, Key Vault APIs accept and return secret values as strings. In addition to the secret data, the following attributes may be specified:
 * expires: Identifies the expiration time on or after which the secret data should not be retrieved.
 * notBefore: Identifies the time after which the secret will be active.
 * enabled: Specifies whether the secret data can be retrieved.
@@ -122,13 +122,14 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Secret
 
-Create a Secret to be stored in the Azure Key Vault.
-- `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
+Create a secret to be stored in the Azure Key Vault.
+- `setSecret` creates a new secret in the Azure Key Vault. if the secret with name already exists then a new version of the secret is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.Secret;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 
 SecretClient secretClient = new SecretClientBuilder()
         .vaultUrl(<your-vault-url>)
@@ -141,7 +142,7 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.getNa
 
 ### Retrieve a Secret
 
-Retrieve a previously stored Secret by calling `getSecret`.
+Retrieve a previously stored secret by calling `getSecret`.
 
 ```Java
 KeyVaultSecret secret = secretClient.getSecret("secret_name");
@@ -150,7 +151,7 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.getN
 
 ### Update an existing Secret
 
-Update an existing Secret by calling `updateSecretProperties`.
+Update an existing secret by calling `updateSecretProperties`.
 
 ```Java
 // Get the secret to update.
@@ -163,7 +164,7 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.
 
 ### Delete a Secret
 
-Delete an existing Secret by calling `beginDeleteSecret`.
+Delete an existing secret by calling `beginDeleteSecret`.
 
 ```Java
 SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
@@ -171,6 +172,7 @@ SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSe
 // Deleted Secret is accessible as soon as polling begins
 PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
+// Deleted date only works for SoftDelete Enabled Key Vault.
 System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue().getDeletedOn().toString());
 
 // Secret is being deleted on server.
@@ -179,7 +181,7 @@ deletedSecretPoller.waitForCompletion();
 
 ### List Secrets
 
-List the secrets in the key vault by calling `listPropertiesOfSecrets`.
+List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
 // List operations don't return the secrets with value information. So, for each returned secret we call getSecret to get the secret with its value information.
@@ -201,8 +203,8 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Secret Asynchronously
 
-Create a Secret to be stored in the Azure Key Vault.
-- `setSecret` creates a new secret in the key vault. if the secret with name already exists then a new version of the secret is created.
+Create a secret to be stored in the Azure Key Vault.
+- `setSecret` creates a new secret in the Azure Key Vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
@@ -219,7 +221,7 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
 
 ### Retrieve a Secret Asynchronously
 
-Retrieve a previously stored Secret by calling `getSecret`.
+Retrieve a previously stored secret by calling `getSecret`.
 
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret ->
@@ -229,7 +231,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret ->
 
 ### Update an existing Secret Asynchronously
 
-Update an existing Secret by calling `updateSecretProperties`.
+Update an existing secret by calling `updateSecretProperties`.
 
 ```Java
 secretAsyncClient.getSecret("secretName").subscribe(secret -> {
@@ -242,7 +244,7 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 
 ### Delete a Secret Asynchronously
 
-Delete an existing Secret by calling `beginDeleteSecret`.
+Delete an existing secret by calling `beginDeleteSecret`.
 
 ```Java
 secretAsyncClient.beginDeleteSecret("secretName")
@@ -255,7 +257,7 @@ secretAsyncClient.beginDeleteSecret("secretName")
 
 ### List Secrets Asynchronously
 
-List the secrets in the key vault by calling `listPropertiesOfSecrets`.
+List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
 // The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.

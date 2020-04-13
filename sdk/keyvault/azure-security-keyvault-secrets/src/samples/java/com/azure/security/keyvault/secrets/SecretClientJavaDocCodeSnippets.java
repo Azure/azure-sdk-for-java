@@ -143,6 +143,7 @@ public final class SecretClientJavaDocCodeSnippets {
         // Deleted Secret is accessible as soon as polling begins
         PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
+        // Deleted date only works for SoftDelete Enabled Key Vault.
         System.out.println("Deleted Date  %s" + deletedSecretPollResponse.getValue()
                 .getDeletedOn().toString());
         System.out.printf("Deleted Secret's Recovery Id %s", deletedSecretPollResponse.getValue()
