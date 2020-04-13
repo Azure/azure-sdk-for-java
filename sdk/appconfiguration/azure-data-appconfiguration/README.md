@@ -340,8 +340,8 @@ Create a configuration client with proxy options.
 <!-- embedme ./src/samples/java/com/azure/data/appconfiguration/ReadmeSamples.java#L175-L187 -->
 ```Java
 // Proxy options
-final String HOST_NAME = "{your-host-name}";
-final int PORT = 447; // your port number
+final String hostname = "{your-host-name}";
+final int port = 447; // your port number
 
 ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
     new InetSocketAddress(HOST_NAME, PORT));
