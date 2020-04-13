@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.util.List;
