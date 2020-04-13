@@ -53,6 +53,7 @@ public class DockerUtils {
          * @param caPem - content of the ca.pem certificate file
          * @param keyPem - content of the key.pem certificate file
          * @param certPem - content of the cert.pem certificate file
+         * @throws DockerClientException throws when something unexpected happens
          */
         public DockerSSLConfig(String caPem, String keyPem, String certPem) {
             try {

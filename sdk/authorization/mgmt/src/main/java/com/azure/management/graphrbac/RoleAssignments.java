@@ -16,12 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to role assignment management API.
- */
+/** Entry point to role assignment management API. */
 @Fluent
-public interface RoleAssignments extends
-        SupportsGettingById<RoleAssignment>,
+public interface RoleAssignments
+    extends SupportsGettingById<RoleAssignment>,
         SupportsCreating<RoleAssignment.DefinitionStages.Blank>,
         SupportsBatchCreation<RoleAssignment>,
         SupportsDeletingById,

@@ -5,7 +5,6 @@ package com.azure.management.storage.samples;
 
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
@@ -118,7 +117,7 @@ public final class ManageStorageAccountAsync {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

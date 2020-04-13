@@ -8,12 +8,8 @@ import com.azure.management.storage.Usages;
 import com.azure.management.storage.models.UsageInner;
 import com.azure.management.storage.models.UsagesInner;
 
-/**
- * The implementation of {@link Usages}.
- */
-class UsagesImpl
-        implements
-        Usages {
+/** The implementation of {@link Usages}. */
+class UsagesImpl implements Usages {
 
     private final StorageManager manager;
 

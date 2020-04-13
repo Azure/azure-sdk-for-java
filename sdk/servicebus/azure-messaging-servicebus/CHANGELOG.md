@@ -19,3 +19,5 @@ our efforts can be found in the [Azure SDK Design Guidelines for
 ### Known issues
 
 - Following features are not implemented Transactions, Sessions, Managing filter rules on Subscription.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FCHANGELOG.png)

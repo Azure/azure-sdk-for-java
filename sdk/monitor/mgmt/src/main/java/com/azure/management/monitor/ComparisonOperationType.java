@@ -7,43 +7,27 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ComparisonOperationType.
- */
+/** Defines values for ComparisonOperationType. */
 public enum ComparisonOperationType {
-    /**
-     * Enum value Equals.
-     */
+    /** Enum value Equals. */
     EQUALS("Equals"),
 
-    /**
-     * Enum value NotEquals.
-     */
+    /** Enum value NotEquals. */
     NOT_EQUALS("NotEquals"),
 
-    /**
-     * Enum value GreaterThan.
-     */
+    /** Enum value GreaterThan. */
     GREATER_THAN("GreaterThan"),
 
-    /**
-     * Enum value GreaterThanOrEqual.
-     */
+    /** Enum value GreaterThanOrEqual. */
     GREATER_THAN_OR_EQUAL("GreaterThanOrEqual"),
 
-    /**
-     * Enum value LessThan.
-     */
+    /** Enum value LessThan. */
     LESS_THAN("LessThan"),
 
-    /**
-     * Enum value LessThanOrEqual.
-     */
+    /** Enum value LessThanOrEqual. */
     LESS_THAN_OR_EQUAL("LessThanOrEqual");
 
-    /**
-     * The actual serialized value for a ComparisonOperationType instance.
-     */
+    /** The actual serialized value for a ComparisonOperationType instance. */
     private final String value;
 
     ComparisonOperationType(String value) {
@@ -52,7 +36,7 @@ public enum ComparisonOperationType {
 
     /**
      * Parses a serialized value to a ComparisonOperationType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ComparisonOperationType object, or null if unable to parse.
      */

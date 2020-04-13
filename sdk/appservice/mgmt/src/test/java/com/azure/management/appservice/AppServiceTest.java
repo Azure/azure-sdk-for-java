@@ -28,22 +28,19 @@ import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.implementation.ResourceManager;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.junit.jupiter.api.Assertions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * The base for app service tests.
- */
+/** The base for app service tests. */
 public class AppServiceTest extends TestBase {
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;
@@ -51,9 +48,9 @@ public class AppServiceTest extends TestBase {
 
     protected AppServiceDomain domain;
     protected AppServiceCertificateOrder certificateOrder;
-    protected String RG_NAME = "";
+    protected String rgName = "";
 
-//    private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).build();
+    //    private static OkHttpClient httpClient = new OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).build();
 
     public AppServiceTest() {
     }
@@ -64,25 +61,21 @@ public class AppServiceTest extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 20);
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        rgName = generateRandomResourceName("javacsmrg", 20);
+        resourceManager =
+            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
 
-        keyVaultManager = KeyVaultManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
 
-        appServiceManager = AppServiceManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
+        appServiceManager = AppServiceManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
 
-        //useExistingDomainAndCertificate();
-        //createNewDomainAndCertificate();
+        // useExistingDomainAndCertificate();
+        // createNewDomainAndCertificate();
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     private void useExistingDomainAndCertificate() {
@@ -104,24 +97,29 @@ public class AppServiceTest extends TestBase {
     }
 
     private void createNewDomainAndCertificate() {
-        domain = appServiceManager.domains().define(System.getenv("appservice-domain"))
+        domain =
+            appServiceManager
+                .domains()
+                .define(System.getenv("appservice-domain"))
                 .withExistingResourceGroup(System.getenv("appservice-group"))
                 .defineRegistrantContact()
-                    .withFirstName("Jon")
-                    .withLastName("Doe")
-                    .withEmail("jondoe@contoso.com")
-                    .withAddressLine1("123 4th Ave")
-                    .withCity("Redmond")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryIsoCode.UNITED_STATES)
-                    .withPostalCode("98052")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                .withFirstName("Jon")
+                .withLastName("Doe")
+                .withEmail("jondoe@contoso.com")
+                .withAddressLine1("123 4th Ave")
+                .withCity("Redmond")
+                .withStateOrProvince("WA")
+                .withCountry(CountryIsoCode.UNITED_STATES)
+                .withPostalCode("98052")
+                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                .withPhoneNumber("4258828080")
+                .attach()
                 .withDomainPrivacyEnabled(true)
                 .withAutoRenewEnabled(true)
                 .create();
-        certificateOrder = appServiceManager.certificateOrders()
+        certificateOrder =
+            appServiceManager
+                .certificateOrders()
                 .define(System.getenv("appservice-certificateorder"))
                 .withExistingResourceGroup(System.getenv("appservice-group"))
                 .withHostName("*." + domain.name())
@@ -134,6 +132,7 @@ public class AppServiceTest extends TestBase {
 
     /**
      * Uploads a file to an Azure web app.
+     *
      * @param profile the publishing profile for the web app.
      * @param fileName the name of the file on server
      * @param file the local file
@@ -176,16 +175,25 @@ public class AppServiceTest extends TestBase {
 
     protected String post(String urlString, String body) {
         try {
-            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body)).block().getValue();
+            return stringResponse(httpClient.postString(getHost(urlString), getPathAndQuery(urlString), body))
+                .block()
+                .getValue();
         } catch (Exception e) {
             return null;
         }
     }
 
     private static Mono<SimpleResponse<String>> stringResponse(Mono<SimpleResponse<Flux<ByteBuffer>>> responseMono) {
-        return responseMono.flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue())
-                .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
-                .map(str -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
+        return responseMono
+            .flatMap(
+                response ->
+                    FluxUtil
+                        .collectBytesInByteBufferStream(response.getValue())
+                        .map(bytes -> new String(bytes, StandardCharsets.UTF_8))
+                        .map(
+                            str ->
+                                new SimpleResponse<>(
+                                    response.getRequest(), response.getStatusCode(), response.getHeaders(), str)));
     }
 
     private static String getHost(String urlString) throws MalformedURLException {
@@ -205,10 +213,14 @@ public class AppServiceTest extends TestBase {
         return path;
     }
 
-    protected WebAppTestClient httpClient = RestProxy.create(
-            WebAppTestClient.class,
-            new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)), new RetryPolicy())
+    protected WebAppTestClient httpClient =
+        RestProxy
+            .create(
+                WebAppTestClient.class,
+                new HttpPipelineBuilder()
+                    .policies(
+                        new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
+                        new RetryPolicy())
                     .build());
 
     @Host("{$host}")
@@ -216,10 +228,14 @@ public class AppServiceTest extends TestBase {
     private interface WebAppTestClient {
         @Get("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> getString(
+            @HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path);
 
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
-        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> postString(
+            @HostParam("$host") String host,
+            @PathParam(value = "path", encoded = true) String path,
+            @BodyParam("text/plain") String body);
     }
 }

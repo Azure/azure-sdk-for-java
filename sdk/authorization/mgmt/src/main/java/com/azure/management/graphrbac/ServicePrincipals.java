@@ -14,12 +14,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to service principal management API.
- */
+/** Entry point to service principal management API. */
 @Fluent
-public interface ServicePrincipals extends
-        SupportsListing<ServicePrincipal>,
+public interface ServicePrincipals
+    extends SupportsListing<ServicePrincipal>,
         SupportsGettingById<ServicePrincipal>,
         SupportsGettingByName<ServicePrincipal>,
         SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,

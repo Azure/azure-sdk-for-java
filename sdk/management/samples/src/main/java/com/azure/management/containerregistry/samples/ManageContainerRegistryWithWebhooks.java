@@ -4,7 +4,6 @@
 package com.azure.management.containerregistry.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.containerregistry.AccessKeyType;
 import com.azure.management.containerregistry.Registry;
@@ -204,7 +203,7 @@ public class ManageContainerRegistryWithWebhooks {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
+                .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credFile)
                 .withDefaultSubscription();
 

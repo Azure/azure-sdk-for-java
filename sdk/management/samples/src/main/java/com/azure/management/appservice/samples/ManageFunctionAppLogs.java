@@ -4,7 +4,6 @@
 package com.azure.management.appservice.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -49,7 +48,7 @@ public final class ManageFunctionAppLogs {
 
             System.out.println("Creating function app " + appName + " in resource group " + rgName + "...");
 
-            FunctionApp app = azure.appServices().functionApps().define(appName)
+            FunctionApp app = azure.functionApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineDiagnosticLogsConfiguration()
@@ -167,7 +166,7 @@ public final class ManageFunctionAppLogs {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

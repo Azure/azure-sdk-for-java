@@ -17,6 +17,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
         if (isPlaybackMode()) {
             // Disable mocked testing but keep it commented out in case we want to re-enable it later
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
+            return;
         } else {
             Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "", ""));
         }
@@ -28,6 +29,7 @@ public class KubernetesClusterTests extends SamplesTestBase {
         if (isPlaybackMode()) {
             // Disable mocked testing but keep it commented out in case we want to re-enable it later
             // Assertions.assertTrue(ManageKubernetesCluster.runSample(azure, "client id", "secret"));
+            return;
         } else {
             Assertions.assertTrue(ManagedKubernetesClusterWithAdvancedNetworking.runSample(azure, "", ""));
         }

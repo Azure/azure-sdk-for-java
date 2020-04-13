@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Encryption model.
- */
+/** The Encryption model. */
 @Fluent
 public final class Encryption {
     /*
@@ -33,7 +31,7 @@ public final class Encryption {
 
     /**
      * Get the services property: List of services which support encryption.
-     * 
+     *
      * @return the services value.
      */
     public EncryptionServices services() {
@@ -42,7 +40,7 @@ public final class Encryption {
 
     /**
      * Set the services property: List of services which support encryption.
-     * 
+     *
      * @param services the services value to set.
      * @return the Encryption object itself.
      */
@@ -52,10 +50,9 @@ public final class Encryption {
     }
 
     /**
-     * Get the keySource property: The encryption keySource (provider).
-     * Possible values (case-insensitive):  Microsoft.Storage,
-     * Microsoft.Keyvault.
-     * 
+     * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.Storage, Microsoft.Keyvault.
+     *
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -63,10 +60,9 @@ public final class Encryption {
     }
 
     /**
-     * Set the keySource property: The encryption keySource (provider).
-     * Possible values (case-insensitive):  Microsoft.Storage,
-     * Microsoft.Keyvault.
-     * 
+     * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.Storage, Microsoft.Keyvault.
+     *
      * @param keySource the keySource value to set.
      * @return the Encryption object itself.
      */
@@ -77,7 +73,7 @@ public final class Encryption {
 
     /**
      * Get the keyVaultProperties property: Properties provided by key vault.
-     * 
+     *
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -86,7 +82,7 @@ public final class Encryption {
 
     /**
      * Set the keyVaultProperties property: Properties provided by key vault.
-     * 
+     *
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the Encryption object itself.
      */

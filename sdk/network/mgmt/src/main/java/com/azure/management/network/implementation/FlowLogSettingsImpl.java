@@ -9,14 +9,9 @@ import com.azure.management.resources.fluentcore.model.implementation.Refreshabl
 import com.azure.management.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for {@link FlowLogSettings} and its create and update interfaces.
- */
-class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner,
-        FlowLogSettings>
-        implements
-        FlowLogSettings,
-        FlowLogSettings.Update {
+/** Implementation for {@link FlowLogSettings} and its create and update interfaces. */
+class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner, FlowLogSettings>
+    implements FlowLogSettings, FlowLogSettings.Update {
     private final NetworkWatcherImpl parent;
     private final String nsgId;
 
@@ -33,9 +28,15 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public Mono<FlowLogSettings> applyAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.inner())
-                .map(flowLogInformationInner -> new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner, nsgId));
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .setFlowLogConfigurationAsync(parent().resourceGroupName(), parent().name(), this.inner())
+            .map(
+                flowLogInformationInner ->
+                    new FlowLogSettingsImpl(FlowLogSettingsImpl.this.parent, flowLogInformationInner, nsgId));
     }
 
     @Override
@@ -85,8 +86,10 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     public Update update() {
-        if (this.inner().flowAnalyticsConfiguration() != null && this.inner().flowAnalyticsConfiguration().networkWatcherFlowAnalyticsConfiguration() == null) {
-            // Service response could have such case, which is not valid in swagger that networkWatcherFlowAnalyticsConfiguration is a required field.
+        if (this.inner().flowAnalyticsConfiguration() != null
+            && this.inner().flowAnalyticsConfiguration().networkWatcherFlowAnalyticsConfiguration() == null) {
+            // Service response could have such case, which is not valid in swagger that
+            // networkWatcherFlowAnalyticsConfiguration is a required field.
             this.inner().withFlowAnalyticsConfiguration(null);
         }
         return this;
@@ -94,8 +97,12 @@ class FlowLogSettingsImpl extends RefreshableWrapperImpl<FlowLogInformationInner
 
     @Override
     protected Mono<FlowLogInformationInner> getInnerAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), inner().targetResourceId());
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getFlowLogStatusAsync(parent().resourceGroupName(), parent().name(), inner().targetResourceId());
     }
 
     @Override

@@ -14,22 +14,15 @@ import com.azure.management.containerservice.models.ManagedClustersInner;
 import com.azure.management.containerservice.models.OrchestratorVersionProfileListResultInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for KubernetesClusters.
- */
-public class KubernetesClustersImpl extends
-        GroupableResourcesImpl<
-                            KubernetesCluster,
-                        KubernetesClusterImpl,
-                            ManagedClusterInner,
-                            ManagedClustersInner,
-                        ContainerServiceManager>
+/** The implementation for KubernetesClusters. */
+public class KubernetesClustersImpl
+    extends GroupableResourcesImpl<
+        KubernetesCluster, KubernetesClusterImpl, ManagedClusterInner, ManagedClustersInner, ContainerServiceManager>
     implements KubernetesClusters {
 
     KubernetesClustersImpl(final ContainerServiceManager containerServiceManager) {
@@ -72,9 +65,7 @@ public class KubernetesClustersImpl extends
 
     @Override
     protected KubernetesClusterImpl wrapModel(String name) {
-        return new KubernetesClusterImpl(name,
-            new ManagedClusterInner(),
-            this.manager());
+        return new KubernetesClusterImpl(name, new ManagedClusterInner(), this.manager());
     }
 
     @Override
@@ -83,9 +74,7 @@ public class KubernetesClustersImpl extends
             return null;
         }
 
-        return new KubernetesClusterImpl(inner.getName(),
-            inner,
-            this.manager());
+        return new KubernetesClusterImpl(inner.getName(), inner, this.manager());
     }
 
     @Override
@@ -96,7 +85,8 @@ public class KubernetesClustersImpl extends
     @Override
     public Set<String> listKubernetesVersions(Region region) {
         TreeSet<String> kubernetesVersions = new TreeSet<>();
-        OrchestratorVersionProfileListResultInner inner = this.manager().inner().containerServices().listOrchestrators(region.name());
+        OrchestratorVersionProfileListResultInner inner =
+            this.manager().inner().containerServices().listOrchestrators(region.name());
 
         if (inner != null && inner.orchestrators() != null && inner.orchestrators().size() > 0) {
             for (OrchestratorVersionProfile orchestrator : inner.orchestrators()) {
@@ -111,8 +101,13 @@ public class KubernetesClustersImpl extends
 
     @Override
     public Mono<Set<String>> listKubernetesVersionsAsync(Region region) {
-        return this.manager().inner().containerServices().listOrchestratorsAsync(region.name())
-                .map(inner -> {
+        return this
+            .manager()
+            .inner()
+            .containerServices()
+            .listOrchestratorsAsync(region.name())
+            .map(
+                inner -> {
                     Set<String> kubernetesVersions = new TreeSet<>();
                     if (inner != null && inner.orchestrators() != null && inner.orchestrators().size() > 0) {
                         for (OrchestratorVersionProfile orchestrator : inner.orchestrators()) {
@@ -127,7 +122,13 @@ public class KubernetesClustersImpl extends
 
     @Override
     public byte[] getAdminKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
-        ManagedClusterAccessProfileInner profileInner = this.manager().inner().managedClusters().getAccessProfile(resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.ADMIN.toString());
+        ManagedClusterAccessProfileInner profileInner =
+            this
+                .manager()
+                .inner()
+                .managedClusters()
+                .getAccessProfile(
+                    resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.ADMIN.toString());
         if (profileInner == null) {
             return new byte[0];
         } else {
@@ -137,20 +138,31 @@ public class KubernetesClustersImpl extends
 
     @Override
     public Mono<byte[]> getAdminKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName) {
-        return this.manager().inner().managedClusters()
-            .getAccessProfileAsync(resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.ADMIN.toString())
-            .map(profileInner -> {
-                if (profileInner == null) {
-                    return new byte[0];
-                } else {
-                    return profileInner.kubeConfig();
-                }
-            });
+        return this
+            .manager()
+            .inner()
+            .managedClusters()
+            .getAccessProfileAsync(
+                resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.ADMIN.toString())
+            .map(
+                profileInner -> {
+                    if (profileInner == null) {
+                        return new byte[0];
+                    } else {
+                        return profileInner.kubeConfig();
+                    }
+                });
     }
 
     @Override
     public byte[] getUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
-        ManagedClusterAccessProfileInner profileInner = this.manager().inner().managedClusters().getAccessProfile(resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.USER.toString());
+        ManagedClusterAccessProfileInner profileInner =
+            this
+                .manager()
+                .inner()
+                .managedClusters()
+                .getAccessProfile(
+                    resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.USER.toString());
         if (profileInner == null) {
             return new byte[0];
         } else {
@@ -160,14 +172,19 @@ public class KubernetesClustersImpl extends
 
     @Override
     public Mono<byte[]> getUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName) {
-        return this.manager().inner().managedClusters()
-            .getAccessProfileAsync(resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.USER.toString())
-            .map(profileInner -> {
-                if (profileInner == null) {
-                    return new byte[0];
-                } else {
-                    return profileInner.kubeConfig();
-                }
-            });
+        return this
+            .manager()
+            .inner()
+            .managedClusters()
+            .getAccessProfileAsync(
+                resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.USER.toString())
+            .map(
+                profileInner -> {
+                    if (profileInner == null) {
+                        return new byte[0];
+                    } else {
+                        return profileInner.kubeConfig();
+                    }
+                });
     }
 }

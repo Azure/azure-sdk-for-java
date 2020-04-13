@@ -10,7 +10,6 @@ import com.azure.management.network.VpnClientProtocol;
 import com.azure.management.network.VpnClientRevokedCertificate;
 import com.azure.management.network.VpnClientRootCertificate;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,17 +17,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation for PointToSiteConfiguration and its create and update interfaces.
- */
-class PointToSiteConfigurationImpl
-        extends IndexableWrapperImpl<VpnClientConfiguration>
-        implements
-        PointToSiteConfiguration,
+/** Implementation for PointToSiteConfiguration and its create and update interfaces. */
+class PointToSiteConfigurationImpl extends IndexableWrapperImpl<VpnClientConfiguration>
+    implements PointToSiteConfiguration,
         PointToSiteConfiguration.Definition<VirtualNetworkGateway.Update>,
         PointToSiteConfiguration.Update {
     private static final String BEGIN_CERT = "-----BEGIN CERTIFICATE-----";
-    private  static final String END_CERT = "-----END CERTIFICATE-----";
+    private static final String END_CERT = "-----END CERTIFICATE-----";
 
     private VirtualNetworkGatewayImpl parent;
 
@@ -56,13 +51,16 @@ class PointToSiteConfigurationImpl
         if (inner().vpnClientRootCertificates() == null) {
             inner().withVpnClientRootCertificates(new ArrayList<VpnClientRootCertificate>());
         }
-        inner().vpnClientRootCertificates().add(new VpnClientRootCertificate().withName(name).withPublicCertData(certificateData));
+        inner()
+            .vpnClientRootCertificates()
+            .add(new VpnClientRootCertificate().withName(name).withPublicCertData(certificateData));
         inner().withRadiusServerAddress(null).withRadiusServerSecret(null);
         return this;
     }
 
     @Override
-    public PointToSiteConfigurationImpl withAzureCertificateFromFile(String name, File certificateFile) throws IOException {
+    public PointToSiteConfigurationImpl withAzureCertificateFromFile(String name, File certificateFile)
+        throws IOException {
         if (certificateFile == null) {
             return this;
         } else {
@@ -98,7 +96,9 @@ class PointToSiteConfigurationImpl
         if (inner().vpnClientRevokedCertificates() == null) {
             inner().withVpnClientRevokedCertificates(new ArrayList<VpnClientRevokedCertificate>());
         }
-        inner().vpnClientRevokedCertificates().add(new VpnClientRevokedCertificate().withName(name).withThumbprint(thumbprint));
+        inner()
+            .vpnClientRevokedCertificates()
+            .add(new VpnClientRevokedCertificate().withName(name).withThumbprint(thumbprint));
         inner().withRadiusServerAddress(null).withRadiusServerSecret(null);
         return this;
     }

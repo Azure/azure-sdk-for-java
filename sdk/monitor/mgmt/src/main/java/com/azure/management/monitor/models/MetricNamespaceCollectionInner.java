@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricNamespaceCollection model.
- */
+/** The MetricNamespaceCollection model. */
 @Fluent
 public final class MetricNamespaceCollectionInner {
     /*
@@ -21,7 +19,7 @@ public final class MetricNamespaceCollectionInner {
 
     /**
      * Get the value property: The values for the metric namespaces.
-     * 
+     *
      * @return the value value.
      */
     public List<MetricNamespaceInner> value() {
@@ -30,7 +28,7 @@ public final class MetricNamespaceCollectionInner {
 
     /**
      * Set the value property: The values for the metric namespaces.
-     * 
+     *
      * @param value the value value to set.
      * @return the MetricNamespaceCollectionInner object itself.
      */

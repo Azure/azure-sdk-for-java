@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricBaselinesResponse model.
- */
+/** The MetricBaselinesResponse model. */
 @Fluent
 public final class MetricBaselinesResponseInner {
     /*
@@ -21,7 +19,7 @@ public final class MetricBaselinesResponseInner {
 
     /**
      * Get the value property: The list of metric baselines.
-     * 
+     *
      * @return the value value.
      */
     public List<SingleMetricBaselineInner> value() {
@@ -30,7 +28,7 @@ public final class MetricBaselinesResponseInner {
 
     /**
      * Set the value property: The list of metric baselines.
-     * 
+     *
      * @param value the value value to set.
      * @return the MetricBaselinesResponseInner object itself.
      */

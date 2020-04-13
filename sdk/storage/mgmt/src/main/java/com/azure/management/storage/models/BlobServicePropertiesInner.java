@@ -14,9 +14,7 @@ import com.azure.management.storage.RestorePolicyProperties;
 import com.azure.management.storage.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BlobServiceProperties model.
- */
+/** The BlobServiceProperties model. */
 @JsonFlatten
 @Fluent
 public class BlobServicePropertiesInner extends ProxyResource {
@@ -81,7 +79,7 @@ public class BlobServicePropertiesInner extends ProxyResource {
 
     /**
      * Get the sku property: Sku name and tier.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -89,11 +87,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the cors property: Specifies CORS rules for the Blob service. You
-     * can include up to five CorsRule elements in the request. If no CorsRule
-     * elements are included in the request body, all CORS rules will be
-     * deleted, and CORS will be disabled for the Blob service.
-     * 
+     * Get the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -101,11 +98,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the cors property: Specifies CORS rules for the Blob service. You
-     * can include up to five CorsRule elements in the request. If no CorsRule
-     * elements are included in the request body, all CORS rules will be
-     * deleted, and CORS will be disabled for the Blob service.
-     * 
+     * Set the cors property: Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the Blob service.
+     *
      * @param cors the cors value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
@@ -115,11 +111,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the defaultServiceVersion property: DefaultServiceVersion indicates
-     * the default version to use for requests to the Blob service if an
-     * incoming request’s version is not specified. Possible values include
-     * version 2008-10-27 and all more recent versions.
-     * 
+     * Get the defaultServiceVersion property: DefaultServiceVersion indicates the default version to use for requests
+     * to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27
+     * and all more recent versions.
+     *
      * @return the defaultServiceVersion value.
      */
     public String defaultServiceVersion() {
@@ -127,11 +122,10 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the defaultServiceVersion property: DefaultServiceVersion indicates
-     * the default version to use for requests to the Blob service if an
-     * incoming request’s version is not specified. Possible values include
-     * version 2008-10-27 and all more recent versions.
-     * 
+     * Set the defaultServiceVersion property: DefaultServiceVersion indicates the default version to use for requests
+     * to the Blob service if an incoming request’s version is not specified. Possible values include version 2008-10-27
+     * and all more recent versions.
+     *
      * @param defaultServiceVersion the defaultServiceVersion value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
@@ -141,9 +135,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the deleteRetentionPolicy property: The blob service properties for
-     * blob soft delete.
-     * 
+     * Get the deleteRetentionPolicy property: The blob service properties for blob soft delete.
+     *
      * @return the deleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy deleteRetentionPolicy() {
@@ -151,9 +144,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the deleteRetentionPolicy property: The blob service properties for
-     * blob soft delete.
-     * 
+     * Set the deleteRetentionPolicy property: The blob service properties for blob soft delete.
+     *
      * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
@@ -163,9 +155,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the isVersioningEnabled property: Versioning is enabled if set to
-     * true.
-     * 
+     * Get the isVersioningEnabled property: Versioning is enabled if set to true.
+     *
      * @return the isVersioningEnabled value.
      */
     public Boolean isVersioningEnabled() {
@@ -173,9 +164,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the isVersioningEnabled property: Versioning is enabled if set to
-     * true.
-     * 
+     * Set the isVersioningEnabled property: Versioning is enabled if set to true.
+     *
      * @param isVersioningEnabled the isVersioningEnabled value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
@@ -185,9 +175,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the automaticSnapshotPolicyEnabled property: Deprecated in favor of
-     * isVersioningEnabled property.
-     * 
+     * Get the automaticSnapshotPolicyEnabled property: Deprecated in favor of isVersioningEnabled property.
+     *
      * @return the automaticSnapshotPolicyEnabled value.
      */
     public Boolean automaticSnapshotPolicyEnabled() {
@@ -195,11 +184,9 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the automaticSnapshotPolicyEnabled property: Deprecated in favor of
-     * isVersioningEnabled property.
-     * 
-     * @param automaticSnapshotPolicyEnabled the automaticSnapshotPolicyEnabled
-     * value to set.
+     * Set the automaticSnapshotPolicyEnabled property: Deprecated in favor of isVersioningEnabled property.
+     *
+     * @param automaticSnapshotPolicyEnabled the automaticSnapshotPolicyEnabled value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
     public BlobServicePropertiesInner withAutomaticSnapshotPolicyEnabled(Boolean automaticSnapshotPolicyEnabled) {
@@ -208,9 +195,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the changeFeed property: The blob service properties for change feed
-     * events.
-     * 
+     * Get the changeFeed property: The blob service properties for change feed events.
+     *
      * @return the changeFeed value.
      */
     public ChangeFeed changeFeed() {
@@ -218,9 +204,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the changeFeed property: The blob service properties for change feed
-     * events.
-     * 
+     * Set the changeFeed property: The blob service properties for change feed events.
+     *
      * @param changeFeed the changeFeed value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
@@ -230,9 +215,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the restorePolicy property: The blob service properties for blob
-     * restore policy.
-     * 
+     * Get the restorePolicy property: The blob service properties for blob restore policy.
+     *
      * @return the restorePolicy value.
      */
     public RestorePolicyProperties restorePolicy() {
@@ -240,9 +224,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the restorePolicy property: The blob service properties for blob
-     * restore policy.
-     * 
+     * Set the restorePolicy property: The blob service properties for blob restore policy.
+     *
      * @param restorePolicy the restorePolicy value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
@@ -252,9 +235,8 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the containerDeleteRetentionPolicy property: The blob service
-     * properties for container soft delete.
-     * 
+     * Get the containerDeleteRetentionPolicy property: The blob service properties for container soft delete.
+     *
      * @return the containerDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy containerDeleteRetentionPolicy() {
@@ -262,14 +244,13 @@ public class BlobServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the containerDeleteRetentionPolicy property: The blob service
-     * properties for container soft delete.
-     * 
-     * @param containerDeleteRetentionPolicy the containerDeleteRetentionPolicy
-     * value to set.
+     * Set the containerDeleteRetentionPolicy property: The blob service properties for container soft delete.
+     *
+     * @param containerDeleteRetentionPolicy the containerDeleteRetentionPolicy value to set.
      * @return the BlobServicePropertiesInner object itself.
      */
-    public BlobServicePropertiesInner withContainerDeleteRetentionPolicy(DeleteRetentionPolicy containerDeleteRetentionPolicy) {
+    public BlobServicePropertiesInner withContainerDeleteRetentionPolicy(
+        DeleteRetentionPolicy containerDeleteRetentionPolicy) {
         this.containerDeleteRetentionPolicy = containerDeleteRetentionPolicy;
         return this;
     }

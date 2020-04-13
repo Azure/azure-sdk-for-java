@@ -13,7 +13,6 @@ import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,13 +21,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Implementation for LoadBalancerBackend.
- */
-class LoadBalancerBackendImpl
-        extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerBackend,
+/** Implementation for LoadBalancerBackend. */
+class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerBackend,
         LoadBalancerBackend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerBackend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerBackend.Update {

@@ -17,12 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to application security group management.
- */
+/** Entry point to application security group management. */
 @Fluent
-public interface RouteFilters extends
-        SupportsCreating<RouteFilter.DefinitionStages.Blank>,
+public interface RouteFilters
+    extends SupportsCreating<RouteFilter.DefinitionStages.Blank>,
         SupportsListing<RouteFilter>,
         SupportsListingByResourceGroup<RouteFilter>,
         SupportsGettingByResourceGroup<RouteFilter>,

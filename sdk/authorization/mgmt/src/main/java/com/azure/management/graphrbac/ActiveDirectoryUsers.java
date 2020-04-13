@@ -14,12 +14,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to AD user management API.
- */
+/** Entry point to AD user management API. */
 @Fluent
-public interface ActiveDirectoryUsers extends
-        SupportsGettingById<ActiveDirectoryUser>,
+public interface ActiveDirectoryUsers
+    extends SupportsGettingById<ActiveDirectoryUser>,
         SupportsGettingByName<ActiveDirectoryUser>,
         SupportsListing<ActiveDirectoryUser>,
         SupportsCreating<ActiveDirectoryUser.DefinitionStages.Blank>,

@@ -3,6 +3,7 @@
 
 package com.azure.management.storage.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.AccessTier;
@@ -27,26 +28,17 @@ import com.azure.management.storage.StorageAccountUpdateParameters;
 import com.azure.management.storage.StorageService;
 import com.azure.management.storage.models.StorageAccountInner;
 import com.azure.management.storage.models.StorageAccountsInner;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for {@link StorageAccount}.
- */
+/** Implementation for {@link StorageAccount}. */
 class StorageAccountImpl
-        extends GroupableResourceImpl<
-        StorageAccount,
-        StorageAccountInner,
-        StorageAccountImpl,
-        StorageManager>
-        implements
-        StorageAccount,
-        StorageAccount.Definition,
-        StorageAccount.Update {
+    extends GroupableResourceImpl<StorageAccount, StorageAccountInner, StorageAccountImpl, StorageManager>
+    implements StorageAccount, StorageAccount.Definition, StorageAccount.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
     private StorageAccountCreateParameters createParameters;
@@ -54,9 +46,7 @@ class StorageAccountImpl
     private StorageNetworkRulesHelper networkRulesHelper;
     private StorageEncryptionHelper encryptionHelper;
 
-    StorageAccountImpl(String name,
-                       StorageAccountInner innerModel,
-                       final StorageManager storageManager) {
+    StorageAccountImpl(String name, StorageAccountInner innerModel, final StorageManager storageManager) {
         super(name, innerModel, storageManager);
         this.createParameters = new StorageAccountCreateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.createParameters);
@@ -189,7 +179,8 @@ class StorageAccountImpl
     @Override
     public boolean isAzureFilesAadIntegrationEnabled() {
         return this.inner().azureFilesIdentityBasedAuthentication() != null
-                && this.inner().azureFilesIdentityBasedAuthentication().directoryServiceOptions() == DirectoryServiceOptions.AADDS;
+            && this.inner().azureFilesIdentityBasedAuthentication().directoryServiceOptions()
+                == DirectoryServiceOptions.AADDS;
     }
 
     @Override
@@ -209,10 +200,13 @@ class StorageAccountImpl
 
     @Override
     public Mono<List<StorageAccountKey>> getKeysAsync() {
-        return this.manager().inner().storageAccounts().listKeysAsync(this.resourceGroupName(), this.name())
-                .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
+        return this
+            .manager()
+            .inner()
+            .storageAccounts()
+            .listKeysAsync(this.resourceGroupName(), this.name())
+            .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
-
 
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) {
@@ -221,17 +215,24 @@ class StorageAccountImpl
 
     @Override
     public Mono<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
-        return this.manager().inner().storageAccounts().regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
-                .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
+        return this
+            .manager()
+            .inner()
+            .storageAccounts()
+            .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
+            .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
 
     @Override
     public Mono<StorageAccount> refreshAsync() {
-        return super.refreshAsync().map(storageAccount -> {
-            StorageAccountImpl impl = (StorageAccountImpl) storageAccount;
-            impl.clearWrapperProperties();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                storageAccount -> {
+                    StorageAccountImpl impl = (StorageAccountImpl) storageAccount;
+                    impl.clearWrapperProperties();
+                    return impl;
+                });
     }
 
     @Override
@@ -367,7 +368,8 @@ class StorageAccountImpl
             createParameters.withAccessTier(accessTier);
         } else {
             if (this.inner().kind() != Kind.BLOB_STORAGE) {
-                throw new UnsupportedOperationException("Access tier can not be changed for general purpose storage accounts.");
+                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                    "Access tier can not be changed for general purpose storage accounts."));
             }
             updateParameters.withAccessTier(accessTier);
         }
@@ -401,7 +403,6 @@ class StorageAccountImpl
         updateParameters.withEnableHttpsTrafficOnly(false);
         return this;
     }
-
 
     @Override
     public StorageAccountImpl withAccessFromAllNetworks() {
@@ -500,9 +501,15 @@ class StorageAccountImpl
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().getTags());
         final StorageAccountsInner client = this.manager().inner().storageAccounts();
-        return this.manager().inner().storageAccounts().createAsync(
-                this.resourceGroupName(), this.name(), createParameters)
-                .flatMap(storageAccountInner -> client.getByResourceGroupAsync(resourceGroupName(), this.name())
+        return this
+            .manager()
+            .inner()
+            .storageAccounts()
+            .createAsync(this.resourceGroupName(), this.name(), createParameters)
+            .flatMap(
+                storageAccountInner ->
+                    client
+                        .getByResourceGroupAsync(resourceGroupName(), this.name())
                         .map(innerToFluentMap(this))
                         .doOnNext(storageAccount -> clearWrapperProperties()));
     }
@@ -511,26 +518,41 @@ class StorageAccountImpl
     public Mono<StorageAccount> updateResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
         updateParameters.withTags(this.inner().getTags());
-        return this.manager().inner().storageAccounts().updateAsync(
-                resourceGroupName(), this.name(), updateParameters)
-                .map(innerToFluentMap(this))
-                .doOnNext(storageAccount -> clearWrapperProperties());
+        return this
+            .manager()
+            .inner()
+            .storageAccounts()
+            .updateAsync(resourceGroupName(), this.name(), updateParameters)
+            .map(innerToFluentMap(this))
+            .doOnNext(storageAccount -> clearWrapperProperties());
     }
 
     @Override
     public StorageAccountImpl withAzureFilesAadIntegrationEnabled(boolean enabled) {
         if (isInCreateMode()) {
             if (enabled) {
-                this.createParameters.withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.AADDS));
+                this
+                    .createParameters
+                    .withAzureFilesIdentityBasedAuthentication(
+                        new AzureFilesIdentityBasedAuthentication()
+                            .withDirectoryServiceOptions(DirectoryServiceOptions.AADDS));
             }
         } else {
             if (this.createParameters.azureFilesIdentityBasedAuthentication() == null) {
-                this.createParameters.withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication());
+                this
+                    .createParameters
+                    .withAzureFilesIdentityBasedAuthentication(new AzureFilesIdentityBasedAuthentication());
             }
             if (enabled) {
-                this.updateParameters.azureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.AADDS);
+                this
+                    .updateParameters
+                    .azureFilesIdentityBasedAuthentication()
+                    .withDirectoryServiceOptions(DirectoryServiceOptions.AADDS);
             } else {
-                this.updateParameters.azureFilesIdentityBasedAuthentication().withDirectoryServiceOptions(DirectoryServiceOptions.NONE);
+                this
+                    .updateParameters
+                    .azureFilesIdentityBasedAuthentication()
+                    .withDirectoryServiceOptions(DirectoryServiceOptions.NONE);
             }
         }
         return this;

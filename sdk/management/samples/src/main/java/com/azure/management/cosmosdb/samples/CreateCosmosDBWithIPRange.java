@@ -4,7 +4,6 @@
 package com.azure.management.cosmosdb.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.CloudException;
 import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
@@ -90,7 +89,7 @@ public final class CreateCosmosDBWithIPRange {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

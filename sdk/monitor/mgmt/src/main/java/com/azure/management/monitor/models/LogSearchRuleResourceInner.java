@@ -15,9 +15,7 @@ import com.azure.management.monitor.Source;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The LogSearchRuleResource model.
- */
+/** The LogSearchRuleResource model. */
 @JsonFlatten
 @Fluent
 public class LogSearchRuleResourceInner extends Resource {
@@ -67,7 +65,7 @@ public class LogSearchRuleResourceInner extends Resource {
 
     /**
      * Get the description property: The description of the Log Search rule.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -76,7 +74,7 @@ public class LogSearchRuleResourceInner extends Resource {
 
     /**
      * Set the description property: The description of the Log Search rule.
-     * 
+     *
      * @param description the description value to set.
      * @return the LogSearchRuleResourceInner object itself.
      */
@@ -86,9 +84,9 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the enabled property: The flag which indicates whether the Log
-     * Search rule is enabled. Value should be true or false.
-     * 
+     * Get the enabled property: The flag which indicates whether the Log Search rule is enabled. Value should be true
+     * or false.
+     *
      * @return the enabled value.
      */
     public Enabled enabled() {
@@ -96,9 +94,9 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the enabled property: The flag which indicates whether the Log
-     * Search rule is enabled. Value should be true or false.
-     * 
+     * Set the enabled property: The flag which indicates whether the Log Search rule is enabled. Value should be true
+     * or false.
+     *
      * @param enabled the enabled value to set.
      * @return the LogSearchRuleResourceInner object itself.
      */
@@ -108,9 +106,8 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the lastUpdatedTime property: Last time the rule was updated in
-     * IS08601 format.
-     * 
+     * Get the lastUpdatedTime property: Last time the rule was updated in IS08601 format.
+     *
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -118,9 +115,8 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the scheduled
-     * query rule.
-     * 
+     * Get the provisioningState property: Provisioning state of the scheduled query rule.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -129,7 +125,7 @@ public class LogSearchRuleResourceInner extends Resource {
 
     /**
      * Get the source property: Data Source against which rule will Query Data.
-     * 
+     *
      * @return the source value.
      */
     public Source source() {
@@ -138,7 +134,7 @@ public class LogSearchRuleResourceInner extends Resource {
 
     /**
      * Set the source property: Data Source against which rule will Query Data.
-     * 
+     *
      * @param source the source value to set.
      * @return the LogSearchRuleResourceInner object itself.
      */
@@ -148,9 +144,8 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Get the schedule property: Schedule (Frequency, Time Window) for rule.
-     * Required for action type - AlertingAction.
-     * 
+     * Get the schedule property: Schedule (Frequency, Time Window) for rule. Required for action type - AlertingAction.
+     *
      * @return the schedule value.
      */
     public Schedule schedule() {
@@ -158,9 +153,8 @@ public class LogSearchRuleResourceInner extends Resource {
     }
 
     /**
-     * Set the schedule property: Schedule (Frequency, Time Window) for rule.
-     * Required for action type - AlertingAction.
-     * 
+     * Set the schedule property: Schedule (Frequency, Time Window) for rule. Required for action type - AlertingAction.
+     *
      * @param schedule the schedule value to set.
      * @return the LogSearchRuleResourceInner object itself.
      */
@@ -171,7 +165,7 @@ public class LogSearchRuleResourceInner extends Resource {
 
     /**
      * Get the action property: Action needs to be taken on rule execution.
-     * 
+     *
      * @return the action value.
      */
     public Action action() {
@@ -180,7 +174,7 @@ public class LogSearchRuleResourceInner extends Resource {
 
     /**
      * Set the action property: Action needs to be taken on rule execution.
-     * 
+     *
      * @param action the action value to set.
      * @return the LogSearchRuleResourceInner object itself.
      */

@@ -82,6 +82,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         // Remove sensitive information such as SAS token signatures from the recording.
         UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        redactedAccountName(urlBuilder);
         if (urlBuilder.getQuery().containsKey(SIG)) {
             urlBuilder.setQueryParameter(SIG, "REDACTED");
         }
@@ -110,6 +111,13 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return bufferedResponse;
                 });
             });
+    }
+
+    private void redactedAccountName(UrlBuilder urlBuilder) {
+        String[] hostParts = urlBuilder.getHost().split("\\.");
+        hostParts[0] = "REDACTED";
+
+        urlBuilder.setHost(String.join(".", hostParts));
     }
 
     private void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,

@@ -14,27 +14,18 @@ import com.azure.management.containerservice.ManagedClusterAgentPoolProfile;
 import com.azure.management.containerservice.ManagedClusterServicePrincipalProfile;
 import com.azure.management.containerservice.models.ManagedClusterInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for KubernetesCluster and its create and update interfaces.
- */
-public class KubernetesClusterImpl extends
-        GroupableResourceImpl<
-                    KubernetesCluster,
-                    ManagedClusterInner,
-                KubernetesClusterImpl,
-                ContainerServiceManager>
-    implements
-    KubernetesCluster,
-    KubernetesCluster.Definition,
-    KubernetesCluster.Update {
+/** The implementation for KubernetesCluster and its create and update interfaces. */
+public class KubernetesClusterImpl
+    extends GroupableResourceImpl<
+        KubernetesCluster, ManagedClusterInner, KubernetesClusterImpl, ContainerServiceManager>
+    implements KubernetesCluster, KubernetesCluster.Definition, KubernetesCluster.Update {
 
     private byte[] adminKubeConfigContent;
     private byte[] userKubeConfigContent;
@@ -72,8 +63,8 @@ public class KubernetesClusterImpl extends
     @Override
     public byte[] adminKubeConfigContent() {
         if (this.adminKubeConfigContent == null) {
-            this.adminKubeConfigContent = this.manager().kubernetesClusters()
-                .getAdminKubeConfigContent(this.resourceGroupName(), this.name());
+            this.adminKubeConfigContent =
+                this.manager().kubernetesClusters().getAdminKubeConfigContent(this.resourceGroupName(), this.name());
         }
         return this.adminKubeConfigContent;
     }
@@ -81,8 +72,8 @@ public class KubernetesClusterImpl extends
     @Override
     public byte[] userKubeConfigContent() {
         if (this.userKubeConfigContent == null) {
-            this.userKubeConfigContent = this.manager().kubernetesClusters()
-                .getUserKubeConfigContent(this.resourceGroupName(), this.name());
+            this.userKubeConfigContent =
+                this.manager().kubernetesClusters().getUserKubeConfigContent(this.resourceGroupName(), this.name());
         }
         return this.userKubeConfigContent;
     }
@@ -159,32 +150,41 @@ public class KubernetesClusterImpl extends
     }
 
     private Mono<byte[]> getAdminConfig(final KubernetesClusterImpl self) {
-        return this.manager().kubernetesClusters()
+        return this
+            .manager()
+            .kubernetesClusters()
             .getAdminKubeConfigContentAsync(self.resourceGroupName(), self.name())
-            .map(kubeConfigContent -> {
-                self.adminKubeConfigContent = kubeConfigContent;
-                return self.adminKubeConfigContent;
-            });
+            .map(
+                kubeConfigContent -> {
+                    self.adminKubeConfigContent = kubeConfigContent;
+                    return self.adminKubeConfigContent;
+                });
     }
 
     private Mono<byte[]> getUserConfig(final KubernetesClusterImpl self) {
-        return this.manager().kubernetesClusters()
+        return this
+            .manager()
+            .kubernetesClusters()
             .getUserKubeConfigContentAsync(self.resourceGroupName(), self.name())
-            .map(kubeConfigContent -> {
-                self.userKubeConfigContent = kubeConfigContent;
-                return self.userKubeConfigContent;
-            });
+            .map(
+                kubeConfigContent -> {
+                    self.userKubeConfigContent = kubeConfigContent;
+                    return self.userKubeConfigContent;
+                });
     }
-
 
     @Override
     protected Mono<ManagedClusterInner> getInnerAsync() {
         final KubernetesClusterImpl self = this;
         final Mono<byte[]> adminConfig = getAdminConfig(self);
         final Mono<byte[]> userConfig = getUserConfig(self);
-        return this.manager().inner().managedClusters().getByResourceGroupAsync(this.resourceGroupName(), this.name())
-            .flatMap(managedClusterInner -> Flux.merge(adminConfig, userConfig).last()
-                .map(bytes -> managedClusterInner));
+        return this
+            .manager()
+            .inner()
+            .managedClusters()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name())
+            .flatMap(
+                managedClusterInner -> Flux.merge(adminConfig, userConfig).last().map(bytes -> managedClusterInner));
     }
 
     @Override
@@ -196,12 +196,21 @@ public class KubernetesClusterImpl extends
         final Mono<byte[]> adminConfig = getAdminConfig(self);
         final Mono<byte[]> userConfig = getUserConfig(self);
 
-        return this.manager().inner().managedClusters().createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner())
-            .flatMap(inner -> Flux.merge(adminConfig, userConfig).last()
-                    .map(bytes -> {
-                        self.setInner(inner);
-                        return self;
-                    }));
+        return this
+            .manager()
+            .inner()
+            .managedClusters()
+            .createOrUpdateAsync(self.resourceGroupName(), self.name(), self.inner())
+            .flatMap(
+                inner ->
+                    Flux
+                        .merge(adminConfig, userConfig)
+                        .last()
+                        .map(
+                            bytes -> {
+                                self.setInner(inner);
+                                return self;
+                            }));
     }
 
     @Override
@@ -234,12 +243,12 @@ public class KubernetesClusterImpl extends
 
     @Override
     public KubernetesClusterImpl withSshKey(String sshKeyData) {
-        this.inner().linuxProfile()
-            .withSsh(new ContainerServiceSshConfiguration()
-                .withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>()));
-        this.inner().linuxProfile().ssh().publicKeys()
-            .add(new ContainerServiceSshPublicKey()
-                .withKeyData(sshKeyData));
+        this
+            .inner()
+            .linuxProfile()
+            .withSsh(
+                new ContainerServiceSshConfiguration().withPublicKeys(new ArrayList<ContainerServiceSshPublicKey>()));
+        this.inner().linuxProfile().ssh().publicKeys().add(new ContainerServiceSshPublicKey().withKeyData(sshKeyData));
 
         return this;
     }
@@ -293,7 +302,9 @@ public class KubernetesClusterImpl extends
     }
 
     @Override
-    public KubernetesCluster.DefinitionStages.NetworkProfileDefinitionStages.Blank<KubernetesCluster.DefinitionStages.WithCreate> defineNetworkProfile() {
+    public KubernetesCluster.DefinitionStages.NetworkProfileDefinitionStages.Blank<
+            KubernetesCluster.DefinitionStages.WithCreate>
+        defineNetworkProfile() {
         return new KubernetesClusterNetworkProfileImpl(this);
     }
 

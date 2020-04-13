@@ -8,64 +8,48 @@ import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.util.Map;
 
-
-/**
- * A client-side representation of an application gateway's redirect configuration.
- */
+/** A client-side representation of an application gateway's redirect configuration. */
 @Fluent()
-public interface ApplicationGatewayRedirectConfiguration extends
-        HasInner<ApplicationGatewayRedirectConfigurationInner>,
-        ChildResource<ApplicationGateway> {
+public interface ApplicationGatewayRedirectConfiguration
+    extends HasInner<ApplicationGatewayRedirectConfigurationInner>, ChildResource<ApplicationGateway> {
 
-    /**
-     * @return the type of redirection.
-     */
+    /** @return the type of redirection. */
     ApplicationGatewayRedirectType type();
 
-    /**
-     * @return the target listener on this application network traffic is redirected to
-     */
+    /** @return the target listener on this application network traffic is redirected to */
     ApplicationGatewayListener targetListener();
 
-    /**
-     * @return the target URL network traffic is redirected to
-     */
+    /** @return the target URL network traffic is redirected to */
     String targetUrl();
 
-    /**
-     * @return request routing rules on this application referencing this redirect configuration, indexed by name
-     */
+    /** @return request routing rules on this application referencing this redirect configuration, indexed by name */
     Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
 
-    /**
-     * @return true if the path is included in the redirected URL, otherwise false
-     */
+    /** @return true if the path is included in the redirected URL, otherwise false */
     boolean isPathIncluded();
 
-    /**
-     * @return true if the query string is included in the redirected URL, otherwise false
-     */
+    /** @return true if the query string is included in the redirected URL, otherwise false */
     boolean isQueryStringIncluded();
 
-    /**
-     * Grouping of application gateway redirect configuration configuration stages.
-     */
+    /** Grouping of application gateway redirect configuration configuration stages. */
     interface DefinitionStages {
         /**
          * The first stage of an application gateway redirect configuration.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface Blank<ReturnT> extends WithType<ReturnT> {
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify the target URL or listener for the redirection.
+         * The stage of an application gateway redirect configuration allowing to specify the target URL or listener for
+         * the redirection.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithTarget<ReturnT> {
             /**
@@ -88,7 +72,8 @@ public interface ApplicationGatewayRedirectConfiguration extends
         /**
          * The stage of an application gateway redirect configuration allowing to specify the type of the redirection.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithType<ReturnT> {
             /**
@@ -101,15 +86,17 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the path should be included in the redirected URL.
+         * The stage of an application gateway redirect configuration allowing to specify whether the path should be
+         * included in the redirected URL.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithPathIncluded<ReturnT> {
             /**
              * Specifies that the path should be included in the redirected URL.
-             * <p>
-             * Note that this setting is valid only when the target of the redirection is a listener, not a URL.
+             *
+             * <p>Note that this setting is valid only when the target of the redirection is a listener, not a URL.
              *
              * @return the next stage of the definition
              */
@@ -117,9 +104,11 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the query string should be included in the redirected URL.
+         * The stage of an application gateway redirect configuration allowing to specify whether the query string
+         * should be included in the redirected URL.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithQueryStringIncluded<ReturnT> {
             /**
@@ -131,46 +120,47 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the query string should be included in the redirected URL or other optional settings.
+         * The stage of an application gateway redirect configuration allowing to specify whether the query string
+         * should be included in the redirected URL or other optional settings.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithAttachAndPath<ReturnT> extends WithAttach<ReturnT>, WithPathIncluded<ReturnT> {
         }
 
         /**
          * The final stage of an application gateway redirect configuration.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * <p>At this stage, any remaining optional settings can be specified, or the definition can be attached to the
+         * parent application gateway definition.
+         *
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
-        interface WithAttach<ReturnT> extends
-                Attachable.InDefinition<ReturnT>,
-                WithQueryStringIncluded<ReturnT> {
+        interface WithAttach<ReturnT> extends Attachable.InDefinition<ReturnT>, WithQueryStringIncluded<ReturnT> {
         }
     }
 
     /**
      * The entirety of an application gateway redirect configuration definition.
      *
-     * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+     * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+     *     definition
      */
-    interface Definition<ReturnT> extends
-            DefinitionStages.Blank<ReturnT>,
+    interface Definition<ReturnT>
+        extends DefinitionStages.Blank<ReturnT>,
             DefinitionStages.WithAttach<ReturnT>,
             DefinitionStages.WithAttachAndPath<ReturnT>,
             DefinitionStages.WithTarget<ReturnT>,
             DefinitionStages.WithType<ReturnT> {
     }
 
-    /**
-     * Grouping of application gateway redirect configuration update stages.
-     */
+    /** Grouping of application gateway redirect configuration update stages. */
     interface UpdateStages {
         /**
-         * The stage of an application gateway redirect configuration allowing to specify the target URL or listener for the redirection.
+         * The stage of an application gateway redirect configuration allowing to specify the target URL or listener for
+         * the redirection.
          */
         interface WithTarget {
             /**
@@ -218,13 +208,14 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the path should be included in the redirected URL.
+         * The stage of an application gateway redirect configuration allowing to specify whether the path should be
+         * included in the redirected URL.
          */
         interface WithPathIncluded {
             /**
              * Specifies that the path should be included in the redirected URL.
-             * <p>
-             * Note that this setting is valid only when the target of the redirection is a listener, not a URL.
+             *
+             * <p>Note that this setting is valid only when the target of the redirection is a listener, not a URL.
              *
              * @return the next stage of the update
              */
@@ -239,7 +230,8 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the query string should be included in the redirected URL.
+         * The stage of an application gateway redirect configuration allowing to specify whether the query string
+         * should be included in the redirected URL.
          */
         interface WithQueryStringIncluded {
             /**
@@ -261,8 +253,8 @@ public interface ApplicationGatewayRedirectConfiguration extends
     /**
      * The entirety of an application gateway redirect configuration update as part of an application gateway update.
      */
-    interface Update extends
-            Settable<ApplicationGateway.Update>,
+    interface Update
+        extends Settable<ApplicationGateway.Update>,
             UpdateStages.WithTarget,
             UpdateStages.WithType,
             UpdateStages.WithPathIncluded,
@@ -270,21 +262,25 @@ public interface ApplicationGatewayRedirectConfiguration extends
     }
 
     /**
-     * Grouping of application gateway redirect configuration definition stages applicable as part of an application gateway update.
+     * Grouping of application gateway redirect configuration definition stages applicable as part of an application
+     * gateway update.
      */
     interface UpdateDefinitionStages {
         /**
          * The first stage of an application gateway redirect configuration configuration definition.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface Blank<ReturnT> extends WithType<ReturnT> {
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify the target URL or listener for the redirection.
+         * The stage of an application gateway redirect configuration allowing to specify the target URL or listener for
+         * the redirection.
          *
-         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this
+         *     definition
          */
         interface WithTarget<ReturnT> {
             /**
@@ -307,7 +303,8 @@ public interface ApplicationGatewayRedirectConfiguration extends
         /**
          * The stage of an application gateway redirect configuration allowing to specify the type of the redirection.
          *
-         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this
+         *     definition
          */
         interface WithType<ReturnT> {
             /**
@@ -320,15 +317,17 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the path should be included in the redirected URL.
+         * The stage of an application gateway redirect configuration allowing to specify whether the path should be
+         * included in the redirected URL.
          *
-         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this
+         *     definition
          */
         interface WithPathIncluded<ReturnT> {
             /**
              * Specifies that the path should be included in the redirected URL.
-             * <p>
-             * Note that this setting is valid only when the target of the redirection is a listener, not a URL.
+             *
+             * <p>Note that this setting is valid only when the target of the redirection is a listener, not a URL.
              *
              * @return the next stage of the definition
              */
@@ -336,9 +335,11 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the query string should be included in the redirected URL.
+         * The stage of an application gateway redirect configuration allowing to specify whether the query string
+         * should be included in the redirected URL.
          *
-         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this
+         *     definition
          */
         interface WithQueryStringIncluded<ReturnT> {
             /**
@@ -350,34 +351,37 @@ public interface ApplicationGatewayRedirectConfiguration extends
         }
 
         /**
-         * The stage of an application gateway redirect configuration allowing to specify whether the query string should be included in the redirected URL or other optional settings.
+         * The stage of an application gateway redirect configuration allowing to specify whether the query string
+         * should be included in the redirected URL or other optional settings.
          *
-         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this
+         *     definition
          */
         interface WithAttachAndPath<ReturnT> extends WithAttach<ReturnT>, WithPathIncluded<ReturnT> {
         }
 
         /**
          * The final stage of an application gateway redirect configuration definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition.
          *
-         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         * <p>At this stage, any remaining optional settings can be specified, or the definition can be attached to the
+         * parent application gateway definition.
+         *
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
-        interface WithAttach<ReturnT> extends
-                Attachable.InUpdate<ReturnT>,
-                WithQueryStringIncluded<ReturnT> {
+        interface WithAttach<ReturnT> extends Attachable.InUpdate<ReturnT>, WithQueryStringIncluded<ReturnT> {
         }
     }
 
     /**
-     * The entirety of an application gateway redirect configuration definition as part of an application gateway update.
+     * The entirety of an application gateway redirect configuration definition as part of an application gateway
+     * update.
      *
-     * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+     * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
+     *     definition
      */
-    interface UpdateDefinition<ReturnT> extends
-            UpdateDefinitionStages.Blank<ReturnT>,
+    interface UpdateDefinition<ReturnT>
+        extends UpdateDefinitionStages.Blank<ReturnT>,
             UpdateDefinitionStages.WithAttach<ReturnT>,
             UpdateDefinitionStages.WithAttachAndPath<ReturnT>,
             UpdateDefinitionStages.WithTarget<ReturnT>,

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The StorageAccountListResult model.
- */
+/** The StorageAccountListResult model. */
 @Immutable
 public final class StorageAccountListResultInner {
     /*
@@ -28,9 +26,8 @@ public final class StorageAccountListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Gets the list of storage accounts and their
-     * properties.
-     * 
+     * Get the value property: Gets the list of storage accounts and their properties.
+     *
      * @return the value value.
      */
     public List<StorageAccountInner> value() {
@@ -38,10 +35,9 @@ public final class StorageAccountListResultInner {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next
-     * page of storage accounts. Returned when total number of requested
-     * storage accounts exceed maximum page size.
-     * 
+     * Get the nextLink property: Request URL that can be used to query next page of storage accounts. Returned when
+     * total number of requested storage accounts exceed maximum page size.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
