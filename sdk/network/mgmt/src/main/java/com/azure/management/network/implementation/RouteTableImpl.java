@@ -10,32 +10,20 @@ import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
 import com.azure.management.network.models.RouteInner;
 import com.azure.management.network.models.RouteTableInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for RouteTable.
- */
+/** Implementation for RouteTable. */
 class RouteTableImpl
-        extends GroupableParentResourceWithTagsImpl<
-        RouteTable,
-        RouteTableInner,
-        RouteTableImpl,
-        NetworkManager>
-        implements
-        RouteTable,
-        RouteTable.Definition,
-        RouteTable.Update {
+    extends GroupableParentResourceWithTagsImpl<RouteTable, RouteTableInner, RouteTableImpl, NetworkManager>
+    implements RouteTable, RouteTable.Definition, RouteTable.Update {
 
     private Map<String, Route> routes;
 
-    RouteTableImpl(String name,
-                   final RouteTableInner innerModel,
-                   final NetworkManager networkManager) {
+    RouteTableImpl(String name, final RouteTableInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -62,17 +50,24 @@ class RouteTableImpl
 
     @Override
     public Mono<RouteTable> refreshAsync() {
-        return super.refreshAsync().map(routeTable -> {
-            RouteTableImpl impl = (RouteTableImpl) routeTable;
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                routeTable -> {
+                    RouteTableImpl impl = (RouteTableImpl) routeTable;
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<RouteTableInner> getInnerAsync() {
         // FIXME: parameter - expand
-        return this.manager().inner().routeTables().getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .routeTables()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -84,8 +79,7 @@ class RouteTableImpl
 
     @Override
     public RouteImpl defineRoute(String name) {
-        RouteInner inner = new RouteInner()
-                .withName(name);
+        RouteInner inner = new RouteInner().withName(name);
         return new RouteImpl(inner, this);
     }
 
@@ -102,18 +96,20 @@ class RouteTableImpl
 
     @Override
     public RouteTableImpl withRoute(String destinationAddressPrefix, RouteNextHopType nextHop) {
-        return this.defineRoute("route_" + this.name() + System.currentTimeMillis())
-                .withDestinationAddressPrefix(destinationAddressPrefix)
-                .withNextHop(nextHop)
-                .attach();
+        return this
+            .defineRoute("route_" + this.name() + System.currentTimeMillis())
+            .withDestinationAddressPrefix(destinationAddressPrefix)
+            .withNextHop(nextHop)
+            .attach();
     }
 
     @Override
     public RouteTableImpl withRouteViaVirtualAppliance(String destinationAddressPrefix, String ipAddress) {
-        return this.defineRoute("route_" + this.name() + System.currentTimeMillis())
-                .withDestinationAddressPrefix(destinationAddressPrefix)
-                .withNextHopToVirtualAppliance(ipAddress)
-                .attach();
+        return this
+            .defineRoute("route_" + this.name() + System.currentTimeMillis())
+            .withDestinationAddressPrefix(destinationAddressPrefix)
+            .withNextHopToVirtualAppliance(ipAddress)
+            .attach();
     }
 
     RouteTableImpl withRoute(RouteImpl route) {
@@ -131,7 +127,11 @@ class RouteTableImpl
 
     @Override
     protected Mono<RouteTableInner> createInner() {
-        return this.manager().inner().routeTables().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this
+            .manager()
+            .inner()
+            .routeTables()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override

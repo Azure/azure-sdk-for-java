@@ -15,11 +15,13 @@ public class LoadBalancerTests extends NetworkManagementTest {
         String vmName = sdkContext.randomResourceName("vm", 8);
         String lbName = sdkContext.randomResourceName("lb", 8);
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_EAST)
-                .create();
+        ResourceGroup resourceGroup =
+            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
-        Network network = networkManager.networks().define(vmName)
+        Network network =
+            networkManager
+                .networks()
+                .define(vmName)
                 .withRegion(resourceGroup.region())
                 .withExistingResourceGroup(resourceGroup.name())
                 .withAddressSpace("172.18.0.0/28")
@@ -44,11 +46,13 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals("/", httpsProbe.requestPath());
 
         // update probe
-        loadBalancer.update()
-                .updateHttpsProbe(probeName2)
-                .withIntervalInSeconds(60)
-                .withRequestPath("/health")
-                .parent().apply();
+        loadBalancer
+            .update()
+            .updateHttpsProbe(probeName2)
+            .withIntervalInSeconds(60)
+            .withRequestPath("/health")
+            .parent()
+            .apply();
 
         // verify probe updated
         Assertions.assertEquals(1, loadBalancer.httpProbes().size());
@@ -62,9 +66,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals("/health", httpsProbe.requestPath());
 
         // delete probe
-        loadBalancer.update()
-                .withoutProbe(probeName2)
-                .apply();
+        loadBalancer.update().withoutProbe(probeName2).apply();
 
         // verify probe deleted (and deref from rule)
         Assertions.assertEquals(1, loadBalancer.httpProbes().size());
@@ -72,11 +74,7 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertNull(loadBalancer.loadBalancingRules().get(ruleName2).probe());
 
         // add probe
-        loadBalancer.update()
-                .defineHttpsProbe(probeName2)
-                .withRequestPath("/")
-                .attach()
-                .apply();
+        loadBalancer.update().defineHttpsProbe(probeName2).withRequestPath("/").attach().apply();
 
         // verify probe added
         loadBalancer.refresh();
@@ -92,14 +90,18 @@ public class LoadBalancerTests extends NetworkManagementTest {
     static final String probeName1 = "httpProbe";
     static final String probeName2 = "httpsProbe";
 
-    private static LoadBalancer createLoadBalancer(NetworkManager networkManager, ResourceGroup resourceGroup, Network network, String lbName) {
+    private static LoadBalancer createLoadBalancer(
+        NetworkManager networkManager, ResourceGroup resourceGroup, Network network, String lbName) {
         final String frontendName = lbName + "-FE1";
         final String backendPoolName1 = lbName + "-BAP1";
         final String backendPoolName2 = lbName + "-BAP2";
         final String natPool50XXto22 = lbName + "natPool50XXto22";
         final String natPool60XXto23 = lbName + "natPool60XXto23";
 
-        LoadBalancer loadBalancer1 = networkManager.loadBalancers().define(lbName)
+        LoadBalancer loadBalancer1 =
+            networkManager
+                .loadBalancers()
+                .define(lbName)
                 .withRegion(resourceGroup.region())
                 .withExistingResourceGroup(resourceGroup.name())
                 // Add two rules that uses above backend and probe

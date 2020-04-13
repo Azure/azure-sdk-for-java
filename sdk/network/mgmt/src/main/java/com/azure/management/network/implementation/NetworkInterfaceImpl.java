@@ -20,55 +20,32 @@ import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for NetworkInterface and its create and update interfaces.
- */
+/** Implementation for NetworkInterface and its create and update interfaces. */
 class NetworkInterfaceImpl
-        extends GroupableParentResourceWithTagsImpl<
-        NetworkInterface,
-        NetworkInterfaceInner,
-        NetworkInterfaceImpl,
-        NetworkManager>
-        implements
-        NetworkInterface,
-        NetworkInterface.Definition,
-        NetworkInterface.Update {
-    /**
-     * the name of the network interface.
-     */
+    extends GroupableParentResourceWithTagsImpl<
+        NetworkInterface, NetworkInterfaceInner, NetworkInterfaceImpl, NetworkManager>
+    implements NetworkInterface, NetworkInterface.Definition, NetworkInterface.Update {
+    /** the name of the network interface. */
     private final String nicName;
-    /**
-     * used to generate unique name for any dependency resources.
-     */
+    /** used to generate unique name for any dependency resources. */
     protected final ResourceNamer namer;
-    /**
-     * references to all ip configuration.
-     */
+    /** references to all ip configuration. */
     private Map<String, NicIPConfiguration> nicIPConfigurations;
-    /**
-     * unique key of a creatable network security group to be associated with the network interface.
-     */
+    /** unique key of a creatable network security group to be associated with the network interface. */
     private String creatableNetworkSecurityGroupKey;
-    /**
-     * reference to an network security group to be associated with the network interface.
-     */
+    /** reference to an network security group to be associated with the network interface. */
     private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
-    /**
-     * cached related resources.
-     */
+    /** cached related resources. */
     private NetworkSecurityGroup networkSecurityGroup;
 
-    NetworkInterfaceImpl(String name,
-                         NetworkInterfaceInner innerModel,
-                         final NetworkManager networkManager) {
+    NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
         this.nicName = name;
         this.namer = this.manager().getSdkContext().getResourceNamerFactory().createResourceNamer(this.nicName);
@@ -79,23 +56,34 @@ class NetworkInterfaceImpl
 
     @Override
     public Mono<NetworkInterface> refreshAsync() {
-        return super.refreshAsync().map(networkInterface -> {
-            NetworkInterfaceImpl impl = (NetworkInterfaceImpl) networkInterface;
-            impl.clearCachedRelatedResources();
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                networkInterface -> {
+                    NetworkInterfaceImpl impl = (NetworkInterfaceImpl) networkInterface;
+                    impl.clearCachedRelatedResources();
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
-        //FIXME: 3rd parameter
-        return this.manager().inner().networkInterfaces().getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+        // FIXME: 3rd parameter
+        return this
+            .manager()
+            .inner()
+            .networkInterfaces()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
     protected Mono<NetworkInterfaceInner> applyTagsToInnerAsync() {
-        return this.manager().inner().networkInterfaces().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this
+            .manager()
+            .inner()
+            .networkInterfaces()
+            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
     }
 
     // Setters (fluent)
@@ -161,7 +149,8 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
+    public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(
+        LoadBalancer loadBalancer, String inboundNatRuleName) {
         this.primaryIPConfiguration().withExistingLoadBalancerInboundNatRule(loadBalancer, inboundNatRuleName);
         return this;
     }
@@ -169,8 +158,7 @@ class NetworkInterfaceImpl
     @Override
     public Update withoutLoadBalancerBackends() {
         for (NicIPConfiguration ipConfig : this.ipConfigurations().values()) {
-            this.updateIPConfiguration(ipConfig.name())
-                    .withoutLoadBalancerBackends();
+            this.updateIPConfiguration(ipConfig.name()).withoutLoadBalancerBackends();
         }
         return this;
     }
@@ -178,8 +166,7 @@ class NetworkInterfaceImpl
     @Override
     public Update withoutLoadBalancerInboundNatRules() {
         for (NicIPConfiguration ipConfig : this.ipConfigurations().values()) {
-            this.updateIPConfiguration(ipConfig.name())
-                    .withoutLoadBalancerInboundNatRules();
+            this.updateIPConfiguration(ipConfig.name()).withoutLoadBalancerInboundNatRules();
         }
         return this;
     }
@@ -368,17 +355,16 @@ class NetworkInterfaceImpl
     public NetworkSecurityGroup getNetworkSecurityGroup() {
         if (this.networkSecurityGroup == null && this.networkSecurityGroupId() != null) {
             String id = this.networkSecurityGroupId();
-            this.networkSecurityGroup = super.myManager
+            this.networkSecurityGroup =
+                super
+                    .myManager
                     .networkSecurityGroups()
-                    .getByResourceGroup(ResourceUtils.groupFromResourceId(id),
-                            ResourceUtils.nameFromResourceId(id));
+                    .getByResourceGroup(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
         }
         return this.networkSecurityGroup;
     }
 
-    /**
-     * @return the primary IP configuration of the network interface
-     */
+    /** @return the primary IP configuration of the network interface */
     @Override
     public NicIPConfigurationImpl primaryIPConfiguration() {
         NicIPConfigurationImpl primaryIPConfig = null;
@@ -405,9 +391,7 @@ class NetworkInterfaceImpl
         return primaryIPConfig;
     }
 
-    /**
-     * @return the list of DNS server IPs from the DNS settings
-     */
+    /** @return the list of DNS server IPs from the DNS settings */
     private List<String> dnsServerIPs() {
         List<String> dnsServers = new ArrayList<String>();
         if (this.inner().dnsSettings() == null) {
@@ -425,24 +409,23 @@ class NetworkInterfaceImpl
         List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners != null) {
             for (NetworkInterfaceIPConfigurationInner inner : inners) {
-                NicIPConfigurationImpl nicIPConfiguration = new NicIPConfigurationImpl(inner, this, super.myManager, false);
+                NicIPConfigurationImpl nicIPConfiguration =
+                    new NicIPConfigurationImpl(inner, this, super.myManager, false);
                 this.nicIPConfigurations.put(nicIPConfiguration.name(), nicIPConfiguration);
             }
         }
     }
 
     /**
-     * Gets a new IP configuration child resource {@link NicIPConfiguration} wrapping {@link NetworkInterfaceIPConfigurationInner}.
+     * Gets a new IP configuration child resource {@link NicIPConfiguration} wrapping {@link
+     * NetworkInterfaceIPConfigurationInner}.
      *
      * @param name the name for the new ip configuration
      * @return {@link NicIPConfiguration}
      */
     private NicIPConfigurationImpl prepareNewNicIPConfiguration(String name) {
-        NicIPConfigurationImpl nicIPConfiguration = NicIPConfigurationImpl.prepareNicIPConfiguration(
-                name,
-                this,
-                super.myManager
-        );
+        NicIPConfigurationImpl nicIPConfiguration =
+            NicIPConfigurationImpl.prepareNicIPConfiguration(name, this, super.myManager);
         return nicIPConfiguration;
     }
 
@@ -469,7 +452,11 @@ class NetworkInterfaceImpl
 
     @Override
     protected Mono<NetworkInterfaceInner> createInner() {
-        return this.manager().inner().networkInterfaces().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this
+            .manager()
+            .inner()
+            .networkInterfaces()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override

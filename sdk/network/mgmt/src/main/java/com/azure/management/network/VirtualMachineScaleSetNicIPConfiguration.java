@@ -9,14 +9,10 @@ import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * An IP configuration in a network interface associated with a virtual machine
- * scale set.
- */
+/** An IP configuration in a network interface associated with a virtual machine scale set. */
 @Fluent
-public interface VirtualMachineScaleSetNicIPConfiguration extends
-        NicIPConfigurationBase,
+public interface VirtualMachineScaleSetNicIPConfiguration
+    extends NicIPConfigurationBase,
         HasInner<NetworkInterfaceIPConfigurationInner>,
         ChildResource<VirtualMachineScaleSetNetworkInterface>,
         HasPrivateIPAddress,
