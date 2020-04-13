@@ -7,11 +7,9 @@ import com.azure.management.network.models.ExpressRouteCircuitStatsInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
-/**
- * Implementation for {@link ExpressRouteCircuitStats}.
- */
+/** Implementation for {@link ExpressRouteCircuitStats}. */
 public class ExpressRouteCircuitStatsImpl extends WrapperImpl<ExpressRouteCircuitStatsInner>
-        implements ExpressRouteCircuitStats {
+    implements ExpressRouteCircuitStats {
     ExpressRouteCircuitStatsImpl(ExpressRouteCircuitStatsInner innerObject) {
         super(innerObject);
     }
@@ -36,4 +34,3 @@ public class ExpressRouteCircuitStatsImpl extends WrapperImpl<ExpressRouteCircui
         return Utils.toPrimitiveLong(inner().secondarybytesOut());
     }
 }
-

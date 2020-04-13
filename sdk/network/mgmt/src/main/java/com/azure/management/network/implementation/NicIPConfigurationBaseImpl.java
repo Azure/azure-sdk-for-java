@@ -21,7 +21,6 @@ import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,18 +35,13 @@ import java.util.Map;
  * @param <ParentT> parent interface
  */
 abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT extends HasManager<NetworkManager>>
-        extends
-        ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT>
-        implements
-        NicIPConfigurationBase {
-    /**
-     * the network client.
-     */
+    extends ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT>
+    implements NicIPConfigurationBase {
+    /** the network client. */
     private final NetworkManager networkManager;
 
-    protected NicIPConfigurationBaseImpl(NetworkInterfaceIPConfigurationInner inner,
-                                         ParentImplT parent,
-                                         NetworkManager networkManager) {
+    protected NicIPConfigurationBaseImpl(
+        NetworkInterfaceIPConfigurationInner inner, ParentImplT parent, NetworkManager networkManager) {
         super(inner, parent);
         this.networkManager = networkManager;
     }
@@ -122,7 +116,10 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
 
     @Override
     public Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends() {
-        return this.parent().manager().listAssociatedApplicationGatewayBackends(this.inner().applicationGatewayBackendAddressPools());
+        return this
+            .parent()
+            .manager()
+            .listAssociatedApplicationGatewayBackends(this.inner().applicationGatewayBackendAddressPools());
     }
 
     @Override
