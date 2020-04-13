@@ -4,7 +4,6 @@
 package com.azure.management.appservice.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.Azure;
 import com.azure.management.appservice.JavaVersion;
 import com.azure.management.appservice.PricingTier;
@@ -52,7 +51,7 @@ public final class ManageWebAppLogs {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            final WebApp app = azure.appServices().webApps().define(appName)
+            final WebApp app = azure.webApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.BASIC_B1)
@@ -181,7 +180,7 @@ public final class ManageWebAppLogs {
 
             Azure azure = Azure
                     .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

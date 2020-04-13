@@ -30,6 +30,7 @@ The following sections provide several code snippets covering some of the most c
 - [Clear read only from a configuration setting][sample_read_only]
 - [Conditional request a configuration setting][sample_conditional_request]
 - [AAD Authentication][sample_aad]
+- [HTTP client with proxy option][proxy_option]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -48,6 +49,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_KEY_CONCEPTS]: ../../README.md#key-concepts
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
+[proxy_option]: java/com/azure/data/appconfiguration/ProxyOptionsSample.java
 [sample_hello_world]: java/com/azure/data/appconfiguration/HelloWorld.java
 [sample_list_configuration_settings]: java/com/azure/data/appconfiguration/ConfigurationSets.java
 [sample_conditional_request]: java/com/azure/data/appconfiguration/ConditionalRequest.java

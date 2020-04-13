@@ -1,38 +1,35 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//package com.azure.management;
+// package com.azure.management;
 //
-//import com.microsoft.azure.PagedList;
-//import com.microsoft.azure.management.dns.ARecordSet;
-//import com.microsoft.azure.management.dns.AaaaRecordSet;
-//import com.microsoft.azure.management.dns.CNameRecordSet;
-//import com.microsoft.azure.management.dns.DnsRecordSet;
-//import com.microsoft.azure.management.dns.DnsZone;
-//import com.microsoft.azure.management.dns.DnsZones;
-//import com.microsoft.azure.management.dns.MxRecord;
-//import com.microsoft.azure.management.dns.MXRecordSet;
-//import com.microsoft.azure.management.dns.NSRecordSet;
-//import com.microsoft.azure.management.dns.PtrRecordSet;
-//import com.microsoft.azure.management.dns.RecordType;
-//import com.microsoft.azure.management.dns.SoaRecord;
-//import com.microsoft.azure.management.dns.SoaRecordSet;
-//import com.microsoft.azure.management.dns.SrvRecord;
-//import com.microsoft.azure.management.dns.SrvRecordSet;
-//import com.microsoft.azure.management.dns.TxtRecord;
-//import com.microsoft.azure.management.dns.TxtRecordSet;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import org.junit.Assert;
+// import com.microsoft.azure.PagedList;
+// import com.microsoft.azure.management.dns.ARecordSet;
+// import com.microsoft.azure.management.dns.AaaaRecordSet;
+// import com.microsoft.azure.management.dns.CNameRecordSet;
+// import com.microsoft.azure.management.dns.DnsRecordSet;
+// import com.microsoft.azure.management.dns.DnsZone;
+// import com.microsoft.azure.management.dns.DnsZones;
+// import com.microsoft.azure.management.dns.MxRecord;
+// import com.microsoft.azure.management.dns.MXRecordSet;
+// import com.microsoft.azure.management.dns.NSRecordSet;
+// import com.microsoft.azure.management.dns.PtrRecordSet;
+// import com.microsoft.azure.management.dns.RecordType;
+// import com.microsoft.azure.management.dns.SoaRecord;
+// import com.microsoft.azure.management.dns.SoaRecordSet;
+// import com.microsoft.azure.management.dns.SrvRecord;
+// import com.microsoft.azure.management.dns.SrvRecordSet;
+// import com.microsoft.azure.management.dns.TxtRecord;
+// import com.microsoft.azure.management.dns.TxtRecordSet;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import org.junit.Assert;
 //
-//import java.util.HashMap;
+// import java.util.HashMap;
 //
-///**
+/// **
 // * Test of Dns management.
 // */
-//public class TestDns extends TestTemplate<DnsZone, DnsZones> {
+// public class TestDns extends TestTemplate<DnsZone, DnsZones> {
 //    @Override
 //    public DnsZone createResource(DnsZones dnsZones) throws Exception {
 //        final Region region = Region.US_EAST;
@@ -259,7 +256,8 @@
 //        Assert.assertEquals(cnameRecordSets.size(), 2);
 //        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
 //            Assert.assertTrue(cnameRecordSet.canonicalName().startsWith("doc.contoso.com"));
-//            Assert.assertTrue(cnameRecordSet.name().startsWith("documents") || cnameRecordSet.name().startsWith("help"));
+//            Assert.assertTrue(cnameRecordSet.name().startsWith("documents") ||
+// cnameRecordSet.name().startsWith("help"));
 //        }
 //
 //        // Check NS records
@@ -454,4 +452,4 @@
 //        }
 //        System.out.println(info.toString());
 //    }
-//}
+// }

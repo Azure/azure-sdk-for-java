@@ -12,14 +12,9 @@ import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for User and its parent interfaces.
- */
-class ActiveDirectoryUserImpl
-        extends CreatableUpdatableImpl<ActiveDirectoryUser, UserInner, ActiveDirectoryUserImpl>
-        implements ActiveDirectoryUser,
-            ActiveDirectoryUser.Definition,
-            ActiveDirectoryUser.Update {
+/** Implementation for User and its parent interfaces. */
+class ActiveDirectoryUserImpl extends CreatableUpdatableImpl<ActiveDirectoryUser, UserInner, ActiveDirectoryUserImpl>
+    implements ActiveDirectoryUser, ActiveDirectoryUser.Definition, ActiveDirectoryUser.Update {
 
     private final GraphRbacManager manager;
     private UserCreateParameters createParameters;
@@ -97,25 +92,35 @@ class ActiveDirectoryUserImpl
     public Mono<ActiveDirectoryUser> createResourceAsync() {
         Mono<ActiveDirectoryUserImpl> domain;
         if (emailAlias != null) {
-            domain = manager().inner().domains().listAsync(null)
-                    .map(domainInner -> {
-                        if (domainInner.isVerified() && domainInner.isDefault()) {
-                            if (emailAlias != null) {
-                                withUserPrincipalName(emailAlias + "@" + domainInner.name());
+            domain =
+                manager()
+                    .inner()
+                    .domains()
+                    .listAsync(null)
+                    .map(
+                        domainInner -> {
+                            if (domainInner.isVerified() && domainInner.isDefault()) {
+                                if (emailAlias != null) {
+                                    withUserPrincipalName(emailAlias + "@" + domainInner.name());
+                                }
                             }
-                        }
-                        return Mono.just(ActiveDirectoryUserImpl.this);
-                    }).blockLast();
+                            return Mono.just(ActiveDirectoryUserImpl.this);
+                        })
+                    .blockLast();
         } else {
             domain = Mono.just(this);
         }
-        return domain.flatMap(activeDirectoryUser -> manager().inner().users().createAsync(createParameters))
-        .map(innerToFluentMap(this));
+        return domain
+            .flatMap(activeDirectoryUser -> manager().inner().users().createAsync(createParameters))
+            .map(innerToFluentMap(this));
     }
 
     public Mono<ActiveDirectoryUser> updateResourceAsync() {
-        return manager().inner().users().updateAsync(id(), updateParameters)
-                .then(ActiveDirectoryUserImpl.this.refreshAsync());
+        return manager()
+            .inner()
+            .users()
+            .updateAsync(id(), updateParameters)
+            .then(ActiveDirectoryUserImpl.this.refreshAsync());
     }
 
     private void withMailNickname(String mailNickname) {

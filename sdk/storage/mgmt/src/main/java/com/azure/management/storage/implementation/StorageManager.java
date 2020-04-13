@@ -23,9 +23,7 @@ import com.azure.management.storage.Usages;
 import com.azure.management.storage.models.StorageManagementClientBuilder;
 import com.azure.management.storage.models.StorageManagementClientImpl;
 
-/**
- * Entry point to Azure storage resource management.
- */
+/** Entry point to Azure storage resource management. */
 public final class StorageManager extends Manager<StorageManager, StorageManagementClientImpl> {
     // Collections
     private StorageAccounts storageAccounts;
@@ -52,13 +50,15 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      * @return the StorageManager
      */
     public static StorageManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), subscriptionId);
+                .buildClient(),
+            subscriptionId);
     }
 
     /**
@@ -77,16 +77,14 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
-     * @param SdkContext the sdk context
+     * @param sdkContext the sdk context
      * @return the StorageManager
      */
-    public static StorageManager authenticate(RestClient restClient, String subscriptionId, SdkContext SdkContext) {
-        return new StorageManager(restClient, subscriptionId, SdkContext);
+    public static StorageManager authenticate(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
+        return new StorageManager(restClient, subscriptionId, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of StorageManager that exposes storage management API entry points.
@@ -98,9 +96,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         StorageManager authenticate(AzureTokenCredential credentials, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
+    /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public StorageManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
             return StorageManager.authenticate(buildRestClient(credentials), subscriptionId);
@@ -108,19 +104,18 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     }
 
     private StorageManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
-        super(restClient,
-                subscriptionId,
-                new StorageManagementClientBuilder()
-                        .pipeline(restClient.getHttpPipeline())
-                        .host(restClient.getBaseUrl().toString())
-                        .subscriptionId(subscriptionId)
-                        .build(),
-                sdkContext);
+        super(
+            restClient,
+            subscriptionId,
+            new StorageManagementClientBuilder()
+                .pipeline(restClient.getHttpPipeline())
+                .host(restClient.getBaseUrl().toString())
+                .subscriptionId(subscriptionId)
+                .buildClient(),
+            sdkContext);
     }
 
-    /**
-     * @return the storage account management API entry point
-     */
+    /** @return the storage account management API entry point */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
             storageAccounts = new StorageAccountsImpl(this);
@@ -128,9 +123,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return storageAccounts;
     }
 
-    /**
-     * @return the storage service usage management API entry point
-     */
+    /** @return the storage service usage management API entry point */
     public Usages usages() {
         if (storageUsages == null) {
             storageUsages = new UsagesImpl(this);
@@ -138,9 +131,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return storageUsages;
     }
 
-    /**
-     * @return the storage service SKU management API entry point
-     */
+    /** @return the storage service SKU management API entry point */
     public StorageSkus storageSkus() {
         if (storageSkus == null) {
             storageSkus = new StorageSkusImpl(this);
@@ -148,9 +139,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return storageSkus;
     }
 
-    /**
-     * @return the blob container management API entry point
-     */
+    /** @return the blob container management API entry point */
     public BlobContainers blobContainers() {
         if (blobContainers == null) {
             blobContainers = new BlobContainersImpl(this);
@@ -158,9 +147,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return blobContainers;
     }
 
-    /**
-     * @return the blob service management API entry point
-     */
+    /** @return the blob service management API entry point */
     public BlobServices blobServices() {
         if (blobServices == null) {
             blobServices = new BlobServicesImpl(this);
@@ -168,9 +155,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return blobServices;
     }
 
-    /**
-     * @return the management policy management API entry point
-     */
+    /** @return the management policy management API entry point */
     public ManagementPolicies managementPolicies() {
         if (managementPolicies == null) {
             managementPolicies = new ManagementPoliciesImpl(this);

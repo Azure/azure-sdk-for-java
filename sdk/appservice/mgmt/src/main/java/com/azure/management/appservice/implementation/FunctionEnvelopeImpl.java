@@ -6,14 +6,10 @@ package com.azure.management.appservice.implementation;
 import com.azure.management.appservice.FunctionEnvelope;
 import com.azure.management.appservice.models.FunctionEnvelopeInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.Map;
 
-/**
- * Implementation for {@link FunctionEnvelope}.
- */
-public class FunctionEnvelopeImpl extends
-        WrapperImpl<FunctionEnvelopeInner> implements FunctionEnvelope {
+/** Implementation for {@link FunctionEnvelope}. */
+public class FunctionEnvelopeImpl extends WrapperImpl<FunctionEnvelopeInner> implements FunctionEnvelope {
 
     FunctionEnvelopeImpl(FunctionEnvelopeInner innerModel) {
         super(innerModel);

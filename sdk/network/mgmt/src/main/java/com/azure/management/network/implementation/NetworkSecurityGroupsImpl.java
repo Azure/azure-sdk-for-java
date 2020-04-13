@@ -8,21 +8,18 @@ import com.azure.management.network.NetworkSecurityGroups;
 import com.azure.management.network.models.NetworkSecurityGroupInner;
 import com.azure.management.network.models.NetworkSecurityGroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
+import java.util.Set;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
-
-/**
- * Implementation for NetworkSecurityGroups.
- */
+/** Implementation for NetworkSecurityGroups. */
 class NetworkSecurityGroupsImpl
-        extends TopLevelModifiableResourcesImpl<
+    extends TopLevelModifiableResourcesImpl<
         NetworkSecurityGroup,
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
         NetworkSecurityGroupsInner,
         NetworkManager>
-        implements NetworkSecurityGroups {
+    implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkSecurityGroups(), networkManager);

@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SKUCapability model.
- */
+/** The SKUCapability model. */
 @Immutable
 public final class SKUCapability {
     /*
@@ -27,10 +25,9 @@ public final class SKUCapability {
     private String value;
 
     /**
-     * Get the name property: The name of capability, The capability
-     * information in the specified SKU, including file encryption, network
-     * ACLs, change notification, etc.
-     * 
+     * Get the name property: The name of capability, The capability information in the specified SKU, including file
+     * encryption, network ACLs, change notification, etc.
+     *
      * @return the name value.
      */
     public String name() {
@@ -38,9 +35,8 @@ public final class SKUCapability {
     }
 
     /**
-     * Get the value property: A string value to indicate states of given
-     * capability. Possibly 'true' or 'false'.
-     * 
+     * Get the value property: A string value to indicate states of given capability. Possibly 'true' or 'false'.
+     *
      * @return the value value.
      */
     public String value() {

@@ -26,13 +26,15 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
 
     @Test
     public void canConfigureNetworkRulesWithCreate() throws Exception {
-        String SA_NAME1 = generateRandomResourceName("javacsmsa", 15);
-        String SA_NAME2 = generateRandomResourceName("javacsmsa", 15);
-        String SA_NAME3 = generateRandomResourceName("javacsmsa", 15);
-        String SA_NAME4 = generateRandomResourceName("javacsmsa", 15);
+        String saName1 = generateRandomResourceName("javacsmsa", 15);
+        String saName2 = generateRandomResourceName("javacsmsa", 15);
+        String saName3 = generateRandomResourceName("javacsmsa", 15);
+        String saName4 = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount1 = storageManager.storageAccounts()
-                .define(SA_NAME1)
+        StorageAccount storageAccount1 =
+            storageManager
+                .storageAccounts()
+                .define(saName1)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -51,12 +53,12 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         Assertions.assertTrue(storageAccount1.canReadMetricsFromAnyNetwork());
         Assertions.assertTrue(storageAccount1.canReadMetricsFromAnyNetwork());
 
-        ResourceGroup resourceGroup = resourceManager
-                .resourceGroups()
-                .getByName(storageAccount1.resourceGroupName());
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().getByName(storageAccount1.resourceGroupName());
 
-        StorageAccount storageAccount2 = storageManager.storageAccounts()
-                .define(SA_NAME2)
+        StorageAccount storageAccount2 =
+            storageManager
+                .storageAccounts()
+                .define(saName2)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(resourceGroup)
                 .withAccessFromIpAddress("23.20.0.0")
@@ -80,8 +82,10 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         Assertions.assertFalse(storageAccount2.canReadMetricsFromAnyNetwork());
         Assertions.assertFalse(storageAccount2.canReadMetricsFromAnyNetwork());
 
-        StorageAccount storageAccount3 = storageManager.storageAccounts()
-                .define(SA_NAME3)
+        StorageAccount storageAccount3 =
+            storageManager
+                .storageAccounts()
+                .define(saName3)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAccessFromAllNetworks()
@@ -106,8 +110,10 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         Assertions.assertTrue(storageAccount3.canReadMetricsFromAnyNetwork());
         Assertions.assertTrue(storageAccount3.canReadLogEntriesFromAnyNetwork());
 
-        StorageAccount storageAccount4 = storageManager.storageAccounts()
-                .define(SA_NAME4)
+        StorageAccount storageAccount4 =
+            storageManager
+                .storageAccounts()
+                .define(saName4)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(resourceGroup)
                 .withReadAccessToLogEntriesFromAnyNetwork()
@@ -135,10 +141,12 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
 
     @Test
     public void canConfigureNetworkRulesWithUpdate() throws Exception {
-        String SA_NAME1 = generateRandomResourceName("javacsmsa", 15);
+        String saName1 = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount1 = storageManager.storageAccounts()
-                .define(SA_NAME1)
+        StorageAccount storageAccount1 =
+            storageManager
+                .storageAccounts()
+                .define(saName1)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -157,10 +165,7 @@ public class StorageAccountNetworkRuleTests extends StorageManagementTest {
         Assertions.assertTrue(storageAccount1.canReadMetricsFromAnyNetwork());
         Assertions.assertTrue(storageAccount1.canReadMetricsFromAnyNetwork());
 
-        storageAccount1.update()
-                .withAccessFromSelectedNetworks()
-                .withAccessFromIpAddressRange("23.20.0.0/20")
-                .apply();
+        storageAccount1.update().withAccessFromSelectedNetworks().withAccessFromIpAddressRange("23.20.0.0/20").apply();
 
         Assertions.assertNotNull(storageAccount1.networkSubnetsWithAccess());
         Assertions.assertEquals(0, storageAccount1.networkSubnetsWithAccess().size());

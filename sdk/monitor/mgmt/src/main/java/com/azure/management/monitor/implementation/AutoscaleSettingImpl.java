@@ -3,36 +3,30 @@
 
 package com.azure.management.monitor.implementation;
 
-import com.azure.management.monitor.EmailNotification;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.AutoscaleNotification;
 import com.azure.management.monitor.AutoscaleProfile;
 import com.azure.management.monitor.AutoscaleSetting;
+import com.azure.management.monitor.EmailNotification;
 import com.azure.management.monitor.WebhookNotification;
 import com.azure.management.monitor.models.AutoscaleProfileInner;
 import com.azure.management.monitor.models.AutoscaleSettingResourceInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for AutoscaleSetting.
- */
+/** Implementation for AutoscaleSetting. */
 class AutoscaleSettingImpl
-        extends GroupableResourceImpl<
-        AutoscaleSetting,
-        AutoscaleSettingResourceInner,
-        AutoscaleSettingImpl,
-        MonitorManager>
-        implements
-        AutoscaleSetting,
-        AutoscaleSetting.Definition,
-        AutoscaleSetting.Update {
+    extends GroupableResourceImpl<AutoscaleSetting, AutoscaleSettingResourceInner, AutoscaleSettingImpl, MonitorManager>
+    implements AutoscaleSetting, AutoscaleSetting.Definition, AutoscaleSetting.Update {
 
-    AutoscaleSettingImpl(String name, final AutoscaleSettingResourceInner innerModel, final MonitorManager monitorManager) {
+    private final ClientLogger logger = new ClientLogger(getClass());
+
+    AutoscaleSettingImpl(
+        String name, final AutoscaleSettingResourceInner innerModel, final MonitorManager monitorManager) {
         super(name, innerModel, monitorManager);
         if (isInCreateMode()) {
             this.inner().withEnabled(true);
@@ -69,8 +63,8 @@ class AutoscaleSettingImpl
     @Override
     public boolean adminEmailNotificationEnabled() {
         if (this.inner().notifications() != null
-                && this.inner().notifications().get(0) != null
-                && this.inner().notifications().get(0).email() != null) {
+            && this.inner().notifications().get(0) != null
+            && this.inner().notifications().get(0).email() != null) {
             return this.inner().notifications().get(0).email().sendToSubscriptionAdministrator();
         }
         return false;
@@ -79,8 +73,8 @@ class AutoscaleSettingImpl
     @Override
     public boolean coAdminEmailNotificationEnabled() {
         if (this.inner().notifications() != null
-                && this.inner().notifications().get(0) != null
-                && this.inner().notifications().get(0).email() != null) {
+            && this.inner().notifications().get(0) != null
+            && this.inner().notifications().get(0).email() != null) {
             return this.inner().notifications().get(0).email().sendToSubscriptionCoAdministrators();
         }
         return false;
@@ -89,9 +83,9 @@ class AutoscaleSettingImpl
     @Override
     public List<String> customEmailsNotification() {
         if (this.inner().notifications() != null
-                && this.inner().notifications().get(0) != null
-                && this.inner().notifications().get(0).email() != null
-                && this.inner().notifications().get(0).email().customEmails() != null) {
+            && this.inner().notifications().get(0) != null
+            && this.inner().notifications().get(0).email() != null
+            && this.inner().notifications().get(0).email().customEmails() != null) {
             return this.inner().notifications().get(0).email().customEmails();
         }
         return new ArrayList<>();
@@ -100,10 +94,10 @@ class AutoscaleSettingImpl
     @Override
     public String webhookNotification() {
         if (this.inner().notifications() != null
-                && this.inner().notifications().get(0) != null
-                && this.inner().notifications().get(0).email() != null
-                && this.inner().notifications().get(0).webhooks() != null
-                && this.inner().notifications().get(0).webhooks().size() > 0) {
+            && this.inner().notifications().get(0) != null
+            && this.inner().notifications().get(0).email() != null
+            && this.inner().notifications().get(0).webhooks() != null
+            && this.inner().notifications().get(0).webhooks().size() > 0) {
             return this.inner().notifications().get(0).webhooks().get(0).serviceUri();
         }
         return null;
@@ -118,7 +112,8 @@ class AutoscaleSettingImpl
     public AutoscaleProfileImpl updateAutoscaleProfile(String name) {
         int idx = getProfileIndexByName(name);
         if (idx == -1) {
-            throw new IllegalArgumentException("Cannot find autoscale profile with the name '" + name + "'");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Cannot find autoscale profile with the name '" + name + "'"));
         }
         AutoscaleProfileInner innerProfile = this.inner().profiles().get(idx);
 
@@ -219,13 +214,21 @@ class AutoscaleSettingImpl
 
     @Override
     public Mono<AutoscaleSetting> createResourceAsync() {
-        return this.manager().inner().autoscaleSettings().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .autoscaleSettings()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<AutoscaleSettingResourceInner> getInnerAsync() {
-        return this.manager().inner().autoscaleSettings().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .autoscaleSettings()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     public AutoscaleSettingImpl addNewAutoscaleProfile(AutoscaleProfileImpl profile) {
@@ -252,4 +255,3 @@ class AutoscaleSettingImpl
         return notificationInner;
     }
 }
-

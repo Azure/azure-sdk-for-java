@@ -2,30 +2,34 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringInner;
-import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringsInner;
-import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.ExpressRouteCrossConnection;
 import com.azure.management.network.ExpressRouteCrossConnectionPeering;
 import com.azure.management.network.ExpressRoutePeeringState;
 import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringInner;
+import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringsInner;
+import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.management.resources.fluentcore.utils.Utils;
+import java.util.Arrays;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-
-class ExpressRouteCrossConnectionPeeringImpl extends
-        CreatableUpdatableImpl<ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringImpl>
-        implements
+class ExpressRouteCrossConnectionPeeringImpl
+    extends CreatableUpdatableImpl<
         ExpressRouteCrossConnectionPeering,
+        ExpressRouteCrossConnectionPeeringInner,
+        ExpressRouteCrossConnectionPeeringImpl>
+    implements ExpressRouteCrossConnectionPeering,
         ExpressRouteCrossConnectionPeering.Definition,
         ExpressRouteCrossConnectionPeering.Update {
     private final ExpressRouteCrossConnectionPeeringsInner client;
     private final ExpressRouteCrossConnection parent;
 
-    ExpressRouteCrossConnectionPeeringImpl(ExpressRouteCrossConnectionImpl parent, ExpressRouteCrossConnectionPeeringInner innerObject, ExpressRoutePeeringType type) {
+    ExpressRouteCrossConnectionPeeringImpl(
+        ExpressRouteCrossConnectionImpl parent,
+        ExpressRouteCrossConnectionPeeringInner innerObject,
+        ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
         this.client = parent.manager().inner().expressRouteCrossConnectionPeerings();
         this.parent = parent;
@@ -75,7 +79,6 @@ class ExpressRouteCrossConnectionPeeringImpl extends
         return this;
     }
 
-
     @Override
     public Ipv6PeeringConfigImpl defineIpv6Config() {
         return new Ipv6PeeringConfigImpl(new Ipv6ExpressRouteCircuitPeeringConfig(), this);
@@ -122,8 +125,11 @@ class ExpressRouteCrossConnectionPeeringImpl extends
 
     @Override
     public Mono<ExpressRouteCrossConnectionPeering> createResourceAsync() {
-        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
-                .map(innerModel -> {
+        return this
+            .client
+            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
+            .map(
+                innerModel -> {
                     ExpressRouteCrossConnectionPeeringImpl.this.setInner(innerModel);
                     parent.refresh();
                     return ExpressRouteCrossConnectionPeeringImpl.this;

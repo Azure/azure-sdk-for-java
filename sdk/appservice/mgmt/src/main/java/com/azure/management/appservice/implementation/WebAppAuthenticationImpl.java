@@ -8,20 +8,17 @@ import com.azure.management.appservice.WebAppAuthentication;
 import com.azure.management.appservice.WebAppBase;
 import com.azure.management.appservice.models.SiteAuthSettingsInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-
 import java.util.ArrayList;
 
 /**
- *  Implementation for WebAppAuthentication and its create and update interfaces.
- *  @param <FluentT> the fluent interface of the parent web app
- *  @param <FluentImplT> the fluent implementation of the parent web app
+ * Implementation for WebAppAuthentication and its create and update interfaces.
+ *
+ * @param <FluentT> the fluent interface of the parent web app
+ * @param <FluentImplT> the fluent implementation of the parent web app
  */
-class WebAppAuthenticationImpl<
-        FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+class WebAppAuthenticationImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteAuthSettingsInner>
-    implements
-        WebAppAuthentication,
+    implements WebAppAuthentication,
         WebAppAuthentication.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         WebAppAuthentication.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
@@ -53,8 +50,11 @@ class WebAppAuthenticationImpl<
     }
 
     @Override
-    public WebAppAuthenticationImpl<FluentT, FluentImplT> withDefaultAuthenticationProvider(BuiltInAuthenticationProvider provider) {
-        inner().withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE).withDefaultProvider(provider);
+    public WebAppAuthenticationImpl<FluentT, FluentImplT> withDefaultAuthenticationProvider(
+        BuiltInAuthenticationProvider provider) {
+        inner()
+            .withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE)
+            .withDefaultProvider(provider);
         return this;
     }
 

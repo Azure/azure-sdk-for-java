@@ -8,34 +8,25 @@ import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.io.File;
 import java.io.IOException;
 
-/**
- * A client-side representation of an application gateway SSL certificate.
- */
+/** A client-side representation of an application gateway SSL certificate. */
 @Fluent()
-public interface ApplicationGatewaySslCertificate extends
-        HasInner<ApplicationGatewaySslCertificateInner>,
-        ChildResource<ApplicationGateway> {
+public interface ApplicationGatewaySslCertificate
+    extends HasInner<ApplicationGatewaySslCertificateInner>, ChildResource<ApplicationGateway> {
 
-    /**
-     * @return the public data of the certificate
-     */
+    /** @return the public data of the certificate */
     String publicData();
 
     /**
-     * Get Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
+     * Get Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
      *
      * @return the secret id
      */
     String keyVaultSecretId();
 
-    /**
-     * Grouping of application gateway SSL certificate definition stages.
-     */
+    /** Grouping of application gateway SSL certificate definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of an application gateway SSL certificate.
@@ -47,14 +38,13 @@ public interface ApplicationGatewaySslCertificate extends
 
         /**
          * The final stage of an application gateway SSL certificate definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the definition can be attached to the
+         * parent application gateway definition.
          *
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT> {
         }
 
         /**
@@ -90,7 +80,8 @@ public interface ApplicationGatewaySslCertificate extends
         }
 
         /**
-         * The stage of an SSL certificate definition allowing to specify the password for the private key (PFX) content of the certificate.
+         * The stage of an SSL certificate definition allowing to specify the password for the private key (PFX) content
+         * of the certificate.
          *
          * @param <ParentT> the stage of the parent application gateway to return to after attaching
          */
@@ -110,28 +101,24 @@ public interface ApplicationGatewaySslCertificate extends
      *
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
             DefinitionStages.WithData<ParentT>,
             DefinitionStages.WithPassword<ParentT> {
     }
 
-    /**
-     * Grouping of application gateway SSL certificate update stages.
-     */
+    /** Grouping of application gateway SSL certificate update stages. */
     interface UpdateStages {
     }
 
-    /**
-     * The entirety of an application gateway SSL certificate update as part of an application gateway update.
-     */
-    interface Update extends
-            Settable<ApplicationGateway.Update> {
+    /** The entirety of an application gateway SSL certificate update as part of an application gateway update. */
+    interface Update extends Settable<ApplicationGateway.Update> {
     }
 
     /**
-     * Grouping of application gateway SSL certificate definition stages applicable as part of an application gateway update.
+     * Grouping of application gateway SSL certificate definition stages applicable as part of an application gateway
+     * update.
      */
     interface UpdateDefinitionStages {
         /**
@@ -144,14 +131,13 @@ public interface ApplicationGatewaySslCertificate extends
 
         /**
          * The final stage of an application gateway SSL certificate definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the definition can be attached to the
+         * parent application gateway definition.
          *
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT> {
         }
 
         /**
@@ -187,7 +173,8 @@ public interface ApplicationGatewaySslCertificate extends
         }
 
         /**
-         * The stage of an SSL certificate definition allowing to specify the password for the private key (PFX) content of the certificate.
+         * The stage of an SSL certificate definition allowing to specify the password for the private key (PFX) content
+         * of the certificate.
          *
          * @param <ParentT> the stage of the parent application gateway to return to after attaching
          */
@@ -207,8 +194,8 @@ public interface ApplicationGatewaySslCertificate extends
      *
      * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithData<ParentT>,
             UpdateDefinitionStages.WithPassword<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {

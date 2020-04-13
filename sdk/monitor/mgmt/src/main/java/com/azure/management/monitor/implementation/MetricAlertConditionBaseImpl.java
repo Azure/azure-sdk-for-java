@@ -7,7 +7,6 @@ import com.azure.management.monitor.MetricAlertRuleTimeAggregation;
 import com.azure.management.monitor.MetricDimension;
 import com.azure.management.monitor.MultiMetricCriteria;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,8 +19,9 @@ import java.util.TreeMap;
  * @param <InnerT> inner class, MetricCriteria or DynamicMetricCriteria
  * @param <SubclassT> subclass, i.e., MetricAlertConditionImpl or MetricDynamicAlertConditionImpl
  */
-class MetricAlertConditionBaseImpl<InnerT extends MultiMetricCriteria, SubclassT extends MetricAlertConditionBaseImpl<InnerT, SubclassT>>
-        extends WrapperImpl<InnerT> {
+class MetricAlertConditionBaseImpl<
+        InnerT extends MultiMetricCriteria, SubclassT extends MetricAlertConditionBaseImpl<InnerT, SubclassT>>
+    extends WrapperImpl<InnerT> {
 
     protected final MetricAlertImpl parent;
     protected final TreeMap<String, MetricDimension> dimensions;

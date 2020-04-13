@@ -12,9 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the AuthorizationManagementClientImpl type.
- */
+/** A builder for creating a new instance of the AuthorizationManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {AuthorizationManagementClientImpl.class})
 public final class AuthorizationManagementClientBuilder {
     /*
@@ -24,7 +22,7 @@ public final class AuthorizationManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the AuthorizationManagementClientBuilder.
      */
@@ -40,7 +38,7 @@ public final class AuthorizationManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the AuthorizationManagementClientBuilder.
      */
@@ -56,7 +54,7 @@ public final class AuthorizationManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the AuthorizationManagementClientBuilder.
      */
@@ -72,7 +70,7 @@ public final class AuthorizationManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the AuthorizationManagementClientBuilder.
      */
@@ -83,10 +81,10 @@ public final class AuthorizationManagementClientBuilder {
 
     /**
      * Builds an instance of AuthorizationManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of AuthorizationManagementClientImpl.
      */
-    public AuthorizationManagementClientImpl build() {
+    public AuthorizationManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -94,7 +92,10 @@ public final class AuthorizationManagementClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         AuthorizationManagementClientImpl client = new AuthorizationManagementClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

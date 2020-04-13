@@ -18,15 +18,14 @@ public class AzureTestCredential extends ApplicationTokenCredential {
 
     public AzureTestCredential(final String mockUrl, String mockTenant, boolean isPlaybackMode) {
         super("test", mockTenant, "test", new AzureEnvironment(new HashMap<String, String>() {{
-            put("managementEndpointUrl", mockUrl);
-            put("resourceManagerEndpointUrl", mockUrl);
-            put("sqlManagementEndpointUrl", mockUrl);
-            put("galleryEndpointUrl", mockUrl);
-            put("activeDirectoryEndpointUrl", mockUrl);
-            put("activeDirectoryResourceId", mockUrl);
-            put("activeDirectoryGraphResourceId", mockUrl);
-
-        }}));
+                put("managementEndpointUrl", mockUrl);
+                put("resourceManagerEndpointUrl", mockUrl);
+                put("sqlManagementEndpointUrl", mockUrl);
+                put("galleryEndpointUrl", mockUrl);
+                put("activeDirectoryEndpointUrl", mockUrl);
+                put("activeDirectoryResourceId", mockUrl);
+                put("activeDirectoryGraphResourceId", mockUrl);
+            }}));
         this.isPlaybackMode = isPlaybackMode;
     }
 

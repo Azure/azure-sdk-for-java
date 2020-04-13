@@ -24,16 +24,24 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);;
-        final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
+
+        final String sshKey =
+            "ssh-rsa"
+                + " AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD"
+                + " azjava@javalib.com";
         final String publicIpDnsLabel = vmName;
-        PublicIPAddress pip = pips.define(publicIpDnsLabel)
+        PublicIPAddress pip =
+            pips
+                .define(publicIpDnsLabel)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withLeafDomainLabel(publicIpDnsLabel)
                 .create();
 
-        VirtualMachine vm = virtualMachines.define(vmName)
+        VirtualMachine vm =
+            virtualMachines
+                .define(vmName)
                 .withRegion(pip.regionName())
                 .withExistingResourceGroup(pip.resourceGroupName())
                 .withNewPrimaryNetwork("10.0.0.0/28")

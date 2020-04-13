@@ -3,6 +3,7 @@
 
 package com.azure.management.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayBackendAddressPool;
 import com.azure.management.network.IPAllocationMethod;
@@ -18,74 +19,50 @@ import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
 import com.azure.management.network.models.PublicIPAddressInner;
 import com.azure.management.network.models.SubnetInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Implementation for NicIPConfiguration and its create and update interfaces.
- */
-class NicIPConfigurationImpl
-        extends
-        NicIPConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
-        implements
-        NicIPConfiguration,
+/** Implementation for NicIPConfiguration and its create and update interfaces. */
+class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
+    implements NicIPConfiguration,
         NicIPConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
         NicIPConfiguration.UpdateDefinition<NetworkInterface.Update>,
         NicIPConfiguration.Update {
-    /**
-     * the network client.
-     */
+    /** the network client. */
     private final NetworkManager networkManager;
-    /**
-     * flag indicating whether IP configuration is in create or update mode.
-     */
+    /** flag indicating whether IP configuration is in create or update mode. */
     private final boolean isInCreateMode;
-    /**
-     * unique key of a creatable virtual network to be associated with the ip configuration.
-     */
+    /** unique key of a creatable virtual network to be associated with the ip configuration. */
     private String creatableVirtualNetworkKey;
-    /**
-     * unique key of a creatable public IP to be associated with the ip configuration.
-     */
+    /** unique key of a creatable public IP to be associated with the ip configuration. */
     private String creatablePublicIPKey;
-    /**
-     * reference to an existing virtual network to be associated with the ip configuration.
-     */
+    /** reference to an existing virtual network to be associated with the ip configuration. */
     private Network existingVirtualNetworkToAssociate;
-    /**
-     * reference to an existing public IP to be associated with the ip configuration.
-     */
+    /** reference to an existing public IP to be associated with the ip configuration. */
     private String existingPublicIPAddressIdToAssociate;
-    /**
-     * name of an existing subnet to be associated with a new or existing IP configuration.
-     */
+    /** name of an existing subnet to be associated with a new or existing IP configuration. */
     private String subnetToAssociate;
-    /**
-     * flag indicating to remove public IP association from the ip configuration during update.
-     */
+    /** flag indicating to remove public IP association from the ip configuration during update. */
     private boolean removePrimaryPublicIPAssociation;
 
-    protected NicIPConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
-                                     NetworkInterfaceImpl parent,
-                                     NetworkManager networkManager,
-                                     final boolean isInCreateModel) {
+    private final ClientLogger logger = new ClientLogger(getClass());
+
+    protected NicIPConfigurationImpl(
+        NetworkInterfaceIPConfigurationInner inner,
+        NetworkInterfaceImpl parent,
+        NetworkManager networkManager,
+        final boolean isInCreateModel) {
         super(inner, parent, networkManager);
         this.isInCreateMode = isInCreateModel;
         this.networkManager = networkManager;
     }
 
     protected static NicIPConfigurationImpl prepareNicIPConfiguration(
-            String name,
-            NetworkInterfaceImpl parent,
-            final NetworkManager networkManager) {
+        String name, NetworkInterfaceImpl parent, final NetworkManager networkManager) {
         NetworkInterfaceIPConfigurationInner ipConfigurationInner = new NetworkInterfaceIPConfigurationInner();
         ipConfigurationInner.withName(name);
-        return new NicIPConfigurationImpl(ipConfigurationInner,
-                parent,
-                networkManager,
-                true);
+        return new NicIPConfigurationImpl(ipConfigurationInner, parent, networkManager, true);
     }
 
     @Override
@@ -120,9 +97,8 @@ class NicIPConfigurationImpl
 
     @Override
     public NicIPConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
-        Network.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.networks()
-                .define(name)
-                .withRegion(this.parent().regionName());
+        Network.DefinitionStages.WithGroup definitionWithGroup =
+            this.networkManager.networks().define(name).withRegion(this.parent().regionName());
 
         Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
@@ -175,7 +151,8 @@ class NicIPConfigurationImpl
 
     @Override
     public NicIPConfigurationImpl withNewPublicIPAddress(String leafDnsLabel) {
-        return withNewPublicIPAddress(prepareCreatablePublicIP(this.parent().namer.randomName("pip", 15), leafDnsLabel));
+        return withNewPublicIPAddress(
+            prepareCreatablePublicIP(this.parent().namer.randomName("pip", 15), leafDnsLabel));
     }
 
     @Override
@@ -216,7 +193,8 @@ class NicIPConfigurationImpl
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingApplicationGatewayBackend(ApplicationGateway appGateway, String backendName) {
+    public NicIPConfigurationImpl withExistingApplicationGatewayBackend(
+        ApplicationGateway appGateway, String backendName) {
         if (appGateway != null) {
             for (ApplicationGatewayBackendAddressPool pool : appGateway.inner().backendAddressPools()) {
                 if (pool.name().equalsIgnoreCase(backendName)) {
@@ -230,7 +208,8 @@ class NicIPConfigurationImpl
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
+    public NicIPConfigurationImpl withExistingLoadBalancerInboundNatRule(
+        LoadBalancer loadBalancer, String inboundNatRuleName) {
         if (loadBalancer != null) {
             for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
                 if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
@@ -280,9 +259,8 @@ class NicIPConfigurationImpl
 
     // Creates a creatable public IP address definition with the given name and DNS label.
     private Creatable<PublicIPAddress> prepareCreatablePublicIP(String name, String leafDnsLabel) {
-        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIPAddresses()
-                .define(name)
-                .withRegion(this.parent().regionName());
+        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup =
+            this.networkManager.publicIPAddresses().define(name).withRegion(this.parent().regionName());
 
         PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
@@ -295,11 +273,10 @@ class NicIPConfigurationImpl
 
     /**
      * Gets the subnet to associate with the IP configuration.
-     * <p>
-     * This method will never return null as subnet is required for a IP configuration, in case of
-     * update mode if user didn't choose to change the subnet then existing subnet will be returned.
-     * Updating the nic subnet has a restriction, the new subnet must reside in the same virtual network
-     * as the current one.
+     *
+     * <p>This method will never return null as subnet is required for a IP configuration, in case of update mode if
+     * user didn't choose to change the subnet then existing subnet will be returned. Updating the nic subnet has a
+     * restriction, the new subnet must reside in the same virtual network as the current one.
      *
      * @return the subnet resource
      */
@@ -319,7 +296,12 @@ class NicIPConfigurationImpl
                 }
             }
 
-            throw new RuntimeException("A subnet with name '" + subnetToAssociate + "' not found under the network '" + this.existingVirtualNetworkToAssociate.name() + "'");
+            throw logger.logExceptionAsError(new RuntimeException(
+                "A subnet with name '"
+                    + subnetToAssociate
+                    + "' not found under the network '"
+                    + this.existingVirtualNetworkToAssociate.name()
+                    + "'"));
 
         } else {
             if (subnetToAssociate != null) {
@@ -333,12 +315,11 @@ class NicIPConfigurationImpl
     }
 
     /**
-     * Get the SubResource instance representing a public IP that needs to be associated with the
-     * IP configuration.
-     * <p>
-     * null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't
-     * opt for public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is
-     * not specified then existing associated (if any) public IP will be returned.
+     * Get the SubResource instance representing a public IP that needs to be associated with the IP configuration.
+     *
+     * <p>null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't opt for
+     * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
+     * associated (if any) public IP will be returned.
      *
      * @return public IP SubResource
      */
@@ -347,8 +328,7 @@ class NicIPConfigurationImpl
         if (this.removePrimaryPublicIPAssociation) {
             return null;
         } else if (this.creatablePublicIPKey != null) {
-            pipId = ((PublicIPAddress) this.parent()
-                    .createdDependencyResource(this.creatablePublicIPKey)).id();
+            pipId = ((PublicIPAddress) this.parent().createdDependencyResource(this.creatablePublicIPKey)).id();
         } else if (this.existingPublicIPAddressIdToAssociate != null) {
             pipId = this.existingPublicIPAddressIdToAssociate;
         }

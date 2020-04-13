@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation;
 
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.IdentityData;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.VaultProperties;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,12 @@ import com.microsoft.azure.Resource;
  * Resource information, as returned by the resource provider.
  */
 public class VaultInner extends Resource {
+    /**
+     * The identity property.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityData identity;
+
     /**
      * The properties property.
      */
@@ -34,6 +41,26 @@ public class VaultInner extends Resource {
      */
     @JsonProperty(value = "eTag")
     private String eTag;
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public IdentityData identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the VaultInner object itself.
+     */
+    public VaultInner withIdentity(IdentityData identity) {
+        this.identity = identity;
+        return this;
+    }
 
     /**
      * Get the properties value.

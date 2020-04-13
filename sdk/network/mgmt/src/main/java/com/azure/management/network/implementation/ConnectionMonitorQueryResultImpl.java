@@ -7,15 +7,12 @@ import com.azure.management.network.ConnectionMonitorSourceStatus;
 import com.azure.management.network.ConnectionStateSnapshot;
 import com.azure.management.network.models.ConnectionMonitorQueryResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation for {@link ConnectionMonitorQueryResult}.
- */
+/** Implementation for {@link ConnectionMonitorQueryResult}. */
 class ConnectionMonitorQueryResultImpl extends WrapperImpl<ConnectionMonitorQueryResultInner>
-        implements ConnectionMonitorQueryResult {
+    implements ConnectionMonitorQueryResult {
     ConnectionMonitorQueryResultImpl(ConnectionMonitorQueryResultInner innerObject) {
         super(innerObject);
     }

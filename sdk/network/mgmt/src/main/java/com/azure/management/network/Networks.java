@@ -17,13 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to virtual network management API in Azure.
- */
+/** Entry point to virtual network management API in Azure. */
 @Fluent()
-public interface Networks extends
-        SupportsCreating<Network.DefinitionStages.Blank>,
+public interface Networks
+    extends SupportsCreating<Network.DefinitionStages.Blank>,
         SupportsListing<Network>,
         SupportsListingByResourceGroup<Network>,
         SupportsGettingByResourceGroup<Network>,

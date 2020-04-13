@@ -3,8 +3,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.monitor.models.AutoscaleSettingsInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.AutoscaleSettingsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,13 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to autoscale management API in Azure.
- */
+/** Entry point to autoscale management API in Azure. */
 @Fluent
-public interface AutoscaleSettings extends
-        SupportsCreating<AutoscaleSetting.DefinitionStages.Blank>,
+public interface AutoscaleSettings
+    extends SupportsCreating<AutoscaleSetting.DefinitionStages.Blank>,
         SupportsListing<AutoscaleSetting>,
         SupportsListingByResourceGroup<AutoscaleSetting>,
         SupportsGettingById<AutoscaleSetting>,

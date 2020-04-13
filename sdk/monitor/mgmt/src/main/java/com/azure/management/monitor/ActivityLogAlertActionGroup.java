@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ActivityLogAlertActionGroup model.
- */
+/** The ActivityLogAlertActionGroup model. */
 @Fluent
 public final class ActivityLogAlertActionGroup {
     /*
@@ -27,9 +25,8 @@ public final class ActivityLogAlertActionGroup {
     private Map<String, String> webhookProperties;
 
     /**
-     * Get the actionGroupId property: The resourceId of the action group. This
-     * cannot be null or empty.
-     * 
+     * Get the actionGroupId property: The resourceId of the action group. This cannot be null or empty.
+     *
      * @return the actionGroupId value.
      */
     public String actionGroupId() {
@@ -37,9 +34,8 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Set the actionGroupId property: The resourceId of the action group. This
-     * cannot be null or empty.
-     * 
+     * Set the actionGroupId property: The resourceId of the action group. This cannot be null or empty.
+     *
      * @param actionGroupId the actionGroupId value to set.
      * @return the ActivityLogAlertActionGroup object itself.
      */
@@ -49,10 +45,9 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Get the webhookProperties property: the dictionary of custom properties
-     * to include with the post operation. These data are appended to the
-     * webhook payload.
-     * 
+     * Get the webhookProperties property: the dictionary of custom properties to include with the post operation. These
+     * data are appended to the webhook payload.
+     *
      * @return the webhookProperties value.
      */
     public Map<String, String> webhookProperties() {
@@ -60,10 +55,9 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Set the webhookProperties property: the dictionary of custom properties
-     * to include with the post operation. These data are appended to the
-     * webhook payload.
-     * 
+     * Set the webhookProperties property: the dictionary of custom properties to include with the post operation. These
+     * data are appended to the webhook payload.
+     *
      * @param webhookProperties the webhookProperties value to set.
      * @return the ActivityLogAlertActionGroup object itself.
      */

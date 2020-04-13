@@ -10,9 +10,7 @@ import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The PrivateLinkResource model.
- */
+/** The PrivateLinkResource model. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkResource extends ProxyResource {
@@ -36,7 +34,7 @@ public class PrivateLinkResource extends ProxyResource {
 
     /**
      * Get the groupId property: The private link resource group id.
-     * 
+     *
      * @return the groupId value.
      */
     public String groupId() {
@@ -44,9 +42,8 @@ public class PrivateLinkResource extends ProxyResource {
     }
 
     /**
-     * Get the requiredMembers property: The private link resource required
-     * member names.
-     * 
+     * Get the requiredMembers property: The private link resource required member names.
+     *
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -54,9 +51,8 @@ public class PrivateLinkResource extends ProxyResource {
     }
 
     /**
-     * Get the requiredZoneNames property: The private link resource Private
-     * link DNS zone name.
-     * 
+     * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
+     *
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -64,9 +60,8 @@ public class PrivateLinkResource extends ProxyResource {
     }
 
     /**
-     * Set the requiredZoneNames property: The private link resource Private
-     * link DNS zone name.
-     * 
+     * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
+     *
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
