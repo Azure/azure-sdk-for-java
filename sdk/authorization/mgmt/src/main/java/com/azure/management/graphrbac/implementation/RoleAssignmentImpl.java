@@ -97,9 +97,10 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                                 String exceptionMessage = cloudException.getMessage().toLowerCase();
                                                 if (exceptionMessage.contains("principalnotfound")
                                                     || exceptionMessage.contains("does not exist in the directory")) {
-                                                    // ref:
-                                                    //TODO check how to fix checkstyle for url
-                                                    // https://github.com/Azure/azure-cli/blob/dev/src/command_modules/azure-cli-role/azure/cli/command_modules/role/custom.py#L1048-L1065
+                                                    /*
+                                                     * ref:
+                                                     * https://github.com/Azure/azure-cli/blob/dev/src/command_modules/azure-cli-role/azure/cli/command_modules/role/custom.py#L1048-L1065
+                                                     */
                                                     return integer;
                                                 } else {
                                                     throw logger.logExceptionAsError(Exceptions.propagate(throwable));
