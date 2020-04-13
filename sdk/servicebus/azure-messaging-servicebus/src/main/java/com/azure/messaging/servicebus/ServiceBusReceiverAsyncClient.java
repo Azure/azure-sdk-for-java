@@ -277,7 +277,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMap(ServiceBusManagementNode::peek);
     }
 
@@ -296,7 +296,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMap(node -> node.peek(sequenceNumber));
     }
 
@@ -315,7 +315,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMapMany(node -> node.peekBatch(maxMessages));
     }
 
@@ -336,7 +336,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMapMany(node -> node.peekBatch(maxMessages, sequenceNumber));
     }
 
@@ -418,7 +418,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMap(node -> node.receiveDeferredMessage(receiveMode, sequenceNumber))
             .map(receivedMessage -> {
                 if (receiveMode == ReceiveMode.PEEK_LOCK && !CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
@@ -443,7 +443,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMapMany(node -> node.receiveDeferredMessageBatch(receiveMode, sequenceNumbers));
     }
 
@@ -482,7 +482,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         UUID finalLockTokenUuid = lockTokenUuid;
         return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+            .flatMap(connection -> connection.getManagementNode(entityPath, entityType, sessionId))
             .flatMap(serviceBusManagementNode ->
                 serviceBusManagementNode.renewMessageLock(finalLockTokenUuid))
             .map(instant -> {

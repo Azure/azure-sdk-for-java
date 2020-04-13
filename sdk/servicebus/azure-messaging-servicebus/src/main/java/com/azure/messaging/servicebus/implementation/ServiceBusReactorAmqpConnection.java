@@ -19,6 +19,7 @@ import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -86,19 +87,24 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
-        return getManagementNode(entityPath, entityType, null);
+        return getManagementNode(entityPath, entityType, "");
     }
 
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType,
         String sessionId) {
+
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
                 connectionId, entityPath))));
         }
 
-        final ServiceBusManagementNode existing = managementNodes.get(entityPath);
+        final String path = CoreUtils.isNullOrEmpty(sessionId)
+            ? String.join("-", entityPath, entityType.toString())
+            : String.join("-", entityPath, entityType.toString(), sessionId);
+
+        final ServiceBusManagementNode existing = managementNodes.get(path);
         if (existing != null) {
             return Mono.just(existing);
         }
