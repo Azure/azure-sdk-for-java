@@ -72,10 +72,9 @@ public class IdentityInner extends Resource {
     }
 
     /**
-     * Get the clientSecretUrl property:  The ManagedServiceIdentity DataPlane
-     * URL that can be queried to obtain the identity credentials. If identity
-     * is user assigned, then the clientSecretUrl will not be present in the
-     * response, otherwise it will be present.
+     * Get the clientSecretUrl property: The ManagedServiceIdentity DataPlane URL that can be queried to obtain the
+     * identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response,
+     * otherwise it will be present.
      *
      * @return the clientSecretUrl value.
      */

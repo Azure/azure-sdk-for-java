@@ -29,7 +29,6 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.msi.IdentityUpdate;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
@@ -113,7 +112,7 @@ public final class UserAssignedIdentitiesInner
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceName") String resourceName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") IdentityUpdate parameters,
+            @BodyParam("application/json") IdentityInner parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -360,7 +359,7 @@ public final class UserAssignedIdentitiesInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<IdentityInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, IdentityUpdate parameters) {
+        String resourceGroupName, String resourceName, IdentityInner parameters) {
         return FluxUtil
             .withContext(
                 context ->
@@ -388,7 +387,7 @@ public final class UserAssignedIdentitiesInner
      * @return describes an identity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<IdentityInner> updateAsync(String resourceGroupName, String resourceName, IdentityUpdate parameters) {
+    public Mono<IdentityInner> updateAsync(String resourceGroupName, String resourceName, IdentityInner parameters) {
         return updateWithResponseAsync(resourceGroupName, resourceName, parameters)
             .flatMap(
                 (SimpleResponse<IdentityInner> res) -> {
@@ -412,7 +411,7 @@ public final class UserAssignedIdentitiesInner
      * @return describes an identity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IdentityInner update(String resourceGroupName, String resourceName, IdentityUpdate parameters) {
+    public IdentityInner update(String resourceGroupName, String resourceName, IdentityInner parameters) {
         return updateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
