@@ -35,8 +35,8 @@ public class ServiceBusMultiSessionProcessorSample {
     static class MyMessageProcessor implements AutoCloseable {
         private final Logger logger = LoggerFactory.getLogger(MyMessageProcessor.class);
         private final AtomicBoolean isDisposed = new AtomicBoolean();
-        private final ConcurrentHashMap<String, Set<String>> partitionsProcessing = new ConcurrentHashMap<>();
-        void onMessage(ServiceBusReceivedMessage message, SessionManager manager) {
+
+        void onMessage(ServiceBusReceivedMessage message, SessionMessageManager manager) {
             System.out.println("Process message here. Session id : " + message.getSessionId()
                 + ", message Id :" + message.getMessageId());
             manager.complete(message);

@@ -2,8 +2,9 @@ package com.azure.messaging.servicebus;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
-
-public class SessionManager {
+/** This provides a way to settle the message
+ * */
+public class SessionMessageManager {
     public ByteBuffer getSessionState(String sessionId) { return null;}
     public void setSessionState(String sessionId, ByteBuffer sessionState) {}
     public void abandon(MessageLockToken lockToken) {}

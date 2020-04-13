@@ -477,7 +477,7 @@ public final class ServiceBusClientBuilder {
         private String subscriptionName;
         private ReceiveMode receiveMode;
         private int maxConcurrentSessions;
-        private BiConsumer<ServiceBusReceivedMessage, SessionManager> processMessage;
+        private BiConsumer<ServiceBusReceivedMessage, SessionMessageManager> processMessage;
         private Consumer<ServiceBusErrorContext> processError;
 
         /**
@@ -545,7 +545,7 @@ public final class ServiceBusClientBuilder {
          * @return The updated {@link ServiceBusMultiSessionProcessorClientBuilder} instance.
          * @throws NullPointerException if {@code processEvent} is {@code null}.
          */
-        public ServiceBusMultiSessionProcessorClientBuilder processMessage(BiConsumer<ServiceBusReceivedMessage, SessionManager> processMessage) {
+        public ServiceBusMultiSessionProcessorClientBuilder processMessage(BiConsumer<ServiceBusReceivedMessage, SessionMessageManager> processMessage) {
             this.processMessage = Objects.requireNonNull(processMessage, "'processMessage' cannot be null");
             return this;
         }
