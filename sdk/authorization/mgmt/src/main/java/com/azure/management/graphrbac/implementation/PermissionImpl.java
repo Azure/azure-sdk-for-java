@@ -6,15 +6,10 @@ package com.azure.management.graphrbac.implementation;
 import com.azure.management.graphrbac.Permission;
 import com.azure.management.graphrbac.models.PermissionInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.util.List;
 
-/**
- * Implementation for Permission and its parent interfaces.
- */
-class PermissionImpl
-        extends WrapperImpl<PermissionInner>
-        implements Permission {
+/** Implementation for Permission and its parent interfaces. */
+class PermissionImpl extends WrapperImpl<PermissionInner> implements Permission {
     protected PermissionImpl(PermissionInner innerObject) {
         super(innerObject);
     }

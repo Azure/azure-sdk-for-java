@@ -33,7 +33,10 @@ public class UsersTests extends GraphRbacManagementTest {
     @Test
     public void canCreateUser() throws Exception {
         String name = sdkContext.randomResourceName("user", 16);
-        ActiveDirectoryUser user = graphRbacManager.users().define("Automatic " + name)
+        ActiveDirectoryUser user =
+            graphRbacManager
+                .users()
+                .define("Automatic " + name)
                 .withEmailAlias(name)
                 .withPassword("StrongPass!123")
                 .withPromptToChangePasswordOnLogin(true)
@@ -46,14 +49,15 @@ public class UsersTests extends GraphRbacManagementTest {
     @Test
     public void canUpdateUser() throws Exception {
         String name = sdkContext.randomResourceName("user", 16);
-        ActiveDirectoryUser user = graphRbacManager.users().define("Test " + name)
+        ActiveDirectoryUser user =
+            graphRbacManager
+                .users()
+                .define("Test " + name)
                 .withEmailAlias(name)
                 .withPassword("StrongPass!123")
                 .create();
 
-        user = user.update()
-                .withUsageLocation(CountryIsoCode.AUSTRALIA)
-                .apply();
+        user = user.update().withUsageLocation(CountryIsoCode.AUSTRALIA).apply();
 
         Assertions.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
     }

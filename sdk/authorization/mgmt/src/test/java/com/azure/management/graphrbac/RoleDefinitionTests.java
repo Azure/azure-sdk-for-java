@@ -9,10 +9,11 @@ import org.junit.jupiter.api.Test;
 public class RoleDefinitionTests extends GraphRbacManagementTest {
     @Test
     public void canGetRoleByRoleName() throws Exception {
-        RoleDefinition roleDefinition = graphRbacManager.roleDefinitions()
+        RoleDefinition roleDefinition =
+            graphRbacManager
+                .roleDefinitions()
                 .getByScopeAndRoleName("subscriptions/" + resourceManager.getSubscriptionId(), "Contributor");
         Assertions.assertNotNull(roleDefinition);
         Assertions.assertEquals("Contributor", roleDefinition.roleName());
     }
-
 }
