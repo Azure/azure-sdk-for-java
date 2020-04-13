@@ -16,7 +16,6 @@ import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.ai.formrecognizer.models.TrainingStatus;
 import com.azure.ai.formrecognizer.models.USReceipt;
-import com.azure.core.implementation.serializer.jsonwrapper.api.JsonApi;
 import com.azure.core.util.IterableStream;
 import reactor.core.publisher.Flux;
 
@@ -34,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.ai.formrecognizer.CustomModelTransforms.DEFAULT_CONFIDENCE_VALUE;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getPagedLines;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getPagedTables;
 import static com.azure.ai.formrecognizer.TestJsonUtil.getRawExpectedForms;
@@ -48,25 +48,23 @@ final class TestUtils {
     static final String SUPERVISED_MODEL_ID = "a0a3998a-b3c0-4075-aa6b-c4c4affe66b7";
     static final String INVALID_MODEL_ID = "a0a3998a-4c4affe66b7";
     static final String INVALID_STATUS_MODEL_ID = "22138c4e-c4b0-4901-a0e1-6c5beb73fc1d";
-    static final String INVALID_STATUS_ERROR = "Invalid status Model Id.";
+    static final String INVALID_STATUS_MODEL_ERROR = "Model Id provided returned with status: invalid";
+
+    static final String INVALID_SOURCE_URL_ERROR = "Download failed. Please check your input URL.";
     // TODO (savaity): Do not hardcode, generate SAS URL
     static final String VALID_SUPERVISED_SAS_URL = "";
     static final String VALID_UNSUPERVISED_SAS_URL = "";
     static final Object INVALID_MODEL_ID_ERROR = "Invalid UUID string: " + INVALID_MODEL_ID;
-    static final Object SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
-    static final String INVALID_KEY = "invalid key";
+    static final Object NULL_SOURCE_URL_ERROR = "'fileSourceUrl' cannot be null.";
     static final String INVALID_URL = "htttttttps://localhost:8080";
     static final String VALID_HTTPS_LOCALHOST = "https://localhost:8080";
     static final String RECEIPT_LOCAL_URL = "src/test/resources/sample-files/contoso-allinone.jpg";
     static final String LAYOUT_LOCAL_URL = "src/test/resources/sample-files/layout1.jpg";
     static final String FORM_LOCAL_URL = "src/test/resources/sample-files/Invoice_6.pdf";
-
     static final Long FILE_LENGTH = new File(RECEIPT_LOCAL_URL).length();
-    // Receipts
     static final String RECEIPT_URL = "https://raw.githubusercontent.com/Azure-Samples/"
         + "cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg";
     static final String INVALID_RECEIPT_URL = "https://invalid.blob.core.windows.net/fr/contoso-allinone.jpg";
-    JsonApi jsonApi;
 
     private TestUtils() {
     }
@@ -116,12 +114,12 @@ final class TestUtils {
                 put("field-8", new CustomFormModelField("field-8", "VAT ID", null));
             }
         };
-        CustomFormSubModel customFormSubModel = new CustomFormSubModel(null, fieldMap, "form-0");
+        CustomFormSubModel customFormSubModel = new CustomFormSubModel(DEFAULT_CONFIDENCE_VALUE, fieldMap, "form-0");
         return new CustomFormModel(VALID_MODEL_ID, ModelTrainingStatus.READY,
             OffsetDateTime.parse("2020-04-09T21:30:28Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
-            Collections.emptyList(), getTrainingDocuments());
+            null, getTrainingDocuments());
     }
 
     static CustomFormModel getExpectedSupervisedModel() {
@@ -139,7 +137,7 @@ final class TestUtils {
             OffsetDateTime.parse("2020-04-09T18:24:49Z"),
             OffsetDateTime.parse("2020-04-09T18:24:56Z"),
             new IterableStream<>(Collections.singletonList(customFormSubModel)),
-            Collections.emptyList(), getTrainingDocuments());
+            null, getTrainingDocuments());
     }
 
     static AccountProperties getExpectedAccountProperties() {

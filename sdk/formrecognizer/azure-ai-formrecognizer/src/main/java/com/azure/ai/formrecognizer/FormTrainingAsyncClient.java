@@ -37,7 +37,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * This class provides an asynchronous client that contains model management operations
  * that apply to Azure Form Recognizer.
- * Operations allowed by the client are, to create/tracin custom models. delete models, list models.
+ * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
+ * subscription account information.
  *
  * @see FormRecognizerClientBuilder
  */
@@ -113,7 +114,6 @@ public class FormTrainingAsyncClient {
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
         boolean useLabelFile, boolean includeSubFolders, String filePrefix, Duration pollInterval) {
         Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
-        Objects.requireNonNull(useLabelFile, "'useLabelFile' cannot be null.");
         final Duration interval = pollInterval != null ? pollInterval : Duration.ofSeconds(5);
 
         return new PollerFlux<OperationResult, CustomFormModel>(
@@ -187,14 +187,15 @@ public class FormTrainingAsyncClient {
     Mono<Response<AccountProperties>> getAccountPropertiesWithResponse(Context context) {
         return service.getCustomModelsWithResponseAsync(context)
             .map(response -> new SimpleResponse<>(response,
-            new AccountProperties(response.getValue().getSummary().getCount(),
-                response.getValue().getSummary().getLimit())));
+                new AccountProperties(response.getValue().getSummary().getCount(),
+                    response.getValue().getSummary().getLimit())));
     }
 
     /**
      * Deletes the specified custom model.
      *
      * @param modelId The modelIdentifier.
+     *
      * @return An empty Mono.
      */
     public Mono<Void> deleteModel(String modelId) {
@@ -216,15 +217,15 @@ public class FormTrainingAsyncClient {
         }
     }
 
+    // list models
+    // TODO (shawn) : #9976
+
     Mono<Response<Void>> deleteModelWithResponse(String modelId, Context context) {
         Objects.requireNonNull(modelId, "'modelId' cannot be null");
 
         return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
             .map(response -> new SimpleResponse<>(response, null));
     }
-
-    // list models
-    // TODO (shawn) : #9976
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
         return (pollingContext) -> {

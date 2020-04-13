@@ -15,8 +15,8 @@ import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_ERROR;
-import static com.azure.ai.formrecognizer.TestUtils.SOURCE_URL_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_MODEL_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.NULL_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedSupervisedModel;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedUnsupervisedModel;
@@ -51,7 +51,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     void getCustomModelInvalidStatusModel() {
         getCustomModelInvalidStatusModelRunner(invalidId -> StepVerifier.create(client.getCustomModel(invalidId))
             .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
-                && throwable.getMessage().equals(INVALID_STATUS_ERROR)).verify());
+                && throwable.getMessage().equals(INVALID_STATUS_MODEL_ERROR)).verify());
     }
 
     @Test
@@ -61,10 +61,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
 
     @Test
     void getCustomModelValidModelId() {
-        getCustomModelValidModelIdRunner(validModelId -> {
-            StepVerifier.create(client.getCustomModel(validModelId)).assertNext(customFormModel ->
-                validateCustomModel(getExpectedUnsupervisedModel(), customFormModel));
-        });
+        getCustomModelValidModelIdRunner(validModelId -> StepVerifier.create(client.getCustomModel(validModelId))
+            .assertNext(customFormModel ->
+                validateCustomModel(getExpectedUnsupervisedModel(), customFormModel)));
     }
 
     @Test
@@ -118,7 +117,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             NullPointerException.class,
             () -> client.beginTraining(null, false).getSyncPoller().getFinalResult());
 
-        assertTrue(thrown.getMessage().equals(SOURCE_URL_ERROR));
+        assertTrue(thrown.getMessage().equals(NULL_SOURCE_URL_ERROR));
     }
 
     @Test

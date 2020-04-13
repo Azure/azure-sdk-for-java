@@ -25,7 +25,7 @@ public class ExtractReceiptsFromUrlAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_Key}"))
+            .apiKey(new AzureKeyCredential("{api_key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
@@ -41,9 +41,8 @@ public class ExtractReceiptsFromUrlAsync {
                     // training completed successfully, retrieving final result.
                     return trainingOperationResponse.getFinalResult();
                 } else {
-                    System.out.println("Polling completed unsuccessfully with status:"
-                        + trainingOperationResponse.getStatus());
-                    return Mono.empty();
+                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
+                        + trainingOperationResponse.getStatus()));
                 }
             }).block();
 

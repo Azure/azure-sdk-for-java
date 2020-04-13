@@ -7,6 +7,8 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelField;
 import com.azure.ai.formrecognizer.models.CustomFormSubModel;
+import com.azure.ai.formrecognizer.models.FormRecognizerError;
+import com.azure.ai.formrecognizer.models.TrainingDocumentInfo;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -177,15 +179,40 @@ public abstract class FormTrainingClientTestBase extends TestBase {
     static void validateCustomModel(CustomFormModel expectedModel, CustomFormModel actualCustomModel) {
         assertNotNull(actualCustomModel.getModelId());
         assertEquals(expectedModel.getModelStatus(), actualCustomModel.getModelStatus());
-        assertEquals(expectedModel.getModelError().size(), actualCustomModel.getModelError().size());
+        validateErrors(expectedModel.getModelError(), actualCustomModel.getModelError());
         assertNotNull(actualCustomModel.getCreatedOn());
         assertNotNull(actualCustomModel.getLastUpdatedOn());
         validateSubModels(expectedModel.getSubModels(), actualCustomModel.getSubModels());
+        validateTrainingDocuments(expectedModel.getTrainingDocuments(), actualCustomModel.getTrainingDocuments());
     }
 
     static void validateAccountProperties(AccountProperties expectedAccountProperties, AccountProperties actualAccountProperties) {
         assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
         assertNotNull(actualAccountProperties.getCount());
+    }
+
+    private static void validateTrainingDocuments(List<TrainingDocumentInfo> expectedTrainingDocuments, List<TrainingDocumentInfo> actualTrainingDocuments) {
+        assertEquals(expectedTrainingDocuments.size(), actualTrainingDocuments.size());
+        for (int i = 0; i < actualTrainingDocuments.size(); i++) {
+            TrainingDocumentInfo expectedTrainingDocument = expectedTrainingDocuments.get(i);
+            TrainingDocumentInfo actualTrainingDocument = actualTrainingDocuments.get(i);
+            assertEquals(expectedTrainingDocument.getName(), actualTrainingDocument.getName());
+            assertEquals(expectedTrainingDocument.getPageCount(), actualTrainingDocument.getPageCount());
+            assertEquals(expectedTrainingDocument.getTrainingStatus(), actualTrainingDocument.getTrainingStatus());
+            validateErrors(expectedTrainingDocument.getDocumentError(), actualTrainingDocument.getDocumentError());
+        }
+    }
+
+    private static void validateErrors(List<FormRecognizerError> expectedErrors, List<FormRecognizerError> actualErrors) {
+        if (expectedErrors != null && actualErrors != null) {
+            assertEquals(expectedErrors.size(), actualErrors.size());
+            for (int i = 0; i < actualErrors.size(); i++) {
+                FormRecognizerError expectedError = expectedErrors.get(i);
+                FormRecognizerError actualError = actualErrors.get(i);
+                assertEquals(expectedError.getCode(), actualError.getCode());
+                assertEquals(expectedError.getMessage(), actualError.getMessage());
+            }
+        }
     }
 
     private static void validateSubModels(IterableStream<CustomFormSubModel> expectedSubModels, IterableStream<CustomFormSubModel> actualSubModels) {

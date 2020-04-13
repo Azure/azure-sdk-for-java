@@ -61,8 +61,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+<<<<<<< HEAD
 <<<<<<< HEAD
 import java.util.Collections;
 =======
@@ -80,8 +80,12 @@ import java.util.stream.Collectors;
 =======
 import java.util.concurrent.atomic.AtomicInteger;
 =======
+=======
+import java.util.Collections;
+>>>>>>> 181b7885a4... review comments
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 >>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
 import java.util.concurrent.atomic.AtomicReference;
@@ -92,6 +96,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 >>>>>>> aa9264e4ca... update form recognizer endpoint models
 
+import static com.azure.ai.formrecognizer.CustomModelTransforms.DEFAULT_CONFIDENCE_VALUE;
+
 /**
  * Helper class to convert service level models to SDK exposed models.
  */
@@ -99,7 +105,10 @@ final class Transforms {
     private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
     // Pattern match to find all non-digits in the provided string.
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
+<<<<<<< HEAD
     private static final float DEFAULT_CONFIDENCE_VALUE = 1.0f;
+=======
+>>>>>>> 181b7885a4... review comments
 
     private Transforms() {
     }
@@ -246,46 +255,49 @@ final class Transforms {
         List<PageResult> pageResults = analyzeResult.getPageResults();
         List<RecognizedForm> extractedFormList = new ArrayList<>();
         Map<String, FormField<?>> extractedFieldMap = null;
-        AtomicReference<PageRange> pageRange = new AtomicReference<>();
 
+        AtomicReference<PageRange> pageRange = new AtomicReference<>();
         AtomicReference<String> formType = new AtomicReference<>("form-");
 
         List<FormPage> formPages = toRecognizedLayout(analyzeResult);
         // labeled
         if (!CoreUtils.isNullOrEmpty(documentResults)) {
-            for (int i = 0; i < documentResults.size(); i++) {
-
-                DocumentResult documentResultItem = documentResults.get(i);
+            for (DocumentResult documentResultItem : documentResults) {
                 List<Integer> documentPageRange = documentResultItem.getPageRange();
                 if (documentPageRange.size() == 2) {
                     pageRange.set(new PageRange(documentPageRange.get(0), documentPageRange.get(1)));
+                } else {
+                    pageRange.set(new PageRange(1, 1));
                 }
 
                 formType.set(documentResultItem.getDocType());
                 extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults, includeTextDetails);
 
             }
-            extractedFormList.add(new RecognizedForm(extractedFieldMap, formType.get(), pageRange.get(),
-                new IterableStream<FormPage>(formPages.subList(pageRange.get().getStartPageNumber(), pageRange.get().getEndPageNumber()))));
+            extractedFormList.add(new RecognizedForm(
+                extractedFieldMap,
+                formType.get(),
+                pageRange.get(),
+                new IterableStream<>(formPages.subList(pageRange.get().getStartPageNumber(), pageRange.get().getEndPageNumber()))));
         }
 
         // labeled
-        if (pageResults != null) {
-            for (int i = 0; i < pageResults.size(); i++) {
-                PageResult pageResultItem = pageResults.get(i);
-                Integer pageNumber = pageResultItem.getPage();
-
+        if (!CoreUtils.isNullOrEmpty(pageResults)) {
+            for (PageResult pageResultItem : pageResults) {
+                int pageNumber = pageResultItem.getPage();
                 if (CoreUtils.isNullOrEmpty(documentResults)) {
                     Integer clusterId = pageResultItem.getClusterId();
                     if (clusterId != null) {
                         formType.set(formType.get() + clusterId);
                     }
-                    extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem, pageNumber);
+                    extractedFieldMap = getUnlabeledFieldMap(includeTextDetails, readResults, pageResultItem,
+                        pageNumber);
                 }
-                extractedFormList.add(
-                    new RecognizedForm(extractedFieldMap, formType.get(),
-                        new PageRange(pageNumber, pageNumber),
-                        new IterableStream<FormPage>(Arrays.asList(formPages.get(pageNumber - 1)))));
+                extractedFormList.add(new RecognizedForm(
+                    extractedFieldMap,
+                    formType.get(),
+                    new PageRange(pageNumber, pageNumber),
+                    new IterableStream<>(Collections.singletonList(formPages.get(pageNumber - 1)))));
             }
         }
         return extractedFormList;
@@ -300,12 +312,11 @@ final class Transforms {
      * @return The IterableStream of {@code RecognizedReceipt}.
      */
     static IterableStream<RecognizedReceipt> toReceipt(AnalyzeResult analyzeResult, boolean includeTextDetails) {
-        List<RecognizedReceipt> extractedReceiptList =
+        return new IterableStream<>(
             toRecognizedForm(analyzeResult, includeTextDetails).stream()
                 .map(recognizedForm ->
-                    new RecognizedReceipt("en-US", recognizedForm)).collect(Collectors.toList());
-
-        return new IterableStream<>(extractedReceiptList);
+                    new RecognizedReceipt("en-US", recognizedForm))
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -327,16 +338,15 @@ final class Transforms {
 
         for (int i = 0; i < readResults.size(); i++) {
             ReadResult readResultItem = readResults.get(i);
-            PageResult pageResultItem;
-            List<FormTable> perPageTableList = new ArrayList<>();
+            List<FormTable> perPageTableList = null;
 
             if (!CoreUtils.isNullOrEmpty(pageResults)) {
-                pageResultItem = pageResults.get(i);
+                PageResult pageResultItem = pageResults.get(i);
                 perPageTableList = getPageTables(pageResultItem, pageResultItem.getPage());
             }
 
             // add form lines
-            List<FormLine> perPageFormLineList = new ArrayList<>();
+            List<FormLine> perPageFormLineList = null;
             if (!CoreUtils.isNullOrEmpty(readResultItem.getLines())) {
                 perPageFormLineList = getReadResultFormLines(readResultItem);
             }
@@ -390,41 +400,52 @@ final class Transforms {
         FormField<?> value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
-                value = new FormField<String>(fieldValue.getConfidence(), labelText,
+                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, fieldValue.getValuePhoneNumber(), valueText, pageNumber);
                 break;
             case STRING:
-                value = new FormField<String>(fieldValue.getConfidence(), labelText,
+                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, fieldValue.getValueString(), valueText, pageNumber);
                 break;
             case TIME:
-                value = new FormField<String>(fieldValue.getConfidence(), labelText,
+                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, fieldValue.getValueTime(), valueText, pageNumber);
                 break;
             case DATE:
-                value = new FormField<LocalDate>(fieldValue.getConfidence(), labelText,
+                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, fieldValue.getValueDate(), valueText, pageNumber);
                 break;
             case INTEGER:
-                value = new FormField<Integer>(fieldValue.getConfidence(), labelText,
+                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, fieldValue.getValueInteger(), valueText, pageNumber);
                 break;
             case NUMBER:
-                value = new FormField<Number>(fieldValue.getConfidence(), labelText,
+                value = new FormField<Number>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, fieldValue.getValueNumber(), valueText, pageNumber);
                 break;
             case ARRAY:
-                value = new FormField<List<FormField<?>>>(null, null, key,
+                value = new FormField<>(null, null, key,
                     toFormFieldArray(fieldValue.getValueArray(), readResults), null, pageNumber);
                 break;
             case OBJECT:
-                value = new FormField<Map<String, FormField<?>>>(fieldValue.getConfidence(), labelText,
+                value = new FormField<>(setDefaultConfidenceValue(fieldValue.getConfidence()), labelText,
                     key, toFormFieldObject(fieldValue.getValueObject(), pageNumber, readResults), valueText, pageNumber);
                 break;
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
         return value;
+    }
+
+    /**
+     * Helper method to set default confidence value if confidence returned by service is null.
+     *
+     * @param confidence the confidence returned by service.
+     *
+     * @return the field confidence value.
+     */
+    private static float setDefaultConfidenceValue(Float confidence) {
+        return confidence == null ? DEFAULT_CONFIDENCE_VALUE : confidence;
     }
 
     /**
@@ -443,9 +464,10 @@ final class Transforms {
             if (!CoreUtils.isNullOrEmpty(fieldValue.getElements())) {
                 formValueContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
             }
-            fieldValueObjectMap.put(key, setFormField(null, key, fieldValue, new FieldText(fieldValue.getText(),
-                    toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(), formValueContentList),
-                fieldValue.getPage(), readResults));
+            fieldValueObjectMap.put(key,
+                setFormField(null, key, fieldValue, new FieldText(fieldValue.getText(),
+                        toBoundingBox(fieldValue.getBoundingBox()), fieldValue.getPage(), formValueContentList),
+                    fieldValue.getPage(), readResults));
         });
         return fieldValueObjectMap;
     }
@@ -472,8 +494,14 @@ final class Transforms {
 >>>>>>> 6db06c5bbf... Remove generic fieldvalue instead use generic FormField
 =======
     private static List<FormField<?>> toFormFieldArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
+<<<<<<< HEAD
         return valueArray.stream().map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage(), readResults)).collect(Collectors.toList());
 >>>>>>> 5f22d8e381... update sync tests
+=======
+        return valueArray.stream()
+            .map(fieldValue -> setFormField(null, null, fieldValue, null, fieldValue.getPage(), readResults))
+            .collect(Collectors.toList());
+>>>>>>> 181b7885a4... review comments
     }
 
     /**
@@ -487,7 +515,12 @@ final class Transforms {
      */
     private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> perPageTableList,
         List<FormLine> perPageLineList) {
-        return new FormPage(readResultItem.getHeight(), readResultItem.getAngle(), DimensionUnit.fromString(readResultItem.getUnit().toString()), readResultItem.getWidth(), perPageLineList,
+        return new FormPage(
+            readResultItem.getHeight(),
+            readResultItem.getAngle(),
+            DimensionUnit.fromString(readResultItem.getUnit().toString()),
+            readResultItem.getWidth(),
+            perPageLineList,
             perPageTableList
         );
     }
@@ -509,7 +542,7 @@ final class Transforms {
                     dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                     dataTableCell.getConfidence(), null,
                     dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
-                    dataTableCell.isFooter() == null ? false : dataTableCell.isHeader(),
+                    dataTableCell.isFooter() == null ? false : dataTableCell.isFooter(),
                     pageNumber))
                 .collect(Collectors.toList());
             FormTable extractedTable = new FormTable(dataTable.getRows(), dataTable.getColumns(), tableCellList);
@@ -526,11 +559,10 @@ final class Transforms {
      * @return The list of {@code FormLine}.
      */
     static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
-        List<FormLine> formLines = readResultItem.getLines().stream()
+        return readResultItem.getLines().stream()
             .map(textLine -> new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
                 readResultItem.getPage(), new IterableStream<>(toWords(textLine.getWords(), readResultItem.getPage()))))
             .collect(Collectors.toList());
-        return formLines;
     }
 
     /**
@@ -702,7 +734,7 @@ final class Transforms {
             String fieldName = "field-" + i;
             FieldText labelFieldText = new FieldText(keyValuePair.getKey().getText(), toBoundingBox(keyValuePair.getKey().getBoundingBox()), pageNumber, formKeyContentList);
             FieldText valueText = new FieldText(keyValuePair.getValue().getText(), toBoundingBox(keyValuePair.getValue().getBoundingBox()), pageNumber, formValueContentList);
-            FormField<String> formField = new FormField<>(keyValuePair.getConfidence(), labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText, pageNumber);
+            FormField<String> formField = new FormField<>(setDefaultConfidenceValue(keyValuePair.getConfidence()), labelFieldText, fieldName, keyValuePair.getValue().getText(), valueText, pageNumber);
             formFieldMap.put(fieldName, formField);
         }
         return formFieldMap;
@@ -716,19 +748,20 @@ final class Transforms {
     private static IterableStream<FormContent> setReferenceElements(List<String> elements, List<ReadResult> readResults, Integer pageNumber) {
         List<FormContent> formContentList = new ArrayList<>();
         elements.forEach(elementString -> {
-            String[] indices = COMPILE.matcher(elementString).replaceAll(" ").trim().split(" ");
-            int readResultIndex, lineIndex;
-            if (indices.length >= 1) {
-                readResultIndex = Integer.parseInt(indices[0]);
-                lineIndex = Integer.parseInt(indices[1]);
-            } else {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Reference Elements not found"));
+            String[] indices = NON_DIGIT_PATTERN.matcher(elementString).replaceAll(" ").trim().split(" ");
+
+            if (indices.length < 2) {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cannot find corresponding reference elements for the field value."));
             }
+
+            int readResultIndex = Integer.parseInt(indices[0]);
+            int lineIndex = Integer.parseInt(indices[1]);
+
             if (indices.length == 3) {
                 int wordIndex = Integer.parseInt(indices[2]);
-                TextWord textWord = readResults.get(readResultIndex).getLines().get(lineIndex).getWords()
-                    .get(wordIndex);
-                FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()), pageNumber, textWord.getConfidence());
+                TextWord textWord = readResults.get(readResultIndex).getLines().get(lineIndex).getWords().get(wordIndex);
+                FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()), pageNumber,
+                    setDefaultConfidenceValue(textWord.getConfidence()));
                 formContentList.add(wordElement);
             } else {
                 TextLine textLine = readResults.get(readResultIndex).getLines().get(lineIndex);
@@ -748,10 +781,10 @@ final class Transforms {
      * @return The list of {@code FormWord words}.
      */
     static IterableStream<FormWord> toWords(List<TextWord> words, Integer pageNumber) {
-        List<FormWord> extractedWordList = words.stream()
+        return new IterableStream<>(words.stream()
             .map(textWord -> new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()), pageNumber,
-                textWord.getConfidence())).collect(Collectors.toList());
-        return new IterableStream<FormWord>(extractedWordList);
+                setDefaultConfidenceValue(textWord.getConfidence())))
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -859,14 +892,14 @@ final class Transforms {
 
 =======
     private static BoundingBox toBoundingBox(List<Float> serviceBoundingBox) {
-        if (CoreUtils.isNullOrEmpty(serviceBoundingBox)) {
+        if (CoreUtils.isNullOrEmpty(serviceBoundingBox) && (serviceBoundingBox.size() < 8 || (serviceBoundingBox.size() % 2 != 0))) {
             return null;
         }
-        Point topLeft = new Point(serviceBoundingBox.get(0), serviceBoundingBox.get(1));
-        Point topRight = new Point(serviceBoundingBox.get(2), serviceBoundingBox.get(3));
-        Point bottomLeft = new Point(serviceBoundingBox.get(4), serviceBoundingBox.get(5));
-        Point bottomRight = new Point(serviceBoundingBox.get(6), serviceBoundingBox.get(7));
-        return new BoundingBox(Arrays.asList(topLeft, topRight, bottomLeft, bottomRight));
+        List<Point> pointList = new ArrayList<>();
+        for (int i = 0; i < serviceBoundingBox.size(); i++) {
+            pointList.add(new Point(serviceBoundingBox.get(i), serviceBoundingBox.get(++i)));
+        }
+        return new BoundingBox(pointList);
     }
 <<<<<<< HEAD
 

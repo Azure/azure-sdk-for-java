@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ErrorInformation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -18,6 +19,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -65,6 +67,8 @@ public final class FormRecognizerAsyncClient {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
+
+
 
     /**
      * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
@@ -532,81 +536,6 @@ public final class FormRecognizerAsyncClient {
         String sourceUrl) {
         return (pollingContext) -> {
             try {
-                Objects.requireNonNull(sourceUrl, "'sourceUrl' is required and cannot be null.");
-                return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(sourceUrl))
-                    .map(response ->
-                        new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentStreamActivationOperation(
-        Flux<ByteBuffer> data, long length, FormContentType formContentType) {
-        return (pollingContext) -> {
-            try {
-                Objects.requireNonNull(data, "'data' is required and cannot be null.");
-                Objects.requireNonNull(formContentType, "'formContentType' is required and cannot be null.");
-                return service.analyzeLayoutAsyncWithResponseAsync(ContentType.fromString(formContentType.toString()),
-                    data, length)
-                    .map(response -> new OperationResult(
-                        parseModelId(response.getDeserializedHeaders().getOperationLocation())));
-            } catch (RuntimeException ex) {
-                return monoError(logger, ex);
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
-        extractContentPollOperation() {
-        return (pollingContext) -> {
-            PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
-            String modelId = operationResultPollResponse.getValue().getResultId();
-            try {
-                UUID resultUid = UUID.fromString(modelId);
-                return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                    .flatMap(modelSimpleResponse -> processAnalyzeModelResponse(modelSimpleResponse,
-                        operationResultPollResponse));
-            } catch (HttpResponseException e) {
-                logger.logExceptionAsError(e);
-                return Mono.just(new PollResponse<>(LongRunningOperationStatus.FAILED, null));
-            }
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<FormPage>>>
-        fetchExtractContentResult() {
-        return (pollingContext) -> {
-            final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse -> {
-                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                    return new IterableStream<>(
-                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult(), true));
-                });
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<IterableStream<RecognizedForm>>>
-        fetchAnalyzeFormResultOperation(String modelId, boolean includeTextDetails) {
-        return (pollingContext) -> {
-            Objects.requireNonNull(modelId, "'modelId' is required and cannot be null.");
-            UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            UUID modelUid = UUID.fromString(modelId);
-            return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
-                .map(modelSimpleResponse -> {
-                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
-                    return new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
-                        includeTextDetails));
-                });
-        };
-    }
-
-    private Function<PollingContext<OperationResult>, Mono<OperationResult>> contentAnalyzeActivationOperation(
-        String sourceUrl) {
-        return (pollingContext) -> {
-            try {
                 return service.analyzeLayoutAsyncWithResponseAsync(new SourcePath().setSource(sourceUrl))
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getOperationLocation())));
@@ -652,9 +581,11 @@ public final class FormRecognizerAsyncClient {
         return (pollingContext) -> {
             final UUID resultUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             return service.getAnalyzeLayoutResultWithResponseAsync(resultUid)
-                .map(modelSimpleResponse ->
-                    new IterableStream<>(
-                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult())));
+                .map(modelSimpleResponse -> {
+                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
+                    return new IterableStream<>(
+                        toRecognizedLayout(modelSimpleResponse.getValue().getAnalyzeResult()));
+                });
         };
     }
 
@@ -665,13 +596,28 @@ public final class FormRecognizerAsyncClient {
             UUID modelUid = UUID.fromString(modelId);
             return service.getAnalyzeFormResultWithResponseAsync(modelUid, resultUid)
                 .map(modelSimpleResponse -> {
-                    if (modelSimpleResponse.getValue().getStatus().equals(OperationStatus.FAILED)) {
-                        throw logger.logExceptionAsError(new IllegalArgumentException("Invalid status Model Id."));
-                    }
+                    throwIfAnalyzeStatusInvalid(modelSimpleResponse);
                     return new IterableStream<>(toRecognizedForm(modelSimpleResponse.getValue().getAnalyzeResult(),
                         includeTextDetails));
                 });
         };
+    }
+
+    /**
+     * Helper method that throws a {@link HttpResponseException} if {@link AnalyzeOperationResult#getStatus()} is
+     * {@link OperationStatus#FAILED}.
+     *
+     * @param modelSimpleResponse The response returned from the service.
+     */
+    private void throwIfAnalyzeStatusInvalid(SimpleResponse<AnalyzeOperationResult> modelSimpleResponse) {
+        if (modelSimpleResponse.getValue().getStatus().equals(OperationStatus.FAILED)) {
+            List<ErrorInformation> errorInformationList =
+                modelSimpleResponse.getValue().getAnalyzeResult().getErrors();
+            if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
+                throw logger.logExceptionAsError(
+                    new HttpResponseException(errorInformationList.get(0).getMessage(), null));
+            }
+        }
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>

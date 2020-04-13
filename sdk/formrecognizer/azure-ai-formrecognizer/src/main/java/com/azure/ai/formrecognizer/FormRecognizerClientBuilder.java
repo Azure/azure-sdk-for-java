@@ -61,6 +61,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder {
 
+    static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
     private static final String CONTENT_TYPE_HEADER_VALUE = ContentType.APPLICATION_JSON;
     private static final String ACCEPT_HEADER = "Accept";
@@ -149,8 +150,9 @@ public final class FormRecognizerClientBuilder {
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
-        pipeline = getDefaultHttpPipeline(buildConfiguration, pipeline);
-
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
+        }
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
             .pipeline(pipeline)
@@ -159,11 +161,35 @@ public final class FormRecognizerClientBuilder {
         return new FormRecognizerAsyncClient(formRecognizerAPI, serviceVersion);
     }
 
-    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration, HttpPipeline pipeline) {
-        if (pipeline == null) {
-            pipeline = getDefaultHttpPipeline(buildConfiguration);
+    private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+            buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersPolicy(headers));
+
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(retryPolicy == null ? DEFAULT_RETRY_POLICY : retryPolicy);
+        policies.add(new AddDatePolicy());
+        // Authentications
+        if (credential != null) {
+            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+        } else {
+            // Throw exception that credential and tokenCredential cannot be null
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
         }
-        return pipeline;
+        policies.addAll(this.policies);
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .build();
     }
 
     private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
