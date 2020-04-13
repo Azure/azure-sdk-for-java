@@ -100,6 +100,10 @@ public final class ModelBridgeInternal {
         return new CosmosStoredProcedureProperties(jsonString);
     }
 
+    public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
+        return new CosmosPermissionProperties(jsonString);
+    }
+
     public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
                                                                               CosmosAsyncContainer container) {
         return new CosmosAsyncTriggerResponse(response, container);
