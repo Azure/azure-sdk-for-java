@@ -25,10 +25,13 @@ public class AppServicePlansTests extends AppServiceTest {
     }
 
     @Test
-    @Disabled("Permanent server side issue: Cannot modify this web hosting plan because another operation is in progress")
+    @Disabled(
+        "Permanent server side issue: Cannot modify this web hosting plan because another operation is in progress")
     public void canCRUDAppServicePlan() throws Exception {
         // CREATE
-        AppServicePlan appServicePlan = appServiceManager.appServicePlans()
+        AppServicePlan appServicePlan =
+            appServiceManager
+                .appServicePlans()
                 .define(APP_SERVICE_PLAN_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
@@ -44,9 +47,11 @@ public class AppServicePlansTests extends AppServiceTest {
         Assertions.assertEquals(0, appServicePlan.numberOfWebApps());
         Assertions.assertEquals(20, appServicePlan.maxInstances());
         // GET
-        Assertions.assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
+        Assertions
+            .assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(RG_NAME, APP_SERVICE_PLAN_NAME));
         // LIST
-        PagedIterable<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByResourceGroup(RG_NAME);
+        PagedIterable<AppServicePlan> appServicePlans =
+            appServiceManager.appServicePlans().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (AppServicePlan asp : appServicePlans) {
             if (APP_SERVICE_PLAN_NAME.equals(asp.name())) {
@@ -56,7 +61,9 @@ public class AppServicePlansTests extends AppServiceTest {
         }
         Assertions.assertTrue(found);
         // UPDATE
-        appServicePlan = appServicePlan.update()
+        appServicePlan =
+            appServicePlan
+                .update()
                 .withPricingTier(PricingTier.STANDARD_S1)
                 .withPerSiteScaling(true)
                 .withCapacity(3)

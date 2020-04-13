@@ -30,7 +30,10 @@ public class WebAppsWebDeployTests extends AppServiceTest {
     @Test
     public void canDeployWarFile() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
@@ -44,8 +47,11 @@ public class WebAppsWebDeployTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, plan1.region());
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
-        WebDeployment deployment = webApp1.deploy()
-                .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-mgmt-appservice/src/test/resources/webapps.zip")
+        WebDeployment deployment =
+            webApp1
+                .deploy()
+                .withPackageUri(
+                    "https://github.com/Azure/azure-libraries-for-java/raw/master/azure-mgmt-appservice/src/test/resources/webapps.zip")
                 .withExistingDeploymentsDeleted(true)
                 .execute();
 

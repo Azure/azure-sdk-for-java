@@ -11,20 +11,10 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AppServicePlan.
- */
+/** The implementation for AppServicePlan. */
 class AppServicePlanImpl
-        extends
-        GroupableResourceImpl<
-                AppServicePlan,
-                AppServicePlanInner,
-                AppServicePlanImpl,
-                AppServiceManager>
-        implements
-        AppServicePlan,
-        AppServicePlan.Definition,
-        AppServicePlan.Update {
+    extends GroupableResourceImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager>
+    implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
 
     AppServicePlanImpl(String name, AppServicePlanInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -32,8 +22,12 @@ class AppServicePlanImpl
 
     @Override
     public Mono<AppServicePlan> createResourceAsync() {
-        return this.manager().inner().appServicePlans().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .appServicePlans()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override

@@ -14,14 +14,17 @@ public class CertificateOrdersTests extends AppServiceTest {
 
     @Override
     protected void cleanUpResources() {
-        //super.cleanUpResources();
+        // super.cleanUpResources();
     }
 
     @Test
-    @Disabled("Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
+    @Disabled(
+        "Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
     public void canCRUDCertificateOrder() throws Exception {
         // CREATE
-        AppServiceCertificateOrder certificateOrder = appServiceManager.certificateOrders()
+        AppServiceCertificateOrder certificateOrder =
+            appServiceManager
+                .certificateOrders()
                 .define(CERTIFICATE_NAME)
                 .withExistingResourceGroup(RG_NAME)
                 .withHostName("*.graph-webapp-319.com")
@@ -34,7 +37,8 @@ public class CertificateOrdersTests extends AppServiceTest {
         // GET
         Assertions.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, CERTIFICATE_NAME));
         // LIST
-        PagedIterable<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByResourceGroup(RG_NAME);
+        PagedIterable<AppServiceCertificateOrder> certificateOrders =
+            appServiceManager.certificateOrders().listByResourceGroup(RG_NAME);
         boolean found = false;
         for (AppServiceCertificateOrder co : certificateOrders) {
             if (CERTIFICATE_NAME.equals(co.name())) {

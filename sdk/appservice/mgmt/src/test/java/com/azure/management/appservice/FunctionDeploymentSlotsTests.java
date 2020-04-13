@@ -7,10 +7,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
-
-import java.util.Map;
 
 public class FunctionDeploymentSlotsTests extends AppServiceTest {
     private String RG_NAME_1 = "";
@@ -33,7 +32,10 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
     @Disabled("Contains connection string in request payload")
     public void canCRUDFunctionSwapSlots() throws Exception {
         // Create with consumption
-        FunctionApp functionApp1 = appServiceManager.functionApps().define(WEBAPP_NAME_1)
+        FunctionApp functionApp1 =
+            appServiceManager
+                .functionApps()
+                .define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewAppServicePlan(PricingTier.STANDARD_S1)
@@ -51,7 +53,10 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, plan1.region());
 
         // Create a deployment slot with empty config
-        FunctionDeploymentSlot slot1 = functionApp1.deploymentSlots().define(SLOT_NAME_1)
+        FunctionDeploymentSlot slot1 =
+            functionApp1
+                .deploymentSlots()
+                .define(SLOT_NAME_1)
                 .withBrandNewConfiguration()
                 .withPythonVersion(PythonVersion.PYTHON_27)
                 .create();
@@ -66,9 +71,8 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertFalse(connectionStringMap.containsKey("stickyName"));
 
         // Create a deployment slot with web app's config
-        FunctionDeploymentSlot slot2 = functionApp1.deploymentSlots().define(SLOT_NAME_2)
-                .withConfigurationFromParent()
-                .create();
+        FunctionDeploymentSlot slot2 =
+            functionApp1.deploymentSlots().define(SLOT_NAME_2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(JavaVersion.JAVA_1_7_0_51, slot2.javaVersion());
         appSettingMap = slot2.getAppSettings();
@@ -83,12 +87,13 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals(true, connectionStringMap.get("stickyName").sticky());
 
         // Update deployment slot
-        slot2.update()
-                .withoutJava()
-                .withPythonVersion(PythonVersion.PYTHON_34)
-                .withAppSetting("slot2key", "slot2value")
-                .withStickyAppSetting("sticky2key", "sticky2value")
-                .apply();
+        slot2
+            .update()
+            .withoutJava()
+            .withPythonVersion(PythonVersion.PYTHON_34)
+            .withAppSetting("slot2key", "slot2value")
+            .withStickyAppSetting("sticky2key", "sticky2value")
+            .apply();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(JavaVersion.OFF, slot2.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot2.pythonVersion());
@@ -96,9 +101,8 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals("slot2value", appSettingMap.get("slot2key").value());
 
         // Create 3rd deployment slot with configuration from slot 2
-        FunctionDeploymentSlot slot3 = functionApp1.deploymentSlots().define(SLOT_NAME_3)
-                .withConfigurationFromDeploymentSlot(slot2)
-                .create();
+        FunctionDeploymentSlot slot3 =
+            functionApp1.deploymentSlots().define(SLOT_NAME_3).withConfigurationFromDeploymentSlot(slot2).create();
         Assertions.assertNotNull(slot3);
         Assertions.assertEquals(JavaVersion.OFF, slot3.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());

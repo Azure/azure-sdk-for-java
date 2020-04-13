@@ -12,10 +12,9 @@ import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Set;
 
 public class WebAppsMsiTests extends AppServiceTest {
     private MSIManager msiManager;
@@ -46,7 +45,10 @@ public class WebAppsMsiTests extends AppServiceTest {
     @Test
     public void canCRUDWebAppWithMsi() throws Exception {
         // Create with new app service plan
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
@@ -67,7 +69,10 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         if (!isPlaybackMode()) {
             // Check availability of environment variables
-            uploadFileToWebApp(webApp.getPublishingProfile(), "appservicemsi.war", WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
+            uploadFileToWebApp(
+                webApp.getPublishingProfile(),
+                "appservicemsi.war",
+                WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
             SdkContext.sleep(30000);
 
@@ -88,30 +93,38 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         // Prepare a definition for yet-to-be-created resource group
         //
-        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(Region.US_WEST);
+        Creatable<ResourceGroup> creatableRG =
+            resourceManager.resourceGroups().define(RG_NAME).withRegion(Region.US_WEST);
 
-        // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual network
+        // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
+        // network
         //
-        final Identity createdIdentity = msiManager.identities()
+        final Identity createdIdentity =
+            msiManager
+                .identities()
                 .define(identityName1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(creatableRG)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .create();
 
-        // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the resource group
+        // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
+        // resource group
         // it resides
         //
-        Creatable<Identity> creatableIdentity = msiManager.identities()
+        Creatable<Identity> creatableIdentity =
+            msiManager
+                .identities()
                 .define(identityName2)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(creatableRG)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create with new app service plan
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
@@ -140,7 +153,10 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         if (!isPlaybackMode()) {
             // Check availability of environment variables
-            uploadFileToWebApp(webApp.getPublishingProfile(), "appservicemsi.war", WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
+            uploadFileToWebApp(
+                webApp.getPublishingProfile(),
+                "appservicemsi.war",
+                WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
             SdkContext.sleep(30000);
 

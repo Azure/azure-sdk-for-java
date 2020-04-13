@@ -8,10 +8,9 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 
 public class ZipDeployTests extends AppServiceTest {
     private String WEBAPP_NAME_4 = "";
@@ -19,6 +18,7 @@ public class ZipDeployTests extends AppServiceTest {
     public ZipDeployTests() {
         super(TestBase.RunCondition.LIVE_ONLY);
     }
+
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         WEBAPP_NAME_4 = generateRandomResourceName("java-func-", 20);
@@ -29,7 +29,10 @@ public class ZipDeployTests extends AppServiceTest {
     @Test
     public void canZipDeployFunction() {
         // Create function app
-        FunctionApp functionApp = appServiceManager.functionApps().define(WEBAPP_NAME_4)
+        FunctionApp functionApp =
+            appServiceManager
+                .functionApps()
+                .define(WEBAPP_NAME_4)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .create();
@@ -41,9 +44,13 @@ public class ZipDeployTests extends AppServiceTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals("625", response);
 
-        PagedIterable<FunctionEnvelope> envelopes = appServiceManager.functionApps().listFunctions(RG_NAME, functionApp.name());
+        PagedIterable<FunctionEnvelope> envelopes =
+            appServiceManager.functionApps().listFunctions(RG_NAME, functionApp.name());
         Assertions.assertNotNull(envelopes);
         Assertions.assertEquals(1, TestUtilities.getSize(envelopes));
-        Assertions.assertEquals(envelopes.iterator().next().href(), "https://" + WEBAPP_NAME_4 +".scm.azurewebsites.net/api/functions/square");
+        Assertions
+            .assertEquals(
+                envelopes.iterator().next().href(),
+                "https://" + WEBAPP_NAME_4 + ".scm.azurewebsites.net/api/functions/square");
     }
 }

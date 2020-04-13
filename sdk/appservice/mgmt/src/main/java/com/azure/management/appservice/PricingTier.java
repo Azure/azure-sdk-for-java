@@ -3,14 +3,11 @@
 
 package com.azure.management.appservice;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.azure.core.annotation.Fluent;
-
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Collection;
 
-/**
- * Defines App service pricing tiers.
- */
+/** Defines App service pricing tiers. */
 @Fluent
 public final class PricingTier {
     private static final AttributeCollection<PricingTier> COLLECTION = new AttributeCollection<>();
@@ -62,14 +59,12 @@ public final class PricingTier {
 
     /**
      * Creates a custom app service pricing tier.
+     *
      * @param tier the tier name
      * @param size the size of the plan
      */
     public PricingTier(String tier, String size) {
-        this.skuDescription = new SkuDescription()
-                .withName(size)
-                .withTier(tier)
-                .withSize(size);
+        this.skuDescription = new SkuDescription().withName(size).withTier(tier).withSize(size);
     }
 
     /**
@@ -99,9 +94,7 @@ public final class PricingTier {
         return skuDescription.tier() + "_" + skuDescription.size();
     }
 
-    /**
-     * @return the underneath sku description
-     */
+    /** @return the underneath sku description */
     @JsonValue
     public SkuDescription toSkuDescription() {
         return this.skuDescription;

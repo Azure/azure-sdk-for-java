@@ -16,18 +16,11 @@ import com.azure.management.resources.fluentcore.arm.collection.implementation.I
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation DeploymentSlots.
- */
+/** The implementation DeploymentSlots. */
 class FunctionDeploymentSlotsImpl
-        extends IndependentChildResourcesImpl<
-        FunctionDeploymentSlot,
-        FunctionDeploymentSlotImpl,
-        SiteInner,
-        WebAppsInner,
-        AppServiceManager,
-        FunctionApp>
-        implements FunctionDeploymentSlots {
+    extends IndependentChildResourcesImpl<
+        FunctionDeploymentSlot, FunctionDeploymentSlotImpl, SiteInner, WebAppsInner, AppServiceManager, FunctionApp>
+    implements FunctionDeploymentSlots {
 
     private final FunctionAppImpl parent;
 
@@ -40,8 +33,8 @@ class FunctionDeploymentSlotsImpl
     @Override
     protected FunctionDeploymentSlotImpl wrapModel(String name) {
         return new FunctionDeploymentSlotImpl(name, new SiteInner(), null, null, parent)
-                .withRegion(parent.regionName())
-                .withExistingResourceGroup(parent.resourceGroupName());
+            .withRegion(parent.regionName())
+            .withExistingResourceGroup(parent.resourceGroupName());
     }
 
     @Override
@@ -54,10 +47,22 @@ class FunctionDeploymentSlotsImpl
 
     @Override
     protected PagedFlux<FunctionDeploymentSlot> wrapPageAsync(PagedFlux<SiteInner> innerPage) {
-        return PagedConverter.flatMapPage(innerPage, siteInner -> Mono.zip(
-                this.inner().getConfigurationSlotAsync(siteInner.resourceGroup(), parent.name(), siteInner.getName()),
-                this.inner().getDiagnosticLogsConfigurationSlotAsync(siteInner.resourceGroup(), parent.name(), siteInner.getName()),
-                (siteConfigResourceInner, logsConfigInner) -> this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+        return PagedConverter
+            .flatMapPage(
+                innerPage,
+                siteInner ->
+                    Mono
+                        .zip(
+                            this
+                                .inner()
+                                .getConfigurationSlotAsync(
+                                    siteInner.resourceGroup(), parent.name(), siteInner.getName()),
+                            this
+                                .inner()
+                                .getDiagnosticLogsConfigurationSlotAsync(
+                                    siteInner.resourceGroup(), parent.name(), siteInner.getName()),
+                            (siteConfigResourceInner, logsConfigInner) ->
+                                this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
     }
 
     @Override
@@ -66,11 +71,18 @@ class FunctionDeploymentSlotsImpl
     }
 
     @Override
-    public Mono<FunctionDeploymentSlot> getByParentAsync(final String resourceGroup, final String parentName, final String name) {
-        return innerCollection.getSlotAsync(resourceGroup, parentName, name).flatMap(siteInner -> Mono.zip(
-                innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name),
-                innerCollection.getDiagnosticLogsConfigurationSlotAsync(resourceGroup, parentName, name),
-                (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) -> wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
+    public Mono<FunctionDeploymentSlot> getByParentAsync(
+        final String resourceGroup, final String parentName, final String name) {
+        return innerCollection
+            .getSlotAsync(resourceGroup, parentName, name)
+            .flatMap(
+                siteInner ->
+                    Mono
+                        .zip(
+                            innerCollection.getConfigurationSlotAsync(resourceGroup, parentName, name),
+                            innerCollection.getDiagnosticLogsConfigurationSlotAsync(resourceGroup, parentName, name),
+                            (SiteConfigResourceInner siteConfigResourceInner, SiteLogsConfigInner logsConfigInner) ->
+                                wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
     }
 
     @Override
@@ -118,7 +130,8 @@ class FunctionDeploymentSlotsImpl
         return wrapPageAsync(innerCollection.listSlotsAsync(parent.resourceGroupName(), parent.name()));
     }
 
-    private FunctionDeploymentSlotImpl wrapModel(SiteInner inner, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig) {
+    private FunctionDeploymentSlotImpl wrapModel(
+        SiteInner inner, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig) {
         if (inner == null) {
             return null;
         }

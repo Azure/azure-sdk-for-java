@@ -3,25 +3,19 @@
 
 package com.azure.management.appservice;
 
+import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 import java.util.Collection;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
-
-/**
- * Defines values for remote visual studio version for remote debugging.
- */
+/** Defines values for remote visual studio version for remote debugging. */
 public final class RemoteVisualStudioVersion extends ExpandableStringEnum<RemoteVisualStudioVersion> {
     /** Static value VS2012 for RemoteVisualStudioVersion. */
-    @Deprecated
-    public static final RemoteVisualStudioVersion VS2012 = RemoteVisualStudioVersion.fromString("VS2012");
+    @Deprecated public static final RemoteVisualStudioVersion VS2012 = RemoteVisualStudioVersion.fromString("VS2012");
 
     /** Static value VS2013 for RemoteVisualStudioVersion. */
-    @Deprecated
-    public static final RemoteVisualStudioVersion VS2013 = RemoteVisualStudioVersion.fromString("VS2013");
+    @Deprecated public static final RemoteVisualStudioVersion VS2013 = RemoteVisualStudioVersion.fromString("VS2013");
 
     /** Static value VS2015 for RemoteVisualStudioVersion. */
-    @Deprecated
-    public static final RemoteVisualStudioVersion VS2015 = RemoteVisualStudioVersion.fromString("VS2015");
+    @Deprecated public static final RemoteVisualStudioVersion VS2015 = RemoteVisualStudioVersion.fromString("VS2015");
 
     /** Static value VS2017 for RemoteVisualStudioVersion. */
     public static final RemoteVisualStudioVersion VS2017 = RemoteVisualStudioVersion.fromString("VS2017");
@@ -31,6 +25,7 @@ public final class RemoteVisualStudioVersion extends ExpandableStringEnum<Remote
 
     /**
      * Finds or creates a Visual Studio version based on the specified name.
+     *
      * @param name a name
      * @return a RemoteVisualStudioVersion instance
      */
@@ -38,9 +33,7 @@ public final class RemoteVisualStudioVersion extends ExpandableStringEnum<Remote
         return fromString(name, RemoteVisualStudioVersion.class);
     }
 
-    /**
-     * @return known Visual Studio versions
-     */
+    /** @return known Visual Studio versions */
     public static Collection<RemoteVisualStudioVersion> values() {
         return values(RemoteVisualStudioVersion.class);
     }

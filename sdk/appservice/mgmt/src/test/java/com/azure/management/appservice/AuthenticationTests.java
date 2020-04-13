@@ -30,14 +30,17 @@ public class AuthenticationTests extends AppServiceTest {
     @Disabled("Need facebook developer account")
     public void canCRUDWebAppWithAuthentication() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .defineAuthentication()
-                    .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.FACEBOOK)
-                    .withFacebook("appId", "appSecret")
-                    .attach()
+                .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.FACEBOOK)
+                .withFacebook("appId", "appSecret")
+                .attach()
                 .create();
         Assertions.assertNotNull(webApp1);
         Assertions.assertEquals(Region.US_WEST, webApp1.region());
@@ -50,15 +53,15 @@ public class AuthenticationTests extends AppServiceTest {
         Assertions.assertTrue(response.contains("do not have permission"));
 
         // Update
-        webApp1.update()
-                .defineAuthentication()
-                    .withAnonymousAuthentication()
-                    .withFacebook("appId", "appSecret")
-                    .attach()
-                .apply();
+        webApp1
+            .update()
+            .defineAuthentication()
+            .withAnonymousAuthentication()
+            .withFacebook("appId", "appSecret")
+            .attach()
+            .apply();
 
         response = curl("http://" + webApp1.defaultHostName()).getValue();
         Assertions.assertFalse(response.contains("do not have permission"));
-
     }
 }

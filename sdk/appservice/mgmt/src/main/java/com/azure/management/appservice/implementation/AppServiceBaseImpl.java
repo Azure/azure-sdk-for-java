@@ -27,13 +27,12 @@ import com.azure.management.appservice.models.SlotConfigNamesResourceInner;
 import com.azure.management.appservice.models.StringDictionaryInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import reactor.core.publisher.Mono;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
 /**
  * The base implementation for web apps and function apps.
@@ -44,18 +43,23 @@ import java.util.stream.Collectors;
  * @param <FluentUpdateT> The definition stage that derives from Appliable
  */
 abstract class AppServiceBaseImpl<
-    FluentT extends WebAppBase,
-    FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
-    FluentWithCreateT,
-    FluentUpdateT>
-        extends WebAppBaseImpl<FluentT, FluentImplT> {
+        FluentT extends WebAppBase,
+        FluentImplT extends AppServiceBaseImpl<FluentT, FluentImplT, FluentWithCreateT, FluentUpdateT>,
+        FluentWithCreateT,
+        FluentUpdateT>
+    extends WebAppBaseImpl<FluentT, FluentImplT> {
 
     protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
     protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
     protected static final String SETTING_REGISTRY_USERNAME = "DOCKER_REGISTRY_SERVER_USERNAME";
     protected static final String SETTING_REGISTRY_PASSWORD = "DOCKER_REGISTRY_SERVER_PASSWORD";
 
-    AppServiceBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, AppServiceManager manager) {
+    AppServiceBaseImpl(
+        String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
     }
 
@@ -81,7 +85,11 @@ abstract class AppServiceBaseImpl<
 
     @Override
     Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig) {
-        return this.manager().inner().webApps().createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
+        return this
+            .manager()
+            .inner()
+            .webApps()
+            .createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
     }
 
     @Override
@@ -147,12 +155,26 @@ abstract class AppServiceBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public Mono<Map<String, HostNameBinding>> getHostNameBindingsAsync() {
-        return this.manager().inner().webApps().listHostNameBindingsAsync(resourceGroupName(), name())
-                .mapPage(hostNameBindingInner -> new HostNameBindingImpl<>(hostNameBindingInner, (FluentImplT) AppServiceBaseImpl.this))
-                .collectList()
-                .map(hostNameBindings -> Collections.<String, HostNameBinding>unmodifiableMap(hostNameBindings.stream()
-                        .collect(Collectors.toMap(binding -> binding.name().replace(name() + "/", ""),
-                                Function.identity()))));
+        return this
+            .manager()
+            .inner()
+            .webApps()
+            .listHostNameBindingsAsync(resourceGroupName(), name())
+            .mapPage(
+                hostNameBindingInner ->
+                    new HostNameBindingImpl<>(hostNameBindingInner, (FluentImplT) AppServiceBaseImpl.this))
+            .collectList()
+            .map(
+                hostNameBindings ->
+                    Collections
+                        .<String, HostNameBinding>unmodifiableMap(
+                            hostNameBindings
+                                .stream()
+                                .collect(
+                                    Collectors
+                                        .toMap(
+                                            binding -> binding.name().replace(name() + "/", ""),
+                                            Function.identity()))));
     }
 
     @Override
@@ -161,9 +183,15 @@ abstract class AppServiceBaseImpl<
     }
 
     public Mono<PublishingProfile> getPublishingProfileAsync() {
-        return FluxUtil.collectBytesInByteBufferStream(
-                manager().inner().webApps().listPublishingProfileXmlWithSecretsAsync(resourceGroupName(), name(), new CsmPublishingProfileOptions()))
-                .map(bytes -> new PublishingProfileImpl(new String(bytes, StandardCharsets.UTF_8), AppServiceBaseImpl.this));
+        return FluxUtil
+            .collectBytesInByteBufferStream(
+                manager()
+                    .inner()
+                    .webApps()
+                    .listPublishingProfileXmlWithSecretsAsync(
+                        resourceGroupName(), name(), new CsmPublishingProfileOptions()))
+            .map(
+                bytes -> new PublishingProfileImpl(new String(bytes, StandardCharsets.UTF_8), AppServiceBaseImpl.this));
     }
 
     @Override
@@ -173,14 +201,18 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<WebAppSourceControl> getSourceControlAsync() {
-        return manager().inner().webApps().getSourceControlAsync(resourceGroupName(), name())
-                .map(siteSourceControlInner -> new WebAppSourceControlImpl<>(siteSourceControlInner, AppServiceBaseImpl.this));
+        return manager()
+            .inner()
+            .webApps()
+            .getSourceControlAsync(resourceGroupName(), name())
+            .map(
+                siteSourceControlInner ->
+                    new WebAppSourceControlImpl<>(siteSourceControlInner, AppServiceBaseImpl.this));
     }
 
     @Override
     Mono<MSDeployStatusInner> createMSDeploy(MSDeploy msDeployInner) {
-        return manager().inner().webApps()
-                .createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
+        return manager().inner().webApps().createMSDeployOperationAsync(resourceGroupName(), name(), msDeployInner);
     }
 
     @Override
@@ -191,8 +223,13 @@ abstract class AppServiceBaseImpl<
     @Override
     public Mono<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
         IdentifierInner identifierInner = new IdentifierInner().withValue(domainVerificationToken);
-        return this.manager().inner().webApps().createOrUpdateDomainOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
-                .then(Mono.empty());
+        return this
+            .manager()
+            .inner()
+            .webApps()
+            .createOrUpdateDomainOwnershipIdentifierAsync(
+                resourceGroupName(), name(), certificateOrderName, identifierInner)
+            .then(Mono.empty());
     }
 
     @Override
@@ -202,9 +239,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> startAsync() {
-        return manager().inner().webApps().startAsync(resourceGroupName(), name())
-                .then(refreshAsync())
-                .then(Mono.empty());
+        return manager()
+            .inner()
+            .webApps()
+            .startAsync(resourceGroupName(), name())
+            .then(refreshAsync())
+            .then(Mono.empty());
     }
 
     @Override
@@ -214,9 +254,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> stopAsync() {
-        return manager().inner().webApps().stopAsync(resourceGroupName(), name())
-                .then(refreshAsync())
-                .then(Mono.empty());
+        return manager()
+            .inner()
+            .webApps()
+            .stopAsync(resourceGroupName(), name())
+            .then(refreshAsync())
+            .then(Mono.empty());
     }
 
     @Override
@@ -226,9 +269,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> restartAsync() {
-        return manager().inner().webApps().restartAsync(resourceGroupName(), name())
-                .then(refreshAsync())
-                .then(Mono.empty());
+        return manager()
+            .inner()
+            .webApps()
+            .restartAsync(resourceGroupName(), name())
+            .then(refreshAsync())
+            .then(Mono.empty());
     }
 
     @Override
@@ -238,9 +284,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> swapAsync(String slotName) {
-        return manager().inner().webApps().swapSlotWithProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
-                .then(refreshAsync())
-                .then(Mono.empty());
+        return manager()
+            .inner()
+            .webApps()
+            .swapSlotWithProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
+            .then(refreshAsync())
+            .then(Mono.empty());
     }
 
     @Override
@@ -250,9 +299,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> applySlotConfigurationsAsync(String slotName) {
-        return manager().inner().webApps().applySlotConfigToProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
-                .then(refreshAsync())
-                .then(Mono.empty());
+        return manager()
+            .inner()
+            .webApps()
+            .applySlotConfigToProductionAsync(resourceGroupName(), name(), new CsmSlotEntity().withTargetSlot(slotName))
+            .then(refreshAsync())
+            .then(Mono.empty());
     }
 
     @Override
@@ -262,9 +314,12 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<Void> resetSlotConfigurationsAsync() {
-        return manager().inner().webApps().resetProductionSlotConfigAsync(resourceGroupName(), name())
-                .then(refreshAsync())
-                .then(Mono.empty());
+        return manager()
+            .inner()
+            .webApps()
+            .resetProductionSlotConfigAsync(resourceGroupName(), name())
+            .then(refreshAsync())
+            .then(Mono.empty());
     }
 
     @Override
@@ -274,7 +329,9 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsAsync() {
-        return FluxUtil.collectBytesInByteBufferStream(manager().inner().webApps().getWebSiteContainerLogsAsync(resourceGroupName(), name()));
+        return FluxUtil
+            .collectBytesInByteBufferStream(
+                manager().inner().webApps().getWebSiteContainerLogsAsync(resourceGroupName(), name()));
     }
 
     @Override
@@ -284,12 +341,17 @@ abstract class AppServiceBaseImpl<
 
     @Override
     public Mono<byte[]> getContainerLogsZipAsync() {
-        return FluxUtil.collectBytesInByteBufferStream(manager().inner().webApps().getContainerLogsZipAsync(resourceGroupName(), name()));
+        return FluxUtil
+            .collectBytesInByteBufferStream(
+                manager().inner().webApps().getContainerLogsZipAsync(resourceGroupName(), name()));
     }
 
     @Override
     Mono<SiteLogsConfigInner> updateDiagnosticLogsConfig(SiteLogsConfigInner siteLogsConfigInner) {
-        return manager().inner().webApps().updateDiagnosticLogsConfigAsync(resourceGroupName(), name(), siteLogsConfigInner);
+        return manager()
+            .inner()
+            .webApps()
+            .updateDiagnosticLogsConfigAsync(resourceGroupName(), name(), siteLogsConfigInner);
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan() {
@@ -298,9 +360,8 @@ abstract class AppServiceBaseImpl<
     }
 
     private AppServicePlanImpl newDefaultAppServicePlan(String appServicePlanName) {
-        AppServicePlanImpl appServicePlan = (AppServicePlanImpl) (this.manager().appServicePlans()
-                .define(appServicePlanName))
-                .withRegion(regionName());
+        AppServicePlanImpl appServicePlan =
+            (AppServicePlanImpl) (this.manager().appServicePlans().define(appServicePlanName)).withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(super.creatableGroup);
         } else {
@@ -318,11 +379,16 @@ abstract class AppServiceBaseImpl<
     }
 
     FluentImplT withNewAppServicePlan(OperatingSystem operatingSystem, PricingTier pricingTier) {
-        return withNewAppServicePlan(newDefaultAppServicePlan().withOperatingSystem(operatingSystem).withPricingTier(pricingTier));
+        return withNewAppServicePlan(
+            newDefaultAppServicePlan().withOperatingSystem(operatingSystem).withPricingTier(pricingTier));
     }
 
-    FluentImplT withNewAppServicePlan(String appServicePlanName, OperatingSystem operatingSystem, PricingTier pricingTier) {
-        return withNewAppServicePlan(newDefaultAppServicePlan(appServicePlanName).withOperatingSystem(operatingSystem).withPricingTier(pricingTier));
+    FluentImplT withNewAppServicePlan(
+        String appServicePlanName, OperatingSystem operatingSystem, PricingTier pricingTier) {
+        return withNewAppServicePlan(
+            newDefaultAppServicePlan(appServicePlanName)
+                .withOperatingSystem(operatingSystem)
+                .withPricingTier(pricingTier));
     }
 
     public FluentImplT withNewAppServicePlan(PricingTier pricingTier) {
@@ -335,8 +401,15 @@ abstract class AppServiceBaseImpl<
 
     public FluentImplT withNewAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable) {
         this.addDependency(appServicePlanCreatable);
-        String id = ResourceUtils.constructResourceId(this.manager().getSubscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanCreatable.name(), "");
+        String id =
+            ResourceUtils
+                .constructResourceId(
+                    this.manager().getSubscriptionId(),
+                    resourceGroupName(),
+                    "Microsoft.Web",
+                    "serverFarms",
+                    appServicePlanCreatable.name(),
+                    "");
         inner().withServerFarmId(id);
         return withOperatingSystem(((AppServicePlanImpl) appServicePlanCreatable).operatingSystem());
     }

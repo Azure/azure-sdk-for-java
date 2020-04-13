@@ -6,10 +6,9 @@ package com.azure.management.appservice;
 import com.azure.core.http.rest.Response;
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
 
 public class WarDeployTests extends AppServiceTest {
     private String WEBAPP_NAME = "";
@@ -29,7 +28,10 @@ public class WarDeployTests extends AppServiceTest {
             // https://api.travis-ci.org/v3/job/427936160/log.txt
             //
             // Create web app
-            WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
+            WebApp webApp =
+                appServiceManager
+                    .webApps()
+                    .define(WEBAPP_NAME)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(RG_NAME)
                     .withNewWindowsPlan(PricingTier.STANDARD_S1)
@@ -53,7 +55,10 @@ public class WarDeployTests extends AppServiceTest {
     @Test
     public void canDeployMultipleWars() throws Exception {
         // Create web app
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)

@@ -7,11 +7,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import javax.net.ssl.SSLPeerUnverifiedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import javax.net.ssl.SSLPeerUnverifiedException;
 
 public class HostnameSslTests extends AppServiceTest {
     private String WEBAPP_NAME = "";
@@ -32,16 +31,18 @@ public class HostnameSslTests extends AppServiceTest {
     @Disabled("Need a domain and a certificate")
     public void canBindHostnameAndSsl() throws Exception {
         // hostname binding
-        appServiceManager.webApps().define(WEBAPP_NAME)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
-                .withNewWindowsPlan(PricingTier.BASIC_B1)
-                .defineHostnameBinding()
-                    .withAzureManagedDomain(domain)
-                    .withSubDomain(WEBAPP_NAME)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                    .attach()
-                .create();
+        appServiceManager
+            .webApps()
+            .define(WEBAPP_NAME)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(RG_NAME)
+            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .defineHostnameBinding()
+            .withAzureManagedDomain(domain)
+            .withSubDomain(WEBAPP_NAME)
+            .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+            .attach()
+            .create();
 
         WebApp webApp = appServiceManager.webApps().getByResourceGroup(RG_NAME, WEBAPP_NAME);
         Assertions.assertNotNull(webApp);
@@ -51,9 +52,7 @@ public class HostnameSslTests extends AppServiceTest {
             Assertions.assertNotNull(response.getValue());
         }
         // hostname binding shortcut
-        webApp.update()
-                .withManagedHostnameBindings(domain, WEBAPP_NAME + "-1", WEBAPP_NAME + "-2")
-                .apply();
+        webApp.update().withManagedHostnameBindings(domain, WEBAPP_NAME + "-1", WEBAPP_NAME + "-2").apply();
         if (!isPlaybackMode()) {
             Response response = curl("http://" + WEBAPP_NAME + "-1." + DOMAIN);
             Assertions.assertEquals(200, response.getStatusCode());
@@ -63,13 +62,14 @@ public class HostnameSslTests extends AppServiceTest {
             Assertions.assertNotNull(response.getValue());
         }
         // SSL binding
-        webApp.update()
-                .defineSslBinding()
-                    .forHostname(WEBAPP_NAME + "." + DOMAIN)
-                    .withExistingAppServiceCertificateOrder(certificateOrder)
-                    .withSniBasedSsl()
-                    .attach()
-                .apply();
+        webApp
+            .update()
+            .defineSslBinding()
+            .forHostname(WEBAPP_NAME + "." + DOMAIN)
+            .withExistingAppServiceCertificateOrder(certificateOrder)
+            .withSniBasedSsl()
+            .attach()
+            .apply();
         if (!isPlaybackMode()) {
             Response<String> response = null;
             int retryCount = 3;

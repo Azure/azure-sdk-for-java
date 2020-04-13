@@ -39,7 +39,10 @@ public class WebAppsTests extends AppServiceTest {
     @Test
     public void canCRUDWebApp() throws Exception {
         // Create with new app service plan
-        WebApp webApp1 = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp1 =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME_1)
                 .withNewWindowsPlan(APP_SERVICE_PLAN_NAME_1, PricingTier.BASIC_B1)
@@ -54,7 +57,10 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(PricingTier.BASIC_B1, plan1.pricingTier());
 
         // Create in a new group with existing app service plan
-        WebApp webApp2 = appServiceManager.webApps().define(WEBAPP_NAME_2)
+        WebApp webApp2 =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_2)
                 .withExistingWindowsPlan(plan1)
                 .withNewResourceGroup(RG_NAME_2)
                 .create();
@@ -74,22 +80,44 @@ public class WebAppsTests extends AppServiceTest {
         Assertions.assertEquals(1, TestUtilities.getSize(webApps));
 
         // Update
-        webApp1.update()
-                .withNewAppServicePlan(PricingTier.STANDARD_S2)
-                .withRuntimeStack(WebAppRuntimeStack.NETCORE)
-                .apply();
+        webApp1
+            .update()
+            .withNewAppServicePlan(PricingTier.STANDARD_S2)
+            .withRuntimeStack(WebAppRuntimeStack.NETCORE)
+            .apply();
         AppServicePlan plan2 = appServiceManager.appServicePlans().getById(webApp1.appServicePlanId());
         Assertions.assertNotNull(plan2);
         Assertions.assertEquals(Region.US_WEST, plan2.region());
         Assertions.assertEquals(PricingTier.STANDARD_S2, plan2.pricingTier());
-        Assertions.assertEquals(WebAppRuntimeStack.NETCORE.runtime(), webApp1.manager().inner().webApps().listMetadata(webApp1.resourceGroupName(), webApp1.name()).properties().get("CURRENT_STACK"));
+        Assertions
+            .assertEquals(
+                WebAppRuntimeStack.NETCORE.runtime(),
+                webApp1
+                    .manager()
+                    .inner()
+                    .webApps()
+                    .listMetadata(webApp1.resourceGroupName(), webApp1.name())
+                    .properties()
+                    .get("CURRENT_STACK"));
 
-        WebApp webApp3 = appServiceManager.webApps().define(WEBAPP_NAME_3)
+        WebApp webApp3 =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME_3)
                 .withExistingWindowsPlan(plan1)
                 .withExistingResourceGroup(RG_NAME_2)
                 .withRuntimeStack(WebAppRuntimeStack.NET)
                 .withNetFrameworkVersion(NetFrameworkVersion.V4_6)
                 .create();
-        Assertions.assertEquals(WebAppRuntimeStack.NET.runtime(), webApp3.manager().inner().webApps().listMetadata(webApp3.resourceGroupName(), webApp3.name()).properties().get("CURRENT_STACK"));
+        Assertions
+            .assertEquals(
+                WebAppRuntimeStack.NET.runtime(),
+                webApp3
+                    .manager()
+                    .inner()
+                    .webApps()
+                    .listMetadata(webApp3.resourceGroupName(), webApp3.name())
+                    .properties()
+                    .get("CURRENT_STACK"));
     }
 }

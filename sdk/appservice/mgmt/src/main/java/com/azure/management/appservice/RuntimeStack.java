@@ -4,12 +4,9 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
-
 import java.util.Collection;
 
-/**
- * Defines App service pricing tiers.
- */
+/** Defines App service pricing tiers. */
 @Fluent
 public class RuntimeStack {
     private static final AttributeCollection<RuntimeStack> COLLECTION = new AttributeCollection<>();
@@ -159,6 +156,7 @@ public class RuntimeStack {
 
     /**
      * Creates a custom app service runtime stack on Linux operating system.
+     *
      * @param stack the name of the language stack
      * @param version the version of the runtime
      */
@@ -167,16 +165,12 @@ public class RuntimeStack {
         this.version = version;
     }
 
-    /**
-     * @return the name of the language runtime stack
-     */
+    /** @return the name of the language runtime stack */
     public String stack() {
         return stack;
     }
 
-    /**
-     * @return the version of the runtime stack
-     */
+    /** @return the version of the runtime stack */
     public String version() {
         return version;
     }

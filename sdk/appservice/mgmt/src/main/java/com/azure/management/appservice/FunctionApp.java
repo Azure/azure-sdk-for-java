@@ -11,41 +11,28 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.StorageAccountSkuType;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-
-/**
- * An immutable client-side representation of an Azure Function App.
- */
+/** An immutable client-side representation of an Azure Function App. */
 @Fluent
-public interface FunctionApp extends
-    WebAppBase,
-    Refreshable<FunctionApp>,
-    Updatable<FunctionApp.Update> {
+public interface FunctionApp extends WebAppBase, Refreshable<FunctionApp>, Updatable<FunctionApp.Update> {
 
-    /**
-     * @return the entry point to deployment slot management API under the function app
-     */
+    /** @return the entry point to deployment slot management API under the function app */
     FunctionDeploymentSlots deploymentSlots();
 
-    /**
-     * @return the storage account associated with the function app
-     */
+    /** @return the storage account associated with the function app */
     StorageAccount storageAccount();
 
-    /**
-     * @return the master key for the function app
-     */
+    /** @return the master key for the function app */
     String getMasterKey();
 
-    /**
-     * @return the master key for the function app
-     */
+    /** @return the master key for the function app */
     Mono<String> getMasterKeyAsync();
 
     /**
      * Retrieve the function key for a specific function.
+     *
      * @param functionName the name of the function
      * @return the function key
      */
@@ -53,6 +40,7 @@ public interface FunctionApp extends
 
     /**
      * Retrieve the function key for a specific function.
+     *
      * @param functionName the name of the function
      * @return the function key
      */
@@ -60,6 +48,7 @@ public interface FunctionApp extends
 
     /**
      * Adds a key to a function in this function app.
+     *
      * @param functionName the name of the function
      * @param keyName the name of the key to add
      * @param keyValue optional. If not provided, a value will be generated.
@@ -69,6 +58,7 @@ public interface FunctionApp extends
 
     /**
      * Adds a key to a function in this function app.
+     *
      * @param functionName the name of the function
      * @param keyName the name of the key to add
      * @param keyValue optional. If not provided, a value will be generated.
@@ -78,6 +68,7 @@ public interface FunctionApp extends
 
     /**
      * Removes a key to a function in this function app.
+     *
      * @param functionName the name of the function
      * @param keyName the name of the key to remove
      */
@@ -85,6 +76,7 @@ public interface FunctionApp extends
 
     /**
      * Removes a key to a function in this function app.
+     *
      * @param functionName the name of the function
      * @param keyName the name of the key to remove
      * @return the completable of the operation
@@ -93,6 +85,7 @@ public interface FunctionApp extends
 
     /**
      * Triggers a function.
+     *
      * @param functionName the name of the function
      * @param payload the payload to be serialized to JSON
      */
@@ -100,19 +93,19 @@ public interface FunctionApp extends
 
     /**
      * Triggers a function.
+     *
      * @param functionName the name of the function
      * @param payload the payload to be serialized to JSON
      * @return the completable of the operation
      */
     Mono<Void> triggerFunctionAsync(String functionName, Object payload);
 
-    /**
-     * Syncs the triggers on the function app.
-     */
+    /** Syncs the triggers on the function app. */
     void syncTriggers();
 
     /**
      * Syncs the triggers on the function app.
+     *
      * @return a completable for the operation
      */
     Mono<Void> syncTriggersAsync();
@@ -121,28 +114,23 @@ public interface FunctionApp extends
      * Fluent interfaces to provision a Function App
      **************************************************************/
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.ExistingAppServicePlanWithGroup,
-        DefinitionStages.WithStorageAccount,
-        DefinitionStages.WithDockerContainerImage,
-        DefinitionStages.WithCredentials,
-        DefinitionStages.WithCreate {
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition
+        extends DefinitionStages.Blank,
+            DefinitionStages.ExistingAppServicePlanWithGroup,
+            DefinitionStages.WithStorageAccount,
+            DefinitionStages.WithDockerContainerImage,
+            DefinitionStages.WithCredentials,
+            DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the function app definition stages.
-     */
+    /** Grouping of all the function app definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the function app definition.
-         */
+        /** The first stage of the function app definition. */
         interface Blank extends DefinitionWithRegion<NewAppServicePlanWithGroup> {
             /**
              * Uses an existing Windows app service plan for the function app.
+             *
              * @param appServicePlan the existing app service plan
              * @return the next stage of the definition
              */
@@ -150,6 +138,7 @@ public interface FunctionApp extends
 
             /**
              * Uses an existing Linux app service plan for the function app.
+             *
              * @param appServicePlan the existing app service plan
              * @return the next stage of the definition
              */
@@ -163,11 +152,13 @@ public interface FunctionApp extends
         }
 
         /**
-         * A function app definition allowing resource group to be specified when a new app service plan is to be created.
+         * A function app definition allowing resource group to be specified when a new app service plan is to be
+         * created.
          */
         interface NewAppServicePlanWithGroup {
             /**
              * Associates the resource with an existing resource group.
+             *
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the definition
              */
@@ -175,6 +166,7 @@ public interface FunctionApp extends
 
             /**
              * Associates the resource with an existing resource group.
+             *
              * @param group an existing resource group to put the resource in
              * @return the next stage of the definition
              */
@@ -182,8 +174,9 @@ public interface FunctionApp extends
 
             /**
              * Creates a new resource group to put the resource in.
-             * <p>
-             * The group will be created in the same location as the resource.
+             *
+             * <p>The group will be created in the same location as the resource.
+             *
              * @param name the name of the new group
              * @return the next stage of the definition
              */
@@ -191,41 +184,43 @@ public interface FunctionApp extends
 
             /**
              * Creates a new resource group to put the resource in.
-             * <p>
-             * The group will be created in the same location as the resource.
-             * The group's name is automatically derived from the resource's name.
+             *
+             * <p>The group will be created in the same location as the resource. The group's name is automatically
+             * derived from the resource's name.
+             *
              * @return the next stage of the definition
              */
             WithCreate withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
+             *
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the definition
              */
             WithCreate withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
-        /**
-         * A function app definition allowing app service plan to be set.
-         */
+        /** A function app definition allowing app service plan to be set. */
         interface WithNewAppServicePlan {
             /**
              * Creates a new Windows consumption plan to use.
+             *
              * @return the next stage of the definition
              */
             WithCreate withNewConsumptionPlan();
 
             /**
              * Creates a new Windows consumption plan to use.
+             *
              * @param appServicePlanName the name of the new consumption plan
              * @return the next stage of the definition
              */
             WithCreate withNewConsumptionPlan(String appServicePlanName);
 
             /**
-             * Creates a new Windows free app service plan. This will fail if there are 10 or more
-             * free plans in the current subscription.
+             * Creates a new Windows free app service plan. This will fail if there are 10 or more free plans in the
+             * current subscription.
              *
              * @return the next stage of the definition
              */
@@ -265,12 +260,14 @@ public interface FunctionApp extends
 
             /**
              * Creates a new Linux consumption plan to use.
+             *
              * @return the next stage of the definition
              */
             WithDockerContainerImage withNewLinuxConsumptionPlan();
 
             /**
              * Creates a new Linux consumption plan to use.
+             *
              * @param appServicePlanName the name of the new consumption plan
              * @return the next stage of the definition
              */
@@ -303,14 +300,15 @@ public interface FunctionApp extends
         }
 
         /**
-         * A function app definition allowing storage account to be specified.
-         * A storage account is required for storing function execution runtime,
-         * triggers, and logs.
+         * A function app definition allowing storage account to be specified. A storage account is required for storing
+         * function execution runtime, triggers, and logs.
          */
         interface WithStorageAccount {
             /**
              * Creates a new storage account to use for the function app.
-             * @deprecated use {@link FunctionApp.DefinitionStages.WithStorageAccount#withNewStorageAccount(String, StorageAccountSkuType)} instead
+             *
+             * @deprecated use {@link FunctionApp.DefinitionStages.WithStorageAccount#withNewStorageAccount(String,
+             *     StorageAccountSkuType)} instead
              * @param name the name of the storage account
              * @param sku the sku of the storage account
              * @return the next stage of the definition
@@ -320,6 +318,7 @@ public interface FunctionApp extends
 
             /**
              * Creates a new storage account to use for the function app.
+             *
              * @param name the name of the storage account
              * @param sku the sku of the storage account
              * @return the next stage of the definition
@@ -328,18 +327,18 @@ public interface FunctionApp extends
 
             /**
              * Specifies the storage account to use for the function app.
+             *
              * @param storageAccount the storage account to use
              * @return the next stage of the definition
              */
             WithCreate withExistingStorageAccount(StorageAccount storageAccount);
         }
 
-        /**
-         * A function app definition allowing runtime version to be specified.
-         */
+        /** A function app definition allowing runtime version to be specified. */
         interface WithRuntimeVersion {
             /**
              * Specifies the runtime for the function app.
+             *
              * @param runtime the Azure Functions runtime
              * @return the next stage of the definition
              */
@@ -347,6 +346,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the runtime version for the function app.
+             *
              * @param version the version of the Azure Functions runtime
              * @return the next stage of the definition
              */
@@ -354,17 +354,17 @@ public interface FunctionApp extends
 
             /**
              * Uses the latest runtime version for the function app.
+             *
              * @return the next stage of the definition
              */
             WithCreate withLatestRuntimeVersion();
         }
 
-        /**
-         * A function app definition allowing daily usage quota to be specified.
-         */
+        /** A function app definition allowing daily usage quota to be specified. */
         interface WithDailyUsageQuota {
             /**
              * Specifies the daily usage data cap.
+             *
              * @param quota the daily usage quota
              * @return the next stage of the definition
              */
@@ -372,23 +372,23 @@ public interface FunctionApp extends
 
             /**
              * Specifies the daily usage data cap.
+             *
              * @return the next stage of the definition
              */
             WithCreate withoutDailyUsageQuota();
         }
 
         /**
-         * A function app definition with sufficient inputs to create a new
-         * function app in the cloud, but exposing additional optional
-         * inputs to specify.
+         * A function app definition with sufficient inputs to create a new function app in the cloud, but exposing
+         * additional optional inputs to specify.
          */
-        interface WithCreate extends
-            Creatable<FunctionApp>,
-            DefinitionStages.WithNewAppServicePlan,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithRuntimeVersion,
-            DefinitionStages.WithDailyUsageQuota,
-            WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
+        interface WithCreate
+            extends Creatable<FunctionApp>,
+                DefinitionStages.WithNewAppServicePlan,
+                DefinitionStages.WithStorageAccount,
+                DefinitionStages.WithRuntimeVersion,
+                DefinitionStages.WithDailyUsageQuota,
+                WebAppBase.DefinitionStages.WithCreate<FunctionApp> {
         }
 
         /**
@@ -397,6 +397,7 @@ public interface FunctionApp extends
         interface ExistingLinuxPlanWithGroup {
             /**
              * Associates the resource with an existing resource group.
+             *
              * @param groupName the name of an existing resource group to put this resource in.
              * @return the next stage of the definition
              */
@@ -404,6 +405,7 @@ public interface FunctionApp extends
 
             /**
              * Associates the resource with an existing resource group.
+             *
              * @param group an existing resource group to put the resource in
              * @return the next stage of the definition
              */
@@ -411,8 +413,9 @@ public interface FunctionApp extends
 
             /**
              * Creates a new resource group to put the resource in.
-             * <p>
-             * The group will be created in the same location as the resource.
+             *
+             * <p>The group will be created in the same location as the resource.
+             *
              * @param name the name of the new group
              * @return the next stage of the definition
              */
@@ -420,27 +423,28 @@ public interface FunctionApp extends
 
             /**
              * Creates a new resource group to put the resource in.
-             * <p>
-             * The group will be created in the same location as the resource.
-             * The group's name is automatically derived from the resource's name.
+             *
+             * <p>The group will be created in the same location as the resource. The group's name is automatically
+             * derived from the resource's name.
+             *
              * @return the next stage of the definition
              */
             WithDockerContainerImage withNewResourceGroup();
 
             /**
              * Creates a new resource group to put the resource in, based on the definition specified.
+             *
              * @param groupDefinition a creatable definition for a new resource group
              * @return the next stage of the definition
              */
             WithDockerContainerImage withNewResourceGroup(Creatable<ResourceGroup> groupDefinition);
         }
 
-        /**
-         * A function app definition allowing docker image source to be specified.
-         */
+        /** A function app definition allowing docker image source to be specified. */
         interface WithDockerContainerImage {
             /**
              * Specifies the docker container image to be a built in one.
+             *
              * @param runtimeStack the runtime stack installed on the image
              * @return the next stage of the definition
              */
@@ -448,6 +452,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
+             *
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the definition
              */
@@ -455,6 +460,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
+             *
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the definition
              */
@@ -462,6 +468,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the docker container image to be one from a private registry.
+             *
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @param serverUrl the URL to the private registry server
              * @return the next stage of the definition
@@ -469,12 +476,11 @@ public interface FunctionApp extends
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
         }
 
-        /**
-         * A function app definition allowing docker registry credentials to be set.
-         */
+        /** A function app definition allowing docker registry credentials to be set. */
         interface WithCredentials {
             /**
              * Specifies the username and password for Docker Hub.
+             *
              * @param username the username for Docker Hub
              * @param password the password for Docker Hub
              * @return the next stage of the web app update
@@ -483,30 +489,28 @@ public interface FunctionApp extends
         }
     }
 
-    /**
-     * Grouping of all the function app update stages.
-     */
+    /** Grouping of all the function app update stages. */
     interface UpdateStages {
-        /**
-         * A function app update allowing app service plan to be set.
-         */
+        /** A function app update allowing app service plan to be set. */
         interface WithAppServicePlan {
             /**
              * Creates a new Windows consumption plan to use.
+             *
              * @return the next stage of the function app update
              */
             Update withNewConsumptionPlan();
 
             /**
              * Creates a new Windows consumption plan to use.
+             *
              * @param appServicePlanName the name of the new consumption plan
              * @return the next stage of the function app update
              */
             Update withNewConsumptionPlan(String appServicePlanName);
 
             /**
-             * Creates a new Windows free app service plan. This will fail if there are 10 or more
-             * free plans in the current subscription.
+             * Creates a new Windows free app service plan. This will fail if there are 10 or more free plans in the
+             * current subscription.
              *
              * @return the next stage of the function app update
              */
@@ -546,6 +550,7 @@ public interface FunctionApp extends
 
             /**
              * Uses an existing Windows app service plan for the function app.
+             *
              * @param appServicePlan the existing app service plan
              * @return the next stage of the function app update
              */
@@ -553,6 +558,7 @@ public interface FunctionApp extends
 
             /**
              * Uses an existing Linux app service plan for the function app.
+             *
              * @param appServicePlan the existing app service plan
              * @return the next stage of the definition
              */
@@ -560,12 +566,14 @@ public interface FunctionApp extends
 
             /**
              * Creates a new Linux consumption plan to use.
+             *
              * @return the next stage of the definition
              */
             Update withNewLinuxConsumptionPlan();
 
             /**
              * Creates a new Linux consumption plan to use.
+             *
              * @param appServicePlanName the name of the new consumption plan
              * @return the next stage of the definition
              */
@@ -597,12 +605,11 @@ public interface FunctionApp extends
             Update withNewLinuxAppServicePlan(Creatable<AppServicePlan> appServicePlanCreatable);
         }
 
-        /**
-         * A function app update allowing runtime version to be specified.
-         */
+        /** A function app update allowing runtime version to be specified. */
         interface WithRuntimeVersion {
             /**
              * Specifies the runtime for the function app.
+             *
              * @param runtime the Azure Functions runtime
              * @return the next stage of the definition
              */
@@ -610,6 +617,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the runtime version for the function app.
+             *
              * @param version the version of the Azure Functions runtime
              * @return the next stage of the function app update
              */
@@ -617,20 +625,22 @@ public interface FunctionApp extends
 
             /**
              * Uses the latest runtime version for the function app.
+             *
              * @return the next stage of the function app update
              */
             Update withLatestRuntimeVersion();
         }
 
         /**
-         * A function app definition allowing storage account to be specified.
-         * A storage account is required for storing function execution runtime,
-         * triggers, and logs.
+         * A function app definition allowing storage account to be specified. A storage account is required for storing
+         * function execution runtime, triggers, and logs.
          */
         interface WithStorageAccount {
             /**
              * Creates a new storage account to use for the function app.
-             * @deprecated use {@link FunctionApp.UpdateStages.WithStorageAccount#withNewStorageAccount(String, StorageAccountSkuType)} instead
+             *
+             * @deprecated use {@link FunctionApp.UpdateStages.WithStorageAccount#withNewStorageAccount(String,
+             *     StorageAccountSkuType)} instead
              * @param name the name of the storage account
              * @param sku the sku of the storage account
              * @return the next stage of the function app update
@@ -640,6 +650,7 @@ public interface FunctionApp extends
 
             /**
              * Creates a new storage account to use for the function app.
+             *
              * @param name the name of the storage account
              * @param sku the sku of the storage account
              * @return the next stage of the function app update
@@ -648,18 +659,18 @@ public interface FunctionApp extends
 
             /**
              * Specifies the storage account to use for the function app.
+             *
              * @param storageAccount the storage account to use
              * @return the next stage of the function app update
              */
             Update withExistingStorageAccount(StorageAccount storageAccount);
         }
 
-        /**
-         * A function app definition allowing daily usage quota to be specified.
-         */
+        /** A function app definition allowing daily usage quota to be specified. */
         interface WithDailyUsageQuota {
             /**
              * Specifies the daily usage data cap.
+             *
              * @param quota the daily usage quota
              * @return the next stage of the function app update
              */
@@ -667,17 +678,17 @@ public interface FunctionApp extends
 
             /**
              * Specifies the daily usage data cap.
+             *
              * @return the next stage of the function app update
              */
             Update withoutDailyUsageQuota();
         }
 
-        /**
-         * A function app update allowing docker image source to be specified.
-         */
+        /** A function app update allowing docker image source to be specified. */
         interface WithDockerContainerImage {
             /**
              * Specifies the docker container image to be a built in one.
+             *
              * @param runtimeStack the runtime stack installed on the image
              * @return the next stage of the web app update
              */
@@ -685,6 +696,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
+             *
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the web app update
              */
@@ -692,6 +704,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the docker container image to be one from Docker Hub.
+             *
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @return the next stage of the web app update
              */
@@ -699,6 +712,7 @@ public interface FunctionApp extends
 
             /**
              * Specifies the docker container image to be one from a private registry.
+             *
              * @param imageAndTag image and optional tag (eg 'image:tag')
              * @param serverUrl the URL to the private registry server
              * @return the next stage of the web app update
@@ -706,12 +720,11 @@ public interface FunctionApp extends
             WithCredentials withPrivateRegistryImage(String imageAndTag, String serverUrl);
         }
 
-        /**
-         * A function app update allowing docker hub credentials to be set.
-         */
+        /** A function app update allowing docker hub credentials to be set. */
         interface WithCredentials {
             /**
              * Specifies the username and password for Docker Hub.
+             *
              * @param username the username for Docker Hub
              * @param password the password for Docker Hub
              * @return the next stage of the web app update
@@ -720,16 +733,14 @@ public interface FunctionApp extends
         }
     }
 
-    /**
-     * The template for a function app update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-        WebAppBase.Update<FunctionApp>,
-        UpdateStages.WithAppServicePlan,
-        UpdateStages.WithRuntimeVersion,
-        UpdateStages.WithStorageAccount,
-        UpdateStages.WithDailyUsageQuota,
-        UpdateStages.WithDockerContainerImage,
-        UpdateStages.WithCredentials {
+    /** The template for a function app update operation, containing all the settings that can be modified. */
+    interface Update
+        extends WebAppBase.Update<FunctionApp>,
+            UpdateStages.WithAppServicePlan,
+            UpdateStages.WithRuntimeVersion,
+            UpdateStages.WithStorageAccount,
+            UpdateStages.WithDailyUsageQuota,
+            UpdateStages.WithDockerContainerImage,
+            UpdateStages.WithCredentials {
     }
 }

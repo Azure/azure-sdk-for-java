@@ -14,34 +14,36 @@ public class DomainsTests extends AppServiceTest {
 
     @Override
     protected void cleanUpResources() {
-        //super.cleanUpResources();
+        // super.cleanUpResources();
     }
 
     @Test
-    @Disabled("Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
+    @Disabled(
+        "Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
     public void canCRUDDomain() throws Exception {
         // CREATE
-        AppServiceDomain domain = appServiceManager.domains().define(DOMAIN_NAME)
+        AppServiceDomain domain =
+            appServiceManager
+                .domains()
+                .define(DOMAIN_NAME)
                 .withExistingResourceGroup(RG_NAME)
                 .defineRegistrantContact()
-                    .withFirstName("Jianghao")
-                    .withLastName("Lu")
-                    .withEmail("jianghlu@microsoft.com")
-                    .withAddressLine1("1 Microsoft Way")
-                    .withCity("Seattle")
-                    .withStateOrProvince("WA")
-                    .withCountry(CountryIsoCode.UNITED_STATES)
-                    .withPostalCode("98101")
-                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                    .withPhoneNumber("4258828080")
-                    .attach()
+                .withFirstName("Jianghao")
+                .withLastName("Lu")
+                .withEmail("jianghlu@microsoft.com")
+                .withAddressLine1("1 Microsoft Way")
+                .withCity("Seattle")
+                .withStateOrProvince("WA")
+                .withCountry(CountryIsoCode.UNITED_STATES)
+                .withPostalCode("98101")
+                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                .withPhoneNumber("4258828080")
+                .attach()
                 .withDomainPrivacyEnabled(true)
                 .withAutoRenewEnabled(true)
                 .create();
-//        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
+        //        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
         Assertions.assertNotNull(domain);
-        domain.update()
-                .withAutoRenewEnabled(false)
-                .apply();
+        domain.update().withAutoRenewEnabled(false).apply();
     }
 }

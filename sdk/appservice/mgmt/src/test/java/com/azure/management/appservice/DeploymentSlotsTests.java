@@ -27,7 +27,10 @@ public class DeploymentSlotsTests extends AppServiceTest {
     @Test
     public void canCRUDSwapSlots() throws Exception {
         // Create web app
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .withNewWindowsPlan(PricingTier.STANDARD_S2)
@@ -38,27 +41,25 @@ public class DeploymentSlotsTests extends AppServiceTest {
         Assertions.assertEquals(Region.US_WEST, webApp.region());
 
         // Create a deployment slot with web app's config
-        DeploymentSlot slot2 = webApp.deploymentSlots().define(SLOT_NAME_2)
-                .withConfigurationFromParent()
-                .create();
+        DeploymentSlot slot2 = webApp.deploymentSlots().define(SLOT_NAME_2).withConfigurationFromParent().create();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(JavaVersion.JAVA_1_7_0_51, slot2.javaVersion());
 
         // Update deployment slot
-        slot2.update()
-                .withoutJava()
-                .withPythonVersion(PythonVersion.PYTHON_34)
-                .withAppSetting("slot2key", "slot2value")
-                .withStickyAppSetting("sticky2key", "sticky2value")
-                .apply();
+        slot2
+            .update()
+            .withoutJava()
+            .withPythonVersion(PythonVersion.PYTHON_34)
+            .withAppSetting("slot2key", "slot2value")
+            .withStickyAppSetting("sticky2key", "sticky2value")
+            .apply();
         Assertions.assertNotNull(slot2);
         Assertions.assertEquals(JavaVersion.OFF, slot2.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot2.pythonVersion());
 
         // Create 3rd deployment slot with configuration from slot 2
-        DeploymentSlot slot3 = webApp.deploymentSlots().define(SLOT_NAME_3)
-                .withConfigurationFromDeploymentSlot(slot2)
-                .create();
+        DeploymentSlot slot3 =
+            webApp.deploymentSlots().define(SLOT_NAME_3).withConfigurationFromDeploymentSlot(slot2).create();
         Assertions.assertNotNull(slot3);
         Assertions.assertEquals(JavaVersion.OFF, slot3.javaVersion());
         Assertions.assertEquals(PythonVersion.PYTHON_34, slot3.pythonVersion());
@@ -66,6 +67,5 @@ public class DeploymentSlotsTests extends AppServiceTest {
         // Get
         DeploymentSlot deploymentSlot = webApp.deploymentSlots().getByName(SLOT_NAME_3);
         Assertions.assertEquals(slot3.id(), deploymentSlot.id());
-
     }
 }
