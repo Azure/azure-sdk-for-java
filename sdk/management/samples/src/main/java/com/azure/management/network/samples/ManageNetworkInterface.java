@@ -42,7 +42,7 @@ public final class ManageNetworkInterface {
         final String publicIPAddressLeafDNS1 = azure.sdkContext().randomResourceName("pip1", 24);
         final String publicIPAddressLeafDNS2 = azure.sdkContext().randomResourceName("pip2", 24);
 
-        // TODO adjust the length of vm name from 8 to 24
+        // TODO: adjust the length of vm name from 8 to 24
         final String vmName = azure.sdkContext().randomResourceName("vm", 8);
         final String rgName = azure.sdkContext().randomResourceName("rgNEMI", 24);
         final String userName = "tirekicker";

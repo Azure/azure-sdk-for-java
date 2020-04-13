@@ -44,8 +44,8 @@ public final class SSHShell {
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException the JSchException
+     * @throws IOException the IOException
      */
     private SSHShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -78,8 +78,8 @@ public final class SSHShell {
      * @param userName the ssh user name
      * @param sshPrivateKey the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException the JSchException
+     * @throws IOException the IOException
      */
     private SSHShell(String host, int port, String userName, byte[] sshPrivateKey)
             throws JSchException, IOException {
@@ -113,7 +113,7 @@ public final class SSHShell {
      * @param password the ssh password
      * @return the shell
      * @throws JSchException exception thrown
-     * @throws IOException   IO exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -129,7 +129,7 @@ public final class SSHShell {
      * @param sshPrivateKey the ssh private key
      * @return the shell
      * @throws JSchException exception thrown
-     * @throws IOException   IO exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, byte[] sshPrivateKey)
             throws JSchException, IOException {
@@ -287,6 +287,9 @@ public final class SSHShell {
 
     private Closure getExpectClosure() {
         return new Closure() {
+            /**
+             * @throws Exception thrown Exception
+             */
             public void run(ExpectState expectState) throws Exception {
                 String outputBuffer = expectState.getBuffer();
                 System.out.println(outputBuffer);
