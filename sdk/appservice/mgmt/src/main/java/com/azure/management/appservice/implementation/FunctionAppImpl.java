@@ -26,6 +26,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.management.RestClient;
 import com.azure.management.appservice.AppServicePlan;
@@ -120,8 +121,8 @@ class FunctionAppImpl
             }
             RestClient client = manager().restClient().newBuilder()
                     .withBaseUrl(baseUrl)
-                    .withCredential(new FunctionCredential(this))
-//                    .withPolicy(new FunctionAuthenticationPolicy(this))
+//                    .withCredential(new FunctionCredential(this))
+                    .withPolicy(new FunctionAuthenticationPolicy(this))
                     .buildClient();
             functionServiceHost = client.getBaseUrl().toString();
             functionService = RestProxy.create(FunctionService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -438,8 +439,9 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        return functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01", manager().inner().userAgent())
-                .map(ListKeysResult::getMasterKey);
+        return FluxUtil.withContext(context -> functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01"))
+            .map(ListKeysResult::getMasterKey)
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
     }
 
     @Override
@@ -483,6 +485,16 @@ class FunctionAppImpl
     @Override
     public Mono<Void> removeFunctionKeyAsync(String functionName, String keyName) {
         return functionService.deleteFunctionKey(functionServiceHost, functionName, keyName);
+    }
+
+    @Override
+    public void triggerFunction(String functionName, Object payload) {
+        triggerFunctionAsync(functionName, payload).block();
+    }
+
+    @Override
+    public Mono<Void> triggerFunctionAsync(String functionName, Object payload) {
+        return functionService.triggerFunction(functionServiceHost, functionName, payload);
     }
 
     @Override
@@ -602,7 +614,7 @@ class FunctionAppImpl
     private interface FunctionAppKeyService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys" })
         @Post("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys")
-        Mono<ListKeysResult> listKeys(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("User-Agent") String userAgent);
+        Mono<ListKeysResult> listKeys(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
     }
 
     @Host("{$host}")
@@ -631,6 +643,10 @@ class FunctionAppImpl
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostStatus" })
         @Get("admin/host/status")
         Mono<Void> getHostStatus(@HostParam("$host") String host);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps triggerFunction" })
+        @Post("admin/functions/{name}")
+        Mono<Void> triggerFunction(@HostParam("$host") String host, @PathParam("name") String functionName, @BodyParam("application/json") Object payload);
     }
 
     private static class FunctionKeyListResult {
@@ -659,6 +675,7 @@ class FunctionAppImpl
         }
     }
 
+    /*
     private static final class FunctionCredential implements TokenCredential {
         private final FunctionAppImpl functionApp;
 
@@ -680,4 +697,5 @@ class FunctionAppImpl
                     });
         }
     }
+    */
 }

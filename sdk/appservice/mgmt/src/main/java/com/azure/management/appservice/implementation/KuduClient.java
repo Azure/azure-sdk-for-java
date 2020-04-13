@@ -194,7 +194,7 @@ class KuduClient {
     }
 
     private static byte[] byteArrayFromInputStream(InputStream inputStream) {
-        // FIXME core does not yet support InputStream as @BodyParam
+        // TODO (weidxu) core does not yet support InputStream as @BodyParam
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             int nRead;
