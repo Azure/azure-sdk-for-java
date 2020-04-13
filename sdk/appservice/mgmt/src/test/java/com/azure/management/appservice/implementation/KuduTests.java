@@ -140,8 +140,8 @@ public class KuduTests {
         for (int seed = 0; seed < 100; ++seed) {
             Random random = new Random(seed);
 
-            List<ByteBuffer> byteBuffers = new ArrayList<>();
-            int offset = 0;
+            byteBuffers = new ArrayList<>();
+            offset = 0;
             for (int i = 0; i < logStreamBytes.length; ++i) {
                 if (random.nextInt(256) == 0) {
                     int nextOffset = i + 1;
@@ -153,10 +153,10 @@ public class KuduTests {
                 byteBuffers.add(ByteBuffer.wrap(logStreamBytes, offset, logStreamBytes.length - offset));
             }
 
-            Flux<ByteBuffer> byteBufferFlux = Flux.fromIterable(byteBuffers);
+            byteBufferFlux = Flux.fromIterable(byteBuffers);
 
-            Flux<String> lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
-            List<String> lines = lineFlux.collectList().block();
+            lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
+            lines = lineFlux.collectList().block();
 
             Assertions.assertEquals(expectedLogLines, lines);
         }
@@ -166,8 +166,8 @@ public class KuduTests {
         for (int seed = 0; seed < 100; ++seed) {
             Random random = new Random(seed);
 
-            List<ByteBuffer> byteBuffers = new ArrayList<>();
-            int offset = 0;
+            byteBuffers = new ArrayList<>();
+            offset = 0;
             for (int i = 0; i < logStreamBytes.length; ++i) {
                 if (random.nextInt(256) == 0) {
                     int nextOffset = i + 1;
@@ -179,10 +179,10 @@ public class KuduTests {
                 byteBuffers.add(ByteBuffer.wrap(logStreamBytes, offset, logStreamBytes.length - offset));
             }
 
-            Flux<ByteBuffer> byteBufferFlux = Flux.fromIterable(byteBuffers);
+            byteBufferFlux = Flux.fromIterable(byteBuffers);
 
-            Flux<String> lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
-            List<String> lines = lineFlux.collectList().block();
+            lineFlux = KuduClient.streamFromFluxBytes(byteBufferFlux);
+            lines = lineFlux.collectList().block();
 
             Assertions.assertEquals(expectedLogLines, lines);
         }
