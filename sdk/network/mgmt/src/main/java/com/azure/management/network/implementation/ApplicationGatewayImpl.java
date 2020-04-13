@@ -548,10 +548,14 @@ class ApplicationGatewayImpl
                             if (defaultPrivateFrontend != null) {
                                 // If a private frontend is also requested, then use the same VNet for the private
                                 // frontend as for the IP config
-                                /* TODO: Not sure if the assumption of the same subnet for the frontend and the IP config will hold in
-                                 * the future, but the existing ARM template for App Gateway for some reason uses the same subnet for the
-                                 * IP config and the private frontend. Also, trying to use different subnets results in server error today saying they
-                                 * have to be the same. This may need to be revisited in the future however, as this is somewhat inconsistent
+                                /* TODO: Not sure if the assumption of the same subnet for the frontend and
+                                 * the IP config will hold in
+                                 * the future, but the existing ARM template for App Gateway for some reason uses
+                                 * the same subnet for the
+                                 * IP config and the private frontend. Also, trying to use different subnets results
+                                 * in server error today saying they
+                                 * have to be the same. This may need to be revisited in the future however,
+                                 * as this is somewhat inconsistent
                                  * with what the documentation says.
                                  */
                                 useSubnetFromIPConfigForFrontend(defaultIPConfig, defaultPrivateFrontend);
@@ -844,7 +848,7 @@ class ApplicationGatewayImpl
             ApplicationGatewaySslCertificateImpl.class);
     }
 
-    // TODO @Override - since app gateways don't support more than one today, no need to expose this
+    // TODO(future) @Override - since app gateways don't support more than one today, no need to expose this
     private ApplicationGatewayIPConfigurationImpl defineIPConfiguration(String name) {
         return defineChild(
             name,
@@ -853,7 +857,7 @@ class ApplicationGatewayImpl
             ApplicationGatewayIPConfigurationImpl.class);
     }
 
-    // TODO @Override - since app gateways don't support more than one today, no need to expose this
+    // TODO(future) @Override - since app gateways don't support more than one today, no need to expose this
     private ApplicationGatewayFrontendImpl defineFrontend(String name) {
         return defineChild(
             name,
@@ -1050,15 +1054,20 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withPrivateFrontend() {
         /* NOTE: This logic is a workaround for the unusual Azure API logic:
-         * - although app gateway API definition allows multiple IP configs, only one is allowed by the service currently;
-         * - although app gateway frontend API definition allows for multiple frontends, only one is allowed by the service today;
-         * - and although app gateway API definition allows different subnets to be specified between the IP configs and frontends, the service
+         * - although app gateway API definition allows multiple IP configs,
+         *   only one is allowed by the service currently;
+         * - although app gateway frontend API definition allows for multiple frontends,
+         *   only one is allowed by the service today;
+         * - and although app gateway API definition allows different subnets to be specified
+         *   between the IP configs and frontends, the service
          * requires the frontend and the containing subnet to be one and the same currently.
          *
-         * So the logic here attempts to figure out from the API what that containing subnet for the app gateway is so that the user wouldn't
-         * have to re-enter it redundantly when enabling a private frontend, since only that one subnet is supported anyway.
+         * So the logic here attempts to figure out from the API what that containing subnet
+         * for the app gateway is so that the user wouldn't have to re-enter it redundantly
+         * when enabling a private frontend, since only that one subnet is supported anyway.
          *
-         * TODO: When the underlying Azure API is reworked to make more sense, or the app gateway service starts supporting the functionality
+         * TODO: When the underlying Azure API is reworked to make more sense,
+         * or the app gateway service starts supporting the functionality
          * that the underlying API implies is supported, this model and implementation should be revisited.
          */
         ensureDefaultPrivateFrontend();
@@ -1667,7 +1676,7 @@ class ApplicationGatewayImpl
             .manager()
             .inner()
             .applicationGateways()
-            // FIXME: Last minutes
+            // TODO(not known): Last minutes
             .backendHealthAsync(this.resourceGroupName(), this.name(), null)
             .map(
                 inner -> {

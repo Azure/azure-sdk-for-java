@@ -19,7 +19,7 @@ public final class LoadBalancerSkuType {
     public static final LoadBalancerSkuType STANDARD = new LoadBalancerSkuType(LoadBalancerSkuName.STANDARD);
 
     /** The actual serialized value for a LoadBalancerSkuType instance. */
-    private LoadBalancerSkuName skuName;
+    private final LoadBalancerSkuName skuName;
 
     /** @return predefined LoadBalancer SKU types */
     public static LoadBalancerSkuType[] values() {

@@ -48,7 +48,7 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
 
     @Override
     public VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name) {
-        // FIXME: parameter - expand
+        // TODO(not known): parameter - expand
         NetworkInterfaceInner networkInterfaceInner =
             this
                 .inner()

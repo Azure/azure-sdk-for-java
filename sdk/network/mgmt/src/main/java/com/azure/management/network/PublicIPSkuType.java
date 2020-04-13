@@ -19,7 +19,7 @@ public final class PublicIPSkuType {
     public static final PublicIPSkuType STANDARD = new PublicIPSkuType(PublicIPAddressSkuName.STANDARD);
 
     /** The actual serialized value for a PublicIPSkuType instance. */
-    private PublicIPAddressSkuName skuName;
+    private final PublicIPAddressSkuName skuName;
 
     /** @return predefined publicIP SKU types */
     public static PublicIPSkuType[] values() {

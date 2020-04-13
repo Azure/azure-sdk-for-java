@@ -17,7 +17,7 @@ public final class FirewallPolicyFilterRuleActionType extends ExpandableStringEn
     public static final FirewallPolicyFilterRuleActionType DENY = fromString("Deny");
 
     /** Static value Alert for FirewallPolicyFilterRuleActionType. */
-    public static final FirewallPolicyFilterRuleActionType ALERT_ = fromString("Alert ");
+    public static final FirewallPolicyFilterRuleActionType ALERT = fromString("Alert ");
 
     /**
      * Creates or finds a FirewallPolicyFilterRuleActionType from its string representation.

@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the NetworkManagementClientImpl type. */
 public final class NetworkManagementClientImpl extends AzureServiceClient {
     /** The proxy service used to perform REST calls. */
-    private NetworkManagementClientService service;
+    private final NetworkManagementClientService service;
 
     /**
      * The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID forms

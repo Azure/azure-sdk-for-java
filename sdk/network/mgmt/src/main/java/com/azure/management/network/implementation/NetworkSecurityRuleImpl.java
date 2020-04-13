@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.NetworkSecurityGroup;
 import com.azure.management.network.NetworkSecurityRule;
 import com.azure.management.network.SecurityRuleAccess;
@@ -28,6 +29,7 @@ class NetworkSecurityRuleImpl
         NetworkSecurityRule.Update {
     private Map<String, ApplicationSecurityGroupInner> sourceAsgs = new HashMap<>();
     private Map<String, ApplicationSecurityGroupInner> destinationAsgs = new HashMap<>();
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     NetworkSecurityRuleImpl(SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
         super(inner, parent);
@@ -260,8 +262,8 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityRuleImpl withPriority(int priority) {
         if (priority < 100 || priority > 4096) {
-            throw new IllegalArgumentException(
-                "The priority number of a network security rule must be between 100 and 4096.");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "The priority number of a network security rule must be between 100 and 4096."));
         }
 
         this.inner().withPriority(priority);

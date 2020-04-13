@@ -35,7 +35,7 @@ public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIPAddress {
     List<LoadBalancerBackend> listAssociatedLoadBalancerBackends();
 
     /** @return the load balancer inbound NAT rules associated with this network interface IP configuration */
-    // TODO This should be a Collection
+    // TODO: This should be a Collection
     List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules();
 
     /** @return the application gateway backends associated with this network IP configuration */

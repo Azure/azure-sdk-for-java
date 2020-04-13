@@ -66,7 +66,7 @@ public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguratio
              * @param name name of certificate
              * @param certificateFile public Base64-encoded certificate file
              * @return the next stage of the definition
-             * @throws IOException
+             * @throws IOException the IO Exception
              */
             WithAttachAndAzureCertificate<ParentT> withAzureCertificateFromFile(String name, File certificateFile)
                 throws IOException;
@@ -183,7 +183,7 @@ public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguratio
              * @param name name of certificate
              * @param certificateFile public Base64-encoded certificate file
              * @return the next stage of the update
-             * @throws IOException
+             * @throws IOException the IO Exception
              */
             Update withAzureCertificateFromFile(String name, File certificateFile) throws IOException;
 

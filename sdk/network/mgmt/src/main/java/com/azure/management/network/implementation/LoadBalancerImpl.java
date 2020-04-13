@@ -3,6 +3,7 @@
 package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.InboundNatPool;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerBackend;
@@ -45,6 +46,7 @@ class LoadBalancerImpl
     extends GroupableParentResourceWithTagsImpl<LoadBalancer, LoadBalancerInner, LoadBalancerImpl, NetworkManager>
     implements LoadBalancer, LoadBalancer.Definition, LoadBalancer.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private final Map<String, String> nicsInBackends = new HashMap<>();
     protected final Map<String, String> creatablePIPKeys = new HashMap<>();
 
@@ -77,7 +79,7 @@ class LoadBalancerImpl
 
     @Override
     protected Mono<LoadBalancerInner> getInnerAsync() {
-        // FIXME: Extra parameter
+        // TODO(not known): Extra parameter
         return this
             .manager()
             .inner()
@@ -501,8 +503,8 @@ class LoadBalancerImpl
             this.creatablePIPKeys.put(this.addDependency(creatablePip), frontendName);
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
-            throw new IllegalArgumentException(
-                "This public IP address definition is already associated with a frontend under a different name.");
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "This public IP address definition is already associated with a frontend under a different name."));
         }
 
         return this;

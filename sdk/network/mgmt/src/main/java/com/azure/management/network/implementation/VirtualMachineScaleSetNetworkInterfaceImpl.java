@@ -3,6 +3,7 @@
 
 package com.azure.management.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.IPAllocationMethod;
 import com.azure.management.network.NetworkSecurityGroup;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
@@ -31,6 +32,8 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     /** resource group this nic belongs to. */
     private final String resourceGroupName;
 
+    private final ClientLogger logger = new ClientLogger(getClass());
+    
     VirtualMachineScaleSetNetworkInterfaceImpl(
         String name,
         String scaleSetName,
@@ -168,12 +171,12 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     @Override
     public Mono<VirtualMachineScaleSetNetworkInterface> createResourceAsync() {
         // VMSS NIC is a read-only resource hence this operation is not supported.
-        throw new UnsupportedOperationException();
+        throw logger.logExceptionAsError(new UnsupportedOperationException());
     }
 
     @Override
     protected Mono<NetworkInterfaceInner> getInnerAsync() {
-        // FIXME: parameter - expand
+        // TODO(not known): parameter - expand
         return this
             .manager()
             .inner()

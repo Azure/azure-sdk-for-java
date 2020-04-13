@@ -3,6 +3,7 @@
 
 package com.azure.management.network.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayBackendAddressPool;
 import com.azure.management.network.IPAllocationMethod;
@@ -44,6 +45,8 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
     private String subnetToAssociate;
     /** flag indicating to remove public IP association from the ip configuration during update. */
     private boolean removePrimaryPublicIPAssociation;
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     protected NicIPConfigurationImpl(
         NetworkInterfaceIPConfigurationInner inner,
@@ -293,12 +296,12 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
                 }
             }
 
-            throw new RuntimeException(
+            throw logger.logExceptionAsError(new RuntimeException(
                 "A subnet with name '"
                     + subnetToAssociate
                     + "' not found under the network '"
                     + this.existingVirtualNetworkToAssociate.name()
-                    + "'");
+                    + "'"));
 
         } else {
             if (subnetToAssociate != null) {

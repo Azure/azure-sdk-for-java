@@ -4,6 +4,7 @@ package com.azure.management.network.implementation;
 
 import com.azure.core.management.CloudException;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.DdosProtectionPlan;
 import com.azure.management.network.DhcpOptions;
@@ -28,6 +29,7 @@ import reactor.core.publisher.Mono;
 class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNetworkInner, NetworkImpl, NetworkManager>
     implements Network, Network.Definition, Network.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private Map<String, Subnet> subnets;
     private NetworkPeeringsImpl peerings;
     private Creatable<DdosProtectionPlan> ddosProtectionPlanCreatable;
@@ -67,7 +69,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> getInnerAsync() {
-        // FIXME: parameter - expand
+        // TODO(not known): parameter - expand
         return this
             .manager()
             .inner()
@@ -108,7 +110,8 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
                     .checkIPAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
         } catch (CloudException e) {
             if (!e.getValue().getCode().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
-                throw e; // Rethrow if the exception reason is anything other than IP address not found
+                throw logger.logExceptionAsError(e);
+                // Rethrow if the exception reason is anything other than IP address not found
             }
         }
         return result;
@@ -177,13 +180,8 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withoutAddressSpace(String cidr) {
-        if (cidr == null) {
-            // Skip
-        } else if (this.inner().addressSpace() == null) {
-            // Skip
-        } else if (this.inner().addressSpace().addressPrefixes() == null) {
-            // Skip
-        } else {
+        if (cidr != null && this.inner().addressSpace() != null
+            && this.inner().addressSpace().addressPrefixes() != null) {
             this.inner().addressSpace().addressPrefixes().remove(cidr);
         }
         return this;

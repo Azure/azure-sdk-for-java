@@ -84,12 +84,6 @@ public class LoadBalancerTests extends NetworkManagementTest {
         Assertions.assertEquals(0, httpsProbe.loadBalancingRules().size());
     }
 
-    static final String subnetName = "subnet1";
-    static final String ruleName1 = "httpRule";
-    static final String ruleName2 = "httpsRule";
-    static final String probeName1 = "httpProbe";
-    static final String probeName2 = "httpsProbe";
-
     private static LoadBalancer createLoadBalancer(
         NetworkManager networkManager, ResourceGroup resourceGroup, Network network, String lbName) {
         final String frontendName = lbName + "-FE1";
@@ -97,6 +91,11 @@ public class LoadBalancerTests extends NetworkManagementTest {
         final String backendPoolName2 = lbName + "-BAP2";
         final String natPool50XXto22 = lbName + "natPool50XXto22";
         final String natPool60XXto23 = lbName + "natPool60XXto23";
+        final String subnetName = "subnet1";
+        final String ruleName1 = "httpRule";
+        final String ruleName2 = "httpsRule";
+        final String probeName1 = "httpProbe";
+        final String probeName2 = "httpsProbe";
 
         LoadBalancer loadBalancer1 =
             networkManager

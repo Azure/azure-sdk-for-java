@@ -391,16 +391,15 @@ public interface ApplicationGateway
             WithCreate withTier(ApplicationGatewayTier tier);
 
             /**
-             * Specifies the size of the application gateway to create within the context of the selected tier.
+             * Specifies the size of the application gateway to create within the context of the selected tier. The API
+             * refers to this as the "SKU"/"SkuName", the docs refer to this as the "size" (and docs call Standard vs
+             * WAF as the "SKU"), while the portal refers to this as the "SKU size"... The documentation naming sounds
+             * the most correct, so following that here.
              *
              * <p>By default, the smallest size is used.
              *
              * @param size an application gateway SKU name
              * @return the next stage of the definition
-             */
-            /*
-             * The API refers to this as the "SKU"/"SkuName", the docs refer to this as the "size" (and docs call Standard vs WAF as the "SKU"),
-             * while the portal refers to this as the "SKU size"... The documentation naming sounds the most correct, so following that here.
              */
             WithCreate withSize(ApplicationGatewaySkuName size);
         }
@@ -433,16 +432,14 @@ public interface ApplicationGateway
          */
         interface WithInstanceCount {
             /**
-             * Specifies the capacity (number of instances) for the application gateway.
+             * Specifies the capacity (number of instances) for the application gateway. The API refers to this as
+             * "Capacity", but the portal and the docs refer to this as "instance count", so using that naming here
              *
              * <p>By default, 1 instance is used.
              *
              * @param instanceCount the capacity as a number between 1 and 10 but also based on the limits imposed by
              *     the selected application gateway size
              * @return the next stage of the definition
-             */
-            /*
-             * The API refers to this as "Capacity", but the portal and the docs refer to this as "instance count", so using that naming here
              */
             WithCreate withInstanceCount(int instanceCount);
 
@@ -451,7 +448,7 @@ public interface ApplicationGateway
              *
              * @param minCapacity Lower bound on number of Application Gateway capacity.
              * @param maxCapacity Upper bound on number of Application Gateway capacity.
-             * @return
+             * @return the next stage of the definition
              */
             WithCreate withAutoScale(int minCapacity, int maxCapacity);
         }
@@ -964,7 +961,7 @@ public interface ApplicationGateway
              *
              * @param minCapacity lower bound on number of Application Gateway capacity.
              * @param maxCapacity upper bound on number of Application Gateway capacity.
-             * @return
+             * @return the next stage of the update
              */
             Update withAutoScale(int minCapacity, int maxCapacity);
         }
