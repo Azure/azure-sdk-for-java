@@ -1,5 +1,5 @@
 # Azure Key Vault Key client library for Java
-Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key Vault client supports RSA keys and elliptic curve keys, each with corresponding support in hardware security modules (HSM).
+Azure Key Vault allows you to create and store keys in the Key Vault. Azure Key Vault Keys client Library supports RSA keys and elliptic curve keys, each with corresponding support in hardware security modules (HSM).
 
  Multiple keys, and multiple versions of the same key, can be kept in the Key Vault. Cryptographic keys in Key Vault are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the keys and its versions.
 
@@ -32,12 +32,12 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
     ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [KeyClient](#create-key-client) class. You would need a **vault url** and **client secret credentials (client id, client key, tenant id)** to instantiate a client object using the default `AzureCredential` examples shown in this document.
+In order to interact with the Key Vault service, you'll need to create an instance of the [KeyClient](#create-key-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the default `AzureCredential` examples shown in this document.
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
  #### Create/Get credentials
-To create/get client key credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
+To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
@@ -70,11 +70,11 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
 
     ```Bash
-    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list create
+    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --key-permissions backup delete get list create update encrypt decrypt
     ```
 
     > --key-permissions:
-    > Accepted values: backup, delete, get, list, purge, recover, restore, create
+    > Accepted values: backup, delete, get, list, purge, recover, restore, create, update, encrypt, decrypt, import, wrapkey, unwrapkey, verify, sign
 
 * Use the above mentioned Key Vault name to retreive details of your Vault which also contains your Key Vault URL:
 
@@ -88,6 +88,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient client = new KeyClientBuilder()
         .vaultUrl(<your-vault-url>)
@@ -104,6 +105,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 
 // Create client with key identifier from key vault.
 CryptographyClient cryptoClient = new CryptographyClientBuilder()
@@ -147,8 +149,12 @@ Create a Key to be stored in the Azure Key Vault.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
+import com.azure.security.keyvault.keys.models.KeyCurveName;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
 
 KeyClient keyClient = new KeyClientBuilder()
         .vaultUrl(<your-vault-url>)
@@ -198,6 +204,7 @@ SyncPoller<DeletedKey, Void> deletedKeyPoller = keyClient.beginDeleteKey("keyNam
 PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
 
 // Deleted key is accessible as soon as polling begins
+// Deleted date only works for SoftDelete Enabled Key Vault.
 DeletedKey deletedKey = deletedKeyPollResponse.getValue();
 System.out.println("Deleted Date  %s" + deletedKey.getDeletedOn().toString());
 
@@ -268,8 +275,10 @@ Create a Key to be stored in the Azure Key Vault.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.keys.models.Key;
 import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
+import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 
 KeyAsyncClient keyAsyncClient = new KeyClientBuilder()
         .vaultUrl(<your-vault-url>)
