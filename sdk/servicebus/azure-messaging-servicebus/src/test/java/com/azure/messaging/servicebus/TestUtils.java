@@ -35,15 +35,11 @@ public class TestUtils {
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
-    static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
-    // An application property key used to identify that the request belongs to a test set.
-    public static final String MESSAGE_TRACKING_ID = "message-tracking-id";
     // An application property key to identify where in the stream this message was created.
     public static final String MESSAGE_POSITION_ID = "message-position";
 
@@ -60,7 +56,7 @@ public class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static org.apache.qpid.proton.message.Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    static org.apache.qpid.proton.message.Message getMessage(byte[] contents, Long sequenceNumber, Date enqueuedTime) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
         systemProperties.put(getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME), sequenceNumber);
@@ -73,11 +69,11 @@ public class TestUtils {
     }
 
     /**
-     * Creates a message with the given contents, default system properties, and adds a {@code messageTrackingValue} in
+     * Creates a message with the given contents, default system properties, and adds a {@code messageId} in
      * the application properties. Useful for helping filter messages.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
-        final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+    static Message getMessage(byte[] contents, String messageId, Map<String, String> additionalProperties) {
+        final Message message = getMessage(contents, SEQUENCE_NUMBER, Date.from(ENQUEUED_TIME));
 
         message.getMessageAnnotations().getValue()
             .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
@@ -85,8 +81,8 @@ public class TestUtils {
         Map<String, Object> applicationProperties = new HashMap<>();
         APPLICATION_PROPERTIES.forEach(applicationProperties::put);
 
-        if (!CoreUtils.isNullOrEmpty(messageTrackingValue)) {
-            applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        if (!CoreUtils.isNullOrEmpty(messageId)) {
+            message.setMessageId(messageId);
         }
 
         if (additionalProperties != null) {
@@ -113,23 +109,31 @@ public class TestUtils {
     }
 
     /**
-     * Gets a set of messages with {@link #MESSAGE_TRACKING_ID} as a unique identifier for that service bus message.
+     * Gets a set of messages with {@link ServiceBusMessage#getMessageId()} as a unique identifier for that
+     * service bus message.
      *
      * @param numberOfEvents Number of events to create.
-     * @param messageTrackingValue An identifier for the set of messages.
-     *
+     * @param messageId An identifier for the set of messages.
      * @return A list of messages.
      */
-    public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageTrackingValue) {
+    public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, String messageId) {
         return IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> getServiceBusMessage("Event " + number, messageTrackingValue, number))
+            .mapToObj(number -> {
+                final ServiceBusMessage message = getServiceBusMessage("Event " + number, messageId);
+                message.getProperties().put(MESSAGE_POSITION_ID, number);
+
+                return message;
+            })
             .collect(Collectors.toList());
     }
 
-    public static ServiceBusMessage getServiceBusMessage(String body, String messageTrackingValue, int position) {
-        final ServiceBusMessage message = new ServiceBusMessage(body.getBytes(UTF_8));
-        message.getProperties().put(MESSAGE_TRACKING_ID, messageTrackingValue);
-        message.getProperties().put(MESSAGE_POSITION_ID, position);
+    public static ServiceBusMessage getServiceBusMessage(String body, String messageId) {
+        return getServiceBusMessage(body.getBytes(UTF_8), messageId);
+    }
+
+    public static ServiceBusMessage getServiceBusMessage(byte[] body, String messageId) {
+        final ServiceBusMessage message = new ServiceBusMessage(body);
+        message.setMessageId(messageId);
         return message;
     }
 
@@ -138,7 +142,6 @@ public class TestUtils {
      * completion signal is emitted.
      *
      * @param messages Messages to emit.
-     *
      * @return A flux of messages.
      */
     public static Flux<ServiceBusReceivedMessage> createMessageSink(ServiceBusReceivedMessage... messages) {
