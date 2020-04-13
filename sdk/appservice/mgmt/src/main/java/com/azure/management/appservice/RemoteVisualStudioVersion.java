@@ -21,7 +21,7 @@ public final class RemoteVisualStudioVersion extends ExpandableStringEnum<Remote
     @Deprecated public static final RemoteVisualStudioVersion VS2013 = RemoteVisualStudioVersion.fromString("VS2013");
 
     /**
-     *  Static value VS2015 for RemoteVisualStudioVersion.
+     * Static value VS2015 for RemoteVisualStudioVersion.
      * @deprecated use {@link RemoteVisualStudioVersion#VS2019}
      */
     @Deprecated public static final RemoteVisualStudioVersion VS2015 = RemoteVisualStudioVersion.fromString("VS2015");
