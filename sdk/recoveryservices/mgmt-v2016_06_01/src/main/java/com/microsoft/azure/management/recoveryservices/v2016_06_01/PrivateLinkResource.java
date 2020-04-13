@@ -9,18 +9,21 @@
 package com.microsoft.azure.management.recoveryservices.v2016_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation.PrivateLinkResourceInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation.RecoveryServicesManager;
-import com.microsoft.azure.management.recoveryservices.v2016_06_01.implementation.CheckNameAvailabilityResultResourceInner;
+import java.util.List;
 
 /**
- * Type representing CheckNameAvailabilityResultResource.
+ * Type representing PrivateLinkResource.
  */
-public interface CheckNameAvailabilityResultResource extends HasInner<CheckNameAvailabilityResultResourceInner>, HasManager<RecoveryServicesManager> {
+public interface PrivateLinkResource extends HasInner<PrivateLinkResourceInner>, Indexable, Refreshable<PrivateLinkResource>, HasManager<RecoveryServicesManager> {
     /**
-     * @return the eTag value.
+     * @return the groupId value.
      */
-    String eTag();
+    String groupId();
 
     /**
      * @return the id value.
@@ -33,9 +36,14 @@ public interface CheckNameAvailabilityResultResource extends HasInner<CheckNameA
     String name();
 
     /**
-     * @return the properties value.
+     * @return the requiredMembers value.
      */
-    CheckNameAvailabilityResult properties();
+    List<String> requiredMembers();
+
+    /**
+     * @return the requiredZoneNames value.
+     */
+    List<String> requiredZoneNames();
 
     /**
      * @return the type value.
