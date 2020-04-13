@@ -64,10 +64,14 @@ class VirtualNetworkPeeringsImpl extends WrapperImpl<VirtualNetworkPeeringsInner
     public Observable<VirtualNetworkPeering> getAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName) {
         VirtualNetworkPeeringsInner client = this.inner();
         return client.getAsync(resourceGroupName, virtualNetworkName, virtualNetworkPeeringName)
-        .map(new Func1<VirtualNetworkPeeringInner, VirtualNetworkPeering>() {
+        .flatMap(new Func1<VirtualNetworkPeeringInner, Observable<VirtualNetworkPeering>>() {
             @Override
-            public VirtualNetworkPeering call(VirtualNetworkPeeringInner inner) {
-                return wrapModel(inner);
+            public Observable<VirtualNetworkPeering> call(VirtualNetworkPeeringInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualNetworkPeering)wrapModel(inner));
+                }
             }
        });
     }
