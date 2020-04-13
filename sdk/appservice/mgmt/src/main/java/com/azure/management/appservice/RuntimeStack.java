@@ -150,9 +150,9 @@ public class RuntimeStack {
     public static final RuntimeStack TOMCAT_9_0_JRE8 = COLLECTION.addValue(new RuntimeStack("TOMCAT", "9.0-jre8"));
 
     /** The name of the language runtime stack. */
-    private String stack;
+    private final String stack;
     /** The version of the runtime. */
-    private String version;
+    private final String version;
 
     /**
      * Creates a custom app service runtime stack on Linux operating system.

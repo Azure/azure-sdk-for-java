@@ -14,17 +14,15 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.RestClient;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.FunctionApp;
+import com.azure.management.appservice.FunctionAuthenticationPolicy;
 import com.azure.management.appservice.FunctionDeploymentSlots;
 import com.azure.management.appservice.FunctionRuntimeStack;
 import com.azure.management.appservice.NameValuePair;
@@ -62,6 +60,8 @@ class FunctionAppImpl
         FunctionApp.DefinitionStages.NewAppServicePlanWithGroup,
         FunctionApp.DefinitionStages.ExistingLinuxPlanWithGroup,
         FunctionApp.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
     private static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
@@ -109,14 +109,13 @@ class FunctionAppImpl
             try {
                 baseUrl = urlBuilder.toUrl().toString();
             } catch (MalformedURLException e) {
-                throw new IllegalStateException(e);
+                throw logger.logExceptionAsError(new IllegalStateException(e));
             }
             RestClient client =
                 manager()
                     .restClient()
                     .newBuilder()
                     .withBaseUrl(baseUrl)
-                    //                    .withCredential(new FunctionCredential(this))
                     .withPolicy(new FunctionAuthenticationPolicy(this))
                     .buildClient();
             functionServiceHost = client.getBaseUrl().toString();
@@ -663,7 +662,8 @@ class FunctionAppImpl
             "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys"
         })
         @Post(
-            "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys")
+            "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
+                + "/host/default/listkeys")
         Mono<ListKeysResult> listKeys(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -744,36 +744,6 @@ class FunctionAppImpl
         private List<NameValuePair> keys;
     }
 
-    private static final class FunctionAuthenticationPolicy implements HttpPipelinePolicy {
-        private final FunctionAppImpl functionApp;
-        private static final String HEADER_NAME = "x-functions-key";
-        private String masterKey;
-
-        private FunctionAuthenticationPolicy(FunctionAppImpl functionApp) {
-            this.functionApp = functionApp;
-        }
-
-        @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<String> masterKeyMono =
-                masterKey == null
-                    ? functionApp
-                        .getMasterKeyAsync()
-                        .map(
-                            key -> {
-                                masterKey = key;
-                                return key;
-                            })
-                    : Mono.just(masterKey);
-            return masterKeyMono
-                .flatMap(
-                    key -> {
-                        context.getHttpRequest().setHeader(HEADER_NAME, key);
-                        return next.process();
-                    });
-        }
-    }
-
     /*
     private static final class FunctionCredential implements TokenCredential {
         private final FunctionAppImpl functionApp;
@@ -792,7 +762,8 @@ class FunctionAppImpl
                         Matcher matcher = pattern.matcher(jwt);
                         matcher.find();
                         long expire = Long.parseLong(matcher.group(1));
-                        return new AccessToken(token, OffsetDateTime.ofInstant(Instant.ofEpochMilli(expire), ZoneOffset.UTC));
+                        return new AccessToken(token, OffsetDateTime.ofInstant(
+                            Instant.ofEpochMilli(expire), ZoneOffset.UTC));
                     });
         }
     }

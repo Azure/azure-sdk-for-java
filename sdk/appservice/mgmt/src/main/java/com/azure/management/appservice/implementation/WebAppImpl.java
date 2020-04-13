@@ -51,7 +51,6 @@ class WebAppImpl extends AppServiceBaseImpl<WebApp, WebAppImpl, WebApp.Definitio
         runtimeStackOnWindowsOSToUpdate = null;
         return super.update();
     }
-    ;
 
     @Override
     public DeploymentSlots deploymentSlots() {

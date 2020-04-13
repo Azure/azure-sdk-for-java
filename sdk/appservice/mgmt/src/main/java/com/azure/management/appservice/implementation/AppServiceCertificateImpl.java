@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificate;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.HostingEnvironmentProfile;
@@ -22,6 +23,8 @@ import reactor.core.publisher.Mono;
 class AppServiceCertificateImpl
     extends GroupableResourceImpl<AppServiceCertificate, CertificateInner, AppServiceCertificateImpl, AppServiceManager>
     implements AppServiceCertificate, AppServiceCertificate.Definition {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private String pfxFileUrl;
     private AppServiceCertificateOrder certificateOrder;
@@ -149,7 +152,7 @@ class AppServiceCertificateImpl
             byte[] fileContent = Files.readAllBytes(file.toPath());
             return withPfxByteArray(fileContent);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

@@ -5,6 +5,7 @@ package com.azure.management.appservice.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificate;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AppSetting;
@@ -91,6 +92,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         WebAppBase.Definition<FluentT>,
         WebAppBase.Update<FluentT>,
         WebAppBase.UpdateStages.WithWebContainer<FluentT> {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private static final Map<AzureEnvironment, String> DNS_MAP =
         new HashMap<AzureEnvironment, String>() {
@@ -638,7 +641,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
         try {
             in.connect(out);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
         final Disposable subscription =
             observable
@@ -651,7 +654,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                             out.write('\n');
                             out.flush();
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            throw logger.logExceptionAsError(new RuntimeException(e));
                         }
                     });
         in

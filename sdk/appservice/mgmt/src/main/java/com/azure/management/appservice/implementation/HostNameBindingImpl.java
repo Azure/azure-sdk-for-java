@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AzureResourceType;
 import com.azure.management.appservice.CustomHostNameDnsRecordType;
@@ -34,6 +35,9 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
         HostNameBinding,
         HostNameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     private final FluentImplT parent;
     private String domainName;
     private String name;
@@ -114,7 +118,8 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
         Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
         Matcher matcher = pattern.matcher(name);
         if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
-            throw new IllegalArgumentException("root hostname cannot be assigned with a CName record");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("root hostname cannot be assigned with a CName record"));
         }
         inner().withCustomHostNameDnsRecordType(hostNameDnsRecordType);
         return this;

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificate;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.HostNameSslBinding;
@@ -36,6 +37,8 @@ class HostNameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
     implements HostNameSslBinding,
         HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         HostNameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private Mono<AppServiceCertificate> newCertificate;
     private AppServiceCertificateOrder.DefinitionStages.WithKeyVault certificateInDefinition;
@@ -261,7 +264,7 @@ class HostNameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
                 .Utils
                 .base16Encode(sha.digest(certificate.getEncoded()));
         } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException ex) {
-            throw new RuntimeException(ex);
+            throw logger.logExceptionAsError(new RuntimeException(ex));
         }
     }
 

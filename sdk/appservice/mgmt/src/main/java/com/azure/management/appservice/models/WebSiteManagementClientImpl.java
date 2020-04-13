@@ -46,7 +46,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the WebSiteManagementClientImpl type. */
 public final class WebSiteManagementClientImpl extends AzureServiceClient {
     /** The proxy service used to perform REST calls. */
-    private WebSiteManagementClientService service;
+    private final WebSiteManagementClientService service;
 
     /** Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
     private String subscriptionId;

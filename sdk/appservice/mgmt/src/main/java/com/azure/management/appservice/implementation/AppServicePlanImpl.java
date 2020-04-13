@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.OperatingSystem;
 import com.azure.management.appservice.PricingTier;
@@ -15,6 +16,8 @@ import reactor.core.publisher.Mono;
 class AppServicePlanImpl
     extends GroupableResourceImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager>
     implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     AppServicePlanImpl(String name, AppServicePlanInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -82,7 +85,7 @@ class AppServicePlanImpl
     @Override
     public AppServicePlanImpl withPricingTier(PricingTier pricingTier) {
         if (pricingTier == null) {
-            throw new IllegalArgumentException("pricingTier == null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("pricingTier == null"));
         }
         inner().withSku(pricingTier.toSkuDescription());
         return this;
@@ -97,7 +100,7 @@ class AppServicePlanImpl
     @Override
     public AppServicePlanImpl withCapacity(int capacity) {
         if (capacity < 1) {
-            throw new IllegalArgumentException("Capacity is at least 1.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Capacity is at least 1."));
         }
         inner().sku().withCapacity(capacity);
         return this;

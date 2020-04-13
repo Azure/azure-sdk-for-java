@@ -43,8 +43,10 @@ public final class CloningInfo {
 
     /*
      * ARM resource ID of the source app. App resource ID is of the form
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}
+     * for production slots and
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
+     * for other slots.
      */
     @JsonProperty(value = "sourceWebAppId", required = true)
     private String sourceWebAppId;

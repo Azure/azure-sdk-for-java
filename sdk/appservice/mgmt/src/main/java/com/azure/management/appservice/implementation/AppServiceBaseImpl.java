@@ -4,6 +4,7 @@
 package com.azure.management.appservice.implementation;
 
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.CsmPublishingProfileOptions;
 import com.azure.management.appservice.CsmSlotEntity;
@@ -48,6 +49,8 @@ abstract class AppServiceBaseImpl<
         FluentWithCreateT,
         FluentUpdateT>
     extends WebAppBaseImpl<FluentT, FluentImplT> {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     protected static final String SETTING_DOCKER_IMAGE = "DOCKER_CUSTOM_IMAGE_NAME";
     protected static final String SETTING_REGISTRY_SERVER = "DOCKER_REGISTRY_SERVER_URL";
@@ -469,7 +472,8 @@ abstract class AppServiceBaseImpl<
 
     protected void ensureLinuxPlan() {
         if (OperatingSystem.WINDOWS.equals(operatingSystem())) {
-            throw new IllegalArgumentException("Docker container settings only apply to Linux app service plans.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Docker container settings only apply to Linux app service plans."));
         }
     }
 

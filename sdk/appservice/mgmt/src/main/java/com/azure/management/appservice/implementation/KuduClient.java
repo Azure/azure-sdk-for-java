@@ -11,15 +11,13 @@ import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.RestClient;
+import com.azure.management.appservice.KuduAuthenticationPolicy;
 import com.azure.management.appservice.WebAppBase;
 import com.fasterxml.jackson.core.JsonParseException;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +27,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -37,12 +34,16 @@ import reactor.core.publisher.Mono;
 
 /** A client which interacts with Kudu service. */
 class KuduClient {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     private String host;
     private KuduService service;
 
     KuduClient(WebAppBase webAppBase) {
         if (webAppBase.defaultHostName() == null) {
-            throw new UnsupportedOperationException("Cannot initialize kudu client before web app is created");
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("Cannot initialize kudu client before web app is created"));
         }
         String host = webAppBase.defaultHostName().toLowerCase().replace("http://", "").replace("https://", "");
         String[] parts = host.split("\\.", 2);
@@ -56,8 +57,8 @@ class KuduClient {
                 .withBaseUrl(this.host)
                 .withPolicy(new KuduAuthenticationPolicy(webAppBase))
                 // TODO (weidxu) support timeout
-                //                .withConnectionTimeout(3, TimeUnit.MINUTES)
-                //                .withReadTimeout(3, TimeUnit.MINUTES)
+                //.withConnectionTimeout(3, TimeUnit.MINUTES)
+                //.withReadTimeout(3, TimeUnit.MINUTES)
                 .buildClient();
 
         service = RestProxy.create(KuduService.class, client.getHttpPipeline(), client.getSerializerAdapter());
@@ -217,7 +218,7 @@ class KuduClient {
         return withRetry(service.zipDeploy(host, byteArrayFromInputStream(zipFile)));
     }
 
-    private static byte[] byteArrayFromInputStream(InputStream inputStream) {
+    private byte[] byteArrayFromInputStream(InputStream inputStream) {
         // TODO (weidxu) core does not yet support InputStream as @BodyParam
         try {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -228,7 +229,7 @@ class KuduClient {
             }
             return buffer.toByteArray();
         } catch (IOException e) {
-            throw new IllegalStateException(e);
+            throw logger.logExceptionAsError(new IllegalStateException(e));
         }
     }
 
@@ -245,44 +246,10 @@ class KuduClient {
                                     || throwable instanceof JsonParseException) {
                                     return integer;
                                 } else {
-                                    throw Exceptions.propagate(throwable);
+                                    throw logger.logExceptionAsError(Exceptions.propagate(throwable));
                                 }
                             })
                         .flatMap(i -> Mono.delay(Duration.ofSeconds(i))));
     }
 
-    private static final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
-        private final WebAppBase webApp;
-        private static final String HEADER_NAME = "Authorization";
-        private String basicToken;
-
-        private KuduAuthenticationPolicy(WebAppBase webApp) {
-            this.webApp = webApp;
-        }
-
-        @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<String> basicTokenMono =
-                basicToken == null
-                    ? webApp
-                        .getPublishingProfileAsync()
-                        .map(
-                            profile -> {
-                                basicToken =
-                                    Base64
-                                        .getEncoder()
-                                        .encodeToString(
-                                            (profile.gitUsername() + ":" + profile.gitPassword())
-                                                .getBytes(StandardCharsets.UTF_8));
-                                return basicToken;
-                            })
-                    : Mono.just(basicToken);
-            return basicTokenMono
-                .flatMap(
-                    key -> {
-                        context.getHttpRequest().setHeader(HEADER_NAME, "Basic " + basicToken);
-                        return next.process();
-                    });
-        }
-    }
 }

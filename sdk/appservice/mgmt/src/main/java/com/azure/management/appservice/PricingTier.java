@@ -55,7 +55,7 @@ public final class PricingTier {
     public static final PricingTier SHARED_D1 = COLLECTION.addValue(new PricingTier("Shared", "D1"));
 
     /** The actual serialized value for a SiteAvailabilityState instance. */
-    private SkuDescription skuDescription;
+    private final SkuDescription skuDescription;
 
     /**
      * Creates a custom app service pricing tier.

@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ManagedServiceIdentity;
 import com.azure.management.appservice.ManagedServiceIdentityType;
 import com.azure.management.appservice.ManagedServiceIdentityUserAssignedIdentities;
@@ -26,6 +27,9 @@ import java.util.Set;
  * role assignments for the service principal associated with the web app.
  */
 public class WebAppMsiHandler extends RoleAssignmentHelper {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     private WebAppBaseImpl webAppBase;
 
     private List<String> creatableIdentityKeys;
@@ -252,7 +256,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
     private void initSiteIdentity(ManagedServiceIdentityType identityType) {
         if (!identityType.equals(ManagedServiceIdentityType.USER_ASSIGNED)
             && !identityType.equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED)) {
-            throw new IllegalArgumentException("Invalid argument: " + identityType);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
         SiteInner siteInner = (SiteInner) this.webAppBase.inner();
