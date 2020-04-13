@@ -15,12 +15,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ServiceBusMultiSessionProcessorSample {
 
     public static void main(String[] args) {
-        final MyMessageProcessor processor = new MyMessageProcessor();
+        final MyMessageProcessor myMessageProcessor = new MyMessageProcessor();
         ServiceBusMultiSessionProcessorClient multiSessionProcessorClient = new ServiceBusClientBuilder()
             .connectionString("connectionString")
             .multiSessionProcessor()
-            .processMessage((receivedMessage, sessionManager) -> processor.onMessage(receivedMessage, sessionManager))
-            .processError(serviceBusErrorContext -> processor.onError(serviceBusErrorContext))
+            .processMessage((receivedMessage, sessionManager) -> myMessageProcessor.onMessage(receivedMessage, sessionManager))
+            .processError(serviceBusErrorContext -> myMessageProcessor.onError(serviceBusErrorContext))
             .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildMultiSessionProcessorClient();

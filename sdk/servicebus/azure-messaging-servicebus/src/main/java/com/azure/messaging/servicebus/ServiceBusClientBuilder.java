@@ -218,10 +218,11 @@ public final class ServiceBusClientBuilder {
     }
 
     /**
-     * A new instance of {@link ServiceBusMultiSessionProcessorClientBuilder} used to configure Service Bus message
-     * receiver.
+     * A new instance of {@link ServiceBusSessionReceiverAsyncClientBuilder} used to configure Service Bus message
+     * receiver. This will receive message from one named session.
+     * This will also support one next available session but this will not rollover to next available session.
      *
-     * @return A new instance of {@link ServiceBusMultiSessionProcessorClientBuilder}.
+     * @return A new instance of {@link ServiceBusSessionReceiverAsyncClientBuilder}.
      */
     public ServiceBusSessionReceiverAsyncClientBuilder receiverSession() {
         return new ServiceBusSessionReceiverAsyncClientBuilder();

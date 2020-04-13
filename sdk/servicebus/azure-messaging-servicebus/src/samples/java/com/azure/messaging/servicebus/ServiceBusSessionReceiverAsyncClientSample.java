@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
+/**Receive message from one named session id**/
 public class ServiceBusSessionReceiverAsyncClientSample {
     public static void main(String[] args) {
 
@@ -36,23 +37,22 @@ public class ServiceBusSessionReceiverAsyncClientSample {
             .buildAsyncClient();
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false)
-            .setMaxAutoRenewDuration(Duration.ofSeconds(2));
+            .setEnableAutoComplete(false) // user want to settle the message
+            .setMaxAutoRenewDuration(Duration.ofSeconds(60));
 
         Disposable subscription = receiverAsyncClient.receive(options)
-            .onErrorContinue(ServiceBusSessionException.class, (throwable, o) -> {
-                // can log the session id which error out
-            })
-            .flatMap(message -> {
+            .flatMap(receivedMessage -> {
+                System.out.println("Session State : " + receiverAsyncClient.getSessionState());
                 boolean messageProcessed =  false;
+
                 // Process the message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
                 // message successfully.
 
                 if (messageProcessed) {
-                    return receiverAsyncClient.complete(message).then();
+                    return receiverAsyncClient.complete(receivedMessage).then();
                 } else {
-                    return receiverAsyncClient.abandon(message).then();
+                    return receiverAsyncClient.abandon(receivedMessage).then();
                 }
             }).subscribe();
 
