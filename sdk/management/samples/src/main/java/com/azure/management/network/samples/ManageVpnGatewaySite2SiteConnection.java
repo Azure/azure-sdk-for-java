@@ -14,7 +14,6 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.samples.Utils;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Azure Network sample for managing virtual network gateway.

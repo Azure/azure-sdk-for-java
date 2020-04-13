@@ -258,7 +258,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             runSample(azure);
-       } catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ public class ContainerServiceTests extends SamplesTestBase {
         if (isPlaybackMode()) {
             // Disable mocked testing but keep it commented out in case we want to re-enable it later
             // Assertions.assertTrue(ManageContainerServiceWithKubernetesOrchestrator.runSample(azure, "client id", "secret"));
+            return;
         } else {
             Assertions.assertTrue(ManageContainerServiceWithKubernetesOrchestrator.runSample(azure, "", ""));
         }

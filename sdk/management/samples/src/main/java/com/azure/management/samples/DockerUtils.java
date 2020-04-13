@@ -3,6 +3,7 @@
 
 package com.azure.management.samples;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -68,7 +69,8 @@ public class DockerUtils {
                 sslConfig.keyStorePassword("docker");
                 sslConfig.trustStore(CertificateUtils.createTrustStore(caPem));
             } catch (Exception e) {
-                throw new DockerClientException(e.getMessage(), e);
+                ClientLogger logger = new ClientLogger(getClass());
+                throw logger.logExceptionAsError(new DockerClientException(e.getMessage(), e));
             }
         }
 
