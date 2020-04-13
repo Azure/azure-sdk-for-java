@@ -55,6 +55,11 @@ public interface ExtendedDatabaseBlobAuditingPolicy extends HasInner<ExtendedDat
     String predicateExpression();
 
     /**
+     * @return the queueDelayMs value.
+     */
+    Integer queueDelayMs();
+
+    /**
      * @return the retentionDays value.
      */
     Integer retentionDays();
@@ -226,6 +231,19 @@ public interface ExtendedDatabaseBlobAuditingPolicy extends HasInner<ExtendedDat
         }
 
         /**
+         * The stage of the extendeddatabaseblobauditingpolicy definition allowing to specify QueueDelayMs.
+         */
+        interface WithQueueDelayMs {
+            /**
+             * Specifies queueDelayMs.
+             * @param queueDelayMs Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+ The default minimum value is 1000 (1 second). The maximum is 2,147,483,647
+             * @return the next definition stage
+             */
+            WithCreate withQueueDelayMs(Integer queueDelayMs);
+        }
+
+        /**
          * The stage of the extendeddatabaseblobauditingpolicy definition allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
@@ -267,7 +285,7 @@ public interface ExtendedDatabaseBlobAuditingPolicy extends HasInner<ExtendedDat
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
-             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required
              * @return the next definition stage
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
@@ -278,13 +296,13 @@ public interface ExtendedDatabaseBlobAuditingPolicy extends HasInner<ExtendedDat
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExtendedDatabaseBlobAuditingPolicy>, DefinitionStages.WithAuditActionsAndGroups, DefinitionStages.WithIsAzureMonitorTargetEnabled, DefinitionStages.WithIsStorageSecondaryKeyInUse, DefinitionStages.WithPredicateExpression, DefinitionStages.WithRetentionDays, DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithStorageAccountSubscriptionId, DefinitionStages.WithStorageEndpoint {
+        interface WithCreate extends Creatable<ExtendedDatabaseBlobAuditingPolicy>, DefinitionStages.WithAuditActionsAndGroups, DefinitionStages.WithIsAzureMonitorTargetEnabled, DefinitionStages.WithIsStorageSecondaryKeyInUse, DefinitionStages.WithPredicateExpression, DefinitionStages.WithQueueDelayMs, DefinitionStages.WithRetentionDays, DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithStorageAccountSubscriptionId, DefinitionStages.WithStorageEndpoint {
         }
     }
     /**
      * The template for a ExtendedDatabaseBlobAuditingPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExtendedDatabaseBlobAuditingPolicy>, UpdateStages.WithAuditActionsAndGroups, UpdateStages.WithIsAzureMonitorTargetEnabled, UpdateStages.WithIsStorageSecondaryKeyInUse, UpdateStages.WithPredicateExpression, UpdateStages.WithRetentionDays, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithStorageAccountSubscriptionId, UpdateStages.WithStorageEndpoint {
+    interface Update extends Appliable<ExtendedDatabaseBlobAuditingPolicy>, UpdateStages.WithAuditActionsAndGroups, UpdateStages.WithIsAzureMonitorTargetEnabled, UpdateStages.WithIsStorageSecondaryKeyInUse, UpdateStages.WithPredicateExpression, UpdateStages.WithQueueDelayMs, UpdateStages.WithRetentionDays, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithStorageAccountSubscriptionId, UpdateStages.WithStorageEndpoint {
     }
 
     /**
@@ -391,6 +409,19 @@ public interface ExtendedDatabaseBlobAuditingPolicy extends HasInner<ExtendedDat
         }
 
         /**
+         * The stage of the extendeddatabaseblobauditingpolicy update allowing to specify QueueDelayMs.
+         */
+        interface WithQueueDelayMs {
+            /**
+             * Specifies queueDelayMs.
+             * @param queueDelayMs Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+ The default minimum value is 1000 (1 second). The maximum is 2,147,483,647
+             * @return the next update stage
+             */
+            Update withQueueDelayMs(Integer queueDelayMs);
+        }
+
+        /**
          * The stage of the extendeddatabaseblobauditingpolicy update allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
@@ -432,7 +463,7 @@ public interface ExtendedDatabaseBlobAuditingPolicy extends HasInner<ExtendedDat
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
-             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required
              * @return the next update stage
              */
             Update withStorageEndpoint(String storageEndpoint);
