@@ -2,31 +2,17 @@
   <img src="service-bus.png" alt="Microsoft Azure Service Bus" width="100"/>
 </p>
 
-|Build/Package|Status|
-|------|-------------|
-|master|[![Build status](https://ci.appveyor.com/api/projects/status/vx6o2sckac0p4jti?svg=true)](https://ci.appveyor.com/project/vinaysurya/azure-service-bus-java/branch/master) |
-|dev|[![Build status](https://ci.appveyor.com/api/projects/status/vx6o2sckac0p4jti/branch/dev?svg=true)](https://ci.appveyor.com/project/vinaysurya/azure-service-bus-java/branch/dev) |
-|maven|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus)|
-
 # Microsoft Azure Service Bus Client for Java
 
 This is the next generation Service Bus Java client library that focuses on Queues & Topics. If you are looking for Event Hubs and Relay clients, follow the below links:
-* [Event Hubs](https://github.com/azure/azure-event-hubs-dotnet)
+* [Event Hubs](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventhubs/microsoft-azure-eventhubs)
 * [Relay](https://github.com/azure/azure-relay-dotnet)
 
 Azure Service Bus is an asynchronous messaging cloud platform that enables you to send and receive messages between decoupled systems. Microsoft offers this feature as a service, which means that you do not need to host any of your own hardware in order to use it.
 
 Refer to [azure.com](https://azure.microsoft.com/services/service-bus/) to learn more about Service Bus.
 
-This library is build using:
-* JDK / JRE 1.8
-* Apache qpid - Proton J 0.22.0
-* Bouncycastle - jdk15on 1.53
-* Microsoft Azure - adal4j 1.3.0
-* SLF4J - 1.7.0
-* Junit 4.12
-
-The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus%22)
+The package can be downloaded from [Maven](https://search.maven.org/artifact/com.microsoft.azure/azure-servicebus)
 
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus;current})
 ```
@@ -67,7 +53,7 @@ The samples are located in this repo. [Java Samples](https://github.com/Azure/az
 
 ### Can I manage Service Bus entities with this library?
 
-Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
+Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](./src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
 
 ### How do I run the unit tests?
 
