@@ -2,12 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Paths;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosConflictProperties;
@@ -23,9 +27,16 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Signal;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -83,8 +94,15 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
-        return database.getDocClientWrapper().readCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+
+        final CosmosContainerRequestOptions requestOptions = options;
+        return withContext(context -> read(requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
@@ -102,8 +120,50 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
+
+        final CosmosContainerRequestOptions requestOptions = options;
+        return withContext(context -> delete(requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
+    }
+
+    private Mono<CosmosAsyncContainerResponse> delete(CosmosContainerRequestOptions options, Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "deleteContainer." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
         return database.getDocClientWrapper().deleteCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
     /**
@@ -156,9 +216,54 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
+
+        final CosmosContainerRequestOptions requestOptions = options;
+        return withContext(context -> replace(containerProperties, requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
+    }
+
+    private Mono<CosmosAsyncContainerResponse> replace(CosmosContainerProperties containerProperties,
+                                                       CosmosContainerRequestOptions options,
+                                                       Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "replaceContainer." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
         return database.getDocClientWrapper()
-                   .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+            .replaceCollection(ModelBridgeInternal.getV2Collection(containerProperties), ModelBridgeInternal.toRequestOptions(options))
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
     }
 
     /* CosmosAsyncItem operations */
@@ -203,7 +308,6 @@ public class CosmosAsyncContainer {
         return createItem(item, options);
     }
 
-
     /**
      * Create an item.
      *
@@ -216,16 +320,58 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
+
+        final CosmosItemRequestOptions requestOptions = options;
+        return withContext(context -> createItem(item, requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
+    }
+
+    private <T> Mono<CosmosAsyncItemResponse<T>> createItem(T item, CosmosItemRequestOptions options, Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "createItem." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
         return database.getDocClientWrapper()
-                   .createDocument(getLink(),
-                                   item,
-                                   requestOptions,
-                                   true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+            .createDocument(getLink(),
+                item,
+                requestOptions,
+                true)
+            .doOnSubscribe(ignoredValue -> {
+            if (isTracingEnabled) {
+                reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                if (!callerFunc.isPresent()) {
+                    parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                        context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                }
+            }
+        }).doOnSuccess(response -> {
+            if (isTracingEnabled) {
+                database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+            }
+        }).doOnError(throwable -> {
+            if (isTracingEnabled) {
+                database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+            }
+        }).map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+            .single();
     }
 
     /**
@@ -259,14 +405,15 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
-        @SuppressWarnings("unchecked")
-        Class<T> itemType = (Class<T>) item.getClass();
-        return this.getDatabase().getDocClientWrapper()
-                   .upsertDocument(this.getLink(), item,
-                       ModelBridgeInternal.toRequestOptions(options),
-                                   true)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+
+        final  CosmosItemRequestOptions requestOptions = options;
+        return withContext(context -> upsertItem(item, requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
@@ -300,6 +447,9 @@ public class CosmosAsyncContainer {
      */
     public <T> CosmosPagedFlux<T> readAllItems(FeedOptions options, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllItems." + this.getId();
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
+                this.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
                 response -> prepareFeedResponse(response, classType));
@@ -379,6 +529,9 @@ public class CosmosAsyncContainer {
     private <T> CosmosPagedFlux<T> queryItemsInternal(
         SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryItems." + this.getId() + "." + sqlQuerySpec.getQueryText();
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
+                this.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);
             return getDatabase().getDocClientWrapper()
                        .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, feedOptions)
@@ -393,7 +546,6 @@ public class CosmosAsyncContainer {
                  .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response));
     }
-
 
     /**
      * Reads an item.
@@ -432,12 +584,16 @@ public class CosmosAsyncContainer {
         if (options == null) {
             options = new CosmosItemRequestOptions();
         }
+
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return this.getDatabase().getDocClientWrapper()
-                   .readDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+        return withContext(context -> readItem(itemId, partitionKey, requestOptions, itemType, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
@@ -481,11 +637,14 @@ public class CosmosAsyncContainer {
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         @SuppressWarnings("unchecked")
         Class<T> itemType = (Class<T>) item.getClass();
-        return this.getDatabase()
-                   .getDocClientWrapper()
-                   .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
-                   .single();
+        final CosmosItemRequestOptions requestOptions = options;
+        return withContext(context -> replaceItem(itemType, itemId, doc, requestOptions,context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
@@ -523,11 +682,13 @@ public class CosmosAsyncContainer {
         }
         ModelBridgeInternal.setPartitionKey(options, partitionKey);
         RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(options);
-        return this.getDatabase()
-                   .getDocClientWrapper()
-                   .deleteDocument(getItemLink(itemId), requestOptions)
-                   .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
-                   .single();
+        return withContext(context -> deleteItem(itemId, requestOptions, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     private String getItemLink(String itemId) {
@@ -561,6 +722,9 @@ public class CosmosAsyncContainer {
      */
     public CosmosPagedFlux<CosmosConflictProperties> readAllConflicts(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllConflicts." + this.getId();
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
+                this.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().readConflicts(getLink(), options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -590,6 +754,9 @@ public class CosmosAsyncContainer {
      */
     public CosmosPagedFlux<CosmosConflictProperties> queryConflicts(String query, FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryConflicts." + this.getId() + "." + query;
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
+                this.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper().queryConflicts(getLink(), query, options)
                        .map(response -> BridgeInternal.createFeedResponse(
@@ -614,23 +781,13 @@ public class CosmosAsyncContainer {
      * @return a {@link Mono} containing throughput or an error.
      */
     public Mono<Integer> readProvisionedThroughput() {
-        return this.read()
-                   .flatMap(cosmosContainerResponse ->
-                                database.getDocClientWrapper()
-                                    .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
-                                                           .getResourceId() + "'", new FeedOptions())
-                                    .single())
-                   .flatMap(offerFeedResponse -> {
-                       if (offerFeedResponse.getResults().isEmpty()) {
-                           return Mono.error(
-                               BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
-                                                                          "No offers found for the resource"));
-                       }
-                       return database.getDocClientWrapper()
-                                  .readOffer(offerFeedResponse.getResults().get(0).getSelfLink())
-                                  .single();
-                   }).map(cosmosOfferResponse -> cosmosOfferResponse.getResource().getThroughput());
+        return withContext(context -> readProvisionedThroughput(context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
@@ -642,23 +799,13 @@ public class CosmosAsyncContainer {
      * @return a {@link Mono} containing throughput or an error.
      */
     public Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond) {
-        return this.read()
-                   .flatMap(cosmosContainerResponse ->
-                                database.getDocClientWrapper()
-                                    .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
-                                                           .getResourceId() + "'", new FeedOptions())
-                                    .single())
-                   .flatMap(offerFeedResponse -> {
-                       if (offerFeedResponse.getResults().isEmpty()) {
-                           return Mono.error(
-                               BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
-                                                                          "No offers found for the resource"));
-                       }
-                       Offer offer = offerFeedResponse.getResults().get(0);
-                       offer.setThroughput(requestUnitsPerSecond);
-                       return database.getDocClientWrapper().replaceOffer(offer).single();
-                   }).map(offerResourceResponse -> offerResourceResponse.getResource().getThroughput());
+        return withContext(context -> replaceProvisionedThroughput(requestUnitsPerSecond, context)).subscriberContext(reactorContext -> {
+            Optional<String> master = reactorContext.getOrEmpty(TracerProvider.MASTER_CALL);
+            if (master.isPresent()) {
+                reactorContext = reactorContext.put(TracerProvider.NESTED_CALL, true);
+            }
+            return reactorContext.put(TracerProvider.MASTER_CALL, true);
+        });
     }
 
     /**
@@ -680,5 +827,305 @@ public class CosmosAsyncContainer {
 
     String getLink() {
         return this.link;
+    }
+
+    private Mono<CosmosAsyncItemResponse<Object>> deleteItem(
+        String itemId,
+        RequestOptions requestOptions,
+        Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "deleteItem." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return this.getDatabase()
+            .getDocClientWrapper()
+            .deleteDocument(getItemLink(itemId), requestOptions)
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncItemResponseWithObjectType(response))
+            .single();
+    }
+
+    private <T> Mono<CosmosAsyncItemResponse<T>> replaceItem(
+        Class<T> itemType,
+        String itemId,
+        Document doc,
+        CosmosItemRequestOptions options,
+        Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "replaceItem." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return this.getDatabase()
+            .getDocClientWrapper()
+            .replaceDocument(getItemLink(itemId), doc, ModelBridgeInternal.toRequestOptions(options))
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+            .single();
+    }
+
+    private <T> Mono<CosmosAsyncItemResponse<T>> upsertItem(T item, CosmosItemRequestOptions options, Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "upsertItem." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        @SuppressWarnings("unchecked")
+        Class<T> itemType = (Class<T>) item.getClass();
+        return this.getDatabase().getDocClientWrapper()
+            .upsertDocument(this.getLink(), item,
+                ModelBridgeInternal.toRequestOptions(options),
+                true)
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+            .single();
+    }
+
+    private <T> Mono<CosmosAsyncItemResponse<T>> readItem(
+        String itemId, PartitionKey partitionKey,
+        RequestOptions requestOptions, Class<T> itemType,
+        Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "readItem." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return this.getDatabase().getDocClientWrapper()
+            .readDocument(getItemLink(itemId), requestOptions)
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType))
+            .single();
+    }
+
+    private Mono<CosmosAsyncContainerResponse> read(CosmosContainerRequestOptions options, Context context) {
+        final boolean isTracingEnabled = database.getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "readContainer." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, database.getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return database.getDocClientWrapper().readCollection(getLink(), ModelBridgeInternal.toRequestOptions(options))
+            .doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if (!callerFunc.isPresent()) {
+                        parentContext.set(database.getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    database.getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            }).map(response -> ModelBridgeInternal.createCosmosAsyncContainerResponse(response, database)).single();
+    }
+
+    private Mono<Integer> readProvisionedThroughput(Context context) {
+        final boolean isTracingEnabled = this.getDatabase().getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "readProvisionedThroughput." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, getDatabase().getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return this.read()
+            .flatMap(cosmosContainerResponse ->
+                database.getDocClientWrapper()
+                    .queryOffers("select * from c where c.offerResourceId = '"
+                        + cosmosContainerResponse.getProperties()
+                        .getResourceId() + "'", new FeedOptions())
+                    .single())
+            .flatMap(offerFeedResponse -> {
+                if (offerFeedResponse.getResults().isEmpty()) {
+                    return Mono.error(
+                        BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                            "No offers found for the resource"));
+                }
+                return database.getDocClientWrapper()
+                    .readOffer(offerFeedResponse.getResults().get(0).getSelfLink())
+                    .single();
+            }).map(cosmosOfferResponse -> cosmosOfferResponse.getResource().getThroughput()).doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if(!callerFunc.isPresent()) {
+                        parentContext.set(getDatabase().getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), 200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
+    }
+
+    private Mono<Integer> replaceProvisionedThroughput(int requestUnitsPerSecond, Context context) {
+        final boolean isTracingEnabled = this.getDatabase().getClient().getTracerProvider().isEnabled();
+        final AtomicReference<Context> parentContext = isTracingEnabled
+            ? new AtomicReference<>(Context.NONE)
+            : null;
+        String spanName = "replaceProvisionedThroughput." + this.getId();
+        Map<String, String> tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_INSTANCE, getId());
+            put(TracerProvider.DB_URL, getDatabase().getClient().getServiceEndpoint());
+            put(TracerProvider.DB_STATEMENT, spanName);
+        }};
+
+        return this.read()
+            .flatMap(cosmosContainerResponse ->
+                database.getDocClientWrapper()
+                    .queryOffers("select * from c where c.offerResourceId = '"
+                        + cosmosContainerResponse.getProperties()
+                        .getResourceId() + "'", new FeedOptions())
+                    .single())
+            .flatMap(offerFeedResponse -> {
+                if (offerFeedResponse.getResults().isEmpty()) {
+                    return Mono.error(
+                        BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                            "No offers found for the resource"));
+                }
+                Offer offer = offerFeedResponse.getResults().get(0);
+                offer.setThroughput(requestUnitsPerSecond);
+                return database.getDocClientWrapper().replaceOffer(offer).single();
+            }).map(offerResourceResponse -> offerResourceResponse.getResource().getThroughput()).doOnSubscribe(ignoredValue -> {
+                if (isTracingEnabled) {
+                    reactor.util.context.Context reactorContext = FluxUtil.toReactorContext(context);
+                    Objects.requireNonNull(reactorContext.hasKey(TracerProvider.MASTER_CALL));
+                    Optional<Object> callerFunc = reactorContext.getOrEmpty(TracerProvider.NESTED_CALL);
+                    if(!callerFunc.isPresent()) {
+                        parentContext.set(getDatabase().getClient().getTracerProvider().startSpan(spanName,
+                            context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
+                    }
+                }
+            }).doOnSuccess(response -> {
+                if (isTracingEnabled) {
+                    getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(), Signal.complete(), 200);
+                }
+            }).doOnError(throwable -> {
+                if (isTracingEnabled) {
+                    getDatabase().getClient().getTracerProvider().endSpan(parentContext.get(), Signal.error(throwable), 0);
+                }
+            });
     }
 }

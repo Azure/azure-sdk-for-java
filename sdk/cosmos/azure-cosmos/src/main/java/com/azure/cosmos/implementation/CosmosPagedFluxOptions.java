@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.util.CosmosPagedFlux;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Specifies paging options for Cosmos Paged Flux implementation.
  * @see CosmosPagedFlux
@@ -13,6 +16,10 @@ public class CosmosPagedFluxOptions {
 
     private String requestContinuation;
     private Integer maxItemCount;
+    private Map<String, String> tracingAttributes;
+    private TracerProvider tracerProvider;
+    private String tracerSpanName;
+
 
     public CosmosPagedFluxOptions() {}
 
@@ -56,5 +63,39 @@ public class CosmosPagedFluxOptions {
     public CosmosPagedFluxOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
+    }
+
+    /**
+     * Gets the tracing attributes
+     * @return tracingAttributes
+     */
+    public Map<String, String> getTracingAttributes() {
+        return this.tracingAttributes;
+    }
+
+    /**
+     * Gets the tracer provider
+     * @return tracerProvider
+     */
+    public TracerProvider getTracerProvider() {
+        return this.tracerProvider;
+    }
+
+    /**
+     * Gets the tracer span name
+     * @return tracerSpanName
+     */
+    public String getTracerSpanName() {
+        return tracerSpanName;
+    }
+
+    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceUrl) {
+        this.tracingAttributes = new HashMap<String, String>() {{
+            put(TracerProvider.DB_TYPE, TracerProvider.DB_TYPE_VALUE);
+            put(TracerProvider.DB_URL, serviceUrl);
+            put(TracerProvider.DB_STATEMENT, tracerSpanName);
+        }};
+        this.tracerSpanName = tracerSpanName;
+        this.tracerProvider = tracerProvider;
     }
 }

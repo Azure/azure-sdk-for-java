@@ -27,8 +27,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
 import java.io.Closeable;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -343,6 +341,8 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> readAllDatabases(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllDatabases";
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                                         .map(response ->
@@ -394,6 +394,8 @@ public final class CosmosAsyncClient implements Closeable {
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryDatabases." + querySpec.getQueryText();
+            pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                                         .map(response -> BridgeInternal.createFeedResponse(
@@ -468,13 +470,13 @@ public final class CosmosAsyncClient implements Closeable {
                 }
             }
             return Mono.error(unwrappedException);
-        }).doOnSuccess(signal -> {
+        }).doOnSuccess(response -> {
             if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.complete());
+                tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
             }
         }).doOnError(throwable -> {
             if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.error(throwable));
+                tracerProvider.endSpan(parentContext.get(), Signal.error(throwable), 0);
             }
         });
     }
@@ -502,20 +504,13 @@ public final class CosmosAsyncClient implements Closeable {
                         context.addData(TracerProvider.ATTRIBUTE_MAP, tracingAttributes), ProcessKind.DATABASE));
                 }
             }
-        }).doOnSuccess(signal -> {
+        }).doOnSuccess(response -> {
             if (isTracingEnabled) {
-                tracerProvider.endSpan(parentContext.get(), Signal.complete());
+                tracerProvider.endSpan(parentContext.get(), Signal.complete(), response.getStatusCode());
             }
         }).doOnError(throwable -> {
             if (isTracingEnabled) {
-                Map<String, String> errorAttributes = new HashMap<String, String>() {{
-                    put(TracerProvider.ERROR_MSG, throwable.getMessage());
-                    put(TracerProvider.ERROR_TYPE,throwable.getClass().getName());
-                    StringWriter errorStack = new StringWriter();
-                    throwable.printStackTrace(new PrintWriter(errorStack));
-                    put(TracerProvider.ERROR_STACK,  errorStack.toString());
-                }};
-                tracerProvider.endSpan(parentContext.get(), Signal.error(throwable));
+                tracerProvider.endSpan(parentContext.get(), Signal.error(throwable), 0);
             }
         }).map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
             this))

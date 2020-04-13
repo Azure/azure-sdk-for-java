@@ -141,11 +141,15 @@ public class CosmosAsyncUser {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read permissions or an
      * error.
      */
     public CosmosPagedFlux<CosmosPermissionProperties> readAllPermissions(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllPermissions." + this.getId();
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .readPermissions(getLink(), options)
@@ -184,6 +188,10 @@ public class CosmosAsyncUser {
      */
     public CosmosPagedFlux<CosmosPermissionProperties> queryPermissions(String query, FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryPermissions." + this.getId() + "." + query;
+            pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper()
                        .queryPermissions(getLink(), query, options)

@@ -72,16 +72,15 @@ public class TracerProvider {
      * @param context Additional metadata that is passed through the call stack.
      * @param signal The signal indicates the status and contains the metadata we need to end the tracing span.
      */
-    public void endSpan(Context context, Signal<CosmosResponse> signal) {
+    public void endSpan(Context context, Signal<CosmosResponse> signal, int statusCode) {
         Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(signal, "'signal' cannot be null.");
 
         switch (signal.getType()) {
             case ON_COMPLETE:
-                end("success", null, context);
+                end(statusCode, null, context);
                 break;
             case ON_ERROR:
-                String errorCondition = "";
                 Throwable throwable = null;
                 if (signal.hasError()) {
                     // The last status available is on error, this contains the thrown error.
@@ -90,10 +89,10 @@ public class TracerProvider {
                     if (throwable instanceof CosmosClientException) {
                         CosmosClientException exception = (CosmosClientException) throwable;
                         // confirm ?
-                        errorCondition =exception.getError().getErrorDetails();
+                        statusCode = exception.getStatusCode();
                     }
                 }
-                end(errorCondition, throwable, context);
+                end(statusCode, throwable, context);
                 break;
             default:
                 // ON_SUBSCRIBE and ON_NEXT don't have the information to end the span so just return.
@@ -101,7 +100,7 @@ public class TracerProvider {
         }
     }
 
-    private void end(String statusMessage, Throwable throwable, Context context) {
+    private void end(int statusCode, Throwable throwable, Context context) {
         for (Tracer tracer : tracers) {
             if(throwable != null) {
                 tracer.setAttribute(TracerProvider.ERROR_MSG,  throwable.getMessage(), context);
@@ -110,7 +109,7 @@ public class TracerProvider {
                 throwable.printStackTrace(new PrintWriter(errorStack));
                 tracer.setAttribute(TracerProvider.ERROR_STACK,  errorStack.toString(), context);
             }
-            tracer.end(statusMessage, throwable, context);
+            tracer.end(statusCode, throwable, context);
         }
     }
 }

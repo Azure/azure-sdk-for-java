@@ -86,12 +86,16 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored
      * procedures
      * properties or an error.
      */
     public CosmosPagedFlux<CosmosStoredProcedureProperties> readAllStoredProcedures(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllStoredProcedures." + this.container.getId();
+            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.container.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .readStoredProcedures(container.getLink(), options)
@@ -110,7 +114,7 @@ public class CosmosAsyncScripts {
      *
      * @param query the the query.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored
      * procedures or
      * an error.
      */
@@ -129,7 +133,7 @@ public class CosmosAsyncScripts {
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored
      * procedures or
      * an error.
      */
@@ -137,6 +141,10 @@ public class CosmosAsyncScripts {
         SqlQuerySpec querySpec,
         FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryStoredProcedures." + this.container.getId() + "." + querySpec.getQueryText();
+            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.container.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .queryStoredProcedures(container.getLink(), querySpec, options)
@@ -189,12 +197,16 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined
      * functions or an
      * error.
      */
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> readAllUserDefinedFunctions(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllUserDefinedFunctions." + this.container.getId();
+            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.container.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .readUserDefinedFunctions(container.getLink(), options)
@@ -208,13 +220,13 @@ public class CosmosAsyncScripts {
      * Query for user defined functions in the container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined 
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined
      * functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
      */
@@ -228,13 +240,13 @@ public class CosmosAsyncScripts {
      * Query for user defined functions in the container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined 
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined
      * functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
      */
@@ -242,6 +254,10 @@ public class CosmosAsyncScripts {
         SqlQuerySpec querySpec,
         FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryUserDefinedFunctions." + this.container.getId() + "." + querySpec.getQueryText();
+            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.container.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .queryUserDefinedFunctions(container.getLink(), querySpec, options)
@@ -286,17 +302,21 @@ public class CosmosAsyncScripts {
      * Reads all triggers in a container
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger 
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger
      * properties.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger
      * properties or
      * an error.
      */
     public CosmosPagedFlux<CosmosTriggerProperties> readAllTriggers(FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "readAllTriggers." + this.container.getId();
+            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.container.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .readTriggers(container.getLink(), options)
@@ -338,6 +358,10 @@ public class CosmosAsyncScripts {
         SqlQuerySpec querySpec,
         FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
+            String spanName = "queryTriggers." + this.container.getId();
+            pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
+                spanName,
+                this.container.getDatabase().getClient().getServiceEndpoint());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                        .queryTriggers(container.getLink(), querySpec, options)
