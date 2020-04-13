@@ -30,9 +30,9 @@ The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav
 
 [//]: # ({x-version-update-start;com.microsoft.azure:azure-servicebus;current})
 ```
-<dependency> 
-  <groupId>com.microsoft.azure</groupId> 
-  <artifactId>azure-servicebus</artifactId> 
+<dependency>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-servicebus</artifactId>
   <version>3.1.5</version>
 </dependency>
 ```
@@ -40,11 +40,11 @@ The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav
 
 ## How to provide feedback
 
-See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
+See our [Contribution Guidelines](../.github/CONTRIBUTING.md).
 
 ## How to get support
 
-See our [Support Guidelines](./.github/SUPPORT.md)
+See our [Support Guidelines](../.github/SUPPORT.md)
 
 ## Known issues
 
@@ -59,7 +59,7 @@ If you send messages from a client any other than the Java client itself in any 
 ## FAQ
 
 ### Where is the API document?
-Click [here](https://docs.microsoft.com/en-us/java/api/overview/azure/servicebus/clientlibrary).
+Click [here](https://docs.microsoft.com/java/api/overview/azure/servicebus/clientlibrary).
 
 ### Where can I find examples that use this library?
 
@@ -69,7 +69,7 @@ The samples are located in this repo. [Java Samples](https://github.com/Azure/az
 
 Yes, this client library now has the management functionality built into it. This is made available through the [ManagementClient](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/microsoft-azure-servicebus/src/main/java/com/microsoft/azure/servicebus/management/ManagementClient.java) which now enables create, read(exists), update and delete Queues, Topics, Subscriptions, Rules.
 
-### How do I run the unit tests? 
+### How do I run the unit tests?
 
 Tests are simple JUnit tests. They can be run from the command line or any IDE that supports running JUnit tests.
 Only prerequisite to running tests is setting an environment variable named 'AZURE_SERVICEBUS_CONNECTION_STRING' to the connection string
