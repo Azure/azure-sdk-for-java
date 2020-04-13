@@ -344,7 +344,7 @@ final String hostname = "{your-host-name}";
 final int port = 447; // your port number
 
 ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
-    new InetSocketAddress(HOST_NAME, PORT));
+    new InetSocketAddress(hostname, port));
 HttpClient httpClient = new NettyAsyncHttpClientBuilder()
     .proxy(proxyOptions)
     .build();
