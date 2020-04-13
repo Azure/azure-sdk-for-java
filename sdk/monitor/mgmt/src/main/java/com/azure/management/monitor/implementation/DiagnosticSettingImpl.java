@@ -3,6 +3,7 @@
 
 package com.azure.management.monitor.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.CategoryType;
 import com.azure.management.monitor.DiagnosticSetting;
 import com.azure.management.monitor.DiagnosticSettingsCategory;
@@ -22,6 +23,9 @@ import reactor.core.publisher.Mono;
 class DiagnosticSettingImpl
     extends CreatableUpdatableImpl<DiagnosticSetting, DiagnosticSettingsResourceInner, DiagnosticSettingImpl>
     implements DiagnosticSetting, DiagnosticSetting.Definition, DiagnosticSetting.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     public static final String DIAGNOSTIC_SETTINGS_URI = "/providers/microsoft.insights/diagnosticSettings/";
 
     private String resourceId;
@@ -124,7 +128,8 @@ class DiagnosticSettingImpl
             } else if (dsc.type() == CategoryType.LOGS) {
                 this.withLog(dsc.name(), retentionDays);
             } else {
-                throw new UnsupportedOperationException(dsc.type().toString() + " is unsupported.");
+                throw logger.logExceptionAsError(
+                    new UnsupportedOperationException(dsc.type().toString() + " is unsupported."));
             }
         }
         return this;

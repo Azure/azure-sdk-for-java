@@ -16,18 +16,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AutoscaleTests extends MonitorManagementTest {
-    private static String RG_NAME = "";
+    private static String rgName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("jMonitor_", 18);
+        rgName = generateRandomResourceName("jMonitor_", 18);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -36,7 +36,7 @@ public class AutoscaleTests extends MonitorManagementTest {
         try {
             resourceManager
                 .resourceGroups()
-                .define(RG_NAME)
+                .define(rgName)
                 .withRegion(Region.US_EAST2)
                 .withTag("type", "autoscale")
                 .withTag("tagname", "tagvalue")
@@ -47,7 +47,7 @@ public class AutoscaleTests extends MonitorManagementTest {
                     .appServicePlans()
                     .define("HighlyAvailableWebApps")
                     .withRegion(Region.US_EAST2)
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .withPricingTier(PricingTier.PREMIUM_P1)
                     .withOperatingSystem(OperatingSystem.WINDOWS)
                     .create();
@@ -57,7 +57,7 @@ public class AutoscaleTests extends MonitorManagementTest {
                     .autoscaleSettings()
                     .define("somesettingZ")
                     .withRegion(Region.US_EAST2)
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .withTargetResource(servicePlan.id())
                     .defineAutoscaleProfile("Default")
                     .withScheduleBasedScale(3)
@@ -445,7 +445,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(Duration.ofHours(3), rule.coolDown());
 
             // List
-            settingFromGet = monitorManager.autoscaleSettings().listByResourceGroup(RG_NAME).iterator().next();
+            settingFromGet = monitorManager.autoscaleSettings().listByResourceGroup(rgName).iterator().next();
 
             Assertions.assertNotNull(settingFromGet);
             Assertions.assertEquals("somesettingZ", settingFromGet.name());
@@ -558,10 +558,10 @@ public class AutoscaleTests extends MonitorManagementTest {
             // Delete
             monitorManager.autoscaleSettings().deleteById(settingFromGet.id());
 
-            PagedIterable<AutoscaleSetting> emptyList = monitorManager.autoscaleSettings().listByResourceGroup(RG_NAME);
+            PagedIterable<AutoscaleSetting> emptyList = monitorManager.autoscaleSettings().listByResourceGroup(rgName);
             Assertions.assertEquals(0, TestUtilities.getSize(emptyList));
         } finally {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 }

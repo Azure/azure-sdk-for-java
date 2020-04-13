@@ -3,6 +3,7 @@
 
 package com.azure.management.monitor.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.AutoscaleProfile;
 import com.azure.management.monitor.DayOfWeek;
 import com.azure.management.monitor.Recurrence;
@@ -24,6 +25,9 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
         AutoscaleProfile.Definition,
         AutoscaleProfile.UpdateDefinition,
         AutoscaleProfile.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     private final AutoscaleSettingImpl parent;
 
     AutoscaleProfileImpl(String name, AutoscaleProfileInner innerObject, AutoscaleSettingImpl parent) {
@@ -140,17 +144,17 @@ class AutoscaleProfileImpl extends WrapperImpl<AutoscaleProfileInner>
             || !Character.isDigit(startTime.charAt(1))
             || !Character.isDigit(startTime.charAt(3))
             || !Character.isDigit(startTime.charAt(4))) {
-            throw new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Start time should have format of 'hh:mm' where hh is in 24-hour clock (AM/PM times are not"
-                    + " supported).");
+                    + " supported)."));
         }
 
         int hh = Integer.parseInt(startTime.substring(0, 2));
         int mm = Integer.parseInt(startTime.substring(3));
         if (hh > 23 || mm > 60) {
-            throw new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Start time should have format of 'hh:mm' where hh is in 24-hour clock (AM/PM times are not"
-                    + " supported).");
+                    + " supported)."));
         }
 
         this.inner().withRecurrence(new Recurrence());

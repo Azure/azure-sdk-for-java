@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class ActionGroupsTests extends MonitorManagementTest {
-    private String RG_NAME = "";
+    private String rgName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("jMonitor_", 18);
+        rgName = generateRandomResourceName("jMonitor_", 18);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class ActionGroupsTests extends MonitorManagementTest {
             monitorManager
                 .actionGroups()
                 .define("simpleActionGroup")
-                .withNewResourceGroup(RG_NAME, Region.AUSTRALIA_SOUTHEAST)
+                .withNewResourceGroup(rgName, Region.AUSTRALIA_SOUTHEAST)
                 .defineReceiver("first")
                 .withPushNotification("azurepush@outlook.com")
                 .withEmail("justemail@outlook.com")
@@ -85,7 +85,7 @@ public class ActionGroupsTests extends MonitorManagementTest {
             .actionGroups()
             .enableReceiver(agGet.resourceGroupName(), agGet.name(), agGet.emailReceivers().get(0).name());
 
-        PagedIterable<ActionGroup> agListByRg = monitorManager.actionGroups().listByResourceGroup(RG_NAME);
+        PagedIterable<ActionGroup> agListByRg = monitorManager.actionGroups().listByResourceGroup(rgName);
         Assertions.assertNotNull(agListByRg);
         Assertions.assertEquals(1, TestUtilities.getSize(agListByRg));
 
@@ -94,9 +94,9 @@ public class ActionGroupsTests extends MonitorManagementTest {
         Assertions.assertTrue(TestUtilities.getSize(agListByRg) > 0);
 
         monitorManager.actionGroups().deleteById(ag.id());
-        agListByRg = monitorManager.actionGroups().listByResourceGroup(RG_NAME);
+        agListByRg = monitorManager.actionGroups().listByResourceGroup(rgName);
         Assertions.assertEquals(0, TestUtilities.getSize(agListByRg));
 
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

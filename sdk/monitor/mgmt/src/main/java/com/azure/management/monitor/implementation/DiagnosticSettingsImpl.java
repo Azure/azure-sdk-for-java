@@ -4,6 +4,7 @@ package com.azure.management.monitor.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.DiagnosticSetting;
 import com.azure.management.monitor.DiagnosticSettings;
 import com.azure.management.monitor.DiagnosticSettingsCategory;
@@ -27,6 +28,8 @@ import reactor.core.publisher.Mono;
 class DiagnosticSettingsImpl
     extends CreatableResourcesImpl<DiagnosticSetting, DiagnosticSettingImpl, DiagnosticSettingsResourceInner>
     implements DiagnosticSettings {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private final MonitorManager manager;
 
@@ -202,14 +205,15 @@ class DiagnosticSettingsImpl
 
     private String getResourceIdFromSettingsId(String diagnosticSettingId) {
         if (diagnosticSettingId == null) {
-            throw new IllegalArgumentException("Parameter 'resourceId' is required and cannot be null.");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Parameter 'resourceId' is required and cannot be null."));
         }
         int dsIdx = diagnosticSettingId.lastIndexOf(DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI);
         if (dsIdx == -1) {
-            throw new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Parameter 'resourceId' does not represent a valid Diagnostic Settings resource Id ["
                     + diagnosticSettingId
-                    + "].");
+                    + "]."));
         }
 
         return diagnosticSettingId.substring(0, dsIdx);

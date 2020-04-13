@@ -3,6 +3,7 @@
 
 package com.azure.management.monitor.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.DynamicMetricCriteria;
 import com.azure.management.monitor.MetricAlert;
 import com.azure.management.monitor.MetricAlertAction;
@@ -34,6 +35,8 @@ class MetricAlertImpl
         MetricAlert.DefinitionMultipleResource,
         MetricAlert.Update,
         MetricAlert.UpdateStages.WithMetricUpdate {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     // 2019/09 at present service support 2 static criteria, or 1 dynamic criteria
     // static criteria
@@ -90,9 +93,10 @@ class MetricAlertImpl
     @Override
     public Mono<MetricAlert> createResourceAsync() {
         if (this.conditions.isEmpty() && this.dynamicConditions.isEmpty()) {
-            throw new IllegalArgumentException("Condition cannot be empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Condition cannot be empty"));
         } else if (!this.conditions.isEmpty() && !this.dynamicConditions.isEmpty()) {
-            throw new IllegalArgumentException("Static condition and dynamic condition cannot co-exist");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Static condition and dynamic condition cannot co-exist"));
         }
 
         this.inner().setLocation("global");
@@ -280,7 +284,7 @@ class MetricAlertImpl
     @Override
     public MetricAlertImpl withMultipleTargetResources(Collection<String> resourceIds, String type, String region) {
         if (resourceIds == null || resourceIds.isEmpty()) {
-            throw new IllegalArgumentException("Target resource cannot be empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Target resource cannot be empty"));
         }
 
         multipleResource = true;
@@ -294,7 +298,7 @@ class MetricAlertImpl
     @Override
     public MetricAlertImpl withMultipleTargetResources(Collection<? extends Resource> resources) {
         if (resources == null || resources.isEmpty()) {
-            throw new IllegalArgumentException("Target resource cannot be empty");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Target resource cannot be empty"));
         }
 
         multipleResource = true;
@@ -304,8 +308,8 @@ class MetricAlertImpl
         String regionName = resources.iterator().next().regionName();
         for (Resource resource : resources) {
             if (!type.equalsIgnoreCase(resource.type()) || !regionName.equalsIgnoreCase(resource.regionName())) {
-                throw new IllegalArgumentException(
-                    "Target resource must be of the same resource type and in the same region");
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Target resource must be of the same resource type and in the same region"));
             }
 
             resourceIds.add(resource.id());

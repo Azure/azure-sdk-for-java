@@ -14,7 +14,6 @@ public final class EventDataPropertyName extends ExpandableStringEnum<EventDataP
 
     /** Static value "claims" for EventDataPropertyName. */
     public static final EventDataPropertyName CLAIMS = fromString("claims");
-    ;
 
     /** Static value "correlationId" for EventDataPropertyName. */
     public static final EventDataPropertyName CORRELATIONID = fromString("correlationId");

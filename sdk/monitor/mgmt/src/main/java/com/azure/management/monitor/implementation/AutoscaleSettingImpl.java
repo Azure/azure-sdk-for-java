@@ -3,6 +3,7 @@
 
 package com.azure.management.monitor.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.AutoscaleNotification;
 import com.azure.management.monitor.AutoscaleProfile;
 import com.azure.management.monitor.AutoscaleSetting;
@@ -21,6 +22,8 @@ import reactor.core.publisher.Mono;
 class AutoscaleSettingImpl
     extends GroupableResourceImpl<AutoscaleSetting, AutoscaleSettingResourceInner, AutoscaleSettingImpl, MonitorManager>
     implements AutoscaleSetting, AutoscaleSetting.Definition, AutoscaleSetting.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     AutoscaleSettingImpl(
         String name, final AutoscaleSettingResourceInner innerModel, final MonitorManager monitorManager) {
@@ -109,7 +112,8 @@ class AutoscaleSettingImpl
     public AutoscaleProfileImpl updateAutoscaleProfile(String name) {
         int idx = getProfileIndexByName(name);
         if (idx == -1) {
-            throw new IllegalArgumentException("Cannot find autoscale profile with the name '" + name + "'");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Cannot find autoscale profile with the name '" + name + "'"));
         }
         AutoscaleProfileInner innerProfile = this.inner().profiles().get(idx);
 

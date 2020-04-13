@@ -7,27 +7,27 @@ import com.azure.management.RestClient;
 import org.junit.jupiter.api.Assertions;
 
 public class DiagnosticSettingsTests extends MonitorManagementTest {
-    private String RG_NAME = "";
-    private String SA_NAME = "";
-    private String DS_NAME = "";
-    private String EH_NAME = "";
+    private String rgName = "";
+    private String saName = "";
+    private String dsName = "";
+    private String ehName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("jMonitor_", 18);
-        SA_NAME = generateRandomResourceName("jMonitorSa", 18);
-        DS_NAME = generateRandomResourceName("jMonitorDs_", 18);
-        EH_NAME = generateRandomResourceName("jMonitorEH", 18);
+        rgName = generateRandomResourceName("jMonitor_", 18);
+        saName = generateRandomResourceName("jMonitorSa", 18);
+        dsName = generateRandomResourceName("jMonitorDs_", 18);
+        ehName = generateRandomResourceName("jMonitorEH", 18);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
-    // FIXME: need eventhub service
+    // TODO (weidxu) need eventhub service
     //    @Test
     //    public void canCRUDDiagnosticSettings() throws Exception {
     //

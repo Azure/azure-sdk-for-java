@@ -18,20 +18,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AlertsTests extends MonitorManagementTest {
-    private String RG_NAME = "";
-    private String SA_NAME = "";
+    private String rgName = "";
+    private String saName = "";
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("jMonitor_", 18);
-        SA_NAME = generateRandomResourceName("jMonitorSA", 18);
+        rgName = generateRandomResourceName("jMonitor_", 18);
+        saName = generateRandomResourceName("jMonitorSA", 18);
 
         super.initializeClients(restClient, defaultSubscription, domain);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test
@@ -41,9 +41,9 @@ public class AlertsTests extends MonitorManagementTest {
             StorageAccount sa =
                 storageManager
                     .storageAccounts()
-                    .define(SA_NAME)
+                    .define(saName)
                     .withRegion(Region.US_EAST2)
-                    .withNewResourceGroup(RG_NAME)
+                    .withNewResourceGroup(rgName)
                     .withOnlyHttpsTraffic()
                     .create();
 
@@ -51,7 +51,7 @@ public class AlertsTests extends MonitorManagementTest {
                 monitorManager
                     .actionGroups()
                     .define("simpleActionGroup")
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .defineReceiver("first")
                     .withPushNotification("azurepush@outlook.com")
                     .withEmail("justemail@outlook.com")
@@ -70,7 +70,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .alertRules()
                     .metricAlerts()
                     .define("somename")
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .withTargetResource(sa.id())
                     .withPeriod(Duration.ofMinutes(15))
                     .withFrequency(Duration.ofMinutes(1))
@@ -260,7 +260,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals("GetBlob", d1.values().get(0));
 
             PagedIterable<MetricAlert> alertsInRg =
-                monitorManager.alertRules().metricAlerts().listByResourceGroup(RG_NAME);
+                monitorManager.alertRules().metricAlerts().listByResourceGroup(rgName);
 
             Assertions.assertEquals(1, TestUtilities.getSize(alertsInRg));
             maFromGet = alertsInRg.iterator().next();
@@ -313,7 +313,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             monitorManager.alertRules().metricAlerts().deleteById(ma.id());
         } finally {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -332,7 +332,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .virtualMachines()
                     .define(vmName1)
                     .withRegion(Region.US_EAST2)
-                    .withNewResourceGroup(RG_NAME)
+                    .withNewResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
@@ -346,7 +346,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .virtualMachines()
                     .define(vmName2)
                     .withRegion(Region.US_EAST2)
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .withNewPrimaryNetwork("10.0.0.0/28")
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
@@ -360,7 +360,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .alertRules()
                     .metricAlerts()
                     .define(alertName)
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .withMultipleTargetResources(Arrays.asList(vm1, vm2))
                     .withPeriod(Duration.ofMinutes(15))
                     .withFrequency(Duration.ofMinutes(5))
@@ -416,7 +416,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             monitorManager.alertRules().metricAlerts().deleteById(ma.id());
         } finally {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 
@@ -428,7 +428,7 @@ public class AlertsTests extends MonitorManagementTest {
                 monitorManager
                     .actionGroups()
                     .define("simpleActionGroup")
-                    .withNewResourceGroup(RG_NAME, Region.US_EAST2)
+                    .withNewResourceGroup(rgName, Region.US_EAST2)
                     .defineReceiver("first")
                     .withPushNotification("azurepush@outlook.com")
                     .withEmail("justemail@outlook.com")
@@ -449,7 +449,7 @@ public class AlertsTests extends MonitorManagementTest {
                     .alertRules()
                     .activityLogAlerts()
                     .define("somename")
-                    .withExistingResourceGroup(RG_NAME)
+                    .withExistingResourceGroup(rgName)
                     .withTargetSubscription(monitorManager.getSubscriptionId())
                     .withDescription("AutoScale-VM-Creation-Failed")
                     .withRuleEnabled()
@@ -513,7 +513,7 @@ public class AlertsTests extends MonitorManagementTest {
             Assertions.assertEquals(false, ala.equalsConditions().containsKey("operationName"));
 
             PagedIterable<ActivityLogAlert> alertsInRg =
-                monitorManager.alertRules().activityLogAlerts().listByResourceGroup(RG_NAME);
+                monitorManager.alertRules().activityLogAlerts().listByResourceGroup(rgName);
 
             Assertions.assertEquals(1, TestUtilities.getSize(alertsInRg));
             alaFromGet = alertsInRg.iterator().next();
@@ -539,7 +539,7 @@ public class AlertsTests extends MonitorManagementTest {
 
             monitorManager.alertRules().activityLogAlerts().deleteById(ala.id());
         } finally {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 }
