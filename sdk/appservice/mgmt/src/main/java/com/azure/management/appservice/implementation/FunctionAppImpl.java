@@ -6,7 +6,6 @@ package com.azure.management.appservice.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.Get;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -15,22 +14,15 @@ import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpPipelineCallContext;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.RestClient;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.FunctionApp;
+import com.azure.management.appservice.FunctionAuthenticationPolicy;
 import com.azure.management.appservice.FunctionDeploymentSlots;
 import com.azure.management.appservice.FunctionRuntimeStack;
 import com.azure.management.appservice.NameValuePair;
@@ -47,40 +39,34 @@ import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.StorageAccountKey;
 import com.azure.management.storage.StorageAccountSkuType;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for FunctionApp.
- */
+/** The implementation for FunctionApp. */
 class FunctionAppImpl
-    extends AppServiceBaseImpl<FunctionApp, FunctionAppImpl, FunctionApp.DefinitionStages.WithCreate, FunctionApp.Update>
-    implements
-        FunctionApp,
+    extends AppServiceBaseImpl<
+        FunctionApp, FunctionAppImpl, FunctionApp.DefinitionStages.WithCreate, FunctionApp.Update>
+    implements FunctionApp,
         FunctionApp.Definition,
         FunctionApp.DefinitionStages.NewAppServicePlanWithGroup,
         FunctionApp.DefinitionStages.ExistingLinuxPlanWithGroup,
         FunctionApp.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     private static final String SETTING_FUNCTIONS_WORKER_RUNTIME = "FUNCTIONS_WORKER_RUNTIME";
     private static final String SETTING_FUNCTIONS_EXTENSION_VERSION = "FUNCTIONS_EXTENSION_VERSION";
-    private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING = "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
+    private static final String SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING =
+        "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING";
     private static final String SETTING_WEBSITE_CONTENTSHARE = "WEBSITE_CONTENTSHARE";
     private static final String SETTING_WEB_JOBS_STORAGE = "AzureWebJobsStorage";
     private static final String SETTING_WEB_JOBS_DASHBOARD = "AzureWebJobsDashboard";
@@ -93,12 +79,18 @@ class FunctionAppImpl
     private FunctionDeploymentSlots deploymentSlots;
 
     private Function<AppServicePlan, SiteConfigResourceInner> linuxFxVersionSetter = null;
-    private Mono<AppServicePlan> cachedAppServicePlanObservable = null; // potentially shared between submitSiteConfig and submitAppSettings
+    private Mono<AppServicePlan> cachedAppServicePlanObservable =
+        null; // potentially shared between submitSiteConfig and submitAppSettings
 
     private String functionAppKeyServiceHost;
     private String functionServiceHost;
 
-    FunctionAppImpl(final String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, AppServiceManager manager) {
+    FunctionAppImpl(
+        final String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        AppServiceManager manager) {
         super(name, innerObject, siteConfig, logConfig, manager);
         functionAppKeyServiceHost = manager.restClient().getBaseUrl().toString();
         functionAppKeyService = RestProxy.create(FunctionAppKeyService.class, manager.restClient().getHttpPipeline());
@@ -117,15 +109,18 @@ class FunctionAppImpl
             try {
                 baseUrl = urlBuilder.toUrl().toString();
             } catch (MalformedURLException e) {
-                throw new IllegalStateException(e);
+                throw logger.logExceptionAsError(new IllegalStateException(e));
             }
-            RestClient client = manager().restClient().newBuilder()
+            RestClient client =
+                manager()
+                    .restClient()
+                    .newBuilder()
                     .withBaseUrl(baseUrl)
-//                    .withCredential(new FunctionCredential(this))
                     .withPolicy(new FunctionAuthenticationPolicy(this))
                     .buildClient();
             functionServiceHost = client.getBaseUrl().toString();
-            functionService = RestProxy.create(FunctionService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            functionService =
+                RestProxy.create(FunctionService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         }
     }
 
@@ -149,7 +144,8 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewConsumptionPlan(String appServicePlanName) {
-        return withNewAppServicePlan(appServicePlanName, OperatingSystem.WINDOWS, new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
+        return withNewAppServicePlan(
+            appServicePlanName, OperatingSystem.WINDOWS, new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
     }
 
     @Override
@@ -172,8 +168,8 @@ class FunctionAppImpl
         if (linuxFxVersionSetter != null) {
             cachedAppServicePlanObservable = this.cachedAppServicePlanObservable(); // first usage, so get a new one
             return cachedAppServicePlanObservable
-                    .map(linuxFxVersionSetter)
-                    .flatMap(ignored -> FunctionAppImpl.super.submitSiteConfig());
+                .map(linuxFxVersionSetter)
+                .flatMap(ignored -> FunctionAppImpl.super.submitSiteConfig());
         } else {
             return super.submitSiteConfig();
         }
@@ -190,35 +186,50 @@ class FunctionAppImpl
             if (cachedAppServicePlanObservable == null) {
                 cachedAppServicePlanObservable = this.cachedAppServicePlanObservable();
             }
-            return Flux.concat(storageAccountToSet.getKeysAsync()
-                    .map(storageAccountKeys -> storageAccountKeys.get(0))
-                    .zipWith(cachedAppServicePlanObservable, (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
-                        String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                                storageAccountToSet.name(), storageAccountKey.value());
-                        addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
-                        addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
-                        if (OperatingSystem.WINDOWS.equals(operatingSystem()) && // as Portal logic, only Windows plan would have following appSettings
-                                (appServicePlan == null || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier()))) {
-                            addAppSettingIfNotModified(SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
-                            addAppSettingIfNotModified(SETTING_WEBSITE_CONTENTSHARE, this.manager().getSdkContext().randomResourceName(name(), 32));
-                        }
-                        return FunctionAppImpl.super.submitAppSettings();
-                    })).last()
-                    .then(Mono.fromCallable(() -> {
-                        currentStorageAccount = storageAccountToSet;
-                        storageAccountToSet = null;
-                        storageAccountCreatable = null;
-                        cachedAppServicePlanObservable = null;
-                        return this;
-                    }));
+            return Flux
+                .concat(
+                    storageAccountToSet
+                        .getKeysAsync()
+                        .map(storageAccountKeys -> storageAccountKeys.get(0))
+                        .zipWith(
+                            cachedAppServicePlanObservable,
+                            (StorageAccountKey storageAccountKey, AppServicePlan appServicePlan) -> {
+                                String connectionString =
+                                    String
+                                        .format(
+                                            "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
+                                            storageAccountToSet.name(), storageAccountKey.value());
+                                addAppSettingIfNotModified(SETTING_WEB_JOBS_STORAGE, connectionString);
+                                addAppSettingIfNotModified(SETTING_WEB_JOBS_DASHBOARD, connectionString);
+                                if (OperatingSystem.WINDOWS.equals(operatingSystem())
+                                    && // as Portal logic, only Windows plan would have following appSettings
+                                    (appServicePlan == null
+                                        || isConsumptionOrPremiumAppServicePlan(appServicePlan.pricingTier()))) {
+                                    addAppSettingIfNotModified(
+                                        SETTING_WEBSITE_CONTENTAZUREFILECONNECTIONSTRING, connectionString);
+                                    addAppSettingIfNotModified(
+                                        SETTING_WEBSITE_CONTENTSHARE,
+                                        this.manager().getSdkContext().randomResourceName(name(), 32));
+                                }
+                                return FunctionAppImpl.super.submitAppSettings();
+                            }))
+                .last()
+                .then(
+                    Mono
+                        .fromCallable(
+                            () -> {
+                                currentStorageAccount = storageAccountToSet;
+                                storageAccountToSet = null;
+                                storageAccountCreatable = null;
+                                cachedAppServicePlanObservable = null;
+                                return this;
+                            }));
         }
     }
 
     @Override
     public OperatingSystem operatingSystem() {
-        return (inner().reserved() == null || !inner().reserved())
-                ? OperatingSystem.WINDOWS
-                : OperatingSystem.LINUX;
+        return (inner().reserved() == null || !inner().reserved()) ? OperatingSystem.WINDOWS : OperatingSystem.LINUX;
     }
 
     private void addAppSettingIfNotModified(String key, String value) {
@@ -229,7 +240,7 @@ class FunctionAppImpl
 
     private boolean appSettingModified(String key) {
         return (appSettingsToAdd != null && appSettingsToAdd.containsKey(key))
-                || (appSettingsToRemove != null && appSettingsToRemove.contains(key));
+            || (appSettingsToRemove != null && appSettingsToRemove.contains(key));
     }
 
     private static boolean isConsumptionOrPremiumAppServicePlan(PricingTier pricingTier) {
@@ -237,7 +248,8 @@ class FunctionAppImpl
             return true;
         }
         SkuDescription description = pricingTier.toSkuDescription();
-        return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier()) || SkuName.ELASTIC_PREMIUM.toString().equalsIgnoreCase(description.tier());
+        return SkuName.DYNAMIC.toString().equalsIgnoreCase(description.tier())
+            || SkuName.ELASTIC_PREMIUM.toString().equalsIgnoreCase(description.tier());
     }
 
     private static boolean isConsumptionPlan(PricingTier pricingTier) {
@@ -254,7 +266,8 @@ class FunctionAppImpl
     }
 
     @Override
-    FunctionAppImpl withNewAppServicePlan(String appServicePlan, OperatingSystem operatingSystem, PricingTier pricingTier) {
+    FunctionAppImpl withNewAppServicePlan(
+        String appServicePlan, OperatingSystem operatingSystem, PricingTier pricingTier) {
         return super.withNewAppServicePlan(appServicePlan, operatingSystem, pricingTier).autoSetAlwaysOn(pricingTier);
     }
 
@@ -267,9 +280,9 @@ class FunctionAppImpl
     private FunctionAppImpl autoSetAlwaysOn(PricingTier pricingTier) {
         SkuDescription description = pricingTier.toSkuDescription();
         if (description.tier().equalsIgnoreCase(SkuName.BASIC.toString())
-                || description.tier().equalsIgnoreCase(SkuName.STANDARD.toString())
-                || description.tier().equalsIgnoreCase(SkuName.PREMIUM.toString())
-                || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())) {
+            || description.tier().equalsIgnoreCase(SkuName.STANDARD.toString())
+            || description.tier().equalsIgnoreCase(SkuName.PREMIUM.toString())
+            || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())) {
             return withWebAppAlwaysOn(true);
         } else {
             return withWebAppAlwaysOn(false);
@@ -278,17 +291,17 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewStorageAccount(String name, com.azure.management.storage.SkuName sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine = manager().storageManager().storageAccounts()
-            .define(name)
-            .withRegion(regionName());
+        StorageAccount.DefinitionStages.WithGroup storageDefine =
+            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable = storageDefine.withNewResourceGroup(super.creatableGroup)
-                .withGeneralPurposeAccountKind()
-                .withSku(sku);
+            storageAccountCreatable =
+                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
         } else {
-            storageAccountCreatable = storageDefine.withExistingResourceGroup(resourceGroupName())
-                .withGeneralPurposeAccountKind()
-                .withSku(sku);
+            storageAccountCreatable =
+                storageDefine
+                    .withExistingResourceGroup(resourceGroupName())
+                    .withGeneralPurposeAccountKind()
+                    .withSku(sku);
         }
         this.addDependency(storageAccountCreatable);
         return this;
@@ -296,15 +309,15 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewStorageAccount(String name, StorageAccountSkuType sku) {
-        StorageAccount.DefinitionStages.WithGroup storageDefine = manager().storageManager().storageAccounts()
-                .define(name)
-                .withRegion(regionName());
+        StorageAccount.DefinitionStages.WithGroup storageDefine =
+            manager().storageManager().storageAccounts().define(name).withRegion(regionName());
         if (super.creatableGroup != null && isInCreateMode()) {
-            storageAccountCreatable = storageDefine.withNewResourceGroup(super.creatableGroup)
-                    .withGeneralPurposeAccountKind()
-                    .withSku(sku);
+            storageAccountCreatable =
+                storageDefine.withNewResourceGroup(super.creatableGroup).withGeneralPurposeAccountKind().withSku(sku);
         } else {
-            storageAccountCreatable = storageDefine.withExistingResourceGroup(resourceGroupName())
+            storageAccountCreatable =
+                storageDefine
+                    .withExistingResourceGroup(resourceGroupName())
                     .withGeneralPurposeAccountKind()
                     .withSku(sku);
         }
@@ -336,7 +349,8 @@ class FunctionAppImpl
 
     @Override
     public FunctionAppImpl withNewLinuxConsumptionPlan(String appServicePlanName) {
-        return withNewAppServicePlan(appServicePlanName, OperatingSystem.LINUX, new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
+        return withNewAppServicePlan(
+            appServicePlanName, OperatingSystem.LINUX, new PricingTier(SkuName.DYNAMIC.toString(), "Y1"));
     }
 
     @Override
@@ -372,14 +386,15 @@ class FunctionAppImpl
         }
         withRuntime(runtimeStack.runtime());
         withRuntimeVersion(runtimeStack.version());
-        linuxFxVersionSetter = appServicePlan -> {
-            if (appServicePlan == null || isConsumptionPlan(appServicePlan.pricingTier())) {
-                siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForConsumptionPlan());
-            } else {
-                siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForDedicatedPlan());
-            }
-            return siteConfig;
-        };
+        linuxFxVersionSetter =
+            appServicePlan -> {
+                if (appServicePlan == null || isConsumptionPlan(appServicePlan.pricingTier())) {
+                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForConsumptionPlan());
+                } else {
+                    siteConfig.withLinuxFxVersion(runtimeStack.getLinuxFxVersionForDedicatedPlan());
+                }
+                return siteConfig;
+            };
         return this;
     }
 
@@ -416,10 +431,11 @@ class FunctionAppImpl
 
     @Override
     protected OperatingSystem appServicePlanOperatingSystem(AppServicePlan appServicePlan) {
-        // Consumption plan or premium (elastic) plan would have "functionapp" or "elastic" in "kind" property, no "linux" in it.
+        // Consumption plan or premium (elastic) plan would have "functionapp" or "elastic" in "kind" property, no
+        // "linux" in it.
         return (appServicePlan.inner().reserved() == null || !appServicePlan.inner().reserved())
-                ? OperatingSystem.WINDOWS
-                : OperatingSystem.LINUX;
+            ? OperatingSystem.WINDOWS
+            : OperatingSystem.LINUX;
     }
 
     private Mono<AppServicePlan> cachedAppServicePlanObservable() {
@@ -439,9 +455,19 @@ class FunctionAppImpl
 
     @Override
     public Mono<String> getMasterKeyAsync() {
-        return FluxUtil.withContext(context -> functionAppKeyService.listKeys(functionAppKeyServiceHost, resourceGroupName(), name(), manager().getSubscriptionId(), "2019-08-01"))
+        return FluxUtil
+            .withContext(
+                context ->
+                    functionAppKeyService
+                        .listKeys(
+                            functionAppKeyServiceHost,
+                            resourceGroupName(),
+                            name(),
+                            manager().getSubscriptionId(),
+                            "2019-08-01"))
             .map(ListKeysResult::getMasterKey)
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
+            .subscriberContext(
+                context -> context.putAll(FluxUtil.toReactorContext(this.manager().inner().getContext())));
     }
 
     @Override
@@ -451,8 +477,10 @@ class FunctionAppImpl
 
     @Override
     public Mono<Map<String, String>> listFunctionKeysAsync(final String functionName) {
-        return functionService.listFunctionKeys(functionServiceHost, functionName)
-                .map(result -> {
+        return functionService
+            .listFunctionKeys(functionServiceHost, functionName)
+            .map(
+                result -> {
                     Map<String, String> keys = new HashMap<>();
                     if (result.keys != null) {
                         for (NameValuePair pair : result.keys) {
@@ -471,7 +499,12 @@ class FunctionAppImpl
     @Override
     public Mono<NameValuePair> addFunctionKeyAsync(String functionName, String keyName, String keyValue) {
         if (keyValue != null) {
-            return functionService.addFunctionKey(functionServiceHost, functionName, keyName, new NameValuePair().withName(keyName).withValue(keyValue));
+            return functionService
+                .addFunctionKey(
+                    functionServiceHost,
+                    functionName,
+                    keyName,
+                    new NameValuePair().withName(keyName).withValue(keyValue));
         } else {
             return functionService.generateFunctionKey(functionServiceHost, functionName, keyName);
         }
@@ -504,9 +537,14 @@ class FunctionAppImpl
 
     @Override
     public Mono<Void> syncTriggersAsync() {
-        return manager().inner().webApps().syncFunctionTriggersAsync(resourceGroupName(), name())
-                .onErrorResume(throwable -> {
-                    if (throwable instanceof CloudException && ((CloudException) throwable).getResponse().getStatusCode() == 200) {
+        return manager()
+            .inner()
+            .webApps()
+            .syncFunctionTriggersAsync(resourceGroupName(), name())
+            .onErrorResume(
+                throwable -> {
+                    if (throwable instanceof CloudException
+                        && ((CloudException) throwable).getResponse().getStatusCode() == 200) {
                         return Mono.empty();
                     } else {
                         return Mono.error(throwable);
@@ -516,37 +554,42 @@ class FunctionAppImpl
 
     @Override
     public Flux<String> streamApplicationLogsAsync() {
-        return functionService.ping(functionServiceHost)
-                .then(functionService.getHostStatus(functionServiceHost))
-                .thenMany(FunctionAppImpl.super.streamApplicationLogsAsync());
+        return functionService
+            .ping(functionServiceHost)
+            .then(functionService.getHostStatus(functionServiceHost))
+            .thenMany(FunctionAppImpl.super.streamApplicationLogsAsync());
     }
 
     @Override
     public Flux<String> streamHttpLogsAsync() {
-        return functionService.ping(functionServiceHost)
-                .then(functionService.getHostStatus(functionServiceHost))
-                .thenMany(FunctionAppImpl.super.streamHttpLogsAsync());
+        return functionService
+            .ping(functionServiceHost)
+            .then(functionService.getHostStatus(functionServiceHost))
+            .thenMany(FunctionAppImpl.super.streamHttpLogsAsync());
     }
 
     @Override
     public Flux<String> streamTraceLogsAsync() {
-        return functionService.ping(functionServiceHost)
-                .then(functionService.getHostStatus(functionServiceHost))
-                .thenMany(FunctionAppImpl.super.streamTraceLogsAsync());
+        return functionService
+            .ping(functionServiceHost)
+            .then(functionService.getHostStatus(functionServiceHost))
+            .thenMany(FunctionAppImpl.super.streamTraceLogsAsync());
     }
 
     @Override
     public Flux<String> streamDeploymentLogsAsync() {
-        return functionService.ping(functionServiceHost)
-                .then(functionService.getHostStatus(functionServiceHost))
-                .thenMany(FunctionAppImpl.super.streamDeploymentLogsAsync());
+        return functionService
+            .ping(functionServiceHost)
+            .then(functionService.getHostStatus(functionServiceHost))
+            .thenMany(FunctionAppImpl.super.streamDeploymentLogsAsync());
     }
 
     @Override
     public Flux<String> streamAllLogsAsync() {
-        return functionService.ping(functionServiceHost)
-                .then(functionService.getHostStatus(functionServiceHost))
-                .thenMany(FunctionAppImpl.super.streamAllLogsAsync());
+        return functionService
+            .ping(functionServiceHost)
+            .then(functionService.getHostStatus(functionServiceHost))
+            .thenMany(FunctionAppImpl.super.streamAllLogsAsync());
     }
 
     @Override
@@ -580,7 +623,9 @@ class FunctionAppImpl
                 withNewConsumptionPlan();
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
-                withNewStorageAccount(this.manager().getSdkContext().randomResourceName(name(), 20), com.azure.management.storage.SkuName.STANDARD_GRS);
+                withNewStorageAccount(
+                    this.manager().getSdkContext().randomResourceName(name(), 20),
+                    com.azure.management.storage.SkuName.STANDARD_GRS);
             }
         }
         return super.createAsync();
@@ -612,67 +657,91 @@ class FunctionAppImpl
     @Host("{$host}")
     @ServiceInterface(name = "FunctionAppKeyService")
     private interface FunctionAppKeyService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys" })
-        @Post("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys")
-        Mono<ListKeysResult> listKeys(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion);
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listKeys"
+        })
+        @Post(
+            "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
+                + "/host/default/listkeys")
+        Mono<ListKeysResult> listKeys(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion);
     }
 
     @Host("{$host}")
     @ServiceInterface(name = "FunctionService")
     private interface FunctionService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listFunctionKeys" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps listFunctionKeys"
+        })
         @Get("admin/functions/{name}/keys")
-        Mono<FunctionKeyListResult> listFunctionKeys(@HostParam("$host") String host, @PathParam("name") String functionName);
+        Mono<FunctionKeyListResult> listFunctionKeys(
+            @HostParam("$host") String host, @PathParam("name") String functionName);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps addFunctionKey" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps addFunctionKey"
+        })
         @Put("admin/functions/{name}/keys/{keyName}")
-        Mono<NameValuePair> addFunctionKey(@HostParam("$host") String host, @PathParam("name") String functionName, @PathParam("keyName") String keyName, @BodyParam("application/json") NameValuePair key);
+        Mono<NameValuePair> addFunctionKey(
+            @HostParam("$host") String host,
+            @PathParam("name") String functionName,
+            @PathParam("keyName") String keyName,
+            @BodyParam("application/json") NameValuePair key);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps generateFunctionKey" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps generateFunctionKey"
+        })
         @Post("admin/functions/{name}/keys/{keyName}")
-        Mono<NameValuePair> generateFunctionKey(@HostParam("$host") String host, @PathParam("name") String functionName, @PathParam("keyName") String keyName);
+        Mono<NameValuePair> generateFunctionKey(
+            @HostParam("$host") String host,
+            @PathParam("name") String functionName,
+            @PathParam("keyName") String keyName);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteFunctionKey" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps deleteFunctionKey"
+        })
         @Delete("admin/functions/{name}/keys/{keyName}")
-        Mono<Void> deleteFunctionKey(@HostParam("$host") String host, @PathParam("name") String functionName, @PathParam("keyName") String keyName);
+        Mono<Void> deleteFunctionKey(
+            @HostParam("$host") String host,
+            @PathParam("name") String functionName,
+            @PathParam("keyName") String keyName);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps ping" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps ping"
+        })
         @Post("admin/host/ping")
         Mono<Void> ping(@HostParam("$host") String host);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostStatus" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps getHostStatus"
+        })
         @Get("admin/host/status")
         Mono<Void> getHostStatus(@HostParam("$host") String host);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps triggerFunction" })
+        @Headers({
+            "Content-Type: application/json; charset=utf-8",
+            "x-ms-logging-context: com.microsoft.azure.management.appservice.WebApps triggerFunction"
+        })
         @Post("admin/functions/{name}")
-        Mono<Void> triggerFunction(@HostParam("$host") String host, @PathParam("name") String functionName, @BodyParam("application/json") Object payload);
+        Mono<Void> triggerFunction(
+            @HostParam("$host") String host,
+            @PathParam("name") String functionName,
+            @BodyParam("application/json") Object payload);
     }
 
     private static class FunctionKeyListResult {
         @JsonProperty("keys")
         private List<NameValuePair> keys;
-    }
-
-    private static final class FunctionAuthenticationPolicy implements HttpPipelinePolicy {
-        private final FunctionAppImpl functionApp;
-        private final static String HEADER_NAME = "x-functions-key";
-        private String masterKey;
-
-        private FunctionAuthenticationPolicy(FunctionAppImpl functionApp) {
-            this.functionApp = functionApp;
-        }
-
-        @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-            Mono<String> masterKeyMono = masterKey == null
-                    ? functionApp.getMasterKeyAsync().map(key -> { masterKey = key; return key; })
-                    : Mono.just(masterKey);
-            return masterKeyMono.flatMap(key -> {
-                context.getHttpRequest().setHeader(HEADER_NAME, key);
-                return next.process();
-            });
-        }
     }
 
     /*
@@ -693,7 +762,8 @@ class FunctionAppImpl
                         Matcher matcher = pattern.matcher(jwt);
                         matcher.find();
                         long expire = Long.parseLong(matcher.group(1));
-                        return new AccessToken(token, OffsetDateTime.ofInstant(Instant.ofEpochMilli(expire), ZoneOffset.UTC));
+                        return new AccessToken(token, OffsetDateTime.ofInstant(
+                            Instant.ofEpochMilli(expire), ZoneOffset.UTC));
                     });
         }
     }
