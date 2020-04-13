@@ -15,39 +15,38 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation of ServicePrincipals and its parent interfaces.
- */
-class ServicePrincipalsImpl
-        extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
-        implements ServicePrincipals,
-            HasManager<GraphRbacManager>,
-            HasInner<ServicePrincipalsInner> {
+/** The implementation of ServicePrincipals and its parent interfaces. */
+class ServicePrincipalsImpl extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
+    implements ServicePrincipals, HasManager<GraphRbacManager>, HasInner<ServicePrincipalsInner> {
     private ServicePrincipalsInner innerCollection;
     private GraphRbacManager manager;
 
-    ServicePrincipalsImpl(
-            final ServicePrincipalsInner client,
-            final GraphRbacManager graphRbacManager) {
+    ServicePrincipalsImpl(final ServicePrincipalsInner client, final GraphRbacManager graphRbacManager) {
         this.innerCollection = client;
         this.manager = graphRbacManager;
     }
 
     @Override
     public PagedIterable<ServicePrincipal> list() {
-        return inner().list(null).mapPage(servicePrincipalInner -> {
-            ServicePrincipalImpl servicePrincipal = wrapModel(servicePrincipalInner);
-            return servicePrincipal.refreshCredentialsAsync().block();
-        });
+        return inner()
+            .list(null)
+            .mapPage(
+                servicePrincipalInner -> {
+                    ServicePrincipalImpl servicePrincipal = wrapModel(servicePrincipalInner);
+                    return servicePrincipal.refreshCredentialsAsync().block();
+                });
     }
 
     @Override
     public PagedFlux<ServicePrincipal> listAsync() {
-        return inner().listAsync(null).mapPage(servicePrincipalInner -> {
-            ServicePrincipalImpl servicePrincipal = wrapModel(servicePrincipalInner);
-            servicePrincipal.refreshCredentialsAsync();
-            return servicePrincipal;
-        });
+        return inner()
+            .listAsync(null)
+            .mapPage(
+                servicePrincipalInner -> {
+                    ServicePrincipalImpl servicePrincipal = wrapModel(servicePrincipalInner);
+                    servicePrincipal.refreshCredentialsAsync();
+                    return servicePrincipal;
+                });
     }
 
     @Override
@@ -65,9 +64,12 @@ class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByIdAsync(String id) {
-        return innerCollection.getAsync(id)
-                .onErrorResume(GraphErrorException.class, e -> Mono.empty())
-                .flatMap(servicePrincipalInner -> new ServicePrincipalImpl(servicePrincipalInner, manager()).refreshCredentialsAsync());
+        return innerCollection
+            .getAsync(id)
+            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
+            .flatMap(
+                servicePrincipalInner ->
+                    new ServicePrincipalImpl(servicePrincipalInner, manager()).refreshCredentialsAsync());
     }
 
     @Override
@@ -77,10 +79,13 @@ class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByNameAsync(final String name) {
-        return inner().listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name)).singleOrEmpty()
-                .switchIfEmpty(Mono.defer(() -> inner().listAsync(String.format("displayName eq '%s'", name)).singleOrEmpty()))
-                .map(servicePrincipalInner -> new ServicePrincipalImpl(servicePrincipalInner, manager()))
-                .flatMap(servicePrincipal -> servicePrincipal.refreshCredentialsAsync());
+        return inner()
+            .listAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name))
+            .singleOrEmpty()
+            .switchIfEmpty(
+                Mono.defer(() -> inner().listAsync(String.format("displayName eq '%s'", name)).singleOrEmpty()))
+            .map(servicePrincipalInner -> new ServicePrincipalImpl(servicePrincipalInner, manager()))
+            .flatMap(servicePrincipal -> servicePrincipal.refreshCredentialsAsync());
     }
 
     @Override

@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ErrorResponse model.
- */
+/** The ErrorResponse model. */
 @Fluent
 public final class ErrorResponse {
     /*
@@ -26,7 +24,7 @@ public final class ErrorResponse {
 
     /**
      * Get the code property: Error code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -35,7 +33,7 @@ public final class ErrorResponse {
 
     /**
      * Set the code property: Error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
@@ -45,9 +43,8 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the message property: Error message indicating why the operation
-     * failed.
-     * 
+     * Get the message property: Error message indicating why the operation failed.
+     *
      * @return the message value.
      */
     public String message() {
@@ -55,9 +52,8 @@ public final class ErrorResponse {
     }
 
     /**
-     * Set the message property: Error message indicating why the operation
-     * failed.
-     * 
+     * Set the message property: Error message indicating why the operation failed.
+     *
      * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */

@@ -14,12 +14,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 
-/**
- * Entry point for Azure web app deployment slot management API.
- */
+/** Entry point for Azure web app deployment slot management API. */
 @Fluent
-public interface DeploymentSlots extends
-        SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
+public interface DeploymentSlots
+    extends SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
         SupportsListing<DeploymentSlot>,
         SupportsGettingByName<DeploymentSlot>,
         SupportsGettingById<DeploymentSlot>,

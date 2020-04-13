@@ -12,14 +12,11 @@ import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.google.common.util.concurrent.SettableFuture;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Flux;
 
-import java.util.List;
-
-/**
- * Test for network security group CRUD.
- */
+/** Test for network security group CRUD. */
 public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityGroups> {
     @Override
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
@@ -31,12 +28,18 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         final Region region = Region.US_WEST;
         final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
 
-        ApplicationSecurityGroup asg = nsgs.manager().applicationSecurityGroups().define(asgName)
+        ApplicationSecurityGroup asg =
+            nsgs
+                .manager()
+                .applicationSecurityGroups()
+                .define(asgName)
                 .withRegion(region)
                 .withNewResourceGroup(resourceGroupName)
                 .create();
         // Create
-        Flux<Indexable> resourceStream = nsgs.define(newName)
+        Flux<Indexable> resourceStream =
+            nsgs
+                .define(newName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)
                 .defineRule("rule1")
@@ -59,14 +62,19 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .attach()
                 .createAsync();
 
-        resourceStream.last()
-                .doOnSuccess((_ignore) -> System.out.print("completed"))
-                .doOnError(throwable -> nsgFuture.setException(throwable))
-                .subscribe(nsg -> nsgFuture.set((NetworkSecurityGroup) nsg));
+        resourceStream
+            .last()
+            .doOnSuccess((_ignore) -> System.out.print("completed"))
+            .doOnError(throwable -> nsgFuture.setException(throwable))
+            .subscribe(nsg -> nsgFuture.set((NetworkSecurityGroup) nsg));
 
         NetworkSecurityGroup nsg = nsgFuture.get();
 
-        NetworkInterface nic = nsgs.manager().networkInterfaces().define(nicName)
+        NetworkInterface nic =
+            nsgs
+                .manager()
+                .networkInterfaces()
+                .define(nicName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -85,14 +93,18 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         Assertions.assertTrue(nsg.networkInterfaceIds().contains(nic.id()));
 
         Assertions.assertEquals(1, nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().size());
-        Assertions.assertEquals(asg.id(), nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().iterator().next());
+        Assertions
+            .assertEquals(
+                asg.id(), nsg.securityRules().get("rule2").sourceApplicationSecurityGroupIds().iterator().next());
 
         return nsg;
     }
 
     @Override
     public NetworkSecurityGroup updateResource(NetworkSecurityGroup resource) throws Exception {
-        resource = resource.update()
+        resource =
+            resource
+                .update()
                 .withoutRule("rule1")
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -121,36 +133,50 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         Assertions.assertEquals(1, resource.securityRules().get("rule2").sourcePortRanges().size());
         Assertions.assertEquals("88-90", resource.securityRules().get("rule2").sourcePortRanges().get(0));
 
-        resource.updateTags()
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .applyTags();
+        resource.updateTags().withTag("tag3", "value3").withoutTag("tag1").applyTags();
         Assertions.assertEquals("value3", resource.tags().get("tag3"));
         Assertions.assertFalse(resource.tags().containsKey("tag1"));
         return resource;
     }
 
     private static StringBuilder printRule(NetworkSecurityRule rule, StringBuilder info) {
-        info.append("\n\t\tRule: ").append(rule.name())
-                .append("\n\t\t\tAccess: ").append(rule.access())
-                .append("\n\t\t\tDirection: ").append(rule.direction())
-                .append("\n\t\t\tFrom address: ").append(rule.sourceAddressPrefix())
-                .append("\n\t\t\tFrom port range: ").append(rule.sourcePortRange())
-                .append("\n\t\t\tTo address: ").append(rule.destinationAddressPrefix())
-                .append("\n\t\t\tTo port: ").append(rule.destinationPortRange())
-                .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\t\tPriority: ").append(rule.priority())
-                .append("\n\t\t\tDescription: ").append(rule.description());
+        info
+            .append("\n\t\tRule: ")
+            .append(rule.name())
+            .append("\n\t\t\tAccess: ")
+            .append(rule.access())
+            .append("\n\t\t\tDirection: ")
+            .append(rule.direction())
+            .append("\n\t\t\tFrom address: ")
+            .append(rule.sourceAddressPrefix())
+            .append("\n\t\t\tFrom port range: ")
+            .append(rule.sourcePortRange())
+            .append("\n\t\t\tTo address: ")
+            .append(rule.destinationAddressPrefix())
+            .append("\n\t\t\tTo port: ")
+            .append(rule.destinationPortRange())
+            .append("\n\t\t\tProtocol: ")
+            .append(rule.protocol())
+            .append("\n\t\t\tPriority: ")
+            .append(rule.priority())
+            .append("\n\t\t\tDescription: ")
+            .append(rule.description());
         return info;
     }
 
     public static void printNSG(NetworkSecurityGroup resource) {
         StringBuilder info = new StringBuilder();
-        info.append("NSG: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags());
+        info
+            .append("NSG: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags());
 
         // Output security rules
         info.append("\n\tCustom security rules:");
@@ -174,8 +200,11 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
             info.append("(None)");
         } else {
             for (Subnet subnet : subnets) {
-                info.append("\n\t\tNetwork ID: ").append(subnet.parent().id())
-                        .append("\n\t\tSubnet name: ").append(subnet.name());
+                info
+                    .append("\n\t\tNetwork ID: ")
+                    .append(subnet.parent().id())
+                    .append("\n\t\tSubnet name: ")
+                    .append(subnet.name());
             }
         }
 

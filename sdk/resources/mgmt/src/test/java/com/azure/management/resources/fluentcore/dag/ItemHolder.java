@@ -5,6 +5,6 @@ package com.azure.management.resources.fluentcore.dag;
 
 class ItemHolder extends DAGNode<String, ItemHolder> {
     ItemHolder(String taskId, String taskItem) {
-        super(taskId,taskItem);
+        super(taskId, taskItem);
     }
 }

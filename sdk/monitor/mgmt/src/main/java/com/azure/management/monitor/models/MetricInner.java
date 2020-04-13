@@ -10,9 +10,7 @@ import com.azure.management.monitor.Unit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Metric model.
- */
+/** The Metric model. */
 @Fluent
 public final class MetricInner {
     /*
@@ -48,7 +46,7 @@ public final class MetricInner {
 
     /**
      * Get the id property: the metric Id.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -57,7 +55,7 @@ public final class MetricInner {
 
     /**
      * Set the id property: the metric Id.
-     * 
+     *
      * @param id the id value to set.
      * @return the MetricInner object itself.
      */
@@ -68,7 +66,7 @@ public final class MetricInner {
 
     /**
      * Get the type property: the resource type of the metric resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -77,7 +75,7 @@ public final class MetricInner {
 
     /**
      * Set the type property: the resource type of the metric resource.
-     * 
+     *
      * @param type the type value to set.
      * @return the MetricInner object itself.
      */
@@ -87,9 +85,8 @@ public final class MetricInner {
     }
 
     /**
-     * Get the name property: the name and the display name of the metric, i.e.
-     * it is localizable string.
-     * 
+     * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
+     *
      * @return the name value.
      */
     public LocalizableStringInner name() {
@@ -97,9 +94,8 @@ public final class MetricInner {
     }
 
     /**
-     * Set the name property: the name and the display name of the metric, i.e.
-     * it is localizable string.
-     * 
+     * Set the name property: the name and the display name of the metric, i.e. it is localizable string.
+     *
      * @param name the name value to set.
      * @return the MetricInner object itself.
      */
@@ -110,7 +106,7 @@ public final class MetricInner {
 
     /**
      * Get the unit property: the unit of the metric.
-     * 
+     *
      * @return the unit value.
      */
     public Unit unit() {
@@ -119,7 +115,7 @@ public final class MetricInner {
 
     /**
      * Set the unit property: the unit of the metric.
-     * 
+     *
      * @param unit the unit value to set.
      * @return the MetricInner object itself.
      */
@@ -129,9 +125,8 @@ public final class MetricInner {
     }
 
     /**
-     * Get the timeseries property: the time series returned when a data query
-     * is performed.
-     * 
+     * Get the timeseries property: the time series returned when a data query is performed.
+     *
      * @return the timeseries value.
      */
     public List<TimeSeriesElement> timeseries() {
@@ -139,9 +134,8 @@ public final class MetricInner {
     }
 
     /**
-     * Set the timeseries property: the time series returned when a data query
-     * is performed.
-     * 
+     * Set the timeseries property: the time series returned when a data query is performed.
+     *
      * @param timeseries the timeseries value to set.
      * @return the MetricInner object itself.
      */

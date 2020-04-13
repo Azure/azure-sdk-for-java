@@ -4,7 +4,7 @@
 package com.azure.management.resources.samples;
 
 
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.Azure;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.DeploymentMode;
@@ -147,7 +147,7 @@ public final class DeployUsingARMTemplateAsync {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions())
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

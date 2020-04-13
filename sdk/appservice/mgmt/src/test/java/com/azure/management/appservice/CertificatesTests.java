@@ -6,35 +6,41 @@ package com.azure.management.appservice;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.keyvault.Vault;
 import com.azure.management.resources.fluentcore.arm.Region;
+import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 public class CertificatesTests extends AppServiceTest {
-    private final String CERTIFICATE_NAME = "javagoodcert319";
+    private final String certificateName = "javagoodcert319";
 
     @Override
     protected void cleanUpResources() {
-        //super.cleanUpResources();
+        // super.cleanUpResources();
     }
 
     @Test
     @Disabled("Test is failing fix it, this is based on Existing RG and settings.")
     public void canCRDCertificate() throws Exception {
-        Vault vault = keyVaultManager.vaults().getByResourceGroup(RG_NAME, "bananagraphwebapp319com");
-        AppServiceCertificate certificate = appServiceManager.certificates().define("bananacert")
+        Vault vault = keyVaultManager.vaults().getByResourceGroup(rgName, "bananagraphwebapp319com");
+        AppServiceCertificate certificate =
+            appServiceManager
+                .certificates()
+                .define("bananacert")
                 .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(RG_NAME)
-                .withExistingCertificateOrder(appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, "graphwebapp319"))
+                .withExistingResourceGroup(rgName)
+                .withExistingCertificateOrder(
+                    appServiceManager.certificateOrders().getByResourceGroup(rgName, "graphwebapp319"))
                 .create();
         Assertions.assertNotNull(certificate);
 
         // CREATE
-        certificate = appServiceManager.certificates().define(CERTIFICATE_NAME)
+        certificate =
+            appServiceManager
+                .certificates()
+                .define(certificateName)
                 .withRegion(Region.US_EAST)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withPfxFile(new File("/Users/jianghlu/Documents/code/certs/myserver.pfx"))
                 .withPfxPassword("StrongPass!123")
                 .create();

@@ -32,7 +32,7 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
 
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(120);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(75);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
@@ -41,8 +41,10 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
+    private static final String AZURE_SERVICEBUS_SESSION_QUEUE_NAME = "AZURE_SERVICEBUS_SESSION_QUEUE_NAME";
     private static final String AZURE_SERVICEBUS_TOPIC_NAME = "AZURE_SERVICEBUS_TOPIC_NAME";
     private static final String AZURE_SERVICEBUS_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SUBSCRIPTION_NAME";
+    private static final String AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME = "AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME";
 
     private ConnectionStringProperties properties;
     private String testName;
@@ -54,7 +56,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing integration test set-up.", testInfo.getDisplayName());
+        logger.info("========= SET-UP [{}] =========", testInfo.getDisplayName());
 
         testName = testInfo.getDisplayName();
         Assumptions.assumeTrue(getTestMode() == TestMode.RECORD);
@@ -70,7 +72,7 @@ public abstract class IntegrationTestBase extends TestBase {
     @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
-        logger.info("[{}]: Performing test clean-up.", testInfo.getDisplayName());
+        logger.info("========= TEARDOWN [{}] =========", testInfo.getDisplayName());
         StepVerifier.resetDefaultTimeout();
         afterTest();
 
@@ -102,6 +104,14 @@ public abstract class IntegrationTestBase extends TestBase {
 
     public String getQueueName() {
         return System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
+    }
+
+    public String getSessionQueueName() {
+        return System.getenv(AZURE_SERVICEBUS_SESSION_QUEUE_NAME);
+    }
+
+    public String getSessionSubscriptionName() {
+        return System.getenv(AZURE_SERVICEBUS_SESSION_SUBSCRIPTION_NAME);
     }
 
     public String getTopicName() {

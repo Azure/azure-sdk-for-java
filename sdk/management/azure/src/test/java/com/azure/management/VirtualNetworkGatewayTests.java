@@ -3,7 +3,6 @@
 
 package com.azure.management;
 
-
 import com.azure.management.network.NetworkWatcher;
 import com.azure.management.network.Troubleshooting;
 import com.azure.management.network.VirtualNetworkGateway;
@@ -22,7 +21,8 @@ public class VirtualNetworkGatewayTests extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        Azure.Authenticated azureAuthed = Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
+        Azure.Authenticated azureAuthed =
+            Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
         azure = azureAuthed.withSubscription(defaultSubscription);
     }
 
@@ -41,7 +41,10 @@ public class VirtualNetworkGatewayTests extends TestBase {
         Region region = nw.region();
         String resourceGroup = nw.resourceGroupName();
 
-        VirtualNetworkGateway vngw1 = azure.virtualNetworkGateways().define(gatewayName)
+        VirtualNetworkGateway vngw1 =
+            azure
+                .virtualNetworkGateways()
+                .define(gatewayName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewNetwork("10.11.0.0/16", "10.11.255.0/27")
@@ -49,14 +52,19 @@ public class VirtualNetworkGatewayTests extends TestBase {
                 .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                 .create();
 
-        VirtualNetworkGateway vngw2 = azure.virtualNetworkGateways().define(gatewayName + "2")
+        VirtualNetworkGateway vngw2 =
+            azure
+                .virtualNetworkGateways()
+                .define(gatewayName + "2")
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewNetwork("10.41.0.0/16", "10.41.255.0/27")
                 .withRouteBasedVpn()
                 .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                 .create();
-        VirtualNetworkGatewayConnection connection1 = vngw1.connections()
+        VirtualNetworkGatewayConnection connection1 =
+            vngw1
+                .connections()
                 .define(connectionName)
                 .withVNetToVNet()
                 .withSecondVirtualNetworkGateway(vngw2)
@@ -64,13 +72,18 @@ public class VirtualNetworkGatewayTests extends TestBase {
                 .create();
 
         // Create storage account to store troubleshooting information
-        StorageAccount storageAccount = azure.storageAccounts().define("sa" + sdkContext.randomResourceName("", 8))
+        StorageAccount storageAccount =
+            azure
+                .storageAccounts()
+                .define("sa" + sdkContext.randomResourceName("", 8))
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
         // Troubleshoot connection
-        Troubleshooting troubleshooting = nw.troubleshoot()
+        Troubleshooting troubleshooting =
+            nw
+                .troubleshoot()
                 .withTargetResourceId(connection1.id())
                 .withStorageAccount(storageAccount.id())
                 .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
@@ -78,14 +91,17 @@ public class VirtualNetworkGatewayTests extends TestBase {
         Assertions.assertEquals("UnHealthy", troubleshooting.code());
 
         // Create corresponding connection on second gateway to make it work
-        vngw2.connections()
-                .define(connectionName + "2")
-                .withVNetToVNet()
-                .withSecondVirtualNetworkGateway(vngw1)
-                .withSharedKey("MySecretKey")
-                .create();
+        vngw2
+            .connections()
+            .define(connectionName + "2")
+            .withVNetToVNet()
+            .withSecondVirtualNetworkGateway(vngw1)
+            .withSharedKey("MySecretKey")
+            .create();
         SdkContext.sleep(250000);
-        troubleshooting = nw.troubleshoot()
+        troubleshooting =
+            nw
+                .troubleshoot()
                 .withTargetResourceId(connection1.id())
                 .withStorageAccount(storageAccount.id())
                 .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
@@ -102,29 +118,32 @@ public class VirtualNetworkGatewayTests extends TestBase {
      */
     @Test
     public void testVirtualNetworkGateways() throws Exception {
-        new TestVirtualNetworkGateway().new Basic(azure.virtualNetworkGateways().manager()).runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway().new Basic(azure.virtualNetworkGateways().manager())
+            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
     }
 
     /**
-     * Tests the virtual network gateway and virtual network gateway connection implementations for Site-to-Site connection.
+     * Tests the virtual network gateway and virtual network gateway connection implementations for Site-to-Site
+     * connection.
      *
      * @throws Exception
      */
     @Test
     public void testVirtualNetworkGatewaySiteToSite() throws Exception {
         new TestVirtualNetworkGateway().new SiteToSite(azure.virtualNetworkGateways().manager())
-                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
     }
 
     /**
-     * Tests the virtual network gateway and virtual network gateway connection implementations for VNet-to-VNet connection.
+     * Tests the virtual network gateway and virtual network gateway connection implementations for VNet-to-VNet
+     * connection.
      *
      * @throws Exception
      */
     @Test
     public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
         new TestVirtualNetworkGateway().new VNetToVNet(azure.virtualNetworkGateways().manager())
-                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
     }
 
     /**
@@ -135,6 +154,6 @@ public class VirtualNetworkGatewayTests extends TestBase {
     @Test
     public void testVirtualNetworkGatewayPointToSite() throws Exception {
         new TestVirtualNetworkGateway().new PointToSite(azure.virtualNetworkGateways().manager())
-                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+            .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
     }
 }

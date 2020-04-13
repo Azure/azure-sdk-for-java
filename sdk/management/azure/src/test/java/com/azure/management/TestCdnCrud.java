@@ -1,28 +1,25 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//package com.azure.management;
+// package com.azure.management;
 //
-//import com.microsoft.azure.management.cdn.CdnEndpoint;
-//import com.microsoft.azure.management.cdn.CdnProfile;
-//import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
-//import com.microsoft.azure.management.cdn.GeoFilterActions;
-//import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
-//import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import com.microsoft.rest.LogLevel;
+// import com.microsoft.azure.management.cdn.CdnEndpoint;
+// import com.microsoft.azure.management.cdn.CdnProfile;
+// import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
+// import com.microsoft.azure.management.cdn.GeoFilterActions;
+// import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+// import com.microsoft.azure.management.resources.fluentcore.arm.CountryIsoCode;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import com.microsoft.rest.LogLevel;
 //
-//import java.io.File;
-//import java.util.Calendar;
-//import java.util.UUID;
+// import java.io.File;
+// import java.util.Calendar;
+// import java.util.UUID;
 //
-///**
+/// **
 // * Created by hovsepm on 10/26/2016.
 // */
-//public final class TestCdnCrud {
+// public final class TestCdnCrud {
 //
 //    /**
 //     * Main entry point.
@@ -153,7 +150,8 @@
 //
 //                System.out.println("Standard Akamai Endpoints: " + standardProfile.endpoints().size());
 //                CdnEndpoint standardEp = standardProfile.endpoints().get(cdnEndpointName);
-//                CustomDomainValidationResult validationResult = standardEp.validateCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net");
+//                CustomDomainValidationResult validationResult =
+// standardEp.validateCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net");
 //                standardProfile.stopEndpoint(standardEp.name());
 //                standardEp.start();
 //
@@ -184,4 +182,4 @@
 //        long datePart = millis % 10000000L;
 //        return namePrefix + root.toLowerCase().substring(0, 3) + datePart;
 //    }
-//}
+// }

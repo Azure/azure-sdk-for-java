@@ -12,21 +12,17 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 
-/**
- * Client-side representation of express route circuit peering object, associated with express route circuit.
- */
+/** Client-side representation of express route circuit peering object, associated with express route circuit. */
 @Fluent
-public interface ExpressRouteCircuitPeering extends
-        IndependentChild<NetworkManager>,
+public interface ExpressRouteCircuitPeering
+    extends IndependentChild<NetworkManager>,
         HasInner<ExpressRouteCircuitPeeringInner>,
         Refreshable<ExpressRouteCircuitPeering>,
         Updatable<ExpressRouteCircuitPeering.Update> {
 
     // Getters
 
-    /**
-     * @return peering type
-     */
+    /** @return peering type */
     ExpressRoutePeeringType peeringType();
 
     /**
@@ -36,54 +32,34 @@ public interface ExpressRouteCircuitPeering extends
      */
     ExpressRoutePeeringState state();
 
-    /**
-     * @return the Azure ASN
-     */
+    /** @return the Azure ASN */
     int azureAsn();
 
-    /**
-     * @return the peer ASN
-     */
+    /** @return the peer ASN */
     long peerAsn();
 
-    /**
-     * @return the primary address prefix
-     */
+    /** @return the primary address prefix */
     String primaryPeerAddressPrefix();
 
-    /**
-     * @return the secondary address prefix.
-     */
+    /** @return the secondary address prefix. */
     String secondaryPeerAddressPrefix();
 
-    /**
-     * @return the primary port
-     */
+    /** @return the primary port */
     String primaryAzurePort();
 
-    /**
-     * @return the secondary port
-     */
+    /** @return the secondary port */
     String secondaryAzurePort();
 
-    /**
-     * @return the shared key
-     */
+    /** @return the shared key */
     String sharedKey();
 
-    /**
-     * @return the VLAN ID
-     */
+    /** @return the VLAN ID */
     int vlanId();
 
-    /**
-     * @return The Microsoft peering configuration.
-     */
+    /** @return The Microsoft peering configuration. */
     ExpressRouteCircuitPeeringConfig microsoftPeeringConfig();
 
-    /**
-     * @return peering stats
-     */
+    /** @return peering stats */
     ExpressRouteCircuitStats stats();
 
     /**
@@ -93,21 +69,15 @@ public interface ExpressRouteCircuitPeering extends
      */
     String provisioningState();
 
-    /**
-     * @return whether the provider or the customer last modified the peering
-     */
+    /** @return whether the provider or the customer last modified the peering */
     String lastModifiedBy();
 
-    /**
-     * @return the IPv6 peering configuration
-     */
+    /** @return the IPv6 peering configuration */
     Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig();
 
-    /**
-     * The entirety of the express route circuit peering definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** The entirety of the express route circuit peering definition. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithAdvertisedPublicPrefixes,
             DefinitionStages.WithPrimaryPeerAddressPrefix,
             DefinitionStages.WithSecondaryPeerAddressPrefix,
@@ -116,21 +86,17 @@ public interface ExpressRouteCircuitPeering extends
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of express route circuit peering definition stages.
-     */
+    /** Grouping of express route circuit peering definition stages. */
     interface DefinitionStages {
         interface Blank extends WithPrimaryPeerAddressPrefix {
         }
 
-        /**
-         * The stage of Express Route Circuit Peering definition allowing to specify advertised address prefixes.
-         */
+        /** The stage of Express Route Circuit Peering definition allowing to specify advertised address prefixes. */
         interface WithAdvertisedPublicPrefixes {
             /**
-             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP session.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP
+             * session. Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated
+             * list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefixes advertised prefixes
              * @return next stage of definition
@@ -138,34 +104,27 @@ public interface ExpressRouteCircuitPeering extends
             WithPrimaryPeerAddressPrefix withAdvertisedPublicPrefixes(String publicPrefixes);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering definition allowing to specify primary address prefix.
-         */
+        /** The stage of Express Route Circuit Peering definition allowing to specify primary address prefix. */
         interface WithPrimaryPeerAddressPrefix {
             WithSecondaryPeerAddressPrefix withPrimaryPeerAddressPrefix(String addressPrefix);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering definition allowing to specify secondary address prefix.
-         */
+        /** The stage of Express Route Circuit Peering definition allowing to specify secondary address prefix. */
         interface WithSecondaryPeerAddressPrefix {
             WithVlanId withSecondaryPeerAddressPrefix(String addressPrefix);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering definition allowing to specify VLAN ID.
-         */
+        /** The stage of Express Route Circuit Peering definition allowing to specify VLAN ID. */
         interface WithVlanId {
             /**
-             * @param vlanId a valid VLAN ID to establish this peering on. No other peering in the circuit can use the same VLAN ID
+             * @param vlanId a valid VLAN ID to establish this peering on. No other peering in the circuit can use the
+             *     same VLAN ID
              * @return next stage of definition
              */
             WithPeerAsn withVlanId(int vlanId);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering definition allowing to specify AS number for peering.
-         */
+        /** The stage of Express Route Circuit Peering definition allowing to specify AS number for peering. */
         interface WithPeerAsn {
             /**
              * @param peerAsn AS number for peering. Both 2-byte and 4-byte AS numbers can be used
@@ -174,15 +133,13 @@ public interface ExpressRouteCircuitPeering extends
             WithCreate withPeerAsn(long peerAsn);
         }
 
-        interface WithCreate extends
-                Creatable<ExpressRouteCircuitPeering> {
+        interface WithCreate extends Creatable<ExpressRouteCircuitPeering> {
         }
     }
 
-    /**
-     * Grouping of express route circuit peering update stages.
-     */
-    interface Update extends Appliable<ExpressRouteCircuitPeering>,
+    /** Grouping of express route circuit peering update stages. */
+    interface Update
+        extends Appliable<ExpressRouteCircuitPeering>,
             UpdateStages.WithAdvertisedPublicPrefixes,
             UpdateStages.WithPrimaryPeerAddressPrefix,
             UpdateStages.WithSecondaryPeerAddressPrefix,
@@ -191,41 +148,31 @@ public interface ExpressRouteCircuitPeering extends
     }
 
     /**
-     * The template for express route circuit peering update operation, containing all the settings that
-     * can be modified.
+     * The template for express route circuit peering update operation, containing all the settings that can be
+     * modified.
      */
     interface UpdateStages {
-        /**
-         * The stage of Express Route Circuit Peering update allowing to specify advertised address prefixes.
-         */
+        /** The stage of Express Route Circuit Peering update allowing to specify advertised address prefixes. */
         interface WithAdvertisedPublicPrefixes {
             Update withAdvertisedPublicPrefixes(String publicPrefixes);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering update allowing to specify primary address prefix.
-         */
+        /** The stage of Express Route Circuit Peering update allowing to specify primary address prefix. */
         interface WithPrimaryPeerAddressPrefix {
             Update withPrimaryPeerAddressPrefix(String addressPrefix);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering update allowing to specify secondary address prefix.
-         */
+        /** The stage of Express Route Circuit Peering update allowing to specify secondary address prefix. */
         interface WithSecondaryPeerAddressPrefix {
             Update withSecondaryPeerAddressPrefix(String addressPrefix);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering update allowing to specify VLAN ID.
-         */
+        /** The stage of Express Route Circuit Peering update allowing to specify VLAN ID. */
         interface WithVlanId {
             Update withVlanId(int vlanId);
         }
 
-        /**
-         * The stage of Express Route Circuit Peering update allowing to specify AS number for peering.
-         */
+        /** The stage of Express Route Circuit Peering update allowing to specify AS number for peering. */
         interface WithPeerAsn {
             Update withPeerAsn(long peerAsn);
         }

@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BlobContainersDeleteImmutabilityPolicyHeaders model.
- */
+/** The BlobContainersDeleteImmutabilityPolicyHeaders model. */
 @Fluent
 public final class BlobContainersDeleteImmutabilityPolicyHeaders {
     /*
@@ -20,7 +18,7 @@ public final class BlobContainersDeleteImmutabilityPolicyHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     * 
+     *
      * @return the eTag value.
      */
     public String eTag() {
@@ -29,7 +27,7 @@ public final class BlobContainersDeleteImmutabilityPolicyHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     * 
+     *
      * @param eTag the eTag value to set.
      * @return the BlobContainersDeleteImmutabilityPolicyHeaders object itself.
      */

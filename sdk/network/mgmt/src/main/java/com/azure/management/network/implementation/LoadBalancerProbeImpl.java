@@ -2,28 +2,23 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
+import com.azure.core.management.SubResource;
+import com.azure.management.network.LoadBalancer;
+import com.azure.management.network.LoadBalancerHttpProbe;
+import com.azure.management.network.LoadBalancerTcpProbe;
+import com.azure.management.network.LoadBalancingRule;
+import com.azure.management.network.ProbeProtocol;
+import com.azure.management.network.models.ProbeInner;
+import com.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-import com.azure.core.management.SubResource;
-import com.azure.management.network.models.ProbeInner;
-import com.azure.management.network.LoadBalancerHttpProbe;
-import com.azure.management.network.LoadBalancer;
-import com.azure.management.network.LoadBalancingRule;
-import com.azure.management.network.ProbeProtocol;
-import com.azure.management.network.LoadBalancerTcpProbe;
-import com.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.management.resources.fluentcore.utils.Utils;
-
-/**
- * Implementation for LoadBalancerTcpProbe and its create and update interfaces.
- */
-class LoadBalancerProbeImpl
-        extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerTcpProbe,
+/** Implementation for LoadBalancerTcpProbe and its create and update interfaces. */
+class LoadBalancerProbeImpl extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerTcpProbe,
         LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerTcpProbe.Update,

@@ -3,19 +3,12 @@
 
 package com.azure.management.storage;
 
-
-
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * Storage resource types.
- */
+/** Storage resource types. */
 public class StorageResourceType extends ExpandableStringEnum<StorageResourceType> {
-    /**
-     * Static value storageAccounts for StorageResourceType.
-     */
+    /** Static value storageAccounts for StorageResourceType. */
     public static final StorageResourceType STORAGE_ACCOUNTS = fromString("storageAccounts");
 
     /**
@@ -28,9 +21,7 @@ public class StorageResourceType extends ExpandableStringEnum<StorageResourceTyp
         return fromString(str, StorageResourceType.class);
     }
 
-    /**
-     * @return known storage resource types
-     */
+    /** @return known storage resource types */
     public static Collection<StorageResourceType> values() {
         return values(StorageResourceType.class);
     }

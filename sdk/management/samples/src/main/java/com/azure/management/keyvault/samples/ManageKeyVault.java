@@ -4,7 +4,6 @@
 package com.azure.management.keyvault.samples;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.Azure;
 import com.azure.management.keyvault.KeyPermissions;
@@ -156,7 +155,7 @@ public final class ManageKeyVault {
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+                    .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 

@@ -6,8 +6,8 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.monitor.models.DiagnosticSettingsInner;
 import com.azure.management.monitor.implementation.MonitorManager;
+import com.azure.management.monitor.models.DiagnosticSettingsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -15,16 +15,13 @@ import com.azure.management.resources.fluentcore.collection.SupportsBatchCreatio
 import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.model.HasInner;
+import java.util.List;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
-/**
- * Entry point for diagnostic settings management API.
- */
+/** Entry point for diagnostic settings management API. */
 @Fluent
-public interface DiagnosticSettings extends
-        SupportsCreating<DiagnosticSetting.DefinitionStages.Blank>,
+public interface DiagnosticSettings
+    extends SupportsCreating<DiagnosticSetting.DefinitionStages.Blank>,
         SupportsBatchCreation<DiagnosticSetting>,
         SupportsGettingById<DiagnosticSetting>,
         SupportsDeletingById,

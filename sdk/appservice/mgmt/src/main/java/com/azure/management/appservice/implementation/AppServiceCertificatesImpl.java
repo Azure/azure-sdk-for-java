@@ -12,17 +12,11 @@ import com.azure.management.appservice.models.CertificatesInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AppServiceCertificates.
- */
+/** The implementation for AppServiceCertificates. */
 class AppServiceCertificatesImpl
-        extends GroupableResourcesImpl<
-            AppServiceCertificate,
-            AppServiceCertificateImpl,
-            CertificateInner,
-            CertificatesInner,
-            AppServiceManager>
-        implements AppServiceCertificates {
+    extends GroupableResourcesImpl<
+        AppServiceCertificate, AppServiceCertificateImpl, CertificateInner, CertificatesInner, AppServiceManager>
+    implements AppServiceCertificates {
 
     AppServiceCertificatesImpl(AppServiceManager manager) {
         super(manager.inner().certificates(), manager);
@@ -36,7 +30,6 @@ class AppServiceCertificatesImpl
     @Override
     protected Mono<Void> deleteInnerAsync(String resourceGroupName, String name) {
         return this.inner().deleteAsync(resourceGroupName, name);
-
     }
 
     @Override
