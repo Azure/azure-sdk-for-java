@@ -7,31 +7,28 @@ package com.azure.management.monitor;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CategoryType. */
-public enum CategoryType {
-    /** Enum value Metrics. */
-    METRICS("Metrics"),
+/** Defines values for QueryType. */
+public enum QueryType {
+    /** Enum value ResultCount. */
+    RESULT_COUNT("ResultCount");
 
-    /** Enum value Logs. */
-    LOGS("Logs");
-
-    /** The actual serialized value for a CategoryType instance. */
+    /** The actual serialized value for a QueryType instance. */
     private final String value;
 
-    CategoryType(String value) {
+    QueryType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a CategoryType instance.
+     * Parses a serialized value to a QueryType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed CategoryType object, or null if unable to parse.
+     * @return the parsed QueryType object, or null if unable to parse.
      */
     @JsonCreator
-    public static CategoryType fromString(String value) {
-        CategoryType[] items = CategoryType.values();
-        for (CategoryType item : items) {
+    public static QueryType fromString(String value) {
+        QueryType[] items = QueryType.values();
+        for (QueryType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

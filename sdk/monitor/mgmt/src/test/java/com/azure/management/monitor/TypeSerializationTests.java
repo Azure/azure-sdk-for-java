@@ -9,16 +9,16 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.monitor.models.AlertRuleResourceInner;
 import com.azure.management.monitor.models.LogSearchRuleResourceInner;
 import com.azure.management.monitor.models.MetricAlertResourceInner;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 public class TypeSerializationTests {
 
     @Test
     public void testDiscriminatorSerialization() throws Exception {
-        // Currently the issue is solved by OdataTypeDiscriminatorTypeResolver, without which JsonFlatten would flatten "odata.type".
+        // Currently the issue is solved by OdataTypeDiscriminatorTypeResolver, without which JsonFlatten would flatten
+        // "odata.type".
 
         SerializerAdapter adapter = new AzureJacksonAdapter();
 
