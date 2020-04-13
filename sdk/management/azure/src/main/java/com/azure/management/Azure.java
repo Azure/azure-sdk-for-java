@@ -7,6 +7,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.CloudException;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.management.appservice.AppServiceCertificateOrders;
+import com.azure.management.appservice.AppServiceCertificates;
+import com.azure.management.appservice.AppServiceDomains;
+import com.azure.management.appservice.AppServicePlans;
+import com.azure.management.appservice.FunctionApps;
 import com.azure.management.appservice.WebApps;
 import com.azure.management.appservice.implementation.AppServiceManager;
 import com.azure.management.compute.AvailabilitySets;
@@ -688,9 +693,29 @@ public final class Azure {
         return appServiceManager.webApps();
     }
 
-    /** @return entry point to managing app services. */
-    public AppServiceManager appServices() {
-        return appServiceManager;
+    /** @return entry point to managing function apps. */
+    public FunctionApps functionApps() {
+        return appServiceManager.functionApps();
+    }
+
+    /** @return entry point to managing app service plans. */
+    public AppServicePlans appServicePlans() {
+        return appServiceManager.appServicePlans();
+    }
+
+    /** @return entry point to managing domains. */
+    public AppServiceDomains appServiceDomains() {
+        return appServiceManager.domains();
+    }
+
+    /** @return entry point to managing certificates. */
+    public AppServiceCertificates appServiceCertificates() {
+        return appServiceManager.certificates();
+    }
+
+    /** @return entry point to managing certificates orders. */
+    public AppServiceCertificateOrders appServiceCertificateOrders() {
+        return appServiceManager.certificateOrders();
     }
 
     /** @return entry point to managing Sql server. */

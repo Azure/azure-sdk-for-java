@@ -90,7 +90,7 @@ public final class ManageWebAppSourceControlAsync {
             System.out.println("Creating another web app " + app3Name + "...");
             System.out.println("Creating another web app " + app4Name + "...");
 
-            Flux<?> app234Observable = azure.appServices().appServicePlans()
+            Flux<?> app234Observable = azure.appServicePlans()
                     .getByResourceGroupAsync(rgName, planName)
                     .flatMapMany(plan -> {
                         return Flux.merge(

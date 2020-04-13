@@ -51,7 +51,7 @@ public final class ManageWebAppLogs {
 
             System.out.println("Creating web app " + appName + " in resource group " + rgName + "...");
 
-            final WebApp app = azure.appServices().webApps().define(appName)
+            final WebApp app = azure.webApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.BASIC_B1)

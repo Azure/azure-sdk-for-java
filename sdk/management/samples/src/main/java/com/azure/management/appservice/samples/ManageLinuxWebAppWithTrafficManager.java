@@ -266,7 +266,7 @@ public final class ManageLinuxWebAppWithTrafficManager {
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azure.appServices().appServicePlans().define(name)
+        return azure.appServicePlans().define(name)
                 .withRegion(region)
                 .withExistingResourceGroup(RG_NAME)
                 .withPricingTier(PricingTier.STANDARD_S2)

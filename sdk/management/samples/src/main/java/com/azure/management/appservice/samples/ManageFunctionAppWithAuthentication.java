@@ -58,7 +58,7 @@ public final class ManageFunctionAppWithAuthentication {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rgName + " with admin level auth...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withLocalGitSourceControl()
@@ -71,8 +71,8 @@ public final class ManageFunctionAppWithAuthentication {
             // Create a second function app with function level auth
 
             System.out.println("Creating another function app " + app2Name + " in resource group " + rgName + " with function level auth...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
                     .withExistingStorageAccount(app1.storageAccount())
@@ -86,7 +86,7 @@ public final class ManageFunctionAppWithAuthentication {
             // Create a thrid function app with function level auth
 
             System.out.println("Creating another function app " + app3Name + " in resource group " + rgName + " with function level auth...");
-            FunctionApp app3 = azure.appServices().functionApps().define(app3Name)
+            FunctionApp app3 = azure.functionApps().define(app3Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
                     .withExistingStorageAccount(app1.storageAccount())
