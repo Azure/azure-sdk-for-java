@@ -10,7 +10,7 @@ import com.azure.core.util.IterableStream;
  * The FormLine model.
  */
 @Immutable
-public class FormLine extends FormContent {
+public final class FormLine extends FormContent {
 
     /*
      * List of words in the text line.
@@ -28,7 +28,7 @@ public class FormLine extends FormContent {
      */
     public FormLine(String text, BoundingBox boundingBox, Integer pageNumber,
         final IterableStream<FormWord> formWords) {
-        super(text, boundingBox, pageNumber);
+        super(text, boundingBox, pageNumber, TextContentType.LINE);
         this.formWords = formWords;
     }
 
@@ -41,16 +41,33 @@ public class FormLine extends FormContent {
         return this.formWords;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TextContentType getTextContentType() {
+        return super.getTextContentType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BoundingBox getBoundingBox() {
         return super.getBoundingBox();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getText() {
         return super.getText();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Integer getPageNumber() {
         return super.getPageNumber();

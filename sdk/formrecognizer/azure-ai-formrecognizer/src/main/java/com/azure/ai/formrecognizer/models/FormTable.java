@@ -11,7 +11,7 @@ import java.util.List;
  * The FormTable model.
  */
 @Immutable
-public class FormTable {
+public final class FormTable {
 
     /*
      * Number of rows.

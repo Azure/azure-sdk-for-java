@@ -11,7 +11,7 @@ import java.util.List;
  * The TrainingDocumentInfo model.
  */
 @Immutable
-public class TrainingDocumentInfo {
+public final class TrainingDocumentInfo {
 
     /*
      * Training document name.

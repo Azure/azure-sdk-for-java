@@ -18,19 +18,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.ai.formrecognizer.Transforms.toReceipt;
 import static com.azure.ai.formrecognizer.Transforms.toRecognizedForm;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 /**
- * Contains helper methods for generating inputs for test methods
+ * Contains helper methods for generating test data for test methods.
  */
 final class TestJsonUtil {
-    // protected static JsonApi jsonApi = JsonWrapper.newInstance(JacksonDeserializer.class);
 
     public static ObjectMapper getObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -43,32 +43,10 @@ final class TestJsonUtil {
         return objectMapper;
     }
 
-    static AnalyzeOperationResult getRawResponseContent() {
-        String content = null;
+    static AnalyzeOperationResult getRawResponse(String filePath) {
+        String content;
         try {
-            content = new String(Files.readAllBytes(Paths.get("src/test/resources/sample-files/layoutContent.json")));
-            return getObjectMapper().readValue(content, AnalyzeOperationResult.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    static AnalyzeOperationResult getRawResponseReceipt() {
-        String content = null;
-        try {
-            content = new String(Files.readAllBytes(Paths.get("src/test/resources/sample-files/receiptContent.json")));
-            return getObjectMapper().readValue(content, AnalyzeOperationResult.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    static AnalyzeOperationResult getRawResponseForm() {
-        String content = null;
-        try {
-            content = new String(Files.readAllBytes(Paths.get("src/test/resources/sample-files/receiptContent.json")));
+            content = new String(Files.readAllBytes(Paths.get(filePath)));
             return getObjectMapper().readValue(content, AnalyzeOperationResult.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,28 +55,26 @@ final class TestJsonUtil {
     }
 
     static List<List<FormTable>> getPagedTables() {
-        List<List<FormTable>> wholeListTables = new ArrayList<>();
-        List<PageResult> pageResults = getRawResponseContent().getAnalyzeResult().getPageResults();
-        for (int i = 0; i < pageResults.size(); i++) {
-            wholeListTables.add(Transforms.getPageTables(pageResults.get(i), i + 1));
-        }
-        return wholeListTables;
+        String filePath = "src/test/resources/sample-files/layoutContent.json";
+        List<PageResult> pageResults = getRawResponse(filePath).getAnalyzeResult().getPageResults();
+        return IntStream.range(0, pageResults.size())
+            .mapToObj(i -> Transforms.getPageTables(pageResults.get(i), i + 1))
+            .collect(Collectors.toList());
     }
 
     static List<List<FormLine>> getPagedLines() {
-        List<List<FormLine>> lines = new ArrayList<>();
-        List<ReadResult> readResults = getRawResponseContent().getAnalyzeResult().getReadResults();
-        for (int i = 0; i < readResults.size(); i++) {
-            lines.add(Transforms.getReadResultFormLines(readResults.get(i)));
-        }
-        return lines;
+        String filePath = "src/test/resources/sample-files/layoutContent.json";
+        List<ReadResult> readResults = getRawResponse(filePath).getAnalyzeResult().getReadResults();
+        return readResults.stream().map(Transforms::getReadResultFormLines).collect(Collectors.toList());
     }
 
     static IterableStream<RecognizedReceipt> getRawExpectedReceipt(boolean includeTextDetails) {
-        return toReceipt(getRawResponseReceipt().getAnalyzeResult(), includeTextDetails);
+        String filePath = "src/test/resources/sample-files/receiptContent.json";
+        return toReceipt(getRawResponse(filePath).getAnalyzeResult(), includeTextDetails);
     }
 
     static List<RecognizedForm> getRawExpectedForms(boolean includeTextDetails) {
-        return toRecognizedForm(getRawResponseForm().getAnalyzeResult(), includeTextDetails);
+        String filePath = "src/test/resources/sample-files/receiptContent.json";
+        return toRecognizedForm(getRawResponse(filePath).getAnalyzeResult(), includeTextDetails);
     }
 }

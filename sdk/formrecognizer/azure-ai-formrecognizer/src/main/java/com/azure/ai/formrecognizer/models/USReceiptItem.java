@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The USReceiptItem model.
  */
 @Immutable
-public class USReceiptItem {
+public final class USReceiptItem {
 
     /*
      * Name of the field value.

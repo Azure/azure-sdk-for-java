@@ -10,7 +10,7 @@ import com.azure.core.annotation.Immutable;
  * @param <T> The type of FormField.
  */
 @Immutable
-public class FormField<T> {
+public final class FormField<T> {
 
     /*
      * The confidence value of the field.

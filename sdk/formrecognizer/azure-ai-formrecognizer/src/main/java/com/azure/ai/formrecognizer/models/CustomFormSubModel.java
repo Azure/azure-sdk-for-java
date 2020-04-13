@@ -11,7 +11,7 @@ import java.util.Map;
  * The CustomFormSubModel model.
  */
 @Immutable
-public class CustomFormSubModel {
+public final class CustomFormSubModel {
 
     /*
      * Estimated extraction accuracy for this model.

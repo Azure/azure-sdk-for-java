@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
  * The AccountProperties model.
  */
 @Immutable
-public class AccountProperties {
+public final class AccountProperties {
 
     /*
      * Max number of models that can be trained for this account.

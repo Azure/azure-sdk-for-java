@@ -12,7 +12,7 @@ import java.util.Map;
  * The RecognizedForm model.
  */
 @Immutable
-public class RecognizedForm {
+public final class RecognizedForm {
 
     /*
      * Dictionary of named field values.

@@ -15,6 +15,7 @@ import java.time.Duration;
 
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID_ERROR;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_STATUS_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedSupervisedModel;
@@ -49,7 +50,8 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     @Test
     void getCustomModelInvalidStatusModel() {
         getCustomModelInvalidStatusModelRunner(invalidId -> StepVerifier.create(client.getCustomModel(invalidId))
-            .verifyError(IllegalArgumentException.class));
+            .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
+                && throwable.getMessage().equals(INVALID_STATUS_ERROR)).verify());
     }
 
     @Test

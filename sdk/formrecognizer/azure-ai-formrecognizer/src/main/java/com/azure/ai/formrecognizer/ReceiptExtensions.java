@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer.models;
+package com.azure.ai.formrecognizer;
+
+import com.azure.ai.formrecognizer.models.FormField;
+import com.azure.ai.formrecognizer.models.RecognizedReceipt;
+import com.azure.ai.formrecognizer.models.USReceipt;
+import com.azure.ai.formrecognizer.models.USReceiptItem;
+import com.azure.ai.formrecognizer.models.USReceiptType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
