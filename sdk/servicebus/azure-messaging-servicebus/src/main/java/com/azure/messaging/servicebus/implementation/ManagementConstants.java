@@ -26,7 +26,7 @@ class ManagementConstants {
 
     static final String FROM_SEQUENCE_NUMBER = "from-sequence-number";
     static final String MESSAGE_COUNT_KEY = "message-count";
-    static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
+    static final String SESSION_ID = "session-id";
 
     // Used in updating disposition of message.
     static final String LOCK_TOKENS_KEY = "lock-tokens";
