@@ -316,14 +316,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can renew message lock.
      */
-    @MethodSource("messagingEntityWithSessions")
+    @MethodSource("messagingEntityProvider")
     @ParameterizedTest
-    void receiveAndRenewLock(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void receiveAndRenewLock(MessagingEntityType entityType) {
         // Arrange
-        setSenderAndReceiver(entityType, isSessionEnabled);
+        setSenderAndReceiver(entityType, false);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        final ServiceBusMessage message = getMessage(messageId, false);
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
             .setEnableAutoComplete(false);
