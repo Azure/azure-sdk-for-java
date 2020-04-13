@@ -214,7 +214,6 @@ stages:
     dependsOn: Signing
     jobs:
     - job: PublishPackages
-      condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
       displayName: Publish package to daily feed
       pool:
         vmImage: windows-2019
