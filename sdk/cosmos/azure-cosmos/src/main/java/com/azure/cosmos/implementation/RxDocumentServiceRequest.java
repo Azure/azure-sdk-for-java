@@ -381,6 +381,30 @@ public class RxDocumentServiceRequest implements Cloneable {
         return request;
     }
 
+    /**
+     * Creates a DocumentServiceRequest with a resource.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param byteBuffer   the resource byteBuffer.
+     * @param headers      the request headers.
+     * @param options      the request/feed/changeFeed options.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+                                                  ResourceType resourceType,
+                                                  String relativePath,
+                                                  ByteBuffer byteBuffer,
+                                                  Map<String, String> headers,
+                                                  Object options) {
+
+        RxDocumentServiceRequest request = new RxDocumentServiceRequest(operation, resourceType, relativePath,
+            byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
+        request.properties = getProperties(options);
+        return request;
+    }
+
     public static RxDocumentServiceRequest create(OperationType operation,
                                                   ResourceType resourceType,
                                                   String relativePath,
