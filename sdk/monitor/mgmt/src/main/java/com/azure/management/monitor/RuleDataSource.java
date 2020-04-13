@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
 /** The RuleDataSource model. */
 @JsonTypeInfo(
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
         value = RuleManagementEventDataSource.class)
 })
+@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 @Fluent
 public class RuleDataSource {
     /*

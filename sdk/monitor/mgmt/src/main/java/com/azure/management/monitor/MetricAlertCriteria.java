@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +32,7 @@ import java.util.Map;
         name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
         value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
 })
+@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 @Fluent
 public class MetricAlertCriteria {
     /*

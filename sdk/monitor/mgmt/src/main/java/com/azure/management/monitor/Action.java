@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
 /** The Action model. */
 @JsonTypeInfo(
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.LogToMetricAction",
         value = LogToMetricAction.class)
 })
+@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 @Immutable
 public class Action {
 }
