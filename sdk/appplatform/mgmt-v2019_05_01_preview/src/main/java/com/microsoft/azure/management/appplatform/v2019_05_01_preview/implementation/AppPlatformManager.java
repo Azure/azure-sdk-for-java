@@ -19,6 +19,8 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Services;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Apps;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Bindings;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Certificates;
+import com.microsoft.azure.management.appplatform.v2019_05_01_preview.CustomDomains;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Deployments;
 import com.microsoft.azure.management.appplatform.v2019_05_01_preview.Operations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -31,6 +33,8 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
     private Services services;
     private Apps apps;
     private Bindings bindings;
+    private Certificates certificates;
+    private CustomDomains customDomains;
     private Deployments deployments;
     private Operations operations;
     /**
@@ -108,6 +112,26 @@ public final class AppPlatformManager extends ManagerCore<AppPlatformManager, Ap
             this.bindings = new BindingsImpl(this);
         }
         return this.bindings;
+    }
+
+    /**
+     * @return Entry point to manage Certificates.
+     */
+    public Certificates certificates() {
+        if (this.certificates == null) {
+            this.certificates = new CertificatesImpl(this);
+        }
+        return this.certificates;
+    }
+
+    /**
+     * @return Entry point to manage CustomDomains.
+     */
+    public CustomDomains customDomains() {
+        if (this.customDomains == null) {
+            this.customDomains = new CustomDomainsImpl(this);
+        }
+        return this.customDomains;
     }
 
     /**
