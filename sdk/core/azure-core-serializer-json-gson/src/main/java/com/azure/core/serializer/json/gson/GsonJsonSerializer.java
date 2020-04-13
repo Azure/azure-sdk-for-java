@@ -8,10 +8,8 @@ import com.azure.core.util.CoreUtils;
 import com.google.gson.Gson;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
@@ -32,28 +30,17 @@ public final class GsonJsonSerializer implements JsonSerializer {
 
     @Override
     public <T> Mono<T> read(byte[] input, Class<T> clazz) {
-        Reader reader = new Reader() {
-            @Override
-            public int read(char[] cbuf, int off, int len) throws IOException {
-                return 0;
-            }
-
-            @Override
-            public void close() throws IOException {
-
-            }
-        }
-        return Mono.fromCallable(() -> gson.fromJson(new String(input, StandardCharsets.UTF_8), clazz));
+        return Mono.fromCallable(() -> gson.fromJson(CoreUtils.bomAwareToString(input, null), clazz));
     }
 
     @Override
     public Mono<byte[]> write(Object value) {
-        return Mono.fromCallable(() -> gson.toJson(value));
+        return Mono.fromCallable(() -> gson.toJson(value).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
     public Mono<byte[]> write(Object value, Class<?> clazz) {
-        return Mono.fromCallable(() -> gson.toJson(value, clazz));
+        return Mono.fromCallable(() -> gson.toJson(value, clazz).getBytes(StandardCharsets.UTF_8));
     }
 
     @Override
