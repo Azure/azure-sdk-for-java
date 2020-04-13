@@ -38,7 +38,8 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
     }
 
     /**
-     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI) resource management API entry points.
+     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI)
+     * resource management API entry points.
      *
      * @param credential the credentials to use
      * @param subscriptionId the subscription UUID
@@ -56,7 +57,8 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
     }
 
     /**
-     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI) resource management API entry points.
+     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI)
+     * resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
@@ -67,7 +69,8 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
     }
 
     /**
-     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI) resource management API entry points.
+     * Creates an instance of MSIManager that exposes Managed Service Identity (MSI)
+     * resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
      * @param subscriptionId the subscription UUID
@@ -87,7 +90,8 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
          *
          * @param credential the credentials to use
          * @param subscriptionId the subscription UUID
-         * @return the interface exposing Managed Service Identity (MSI) resource management API entry points that work across subscriptions
+         * @return the interface exposing Managed Service Identity (MSI)
+         * resource management API entry points that work across subscriptions
          */
         MSIManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
@@ -108,7 +112,9 @@ public final class MSIManager extends Manager<MSIManager, ManagedServiceIdentity
                 .subscriptionId(subscriptionId)
                 .buildClient(),
                 sdkContext);
-        rbacManager = GraphRbacManager.authenticate(restClient, Utils.getTenantIdFromRestClient(restClient), sdkContext);
+        rbacManager = GraphRbacManager.authenticate(restClient,
+            Utils.getTenantIdFromRestClient(restClient),
+            sdkContext);
     }
 
     /**
