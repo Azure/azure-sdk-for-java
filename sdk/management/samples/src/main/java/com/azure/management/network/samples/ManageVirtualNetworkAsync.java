@@ -38,7 +38,7 @@ public final class ManageVirtualNetworkAsync {
         Indexable indexable;
         Long duration;
 
-        public Indexable2Duration(Indexable indexable, long duration) {
+        Indexable2Duration(Indexable indexable, long duration) {
             this.indexable = indexable;
             this.duration = duration;
         }

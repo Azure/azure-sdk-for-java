@@ -15,21 +15,16 @@ import com.azure.management.graphrbac.models.ServicePrincipalInner;
 import com.azure.management.graphrbac.models.UserInner;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Group and its parent interfaces.
- */
+/** Implementation for Group and its parent interfaces. */
 class ActiveDirectoryGroupImpl
-        extends CreatableUpdatableImpl<ActiveDirectoryGroup, ADGroupInner, ActiveDirectoryGroupImpl>
-        implements ActiveDirectoryGroup,
-            ActiveDirectoryGroup.Definition,
-            ActiveDirectoryGroup.Update {
+    extends CreatableUpdatableImpl<ActiveDirectoryGroup, ADGroupInner, ActiveDirectoryGroupImpl>
+    implements ActiveDirectoryGroup, ActiveDirectoryGroup.Definition, ActiveDirectoryGroup.Update {
 
     private final GraphRbacManager manager;
     private GroupCreateParameters createParameters;
@@ -40,7 +35,8 @@ class ActiveDirectoryGroupImpl
     ActiveDirectoryGroupImpl(ADGroupInner innerModel, GraphRbacManager manager) {
         super(innerModel.displayName(), innerModel);
         this.manager = manager;
-        this.createParameters = new GroupCreateParameters()
+        this.createParameters =
+            new GroupCreateParameters()
                 .withDisplayName(innerModel.displayName())
                 .withMailEnabled(false)
                 .withSecurityEnabled(true);
@@ -65,16 +61,20 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public PagedFlux<ActiveDirectoryObject> listMembersAsync() {
-        return manager().inner().groups().getGroupMembersAsync(id())
-                .mapPage(directoryObjectInner -> {
+        return manager()
+            .inner()
+            .groups()
+            .getGroupMembersAsync(id())
+            .mapPage(
+                directoryObjectInner -> {
                     if (directoryObjectInner instanceof UserInner) {
                         return new ActiveDirectoryUserImpl((UserInner) directoryObjectInner, manager());
                     } else if (directoryObjectInner instanceof ADGroupInner) {
-                        return new ActiveDirectoryGroupImpl((ADGroupInner)directoryObjectInner, manager());
+                        return new ActiveDirectoryGroupImpl((ADGroupInner) directoryObjectInner, manager());
                     } else if (directoryObjectInner instanceof ServicePrincipalInner) {
-                        return new ServicePrincipalImpl((ServicePrincipalInner)directoryObjectInner, manager());
+                        return new ServicePrincipalImpl((ServicePrincipalInner) directoryObjectInner, manager());
                     } else if (directoryObjectInner instanceof ApplicationInner) {
-                        return new ActiveDirectoryApplicationImpl((ApplicationInner)directoryObjectInner, manager());
+                        return new ActiveDirectoryApplicationImpl((ApplicationInner) directoryObjectInner, manager());
                     } else {
                         return null;
                     }
@@ -95,22 +95,31 @@ class ActiveDirectoryGroupImpl
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
         Mono<?> group = Mono.just(this);
         if (isInCreateMode()) {
-            group = manager().inner().groups().createAsync(createParameters)
-                    .map(innerToFluentMap(this));
+            group = manager().inner().groups().createAsync(createParameters).map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
-            group = group.flatMap(o -> Flux.fromIterable(membersToRemove)
-                    .flatMap(s -> manager().inner().groups().removeMemberAsync(id(), s))
-                    .singleOrEmpty()
-                    .thenReturn(Mono.just(this))
-                    .doFinally(signalType -> membersToRemove.clear()));
+            group =
+                group
+                    .flatMap(
+                        o ->
+                            Flux
+                                .fromIterable(membersToRemove)
+                                .flatMap(s -> manager().inner().groups().removeMemberAsync(id(), s))
+                                .singleOrEmpty()
+                                .thenReturn(Mono.just(this))
+                                .doFinally(signalType -> membersToRemove.clear()));
         }
         if (!membersToAdd.isEmpty()) {
-            group = group.flatMap(o -> Flux.fromIterable(membersToAdd)
-                    .flatMap(s -> manager().inner().groups().addMemberAsync(id(), s))
-                    .singleOrEmpty()
-                    .thenReturn(Mono.just(this))
-                    .doFinally(signalType -> membersToAdd.clear()));
+            group =
+                group
+                    .flatMap(
+                        o ->
+                            Flux
+                                .fromIterable(membersToAdd)
+                                .flatMap(s -> manager().inner().groups().addMemberAsync(id(), s))
+                                .singleOrEmpty()
+                                .thenReturn(Mono.just(this))
+                                .doFinally(signalType -> membersToAdd.clear()));
         }
         return group.map(o -> ActiveDirectoryGroupImpl.this);
     }
@@ -129,8 +138,9 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public ActiveDirectoryGroupImpl withMember(String objectId) {
-        membersToAdd.add(String.format("%s%s/directoryObjects/%s",
-                manager().inner().getHost(), manager().tenantId(), objectId));
+        membersToAdd
+            .add(
+                String.format("%s%s/directoryObjects/%s", manager().inner().getHost(), manager().tenantId(), objectId));
         return this;
     }
 

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DiagnosticSettingsCategoryResourceCollection model.
- */
+/** The DiagnosticSettingsCategoryResourceCollection model. */
 @Fluent
 public final class DiagnosticSettingsCategoryResourceCollectionInner {
     /*
@@ -20,9 +18,8 @@ public final class DiagnosticSettingsCategoryResourceCollectionInner {
     private List<DiagnosticSettingsCategoryResourceInner> value;
 
     /**
-     * Get the value property: The collection of diagnostic settings category
-     * resources.
-     * 
+     * Get the value property: The collection of diagnostic settings category resources.
+     *
      * @return the value value.
      */
     public List<DiagnosticSettingsCategoryResourceInner> value() {
@@ -30,14 +27,13 @@ public final class DiagnosticSettingsCategoryResourceCollectionInner {
     }
 
     /**
-     * Set the value property: The collection of diagnostic settings category
-     * resources.
-     * 
+     * Set the value property: The collection of diagnostic settings category resources.
+     *
      * @param value the value value to set.
-     * @return the DiagnosticSettingsCategoryResourceCollectionInner object
-     * itself.
+     * @return the DiagnosticSettingsCategoryResourceCollectionInner object itself.
      */
-    public DiagnosticSettingsCategoryResourceCollectionInner withValue(List<DiagnosticSettingsCategoryResourceInner> value) {
+    public DiagnosticSettingsCategoryResourceCollectionInner withValue(
+        List<DiagnosticSettingsCategoryResourceInner> value) {
         this.value = value;
         return this;
     }

@@ -10,9 +10,7 @@ import com.azure.management.monitor.CategoryType;
 import com.azure.management.monitor.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DiagnosticSettingsCategoryResource model.
- */
+/** The DiagnosticSettingsCategoryResource model. */
 @JsonFlatten
 @Fluent
 public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
@@ -23,9 +21,8 @@ public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
     private CategoryType categoryType;
 
     /**
-     * Get the categoryType property: The type of the diagnostic settings
-     * category.
-     * 
+     * Get the categoryType property: The type of the diagnostic settings category.
+     *
      * @return the categoryType value.
      */
     public CategoryType categoryType() {
@@ -33,9 +30,8 @@ public class DiagnosticSettingsCategoryResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the categoryType property: The type of the diagnostic settings
-     * category.
-     * 
+     * Set the categoryType property: The type of the diagnostic settings category.
+     *
      * @param categoryType the categoryType value to set.
      * @return the DiagnosticSettingsCategoryResourceInner object itself.
      */

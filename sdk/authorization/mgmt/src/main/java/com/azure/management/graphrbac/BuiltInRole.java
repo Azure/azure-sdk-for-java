@@ -4,24 +4,25 @@
 package com.azure.management.graphrbac;
 
 import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * Defines values for roles.
- */
+/** Defines values for roles. */
 public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** A role that can manage API Management service and the APIs. */
-    public static final BuiltInRole API_MANAGEMENT_SERVICE_CONTRIBUTOR = BuiltInRole.fromString("API Management Service Contributor");
+    public static final BuiltInRole API_MANAGEMENT_SERVICE_CONTRIBUTOR =
+        BuiltInRole.fromString("API Management Service Contributor");
 
     /** A role that can manage API Management service, but not the APIs themselves. */
-    public static final BuiltInRole API_MANAGEMENT_SERVICE_OPERATOR_ROLE = BuiltInRole.fromString("API Management Service Operator Role");
+    public static final BuiltInRole API_MANAGEMENT_SERVICE_OPERATOR_ROLE =
+        BuiltInRole.fromString("API Management Service Operator Role");
 
     /** A role that has read-only access to API Management service and APIs. */
-    public static final BuiltInRole API_MANAGEMENT_SERVICE_READER_ROLE = BuiltInRole.fromString("API Management Service Reader Role");
+    public static final BuiltInRole API_MANAGEMENT_SERVICE_READER_ROLE =
+        BuiltInRole.fromString("API Management Service Reader Role");
 
     /** A role that can manage Application Insights components. */
-    public static final BuiltInRole APPLICATION_INSIGHTS_COMPONENT_CONTRIBUTOR = BuiltInRole.fromString("Application Insights Component Contributor");
+    public static final BuiltInRole APPLICATION_INSIGHTS_COMPONENT_CONTRIBUTOR =
+        BuiltInRole.fromString("Application Insights Component Contributor");
 
     /** A role that is able to start, stop, suspend, and resume jobs. */
     public static final BuiltInRole AUTOMATION_OPERATOR = BuiltInRole.fromString("Automation Operator");
@@ -42,7 +43,8 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole BIZTALK_CONTRIBUTOR = BuiltInRole.fromString("BizTalk Contributor");
 
     /** A role that can manage ClearDB MySQL databases. */
-    public static final BuiltInRole CLEARDB_MYSQL_DB_CONTRIBUTOR = BuiltInRole.fromString("ClearDB MySQL DB Contributor");
+    public static final BuiltInRole CLEARDB_MYSQL_DB_CONTRIBUTOR =
+        BuiltInRole.fromString("ClearDB MySQL DB Contributor");
 
     /** A role that can manage everything except access.. */
     public static final BuiltInRole CONTRIBUTOR = BuiltInRole.fromString("Contributor");
@@ -57,13 +59,16 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole DNS_ZONE_CONTRIBUTOR = BuiltInRole.fromString("DNS Zone Contributor");
 
     /** A role that can manage Azure Cosmos DB accounts. */
-    public static final BuiltInRole AZURE_COSMOS_DB_ACCOUNT_CONTRIBUTOR = BuiltInRole.fromString("Azure Cosmos DB Account Contributor");
+    public static final BuiltInRole AZURE_COSMOS_DB_ACCOUNT_CONTRIBUTOR =
+        BuiltInRole.fromString("Azure Cosmos DB Account Contributor");
 
     /** A role that can manage Intelligent Systems accounts. */
-    public static final BuiltInRole INTELLIGENT_SYSTEMS_ACCOUNT_CONTRIBUTOR = BuiltInRole.fromString("Intelligent Systems Account Contributor");
+    public static final BuiltInRole INTELLIGENT_SYSTEMS_ACCOUNT_CONTRIBUTOR =
+        BuiltInRole.fromString("Intelligent Systems Account Contributor");
 
     /** A role that can manage user assigned identities. */
-    public static final BuiltInRole MANAGED_IDENTITY_CONTRIBUTOR = BuiltInRole.fromString("Managed Identity Contributor");
+    public static final BuiltInRole MANAGED_IDENTITY_CONTRIBUTOR =
+        BuiltInRole.fromString("Managed Identity Contributor");
 
     /** A role that can read and assign user assigned identities. */
     public static final BuiltInRole MANAGED_IDENTITY_OPERATOR = BuiltInRole.fromString("Managed Identity Operator");
@@ -78,7 +83,8 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole NETWORK_CONTRIBUTOR = BuiltInRole.fromString("Network Contributor");
 
     /** A role that can manage New Relic Application Performance Management accounts and applications. */
-    public static final BuiltInRole NEW_RELIC_APM_ACCOUNT_CONTRIBUTOR = BuiltInRole.fromString("New Relic APM Account Contributor");
+    public static final BuiltInRole NEW_RELIC_APM_ACCOUNT_CONTRIBUTOR =
+        BuiltInRole.fromString("New Relic APM Account Contributor");
 
     /** A role that can manage everything, including access. */
     public static final BuiltInRole OWNER = BuiltInRole.fromString("Owner");
@@ -90,7 +96,8 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole REDIS_CACHE_CONTRIBUTOR = BuiltInRole.fromString("Redis Cache Contributor");
 
     /** A role that can manage scheduler job collections. */
-    public static final BuiltInRole SCHEDULER_JOB_COLLECTIONS_CONTRIBUTOR = BuiltInRole.fromString("Scheduler Job Collections Contributor");
+    public static final BuiltInRole SCHEDULER_JOB_COLLECTIONS_CONTRIBUTOR =
+        BuiltInRole.fromString("Scheduler Job Collections Contributor");
 
     /** A role that can manage search services. */
     public static final BuiltInRole SEARCH_SERVICE_CONTRIBUTOR = BuiltInRole.fromString("Search Service Contributor");
@@ -108,7 +115,8 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole SQL_SERVER_CONTRIBUTOR = BuiltInRole.fromString("SQL Server Contributor");
 
     /** A role that can manage classic storage accounts. */
-    public static final BuiltInRole CLASSIC_STORAGE_ACCOUNT_CONTRIBUTOR = BuiltInRole.fromString("Classic Storage Account Contributor");
+    public static final BuiltInRole CLASSIC_STORAGE_ACCOUNT_CONTRIBUTOR =
+        BuiltInRole.fromString("Classic Storage Account Contributor");
 
     /** A role that can manage storage accounts. */
     public static final BuiltInRole STORAGE_ACCOUNT_CONTRIBUTOR = BuiltInRole.fromString("Storage Account Contributor");
@@ -116,10 +124,17 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     /** A role that can manage user access to Azure resources. */
     public static final BuiltInRole USER_ACCESS_ADMINISTRATOR = BuiltInRole.fromString("User Access Administrator");
 
-    /** A role that can manage classic virtual machines, but not the virtual network or storage account to which they are connected. */
-    public static final BuiltInRole CLASSIC_VIRTUAL_MACHINE_CONTRIBUTOR = BuiltInRole.fromString("Classic Virtual Machine Contributor");
+    /**
+     * A role that can manage classic virtual machines, but not the virtual network or storage account to which they are
+     * connected.
+     */
+    public static final BuiltInRole CLASSIC_VIRTUAL_MACHINE_CONTRIBUTOR =
+        BuiltInRole.fromString("Classic Virtual Machine Contributor");
 
-    /** A role that can manage virtual machines, but not the virtual network or storage account to which they are connected. */
+    /**
+     * A role that can manage virtual machines, but not the virtual network or storage account to which they are
+     * connected.
+     */
     public static final BuiltInRole VIRTUAL_MACHINE_CONTRIBUTOR = BuiltInRole.fromString("Virtual Machine Contributor");
 
     /** A role that can manage classic virtual networks and reserved IPs. */
@@ -133,6 +148,7 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
 
     /**
      * Finds or creates a role instance based on the specified name.
+     *
      * @param name a name
      * @return a BuiltInRole instance
      */
@@ -140,9 +156,7 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
         return fromString(name, BuiltInRole.class);
     }
 
-    /**
-     * @return known roles
-     */
+    /** @return known roles */
     public static Collection<BuiltInRole> values() {
         return values(BuiltInRole.class);
     }

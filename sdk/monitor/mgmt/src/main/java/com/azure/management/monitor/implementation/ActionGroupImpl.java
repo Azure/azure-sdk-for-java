@@ -4,38 +4,30 @@
 package com.azure.management.monitor.implementation;
 
 import com.azure.management.monitor.ActionGroup;
+import com.azure.management.monitor.AutomationRunbookReceiver;
 import com.azure.management.monitor.AzureAppPushReceiver;
+import com.azure.management.monitor.AzureFunctionReceiver;
 import com.azure.management.monitor.EmailReceiver;
 import com.azure.management.monitor.ItsmReceiver;
 import com.azure.management.monitor.LogicAppReceiver;
 import com.azure.management.monitor.SmsReceiver;
-import com.azure.management.monitor.WebhookReceiver;
-import com.azure.management.monitor.AutomationRunbookReceiver;
-import com.azure.management.monitor.AzureFunctionReceiver;
 import com.azure.management.monitor.VoiceReceiver;
+import com.azure.management.monitor.WebhookReceiver;
 import com.azure.management.monitor.models.ActionGroupResourceInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ActionGroup.
- */
+/** Implementation for ActionGroup. */
 class ActionGroupImpl
-        extends GroupableResourceImpl<
-            ActionGroup,
-            ActionGroupResourceInner,
-            ActionGroupImpl,
-            MonitorManager>
-        implements
-            ActionGroup,
-            ActionGroup.Definition,
-            ActionGroup.Update,
-            ActionGroup.UpdateStages.WithActionUpdateDefinition {
+    extends GroupableResourceImpl<ActionGroup, ActionGroupResourceInner, ActionGroupImpl, MonitorManager>
+    implements ActionGroup,
+        ActionGroup.Definition,
+        ActionGroup.Update,
+        ActionGroup.UpdateStages.WithActionUpdateDefinition {
     private final String emailSuffix = "_-EmailAction-";
     private final String smsSuffix = "_-SMSAction-";
     private final String appActionSuffix = "_-AzureAppAction-";
@@ -71,7 +63,9 @@ class ActionGroupImpl
         this.itsmReceivers = new TreeMap<>();
         if (isInCreateMode()) {
             this.inner().withEnabled(true);
-            this.inner().withGroupShortName(this.name().substring(0, (this.name().length() > 12) ? 12 : this.name().length()));
+            this
+                .inner()
+                .withGroupShortName(this.name().substring(0, (this.name().length() > 12) ? 12 : this.name().length()));
         } else {
             this.withExistingResourceGroup(ResourceUtils.groupFromResourceId(this.id()));
         }
@@ -173,7 +167,6 @@ class ActionGroupImpl
             }
         }
 
-
         if (this.inner().azureAppPushReceivers() != null) {
             for (AzureAppPushReceiver ar : this.inner().azureAppPushReceivers()) {
                 this.appActionReceivers.put(ar.name(), ar);
@@ -227,8 +220,12 @@ class ActionGroupImpl
     @Override
     public Mono<ActionGroup> createResourceAsync() {
         this.inner().setLocation("global");
-        return this.manager().inner().actionGroups().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .actionGroups()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -277,7 +274,8 @@ class ActionGroupImpl
     }
 
     @Override
-    public ActionGroupImpl withItsm(String workspaceId, String connectionId, String ticketConfiguration, String region) {
+    public ActionGroupImpl withItsm(
+        String workspaceId, String connectionId, String ticketConfiguration, String region) {
         this.withoutItsm();
 
         String compositeKey = this.actionReceiverPrefix + itsmSuffix;
@@ -306,7 +304,8 @@ class ActionGroupImpl
     }
 
     @Override
-    public ActionGroupImpl withAutomationRunbook(String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook) {
+    public ActionGroupImpl withAutomationRunbook(
+        String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook) {
         this.withoutAutomationRunbook();
 
         String compositeKey = this.actionReceiverPrefix + runBookSuffix;
@@ -540,7 +539,6 @@ class ActionGroupImpl
             this.inner().withVoiceReceivers(null);
         }
 
-
         if (this.runBookReceivers.values().size() > 0) {
             if (this.inner().automationRunbookReceivers() == null) {
                 this.inner().withAutomationRunbookReceivers(new ArrayList<AutomationRunbookReceiver>());
@@ -595,7 +593,5 @@ class ActionGroupImpl
         } else {
             this.inner().withItsmReceivers(null);
         }
-
     }
 }
-

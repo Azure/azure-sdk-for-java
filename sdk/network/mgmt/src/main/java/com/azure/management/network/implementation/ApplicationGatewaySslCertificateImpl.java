@@ -2,23 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
+import com.azure.management.network.ApplicationGateway;
+import com.azure.management.network.ApplicationGatewaySslCertificate;
+import com.azure.management.network.models.ApplicationGatewaySslCertificateInner;
+import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Base64;
 
-import com.azure.management.network.models.ApplicationGatewaySslCertificateInner;
-import com.azure.management.network.ApplicationGateway;
-import com.azure.management.network.ApplicationGatewaySslCertificate;
-import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
-/**
- * Implementation for ApplicationGatewaySslCertificate.
- */
+/** Implementation for ApplicationGatewaySslCertificate. */
 class ApplicationGatewaySslCertificateImpl
-        extends ChildResourceImpl<ApplicationGatewaySslCertificateInner, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewaySslCertificate,
+    extends ChildResourceImpl<ApplicationGatewaySslCertificateInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewaySslCertificate,
         ApplicationGatewaySslCertificate.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewaySslCertificate.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewaySslCertificate.Update {
@@ -53,7 +49,6 @@ class ApplicationGatewaySslCertificateImpl
         return this.parent().withSslCertificate(this);
     }
 
-
     // Withers
 
     @Override
@@ -84,5 +79,4 @@ class ApplicationGatewaySslCertificateImpl
         this.inner().withKeyVaultSecretId(keyVaultSecretId);
         return this;
     }
-
 }

@@ -64,7 +64,7 @@ public final class ManageLinuxWebAppBasic {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rg1Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps()
                     .define(app2Name)
                     .withExistingLinuxPlan(plan)

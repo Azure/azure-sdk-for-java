@@ -11,13 +11,10 @@ import com.azure.management.network.models.ApplicationGatewayIPConfigurationInne
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * Implementation for ApplicationGatewayIPConfiguration.
- */
+/** Implementation for ApplicationGatewayIPConfiguration. */
 class ApplicationGatewayIPConfigurationImpl
-        extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayIPConfiguration,
+    extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayIPConfiguration,
         ApplicationGatewayIPConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayIPConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayIPConfiguration.Update {

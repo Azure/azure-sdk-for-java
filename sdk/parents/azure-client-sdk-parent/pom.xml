@@ -516,7 +516,8 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
-              for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+              for more Java documentation, including quick starts, tutorials, and code samples.
+            </footer>
             <linksource>false</linksource>
             <excludePackageNames>
               *.impl*:
@@ -743,9 +744,8 @@
         <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <configuration>
           <configLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
-          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml
-          </suppressionsLocation>
-          <headerLocation>eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+          <suppressionsLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+          <headerLocation>../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
           <propertyExpansion>samedir=</propertyExpansion>
           <encoding>UTF-8</encoding>
           <consoleOutput>true</consoleOutput>
@@ -779,8 +779,7 @@
           <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
           <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml
-          </excludeFilterFile>
+          <excludeFilterFile>../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
           <failOnError>true</failOnError>
           <fork>true</fork>
           <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->

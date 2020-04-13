@@ -88,7 +88,7 @@ public final class ManageLinuxWebAppSourceControl {
             // Create a second web app with local git source control
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingLinuxPlan(plan)
                     .withExistingResourceGroup(rgName)

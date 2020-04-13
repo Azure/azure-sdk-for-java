@@ -5,30 +5,19 @@ package com.azure.management.graphrbac;
 
 import com.azure.management.graphrbac.models.PermissionInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of a permission.
- */
+/** An immutable client-side representation of a permission. */
 public interface Permission extends HasInner<PermissionInner> {
-    /**
-     * @return allowed actions
-     */
+    /** @return allowed actions */
     List<String> actions();
 
-    /**
-     * @return denied actions
-     */
+    /** @return denied actions */
     List<String> notActions();
 
-    /**
-     * @return allowed Data actions
-     */
+    /** @return allowed Data actions */
     List<String> dataActions();
 
-    /**
-     * @return denied Data actions
-     */
+    /** @return denied Data actions */
     List<String> notDataActions();
 }

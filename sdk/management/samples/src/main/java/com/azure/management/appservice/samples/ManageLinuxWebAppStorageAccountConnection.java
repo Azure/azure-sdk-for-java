@@ -86,7 +86,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Creating web app " + app1Name + "...");
 
-            // FIXME the env variable will not work in linux since dot is not allowed in env variable name
+            // note: the env variable will not work in linux since dot is not allowed in env variable name
             WebApp app1 = azure.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)

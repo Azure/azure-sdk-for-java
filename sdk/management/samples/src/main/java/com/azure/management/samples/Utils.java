@@ -1346,6 +1346,7 @@ public final class Utils {
      * @param password alias password
      * @param cnName domain name
      * @throws Exception exceptions from the creation
+     * @throws IOException IO Exception
      */
     public static void createCertificate(String certPath, String pfxPath,
                                          String alias, String password, String cnName) throws Exception {
@@ -1371,17 +1372,17 @@ public final class Utils {
 
         // Create Pfx file
         String[] commandArgs = {command, "-genkey", "-alias", alias,
-                "-keystore", pfxPath, "-storepass", password, "-validity",
-                validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
-                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
+            "-keystore", pfxPath, "-storepass", password, "-validity",
+            validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
+            "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
         Utils.cmdInvocation(commandArgs, true);
 
         // Create cer file i.e. extract public key from pfx
         File pfxFile = new File(pfxPath);
         if (pfxFile.exists()) {
             String[] certCommandArgs = {command, "-export", "-alias", alias,
-                    "-storetype", storeType, "-keystore", pfxPath,
-                    "-storepass", password, "-rfc", "-file", certPath};
+                "-storetype", storeType, "-keystore", pfxPath,
+                "-storepass", password, "-rfc", "-file", certPath};
             // output of keytool export command is going to error stream
             // although command is
             // executed successfully, hence ignoring error stream in this case

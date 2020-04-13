@@ -11,23 +11,16 @@ import com.azure.management.network.models.ExpressRouteCrossConnectionInner;
 import com.azure.management.network.models.ExpressRouteCrossConnectionPeeringInner;
 import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ExpressRouteCrossConnection.
- */
-public class ExpressRouteCrossConnectionImpl extends GroupableParentResourceWithTagsImpl<
-        ExpressRouteCrossConnection,
-        ExpressRouteCrossConnectionInner,
-        ExpressRouteCrossConnectionImpl,
-        NetworkManager>
-        implements
-        ExpressRouteCrossConnection,
-        ExpressRouteCrossConnection.Update {
+/** Implementation for ExpressRouteCrossConnection. */
+public class ExpressRouteCrossConnectionImpl
+    extends GroupableParentResourceWithTagsImpl<
+        ExpressRouteCrossConnection, ExpressRouteCrossConnectionInner, ExpressRouteCrossConnectionImpl, NetworkManager>
+    implements ExpressRouteCrossConnection, ExpressRouteCrossConnection.Update {
     private ExpressRouteCrossConnectionPeeringsImpl peerings;
     private Map<String, ExpressRouteCrossConnectionPeering> crossConnectionPeerings;
 
@@ -38,8 +31,11 @@ public class ExpressRouteCrossConnectionImpl extends GroupableParentResourceWith
 
     @Override
     protected Mono<ExpressRouteCrossConnectionInner> createInner() {
-        return this.manager().inner().expressRouteCrossConnections().createOrUpdateAsync(
-                this.resourceGroupName(), this.name(), this.inner());
+        return this
+            .manager()
+            .inner()
+            .expressRouteCrossConnections()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override
@@ -47,7 +43,9 @@ public class ExpressRouteCrossConnectionImpl extends GroupableParentResourceWith
         crossConnectionPeerings = new HashMap<>();
         if (inner().peerings() != null) {
             for (ExpressRouteCrossConnectionPeeringInner peering : inner().peerings()) {
-                crossConnectionPeerings.put(peering.name(),
+                crossConnectionPeerings
+                    .put(
+                        peering.name(),
                         new ExpressRouteCrossConnectionPeeringImpl(this, peering, peering.peeringType()));
             }
         }
@@ -55,21 +53,33 @@ public class ExpressRouteCrossConnectionImpl extends GroupableParentResourceWith
 
     @Override
     protected Mono<ExpressRouteCrossConnectionInner> getInnerAsync() {
-        return this.manager().inner().expressRouteCrossConnections().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .expressRouteCrossConnections()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<ExpressRouteCrossConnection> refreshAsync() {
-        return super.refreshAsync().map(expressRouteCrossConnection -> {
-            ExpressRouteCrossConnectionImpl impl = (ExpressRouteCrossConnectionImpl) expressRouteCrossConnection;
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                expressRouteCrossConnection -> {
+                    ExpressRouteCrossConnectionImpl impl =
+                        (ExpressRouteCrossConnectionImpl) expressRouteCrossConnection;
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<ExpressRouteCrossConnectionInner> applyTagsToInnerAsync() {
-        return this.manager().inner().expressRouteCrossConnections().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this
+            .manager()
+            .inner()
+            .expressRouteCrossConnections()
+            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
     }
 
     @Override

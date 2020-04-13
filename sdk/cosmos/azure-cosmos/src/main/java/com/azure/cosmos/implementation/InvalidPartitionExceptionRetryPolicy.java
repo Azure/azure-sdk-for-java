@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.FeedOptions;
@@ -19,6 +20,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     private final DocumentClientRetryPolicy nextPolicy;
     private final String collectionLink;
     private final FeedOptions feedOptions;
+    private RxDocumentServiceRequest request;
 
     private volatile boolean retried = false;
 
@@ -37,6 +39,7 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
+        this.request = request;
         this.nextPolicy.onBeforeSendRequest(request);
     }
 
@@ -51,9 +54,15 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 //this.clientCollectionCache.Refresh(clientException.ResourceAddress);
                 // TODO: this is blocking. is that fine?
                 if(this.feedOptions != null) {
-                    this.clientCollectionCache.refresh(collectionLink,this.feedOptions.getProperties());
+                    this.clientCollectionCache.refresh(
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        collectionLink,
+                        this.feedOptions.getProperties());
                 } else {
-                    this.clientCollectionCache.refresh(collectionLink,null);
+                    this.clientCollectionCache.refresh(
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        collectionLink,
+                        null);
                 }
 
                 this.retried = true;

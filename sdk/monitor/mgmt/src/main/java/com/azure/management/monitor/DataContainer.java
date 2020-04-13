@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DataContainer model.
- */
+/** The DataContainer model. */
 @Fluent
 public final class DataContainer {
     /*
@@ -20,7 +18,7 @@ public final class DataContainer {
 
     /**
      * Get the workspace property: Log Analytics workspace information.
-     * 
+     *
      * @return the workspace value.
      */
     public WorkspaceInfo workspace() {
@@ -29,7 +27,7 @@ public final class DataContainer {
 
     /**
      * Set the workspace property: Log Analytics workspace information.
-     * 
+     *
      * @param workspace the workspace value to set.
      * @return the DataContainer object itself.
      */

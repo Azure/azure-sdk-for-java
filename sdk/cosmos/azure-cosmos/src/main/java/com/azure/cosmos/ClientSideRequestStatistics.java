@@ -3,12 +3,15 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.ZonedDateTimeSerializer;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -51,16 +54,18 @@ class ClientSideRequestStatistics {
 
     private List<URI> contactedReplicas;
     private Set<URI> failedReplicas;
-    private ZonedDateTime requestStartTime;
-    private ZonedDateTime requestEndTime;
+    private ZonedDateTime requestStartTimeUTC;
+    private ZonedDateTime requestEndTimeUTC;
     private Set<URI> regionsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline transportRequestTimeline;
+    private MetadataDiagnosticsContext metadataDiagnosticsContext;
+    private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
     ClientSideRequestStatistics() {
-        this.requestStartTime = ZonedDateTime.now(ZoneOffset.UTC);
-        this.requestEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        this.requestStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        this.requestEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
         this.responseStatisticsList = new ArrayList<>();
         this.supplementalResponseStatisticsList = new ArrayList<>();
         this.addressResolutionStatistics = new HashMap<>();
@@ -68,17 +73,12 @@ class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
         this.connectionMode = ConnectionMode.DIRECT;
-    }
-
-    private static String formatDateTime(ZonedDateTime dateTime) {
-        if (dateTime == null) {
-            return null;
-        }
-        return dateTime.format(RESPONSE_TIME_FORMATTER);
+        this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
+        this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
     }
 
     Duration getRequestLatency() {
-        return Duration.between(requestStartTime, requestEndTime);
+        return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
     void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
@@ -101,8 +101,8 @@ class ClientSideRequestStatistics {
         }
 
         synchronized (this) {
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             if (locationEndPoint != null) {
@@ -124,8 +124,8 @@ class ClientSideRequestStatistics {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.GATEWAY;
         synchronized (this) {
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             if (rxDocumentServiceRequest != null
@@ -187,8 +187,8 @@ class ClientSideRequestStatistics {
                                                        + "before calling end");
             }
 
-            if (responseTime.isAfter(this.requestEndTime)) {
-                this.requestEndTime = responseTime;
+            if (responseTime.isAfter(this.requestEndTimeUTC)) {
+                this.requestEndTimeUTC = responseTime;
             }
 
             AddressResolutionStatistics resolutionStatistics = this.addressResolutionStatistics.get(identifier);
@@ -220,9 +220,17 @@ class ClientSideRequestStatistics {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
+    MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+        return this.metadataDiagnosticsContext;
+    }
+
+    SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
+        return this.serializationDiagnosticsContext;
+    }
+
     void recordRetryContext(RxDocumentServiceRequest request) {
-        if (request.requestContext.retryContext != null) {
-            request.requestContext.retryContext.retryEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        if(request.requestContext.retryContext != null) {
+            request.requestContext.retryContext.retryEndTime =  ZonedDateTime.now(ZoneOffset.UTC);
             this.retryContext = new RetryContext(request.requestContext.retryContext);
         }
     }
@@ -259,23 +267,6 @@ class ClientSideRequestStatistics {
         }
     }
 
-    private static class ZonedDateTimeSerializer extends StdSerializer<ZonedDateTime> {
-
-        private static final long serialVersionUID = -1029068207700658765L;
-
-        ZonedDateTimeSerializer() {
-            super(ZonedDateTime.class);
-        }
-
-        @Override
-        public void serialize(
-            ZonedDateTime zonedDateTime,
-            JsonGenerator jsonGenerator,
-            SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeObject(formatDateTime(zonedDateTime));
-        }
-    }
-
     public static class ClientSideRequestStatisticsSerializer extends StdSerializer<ClientSideRequestStatistics> {
 
         private static final long serialVersionUID = -2746532297176812860L;
@@ -291,8 +282,8 @@ class ClientSideRequestStatistics {
             generator.writeStartObject();
             long requestLatency = statistics.getRequestLatency().toMillis();
             generator.writeNumberField("requestLatency", requestLatency);
-            generator.writeStringField("requestStartTime", formatDateTime(statistics.requestStartTime));
-            generator.writeStringField("requestEndTime", formatDateTime(statistics.requestEndTime));
+            generator.writeStringField("requestStartTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestStartTimeUTC));
+            generator.writeStringField("requestEndTimeUTC", ZonedDateTimeSerializer.formatDateTime(statistics.requestEndTimeUTC));
             generator.writeObjectField("connectionMode", statistics.connectionMode);
             generator.writeObjectField("responseStatisticsList", statistics.responseStatisticsList);
             int supplementalResponseStatisticsListCount = statistics.supplementalResponseStatisticsList.size();
@@ -312,6 +303,8 @@ class ClientSideRequestStatistics {
             generator.writeObjectField("addressResolutionStatistics", statistics.addressResolutionStatistics);
             generator.writeObjectField("regionsContacted", statistics.regionsContacted);
             generator.writeObjectField("retryContext", statistics.retryContext);
+            generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
+            generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
 
             try {

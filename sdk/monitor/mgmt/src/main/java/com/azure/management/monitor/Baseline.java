@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Baseline model.
- */
+/** The Baseline model. */
 @Fluent
 public final class Baseline {
     /*
@@ -33,7 +31,7 @@ public final class Baseline {
 
     /**
      * Get the sensitivity property: the sensitivity of the baseline.
-     * 
+     *
      * @return the sensitivity value.
      */
     public Sensitivity sensitivity() {
@@ -42,7 +40,7 @@ public final class Baseline {
 
     /**
      * Set the sensitivity property: the sensitivity of the baseline.
-     * 
+     *
      * @param sensitivity the sensitivity value to set.
      * @return the Baseline object itself.
      */
@@ -53,7 +51,7 @@ public final class Baseline {
 
     /**
      * Get the lowThresholds property: The low thresholds of the baseline.
-     * 
+     *
      * @return the lowThresholds value.
      */
     public List<Double> lowThresholds() {
@@ -62,7 +60,7 @@ public final class Baseline {
 
     /**
      * Set the lowThresholds property: The low thresholds of the baseline.
-     * 
+     *
      * @param lowThresholds the lowThresholds value to set.
      * @return the Baseline object itself.
      */
@@ -73,7 +71,7 @@ public final class Baseline {
 
     /**
      * Get the highThresholds property: The high thresholds of the baseline.
-     * 
+     *
      * @return the highThresholds value.
      */
     public List<Double> highThresholds() {
@@ -82,7 +80,7 @@ public final class Baseline {
 
     /**
      * Set the highThresholds property: The high thresholds of the baseline.
-     * 
+     *
      * @param highThresholds the highThresholds value to set.
      * @return the Baseline object itself.
      */

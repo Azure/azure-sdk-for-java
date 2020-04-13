@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificate;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.HostingEnvironmentProfile;
@@ -10,28 +11,20 @@ import com.azure.management.appservice.models.CertificateInner;
 import com.azure.management.appservice.models.CertificatesInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AppServiceCertificate.
- */
+/** The implementation for AppServiceCertificate. */
 class AppServiceCertificateImpl
-        extends
-        GroupableResourceImpl<
-                AppServiceCertificate,
-                CertificateInner,
-                AppServiceCertificateImpl,
-                AppServiceManager>
-        implements
-        AppServiceCertificate,
-        AppServiceCertificate.Definition {
+    extends GroupableResourceImpl<AppServiceCertificate, CertificateInner, AppServiceCertificateImpl, AppServiceManager>
+    implements AppServiceCertificate, AppServiceCertificate.Definition {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     private String pfxFileUrl;
     private AppServiceCertificateOrder certificateOrder;
@@ -124,24 +117,33 @@ class AppServiceCertificateImpl
     public Mono<AppServiceCertificate> createResourceAsync() {
         Mono<Void> pfxBytes = Mono.empty();
         if (pfxFileUrl != null) {
-            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, this.manager().restClient().getHttpPipeline())
-                    .map(bytes -> {
-                        inner().withPfxBlob(bytes);
-                        return null;
-                    });
+            pfxBytes =
+                Utils
+                    .downloadFileAsync(pfxFileUrl, this.manager().restClient().getHttpPipeline())
+                    .map(
+                        bytes -> {
+                            inner().withPfxBlob(bytes);
+                            return null;
+                        });
         }
         Mono<Void> keyVaultBinding = Mono.empty();
         if (certificateOrder != null) {
-            keyVaultBinding = certificateOrder.getKeyVaultBindingAsync()
-                    .map(keyVaultBinding1 -> {
-                        inner().withKeyVaultId(keyVaultBinding1.keyVaultId()).withKeyVaultSecretName(keyVaultBinding1.keyVaultSecretName());
-                        return null;
-                    });
+            keyVaultBinding =
+                certificateOrder
+                    .getKeyVaultBindingAsync()
+                    .map(
+                        keyVaultBinding1 -> {
+                            inner()
+                                .withKeyVaultId(keyVaultBinding1.keyVaultId())
+                                .withKeyVaultSecretName(keyVaultBinding1.keyVaultSecretName());
+                            return null;
+                        });
         }
         final CertificatesInner client = this.manager().inner().certificates();
         return pfxBytes
-                .then(keyVaultBinding)
-                .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner())).map(innerToFluentMap(this));
+            .then(keyVaultBinding)
+            .then(client.createOrUpdateAsync(resourceGroupName(), name(), inner()))
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -150,7 +152,7 @@ class AppServiceCertificateImpl
             byte[] fileContent = Files.readAllBytes(file.toPath());
             return withPfxByteArray(fileContent);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
     }
 

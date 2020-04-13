@@ -9,12 +9,14 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -391,6 +393,22 @@ public final class BridgeInternal {
     public static void recordRetryContext(CosmosResponseDiagnostics cosmosResponseDiagnostics,
                                       RxDocumentServiceRequest request) {
         cosmosResponseDiagnostics.clientSideRequestStatistics().recordRetryContext(request);
+    }
+
+    public static MetadataDiagnosticsContext getMetaDataDiagnosticContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        if(cosmosResponseDiagnostics == null) {
+            return null;
+        }
+
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getMetadataDiagnosticsContext();
+    }
+
+    public static SerializationDiagnosticsContext getSerializationDiagnosticsContext(CosmosResponseDiagnostics cosmosResponseDiagnostics){
+        if(cosmosResponseDiagnostics == null) {
+            return null;
+        }
+
+        return cosmosResponseDiagnostics.clientSideRequestStatistics().getSerializationDiagnosticsContext();
     }
 
     public static void recordGatewayResponse(CosmosResponseDiagnostics cosmosResponseDiagnostics,

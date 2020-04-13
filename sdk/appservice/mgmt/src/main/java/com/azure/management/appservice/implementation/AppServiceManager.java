@@ -26,9 +26,7 @@ import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlin
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.implementation.StorageManager;
 
-/**
- * Entry point to Azure storage resource management.
- */
+/** Entry point to Azure storage resource management. */
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
     // Managers
     private GraphRbacManager rbacManager;
@@ -60,13 +58,16 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @return the StorageManager
      */
     public static AppServiceManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
+        return authenticate(
+            new RestClientBuilder()
                 .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredential(credential)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withPolicy(new ProviderRegistrationPolicy(credential))
                 .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), credential.getDomain(), subscriptionId);
+                .buildClient(),
+            credential.getDomain(),
+            subscriptionId);
     }
 
     /**
@@ -90,13 +91,12 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @param sdkContext the sdk context
      * @return the StorageManager
      */
-    public static AppServiceManager authenticate(RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
+    public static AppServiceManager authenticate(
+        RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
         return new AppServiceManager(restClient, tenantId, subscriptionId, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of StorageManager that exposes storage management API entry points.
@@ -108,9 +108,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         AppServiceManager authenticate(AzureTokenCredential credential, String subscriptionId);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
+    /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AppServiceManager authenticate(AzureTokenCredential credential, String subscriptionId) {
             return AppServiceManager.authenticate(buildRestClient(credential), credential.getDomain(), subscriptionId);
@@ -119,36 +117,31 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
 
     private AppServiceManager(RestClient restClient, String tenantId, String subscriptionId, SdkContext sdkContext) {
         super(
-                restClient,
-                subscriptionId,
-                new WebSiteManagementClientBuilder()
-                        .pipeline(restClient.getHttpPipeline())
-                        .host(restClient.getBaseUrl().toString())
-                        .subscriptionId(subscriptionId).build(),
-                sdkContext);
+            restClient,
+            subscriptionId,
+            new WebSiteManagementClientBuilder()
+                .pipeline(restClient.getHttpPipeline())
+                .host(restClient.getBaseUrl().toString())
+                .subscriptionId(subscriptionId)
+                .buildClient(),
+            sdkContext);
         keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId, sdkContext);
         storageManager = StorageManager.authenticate(restClient, subscriptionId, sdkContext);
         rbacManager = GraphRbacManager.authenticate(restClient, tenantId, sdkContext);
         this.restClient = restClient;
     }
 
-    /**
-     * @return the Graph RBAC manager instance.
-     */
+    /** @return the Graph RBAC manager instance. */
     GraphRbacManager rbacManager() {
         return rbacManager;
     }
 
-    /**
-     * @return the key vault manager instance.
-     */
+    /** @return the key vault manager instance. */
     KeyVaultManager keyVaultManager() {
         return keyVaultManager;
     }
 
-    /**
-     * @return the storage manager instance.
-     */
+    /** @return the storage manager instance. */
     StorageManager storageManager() {
         return storageManager;
     }
@@ -157,10 +150,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         return restClient;
     }
 
-
-    /**
-     * @return the web app management API entry point
-     */
+    /** @return the web app management API entry point */
     public WebApps webApps() {
         if (webApps == null) {
             webApps = new WebAppsImpl(this);
@@ -168,9 +158,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         return webApps;
     }
 
-    /**
-     * @return the app service plan management API entry point
-     */
+    /** @return the app service plan management API entry point */
     public AppServicePlans appServicePlans() {
         if (appServicePlans == null) {
             appServicePlans = new AppServicePlansImpl(this);
@@ -178,9 +166,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         return appServicePlans;
     }
 
-    /**
-     * @return the certificate order management API entry point
-     */
+    /** @return the certificate order management API entry point */
     public AppServiceCertificateOrders certificateOrders() {
         if (appServiceCertificateOrders == null) {
             appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(this);
@@ -188,9 +174,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         return appServiceCertificateOrders;
     }
 
-    /**
-     * @return the certificate management API entry point
-     */
+    /** @return the certificate management API entry point */
     public AppServiceCertificates certificates() {
         if (appServiceCertificates == null) {
             appServiceCertificates = new AppServiceCertificatesImpl(this);
@@ -198,18 +182,14 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
         return appServiceCertificates;
     }
 
-    /**
-     * @return the app service plan management API entry point
-     */
+    /** @return the app service plan management API entry point */
     public AppServiceDomains domains() {
         if (appServiceDomains == null) {
             appServiceDomains = new AppServiceDomainsImpl(this);
         }
         return appServiceDomains;
     }
-    /**
-     * @return the web app management API entry point
-     */
+    /** @return the web app management API entry point */
     public FunctionApps functionApps() {
         if (functionApps == null) {
             functionApps = new FunctionAppsImpl(this);

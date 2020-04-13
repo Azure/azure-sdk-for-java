@@ -4,18 +4,15 @@
 package com.azure.management.appservice.samples;
 
 import com.azure.management.Azure;
+//import com.azure.management.trafficmanager.TrafficManagerProfile;
+//import com.azure.management.trafficmanager.TrafficRoutingMethod;
+import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.OperatingSystem;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.appservice.WebApp;
-import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
-import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.samples.Utils;
-//import com.azure.management.trafficmanager.TrafficManagerProfile;
-//import com.azure.management.trafficmanager.TrafficRoutingMethod;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
 
@@ -30,7 +27,7 @@ import java.io.File;
  *  - Scale up the app service plans to twice the capacity
  */
 public final class ManageWebAppWithTrafficManager {
-    private static String RG_NAME;
+    private static String rgName;
     // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
     private static final String CERT_PASSWORD = "StrongPass!12";
 
@@ -265,9 +262,9 @@ public final class ManageWebAppWithTrafficManager {
     }
 
     private static AppServicePlan createAppServicePlan(String name, Region region) {
-        return azure.appServices().appServicePlans().define(name)
+        return azure.appServicePlans().define(name)
                 .withRegion(region)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withPricingTier(PricingTier.STANDARD_S1)
                 .withOperatingSystem(OperatingSystem.WINDOWS)
                 .create();
@@ -276,7 +273,7 @@ public final class ManageWebAppWithTrafficManager {
     private static WebApp createWebApp(String name, AppServicePlan plan) {
         return azure.webApps().define(name)
                 .withExistingWindowsPlan(plan)
-                .withExistingResourceGroup(RG_NAME)
+                .withExistingResourceGroup(rgName)
                 .withManagedHostnameBindings(domain, name)
                 .defineSslBinding()
                     .forHostname(name + "." + domain.name())

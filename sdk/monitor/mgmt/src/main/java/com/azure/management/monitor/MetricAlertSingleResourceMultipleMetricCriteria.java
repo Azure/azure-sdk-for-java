@@ -9,16 +9,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
 import java.util.List;
 
-/**
- * The MetricAlertSingleResourceMultipleMetricCriteria model.
- */
+/** The MetricAlertSingleResourceMultipleMetricCriteria model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria")
-@Fluent
 @JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@Fluent
 public final class MetricAlertSingleResourceMultipleMetricCriteria extends MetricAlertCriteria {
     /*
      * The list of metric criteria for this 'all of' operation.
@@ -27,9 +24,8 @@ public final class MetricAlertSingleResourceMultipleMetricCriteria extends Metri
     private List<MetricCriteria> allOf;
 
     /**
-     * Get the allOf property: The list of metric criteria for this 'all of'
-     * operation.
-     * 
+     * Get the allOf property: The list of metric criteria for this 'all of' operation.
+     *
      * @return the allOf value.
      */
     public List<MetricCriteria> allOf() {
@@ -37,12 +33,10 @@ public final class MetricAlertSingleResourceMultipleMetricCriteria extends Metri
     }
 
     /**
-     * Set the allOf property: The list of metric criteria for this 'all of'
-     * operation.
-     * 
+     * Set the allOf property: The list of metric criteria for this 'all of' operation.
+     *
      * @param allOf the allOf value to set.
-     * @return the MetricAlertSingleResourceMultipleMetricCriteria object
-     * itself.
+     * @return the MetricAlertSingleResourceMultipleMetricCriteria object itself.
      */
     public MetricAlertSingleResourceMultipleMetricCriteria withAllOf(List<MetricCriteria> allOf) {
         this.allOf = allOf;

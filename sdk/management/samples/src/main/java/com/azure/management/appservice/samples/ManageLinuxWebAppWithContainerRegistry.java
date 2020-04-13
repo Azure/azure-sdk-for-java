@@ -3,24 +3,10 @@
 
 package com.azure.management.appservice.samples;
 
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.github.dockerjava.api.exception.NotFoundException;
-import com.github.dockerjava.api.model.Image;
-import com.github.dockerjava.core.command.PullImageResultCallback;
-import com.github.dockerjava.core.command.PushImageResultCallback;
 import com.azure.management.Azure;
-import com.azure.management.appservice.PricingTier;
-import com.azure.management.appservice.WebApp;
-import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.samples.DockerUtils;
-import com.azure.management.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
-import java.util.Date;
-import java.util.List;
 
 
 /**

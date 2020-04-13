@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The WorkspaceInfo model.
- */
+/** The WorkspaceInfo model. */
 @JsonFlatten
 @Fluent
 public class WorkspaceInfo {
@@ -33,9 +31,8 @@ public class WorkspaceInfo {
     private String customerId;
 
     /**
-     * Get the id property: Azure Resource Manager identifier of the Log
-     * Analytics Workspace.
-     * 
+     * Get the id property: Azure Resource Manager identifier of the Log Analytics Workspace.
+     *
      * @return the id value.
      */
     public String getId() {
@@ -43,9 +40,8 @@ public class WorkspaceInfo {
     }
 
     /**
-     * Set the id property: Azure Resource Manager identifier of the Log
-     * Analytics Workspace.
-     * 
+     * Set the id property: Azure Resource Manager identifier of the Log Analytics Workspace.
+     *
      * @param id the id value to set.
      * @return the WorkspaceInfo object itself.
      */
@@ -56,7 +52,7 @@ public class WorkspaceInfo {
 
     /**
      * Get the location property: Location of the Log Analytics workspace.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -65,7 +61,7 @@ public class WorkspaceInfo {
 
     /**
      * Set the location property: Location of the Log Analytics workspace.
-     * 
+     *
      * @param location the location value to set.
      * @return the WorkspaceInfo object itself.
      */
@@ -76,7 +72,7 @@ public class WorkspaceInfo {
 
     /**
      * Get the customerId property: Log Analytics workspace identifier.
-     * 
+     *
      * @return the customerId value.
      */
     public String customerId() {
@@ -85,7 +81,7 @@ public class WorkspaceInfo {
 
     /**
      * Set the customerId property: Log Analytics workspace identifier.
-     * 
+     *
      * @param customerId the customerId value to set.
      * @return the WorkspaceInfo object itself.
      */

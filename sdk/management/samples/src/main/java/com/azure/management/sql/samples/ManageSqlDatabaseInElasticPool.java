@@ -212,8 +212,7 @@ public final class ManageSqlDatabaseInElasticPool {
                 System.out.println("Deleting Resource Group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
@@ -241,7 +240,7 @@ public final class ManageSqlDatabaseInElasticPool {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             runSample(azure);
-       } catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

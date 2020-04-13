@@ -48,7 +48,7 @@ public final class ManageFunctionAppLogs {
 
             System.out.println("Creating function app " + appName + " in resource group " + rgName + "...");
 
-            FunctionApp app = azure.appServices().functionApps().define(appName)
+            FunctionApp app = azure.functionApps().define(appName)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineDiagnosticLogsConfiguration()
