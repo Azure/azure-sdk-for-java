@@ -28,6 +28,7 @@ public class ExtractPrebuiltReceiptAsync {
      * Sample for extracting receipt information using input stream.
      *
      * @param args Unused. Arguments to the program.
+     * @throws IOException Unused. If an I/O error occurs reading from the stream of file.
      */
     public static void main(final String[] args) throws IOException {
         // Instantiate a client that will be used to call the service.

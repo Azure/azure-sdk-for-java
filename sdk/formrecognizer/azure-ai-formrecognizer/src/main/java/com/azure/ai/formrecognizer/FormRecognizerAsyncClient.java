@@ -174,7 +174,7 @@ public final class FormRecognizerAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomFormModelInfo> listModels() {
-         try {
+        try {
             return new PagedFlux<>(() -> withContext(context -> listFirstPageModelInfo(context)),
                 continuationToken -> withContext(context -> listNextPageModelInfo(continuationToken, context)));
         } catch (RuntimeException ex) {
@@ -191,19 +191,14 @@ public final class FormRecognizerAsyncClient {
      */
     PagedFlux<CustomFormModelInfo> listModels(Context context) {
         return new PagedFlux<>(() -> listFirstPageModelInfo(context),
-            continuationToken -> {
-                if (CoreUtils.isNullOrEmpty(continuationToken)) {
-                    return Mono.empty();
-                }
-                return listNextPageModelInfo(continuationToken, context);
-            });
+            continuationToken -> listNextPageModelInfo(continuationToken, context));
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
         return service.listCustomModelsSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
-            .doOnError(error -> logger.warning("Failed to list all models", error))
+            .doOnError(error -> logger.warning("Failed to list all models information", error))
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),
@@ -214,6 +209,9 @@ public final class FormRecognizerAsyncClient {
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listNextPageModelInfo(String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return Mono.empty();
+        }
         return service.listCustomModelsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))

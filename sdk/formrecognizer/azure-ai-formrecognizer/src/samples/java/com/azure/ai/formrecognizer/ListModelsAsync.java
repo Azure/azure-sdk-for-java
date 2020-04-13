@@ -22,13 +22,12 @@ public class ListModelsAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        client.listModels().subscribe(result -> {
-                System.out.printf("Model ID = %s, model status = %s, created on = %s, last updated on = %s.%n",
-                    result.getModelId(),
-                    result.getStatus(),
-                    result.getCreatedOn(),
-                    result.getLastUpdatedOn());
-            },
+        client.listModels().subscribe(result ->
+            System.out.printf("Model ID = %s, model status = %s, created on = %s, last updated on = %s.%n",
+                result.getModelId(),
+                result.getStatus(),
+                result.getCreatedOn(),
+                result.getLastUpdatedOn()),
             error -> System.err.printf(String.format("There was an error list the models, %s.", error)),
             () -> System.out.println("Finished listing models."));
 

@@ -34,7 +34,16 @@ public final class CustomFormModelInfo {
      */
     private final OffsetDateTime lastUpdatedOn;
 
-    public CustomFormModelInfo(final UUID modelId, final ModelTrainingStatus status, final OffsetDateTime createdOn, final OffsetDateTime lastUpdatedOn) {
+    /**
+     * Constructs a {@link CustomFormModelInfo} box object.
+     *
+     * @param modelId The model identifier.
+     * @param status The status of the model.
+     * @param createdOn The date and time (UTC) when the model was created.
+     * @param lastUpdatedOn The date and time (UTC) when the status was last updated.
+     */
+    public CustomFormModelInfo(final UUID modelId, final ModelTrainingStatus status, final OffsetDateTime createdOn,
+        final OffsetDateTime lastUpdatedOn) {
         this.modelId = modelId;
         this.status = status;
         this.createdOn = createdOn;

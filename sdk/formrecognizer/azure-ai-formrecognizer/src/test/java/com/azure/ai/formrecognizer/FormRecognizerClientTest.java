@@ -3,6 +3,7 @@
 
 package com.azure.ai.formrecognizer;
 
+import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.ExtractedReceipt;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.OperationResult;
@@ -13,6 +14,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.RECEIPT_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getExtractedReceipts;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
@@ -185,5 +188,27 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         // Action and Assert
         validateReceiptResult(false, getExtractedReceipts(),
             client.beginExtractReceiptsFromUrl(RECEIPT_URL).getFinalResult());
+    }
+
+    /**
+     * Test for listing all models information.
+     */
+    @Test
+    void listModels() {
+        for (CustomFormModelInfo modelInfo : client.listModels()) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
+                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        }
+    }
+
+    /**
+     * Test for listing all models information with {@link Context}.
+     */
+    @Test
+    void listModelsWithContext() {
+        for (CustomFormModelInfo modelInfo : client.listModels(Context.NONE)) {
+            assertTrue(modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
+                && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null);
+        }
     }
 }

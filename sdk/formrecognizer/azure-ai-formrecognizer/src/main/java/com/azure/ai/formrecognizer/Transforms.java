@@ -385,7 +385,8 @@ final class Transforms {
      * @return A list of {@link CustomFormModelInfo}.
      */
     static List<CustomFormModelInfo> toCustomFormModelInfo(List<ModelInfo> list) {
-        CollectionTransformer transformer = new CollectionTransformer<ModelInfo, CustomFormModelInfo>() {
+        CollectionTransformer<ModelInfo, CustomFormModelInfo> transformer =
+            new CollectionTransformer<ModelInfo, CustomFormModelInfo>() {
             @Override
             CustomFormModelInfo transform(ModelInfo modelInfo) {
                 return new CustomFormModelInfo(modelInfo.getModelId(),
