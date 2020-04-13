@@ -28,7 +28,7 @@ public interface RouteFilterRule extends
     /**
      * @return the rule type of the rule
      */
-    String routeFilterRuleType();
+    RouteFilterRuleType routeFilterRuleType();
 
     /**
      * The collection for bgp community values to filter on. e.g.

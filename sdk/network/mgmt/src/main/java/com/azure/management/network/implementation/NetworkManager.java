@@ -146,7 +146,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
                         .pipeline(restClient.getHttpPipeline())
                         .host(restClient.getBaseUrl().toString())
                         .subscriptionId(subscriptionId)
-                        .build(),
+                        .buildClient(),
                 sdkContext);
     }
 

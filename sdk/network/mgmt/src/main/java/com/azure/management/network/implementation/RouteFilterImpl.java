@@ -6,6 +6,7 @@ import com.azure.management.network.Access;
 import com.azure.management.network.ExpressRouteCircuitPeering;
 import com.azure.management.network.RouteFilter;
 import com.azure.management.network.RouteFilterRule;
+import com.azure.management.network.RouteFilterRuleType;
 import com.azure.management.network.models.RouteFilterInner;
 import com.azure.management.network.models.RouteFilterRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -107,7 +108,7 @@ class RouteFilterImpl
     public RouteFilterRuleImpl defineRule(String name) {
         RouteFilterRuleInner inner = new RouteFilterRuleInner();
         inner.withName(name);
-        inner.withRouteFilterRuleType(RULE_TYPE);
+        inner.withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY);
         inner.withAccess(Access.ALLOW);
         return new RouteFilterRuleImpl(inner, this);
     }

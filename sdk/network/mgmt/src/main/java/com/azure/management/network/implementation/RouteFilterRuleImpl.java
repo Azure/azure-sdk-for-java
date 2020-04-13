@@ -5,6 +5,7 @@ package com.azure.management.network.implementation;
 import com.azure.management.network.Access;
 import com.azure.management.network.RouteFilter;
 import com.azure.management.network.RouteFilterRule;
+import com.azure.management.network.RouteFilterRuleType;
 import com.azure.management.network.models.RouteFilterRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -79,7 +80,7 @@ class RouteFilterRuleImpl
     }
 
     @Override
-    public String routeFilterRuleType() {
+    public RouteFilterRuleType routeFilterRuleType() {
         return inner().routeFilterRuleType();
     }
 

@@ -162,7 +162,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityRuleImpl withAnyProtocol() {
-        return this.withProtocol(SecurityRuleProtocol._);
+        return this.withProtocol(SecurityRuleProtocol.fromString("*"));
     }
 
     @Override
