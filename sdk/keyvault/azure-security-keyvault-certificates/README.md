@@ -1,5 +1,5 @@
 # Azure Key Vault Certificate client library for Java
-Azure Key Vault allows you to create and store certificates in the Key Vault. Azure Key Vault client supports certificates backed by Rsa keys and Ec keys. It allows you to securely manage, tightly control your certificates.
+Azure Key Vault allows you to create and store certificates in the Key Vault. Azure Key Vault Certificate client Library supports certificates backed by Rsa keys and Ec keys. It allows you to securely manage, tightly control your certificates.
 
  Multiple certificates, and multiple versions of the same certificate, can be kept in the Key Vault. Cryptographic keys in Key Vault backing the certificates are represented as [JSON Web Key [JWK]](https://tools.ietf.org/html/rfc7517) objects. This library offers operations to create, retrieve, update, delete, purge, backup, restore and list the certificates and its versions.
 
@@ -31,12 +31,12 @@ Maven dependency for Azure Key Client library. Add it to your project's pom file
     ```
 
 ### Authenticate the client
-In order to interact with the Key Vault service, you'll need to create an instance of the [CertificateClient](#create-certificate-client) class. You would need a **vault url** and **client secret credentials (client id, client key, tenant id)** to instantiate a client object using the default `AzureCredential` examples shown in this document.
+In order to interact with the Key Vault service, you'll need to create an instance of the [CertificateClient](#create-certificate-client) class. You would need a **vault url** and **client secret credentials (client id, client secret, tenant id)** to instantiate a client object using the `DefaultAzureCredential` examples shown in this document.
 
 The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
 #### Create/Get credentials
-To create/get client key credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
+To create/get client secret credentials you can use the [Azure Portal][azure_create_application_in_portal], [Azure CLI][azure_keyvault_cli_full] or [Azure Cloud Shell](https://shell.azure.com/bash)
 
 Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 
@@ -69,7 +69,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
 * Grant the above mentioned application authorization to perform key operations on the keyvault:
 
     ```Bash
-    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --certificate-permissions backup delete get list create
+    az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --certificate-permissions backup delete get list create update
     ```
 
     > --certificate-permissions:
@@ -87,6 +87,7 @@ Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZU
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
+import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 
 CertificateClient client = new CertificateClientBuilder()
         .vaultUrl(<your-vault-url>)
@@ -108,7 +109,7 @@ The Certificate client performs the interactions with the Azure Key Vault servic
 
 ## Examples
 ### Sync API
-The following sections provide several code snippets covering some of the most common Azure Key Vault Key Service tasks, including:
+The following sections provide several code snippets covering some of the most common Azure Key Vault Certificate Service tasks, including:
 - [Create a Certificate](#create-a-certificate)
 - [Retrieve a Certificate](#retrieve-a-certificate)
 - [Update an existing Certificate](#update-an-existing-certificate)
@@ -117,15 +118,19 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Certificate
 
-Create a Certificate to be stored in the Azure Key Vault.
-- `beginCreateCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+Create a certificate to be stored in the Azure Key Vault.
+- `beginCreateCertificate` creates a new certificate in the Azure Key Vault. if the certificate with name already exists then a new version of the certificate is created.
 
 ```Java
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.CertificateClient;
+import com.azure.security.keyvault.certificates.CertificateClientBuilder;
+import com.azure.security.keyvault.certificates.models.CertificateOperation;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy; 
 
 CertificateClient certificateClient = new CertificateClientBuilder()
         .vaultUrl(<your-vault-url>)
@@ -192,7 +197,7 @@ for (CertificateProperties certificateProperties : certificateClient.listPropert
 ```
 
 ### Async API
-The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Key Service tasks, including:
+The following sections provide several code snippets covering some of the most common asynchronous Azure Key Vault Certificate Service tasks, including:
 - [Create a Certificate Asynchronously](#create-a-certificate-asynchronously)
 - [Retrieve a Certificate Asynchronously](#retrieve-a-certificate-asynchronously)
 - [Update an existing Certificate Asynchronously](#update-an-existing-certificate-asynchronously)
@@ -203,15 +208,13 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a Certificate Asynchronously
 
-Create a Certificate to be stored in the Azure Key Vault.
-- `beginCreateCertificate` creates a new certificate in the key vault. if the certificate with name already exists then a new version of the certificate is created.
+Create a certificate to be stored in the Azure Key Vault.
+- `beginCreateCertificate` creates a new certificate in the Azure Key Vault. if the certificate with name already exists then a new version of the certificate is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.security.keyvault.certificates.models.Certificate;
-import com.azure.security.keyvault.certificates.models.CertificatePolicy;
-import com.azure.security.keyvault.certificates.models.CertificateOperation;
 import com.azure.security.keyvault.certificates.CertificateAsyncClient;
+import com.azure.security.keyvault.certificates.models.CertificatePolicy; 
 
 //Creates a certificate using the default policy and polls on its progress.
 certificateAsyncClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault())
@@ -271,7 +274,7 @@ List the certificates in the key vault by calling `listPropertiesOfCertificates`
 ```Java
 // The List Certificates operation returns certificates without their full properties, so for each certificate returned we call `getCertificate` to get all its attributes excluding the policy.
 certificateAsyncClient.listPropertiesOfCertificates()
-    .subscribe(certificateProperties -> certificateAsyncClient.getCertificate(certificateProperties.getName(),
+    .subscribe(certificateProperties -> certificateAsyncClient.getCertificateVersion(certificateProperties.getName(),
      certificateProperties.getVersion());
         .subscribe(certificateResponse -> System.out.printf("Received certificate with name %s and key id %s",
             certificateResponse.getName(), certificateResponse.getKeyId())));
