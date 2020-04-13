@@ -178,7 +178,7 @@ class VirtualNetworkGatewayImpl
             .manager()
             .inner()
             .virtualNetworkGateways()
-            .resetAsync(resourceGroupName(), name(), null)
+            .resetAsync(resourceGroupName(), name())
             .map(
                 inner -> {
                     VirtualNetworkGatewayImpl.this.setInner(inner);

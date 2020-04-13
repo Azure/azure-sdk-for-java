@@ -56,7 +56,7 @@ class RouteFilterImpl
             .manager()
             .inner()
             .routeFilters()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

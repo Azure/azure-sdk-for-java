@@ -184,8 +184,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
                 this.resourceGroupName,
                 this.scaleSetName,
                 ResourceUtils.nameFromResourceId(this.virtualMachineId()),
-                this.name(),
-                null);
+                this.name());
     }
 
     @Override

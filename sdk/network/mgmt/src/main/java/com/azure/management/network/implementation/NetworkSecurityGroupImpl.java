@@ -84,7 +84,7 @@ class NetworkSecurityGroupImpl
             .manager()
             .inner()
             .networkSecurityGroups()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

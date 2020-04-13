@@ -73,7 +73,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
             .manager()
             .inner()
             .virtualNetworks()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

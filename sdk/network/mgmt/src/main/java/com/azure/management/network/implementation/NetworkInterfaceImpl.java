@@ -73,7 +73,7 @@ class NetworkInterfaceImpl
             .manager()
             .inner()
             .networkInterfaces()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override

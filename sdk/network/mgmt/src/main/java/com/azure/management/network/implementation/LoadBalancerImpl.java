@@ -83,7 +83,7 @@ class LoadBalancerImpl
             .manager()
             .inner()
             .loadBalancers()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
